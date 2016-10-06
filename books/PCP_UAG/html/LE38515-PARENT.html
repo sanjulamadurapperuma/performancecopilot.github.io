@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">Chapter 4. Monitoring System Performance</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="prev" href="id5196749.html" title="3.6.2. Time Dilation and Time Skew" /><link rel="next" href="Z926977852sdc.html" title="4.2. The pmdumptext Command" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5196749.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="Z926977852sdc.html"><strong>Next</strong></a></li></ul><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE38515-PARENT">
+      ⁠</a>Chapter 4. Monitoring System Performance</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="LE38515-PARENT.html#LE91266-PARENT">4.1. The <code class="command">pmstat</code> Command</a></span></dt><dt><span class="section"><a href="Z926977852sdc.html">4.2. The <code class="command">pmdumptext</code> Command</a></span></dt><dt><span class="section"><a href="LE35315-PARENT.html">4.3. The <code class="command">pmval</code> Command</a></span></dt><dt><span class="section"><a href="LE60452-PARENT.html">4.4. The <code class="command">pminfo</code> Command</a></span></dt><dt><span class="section"><a href="LE10170-PARENT.html">4.5. The <code class="command">pmstore</code> Command</a></span></dt></dl></div><div class="para">
+			<a id="IG31371888166" class="indexterm"></a><a id="IG31371888167" class="indexterm"></a><a id="IG31371888168" class="indexterm"></a><a id="Z1033415772tls" class="indexterm"></a>This chapter describes the performance monitoring tools available in Performance Co-Pilot (PCP). This product provides a group of commands and tools for measuring system performance. Each tool is described completely by its own man page. The man pages are accessible through the <code class="command">man</code> command. For example, the man page for the tool <code class="command">pmdumptext</code> is viewed by entering the following command:
+		</div><pre class="literallayout"><strong class="userinput"><code>man pmdumptext</code></strong></pre><div class="para">
+			The following major sections are covered in this chapter:
+		</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para"><a id="Z930615099sdc">
+      ⁠</a>
+					<a class="xref" href="LE38515-PARENT.html#LE91266-PARENT">Section 4.1, “The <code class="command">pmstat</code> Command”</a>, discusses <code class="command">pmstat</code>, a utility that provides a periodic one-line summary of system performance.
+				</div></li><li class="listitem"><div class="para">
+					<a class="xref" href="Z926977852sdc.html">Section 4.2, “The <code class="command">pmdumptext</code> Command”</a>, discusses <code class="command">pmdumptext</code>, a utility that shows the current values for named performance metrics.
+				</div></li><li class="listitem"><div class="para">
+					<a class="xref" href="LE35315-PARENT.html">Section 4.3, “The <code class="command">pmval</code> Command”</a>, describes <code class="command">pmval</code>, a utility that displays performance metrics in a textual format.
+				</div></li><li class="listitem"><div class="para">
+					<a class="xref" href="LE60452-PARENT.html">Section 4.4, “The <code class="command">pminfo</code> Command”</a>, describes <code class="command">pminfo</code>, a utility that displays information about performance metrics.
+				</div></li><li class="listitem"><div class="para">
+					<a id="IG31371888169" class="indexterm"></a><a class="xref" href="LE10170-PARENT.html">Section 4.5, “The <code class="command">pmstore</code> Command”</a>, describes the use of the <code class="command">pmstore</code> utility to arbitrarily set or reset selected performance metric values.
+				</div></li></ul></div><div class="para">
+			<a id="IG31371888170" class="indexterm"></a><a id="IG31371888171" class="indexterm"></a>The following sections describe the various graphical and text-based PCP tools used to monitor local or remote system performance.
+		</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE91266-PARENT">
+      ⁠</a>4.1. The <code class="command">pmstat</code> Command</h2></div></div></div><div class="para">
+				<a id="ITch04-20" class="indexterm"></a> The <code class="command">pmstat</code> command provides a periodic, one-line summary of system performance. This command is intended to monitor system performance at the highest level, after which other tools may be used for examining subsystems to observe potential performance problems in greater detail. After entering the <code class="command">pmstat</code> command, you see output similar to the following, with successive lines appearing periodically:
+			</div><pre class="literallayout"><strong class="userinput"><code>pmstat</code></strong>
+@ Thu Aug 15 09:25:56 2013
+ loadavg                      memory      swap        io    system         cpu
+   1 min   swpd   free   buff  cache   pi   po   bi   bo   in   cs  us  sy  id
+    1.29 833960  5614m 144744 265824    0    0    0 1664  13K  23K   6   7  81
+    1.51 833956  5607m 144744 265712    0    0    0 1664  13K  24K   5   7  83
+    1.55 833956  5595m 145196 271908    0    0  14K 1056  13K  24K   7   7  74</pre><div class="para">
+				An additional line of output is added every five seconds. The <code class="literal">-t </code><em class="replaceable">interval</em> option may be used to vary the update interval (i.e. the sampling interval).
+			</div><div class="para">
+				The output from <code class="command">pmstat</code> is directed to standard output, and the columns in the report are interpreted as follows:
+			</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">loadavg</code></span></dt><dd><div class="para">
+							The 1-minute load average (runnable processes).
+						</div></dd><dt><span class="term"><code class="literal">memory</code></span></dt><dd><div class="para">
+							The swpd column indicates average swap space used during the interval (all columns reported in Kbytes unless otherwise indicated). The <code class="literal">free</code> column indicates average free memory during the interval. The <code class="literal">buff</code> column indicates average buffer memory in use during the interval. The <code class="literal">cache</code> column indicates average cached memory in use during the interval.
+						</div></dd><dt><span class="term"><code class="literal">swap</code></span></dt><dd><div class="para">
+							Reports the average number of pages that are paged-in (<code class="literal">pi</code>) and paged-out (<code class="literal">po</code>) per second during the interval. It is normal for the paged-in values to be non-zero, but the system is suffering memory stress if the paged-out values are non-zero over an extended period.
+						</div></dd><dt><span class="term"><code class="literal">io</code></span></dt><dd><div class="para">
+							The <code class="literal">bi</code> and <code class="literal">bo</code> columns indicate the average rate per second of block input and block output operations respectfully, during the interval. These rates are independent of the I/O block size. If the values become large, they are reported as thousands of operations per second (K suffix) or millions of operations per second (M suffix).
+						</div></dd><dt><span class="term"><code class="literal">system</code></span></dt><dd><div class="para">
+							Context switch rate (<code class="literal">cs</code>) and interrupt rate (<code class="literal">in</code>). Rates are expressed as average operations per second during the interval. Note that the interrupt rate is normally at least HZ (the clock interrupt rate, and <code class="literal">kernel.all.hz</code> metric) interrupts per second.
+						</div></dd><dt><span class="term"><code class="literal">cpu</code></span></dt><dd><div class="para">
+							Percentage of CPU time spent executing user code (<code class="literal">us</code>), system and interrupt code (<code class="literal">sy</code>), idle loop (<code class="literal">id</code>).
+						</div></dd></dl></div><div class="para">
+				As with most PCP utilities, real-time metric, and archive logs are interchangeable.
+			</div><div class="para">
+				For example, the following command uses a local system PCP archive log <em class="replaceable">20130731</em> and the timezone of the host (<code class="literal">smash</code>) from which performance metrics in the archive were collected:
+			</div><pre class="literallayout"><strong class="userinput"><code>pmstat -a </code></strong><em class="replaceable">${PCP_LOG_DIR}/pmlogger/smash/20130731</em> <strong class="userinput"><code>-t 2hour -A 1hour -z</code></strong>
+Note: timezone set to local timezone of host "smash"
+@ Wed Jul 31 10:00:00 2013
+ loadavg                      memory      swap        io    system         cpu
+   1 min   swpd   free   buff  cache   pi   po   bi   bo   in   cs  us  sy  id
+    3.90  24648  6234m 239176  2913m    ?    ?    ?    ?    ?    ?   ?   ?   ?
+    1.72  24648  5273m 239320  2921m    0    0    4   86  11K  19K   5   5  84
+    3.12  24648  5194m 241428  2969m    0    0    0   84  10K  19K   5   5  85
+    1.97  24644  4945m 244004  3146m    0    0    0   84  10K  19K   5   5  84
+    3.82  24640  4908m 244116  3147m    0    0    0   83  10K  18K   5   5  85
+    3.38  24620  4860m 244116  3148m    0    0    0   83  10K  18K   5   4  85
+    2.89  24600  4804m 244120  3149m    0    0    0   83  10K  18K   5   4  85
+pmFetch: End of PCP archive log</pre><div class="para">
+				For complete information on <code class="literal">pmstat</code> usage and command line options, see the <code class="command">pmstat(1)</code> man page.
+			</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5196749.html"><strong>Prev</strong>3.6.2. Time Dilation and Time Skew</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="Z926977852sdc.html"><strong>Next</strong>4.2. The pmdumptext Command</a></li></ul></body></html>

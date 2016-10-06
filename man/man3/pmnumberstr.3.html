@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMNUMBERSTR
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmNumberStr
+               </b>
+               ,
+               <b>
+                pmNumberStr_r
+               </b>
+               - fixed width output format for numbers
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                const char *pmNumberStr(double
+                <i>
+                 value
+                </i>
+                );
+                <br/>
+                char *pmNumberStr_r(double
+                <i>
+                 value
+                </i>
+                , char *
+                <i>
+                 buf
+                </i>
+                , int
+                <i>
+                 buflen
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmNumberStr
+               </b>
+               returns the address of a 8-byte buffer that holds a
+              null-byte terminated representation of
+               <i>
+                value
+               </i>
+               suitable for output with fixed width fields.
+              The
+               <b>
+                pmNumberStr_r
+               </b>
+               function does the same, but stores the result in a user-supplied buffer
+               <i>
+                buf
+               </i>
+               of length
+               <i>
+                buflen
+               </i>
+               ,
+              
+              which should have room for at least 8 bytes.
+               <p>
+                The value is scaled using multipliers in powers of ``one thousand''
+              (the decimal ``kilo'') and has a bias that provides greater precision for
+              positive numbers as opposed to negative numbers.
+               </p>
+               <p>
+                The format depends on the sign and magnitude of
+                <i>
+                 value
+                </i>
+                as follows (d
+              represents a decimal digit):
+               </p>
+               <center>
+                <table border="">
+                 <tr>
+                  <td>
+                   <table>
+                    <tr valign="top">
+                     <td align="center">
+                      <i>
+                       value
+                      </i>
+                      range
+                     </td>
+                     <td align="center">
+                      format
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="2">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      &gt; 999995000000000
+                     </td>
+                     <td>
+                      inf?
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      999995000000000 - 999995000000
+                     </td>
+                     <td>
+                      ddd.ddT
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      999995000000 - 999995000
+                     </td>
+                     <td>
+                      ddd.ddG
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      999995000 - 999995
+                     </td>
+                     <td>
+                      ddd.ddM
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      999995 - 999.995
+                     </td>
+                     <td>
+                      ddd.ddK
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      999.995 - 0.005
+                     </td>
+                     <td>
+                      ddd.dd
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      0.005 - -0.005
+                     </td>
+                     <td>
+                      0.00
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      -0.005 - -99.95
+                     </td>
+                     <td>
+                      -dd.dd
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      -99.995 - -99995
+                     </td>
+                     <td>
+                      -dd.ddK
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      -99995 - -99995000
+                     </td>
+                     <td>
+                      -dd.ddM
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      -99995000 - -99995000000
+                     </td>
+                     <td>
+                      -dd.ddG
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      -99995000000 - -99995000000000
+                     </td>
+                     <td>
+                      -dd.ddT
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      <br/>
+                      &lt; -99995000000000
+                     </td>
+                     <td>
+                      -inf?
+                      <br/>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+               </center>
+               <p>
+                At the boundary points of the ranges, the chosen format will retain the
+              maximum number of significant digits.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                NOTES
+               </h2>
+               <b>
+                pmNumberStr
+               </b>
+               returns a pointer to a static buffer and hence is not thread-safe.
+              Multi-threaded applications should use
+               <b>
+                pmNumberStr_r
+               </b>
+               instead.
+               <a name="lbAF">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="http://man7.org/linux/man-pages/man3/printf.3.html">
+                 printf
+                </a>
+               </b>
+               (3)
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  NOTES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

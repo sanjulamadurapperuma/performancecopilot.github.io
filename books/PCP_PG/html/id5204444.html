@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8.4.8.  pmSetMode Function</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE94187-PARENT.html" title="3.8.4. PMAPI Context Services" /><link rel="prev" href="id5204360.html" title="3.8.4.7.  pmDelProfile Function" /><link rel="next" href="id5204926.html" title="3.8.4.9.  pmReconnectContext Function" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5204360.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5204926.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5204444">
+      ⁠</a>3.8.4.8.  <code class="command">pmSetMode</code> Function</h4></div></div></div><pre class="programlisting">int pmSetMode(int <em class="replaceable">mode</em>, const struct timeval *<em class="replaceable">when</em>, int <em class="replaceable">delta</em>)
+<code class="command">Python:</code>
+int <em class="replaceable">status</em> = pmSetMode(mode, timeVal <em class="replaceable">timeval</em>, int <em class="replaceable">delta</em>)</pre><div class="para">
+						<a id="IG31340177365" class="indexterm"></a> <a id="IG31340177366" class="indexterm"></a> <a id="IG31340177367" class="indexterm"></a> <a id="IG31340177368" class="indexterm"></a> <a id="IG31340177369" class="indexterm"></a> <a id="IG31340177370" class="indexterm"></a> <a id="IG31340177371" class="indexterm"></a>This function defines the collection time and mode for accessing performance metrics and metadata in the current PMAPI context. This mode affects the semantics of subsequent calls to the following PMAPI functions: <code class="command">pmFetch</code>, <code class="command">pmFetchArchive</code>, <code class="command">pmLookupDesc</code>, <code class="command">pmGetInDom</code>, <code class="command">pmLookupInDom </code>, and <code class="command">pmNameInDom</code>.
+					</div><div class="para">
+						The <code class="command">pmSetMode</code> function requires the current PMAPI context to be of type <code class="literal">PM_CONTEXT_ARCHIVE</code>.
+					</div><div class="para">
+						The <em class="replaceable">when</em> parameter defines a time origin, and all requests for metadata (metrics descriptions and instance identifiers from the instance domains) are processed to reflect the state of the metadata as of the time origin. For example, use the last state of this information at, or before, the time origin.
+					</div><div class="para">
+						If the <em class="replaceable">mode</em> is <code class="literal">PM_MODE_INTERP</code> then, in the case of <code class="command">pmFetch</code>, the underlying code uses an interpolation scheme to compute the values of the metrics from the values recorded for times in the proximity of the time origin.
+					</div><div class="para">
+						If the <em class="replaceable">mode</em> is <code class="literal">PM_MODE_FORW</code>, then, in the case of <code class="command">pmFetch</code>, the collection of recorded metric values is scanned forward, until values for at least one of the requested metrics is located after the time origin. Then all requested metrics stored in the PCP archive at that time are returned with a corresponding time stamp. This is the default mode when an archive context is first established with <code class="command">pmNewContext</code>.
+					</div><div class="para">
+						If the <em class="replaceable">mode</em> is <code class="literal">PM_MODE_BACK</code>, then the situation is the same as for <code class="literal">PM_MODE_FORW</code>, except a <code class="command">pmFetch</code> is serviced by scanning the collection of recorded metrics backward for metrics before the time origin.
+					</div><div class="para">
+						After each successful <code class="command">pmFetch</code>, the time origin is reset to the time stamp returned through the <code class="filename">pmResult</code>.
+					</div><div class="para">
+						The <code class="command">pmSetMode</code> parameter <em class="replaceable">delta</em> defines an additional number of time unit that should be used to adjust the time origin (forward or backward) after the new time origin from the <code class="filename">pmResult</code> has been determined. This is useful when moving through archives with a mode of <code class="literal">PM_MODE_INTERP</code>. The high-order bits of the <em class="replaceable">mode</em> parameter field is also used to optionally set the units of time for the <code class="filename">delta</code> field. To specify the units of time, use the <code class="literal">PM_XTB_SET</code> macro with one of the values <code class="literal">PM_TIME_NSEC</code>, <code class="literal">PM_TIME_MSEC</code>, <code class="literal">PM_TIME_SEC</code>, or so on as follows:
+					</div><pre class="literallayout">PM_MODE_INTERP | PM_XTB_SET(PM_TIME_<em class="replaceable">XXXX)</em></pre><div class="para">
+						If no units are specified, the default is to interpret <em class="replaceable">delta</em> as milliseconds.
+					</div><div class="para">
+						Using these mode options, an application can implement replay, playback, fast forward, or reverse for performance metric values held in a set of PCP archive logs by alternating calls to <code class="command">pmSetMode</code> and <code class="command">pmFetch</code>.
+					</div><div class="para">
+						In <a class="xref" href="id5204444.html#Z976827209sdc">Example 3.11, “Dumping Values in Temporal Sequence”</a>, the code fragment may be used to dump only those values stored in correct temporal sequence, for the specified performance metric <code class="filename">my.metric.name</code>:
+					</div><div class="example"><a id="Z976827209sdc">
+      ⁠</a><p class="title"><strong>Example 3.11. Dumping Values in Temporal Sequence</strong></p><div class="example-contents"><pre class="programlisting">    int     sts;
+    pmID    pmid;
+    char    *name = “my.metric.name”;
+
+    sts = pmNewContext(PM_CONTEXT_ARCHIVE, “myarchive”);
+    sts = pmLookupName(1, &amp;name, &amp;pmid);
+    for ( ; ; ) {
+        sts = pmFetch(1, &amp;pmid, &amp;result);
+        if (sts &lt; 0)
+            break;
+        /* dump value(s) from result-&gt;vset[0]-&gt;vlist[] */
+        pmFreeResult(result);
+   }</pre></div></div><div class="para">
+						<a id="IG31340177372" class="indexterm"></a>Alternatively, the code fragment in <a class="xref" href="id5204444.html#Z976827219sdc">Example 3.12, “Replaying Interpolated Metrics”</a> may be used to replay interpolated metrics from an archive in reverse chronological order, at ten-second intervals (of recorded time):
+					</div><div class="example"><a id="Z976827219sdc">
+      ⁠</a><p class="title"><strong>Example 3.12. Replaying Interpolated Metrics</strong></p><div class="example-contents"><pre class="programlisting">    int             sts;
+    pmID            pmid;
+    char            *name = “my.metric.name”;
+    struct timeval  endtime;
+
+    sts = pmNewContext(PM_CONTEXT_ARCHIVE, “myarchive”);
+    sts = pmLookupName(1, &amp;name, &amp;pmid);
+    sts = pmGetArchiveEnd(&amp;endtime);
+    sts = pmSetMode(PM_MODE_INTERP, &amp;endtime, -10000);
+    while (pmFetch(1, &amp;pmid, &amp;result) != PM_ERR_EOL) {
+        /*
+         * process interpolated metric values as of result-&gt;timestamp
+         */
+        pmFreeResult(result);
+   }</pre></div></div><div class="para">
+						The python bindings define the collection <em class="replaceable">time</em> and <em class="replaceable">mode</em> for reading archive files. <em class="replaceable">mode</em> can be one of: c_api.PM_MODE_LIVE, c_api.PM_MODE_INTERP, c_api.FORW, c_api.BACK. wjocj are available by importing cpmapi.
+					</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5204360.html"><strong>Prev</strong>3.8.4.7.  pmDelProfile Function</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5204926.html"><strong>Next</strong>3.8.4.9.  pmReconnectContext Function</a></li></ul></body></html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">4.3. The pmval Command</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE38515-PARENT.html" title="Chapter 4. Monitoring System Performance" /><link rel="prev" href="Z926977852sdc.html" title="4.2. The pmdumptext Command" /><link rel="next" href="LE60452-PARENT.html" title="4.4. The pminfo Command" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="Z926977852sdc.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE60452-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE35315-PARENT">
+      ⁠</a>4.3. The <code class="command">pmval</code> Command</h2></div></div></div><div class="para">
+				<a id="ITch04-23" class="indexterm"></a> The <code class="command">pmval</code> command dumps the current values for the named performance metrics. For example, the following command reports the value of performance metric <code class="literal">proc.nprocs</code> once per second (by default), and produces output similar to this:
+			</div><pre class="literallayout"><strong class="userinput"><code>pmval proc.nprocs</code></strong>
+metric:    proc.nprocs
+host:      localhost
+semantics: instantaneous value
+units:     none
+samples:   all
+interval:  1.00 sec
+         81
+         81
+         82
+         81</pre><div class="para">
+				In this example, the number of running processes was reported once per second.
+			</div><div class="para">
+				Where the semantics of the underlying performance metrics indicate that it would be sensible, <code class="command">pmval</code> reports the rate of change or resource utilization.
+			</div><div class="para">
+				For example, the following command reports idle processor utilization for each of four CPUs on the remote host <code class="literal">dove</code>, each five seconds apart, producing output of this form:
+			</div><pre class="literallayout"><strong class="userinput"><code>pmval -h dove -t 5sec -s 4 kernel.percpu.cpu.idle</code></strong>
+metric:    kernel.percpu.cpu.idle
+host:      dove
+semantics: cumulative counter (converting to rate)
+units:     millisec (converting to time utilization)
+samples:   4
+interval:  5.00 sec
+
+cpu:1.1.0.a cpu:1.1.0.c cpu:1.1.1.a cpu:1.1.1.c 
+     1.000       0.9998      0.9998      1.000  
+     1.000       0.9998      0.9998      1.000  
+     0.8989      0.9987      0.9997      0.9995 
+     0.9568      0.9998      0.9996      1.000
+</pre><div class="para">
+				Similarly, the following command reports disk I/O read rate every minute for just the disk <code class="literal">/dev/disk1</code>, and produces output similar to the following:
+			</div><pre class="literallayout"><strong class="userinput"><code>pmval -t 1min -i disk1 disk.dev.read</code></strong>
+metric:    disk.dev.read
+host:      localhost
+semantics: cumulative counter (converting to rate)
+units:     count (converting to count / sec)
+samples:   indefinite
+interval:  60.00 sec
+        disk1 
+         33.67 
+         48.71 
+         52.33 
+         11.33 
+         2.333</pre><div class="para">
+				The <code class="literal">-r</code> flag may be used to suppress the rate calculation (for metrics with counter semantics) and display the raw values of the metrics.
+			</div><div class="para">
+				In the example below, manipulation of the time within the archive is achieved by the exchange of time control messages between <code class="command">pmval</code> and <code class="command">pmtime</code>.
+			</div><pre class="literallayout"><strong class="userinput"><code>pmval -g -a ${PCP_LOG_DIR}/pmlogger/myserver/20130731 kernel.all.load</code></strong></pre><div class="para">
+				<a id="IG31371888173" class="indexterm"></a>The <code class="command">pmval</code> command is documented by the <code class="command">pmval(1)</code> man page, and annotated examples of the use of <code class="command">pmval</code> can be found in the <em class="citetitle">PCP Tutorials and Case Studies</em> companion document.
+			</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="Z926977852sdc.html"><strong>Prev</strong>4.2. The pmdumptext Command</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE60452-PARENT.html"><strong>Next</strong>4.4. The pminfo Command</a></li></ul></body></html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.2. General PCP Tool Options</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE94335-PARENT.html" title="Chapter 3. Common Conventions and Arguments" /><link rel="prev" href="LE94335-PARENT.html" title="Chapter 3. Common Conventions and Arguments" /><link rel="next" href="id5194616.html" title="3.2.2. Alternate Performance Metric Name Spaces" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE94335-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5194616.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE68596-PARENT">
+      ⁠</a>3.2. General PCP Tool Options</h2></div></div></div><div class="para">
+				<a id="IG31371888118" class="indexterm"></a>The following sections provide information relevant to most of the PCP tools. It is presented here in a single place for convenience.
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5194103">
+      ⁠</a>3.2.1. Common Directories and File Locations</h3></div></div></div><div class="para">
+					<a id="IG31371888119" class="indexterm"></a><a id="IG31371888120" class="indexterm"></a>The following files and directories are used by the PCP tools as repositories for option and configuration files and for binaries:
+				</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename">${PCP_DIR}/etc/pcp.env</code></span></dt><dd><div class="para">
+								<a id="IG31371888121" class="indexterm"></a>Script to set PCP run-time environment variables.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_DIR}/etc/pcp.conf</code></span></dt><dd><div class="para">
+								<a id="IG31371888122" class="indexterm"></a>PCP configuration and environment file.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_PMCDCONF_PATH}</code></span></dt><dd><div class="para">
+								<a id="IG31371888123" class="indexterm"></a><a id="IG31371888124" class="indexterm"></a>Configuration file for Performance Metrics Collection Daemon (PMCD). Sets environment variables, including <code class="literal">PATH</code>.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_BINADM_DIR}/pmcd</code></span></dt><dd><div class="para">
+								<a id="IG31371888125" class="indexterm"></a>The PMCD binary.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_PMCDOPTIONS_PATH}</code></span></dt><dd><div class="para">
+								<a id="IG31371888126" class="indexterm"></a>Command line options for PMCD.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_RC_DIR}/pmcd</code></span></dt><dd><div class="para">
+								<a id="IG31371888127" class="indexterm"></a>The PMCD startup script.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_BIN_DIR}/<em class="replaceable">pcptool</em></code></span></dt><dd><div class="para">
+								Directory containing PCP tools such as <code class="command">pmstat </code>, <code class="command">pminfo</code>, <code class="command">pmlogger</code>, <code class="command">pmlogsummary</code>, <code class="command">pmchart</code>, <code class="command">pmie</code>, and so on.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_SHARE_DIR}</code></span></dt><dd><div class="para">
+								Directory containing shareable PCP-specific files and repository directories such as <code class="command">bin</code>, <code class="command">demos</code>, <code class="command">examples</code> and <code class="command">lib</code>.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_VAR_DIR}</code></span></dt><dd><div class="para">
+								Directory containing non-shareable (that is, per-host) PCP specific files and repository directories.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_BINADM_DIR}/<em class="replaceable">pcptool</em></code></span></dt><dd><div class="para">
+								PCP tools that are typically not executed directly by the end user such as <code class="command">pmcd_wait</code>.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_SHARE_DIR}/lib/<em class="replaceable">pcplib</em></code></span></dt><dd><div class="para">
+								Miscellaneous PCP libraries and executables.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_PMDAS_DIR}</code></span></dt><dd><div class="para">
+								Performance Metric Domain Agents (PMDAs), one directory per PMDA.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_VAR_DIR}/config</code></span></dt><dd><div class="para">
+								Configuration files for PCP tools, typically with one directory per tool.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_DEMOS_DIR}</code></span></dt><dd><div class="para">
+								Demonstration data files and example programs.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_LOG_DIR}</code></span></dt><dd><div class="para">
+								By default, diagnostic and trace log files generated by PMCD and PMDAs. Also, the PCP archive logs are managed in one directory per logged host below here.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_VAR_DIR}/pmns</code></span></dt><dd><div class="para">
+								Files and scripts for the Performance Metrics Name Space (PMNS).
+							</div></dd></dl></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE94335-PARENT.html"><strong>Prev</strong>Chapter 3. Common Conventions and Arguments</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5194616.html"><strong>Next</strong>3.2.2. Alternate Performance Metric Name Spaces</a></li></ul></body></html>

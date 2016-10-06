@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.2.4.3. Controlling Access to PMCD with pmcd.conf</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="id5190661.html" title="2.2.4. PMCD Options and Configuration Files" /><link rel="prev" href="LE63226-PARENT.html" title="2.2.4.2. The pmcd.conf File" /><link rel="next" href="LE43202-PARENT.html" title="2.3. Managing Optional PMDAs" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE63226-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE43202-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5191707">
+      ⁠</a>2.2.4.3. Controlling Access to PMCD with <code class="filename">pmcd.conf</code></h4></div></div></div><div class="para">
+						<a id="ITch02-30" class="indexterm"></a>You can place this option extension in the <code class="filename">pmcd.conf</code> file to control access to performance metric data based on hosts, users and groups. To add an access control section, begin by placing the following line at the end of your <code class="filename">pmcd.conf</code> file:
+					</div><pre class="literallayout">[access]</pre><div class="para">
+						Below this line, you can add entries of the following forms:
+					</div><pre class="literallayout">allow hosts <em class="replaceable">hostlist</em> : <em class="replaceable">operations</em> ;   disallow hosts <em class="replaceable">hostlist</em> : <em class="replaceable">operations</em> ;
+allow users <em class="replaceable">userlist</em> : <em class="replaceable">operations</em> ;   disallow users <em class="replaceable">userlist</em> : <em class="replaceable">operations</em> ;
+allow groups <em class="replaceable">grouplist</em> : <em class="replaceable">operations</em> ;   disallow groups <em class="replaceable">grouplist</em> : <em class="replaceable">operations</em> ;
+</pre><div class="para">
+						The keywords <em class="replaceable">users</em>, <em class="replaceable">groups</em> and <em class="replaceable">hosts</em> can be used in either plural or singular form.
+					</div><div class="para">
+						The <em class="replaceable">userlist</em> and <em class="replaceable">grouplist</em> fields are comma-separated lists of authenticated users and groups from the local <code class="filename">/etc/passwd</code> and <code class="filename">/etc/groups</code> files, NIS (network information service) or LDAP (lightweight directory access protocol) service.
+					</div><div class="para">
+						The <em class="replaceable">hostlist</em> is a comma-separated list of host identifiers; the following rules apply:
+					</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+								Host names must be in the local system's <code class="filename">/etc/hosts</code> file or known to the local DNS (domain name service).
+							</div></li><li class="listitem"><div class="para">
+								IP and IPv6 addresses may be given in the usual numeric notations.
+							</div></li><li class="listitem"><div class="para">
+								A wildcarded IP or IPv6 address may be used to specify groups of hosts, with the single wildcard character * as the last-given component of the address. The wildcard .* refers to all IP (IPv4) addresses. The wildcard :* refers to all IPv6 addresses. If an IPv6 wildcard contains a :: component, then the final * refers to the final 16 bits of the address only, otherwise it refers to the remaining unspecified bits of the address.
+							</div></li></ul></div><div class="para">
+						The wildcard ``*'' refers to all users, groups or host addresses. Names of users, groups or hosts may not be wildcarded.
+					</div><div class="para">
+						For example, the following <em class="replaceable">hostlist</em> entries are all valid:
+					</div><pre class="literallayout">babylon
+babylon.acme.com
+123.101.27.44
+localhost
+155.116.24.*
+192.*
+.*
+fe80::223:14ff:feaf:b62c
+fe80::223:14ff:feaf:*
+fe80:*
+:*
+*</pre><div class="para">
+						The <em class="replaceable">operations</em> field can be any of the following:
+					</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+								A comma-separated list of the operation types described below.
+							</div></li><li class="listitem"><div class="para">
+								The word <em class="firstterm">all</em> to allow or disallow all operations as specified in the first field.
+							</div></li><li class="listitem"><div class="para">
+								The words <em class="firstterm">all except</em> and a list of operations. This entry allows or disallows all operations as specified in the first field except those listed.
+							</div></li><li class="listitem"><div class="para">
+								The phrase <em class="firstterm">maximum</em> N <em class="firstterm">connections</em> to set an upper bound (N) on the number of connections an individual host, user or group of users may make. This can only be added to the <em class="replaceable">operations</em> list of an allow statement.
+							</div></li></ul></div><div class="para">
+						The operations that can be allowed or disallowed are as follows:
+					</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">fetch</code></span></dt><dd><div class="para">
+									Allows retrieval of information from the PMCD. This may be information about a metric (such as a description, instance domain, or help text) or an actual value for a metric.
+								</div></dd><dt><span class="term"><code class="literal">store</code></span></dt><dd><div class="para">
+									Allows the PMCD to store metric values in PMDAs that permit store operations. Be cautious in allowing this operation, because it may be a security opening in large networks, although the PMDAs shipped with the PCP package typically reject store operations, except for selected performance metrics where the effect is benign.
+								</div></dd></dl></div><div class="para">
+						For example, here is a sample access control portion of a <code class="filename">${PCP_PMCDCONF_PATH}</code> file:
+					</div><pre class="literallayout">allow hosts babylon, moomba : all ; 
+disallow user sam : all ;
+allow group dev : fetch ; 
+allow hosts 192.127.4.* : fetch ; 
+disallow host gate-inet : store ;</pre><div class="para">
+						Complete information on access control syntax rules in the <code class="filename">pmcd.conf</code> file can be found in the <code class="command">pmcd(1)</code> man page.
+					</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE63226-PARENT.html"><strong>Prev</strong>2.2.4.2. The pmcd.conf File</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE43202-PARENT.html"><strong>Next</strong>2.3. Managing Optional PMDAs</a></li></ul></body></html>

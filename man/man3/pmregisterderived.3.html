@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMREGISTERDERIVED
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               Updated:
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmRegisterDerived
+               </b>
+               ,
+               <b>
+                pmRegisterDerivedMetric
+               </b>
+               - register a derived metric name and definition
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                <br/>
+                char *pmRegisterDerived(char *
+                <i>
+                 name
+                </i>
+                , char *
+                <i>
+                 expr
+                </i>
+                );
+                <br/>
+                int pmRegisterDerivedMetric(char *
+                <i>
+                 name
+                </i>
+                , char *
+                <i>
+                 expr
+                </i>
+                , char **
+                <i>
+                 errmsg
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <p>
+                Derived metrics provide a way of extending the Performance Metrics
+              Name Space (PMNS) with new metrics defined at the PCP client-side using
+              arithmetic expressions over the existing performance metrics.
+               </p>
+               <p>
+                Typical uses would be to aggregate a number of similar metrics to provide
+              a higher-level summary metric or to support the ``delta V over delta V''
+              class of metrics that are not possible in the base data semantics of PCP.
+              An example of the latter class would be the average I/O size, defined
+              as
+                <br/>
+               </p>
+               <center>
+                <br/>
+               </center>
+               delta(disk.dev.total_bytes) / delta(disk.dev.total)
+              
+              where both of the
+              
+              disk.dev
+              
+              metrics are counters, and what is required
+              is to to sample both metrics, compute the difference between the current
+              and previous values and then calculate the ratio of these differences.
+               <p>
+                The arguments to
+                <b>
+                 pmRegisterDerived
+                </b>
+                are the
+                <i>
+                 name
+                </i>
+                of the new derived metric and
+                <i>
+                 expr
+                </i>
+                is an arithmetic expression defining how the values of
+                <i>
+                 name
+                </i>
+                should be computed.
+               </p>
+               <p>
+                <b>
+                 pmRegisterDerivedMetric
+                </b>
+                is the exact functional equivalent to
+                <b>
+                 pmRegisterDerived
+                </b>
+                except that it provides a simplified model of error handling, where
+              a formatted message is returned via the
+                <i>
+                 errmsg
+                </i>
+                parameter.
+               </p>
+               <p>
+                Syntactic checking is performed at the time
+                <b>
+                 pmRegisterDerived
+                </b>
+                is called, but semantic checking is deferred until each new context
+              is created with
+                <b>
+                 <a href="/man/man3/pmnewcontext.3.html">
+                  pmNewContext
+                 </a>
+                </b>
+                (3)
+              
+              or re-established with
+                <b>
+                 <a href="/man/man3/pmreconnectcontext.3.html">
+                  pmReconnectContext
+                 </a>
+                </b>
+                (3),
+              
+              at which time the PMNS and metadata is available to
+              allow semantic checking and the metadata of the derived metrics
+              to be established.
+              This means
+                <b>
+                 pmRegisterDerived
+                </b>
+                does not apply retrospectively to any open contexts, so the normal
+              use would be to make all calls to
+                <b>
+                 pmRegisterDerived
+                </b>
+                (possibly via
+                <b>
+                 <a href="/man/man3/pmloadderivedconfig.3.html">
+                  pmLoadDerivedConfig
+                 </a>
+                </b>
+                (3))
+              
+              or
+                <b>
+                 pmRegisterDerivedMetric
+                </b>
+                and then call
+                <b>
+                 <a href="/man/man3/pmnewcontext.3.html">
+                  pmNewContext
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                <i>
+                 name
+                </i>
+                should follow the syntactic rules for the names of performance metrics,
+              namely one or more components separated with a dot (``.''), and each
+              component must begin with an alphabetic followed by zero or more characters
+              drawn from the alphabetics, numerics and underscore (``_'').
+              For more details, refer to
+                <b>
+                 <a href="/man/man1/pcpintro.1.html">
+                  PCPIntro
+                 </a>
+                </b>
+                (1)
+              
+              and
+                <b>
+                 <a href="/man/man5/pmns.5.html">
+                  pmns
+                 </a>
+                </b>
+                (5).
+               </p>
+               <p>
+                <i>
+                 name
+                </i>
+                must be unique across all derived metrics and should
+                <b>
+                 not
+                </b>
+                match the
+              name of any regular metric in the PMNS.  It is acceptable for
+                <i>
+                 name
+                </i>
+                to share some part of its prefix with an existing subtree of the PMNS,
+              e.g. the average I/O size metric above could be named
+              
+              disk.dev.avgsz
+              
+              which would place it amongst the other
+              
+              disk.dev
+              
+              metrics in the PMNS.
+              Alternatively, derived metrics could populate their own subtree
+              of the PMNS,
+              e.g. the average I/O size metric above could be named
+              
+              my.summary.disk.avgsz
+              .
+               </p>
+               <p>
+                The expression
+                <i>
+                 expr
+                </i>
+                follows these syntactic rules:
+               </p>
+               <dl compact="">
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 Terminal elements are either names of existing metrics or integer constants.
+              Recursive definitions are not allowed, so only the names of regular
+              metrics (not other derived metrics) may be used. Integer constants are
+              constrained to the precision of 32-bit unsigned integers.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 The usual binary arithmetic operators are supported, namely - addition (``+''),
+              subtraction (``-''), multiplication (``*'') and division (``/'') with
+              the normal precedence rules where multiplication and division have
+              higher precedence than addition and subtraction, so
+              
+              a+b*c
+              
+              is evaluated as
+              
+              a+(b*c)
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 Parenthesis may be used for grouping.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 The following unary functions operate on a single performance metric
+              and return one or more values.
+              For all functions (except
+              
+              count()
+              
+              and
+              
+              instant()
+              ), the type of the operand metric must be arithmetic 
+              (integer of various sizes and signedness, float or
+              double).
+                 <center>
+                  <table border="">
+                   <tr>
+                    <td>
+                     <table>
+                      <tr valign="top">
+                       <td align="center">
+                        Function
+                       </td>
+                       <td align="center">
+                        Value
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        avg(x)
+                       </td>
+                       <td>
+                        A singular instance being the average value across all instances for the metric x.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        count(x)
+                       </td>
+                       <td>
+                        A singular instance being the count of the number of instances for the metric x.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        delta(x)
+                       </td>
+                       <td>
+                        Returns the difference in values for the metric x between
+              one call to
+                        <b>
+                         <a href="/man/man3/pmfetch.3.html">
+                          pmFetch
+                         </a>
+                        </b>
+                        (3)
+              
+              and the next. There is one value in the result
+              for each instance that appears in both the current and the previous
+              sample.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        rate(x)
+                       </td>
+                       <td>
+                        Returns the difference in values for the metric x between
+              one call to
+                        <b>
+                         <a href="/man/man3/pmfetch.3.html">
+                          pmFetch
+                         </a>
+                        </b>
+                        (3)
+              
+              and the next divided by the elapsed time between the calls to
+                        <b>
+                         <a href="/man/man3/pmfetch.3.html">
+                          pmFetch
+                         </a>
+                        </b>
+                        (3).
+              
+              The semantics of the derived metric are based on the semantics of the
+              operand (x) with the dimension in the
+                        <b>
+                         time
+                        </b>
+                        domain decreased by one and scaling if required in the time utilization case
+              where the operand is in units of time, and the derived metric is unitless.
+              This mimics the rate conversion applied to counter metrics by tools
+              such as
+                        <b>
+                         <a href="/man/man1/pmval.1.html">
+                          pmval
+                         </a>
+                        </b>
+                        (1),
+                        <b>
+                         <a href="/man/man1/pmie.1.html">
+                          pmie
+                         </a>
+                        </b>
+                        (1)
+              
+              and
+                        <b>
+                         <a href="/man/man1/pmchart.1.html">
+                          pmchart
+                         </a>
+                        </b>
+                        (1).
+              
+              There is one value in the result
+              for each instance that appears in both the current and the previous
+              sample.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        instant(x)
+                       </td>
+                       <td>
+                        Returns the current value of the metric x, even it has
+              the semantics of a counter, i.e. PM_SEM_COUNTER.
+              The semantics of the derived metric are based on the semantics of the
+              operand (x); if x has semantics PM_SEM_COUNTER, the semantics of
+              instant(x) is PM_SEM_INSTANT, otherwise the semantics of the derived metric
+              is the same as the semantics of the metric x.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        max(x)
+                       </td>
+                       <td>
+                        A singular instance being the maximum value across all instances for the metric x.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        min(x)
+                       </td>
+                       <td>
+                        A singular instance being the minimum value across all instances for the metric x.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        sum(x)
+                       </td>
+                       <td>
+                        A singular instance being the sum of the values across all instances for the metric x.
+                        <br/>
+                       </td>
+                      </tr>
+                     </table>
+                    </td>
+                   </tr>
+                  </table>
+                 </center>
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 White space is ignored.
+                </dd>
+               </dl>
+               <a name="lbAE">
+               </a>
+               <h2>
+                SEMANTIC CHECKS AND RULES
+               </h2>
+               <p>
+                There are a number of conversions required to determine the
+              metadata for a derived metric and to ensure the semantics of
+              the expressions are sound.
+               </p>
+               <p>
+                In a binary expression, if the semantics of both operands is not
+              a counter (i.e. PM_SEM_INSTANT or PM_SEM_DISCRETE) then the result
+              will have semantics PM_SEM_INSTANT unless both operands are
+              PM_SEM_DISCRETE in which case the result is also PM_SEM_DISCRETE.
+               </p>
+               <p>
+                The mapping of the pmUnits of the metadata uses the following rules:
+               </p>
+               <dl compact="">
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 If both operands have a dimension of COUNT and the scales are not
+              the same, use the larger scale and convert the values of the operand
+              with the smaller scale.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 If both operands have a dimension of TIME and the scales are not
+              the same, use the larger scale and convert the values of the operand
+              with the smaller scale.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 If both operands have a dimension of SPACE and the scales are not
+              the same, use the larger scale and convert the values of the operand
+              with the smaller scale.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 For addition and subtraction all dimensions for each of the operands
+              and result are identical.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 For multiplication, the dimensions of the result are the sum of the
+              dimensions of the operands.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 For division, the dimensions of the result are the difference of the
+              dimensions of the operands.
+                </dd>
+               </dl>
+               <p>
+                Scale conversion involves division if the dimension is positive else
+              multiplication if the dimension is negative. If scale conversion is
+              applied to either of the operands, the result is promoted to type
+              PM_TYPE_DOUBLE.
+               </p>
+               <p>
+                Putting all of this together in an example, consider the derived
+              metric defined as follows:
+                <br/>
+                x = network.interface.speed - delta(network.interface.in.bytes) / delta(sample.milliseconds)
+                <br/>
+                The type, dimension and scale settings would propagate up the expression
+              tree as follows.
+               </p>
+               <center>
+                <table border="">
+                 <tr>
+                  <td>
+                   <table>
+                    <tr valign="top">
+                     <td align="center">
+                      Expression
+                     </td>
+                     <td align="center">
+                      Type
+                     </td>
+                     <td align="center">
+                      Dimension &amp; Scale
+                     </td>
+                     <td align="center">
+                      Scale Factor(s)
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="4">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      sample.milliseconds
+                     </td>
+                     <td>
+                      DOUBLE
+                     </td>
+                     <td>
+                      millisec
+                     </td>
+                     <td>
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      delta(...)
+                     </td>
+                     <td>
+                      DOUBLE
+                     </td>
+                     <td>
+                      millisec
+                     </td>
+                     <td>
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      network...bytes
+                     </td>
+                     <td>
+                      U64
+                     </td>
+                     <td>
+                      byte
+                     </td>
+                     <td>
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      delta(...)
+                     </td>
+                     <td>
+                      U64
+                     </td>
+                     <td>
+                      byte
+                     </td>
+                     <td>
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      delta(...) / delta(...)
+                     </td>
+                     <td>
+                      DOUBLE
+                     </td>
+                     <td>
+                      byte/millisec
+                     </td>
+                     <td>
+                      /1048576 and *1000
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      network...speed
+                     </td>
+                     <td>
+                      FLOAT
+                     </td>
+                     <td>
+                      Mbyte/sec
+                     </td>
+                     <td>
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      x
+                     </td>
+                     <td>
+                      DOUBLE
+                     </td>
+                     <td>
+                      Mbyte/sec
+                     </td>
+                     <td>
+                      <br/>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+               </center>
+               <p>
+                Because semantic checking cannot be done at the time
+                <b>
+                 pmRegisterDerived
+                </b>
+                is called, errors found during semantic checking are reported
+              using
+                <b>
+                 <a href="/man/man3/pmprintf.3.html">
+                  pmprintf
+                 </a>
+                </b>
+                (3).
+              
+              These include:
+               </p>
+               <dl compact="">
+                <dt>
+                 Error: derived metric &lt;name1&gt;: operand: &lt;name2&gt;: &lt;reason&gt;
+                </dt>
+                <dd>
+                 There was a problem calling
+                 <b>
+                  <a href="/man/man3/pmlookupname.3.html">
+                   pmLookupName
+                  </a>
+                 </b>
+                 (3)
+              
+              to identify the operand metric &lt;name2&gt; used in the definition
+              of the derived metric &lt;name1&gt;.
+                </dd>
+                <dt>
+                 Error: derived metric &lt;name1&gt;: operand (&lt;name2&gt; [&lt;pmid2&gt;]): &lt;reason&gt;
+                </dt>
+                <dd>
+                 There was a problem calling
+                 <b>
+                  <a href="/man/man3/pmlookupdesc.3.html">
+                   pmLookupDesc
+                  </a>
+                 </b>
+                 (3)
+              
+              to identify the operand metric &lt;name2&gt; with PMID &lt;pmid2&gt;
+              used in the definition of the derived metric &lt;name1&gt;.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Illegal operator for counters
+                </dt>
+                <dd>
+                 If both operands have the semantics of counter, only addition or subtraction
+              make sense, so multiplication and division are not allowed.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Illegal operator for counter and non-counter
+                </dt>
+                <dd>
+                 Only multiplication or division are allowed if the left operand has the
+              semantics of a counter and the right operand is
+                 <b>
+                  not
+                 </b>
+                 a counter.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Illegal operator for non-counter and counter
+                </dt>
+                <dd>
+                 Only multiplication is allowed if the right operand has the
+              semantics of a counter and the left operand is
+                 <b>
+                  not
+                 </b>
+                 a counter.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Non-arithmetic type for &lt;left-or-right&gt; operand
+                </dt>
+                <dd>
+                 The binary arithmetic operators are only allowed with operands with an
+              arithmetic type (integer of various sizes and signedness, float or
+              double).
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;function&gt;(&lt;operand&gt;): Non-arithmetic operand for function
+                </dt>
+                <dd>
+                 The unary functions are only defined if the operand has arithmetic type.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: Incorrect time dimension for operand
+                </dt>
+                <dd>
+                 Rate conversion using the
+                 <b>
+                  rate
+                 </b>
+                 ()
+              
+              function is only possible for operand metrics with a Time dimension of 0 or 1
+              (see
+                 <b>
+                  <a href="/man/man3/pmlookupdesc.3.html">
+                   pmLookupDesc
+                  </a>
+                 </b>
+                 (3)).
+              
+              If the operand metric's Time dimension is 0, then
+              the derived metrics has a value "per second" (Time dimension of -1). 
+              If the operand metric's Time dimension is 1, then
+              the derived metrics has a value of time utilization (Time dimension of 0).
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                EXPRESSION EVALUATION
+               </h2>
+               For the binary arithmetic operators,
+              if either operand must be scaled (e.g. convert bytes to Kbytes) then the
+              result is promoted to PM_TYPE_DOUBLE.
+              Otherwise the type of the result is determined
+              by the types of the operands, as per the following table which is evaluated
+              from top to bottom until a match is found.
+               <center>
+                <table border="">
+                 <tr>
+                  <td>
+                   <table>
+                    <tr valign="top">
+                     <td align="center">
+                      Operand Types
+                     </td>
+                     <td align="center">
+                      Operator
+                     </td>
+                     <td align="center">
+                      Result Type
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      either is PM_TYPE_DOUBLE
+                     </td>
+                     <td>
+                      any
+                     </td>
+                     <td>
+                      PM_TYPE_DOUBLE
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      any
+                     </td>
+                     <td>
+                      division
+                     </td>
+                     <td>
+                      PM_TYPE_DOUBLE
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      either is PM_TYPE_FLOAT
+                     </td>
+                     <td>
+                      any
+                     </td>
+                     <td>
+                      PM_TYPE_FLOAT
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      either is PM_TYPE_U64
+                     </td>
+                     <td>
+                      any
+                     </td>
+                     <td>
+                      PM_TYPE_U64
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      either is PM_TYPE_64
+                     </td>
+                     <td>
+                      any
+                     </td>
+                     <td>
+                      PM_TYPE_64
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      either is PM_TYPE_U32
+                     </td>
+                     <td>
+                      any
+                     </td>
+                     <td>
+                      PM_TYPE_U32
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      otherwise (both are PM_TYPE_32)
+                     </td>
+                     <td>
+                      any
+                     </td>
+                     <td>
+                      PM_TYPE_32
+                      <br/>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+               </center>
+               <a name="lbAG">
+               </a>
+               <h2>
+                CAVEATS
+               </h2>
+               <p>
+                Unary negation is not supported, so the following expressions would be
+              syntactically incorrect,
+              
+              -3*abc
+              
+              and
+              
+              -this.number
+               </p>
+               <p>
+                Derived metrics are not available when using
+                <b>
+                 <a href="/man/man3/pmfetcharchive.3.html">
+                  pmFetchArchive
+                 </a>
+                </b>
+                (3)
+              
+              as this routine does not use a target list of PMIDs that could be
+              remapped (as is done for
+                <b>
+                 <a href="/man/man3/pmfetch.3.html">
+                  pmFetch
+                 </a>
+                </b>
+                (3)).
+               </p>
+               <p>
+                There is no
+                <b>
+                 pmUnregisterDerived
+                </b>
+                method, so once registered a derived metric persists for the life
+              of the application.
+                <a name="lbAH">
+                </a>
+               </p>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               <p>
+                On success,
+                <b>
+                 pmRegisterDerived
+                </b>
+                returns NULL.
+               </p>
+               <p>
+                If a syntactic error is found at the time of registration, the
+              value returned by
+                <b>
+                 pmRegisterDerived
+                </b>
+                is a pointer into
+                <i>
+                 expr
+                </i>
+                indicating
+                <b>
+                 where
+                </b>
+                the error was found.  To identify
+                <b>
+                 what
+                </b>
+                the error was, the application should call
+                <b>
+                 <a href="/man/man3/pmderivederrstr.3.html">
+                  pmDerivedErrStr
+                 </a>
+                </b>
+                (3)
+              
+              to retrieve the corresponding parser error message.
+               </p>
+               <p>
+                <b>
+                 pmRegisterDerivedMetric
+                </b>
+                returns 0 and
+                <i>
+                 errmsg
+                </i>
+                is undefined if the parsing is successful.
+               </p>
+               <p>
+                If the given
+                <i>
+                 expr
+                </i>
+                does not conform to the required syntax
+                <b>
+                 pmRegisterDerivedMetric
+                </b>
+                returns -1 and a dynamically allocated error message string in
+                <i>
+                 errmsg
+                </i>
+                .
+              
+              The error message is terminated with a newline
+              and includes both the input
+                <i>
+                 name
+                </i>
+                and
+                <i>
+                 expr
+                </i>
+                ,
+              
+              along with an indicator of the position at which the
+              error was detected.
+              e.g.
+                <br/>
+                Error: pmRegisterDerivedMetric("my.disk.rates", ...) syntax error
+                <br/>
+                <br/>
+               </p>
+               <p>
+                The position indicator line may be followed by an additional
+              diagnostic line describing the nature of the error, when available.
+               </p>
+               <p>
+                In the case of an error, the caller is responsible for calling
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+                  free
+                 </a>
+                </b>
+                (3)
+              
+              to release the space allocated for
+                <i>
+                 errmsg
+                </i>
+                .
+                <a name="lbAI">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+                 free
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmderivederrstr.3.html">
+                 pmDerivedErrStr
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmfetch.3.html">
+                 pmFetch
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmloadderivedconfig.3.html">
+                 pmLoadDerivedConfig
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmnewcontext.3.html">
+                 pmNewContext
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmreconnectcontext.3.html">
+                 pmReconnectContext
+                </a>
+               </b>
+               (3).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SEMANTIC CHECKS AND RULES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  EXPRESSION EVALUATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  CAVEATS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

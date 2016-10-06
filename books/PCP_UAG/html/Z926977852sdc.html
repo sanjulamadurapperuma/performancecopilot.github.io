@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">4.2. The pmdumptext Command</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE38515-PARENT.html" title="Chapter 4. Monitoring System Performance" /><link rel="prev" href="LE38515-PARENT.html" title="Chapter 4. Monitoring System Performance" /><link rel="next" href="LE35315-PARENT.html" title="4.3. The pmval Command" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE38515-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE35315-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="Z926977852sdc">
+      ⁠</a>4.2. The <code class="command">pmdumptext</code> Command</h2></div></div></div><div class="para">
+				<a id="IG31371888172" class="indexterm"></a>The <code class="command">pmdumptext</code> command displays performance metrics in ASCII tables, suitable for export into databases or report generators. It is a flexible command. For example, the following command provides continuous memory statistics on a host named <code class="literal">surf</code>:
+			</div><pre class="literallayout"><strong class="userinput"><code>pmdumptext -Ximu -h </code></strong><strong class="userinput"><code>surf</code></strong><strong class="userinput"><code> -f '%H:%M:%S' xfs.buffer</code></strong>
+[ 1] xfs.buffer.get
+[ 2] xfs.buffer.create
+[ 3] xfs.buffer.get_locked
+[ 4] xfs.buffer.get_locked_waited
+[ 5] xfs.buffer.busy_locked
+[ 6] xfs.buffer.miss_locked
+[ 7] xfs.buffer.page_retries
+[ 8] xfs.buffer.page_found
+[ 9] xfs.buffer.get_read
+
+  Column	     1	     2	     3	     4	     5	     6	     7	     8	     9
+  Metric	   get	create	locked	waited	locked	locked	etries	_found	t_read
+   Units	   c/s	   c/s	   c/s	   c/s	   c/s	   c/s	   c/s	   c/s	   c/s
+10:13:23	     ?	     ?	     ?	     ?	     ?	     ?	     ?	     ?	     ?
+10:13:24	 0.16K	 9.00 	 0.15K	 5.00 	 0.00 	 0.00 	 0.00 	12.00 	 9.00 
+10:13:25	 1.21K	38.00 	 1.17K	15.00 	 0.00 	 0.00 	 0.00 	62.01 	38.00 
+10:13:26	 5.80K	 0.12K	 5.69K	41.99 	 0.00 	 0.00 	 0.00 	 0.19K	 0.12K</pre><div class="para">
+				See the <code class="command">pmdumptext(1)</code> man page for more information.
+			</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE38515-PARENT.html"><strong>Prev</strong>Chapter 4. Monitoring System Performance</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE35315-PARENT.html"><strong>Next</strong>4.3. The pmval Command</a></li></ul></body></html>

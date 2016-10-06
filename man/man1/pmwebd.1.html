@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMWEBD
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmwebd
+               </b>
+               - web access to PCP
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pmwebd
+               </b>
+               [
+               <b>
+                -p
+               </b>
+               <i>
+                port
+               </i>
+               ]
+              [
+               <b>
+                -4
+               </b>
+               ]
+              [
+               <b>
+                -6
+               </b>
+               ]
+              [
+               <b>
+                -t
+               </b>
+               <i>
+                timeout
+               </i>
+               ]
+              [
+               <b>
+                -R
+               </b>
+               <i>
+                resdir
+               </i>
+               ]
+              [
+               <b>
+                -c
+               </b>
+               <i>
+                number
+               </i>
+               ]
+              [
+               <b>
+                -h
+               </b>
+               <i>
+                hostname
+               </i>
+               ]
+              [
+               <b>
+                -a
+               </b>
+               <i>
+                archive
+               </i>
+               ]
+              [
+               <b>
+                -P
+               </b>
+               ]
+              [
+               <b>
+                -L
+               </b>
+               ]
+              [
+               <b>
+                -N
+               </b>
+               ]
+              [
+               <b>
+                -G
+               </b>
+               ]
+              [
+               <b>
+                -X
+               </b>
+               ]
+              [
+               <b>
+                -i
+               </b>
+               <i>
+                min-interval
+               </i>
+               ]
+              [
+               <b>
+                -I
+               </b>
+               [
+               <b>
+                -K
+               </b>
+               <i>
+                spec
+               </i>
+               ]
+              [
+               <b>
+                -A
+               </b>
+               <i>
+                archivesdir
+               </i>
+               ]
+              [
+               <b>
+                -S
+               </b>
+               ]
+              [
+               <b>
+                -l
+               </b>
+               <i>
+                logfile
+               </i>
+               ]
+              [
+               <b>
+                -U
+               </b>
+               <i>
+                username
+               </i>
+               ]
+              [
+               <b>
+                -x
+               </b>
+               <i>
+                file
+               </i>
+               ]
+              [
+               <b>
+                -v
+               </b>
+               ]
+              [
+               <b>
+                -?
+               </b>
+               ]
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmwebd
+               </b>
+               is a network daemon that binds a subset of the
+              Performance Co-Pilot (PCP) client API (
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3))
+              
+              to RESTful web
+              applications using the HTTP (
+               <b>
+                <a href="/man/man3/pmwebapi.3.html">
+                 PMWEBAPI
+                </a>
+               </b>
+               (3))
+              
+              protocol.
+              Web clients request a URI with the prefix
+               <b>
+                /pmapi
+               </b>
+               to access the bindings.
+               <b>
+                pmwebd
+               </b>
+               creates PCP contexts as requested
+              by a dynamic pool of remote clients, and maintains them as long as the
+              clients regularly reconnect to request PMAPI operations.  Otherwise,
+              PCP contexts are closed after a timeout.  Permanent contexts may be
+              requested on the command line.
+               <p>
+                In addition to the API binding,
+                <b>
+                 pmwebd
+                </b>
+                may be optionally configured as a
+              simple HTTP file server, in order to feed the web application itself
+              to a web browser.  URIs not matching the
+                <b>
+                 /pmapi
+                </b>
+                prefix are mapped to files under the configured resource directory, if
+              the
+                <b>
+                 -R
+                </b>
+                option was given.
+               </p>
+               <p>
+                In addition,
+                <b>
+                 pmwebd
+                </b>
+                may be optionally configured as a server of a subset
+              of the graphite 0.9.12 web API, for URLs with the
+                <b>
+                 /graphite
+                </b>
+                prefix, in order to expose PCP archives to interactive data-graphing web
+              applications.
+               </p>
+               <p>
+                The options to
+                <b>
+                 pmwebd
+                </b>
+                are as follows.
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -p
+                 </b>
+                 <i>
+                  port
+                 </i>
+                </dt>
+                <dd>
+                 Set the TCP port number on which
+                 <b>
+                  pmwebd
+                 </b>
+                 will listen for HTTP requests.
+              The default is 44323.
+                </dd>
+                <dt>
+                 <b>
+                  -4
+                 </b>
+                 or
+                 <b>
+                  -6
+                 </b>
+                </dt>
+                <dd>
+                 Listen only on IPv4 or IPv6.  By default,
+                 <b>
+                  pmwebd
+                 </b>
+                 will listen on both
+              protocols, if possible.
+                </dd>
+                <dt>
+                 <b>
+                  -A
+                 </b>
+                 <i>
+                  archdir
+                 </i>
+                </dt>
+                <dd>
+                 Limit remote access to archives to only those beneath the given directory.
+              By default, only files beneath the initial
+                 <b>
+                  pmwebd
+                 </b>
+                 working directory may
+              be accessed.
+                </dd>
+                <dt>
+                 <b>
+                  -R
+                 </b>
+                 <i>
+                  resdir
+                 </i>
+                </dt>
+                <dd>
+                 Activate file serving beneath the given resource directory.  All regular
+              files there may be read and transcribed to remote clients.  By default,
+              file serving is disabled.
+                </dd>
+                <dt>
+                 <b>
+                  -G
+                 </b>
+                </dt>
+                <dd>
+                 Activate servicing of a subset of the graphite webapi.  This exposes all
+              PCP archives under the
+                 <b>
+                  -A
+                 </b>
+                 directory to remote clients.  By default,
+              graphite webapi serving is disabled.  To use the graphite and/or grafana
+              web applications included with
+                 <b>
+                  pmwebd
+                 </b>
+                 ,
+              
+              use both
+                 <b>
+                  -G
+                 </b>
+                 and
+                 <b>
+                  -R
+                 </b>
+                 , and connect your web browser to
+                 <b>
+                  <a href="http://127.0.0.1:43323/">
+                   http://127.0.0.1:43323/
+                  </a>
+                 </b>
+                </dd>
+                <dt>
+                 <b>
+                  -X
+                 </b>
+                </dt>
+                <dd>
+                 Disable encoding of common characters for metric names, which allows
+              shorter graphite metric names.
+                </dd>
+                <dt>
+                 <b>
+                  -i
+                 </b>
+                 <i>
+                  min-interval
+                 </i>
+                </dt>
+                <dd>
+                 Set the minimum sampling interval for graphite time series in seconds.
+              The default is 60.  Smaller values give higher precision (but not
+              necessarily accuracy) data, but may cost extra processing time at
+                 <b>
+                  pmwebd
+                 </b>
+                 or the web browser; and vice versa.
+                </dd>
+                <dt>
+                 <b>
+                  -I
+                 </b>
+                </dt>
+                <dd>
+                 Attempt to open an entire directory as an archive when traversing the
+                 <b>
+                  -A
+                 </b>
+                 DIR paths to serve graphite-api metrics.  If successful, it can make the
+              metric names much shorter (omitting individual encoded file names) and span
+              across time.  If the attempt fails,
+                 <b>
+                  pmwebd
+                 </b>
+                 will recurse to each individual
+              archive file, just as though
+                 <b>
+                  -I
+                 </b>
+                 were not given.  The difference is that if
+              the
+                 <b>
+                  -I
+                 </b>
+                 attempt succeeds, a subdirectory is not recursed further, so if any
+              other archives or subdirectories are present, they won't be exposed to
+              graphite-api clients.
+                </dd>
+                <dt>
+                 <b>
+                  -t
+                 </b>
+                 <i>
+                  timeout
+                 </i>
+                </dt>
+                <dd>
+                 Set the maximum timeout (in seconds) after the last operation on a pmapi web
+              context, before it is closed by
+                 <b>
+                  pmwebd
+                 </b>
+                 .
+              
+              A smaller timeout may be requested
+              by the web client. The default is 300.
+                </dd>
+                <dt>
+                 <b>
+                  -c
+                 </b>
+                 <i>
+                  number
+                 </i>
+                </dt>
+                <dd>
+                 Reset the next PMWEBAPI permanent context identifier as given.
+              The default is 1.
+                </dd>
+                <dt>
+                 <b>
+                  -h
+                 </b>
+                 <i>
+                  hostname
+                 </i>
+                 or
+                 <b>
+                  -a
+                 </b>
+                 <i>
+                  archive
+                 </i>
+                 or
+                 <b>
+                  -L
+                 </b>
+                </dt>
+                <dd>
+                 Assign the next permanent PMWEBAPI context identifier to a PMAPI connection
+              to the given host (with an extended syntax as given in
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)),
+              
+              or archive file, or the PM_CONTEXT_LOCAL.
+                </dd>
+                <dt>
+                 <b>
+                  -P
+                 </b>
+                </dt>
+                <dd>
+                 Run in permissive mode, allowing Unix domain socket connections and/or
+              local PMDA contexts.
+              By default these are not allowed due to the automatic authentication that
+              is performed on the server in these modes.
+              Only enable this option if you understand the risks involved, and are sure
+              that all remote
+                 <b>
+                  pmwebd
+                 </b>
+                 accesses will be from benevolent users.
+              If enabled, unauthenticated remote
+                 <b>
+                  <a href="/man/man3/pmwebapi.3.html">
+                   PMWEBAPI
+                  </a>
+                 </b>
+                 (3)
+              
+              clients will be able to access
+              potentially sensitive performance metric values which an unauthenticated
+                 <b>
+                  <a href="/man/man3/pmapi.3.html">
+                   PMAPI
+                  </a>
+                 </b>
+                 (3)
+              
+              client usually would not be able to.
+                </dd>
+                <dt>
+                 <b>
+                  -N
+                 </b>
+                </dt>
+                <dd>
+                 Disable creation of new PMWEBAPI contexts via HTTP requests, leaving only
+              permanent ones accessible.
+                </dd>
+                <dt>
+                 <b>
+                  -K
+                 </b>
+                 <i>
+                  spec
+                 </i>
+                </dt>
+                <dd>
+                 When
+              fetching metrics from a local context, the
+                 <b>
+                  -K
+                 </b>
+                 option may be used to control the DSO PMDAs that should be
+              made accessible.  The
+                 <i>
+                  spec
+                 </i>
+                 argument conforms to the syntax described in
+                 <b>
+                  <a href="/man/man3/pmspeclocalpmda.3.html">
+                   __pmSpecLocalPMDA
+                  </a>
+                 </b>
+                 (3).
+              
+              More than one
+                 <b>
+                  -K
+                 </b>
+                 option may be used.
+                </dd>
+                <dt>
+                 <b>
+                  -l
+                 </b>
+                 <i>
+                  logfile
+                 </i>
+                </dt>
+                <dd>
+                 By default, logging goes to standard output/error file handles.
+              The verbosity flag
+                 <b>
+                  -v
+                 </b>
+                 affects the amount of traffic.  The
+                 <b>
+                  -l
+                 </b>
+                 option causes the log file to be written to
+                 <i>
+                  logfile
+                 </i>
+                 instead.
+              If the log file cannot be created or is not writable, output is
+              written to the standard error instead.
+                </dd>
+                <dt>
+                 <b>
+                  -U
+                 </b>
+                 <i>
+                  username
+                 </i>
+                </dt>
+                <dd>
+                 If invoked as root, assume the identity of
+                 <i>
+                  username
+                 </i>
+                 before starting to accept incoming requests from web clients.
+                </dd>
+                <dt>
+                 <b>
+                  -S
+                 </b>
+                </dt>
+                <dd>
+                 Disable service advertisement.
+              By default,
+                 <b>
+                  pmwebd
+                 </b>
+                 will advertise its presence on the network using any available
+              mechanisms (such as Avahi/DNS-SD), assisting remote monitoring
+              tools with finding it.
+              These mechanisms are disabled with this option.
+                </dd>
+                <dt>
+                 <b>
+                  -x
+                 </b>
+                 <i>
+                  file
+                 </i>
+                </dt>
+                <dd>
+                 Before the
+                 <b>
+                  pmwebd
+                 </b>
+                 <i>
+                  logfile
+                 </i>
+                 can be opened,
+                 <b>
+                  pmwebd
+                 </b>
+                 may encounter a fatal error which prevents it from starting.  By default, the
+              output describing this error is sent to
+                 <b>
+                  /dev/tty
+                 </b>
+                 but it may redirected to
+                 <i>
+                  file
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -v
+                 </b>
+                </dt>
+                <dd>
+                 Increase the verbosity of the
+                 <b>
+                  pmwebd
+                 </b>
+                 program as it logs to its standard output/error.
+                </dd>
+                <dt>
+                 <b>
+                  -?
+                 </b>
+                </dt>
+                <dd>
+                 Show
+                 <b>
+                  pmwebd
+                 </b>
+                 invocation help and exit.
+                </dd>
+               </dl>
+               <a name="lbAE">
+               </a>
+               <h2>
+                SECURITY
+               </h2>
+               <p>
+                The current release of
+                <b>
+                 pmwebd
+                </b>
+                is suitable for direct exposure to
+              trusted networks only, due to several security limitations.  Most or
+              all of these limitations may be worked around by use of a web
+              application firewall (for example, an Apache HTTPD proxy), which would
+              add the constraints and capabilities absent within
+                <b>
+                 pmwebd
+                </b>
+                .
+              
+              Such configuration is beyond the scope of this document.
+               </p>
+               <dl compact="">
+                <dt>
+                 encryption/confidentiality
+                </dt>
+                <dd>
+                 The
+                 <b>
+                  pmwebd
+                 </b>
+                 program is does not currently support HTTPS (SSL/TLS), so
+              the HTTP traffic is not protected against network-level attacks.
+                </dd>
+                <dt>
+                 authentication
+                </dt>
+                <dd>
+                 The PMAPI layer does not possess a mandatory authentication mechanism,
+              so any remote connection can access any metric exposed by suchly connected
+              PMAPI contexts.  However, a new host-context string may use
+              authentication clauses of the longer host URLs, for example
+                 <i>
+                  <a href="pcps://hostname?method=plain">
+                   pcps://hostname?method=plain
+                  </a>
+                  &amp;user=userid&amp;pass=password
+                 </i>
+                 .
+              
+              Use of resulting pmwebapi contexts later requires matching HTTP PLAIN
+              authentication; see below.
+                </dd>
+                <dt>
+                 inbound admission control
+                </dt>
+                <dd>
+                 The
+                 <b>
+                  pmwebd
+                 </b>
+                 program does not impose access control on the origin or rate of its
+              incoming requests.  It may be possible for some clients to starve others.
+                </dd>
+                <dt>
+                 outbound admission control
+                </dt>
+                <dd>
+                 The
+                 <b>
+                  pmwebd
+                 </b>
+                 program does not impose access control on outbound connections
+              when a new PMAPI context is created for a PMCD.
+              (Without the
+                 <b>
+                  -P
+                 </b>
+                 option, connections to UNIX-domain / local PMCDs are blocked.)
+              This enables hypothetical use of a
+                 <b>
+                  pmwebd
+                 </b>
+                 instance to be used as a network proxy/scanner.
+              For an archive type context, the files must be located under the
+                 <b>
+                  pmwebd
+                 </b>
+                 current directory, or another directory specified by
+                 <b>
+                  -A
+                 </b>
+                 .
+              
+              One may entirely disable remotely specified PMAPI context creation using the
+                 <b>
+                  -N
+                 </b>
+                 option; in this case, specify a static set of contexts using the
+                 <b>
+                  -h
+                 </b>
+                 ,
+                 <b>
+                  -a
+                 </b>
+                 ,
+              
+              and/or
+                 <b>
+                  -L
+                 </b>
+                 options.
+              You may assign them arbitrary context numbers with the
+                 <b>
+                  -c
+                 </b>
+                 option.
+                </dd>
+                <dt>
+                 context ownership
+                </dt>
+                <dd>
+                 Authenticated PCP contexts are protected by requiring the same HTTP
+              PLAIN/simple userid/password credentials for related /pmapi requests.
+              However, unauthenticated contexts for different web clients are kept
+              distinct only by the assignment of large pseudorandom identifiers.  It
+              may be possible to find these by brute-force search or other
+              techniques, thereby letting a web client impersonate another.  For
+              more privacy of the permanent contexts, use the
+                 <b>
+                  -c
+                 </b>
+                 option to reset their starting web context identifiers to a number
+              much different from 1.  On the other hand, context ownership is not
+              that precious, since there exist no state-destructive operations for
+              them, except perhaps metric store or instance profile settings.
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                STARTING AND STOPPING PMWEBD
+               </h2>
+               The
+               <b>
+                pmwebd
+               </b>
+               server may be started automatically at boot time and
+              stopped when the system is being brought down.  Users may also run
+              customized
+               <b>
+                pmwebd
+               </b>
+               instances (under separate
+               <b>
+                -p
+               </b>
+               PORT numbers), for
+              example for their own archive farms.
+               <b>
+                For management fo the system
+               </b>
+               <b>
+                pmwebd
+               </b>
+               ,
+              
+              become superuser and type
+               <p>
+                # $PCP_RC_DIR/pmwebd start
+               </p>
+               <p>
+                to start
+                <b>
+                 pmwebd
+                </b>
+                ,
+              
+              or
+               </p>
+               <p>
+                # $PCP_RC_DIR/pmwebd stop
+               </p>
+               <p>
+                to stop
+                <b>
+                 pmwebd
+                </b>
+                .
+              
+              Starting
+                <b>
+                 pmwebd
+                </b>
+                when it is already running is the same as stopping
+              it and then starting it again.
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  $PCP_PMWEBDOPTIONS_PATH
+                 </b>
+                </dt>
+                <dd>
+                 command line options
+              and environment variable settings for
+                 <b>
+                  pmwebd
+                 </b>
+                 when launched from
+                 <b>
+                  $PCP_RC_DIR/pmwebd
+                 </b>
+                 This file is interpreted as a Bourne Shell script, expecting
+              variable settings of the form "OPTIONS=value" and possibly others.
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_LOG_DIR/pmwebd/pmwebd.log
+                 </b>
+                </dt>
+                <dd>
+                 Log file for system
+                 <b>
+                  pmwebd
+                 </b>
+                 service.
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_LOG_DIR
+                 </b>
+                </dt>
+                <dd>
+                 Default directory for
+                 <b>
+                  -A
+                 </b>
+                 option: a base directory containing PCP archives.
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_SHARE_DIR/webapps
+                 </b>
+                </dt>
+                <dd>
+                 Default directory for
+                 <b>
+                  -R
+                 </b>
+                 option: a base directory containing web applications.
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <i>
+                /etc/pcp.conf
+               </i>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAI">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmwebapi.3.html">
+                 PMWEBAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="/man/man5/pcp.env.5.html">
+                 pcp.env
+                </a>
+               </b>
+               (5)
+               <b>
+                <a href="http://graphite.readthedocs.org/">
+                 http://graphite.readthedocs.org/
+                </a>
+               </b>
+               and
+               <b>
+                <a href="/man/man5/pmns.5.html">
+                 pmns
+                </a>
+               </b>
+               (5).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SECURITY
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  STARTING AND STOPPING PMWEBD
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

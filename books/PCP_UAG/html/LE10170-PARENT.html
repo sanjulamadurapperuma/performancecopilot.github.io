@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">4.5. The pmstore Command</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE38515-PARENT.html" title="Chapter 4. Monitoring System Performance" /><link rel="prev" href="LE60452-PARENT.html" title="4.4. The pminfo Command" /><link rel="next" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE60452-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE21414-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE10170-PARENT">
+      ⁠</a>4.5. The <code class="command">pmstore</code> Command</h2></div></div></div><div class="para">
+				<a id="ITch04-26" class="indexterm"></a>From time to time you may wish to change the value of a particular metric. Some metrics are counters that may need to be reset, and some are simply control variables for agents that collect performance metrics. When you need to change the value of a metric for any reason, the command to use is <code class="command">pmstore</code>.
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+					For obvious reasons, the ability to arbitrarily change the value of a performance metric is not supported. Rather, PCP collectors selectively allow some metrics to be modified in a very controlled fashion.
+				</div></div></div><div class="para">
+				The basic syntax of the command is as follows:
+			</div><pre class="literallayout">pmstore <em class="replaceable">metricname</em> <em class="replaceable">value</em> </pre><div class="para">
+				There are also command line flags to further specify the action. For example, the <code class="literal">-i</code> option restricts the change to one or more instances of the performance metric.
+			</div><div class="para">
+				The <em class="replaceable">value</em> may be in one of several forms, according to the following rules:
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="orderedlist"><ol><li class="listitem"><div class="para">
+						If the metric has an integer type, then <em class="replaceable">value</em> should consist of an optional leading hyphen, followed either by decimal digits or “0x” and some hexadecimal digits; “0X” is also acceptable instead of “0x.”
+					</div></li><li class="listitem"><div class="para">
+						If the metric has a floating point type, then <em class="replaceable">value</em> should be in the form of an integer (described above), a fixed point number, or a number in scientific notation.
+					</div></li><li class="listitem"><div class="para">
+						If the metric has a string type, then <em class="replaceable">value</em> is interpreted as a literal string of ASCII characters.
+					</div></li><li class="listitem"><div class="para">
+						If the metric has an aggregate type, then an attempt is made to interpret <em class="replaceable">value</em> as an integer, a floating point number, or a string. In the first two cases, the minimal word length encoding is used; for example, “123” would be interpreted as a four-byte aggregate, and “0x100000000” would be interpreted as an eight-byte aggregate.
+					</div></li></ol></div><div class="para">
+				The following example illustrates the use of <code class="command">pmstore</code> to enable performance metrics collection in the <code class="literal">txmon</code> PMDA (see <code class="literal">${PCP_PMDAS_DIR}/txmon</code> for the source code of the txmon PMDA). When the metric <code class="literal">txmon.control.level</code> has the value 0, no performance metrics are collected. Values greater than 0 enable progressively more verbose instrumentation.
+			</div><pre class="literallayout"><strong class="userinput"><code>pminfo -f txmon.count</code></strong>
+txmon.count
+No value(s) available!
+<strong class="userinput"><code>pmstore txmon.control.level 1</code></strong>
+txmon.control.level old value=0 new value=1
+<strong class="userinput"><code>pminfo -f txmon.count</code></strong>
+txmon.count
+       inst [0 or "ord-entry"] value 23
+       inst [1 or "ord-enq"] value 11
+       inst [2 or "ord-ship"] value 10
+       inst [3 or "part-recv"] value 3
+       inst [4 or "part-enq"] value 2
+       inst [5 or "part-used"] value 1
+       inst [6 or "b-o-m"] value 0</pre><div class="para">
+				For complete information on <code class="command">pmstore</code> usage and syntax, see the <code class="command">pmstore(1)</code> man page.
+			</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE60452-PARENT.html"><strong>Prev</strong>4.4. The pminfo Command</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE21414-PARENT.html"><strong>Next</strong>Chapter 5. Performance Metrics Inference Engine</a></li></ul></body></html>

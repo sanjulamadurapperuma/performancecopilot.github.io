@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">4.7.2. Point Tracing</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE26087-PARENT.html" title="4.7. Trace API" /><link rel="prev" href="LE26087-PARENT.html" title="4.7. Trace API" /><link rel="next" href="id5214931.html" title="4.7.3. Observations and Counters" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE26087-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5214931.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5214714">
+      ⁠</a>4.7.2. Point Tracing </h3></div></div></div><div class="para">
+					<a id="IG31340177514" class="indexterm"></a> <a id="IG31340177515" class="indexterm"></a>Point tracing allows the application programmer to export metrics related to salient events. The <code class="command">pmtracepoint</code> function is most useful when start and end points are not well defined. For example, this function is useful when the code branches in such a way that a transaction cannot be clearly identified, or when processing does not follow a transactional model, or when the desired instrumentation is akin to event rates rather than event service times. This data is exported through the <code class="literal">trace.point</code> metrics listed in <a class="xref" href="id5214714.html#id5214762">Table 4.3, “<code class="literal">trace.point</code> Metrics”</a>:
+					<div class="table"><a id="id5214762">
+      ⁠</a><p class="title"><strong>Table 4.3. <code class="literal">trace.point</code> Metrics</strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols lt-7-rows" summary="trace.point Metrics"><colgroup><col width="38%" /><col width="62%" /></colgroup><thead><tr valign="top"><th align="left" valign="bottom">
+									<div class="para">
+										Metric
+									</div>
+									</th><th align="left" valign="bottom">
+									<div class="para">
+										Description
+									</div>
+									</th></tr></thead><tbody><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										<code class="literal">trace.point.count<a id="IG31340177516" class="indexterm"></a></code>
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										Running count of point observations for each tag seen since the trace PMDA started.
+									</div>
+									</td></tr><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										<code class="literal">trace.point.rate<a id="IG31340177517" class="indexterm"></a></code>
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										The average rate at which observation points occur for each tag within the last sample duration.
+									</div>
+									</td></tr></tbody></table></div></div>
+				</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE26087-PARENT.html"><strong>Prev</strong>4.7. Trace API</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5214931.html"><strong>Next</strong>4.7.3. Observations and Counters</a></li></ul></body></html>

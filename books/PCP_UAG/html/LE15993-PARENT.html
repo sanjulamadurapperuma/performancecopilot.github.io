@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.2. Basic pmie Usage</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="prev" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="next" href="id5199666.html" title="5.2.2. Simple pmie Usage" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE21414-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5199666.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE15993-PARENT">
+      ⁠</a>5.2. Basic <code class="command">pmie</code> Usage</h2></div></div></div><div class="para">
+				<a id="IG31371888186" class="indexterm"></a>This section presents and explains some basic examples of <code class="command">pmie</code> usage. The <code class="command">pmie</code> tool accepts the common PCP command line arguments, as described in <a class="xref" href="LE94335-PARENT.html">Chapter 3, <em>Common Conventions and Arguments</em></a>. In addition, <code class="command">pmie</code> accepts the following command line arguments:
+			</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">-d</code></span></dt><dd><div class="para">
+							Enables interactive debug mode.
+						</div></dd><dt><span class="term"><code class="literal">-v</code></span></dt><dd><div class="para">
+							Verbose mode: expression values are displayed.
+						</div></dd><dt><span class="term"><code class="literal">-V</code></span></dt><dd><div class="para">
+							Verbose mode: annotated expression values are displayed.
+						</div></dd><dt><span class="term"><code class="literal">-W</code></span></dt><dd><div class="para">
+							When-verbose mode: when a condition is true, the satisfying expression bindings are displayed.
+						</div></dd></dl></div><div class="para">
+				One of the most basic invocations of this tool is this form:
+			</div><pre class="literallayout"><strong class="userinput"><code>pmie</code></strong> <em class="replaceable">filename</em></pre><div class="para">
+				In this form, the expressions to be evaluated are read from <em class="replaceable">filename</em>. In the absence of a given <em class="replaceable">filename</em>, expressions are read from standard input, which may be your system keyboard.
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE23271-PARENT">
+      ⁠</a>5.2.1. <code class="command">pmie</code> use of PCP services</h3></div></div></div><div class="para">
+					<a id="ITch06-7" class="indexterm"></a>Before you use <code class="command">pmie</code>, it is strongly recommended that you familiarize yourself with the concepts from the <a class="xref" href="LE79836-PARENT.html">Section 1.2, “Conceptual Foundations”</a>. The discussion in this section serves as a very brief review of these concepts.
+				</div><div class="para">
+					<a id="IG31371888187" class="indexterm"></a>PCP makes available thousands of performance metrics that you can use when formulating expressions for <code class="command">pmie</code> to evaluate. If you want to find out which metrics are currently available on your system, use this command:
+				</div><pre class="literallayout"><strong class="userinput"><code>pminfo</code></strong> </pre><div class="para">
+					Use the <code class="command">pmie</code> command line arguments to find out more about a particular metric. In <a class="xref" href="LE15993-PARENT.html#Z983825969sdc">Example 5.1, “<code class="command">pmie</code> with the <code class="literal">-f</code> Option”</a>, to fetch new metric values from host <code class="literal">dove</code>, you use the <code class="literal">-f</code> flag:
+				</div><div class="example"><a id="Z983825969sdc">
+      ⁠</a><p class="title"><strong>Example 5.1. <code class="command">pmie</code> with the <code class="literal">-f</code> Option</strong></p><div class="example-contents"><pre class="literallayout"><strong class="userinput"><code>pminfo -f -h dove disk.dev.total</code></strong></pre><div class="para">
+						This produces the following response:
+					</div><pre class="literallayout">disk.dev.total
+    inst [0 or "xscsi/pci00.01.0/target81/lun0/disc"] value 131233
+    inst [4 or "xscsi/pci00.01.0/target82/lun0/disc"] value 4
+    inst [8 or "xscsi/pci00.01.0/target83/lun0/disc"] value 4
+    inst [12 or "xscsi/pci00.01.0/target84/lun0/disc"] value 4
+    inst [16 or "xscsi/pci00.01.0/target85/lun0/disc"] value 4
+    inst [18 or "xscsi/pci00.01.0/target86/lun0/disc"] value 4</pre></div></div><div class="para">
+					This reveals that on the host <code class="literal">dove</code>, the metric <code class="literal">disk.dev.total</code> has six instances, one for each disk on the system.
+				</div><div class="para">
+					Use the following command to request help text (specified with the <code class="literal">-T</code> flag) to provide more information about performance metrics:
+				</div><pre class="literallayout"><strong class="userinput"><code>pminfo -T network.interface.in.packets</code></strong></pre><div class="para">
+					The metadata associated with a performance metric is used by <code class="command">pmie</code> to determine how the value should be interpreted. You can examine the descriptor that encodes the metadata by using the <code class="literal">-d</code> flag for <code class="command">pminfo</code>, as shown in <a class="xref" href="LE15993-PARENT.html#Z983826092sdc">Example 5.2, “<code class="command">pmie</code> with the <code class="literal">-d</code> and <code class="literal">-h</code> Options”</a>:
+				</div><div class="example"><a id="Z983826092sdc">
+      ⁠</a><p class="title"><strong>Example 5.2. <code class="command">pmie</code> with the <code class="literal">-d</code> and <code class="literal">-h</code> Options</strong></p><div class="example-contents"><pre class="literallayout"><strong class="userinput"><code>pminfo -d -h </code></strong><em class="replaceable">somehost </em><strong class="userinput"><code>mem.util.cached kernel.percpu.cpu.user</code></strong></pre><div class="para">
+						In response, you see output similar to this:
+					</div><pre class="literallayout">mem.util.cached
+    Data Type: 64-bit unsigned int  InDom: PM_INDOM_NULL 0xffffffff
+    Semantics: instant  Units: Kbyte
+
+kernel.percpu.cpu.user
+    Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
+    Semantics: counter  Units: millisec</pre></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+						<a id="ITch06-8" class="indexterm"></a>A cumulative counter such as <code class="literal">kernel.percpu.cpu.user</code> is automatically converted by <code class="command">pmie</code> into a rate (measured in events per second, or count/second), while instantaneous values such as <code class="literal">mem.util.cached</code> are not subjected to rate conversion. Metrics with an instance domain (<code class="literal">InDom</code> in the <code class="command">pminfo</code> output) of <code class="literal">PM_INDOM_NULL</code> are singular and always produce one value per source. However, a metric like <code class="literal">kernel.percpu.cpu.user</code> has an instance domain, and may produce multiple values per source (in this case, it is one value for each configured CPU).
+					</div></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE21414-PARENT.html"><strong>Prev</strong>Chapter 5. Performance Metrics Inference Engine</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5199666.html"><strong>Next</strong>5.2.2. Simple pmie Usage</a></li></ul></body></html>

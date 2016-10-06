@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">Performance Co-Pilot™ Tutorials and Case Studies</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-tutorials-and-case-studies-3-en-US-1.0-1" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><div xml:lang="en-US" class="book" lang="en-US"><div class="titlepage"><div><div><h1 class="title"><a id="idm139961263670528"></a>Performance Co-Pilot™ Tutorials and Case Studies</h1></div><p xmlns:d="http://docbook.org/ns/docbook" class="edition">Edition 3</p><div><div class="othercredit"><h3 class="othercredit"></h3><span class="contrib">Maintained by</span> <div class="affiliation"><span xmlns:d="http://docbook.org/ns/docbook" class="orgname">The Performance Co-Pilot Development Team</span><div class="address"><div class="para"><br />
+<code class="email"><a class="email" href="mailto:pcp@oss.sgi.com">pcp@oss.sgi.com</a></code><br />
+				<br />
+<span class="otheraddr"><a href="http://pcp.io">http://pcp.io</a><br />
+				<span class="inlinemediaobject"><object data="images/pcp.svg" type="image/svg+xml"><img src="images/pcp.png" alt="" /></object></span><br />
+				</span></div></div></div></div></div><div><p class="copyright">Copyright © 2012, 2014 Red Hat, Inc.</p></div><div><p class="copyright">Copyright © 2007, 2013 Aconex.</p></div><div><p class="copyright">Copyright © 2000, 2013 Silicon Graphics, Inc.</p></div><div><div class="legalnotice"><a id="idm139961235137360"></a><h1 class="legalnotice">Legal Notice</h1><p class="legalnotice-title"><strong>LICENSE</strong></p><div class="para">
+				Permission is granted to copy, distribute, and/or modify this document under the terms of the Creative Commons Attribution-Share Alike, Version 3.0 or any later version published by the Creative Commons Corp. A copy of the license is available at <a href="http://creativecommons.org/licenses/by-sa/3.0/us/">http://creativecommons.org/licenses/by-sa/3.0/us/</a>
+			</div></div></div><div><div class="legalnotice"><a id="idm139961235135200"></a><h1 class="legalnotice">Legal Notice</h1><p class="legalnotice-title"><strong>TRADEMARKS AND ATTRIBUTIONS</strong></p><div class="para">
+				Red Hat and the Shadowman logo are trademarks of Red Hat, Inc., registered in the United States and other countries.
+			</div><div class="para">
+				Silicon Graphics, SGI and the SGI logo are registered trademarks and Performance Co-Pilot is a trademark of Silicon Graphics, Inc.
+			</div><div class="para">
+				Cisco is a registered trademark of Cisco Systems, Inc. Linux is a registered trademark of Linus Torvalds, used with permission. UNIX is a registered trademark of The Open Group.
+			</div></div></div><div><div class="revhistory"><table summary="Revision History"><tr><th align="left" valign="top" colspan="2"><strong>Revision History</strong></th></tr><tr><td align="left">Revision 001</td><td align="left">August 2013</td></tr><tr><td align="left" colspan="2">Initial collation.</td></tr></table></div></div></div></div><div class="toc"><dl class="toc"><dt><span class="preface"><a href="#id5178752">About This Book</a></span></dt><dd><dl><dt><span class="section"><a href="#id5178771">1. What This Book Contains</a></span></dt><dt><span class="section"><a href="#id5178891">2. Audience for This Book</a></span></dt><dt><span class="section"><a href="#id5178933">3. Related Resources</a></span></dt><dt><span class="section"><a href="#id5178968">4. Man Pages</a></span></dt><dt><span class="section"><a href="#id5179157">5. Web Site</a></span></dt><dt><span class="section"><a href="#id5179276">6. Conventions</a></span></dt><dt><span class="section"><a href="#z825546061melby">7. Reader Comments</a></span></dt></dl></dd><dt><span class="chapter"><a href="#LE21795-PARENT">1. Supported Platforms Installation</a></span></dt><dd><dl><dt><span class="section"><a href="#id5177140">1.1. Linux Installation</a></span></dt><dt><span class="section"><a href="#id5177343">1.2. Mac OS X Installation</a></span></dt><dt><span class="section"><a href="#id5177529">1.3. Solaris Installation</a></span></dt><dt><span class="section"><a href="#id5177616">1.4. Windows Installation</a></span></dt></dl></dd><dt><span class="chapter"><a href="#LE98072-PARENT">2. Tutorials</a></span></dt><dd><dl><dt><span class="section"><a href="#id5187772">2.1. Using PCP Charts</a></span></dt><dt><span class="section"><a href="#id5188149">2.2. Logging Basics</a></span></dt><dt><span class="section"><a href="#id5188221">2.3. Automated Reasoning</a></span></dt></dl></dd><dt><span class="chapter"><a href="#LE25915-PARENT">3. Case Studies</a></span></dt><dd><dl><dt><span class="section"><a href="#id5187771">3.1. Understanding System-Level Processor Performance</a></span></dt><dt><span class="section"><a href="#id5187773">3.2. Understanding Measures of Disk Performance</a></span></dt><dt><span class="section"><a href="#id5187774">3.3. An Operating System Upgrade Evaluation</a></span></dt><dt><span class="section"><a href="#id5187775">3.4. Comparing Storage System Performance</a></span></dt><dt><span class="section"><a href="#id5187776">3.5. Central Logging: Instrumenting Distributed Event Logs</a></span></dt></dl></dd><dt><span class="index"><a href="#sgi-index">Index</a></span></dt></dl></div><div class="preface"><div class="titlepage"><div><div><h1 class="title"><a id="id5178752">
+      ⁠</a>About This Book</h1></div></div></div><div class="para">
+			This book is a collection of tutorials, case studies, and short stories about various aspects of the Performance Co-Pilot (PCP) performance analysis toolkit. Topics range from basic installation through to detailed analysis techniques, with everything in-between, that even seasoned PCP users can expect to learn from.
+		</div><div class="para">
+			Much like PCP is an open source, cross-platform software package - where customizations are actively encouraged - so too is this book. If you have interesting experiences to share, please consider contibuting - the XML source to this book is available, along with the PCP source code.
+		</div><div class="para">
+			“About This Book” includes short descriptions of the chapters in this book, directs you to additional sources of information, and explains typographical conventions.
+		</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5178771">
+      ⁠</a>1. What This Book Contains</h2></div></div></div><div class="para">
+				This book contains the following chapters:
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+						<a class="xref" href="#LE21795-PARENT">Chapter 1, <em>Supported Platforms Installation</em></a>, contains introductory topics around installation of PCP.
+					</div></li><li class="listitem"><div class="para">
+						<a class="xref" href="#LE98072-PARENT">Chapter 2, <em>Tutorials</em></a>, contains a series of hands-on tutorials covering use of specific PCP monitor tools, secure collector setup.
+					</div></li><li class="listitem"><div class="para">
+						<a class="xref" href="#LE25915-PARENT">Chapter 3, <em>Case Studies</em></a>, provides a set of case studies of use of PCP to address problems, or understand certain system behaviours using PCP.
+					</div></li></ul></div><div class="para">
+				It provides a series of real-world examples of using various PCP tools, and lessons learned from deploying the toolkit in production environments. It serves to provide reinforcement of the general concepts discussed in the other books described in the <a class="xref" href="#id5178933">Section 3, “Related Resources”</a>, with additional case studies and more detailed discussion of individual tools.
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5178891">
+      ⁠</a>2. Audience for This Book</h2></div></div></div><div class="para">
+				This book has something for everyone - early topics will aid those getting started with PCP, while later sections cover in-depth material, sometimes requiring detailed understanding of operating system internals.
+			</div><div class="para">
+				Some familiarity with the basic concepts behind PCP is assumed.
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5178933">
+      ⁠</a>3. Related Resources</h2></div></div></div><div class="para">
+				The <em class="citetitle">Performance Co-Pilot User's and Administrator's Guide</em> is intended for system administrators and performance analysts who are directly using and administering PCP installations.
+			</div><div class="para">
+				The <em class="citetitle">Performance Co-Pilot Programmer's Guide</em> is intended for developers who want to use the PCP framework and services for exporting additional collections of performance metrics, or for delivering new or customized applications to enhance performance management.
+			</div><div class="para">
+				Additional resources include man pages and the project web site.
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5178968">
+      ⁠</a>4. Man Pages</h2></div></div></div><div class="para">
+				The operating system man pages provide concise reference information on the use of commands, subroutines, and system resources. There is usually a man page for each PCP command or subroutine. To see a list of all the PCP man pages, start from the following command:
+			</div><pre class="literallayout"><strong class="userinput"><code>man PCPIntro</code></strong></pre><div class="para">
+				Each man page usually has a "SEE ALSO" section, linking to other, related entries.
+			</div><div class="para">
+				To see a particular man page, supply its name to the <code class="literal">man</code> command, for example:
+			</div><pre class="literallayout"><strong class="userinput"><code>man pcp</code></strong></pre><div class="para">
+				The man pages are arranged in different sections separating commands, programming interfaces, and so on. For a complete list of manual sections on a platform enter the command:
+			</div><pre class="literallayout"><strong class="userinput"><code>man man</code></strong></pre><div class="para">
+				When referring to man pages, this guide follows a standard convention: the section number in parentheses follows the item. For example, <code class="command">pminfo(1)</code> refers to the man page in section 1 for the <code class="command">pminfo</code> command.
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5179157">
+      ⁠</a>5. Web Site</h2></div></div></div><div class="para">
+				The following web site is accessible to everyone:
+			</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><span class="bold bold"><strong>URL</strong></span></span></dt><dd><div class="para">
+							<span class="bold bold"><strong>Description</strong></span>
+						</div></dd><dt><span class="term"><a href="http://pcp.io">http://pcp.io</a></span></dt><dd><div class="para">
+							PCP is open source software released under the GNU General Public License (GPL) and GNU Lesser General Public License (LGPL)
+						</div></dd></dl></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5179276">
+      ⁠</a>6. Conventions</h2></div></div></div><div class="para">
+				The following conventions are used throughout this document:
+				<div class="variablelist"><dl class="variablelist"><dt><span class="term"><span class="bold bold"><strong>Convention</strong></span></span></dt><dd><div class="para">
+								<span class="bold bold"><strong>Meaning</strong></span>
+							</div></dd><dt><span class="term"><code class="literal">${PCP_VARIABLE}</code></span></dt><dd><div class="para">
+								A brace-enclosed all-capital-letters syntax indicates a variable that has been sourced from the global <code class="filename">/etc/pcp.conf</code> file. These special variables indicate parameters that affect all PCP commands, and are likely to be different between platforms.
+							</div></dd><dt><span class="term"><code class="literal">command</code></span></dt><dd><div class="para">
+								This fixed-space font denotes literal items such as commands, files, routines, path names, signals, messages, and programming language structures.
+							</div></dd><dt><span class="term"><em class="replaceable">variable</em></span></dt><dd><div class="para">
+								Italic typeface denotes variable entries and words or concepts being defined.
+							</div></dd><dt><span class="term"><strong class="userinput"><code>user input</code></strong></span></dt><dd><div class="para">
+								This bold, fixed-space font denotes literal items that the user enters in interactive sessions. (Output is shown in nonbold, fixed-space font.)
+							</div></dd><dt><span class="term">[ ]</span></dt><dd><div class="para">
+								Brackets enclose optional portions of a command or directive line.
+							</div></dd><dt><span class="term">...</span></dt><dd><div class="para">
+								Ellipses indicate that a preceding element can be repeated.
+							</div></dd><dt><span class="term">ALL CAPS</span></dt><dd><div class="para">
+								All capital letters denote environment variables, operator names, directives, defined constants, and macros in C programs.
+							</div></dd><dt><span class="term">()</span></dt><dd><div class="para">
+								Parentheses that follow function names surround function arguments or are empty if the function has no arguments; parentheses that follow commands surround man page section numbers.
+							</div></dd></dl></div>
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="z825546061melby">
+      ⁠</a>7. Reader Comments</h2></div></div></div><div class="para">
+				If you have comments about the technical accuracy, content, or organization of this document, contact the PCP maintainers using either the email address or the web site listed earlier.
+			</div><div class="para">
+				We value your comments and will respond to them promptly.
+			</div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE21795-PARENT">
+      ⁠</a>Chapter 1. Supported Platforms Installation</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#id5177140">1.1. Linux Installation</a></span></dt><dt><span class="section"><a href="#id5177343">1.2. Mac OS X Installation</a></span></dt><dt><span class="section"><a href="#id5177529">1.3. Solaris Installation</a></span></dt><dt><span class="section"><a href="#id5177616">1.4. Windows Installation</a></span></dt></dl></div><div class="para">
+			Binary packages for Linux (deb and rpm formats), Mac OS X, Solaris and Windows are made available by the PCP development team.
+		</div><div class="para">
+			These are all freely available from the download section of the PCP project web site.
+		</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5177140">
+      ⁠</a>1.1. Linux Installation</h2></div></div></div><div class="para">
+				<a id="IG313401778" class="indexterm"></a>Pre-packaged binaries are available for the Linux platform ... XXX
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5177343">
+      ⁠</a>1.2. Mac OS X Installation</h2></div></div></div><div class="para">
+				<a id="IG313401779" class="indexterm"></a>After downloading the <code class="literal">dmg</code> file for your platform, double-click on the PCP <code class="literal">dmg</code> icon in the Finder application, and follow the installation instructions presented by the Installer.
+			</div><div class="para">
+				Mac OS X versions 10.5 and onward are generally available, although older versions can be built from source.
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5177529">
+      ⁠</a>1.3. Solaris Installation</h2></div></div></div><div class="para">
+				<a id="IG313401780" class="indexterm"></a>Download and unzip the latest binary package from the PCP project web site.
+			</div><div class="para">
+				To install the package for the first time, issue the following commands:
+			</div><pre class="programlisting"><strong class="userinput"><code>pkgadd -d pcp-${PCP_VERSION}</code></strong>
+  Say 'y' to all of the questions.
+<strong class="userinput"><code>svcadm enable pmcd</code></strong></pre><div class="para">
+				To upgrade an existing installation, issue the following commands:
+			</div><pre class="programlisting"><strong class="userinput"><code>pkgadd -d pcp-${PCP_VERSION}</code></strong>
+<strong class="userinput"><code>pkgadd -d pcp-${PCP_VERSION}</code></strong>
+<strong class="userinput"><code>svcadm enable pmcd</code></strong></pre></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5177616">
+      ⁠</a>1.4. Windows Installation</h2></div></div></div><div class="para">
+				<a id="IG313401781" class="indexterm"></a> After downloading the PCP Glider <code class="literal">msi</code> file, right-click on the command prompt icon, select <code class="literal">Run As Administrator</code>, and enter:
+			</div><pre class="programlisting"><strong class="userinput"><code>msiexec /i pcp-glider-${PCP_VERSION}.msi</code></strong>
+<strong class="userinput"><code>cd C:\Glider\scripts</code></strong>
+<strong class="userinput"><code>postinst.bat</code></strong></pre><div class="para">
+				The command line utilities can now be accessed from a Windows shell or the provided (POSIX) shell. The graphical tools can be accessed via the Windows <code class="literal">Start</code> menu.
+			</div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE98072-PARENT">
+      ⁠</a>Chapter 2. Tutorials</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#id5187772">2.1. Using PCP Charts</a></span></dt><dt><span class="section"><a href="#id5188149">2.2. Logging Basics</a></span></dt><dt><span class="section"><a href="#id5188221">2.3. Automated Reasoning</a></span></dt></dl></div><div class="para">
+			From a high-level PCP can be considered to contain two classes of software utility:
+		</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+					PCP Collectors. These are the parts of PCP that collect and extract performance data from various domains, such as the kernel or a database.
+				</div></li><li class="listitem"><div class="para">
+					PCP Monitors. These are the parts of PCP that display data collected from hosts (or archives) that have the PCP Collector installed.
+				</div></li></ul></div><div class="para">
+			The tutorials of this section focus on various monitoring tools initially, and then finish up with some extensions to collector systems not covered in the <em class="citetitle">Performance Co-Pilot User's and Administrator's Guide</em>.
+		</div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5187772">
+      ⁠</a>2.1. Using PCP Charts</h2></div></div></div><div class="para">
+				...
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5188149">
+      ⁠</a>2.2. Logging Basics</h2></div></div></div><div class="para">
+				...
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5188221">
+      ⁠</a>2.3. Automated Reasoning</h2></div></div></div><div class="para">
+				...
+			</div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE25915-PARENT">
+      ⁠</a>Chapter 3. Case Studies</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="#id5187771">3.1. Understanding System-Level Processor Performance</a></span></dt><dt><span class="section"><a href="#id5187773">3.2. Understanding Measures of Disk Performance</a></span></dt><dt><span class="section"><a href="#id5187774">3.3. An Operating System Upgrade Evaluation</a></span></dt><dt><span class="section"><a href="#id5187775">3.4. Comparing Storage System Performance</a></span></dt><dt><span class="section"><a href="#id5187776">3.5. Central Logging: Instrumenting Distributed Event Logs</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5187771">
+      ⁠</a>3.1. Understanding System-Level Processor Performance</h2></div></div></div><div class="para">
+				...
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5187773">
+      ⁠</a>3.2. Understanding Measures of Disk Performance</h2></div></div></div><div class="para">
+				...
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5187774">
+      ⁠</a>3.3. An Operating System Upgrade Evaluation</h2></div></div></div><div class="para">
+				...
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5187775">
+      ⁠</a>3.4. Comparing Storage System Performance</h2></div></div></div><div class="para">
+				...
+			</div></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5187776">
+      ⁠</a>3.5. Central Logging: Instrumenting Distributed Event Logs</h2></div></div></div><div class="para">
+				...
+			</div></div></div><div class="index"><div class="titlepage"><div><div><h1 class="title"><a id="sgi-index">
+      ⁠</a>Index</h1></div></div></div><dl><dt>Linux <a class="link" href="#IG313401778">Supported Platforms Installation</a></dt><dd></dd><dt>Max OS X <a class="link" href="#IG313401779">Supported Platform Installations</a></dt><dd></dd><dt>Solaris <a class="link" href="#IG313401780">Supported Platform Installations</a></dt><dd></dd><dt>Windows <a class="link" href="#IG313401781">Supported Platforms Installation</a></dt><dd></dd></dl></div></div></body></html>

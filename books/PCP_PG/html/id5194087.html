@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.6.2. Common Initialization</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE19047-PARENT.html" title="2.6. Initializing a PMDA" /><link rel="prev" href="LE19047-PARENT.html" title="2.6. Initializing a PMDA" /><link rel="next" href="id5194416.html" title="2.6.2.2. Simple PMDA" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE19047-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5194416.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5194087">
+      ⁠</a>2.6.2. Common Initialization</h3></div></div></div><div class="para">
+					<a id="IG31340177209" class="indexterm"></a>As described in <a class="xref" href="LE82676-PARENT.html">Section 2.2.2, “DSO PMDA”</a>, an initialization function is provided by a DSO PMDA and called by PMCD. Using the standard PMDA wrappers, the same function can also be used as part of the daemon PMDA initialization. This PMDA initialization function performs the following tasks:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							Assigning callback functions to the function pointer interface of <code class="filename">pmdaInterface</code>
+						</div></li><li class="listitem"><div class="para">
+							Assigning pointers to the metric and instance tables from <code class="filename">pmdaExt</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177210" class="indexterm"></a>Opening the help text files
+						</div></li><li class="listitem"><div class="para">
+							Assigning the domain number to the instance domains
+						</div></li><li class="listitem"><div class="para">
+							Correlating metrics with their instance domains
+						</div></li></ul></div><div class="para">
+					<a id="IG31340177211" class="indexterm"></a> <a id="IG31340177212" class="indexterm"></a>If the PMDA uses the common data structures defined for the <code class="filename">pcp_pmda</code> library, most of these requirements can be handled by the default <code class="command">pmdaInit</code> function; see the <code class="command">pmdaInit(3)</code> man page.
+				</div><div class="para">
+					Because the initialization function is the only initialization opportunity for a DSO PMDA, the common initialization function should also perform any DSO-specific functions that are required. A default implementation of this functionality is provided by the <code class="command">pmdaDSO</code> function; see the <code class="command">pmdaDSO(3)</code> man page.
+				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5194313">
+      ⁠</a>2.6.2.1. Trivial PMDA</h4></div></div></div><div class="para">
+						<a id="IG31340177213" class="indexterm"></a> <a id="IG31340177214" class="indexterm"></a> <a id="IG31340177215" class="indexterm"></a> <a class="xref" href="id5194087.html#Z976058585sdc">Example 2.29, “Initialization in the Trivial PMDA”</a> shows the trivial PMDA, which has no instances (that is, all metrics have singular values) and a single callback. This callback is for the <code class="command">pmdaFetch</code> function called <code class="command">trivial_fetchCallBack</code>; see the <code class="command">pmdaFetch(3)</code> man page:
+					</div><div class="example"><a id="Z976058585sdc">
+      ⁠</a><p class="title"><strong>Example 2.29. Initialization in the Trivial PMDA</strong></p><div class="example-contents"><pre class="programlisting">static char     *username;
+static int      isDSO = 1;              /* ==0 if I am a daemon */
+
+void trivial_init(pmdaInterface *dp)
+{
+    if (isDSO)
+        pmdaDSO(dp, PMDA_INTERFACE_2, “trivial DSO”,
+                “${PCP_PMDAS_DIR}/trivial/help”);
+    else
+        __pmSetProcessIdentity(username);
+
+    if (dp-&gt;status != 0)
+        return;
+
+    pmdaSetFetchCallBack(dp, trivial_fetchCallBack);
+    pmdaInit(dp, NULL, 0,
+             metrictab, sizeof(metrictab)/sizeof(metrictab[0]));
+}</pre></div></div><div class="para">
+						The trivial PMDA can execute as either a DSO or daemon PMDA. A default installation installs it as a daemon, however, and the <code class="command">main</code> routine clears <em class="replaceable">isDSO</em> and sets <em class="replaceable">username</em> accordingly.
+					</div><div class="para">
+						The <code class="command">trivial_init</code> routine provides the opportunity to do any extra DSO or daemon setup before calling the library <code class="command">pmdaInit</code>. In the example, the help text is setup for DSO mode and the daemon is switched to run as an unprivileged user (default is <code class="literal">root</code>, but it is generally good form for PMDAs to run with the least privileges possible). If <code class="literal">dp-&gt;status</code> is non-zero after the <code class="command">pmdaDSO</code> call, the PMDA will be removed by PMCD and cannot safely continue to use the <code class="command">pmdaInterface</code> structure.
+					</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE19047-PARENT.html"><strong>Prev</strong>2.6. Initializing a PMDA</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5194416.html"><strong>Next</strong>2.6.2.2. Simple PMDA</a></li></ul></body></html>

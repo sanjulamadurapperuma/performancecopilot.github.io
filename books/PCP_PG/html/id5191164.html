@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.4. Other Issues</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE98072-PARENT.html" title="Chapter 2. Writing a PMDA" /><link rel="prev" href="id5190626.html" title="2.3.4.3. Data Structures" /><link rel="next" href="id5191305.html" title="2.4.2. Latency and Threads of Control" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5190626.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5191305.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5191164">
+      ⁠</a>2.4. Other Issues</h2></div></div></div><div class="para">
+				Other issues include extracting the information, latency and threads of control, Name Space, PMDA help text, and management of evolution within a PMDA.
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5191177">
+      ⁠</a>2.4.1. Extracting the Information</h3></div></div></div><div class="para">
+					<a id="IG31340177146" class="indexterm"></a>A suggested approach to writing a PMDA is to write a standalone program to extract the values from the target domain and then incorporate this program into the PMDA framework. This approach avoids concurrent debugging of two distinct problems: 
+					<div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+								<a id="IG31340177147" class="indexterm"></a> Extraction of the data
+							</div></li><li class="listitem"><div class="para">
+								Communication with PMCD
+							</div></li></ul></div>
+				</div><div class="para">
+					<a id="IG31340177148" class="indexterm"></a>These are some possible ways of exporting the data from the target domain:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							Accumulate the performance data in a public shared memory segment.
+						</div></li><li class="listitem"><div class="para">
+							Write the performance data to the end of a log file.
+						</div></li><li class="listitem"><div class="para">
+							Periodically rewrite a file with the most recent values for the performance data.
+						</div></li><li class="listitem"><div class="para">
+							Implement a protocol that allows a third party to connect to the target application, send a request, and receive new performance data.
+						</div></li><li class="listitem"><div class="para">
+							If the data is in the operating system kernel, provide a kernel interface (preferred) to export the performance data.
+						</div></li></ul></div><div class="para">
+					Most of these approaches require some further data processing by the PMDA.
+				</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5190626.html"><strong>Prev</strong>2.3.4.3. Data Structures</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5191305.html"><strong>Next</strong>2.4.2. Latency and Threads of Control</a></li></ul></body></html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMDAORACLE
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmdaoracle
+               </b>
+               - Oracle database PMDA
+               <a name="lbAC">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmdaoracle
+               </b>
+               is a Performance Co-Pilot
+               <font size="-1">
+                PMDA
+               </font>
+               which extracts
+              live performance data from a running Oracle database.
+               <a name="lbAD">
+               </a>
+               <h2>
+                INSTALLATION
+               </h2>
+               <b>
+                pmdaoracle
+               </b>
+               uses a configuration file from (in this order):
+               <dl compact="">
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 /etc/pcpdbi.conf
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 <tt>
+                  $PCP_PMDAS_DIR
+                 </tt>
+                 /oracle/oracle.conf
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 ./oracle.conf
+                </dd>
+               </dl>
+               <p>
+                This file can contain overridden values (Perl code) for the settings
+              listed at the start of pmdaoracle.pl, for example:
+               </p>
+               <dl compact="">
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 $username - username to connect to the database [default: 'SYSTEM']
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 $password - password to connect to the database [default: 'manager']
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 $host - host the database is running on [default: 'localhost']
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 $port - port the database is listening on [default: '1521']
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 $os_user -
+              operating system username (PMDA will run with the corresponding user id) [default: oracle]
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 @sids -
+              an array of $ORACLE_SID database identifiers [default: ('master')]
+                </dd>
+               </dl>
+               <p>
+                In order to test your local settings, a simple script is provided that
+              will connect and disconnect from the database - verifying fundamental
+              configuration is in place before continuing on.
+              If the
+                <b>
+                 $PCP_PMDAS_DIR/oracle/connect.pl
+                </b>
+                script cannot connect,
+              do not proceed with installation of the PMDA as it will be unsuccessful.
+              Correct your local settings first.
+               </p>
+               <p>
+                Once this is setup, you can access the names and values for the
+              oracle performance metrics by doing the following as root:
+               </p>
+               <p>
+                <br/>
+                # cd $PCP_PMDAS_DIR/oracle
+                <br/>
+                <br/>
+                # ./Install
+               </p>
+               <p>
+                To uninstall, do the following as root:
+               </p>
+               <p>
+                <br/>
+                # cd $PCP_PMDAS_DIR/oracle
+                <br/>
+                <br/>
+                # ./Remove
+               </p>
+               <p>
+                <b>
+                 pmdaoracle
+                </b>
+                is launched by
+                <i>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </i>
+                (1) and should never be executed 
+              directly. The Install and Remove scripts notify
+                <i>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </i>
+                (1) when the 
+              agent is installed or removed.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                CONNECTION STATE
+               </h2>
+               By default,
+               <b>
+                pmdaoracle
+               </b>
+               will aggressively attempt to maintain persistent connections to Oracle to
+              ensure timely responses to its queries, and will automatically re-connect
+              if a connection drops.
+               <p>
+                However, in certain circumstances this may be undesirable, so a manual
+                <b>
+                 <a href="/man/man3/pmstore.3.html">
+                  pmStore
+                 </a>
+                </b>
+                (3)
+              
+              mechanism is provided to explicitly control disconnecting and reconnecting
+              to an Oracle instance.
+              This can be used, for example, to ensure that
+                <b>
+                 pmdaoracle
+                </b>
+                is not connected at shutdown, to ensure a clean Oracle shutdown process.
+               </p>
+               <p>
+                The
+                <b>
+                 pmstore (1)
+                </b>
+                command can be used to disconnect and reconnect.
+              Using the individual instances of the oracle.control.connected
+              metric, one can set the connection state to either up (1) or down (0).
+              Additionally,
+                <b>
+                 <a href="/man/man1/pminfo.1.html">
+                  pminfo
+                 </a>
+                </b>
+                (1)
+              
+              can report on the current status of Oracle connections.
+               </p>
+               <p>
+               </p>
+               <pre>
+              # pminfo -f oracle.control.connected
+              
+              oracle.control.connected
+                  inst [0 or "master"] value 1
+              
+              # pmstore oracle.control.connected 0
+              oracle.control.connected inst [0 or "master"] old value=1 new value=0
+              </pre>
+               <a name="lbAF">
+               </a>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  /etc/pcpdbi.conf
+                 </b>
+                </dt>
+                <dd>
+                 configuration file for all
+                 <font size="-1">
+                  PCP
+                 </font>
+                 database monitors
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/oracle/oracle.conf
+                 </b>
+                </dt>
+                <dd>
+                 configuration file for
+                 <b>
+                  pmdaoracle
+                 </b>
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/oracle/sample.conf
+                 </b>
+                </dt>
+                <dd>
+                 example configuration file for
+                 <b>
+                  pmdaoracle
+                 </b>
+                 using $LD_LIBRARY_PATH
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/oracle/connect.pl
+                 </b>
+                </dt>
+                <dd>
+                 configuration test script for
+                 <b>
+                  Oracle
+                 </b>
+                 database connectivity
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/oracle/Install
+                 </b>
+                </dt>
+                <dd>
+                 installation script for the
+                 <b>
+                  pmdaoracle
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/oracle/Remove
+                 </b>
+                </dt>
+                <dd>
+                 undo installation script for the
+                 <b>
+                  pmdaoracle
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_LOG_DIR/pmcd/oracle.log
+                 </b>
+                </dt>
+                <dd>
+                 default log file for error messages from
+                 <b>
+                  pmdaoracle
+                 </b>
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize
+              the file and directory names used by
+               <b>
+                PCP
+               </b>
+               . On each installation, the
+              file
+               <b>
+                /etc/pcp.conf
+               </b>
+               contains the local values for these variables. 
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative 
+              configuration file, as described in
+               <i>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </i>
+               (5).
+               <a name="lbAH">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmdadbping.1.html">
+                 pmdadbping
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pminfo.1.html">
+                 pminfo
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmstore.1.html">
+                 pmstore
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man3/dbi.3.html">
+                 DBI
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmstore.3.html">
+                 pmStore
+                </a>
+               </b>
+               (3).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  INSTALLATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  CONNECTION STATE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

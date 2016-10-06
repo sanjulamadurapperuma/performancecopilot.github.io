@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">4.7.3. Observations and Counters</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE26087-PARENT.html" title="4.7. Trace API" /><link rel="prev" href="id5214714.html" title="4.7.2. Point Tracing" /><link rel="next" href="id5215241.html" title="4.7.4. Configuring the Trace Library" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5214714.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5215241.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5214931">
+      ⁠</a>4.7.3. Observations and Counters</h3></div></div></div><div class="para">
+					<a id="IG31340177518" class="indexterm"></a> <a id="IG31340177519" class="indexterm"></a> <a id="IG31340177520" class="indexterm"></a>The <code class="command">pmtraceobs</code> and <code class="command">pmtracecount</code> functions have similar semantics to <code class="command">pmtracepoint</code>, but also allow an arbitrary numeric value to be passed to the trace PMDA. The most recent value for each tag is then immediately available from the PMDA. Observation data is exported through the <code class="literal">trace.observe</code> metrics listed in <a class="xref" href="id5214931.html#id5215021">Table 4.4, “ <code class="literal">trace.observe</code> Metrics”</a>:
+				</div><div class="table"><a id="id5215021">
+      ⁠</a><p class="title"><strong>Table 4.4.  <code class="literal">trace.observe</code> Metrics</strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols lt-7-rows" summary=" trace.observe Metrics"><colgroup><col width="38%" /><col width="62%" /></colgroup><thead><tr valign="top"><th align="left" valign="bottom"> <div class="para">
+									Metric
+								</div>
+								 </th><th align="left" valign="bottom"> <div class="para">
+									Description
+								</div>
+								 </th></tr></thead><tbody><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">trace.observe.count</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Running count of observations seen since the trace PMDA started.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">trace.observe.rate</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The average rate at which observations for each tag occur. This rate is calculated over the last sample duration.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">trace.observe.value</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The numeric value associated with the observation last seen by the trace PMDA.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">trace.counter</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Counter data is exported through the <code class="literal">trace.counter</code> metrics. The only difference between <code class="literal">trace.counter</code> and <code class="literal">trace.observe</code> metrics is that the numeric value of <code class="literal">trace.counter</code> must be a monotonic increasing count.
+								</div>
+								 </td></tr></tbody></table></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5214714.html"><strong>Prev</strong>4.7.2. Point Tracing </a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5215241.html"><strong>Next</strong>4.7.4. Configuring the Trace Library</a></li></ul></body></html>

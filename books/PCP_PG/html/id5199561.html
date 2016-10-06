@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8. PMAPI Procedural Interface</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97135-PARENT.html" title="Chapter 3. PMAPI--The Performance Metrics API" /><link rel="prev" href="LE62826-PARENT.html" title="3.7.3. PMAPI Error Handling" /><link rel="next" href="LE89521-PARENT.html" title="3.8.2. PMAPI Metrics Description Services" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE62826-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="LE89521-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5199561">
+      ⁠</a>3.8. PMAPI Procedural Interface</h2></div></div></div><div class="para">
+				The following sections describe all of the PMAPI functions that provide access to the PCP infrastructure on behalf of a client application:
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+						PMAPI Name Space services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI metric description services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI instance domain services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI context services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI timezone services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI metrics services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI fetchgroup services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI record-mode services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI archive-specific services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI time control services
+					</div></li><li class="listitem"><div class="para">
+						PMAPI ancillary support services
+					</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE32034-PARENT">
+      ⁠</a>3.8.1. PMAPI Name Space Services</h3></div></div></div><div class="para">
+					The functions described in this section provide Performance Metrics Application Programming Interface (PMAPI) Name Space services.
+				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5199677">
+      ⁠</a>3.8.1.1.  <code class="command">pmGetChildren</code> Function</h4></div></div></div><pre class="literallayout">int pmGetChildren(const char*<em class="replaceable">name</em>, char***<em class="replaceable">offspring</em>)
+<code class="command">Python:</code>
+[name1, name2...] = pmGetChildren(<em class="replaceable">name</em>)</pre><div class="para">
+						<a id="IG31340177292" class="indexterm"></a> <a id="IG31340177293" class="indexterm"></a>Given a full pathname to a node in the current PMNS, as identified by <em class="replaceable">name</em>, return through <em class="replaceable">offspring</em> a list of the relative names of all the immediate descendents of <em class="replaceable">name</em> in the current PMNS. As a special case, if <em class="replaceable">name</em> is an empty string, (that is, <code class="literal">""</code> but not <code class="literal">NULL</code> or <code class="literal">(char *)0</code>), the immediate descendents of the root node in the PMNS are returned.
+					</div><div class="para">
+						For the python bindings a tuple containing the relative names of all the immediate descendents of <em class="replaceable">name</em> in the current PMNS is returned.
+					</div><div class="para">
+						Normally, <code class="command">pmGetChildren</code> returns the number of descendent names discovered, or a value less than zero for an error. The value zero indicates that the <em class="replaceable">name</em> is valid, and associated with a leaf node in the PMNS.
+					</div><div class="para">
+						The resulting list of pointers (<em class="replaceable">offspring</em>) and the values (relative metric names) that the pointers reference are allocated by <code class="command">pmGetChildren</code> with a single call to <code class="command">malloc</code>, and it is the responsibility of the caller to issue a <code class="command">free</code><em class="replaceable">(offspring)</em> system call to release the space when it is no longer required. When the result of <code class="command">pmGetChildren</code> is less than one, <em class="replaceable">offspring</em> is undefined (no space is allocated, and so calling <code class="command">free</code> is counterproductive).
+					</div><div class="para">
+						The python bindings return a tuple containing the relative names of all the immediate descendents of <em class="replaceable">name</em>, where <em class="replaceable">name</em> is a full pathname to a node in the current PMNS.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5199872">
+      ⁠</a>3.8.1.2.  <code class="command">pmGetChildrenStatus</code> Function</h4></div></div></div><pre class="literallayout">int pmGetChildrenStatus(const char *<em class="replaceable">name</em>, char ***<em class="replaceable">offspring</em>, int **<em class="replaceable">status</em>)
+<code class="command">Python:</code>
+([name1, name2...],[status1, status2...]) = pmGetChildrenStatus(<em class="replaceable">name</em>)</pre><div class="para">
+						<a id="IG31340177294" class="indexterm"></a>The <code class="command">pmGetChildrenStatus</code> function is an extension of <code class="command">pmGetChildren</code> that optionally returns status information about each of the descendent names.
+					</div><div class="para">
+						Given a fully qualified pathname to a node in the current PMNS, as identified by <em class="replaceable">name</em>, <code class="command">pmGetChildrenStatus</code> returns by means of <em class="replaceable">offspring</em> a list of the relative names of all of the immediate descendent nodes of <em class="replaceable">name</em> in the current PMNS. If <em class="replaceable">name</em> is the empty string (””), it returns the immediate descendents of the root node in the PMNS.
+					</div><div class="para">
+						If <em class="replaceable">status</em> is not NULL, then <code class="command">pmGetChildrenStatus</code> also returns the status of each child by means of <em class="replaceable">status</em>. This refers to either a leaf node (with value <code class="literal">PMNS_LEAF_STATUS</code>) or a non-leaf node (with value <code class="literal">PMNS_NONLEAF_STATUS</code>).
+					</div><div class="para">
+						Normally, <code class="command">pmGetChildrenStatus</code> returns the number of descendent names discovered, or else a value less than zero to indicate an error. The value zero indicates that name is a valid metric name, being associated with a leaf node in the PMNS.
+					</div><div class="para">
+						The resulting list of pointers (<em class="replaceable">offspring</em>) and the values (relative metric names) that the pointers reference are allocated by <code class="command">pmGetChildrenStatus</code> with a single call to <code class="command">malloc</code>, and it is the responsibility of the caller to <code class="command">free</code>(<em class="replaceable">offspring</em>) to release the space when it is no longer required. The same holds true for the <em class="replaceable">status</em> array.
+					</div><div class="para">
+						The python bindings return a tuple containing the relative names and statuses of all the immediate descendents of <em class="replaceable">name</em>, where <em class="replaceable">name</em> is a full pathname to a node in the current PMNS.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5200032">
+      ⁠</a>3.8.1.3.  <code class="command">pmGetPMNSLocation</code> Function</h4></div></div></div><pre class="literallayout">int pmGetPMNSLocation(void)
+<code class="command">Python:</code>
+int loc = pmGetPMNSLocation()</pre><div class="para">
+						<a id="IG31340177295" class="indexterm"></a>If an application needs to know where the origin of a PMNS is, <code class="command">pmGetPMNSLocation</code> returns whether it is an archive (<code class="filename">PMNS_ARCHIVE</code>), a local PMNS file (<code class="filename">PMNS_LOCAL</code>), or a remote PMCD (<code class="filename">PMNS_REMOTE</code>). This information may be useful in determining an appropriate error message depending on PMNS location.
+					</div><div class="para">
+						The python bindings return whether a PMNS is an archive <em class="replaceable">cpmapi.PMNS_ARCHIVE</em>, a local PMNS file <em class="replaceable">cpmapi.PMNS_LOCAL</em>, or a remote PMCD <em class="replaceable">cpmapi.PMNS_REMOTE</em>. The constants are available by importing cpmapi.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5200074">
+      ⁠</a>3.8.1.4.  <code class="command">pmLoadNameSpace</code> Function</h4></div></div></div><pre class="literallayout">int pmLoadNameSpace(const char *<em class="replaceable">filename</em>)
+<code class="command">Python:</code>
+int <em class="replaceable">status</em> = pmLoadNameSpace(<em class="replaceable">filename</em>)</pre><div class="para">
+						<a id="IG31340177296" class="indexterm"></a>In the highly unusual situation that an application wants to force using a local Performance Metrics Name Space (PMNS), the application can load the PMNS using <code class="command">pmLoadNameSpace</code>.
+					</div><div class="para">
+						The <em class="replaceable">filename</em> argument designates the PMNS of interest. For applications that do not require a tailored Name Space, the special value <code class="literal">PM_NS_DEFAULT</code> may be used for <em class="replaceable">filename</em>, to force a default local PMNS to be established. Externally, a PMNS is stored in an ASCII format.
+					</div><div class="para">
+						The python bindings load a local tailored Name Space from <em class="replaceable">filename</em>.
+					</div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+							Do not use this routine in monitor tools. The distributed PMNS services avoid the need for a local PMNS; so applications should <span class="bold bold"><strong>not</strong></span> use <code class="command">pmLoadNameSpace</code>. Without this call, the default PMNS is the one at the source of the performance metrics (PMCD or an archive).
+						</div></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5200342">
+      ⁠</a>3.8.1.5.  <code class="command">pmLookupName</code> Function</h4></div></div></div><pre class="literallayout">int pmLookupName(int <em class="replaceable">numpmid</em>, char *<em class="replaceable">namelist</em>[], pmID <em class="replaceable">pmidlist</em>[])
+<code class="command">Python:</code>
+c_uint <em class="replaceable">pmid</em> [] = pmLookupName(<em class="replaceable">"MetricName"</em>)
+c_uint <em class="replaceable">pmid</em> [] = pmLookupName((<em class="replaceable">"MetricName1"</em>, <em class="replaceable">"MetricName2"</em>, ...))</pre><div class="para">
+						<a id="IG31340177298" class="indexterm"></a>Given a list in <em class="replaceable">namelist</em> containing <em class="replaceable">numpmid</em> full pathnames for performance metrics from the current PMNS, <code class="command">pmLookupName</code> returns the list of associated PMIDs through the <em class="replaceable">pmidlist</em> parameter. Invalid metrics names are translated to the error PMID value of <code class="literal">PM_ID_NULL</code>.
+					</div><div class="para">
+						The result from <code class="command">pmLookupName</code> is the number of names translated in the absence of errors, or an error indication. Note that argument definition and the error protocol guarantee a one-to-one relationship between the elements of <em class="replaceable">namelist</em> and <em class="replaceable">pmidlist</em>; both lists contain exactly <em class="replaceable">numpmid</em> elements.
+					</div><div class="para">
+						The python bindings return an array of associated PMIDs corresponding to a tuple of <em class="replaceable">MetricNames</em>. The returned <em class="replaceable">pmid</em> tuple is passed to <code class="command">pmLookupDescs</code> and <code class="command">pmFetch</code>.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5200423">
+      ⁠</a>3.8.1.6.  <code class="command">pmNameAll</code> Function</h4></div></div></div><pre class="literallayout">int pmNameAll(pmID <em class="replaceable">pmid</em>, char ***<em class="replaceable">nameset</em>)
+<code class="command">Python:</code>
+[name1, name2...] = pmNameAll(<em class="replaceable">pmid</em>)</pre><div class="para">
+						<a id="IG31340177299" class="indexterm"></a>Given a performance metric ID in <em class="replaceable">pmid</em>, <code class="command">pmNameAll</code> determines all the corresponding metric names, if any, in the PMNS, and returns these through <em class="replaceable">nameset</em>.
+					</div><div class="para">
+						The resulting list of pointers <em class="replaceable">nameset</em> and the values (relative names) that the pointers reference are allocated by <code class="command">pmNameAll</code> with a single call to <code class="command">malloc</code>. It is the caller's responsibility to call <code class="command">free</code> and release the space when it is no longer required.
+					</div><div class="para">
+						In the absence of errors, <code class="command">pmNameAll</code> returns the number of names in <code class="command">nameset</code>.
+					</div><div class="para">
+						For many PMNS instances, there is a 1:1 mapping between a name and a PMID, and under these circumstances, <code class="command">pmNameID</code> provides a simpler interface in the absence of duplicate names for a particular PMID.
+					</div><div class="para">
+						The python bindings return a tuple of all metric names having this identical <em class="replaceable">pmid</em>.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5200532">
+      ⁠</a>3.8.1.7.  <code class="command">pmNameID</code> Function</h4></div></div></div><pre class="literallayout">int pmNameID(pmID <em class="replaceable">pmid</em>, char **<em class="replaceable">name</em>)
+<code class="command">Python:</code>
+"metric name" = pmNameID(<em class="replaceable">pmid</em>)</pre><div class="para">
+						<a id="IG31340177300" class="indexterm"></a>Given a performance metric ID in <em class="replaceable">pmid</em>, <code class="command">pmNameID</code> determines the corresponding metric name, if any, in the current PMNS, and returns this through <em class="replaceable">name</em>.
+					</div><div class="para">
+						In the absence of errors, <code class="command">pmNameID</code> returns zero. The <em class="replaceable">name</em> argument is a null byte terminated string, allocated by <code class="command">pmNameID</code> using <code class="command">malloc</code>. It is the caller's responsibility to call <code class="command">free</code> and release the space when it is no longer required.
+					</div><div class="para">
+						The python bindings return a metric name corresponding to a <em class="replaceable">pmid</em>.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5200683">
+      ⁠</a>3.8.1.8.  <code class="command">pmTraversePMNS</code> Function</h4></div></div></div><pre class="literallayout">int pmTraversePMNS(const char *<em class="replaceable">name</em>, void (*<code class="command">dometric</code>)(const char *))
+<code class="command">Python:</code>
+int <em class="replaceable">status</em> = pmTraversePMNS(<em class="replaceable">name</em>, <em class="replaceable">traverse_callback</em>)</pre><div class="para">
+						<a id="IG31340177301" class="indexterm"></a>The function <code class="command">pmTraversePMNS</code> may be used to perform a depth-first traversal of the PMNS. The traversal starts at the node identified by <em class="replaceable">name</em> --if <em class="replaceable">name</em> is an empty string, the traversal starts at the root of the PMNS. Usually, <em class="replaceable">name</em> would be the pathname of a non-leaf node in the PMNS.
+					</div><div class="para">
+						<a id="IG31340177302" class="indexterm"></a> <a id="IG31340177303" class="indexterm"></a>For each leaf node (actual performance metrics) found in the traversal, the user-supplied function <code class="command">dometric</code> is called with the full pathname of that metric in the PMNS as the single argument; this argument is a null byte-terminated string, and is constructed from a buffer that is managed internally to <code class="command">pmTraversePMNS</code>. Consequently, the value is valid only during the call to <code class="command">dometric</code>--if the pathname needs to be retained, it should be copied using <code class="command">strdup</code> before returning from <code class="command">dometric</code>; see the <code class="command">strdup(3)</code> man page.
+					</div><div class="para">
+						The python bindings perform a depth first traversal of the PMNS by scanning <em class="replaceable">namespace</em>, depth first, and call a python function <em class="replaceable">traverse_callback</em> for each node.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5200806">
+      ⁠</a>3.8.1.9.  <code class="command">pmUnloadNameSpace</code> Function</h4></div></div></div><pre class="literallayout">int pmUnloadNameSpace(void)
+<code class="command">Python:</code>
+pmUnLoadNameSpace(<em class="replaceable">"NameSpace"</em>)</pre><div class="para">
+						<a id="IG31340177304" class="indexterm"></a>If a local PMNS was loaded with <code class="command">pmLoadNameSpace</code>, calling <code class="command">pmUnloadNameSpace</code> frees up the memory associated with the PMNS and force all subsequent Name Space functions to use the distributed PMNS. If <code class="command">pmUnloadNameSpace</code> is called before calling <code class="command">pmLoadNameSpace</code>, it has no effect.
+					</div><div class="para">
+						As discussed in <a class="xref" href="id5199561.html#id5200074">Section 3.8.1.4, “ <code class="command">pmLoadNameSpace</code> Function”</a> there are few if any situations where clients need to call this routine in modern versions of PCP.
+					</div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE62826-PARENT.html"><strong>Prev</strong>3.7.3. PMAPI Error Handling</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE89521-PARENT.html"><strong>Next</strong>3.8.2. PMAPI Metrics Description Services</a></li></ul></body></html>

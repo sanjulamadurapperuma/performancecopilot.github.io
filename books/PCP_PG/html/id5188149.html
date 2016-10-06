@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.2. PMDA Architecture</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE98072-PARENT.html" title="Chapter 2. Writing a PMDA" /><link rel="prev" href="LE98072-PARENT.html" title="Chapter 2. Writing a PMDA" /><link rel="next" href="LE82676-PARENT.html" title="2.2.2. DSO PMDA" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE98072-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="LE82676-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5188149">
+      ⁠</a>2.2. PMDA Architecture</h2></div></div></div><div class="para">
+				<a id="IG3134017777" class="indexterm"></a> <a id="IG3134017778" class="indexterm"></a> <a id="IG3134017779" class="indexterm"></a>This section discusses the two methods of connecting a PMDA to a PMCD process:
+				<div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							As a separate process using some interprocess communication (IPC) protocol.
+						</div></li><li class="listitem"><div class="para">
+							As a dynamically attached library (that is, a dynamic shared object or DSO).
+						</div></li></ul></div>
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5188221">
+      ⁠</a>2.2.1. Overview</h3></div></div></div><div class="para">
+					<a id="IG3134017780" class="indexterm"></a> <a id="IG3134017781" class="indexterm"></a>All PMDAs are launched and controlled by the PMCD process on the local host. PMCD receives requests from the monitoring tools and forwards them to the PMDAs. Responses, when required, are returned through PMCD to the clients. The requests fall into a small number of categories, and the PMDA must handle each request type. For a DSO PMDA, each request type corresponds to a method in the agent. For a daemon PMDA, each request translates to a message or protocol data unit (PDU) that may be sent to a PMDA from PMCD.
+				</div><div class="para">
+					For a daemon PMDA, the following request PDUs must be supported:
+					<div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">PDU_FETCH</code></span></dt><dd><div class="para">
+									<a id="IG3134017782" class="indexterm"></a><a id="IG3134017783" class="indexterm"></a>Request for metric values (see the <code class="command">pmFetch(3)</code> man page.)
+								</div></dd><dt><span class="term"><code class="literal">PDU_PROFILE</code></span></dt><dd><div class="para">
+									<a id="IG3134017784" class="indexterm"></a><a id="IG3134017785" class="indexterm"></a>A list of instances required for the corresponding metrics in subsequent fetches (see the <code class="command">pmAddProfile(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_INSTANCE_REQ</code></span></dt><dd><div class="para">
+									<a id="IG3134017786" class="indexterm"></a><a id="IG3134017787" class="indexterm"></a> Request for a particular instance domain for instance descriptions (see the <code class="command">pmGetInDom(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_DESC_REQ</code></span></dt><dd><div class="para">
+									<a id="IG3134017788" class="indexterm"></a><a id="IG3134017789" class="indexterm"></a>Request for metadata describing metrics (see the <code class="command">pmLookupDesc(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_TEXT_REQ</code></span></dt><dd><div class="para">
+									<a id="IG3134017790" class="indexterm"></a><a id="IG3134017791" class="indexterm"></a><a id="IG3134017792" class="indexterm"></a>Request for metric help text (see the <code class="command">pmLookupText(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_RESULT</code></span></dt><dd><div class="para">
+									<a id="IG3134017793" class="indexterm"></a><a id="IG3134017794" class="indexterm"></a>Values to store into metrics (see the <code class="command">pmStore(3)</code> man page).
+								</div></dd></dl></div>
+				</div><div class="para">
+					The following request PDUs may optionally be supported:
+					<div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">PDU_PMNS_NAMES</code></span></dt><dd><div class="para">
+									<a id="IG3134017782nat" class="indexterm"></a><a id="IG3134017783nat" class="indexterm"></a>Request for metric names, given one or more identifiers (see the <code class="command">pmLookupName(3)</code> man page.)
+								</div></dd><dt><span class="term"><code class="literal">PDU_PMNS_CHILD</code></span></dt><dd><div class="para">
+									<a id="IG3134017784nat" class="indexterm"></a><a id="IG3134017785nat" class="indexterm"></a>A list of immediate descendent nodes of a given namespace node (see the <code class="command">pmGetChildren(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_PMNS_TRAVERSE</code></span></dt><dd><div class="para">
+									<a id="IG3134017786nat" class="indexterm"></a><a id="IG3134017787nat" class="indexterm"></a>Request for a particular sub-tree of a given namespace node (see the <code class="command">pmTraversePMNS(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_PMNS_IDS</code></span></dt><dd><div class="para">
+									<a id="IG3134017788nat" class="indexterm"></a><a id="IG3134017789nat" class="indexterm"></a>Perform a reverse name lookup, mapping a metric identifier to a name (see the <code class="command">pmNameID(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_AUTH</code></span></dt><dd><div class="para">
+									<a id="IG3134017790nat" class="indexterm"></a><a id="IG3134017791nat" class="indexterm"></a>Handle connection attributes (key/value pairs), such as client credentials and other authentication information (see the <code class="command">__pmParseHostAttrsSpec(3)</code> man page).
+								</div></dd></dl></div>
+				</div><div class="para">
+					Each PMDA is associated with a unique domain number that is encoded in the domain field of metric and instance identifiers, and PMCD uses the domain number to determine which PMDA can handle the components of any given client request.
+				</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE98072-PARENT.html"><strong>Prev</strong>Chapter 2. Writing a PMDA</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE82676-PARENT.html"><strong>Next</strong>2.2.2. DSO PMDA</a></li></ul></body></html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMGENMAP
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmgenmap
+               </b>
+               - generate C code to simplify handling of performance metrics
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pmgenmap
+               </b>
+               [
+               <i>
+                infile
+               </i>
+               ]
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               Given one or more lists of metric names in
+               <i>
+                infile
+               </i>
+               or on standard input,
+               <b>
+                pmgenmap
+               </b>
+               generates C declarations
+              and
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/cpp.1.html">
+                 cpp
+                </a>
+               </b>
+               (1)
+              
+              macros suitable for use across the
+              Performance Metrics Programming Interface (PMAPI)
+              on standard output.
+               <p>
+                The declarations produced by
+                <b>
+                 pmgenmap
+                </b>
+                simplify the coding for client applications using the PMAPI.
+               </p>
+               <p>
+                The input should consist of one or more lists of metric names of the form
+               </p>
+               <p>
+               </p>
+               <pre>
+              listname {
+                  metricname1 symbolname1
+                  metricname2 symbolname2
+                  ...
+              }
+              </pre>
+               <p>
+                which will generate C and
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/cpp.1.html">
+                  cpp
+                 </a>
+                </b>
+                (1)
+              
+              declarations of the form
+               </p>
+               <p>
+               </p>
+               <pre>
+              char *listname[] = {
+              #define symbolname1 0
+                  "metricname1",
+              #define symbolname2 1
+                  "metricname2",
+                  ...
+              };
+              </pre>
+               <p>
+                The array declarations produced are suitable as parameters to
+                <b>
+                 <a href="/man/man3/pmlookupname.3.html">
+                  pmLookupName
+                 </a>
+                </b>
+                (3)
+              
+              and the
+                <b>
+                 #define
+                </b>
+                d
+              
+              constants may be used to index the
+                <i>
+                 vset
+                </i>
+                s
+              
+              in the
+                <i>
+                 pmResult
+                </i>
+                structure returned by a
+                <b>
+                 <a href="/man/man3/pmfetch.3.html">
+                  pmFetch
+                 </a>
+                </b>
+                (3)
+              
+              call.
+               </p>
+               <p>
+                Obviously,
+                <i>
+                 listname
+                </i>
+                must conform to the C identifier naming rules, each
+                <i>
+                 symbolname
+                </i>
+                must conform to the
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/cpp.1.html">
+                  cpp
+                 </a>
+                </b>
+                (1)
+              
+              macro naming rules, and each
+                <i>
+                 metricname
+                </i>
+                is expected to be a valid performance metrics name (see
+                <b>
+                 <a href="/man/man5/pmns.5.html">
+                  pmns
+                 </a>
+                </b>
+                (5)
+              
+              for more details).
+               </p>
+               <p>
+                The input may include
+                <b>
+                 sh
+                </b>
+                -style
+              
+              comment lines, i.e. with a `
+                <b>
+                 #
+                </b>
+                ' as the first non-blank character of a
+              line, and these are translated on output to either single line or multi-line C
+              comments in the K&amp;R style.  For example, the input:
+               </p>
+               <p>
+               </p>
+               <p>
+               </p>
+               <pre>
+              # leading block of multi-line comments
+              # initialization group
+              foo {
+                      a.b.c   ONE
+                      d.e.f.g TWO
+                      # embedded block of multi-lines
+                      # comments and boring pad text
+                      xx.yy.zz        THREE
+              }
+              
+              # trailing single line comment
+              </pre>
+               <p>
+               </p>
+               <p>
+                Produces the output:
+               </p>
+               <p>
+               </p>
+               <pre>
+              /*
+               * leading block of multi-line comments
+               * initialization group
+               */
+              char *foo[] = {
+              #define ONE 0
+                      "a.b.c",
+              #define TWO 1
+                      "d.e.f.g",
+              /*
+               * embedded block of multi-lines
+               * comments and boring pad text
+               */
+              #define THREE 2
+                      "xx.yy.zz",
+              
+              };
+              
+              
+              /* trailing single line comment */
+              </pre>
+               <a name="lbAE">
+               </a>
+               <h2>
+                EXAMPLE
+               </h2>
+               For brevity we have removed the error handling code, and assumed the chosen
+              metrics do not have multiple values.
+               <p>
+                The input file
+               </p>
+               <p>
+               </p>
+               <pre>
+              mystats {
+                  kernel.percpu.cpu.idle     IDLE
+                  kernel.percpu.cpu.sys      SYS
+                  kernel.percpu.cpu.user     USER
+                  hinv.ncpu                       NCPU
+              }
+              </pre>
+               <p>
+                produces the following C code, suitable for
+                <b>
+                 #include
+                </b>
+                -ing
+               </p>
+               <p>
+               </p>
+               <pre>
+              /*
+               * Performance Metrics Name Space Map
+               * Built by pmgenmap from the file
+               * mystats.metrics
+               * on Wed Dec 28 19:44:17 EST 1994
+               *
+               * Do not edit this file!
+               */
+              
+              char *mystats[] = {
+              #define IDLE    0
+                      "kernel.percpu.cpu.idle",
+              #define SYS     1
+                      "kernel.percpu.cpu.sys",
+              #define USER    2
+                      "kernel.percpu.cpu.user",
+              #define NCPU    3
+                      "hinv.ncpu",
+              
+              };
+              </pre>
+               <p>
+                Using the code generated by
+                <b>
+                 pmgenmap
+                </b>
+                ,
+              
+              we are now able to easily obtain metrics from the Performance Metrics Collection
+              Subsystem (PMCS) as follows:
+               </p>
+               <p>
+               </p>
+               <p>
+               </p>
+               <pre>
+              #define MAX_PMID 4
+              
+                  int         trip = 0;
+                  int         numpmid = sizeof(mystats)/sizeof(mystats[0]);
+                  double      duration;
+                  pmResult    *resp;
+                  pmResult    *prev;
+                  pmID        pmidlist[MAX_PMID];
+              
+                  pmNewContext(PM_CONTEXT_HOST, "localhost");
+                  pmLookupName(numpmid, mystats, pmidlist);
+                  pmFetch(numpmid, pmidlist, &amp;resp);
+              
+                  printf("%d CPUs: %d usr   %d sys   %d   idle, 
+                         resp-&gt;vset[NCPU]-&gt;vlist[0].value.lval,
+                         resp-&gt;vset[USER]-&gt;vlist[0].value.lval,
+                         resp-&gt;vset[SYS]-&gt;vlist[0].value.lval,
+                         resp-&gt;vset[IDLE]-&gt;vlist[0].value.lval);
+              </pre>
+               <p>
+                Some calls to ensure portability have been removed from the code above for the
+              sake of clarity - the example above should not be used as a template for
+              programming.  In particular, the raw values of the metrics were used when
+                <b>
+                 <a href="/man/man3/pmlookupdesc.3.html">
+                  pmLookupDesc
+                 </a>
+                </b>
+                (3)
+              
+              should have been called to determine the semantics of each metric.
+               </p>
+               <p>
+                More complete examples that demonstrate the use of
+                <b>
+                 pmgenmap
+                </b>
+                which may be used as a basis for program development are included in the
+              PCP demos, e.g.
+                <i>
+                 $PCP_DEMOS_DIR/pmclient
+                </i>
+                .
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  $PCP_VAR_DIR/pmns/
+                 </b>
+                 <i>
+                  *
+                 </i>
+                </dt>
+                <dd>
+                 default PMNS specification files
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <i>
+                /etc/pcp.conf
+               </i>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAH">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/cpp.1.html">
+                 cpp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmfetch.3.html">
+                 pmFetch
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmlookupname.3.html">
+                 pmLookupName
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmnewcontext.3.html">
+                 pmNewContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="/man/man5/pcp.env.5.html">
+                 pcp.env
+                </a>
+               </b>
+               (5)
+              
+              and
+               <b>
+                <a href="/man/man5/pmns.5.html">
+                 pmns
+                </a>
+               </b>
+               (5).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  EXAMPLE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

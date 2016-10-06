@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='docpage'>
+              ﻿
+               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+                <font size="7">
+                 Views
+                </font>
+               </h1>
+               <p>
+                The primary pmchart configuration file is the  "view", which allows the metadata associated with one or more charts to be saved in the filesystem.  This metadata describes all aspects of the charts, including which PCP metrics and instances are to be used, which hosts, which colors, the chart titles, use of chart legends, and much more.
+               </p>
+               <p>
+                From a conceptual point of view, there are two classes of view.  These views share the same configuration file format, described below.  The differences lie in where they are installed and how they are manipulated.
+               </p>
+               <p>
+                The first class, the "system" view, is simply any view that is installed as part of the pmchart package.  These are stored in
+                <i>
+                 $PCP_VAR_DIR/config/pmchart
+                </i>
+                .  When the
+                <i>
+                 File→Open View
+                </i>
+                dialog is displayed, it is these views that are initially listed.  The system views cannot be modified by a normal user, and should not be modified even by a user with suitable priviledges, as they will be overwritten during an upgrade.
+               </p>
+               <p>
+                The second class of view is the "user" view.  These views are created on-the-fly using the
+                <i>
+                 File→Save View
+                </i>
+                dialog.  This is a mechanism for individual users to save their commonly used views.  Access to these views is achieved through the
+                <i>
+                 File→Open View
+                </i>
+                dialog, as with the system views.  Once the dialog is opened, the list of views can be toggled between user and system views by clicking on the two toggle buttons in the top right corner.  User views are stored in
+                <i>
+                 $HOME/.pcp/pmchart
+                </i>
+                .
+               </p>
+               <p>
+               </p>
+               <p>
+                The current pmchart configuration file syntax has
+                <a href="pmchart.html">
+                 evolved
+                </a>
+                from the original SGI pmchart syntax.
+               </p>
+               <p>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     Configuration File Syntax
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                pmchart loads predefined chart configurations (or "views") from external files that conform to the following rules.  In the descriptions below keywords (shown in bold) may appear in upper, lower or mixed case, elements shown as [stuff] are optional, and user-supplied elements are shown as &lt;other stuff&gt;.  A vertical bar (|) is used where syntactic elements are alternatives.  Quotes (") may be used to enclose lexical elements that may contain white space, such as titles, labels and instance names.
+               </p>
+               <p>
+               </p>
+               <ol>
+                <li>
+                 The first line defines the configuration file type and should be
+                 <pre>    #kmchart</pre>
+                 although pmchart provides backwards compatibility for original SGI pmchart formats with an initial line of
+                 <pre>    #pmchart</pre>
+                </li>
+                <li>
+                 After the first line, lines beginning with "#" as the first non-whitespace character are treated as comments and skipped.  Similarly blank lines are skipped.
+                 <pre></pre>
+                </li>
+                <li>
+                 The next line should be
+                 <pre>    version &lt;n&gt; &lt;host-clause&gt;</pre>
+                 where &lt;n&gt; depends on the configuration file type, and is 1 for kmchart else 1.1, 1.2 or 2.0 for pmchart.
+                 <br/>
+                 The &lt;host-clause&gt; part is optional (and ignored) for pmchart configuration files, but required for the older pmchart configuration files, and is of the form
+                 <pre>    host literal</pre>
+                 or
+                 <pre>    host dynamic</pre>
+                </li>
+                <li>
+                 A configuration contains one or more charts defined as follows:
+                 <pre>    chart [title &lt;title&gt;] style &lt;style&gt; &lt;options&gt;</pre>
+                 If specified, the title will appear centred and above the graph area of the chart.  The &lt;title&gt; is usually enclosed in quotes (") and if it contains the sequence "%h" this will be replaced by the short form of the hostname for the default source of metrics at the time this chart was loaded.  After the view is loaded, the title visibility and setting can be manipulated using the Chart Title text box in the
+                 <i>
+                  Edit→Chart
+                 </i>
+                 dialog.
+                 <br/>
+                 The &lt;options&gt; are zero or more of the optional elements:
+                 <pre>    [scale [from] &lt;ymin&gt; [to] &lt;ymax&gt;] [legend &lt;onoff&gt;]</pre>
+                 If
+                 <b>
+                  scale
+                 </b>
+                 is specified, the vertical scaling is set for all plots in the chart to a y-range defined by &lt;ymin&gt; and &lt;ymax&gt;.  Otherwise the vertical axis will be autoscaled based on the values currently being plotted.
+                 <br/>
+                 &lt;onoff&gt; is one of the keywords
+                 <b>
+                  on
+                 </b>
+                 or
+                 <b>
+                  off
+                 </b>
+                 and the
+                 <b>
+                  legend
+                 </b>
+                 clause controls the presence or absence of the plot legend below the graph area.  The default is for the legend to be shown.  After the view is loaded, the legend visibility can be toggled using the Show Legend button in the
+                 <i>
+                  Edit→Chart
+                 </i>
+                 dialog.
+                 <pre></pre>
+                </li>
+                <li>
+                 pmchart supports a
+                 <b>
+                  global
+                 </b>
+                 clause to specify the dimensions of the top-level window (using the
+                 <b>
+                  width
+                 </b>
+                 and
+                 <b>
+                  height
+                 </b>
+                 keywords), the number of visible points (
+                 <b>
+                  points
+                 </b>
+                 keyword) and the starting X and Y axis positions on the screen (
+                 <b>
+                  xpos
+                 </b>
+                 and
+                 <b>
+                  ypos
+                 </b>
+                 keywords).  Each of these global attributes takes an integer value as the sole qualifier.
+                 <pre></pre>
+                </li>
+                <li>
+                 Each chart has one or more plots associated with it, as defined by one of the following specifications:
+                 <pre>    plot
+                     [legend &lt;title&gt;] [color &lt;colorspec&gt;] [host &lt;hostspec&gt;]
+                     metric &lt;metricname&gt;
+                     [ instance &lt;inst&gt; | matching &lt;pat&gt; | not-matching &lt;pat&gt; ]</pre>
+                 The keyword
+                 <b>
+                  plot
+                 </b>
+                 may be replaced with the keyword
+                 <b>
+                  optional-plot
+                 </b>
+                 , in which case if the source of performance data does not include the specified performance metric and/or instance, then this plot is silently dropped from the chart.
+                 <br/>
+                 If specified, the title will appear in the chart legend.  The &lt;title&gt; is usually enclosed in quotes (") and if it contains the sequence "%i" this will be replaced by the metric instance name (if any).
+                 <p>
+                  For pmchart configuration files, the keyword
+                  <b>
+                   title
+                  </b>
+                  must be used instead of
+                  <b>
+                   legend
+                  </b>
+                  .  pmchart supports either keyword.
+                  <br/>
+                  The
+                  <b>
+                   color
+                  </b>
+                  clause is optional for new pmchart configuration files, but it is mandatory for older pmchart configuration files.  &lt;colorspec&gt; may be one of the following:
+                 </p>
+                 <pre>    #-cycle<br/>
+                  rgbi:rr:gg:bb<br/>
+                  #rgb<br/>
+                  #rrggbb<br/>
+                  #rrrgggbbb<br/>
+                  #rrrrggggbbbb<br/>
+                  &lt;Xcolor&gt;</pre>
+                 where each of r, g and b are hexidecimal digits (0-9 and A-F) representing respectively the red, green and blue color components.  &lt;Xcolor&gt; is one of the color names from the X color database, e.g. red or steelblue, see also the output from
+                 <b>
+                  showrgb
+                 </b>
+                 (1) on X11 platforms.
+                 <br/>
+                 The "color" #-cycle specifies that pmchart should use the next in a pallet of colors that it uses cyclically for each chart.  This is the default if the
+                 <b>
+                  color
+                 </b>
+                 clause is omitted.
+                 <br/>
+                 The &lt;hostspec&gt; in the
+                 <b>
+                  host
+                 </b>
+                 clause may be a hostname, an IP address or an asterisk (*); the latter is used to mean the default source of performance metrics.  For pmchart configuration files, the
+                 <b>
+                  host
+                 </b>
+                 clause must be present, for new pmchart configuration files it is optional, and if missing the default source of performance metrics will be used.
+                 <br/>
+                 The optional
+                 <b>
+                  instance
+                 </b>
+                 specification,
+                 <ol>
+                  <li>
+                   is omitted in which case one plot will be created for every instance of the &lt;metricname&gt; metric
+                  </li>
+                  <li>
+                   starts with
+                   <b>
+                    instance
+                   </b>
+                   , in which case only the instance named &lt;inst&gt; will be plotted
+                  </li>
+                  <li>
+                   starts with
+                   <b>
+                    matching
+                   </b>
+                   , in which case all instances whose names match the pattern &lt;pat&gt; will be plotted; the pattern uses extended regular expression notation in the style of
+                   <b>
+                    egrep
+                   </b>
+                   (1) (refer to the
+                   <i>
+                    PMCD
+                   </i>
+                   view for an example)
+                  </li>
+                  <li>
+                   starts with
+                   <b>
+                    not-matching
+                   </b>
+                   , in which case all instances whose names do not match the pattern &lt;pat&gt; will be plotted; the pattern uses extended regular expression notation in the style of
+                   <b>
+                    egrep
+                   </b>
+                   (1) (refer to the
+                   <i>
+                    Netbytes
+                   </i>
+                   view for an example)
+                   <br/>
+                   The original pmchart syntax uses a bizarre notation where &lt;inst&gt; and &lt;pat&gt; extend from the first non-white space character to the end of the input line.  For modern pmchart configuration files these elements are either delimited by white space, or enclosed in quotes (").
+                  </li>
+                 </ol>
+                 <pre></pre>
+                </li>
+                <li>
+                 The optional
+                 <b>
+                  tab
+                 </b>
+                 directive can be used to create views with multiple charts which span multiple Tabs.  The synax is as follows:
+                 <pre>    tab &lt;label&gt; [host &lt;host&gt;] [points &lt;points&gt; [samples &lt;samples&gt;]]</pre>
+                 <br/>
+                 All chart specifications following this keyword will be created on the new Tab, until the end of the configuration file or until another
+                 <b>
+                  tab
+                 </b>
+                 keyword is encountered.
+                </li>
+               </ol>
+               <p>
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

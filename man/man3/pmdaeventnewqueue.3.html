@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMDAEVENTQUEUE
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmdaEventNewQueue
+               </b>
+               ,
+               <b>
+                pmdaEventNewActiveQueue
+               </b>
+               ,
+               <b>
+                pmdaEventQueueHandle
+               </b>
+               ,
+               <b>
+                pmdaEventQueueAppend
+               </b>
+               ,
+               <b>
+                pmdaEventQueueShutdown
+               </b>
+               ,
+               <b>
+                pmdaEventQueueRecords
+               </b>
+               ,
+               <b>
+                pmdaEventQueueClients
+               </b>
+               ,
+               <b>
+                pmdaEventQueueCounter
+               </b>
+               ,
+               <b>
+                pmdaEventQueueBytes
+               </b>
+               ,
+               <b>
+                pmdaEventQueueMemory
+               </b>
+               - utilities for PMDAs managing event queues
+               <br/>
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+               </b>
+               <pre>
+              #include &lt;<a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">pcp/pmapi.h</a>&gt;
+              #include &lt;<a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmda.h">pcp/pmda.h</a>&gt;
+              </pre>
+               <p>
+                <br/>
+                int pmdaEventNewQueue(const char *
+                <i>
+                 name
+                </i>
+                , size_t
+                <i>
+                 maxmem
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventNewActiveQueue(const char *
+                <i>
+                 name
+                </i>
+                , size_t
+                <i>
+                 maxmem
+                </i>
+                ,  int
+                <i>
+                 nclients
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventQueueHandle(const char *
+                <i>
+                 name
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventQueueAppend(int
+                <i>
+                 handle
+                </i>
+                , void *
+                <i>
+                 buffer
+                </i>
+                , size_t
+                <i>
+                 bytes
+                </i>
+                , struct timeval *
+                <i>
+                 tv
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventQueueShutdown(int
+                <i>
+                 handle
+                </i>
+                );
+                <br/>
+               </p>
+               <p>
+                <br/>
+                typedef int (*pmdaEventDecodeCallBack)(int, void *, int, struct timeval *, void *);
+                <br/>
+                <br/>
+                int pmdaEventQueueRecords(int
+                <i>
+                 handle
+                </i>
+                , pmAtomValue *
+                <i>
+                 avp
+                </i>
+                , int
+                <i>
+                 context
+                </i>
+                , pmdaEventDecodeCallBack
+                <i>
+                 decoder
+                </i>
+                , void *
+                <i>
+                 data
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventQueueClients(int
+                <i>
+                 handle
+                </i>
+                , pmAtomValue *
+                <i>
+                 avp
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventQueueCounter(int
+                <i>
+                 handle
+                </i>
+                , pmAtomValue *
+                <i>
+                 avp
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventQueueBytes(int
+                <i>
+                 handle
+                </i>
+                , pmAtomValue *
+                <i>
+                 avp
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaEventQueueMemory(int
+                <i>
+                 handle
+                </i>
+                , pmAtomValue *
+                <i>
+                 avp
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp_pmda -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               A Performance Metrics Domain Agent (PMDA) that exports event records
+              must effectively act an event multiplexer.
+              Events consumed by the PMDA may have to be forwarded on to any number
+              of monitoring tools (or "client contexts").
+              These tools may be requesting events at different sampling intervals,
+              and are very unlikely to request an event at the exact moment it arrives
+              at the PMDA, making some form of event buffering and queueing scheme a
+              necessity.
+              Events must be held by the PMDA until either all registered clients
+              have been sent them, or until a memory limit has been reached by the
+              PMDA at which point it must discard older events as new ones arrive.
+               <p>
+                The routines described here are designed to assist the PMDA developer
+              in managing both client contexts and queues of events at a high level.
+              These fit logically above lower level primitives, such as those
+              described in
+                <b>
+                 <a href="/man/man3/pmdaeventnewarray.3.html">
+                  pmdaEventNewArray
+                 </a>
+                </b>
+                (3),
+              
+              and shield the average PMDA from the details of directly building event
+              record arrays for individual client contexts.
+               </p>
+               <p>
+                The PMDA registers a new queue of events using either
+                <b>
+                 pmdaEventNewQueue
+                </b>
+                or
+                <b>
+                 pmdaEventNewActiveQueue
+                </b>
+                .
+              
+              These are passed an identifying
+                <i>
+                 name
+                </i>
+                (for diagnostic purposes, and for subsequent lookup by
+                <b>
+                 pmdaEventQueueLookup
+                </b>
+                )
+              
+              and
+                <i>
+                 maxmem
+                </i>
+                ,
+              
+              an upper bound on the memory (in bytes) that can be consumed by events
+              in this queue, before beginning to discard them (resulting in "missed"
+              events for any client that has not kept up).
+              If a queue is dynamically allocated (such that the PMDA may already have
+              clients connected) the
+                <b>
+                 pmdaEventNewActiveQueue
+                </b>
+                interface should be used, with the additional
+                <i>
+                 numclients
+                </i>
+                parameter indicating the count of active client connections.
+              The return is a negative error code on failure, suitable for decoding
+              by the
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3)
+              
+              routine.
+              Any non-negative value indicates success, and provides a
+                <i>
+                 handle
+                </i>
+                suitable for passing into the other API routines.
+               </p>
+               <p>
+                For each new event received by the PMDA, the
+                <b>
+                 pmdaEventQueueAppend
+                </b>
+                routine should be called, placing that event into the queue identified
+              by
+                <i>
+                 handle
+                </i>
+                .
+              
+              The event itself must be contained in the passed in
+                <i>
+                 buffer
+                </i>
+                ,
+              
+              having
+                <i>
+                 bytes
+                </i>
+                length.
+              The timestamp associated with the event (time at which the event
+              occurred) is passed in via the final
+                <i>
+                 tv
+                </i>
+                parameter.
+               </p>
+               <p>
+                In the PMDAs specific implementation of its fetch callback, when values
+              for an event metric have been requested, the
+                <b>
+                 pmdaEventQueueRecords
+                </b>
+                routine should be used.
+              It is passed the queue
+                <i>
+                 handle
+                </i>
+                and the
+                <i>
+                 avp
+                </i>
+                pmAtomValue structure to fill with event records, for the client making
+              that fetch request (identified by the
+                <i>
+                 context
+                </i>
+                parameter).
+              Finally, the PMDA must also pass in an event decoding routine, which is
+              responsible for decoding the fields of a single event into the individual
+              event parameters of that event.
+              The
+                <i>
+                 data
+                </i>
+                parameter is an opaque cookie that can be used to pass situation-specific
+              information into each
+                <i>
+                 decoder
+                </i>
+                invocation.
+               </p>
+               <p>
+                Under some situations it is useful for the PMDA to export state about
+              the queues under its control.
+              The accessor routines -
+                <b>
+                 pmdaEventQueueClients
+                </b>
+                ,
+                <b>
+                 pmdaEventQueueCounter
+                </b>
+                ,
+                <b>
+                 pmdaEventQueueBytes
+                </b>
+                and
+                <b>
+                 pmdaEventQueueMemory
+                </b>
+                provide a mechanism for querying a queue by its
+                <i>
+                 handle
+                </i>
+                and filling in a
+                <b>
+                 pmAtomValue
+                </b>
+                structure that the
+                <b>
+                 pmdaFetchCallBack
+                </b>
+                method should return.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmda.3.html">
+                 PMDA
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdaeventnewclient.3.html">
+                 pmdaEventNewClient
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmdaeventnewarray.3.html">
+                 pmdaEventNewArray
+                </a>
+               </b>
+               (3).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

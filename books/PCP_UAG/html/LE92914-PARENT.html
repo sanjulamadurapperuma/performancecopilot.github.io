@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">6.2.3. Archive Log File Management</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE46764-PARENT.html" title="6.2. Using Archive Logs with Performance Tools" /><link rel="prev" href="id5206675.html" title="6.2.2. Administering PCP Archive Logs Using cron Scripts" /><link rel="next" href="id5207181.html" title="6.2.3.2. Log Volumes" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5206675.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5207181.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE92914-PARENT">
+      ⁠</a>6.2.3. Archive Log File Management</h3></div></div></div><div class="para">
+					<a id="IG31371888260" class="indexterm"></a>PCP archive log files can occupy a great deal of disk space, and management of archive logs can be a large task in itself. The following sections provide information to assist you in PCP archive log file management.
+				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5206941">
+      ⁠</a>6.2.3.1. Basename Conventions</h4></div></div></div><div class="para">
+						<a id="IG31371888261" class="indexterm"></a>When a PCP archive is created by <code class="command">pmlogger</code>, an archive basename must be specified and several physical files are created, as shown in <a class="xref" href="LE92914-PARENT.html#id5206972">Table 6.1, “Filenames for PCP Archive Log Components (<code class="literal">archive</code>.<em class="replaceable">*</em>)”</a>.
+					</div><div class="table"><a id="id5206972">
+      ⁠</a><p class="title"><strong>Table 6.1. Filenames for PCP Archive Log Components (<code class="literal">archive</code>.<em class="replaceable">*</em>)</strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols lt-7-rows" summary="Filenames for PCP Archive Log Components (archive.*)"><colgroup><col width="26%" /><col width="74%" /></colgroup><thead><tr valign="top"><th align="left" valign="bottom">
+									<div class="para">
+										Filename
+									</div>
+									</th><th align="left" valign="bottom">
+									<div class="para">
+										Contents
+									</div>
+									</th></tr></thead><tbody><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										<code class="filename">archive.</code><span class="bold bold"><strong></strong></span><em class="replaceable">index</em>
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										Temporal index for rapid access to archive contents.
+									</div>
+									</td></tr><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										<code class="filename">archive.</code><em class="replaceable">meta</em>
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										Metadata descriptions for performance metrics and instance domains appearing in the archive.
+									</div>
+									</td></tr><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										<code class="filename">archive.N</code>
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										Volumes of performance metrics values, for <code class="filename">N</code> = 0,1,2,...
+									</div>
+									</td></tr></tbody></table></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5206675.html"><strong>Prev</strong>6.2.2. Administering PCP Archive Logs Using cron ...</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5207181.html"><strong>Next</strong>6.2.3.2. Log Volumes</a></li></ul></body></html>

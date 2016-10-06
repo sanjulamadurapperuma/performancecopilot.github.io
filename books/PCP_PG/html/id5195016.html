@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.7.2. Debugging Information</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5194770.html" title="2.7. Testing and Debugging a PMDA" /><link rel="prev" href="id5194770.html" title="2.7. Testing and Debugging a PMDA" /><link rel="next" href="id5195283.html" title="2.7.3.  dbpmda Debug Utility" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5194770.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5195283.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5195016">
+      ⁠</a>2.7.2. Debugging Information</h3></div></div></div><div class="para">
+					<a id="IG31340177231" class="indexterm"></a> <a id="IG31340177232" class="indexterm"></a> <a id="IG31340177233" class="indexterm"></a>You can activate debugging flags in PMCD and most other PCP tools with the <code class="literal">-D</code> command-line option. Supported flags can be listed with the <code class="command">pmdbg</code> command; see the <code class="command">pmdbg(1)</code> man page. Setting the debug flag for PMCD in <code class="filename">${PCP_PMCDOPTIONS_PATH}</code> might generate too much information to be useful, especially if there are other clients and PMDAs connected to the PMCD process.
+				</div><div class="para">
+					The PMCD debugging flag can also be changed dynamically by storing a new value into the metric <code class="literal">pmcd.control.debug</code>:
+				</div><pre class="programlisting"># <span class="bold bold"><strong>pmstore pmcd.control.debug 5</strong></span></pre><div class="para">
+					Most of the <code class="filename">pcp_pmda</code> library functions log additional information if the <code class="literal">DBG_TRACE_LIBPMDA</code> flag is set within the PMDA; see the <code class="command">PMDA(3)</code> man page. The command-line argument <code class="command">-D</code> is trapped by <code class="command">pmdaGetOptions</code> to set the global debugging control variable <code class="literal">pmDebug</code>. Adding tests within the PMDA for the <code class="literal">DBG_TRACE_APPL0</code>, <code class="literal">DBG_TRACE_APPL1</code>, and <code class="literal">DBG_TRACE_APPL2</code> trace flags permits different levels of information to be logged to the PMDA's log file.
+				</div><div class="para">
+					All diagnostic, debugging, and tracing output from a PMDA should be written to the standard error stream. By convention, all debugging information is enclosed by preprocessor <code class="literal">#ifdef</code> <code class="command">PCP_DEBUG</code> statements so that they can be compiled out of the program at a later stage, if required, although this is rarely done in practice.
+				</div><div class="para">
+					<a id="IG31340177234" class="indexterm"></a>Adding this segment of code to the <code class="command">simple_store</code> metric causes a timestamped log message to be sent to the current log file whenever <code class="command">pmstore</code> attempts to change <code class="literal">simple.numfetch</code> and <code class="command">pmDebug</code> has the <code class="literal">DBG_TRACE_APPL0</code> flag set as shown in <a class="xref" href="id5195016.html#Z976060060sdc">Example 2.32, “ <code class="literal">simple.numfetch</code> in the Simple PMDA”</a>:
+				</div><div class="example"><a id="Z976060060sdc">
+      ⁠</a><p class="title"><strong>Example 2.32.  <code class="literal">simple.numfetch</code> in the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">   case 0: /* simple.numfetch */ 
+       	x
+        val = vsp-&gt;vlist[0].value.lval; 
+        if (val &lt; 0) { 
+            sts = PM_ERR_SIGN; 
+            val = 0; 
+        } 
+#ifdef PCP_DEBUG 
+        if (pmDebug &amp; DBG_TRACE_APPL0) { 
+            __pmNotifyErr(LOG_DEBUG,
+                  "simple: %d stored into numfetch", val); 
+        } 
+#endif 
+        numfetch = val; 
+        break;</pre></div></div><div class="para">
+					<a id="IG31340177235" class="indexterm"></a>For a description of <code class="command">pmstore</code>, see the <code class="command">pmstore(1)</code> man page.
+				</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5194770.html"><strong>Prev</strong>2.7. Testing and Debugging a PMDA</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5195283.html"><strong>Next</strong>2.7.3.  dbpmda Debug Utility</a></li></ul></body></html>

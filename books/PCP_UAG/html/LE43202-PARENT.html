@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.3. Managing Optional PMDAs</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE17127-PARENT.html" title="Chapter 2. Installing and Configuring Performance Co-Pilot" /><link rel="prev" href="id5191707.html" title="2.2.4.3. Controlling Access to PMCD with pmcd.conf" /><link rel="next" href="id5192380.html" title="2.3.2. PMDA Removal on a PCP Collector Host" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5191707.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5192380.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE43202-PARENT">
+      ⁠</a>2.3. Managing Optional PMDAs</h2></div></div></div><div class="para">
+				<a id="ITch02-31" class="indexterm"></a>Some Performance Metrics Domain Agents (PMDAs) shipped with Performance Co-Pilot (PCP) are designed to be installed and activated on every collector host, for example, <code class="literal">linux</code>, <code class="literal">windows</code>, <code class="literal">darwin</code>, <code class="literal">pmcd</code>, and <code class="literal">process</code> PMDAs.
+			</div><div class="para">
+				Other PMDAs are designed for optional activation and require some user action to make them operational. In some cases these PMDAs expect local site customization to reflect the operational environment, the system configuration, or the production workload. This customization is typically supported by interactive installation scripts for each PMDA.
+			</div><div class="para">
+				Each PMDA has its own directory located below <code class="filename">${PCP_PMDAS_DIR}</code>. Each directory contains a <code class="filename">Remove</code> script to unconfigure the PMDA, remove the associated metrics from the PMNS, and restart the <code class="command"> pmcd</code> daemon; and an <code class="filename">Install</code> script to install the PMDA, update the PMNS, and restart the PMCD daemon.
+			</div><div class="para">
+				As a shortcut mechanism to support automated PMDA installation, a file named <code class="filename">.NeedInstall</code> can be created in a PMDA directory below <code class="filename">${PCP_PMDAS_DIR}</code>. The next restart of PCP services will invoke that PMDAs installation automatically, with default options taken.
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE31599-PARENT">
+      ⁠</a>2.3.1. PMDA Installation on a PCP Collector Host</h3></div></div></div><div class="para">
+					<a id="ITch02-32" class="indexterm"></a>To install a PMDA you must perform a collector installation for each host on which the PMDA is required to export performance metrics. PCP provides a distributed metric namespace (PMNS) and metadata, so it is not necessary to install PMDAs (with their associated PMNS) on PCP monitor hosts.
+				</div><div class="para">
+					<a id="ITch02-33" class="indexterm"></a> You need to update the PMNS, configure the PMDA, and notify PMCD. The <code class="literal">Install</code> script for each PMDA automates these operations, as follows:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="orderedlist"><ol><li class="listitem"><div class="para">
+							Log in as <code class="literal">root</code> (the superuser).
+						</div></li><li class="listitem"><div class="para">
+							Change to the PMDA's directory as shown in the following example:
+						</div><pre class="literallayout"><strong class="userinput"><code>cd ${PCP_PMDAS_DIR}/cisco</code></strong></pre></li><li class="listitem"><div class="para">
+							<a id="IG3137188893" class="indexterm"></a><a id="IG3137188894" class="indexterm"></a>In the unlikely event that you wish to use a non-default Performance Metrics Domain (PMD) assignment, determine the current PMD assignment:
+						</div><pre class="literallayout"><strong class="userinput"><code>cat domain.h</code></strong></pre><div class="para">
+							<a id="IG3137188895" class="indexterm"></a><a id="IG3137188896" class="indexterm"></a>Check that there is no conflict in the PMDs as defined in <code class="filename">${PCP_VAR_DIR}/pmns/stdpmid</code> and the other PMDAs currently in use (listed in <code class="filename">${PCP_PMCDCONF_PATH}</code>). Edit <code class="filename">domain.h</code> to assign the new domain number if there is a conflict (this is highly unlikely to occur in a regular PCP installation).
+						</div></li><li class="listitem"><div class="para">
+							Enter the following command:
+						</div><pre class="literallayout"><strong class="userinput"><code>./Install</code></strong></pre><div class="para">
+							You may be prompted to enter some local parameters or configuration options. The script applies all required changes to the control files and to the PMNS, and then notifies PMCD. <a class="xref" href="LE43202-PARENT.html#Z929138022sdc">Example 2.1, “PMNS Installation Output ”</a> is illustrative of the interactions:
+						</div><div class="example"><a id="Z929138022sdc">
+      ⁠</a><p class="title"><strong>Example 2.1. PMNS Installation Output </strong></p><div class="example-contents"><pre class="literallayout">You will need to choose an appropriate configuration for
+installation of the “cisco” Performance Metrics Domain Agent (PMDA).
+
+  collector collect performance statistics on this system
+  monitor   allow this system to monitor local and/or remote systems
+  both      collector and monitor configuration for this system
+
+Please enter c(ollector) or m(onitor) or b(oth) [b] <strong class="userinput"><code>collector</code></strong>
+
+Cisco hostname or IP address? [return to quit] <strong class="userinput"><code>wanmelb</code></strong>
+
+A user-level password may be required for Cisco “show int” command.
+    If you are unsure, try the command
+        $ telnet wanmelb
+    and if the prompt “Password:” appears, a user-level password is
+    required; otherwise answer the next question with an empty line.
+
+User-level Cisco password? <strong class="userinput"><code>********</code></strong>
+Probing Cisco for list of interfaces ...
+
+Enter interfaces to monitor, one per line in the format
+tX where “t” is a type and one of “e” (Ethernet), or “f” (Fddi), or
+“s” (Serial), or “a” (ATM), and “X” is an interface identifier
+which is either an integer (e.g.  4000 Series routers) or two
+integers separated by a slash (e.g. 7000 Series routers).
+
+The currently unselected interfaces for the Cisco “wanmelb” are:
+    e0 s0 s1
+Enter “quit” to terminate the interface selection process.
+Interface? [e0] <strong class="userinput"><code>s0</code></strong>
+
+The currently unselected interfaces for the Cisco “wanmelb” are:
+       e0 s1
+Enter “quit” to terminate the interface selection process.
+Interface? [e0] <strong class="userinput"><code>s1</code></strong>
+
+The currently unselected interfaces for the Cisco “wanmelb” are:
+    e0
+Enter “quit” to terminate the interface selection process.
+Interface? [e0] <strong class="userinput"><code>quit</code></strong>
+
+Cisco hostname or IP address? [return to quit]
+Updating the Performance Metrics Name Space (PMNS) ...
+Installing pmchart view(s) ...
+Terminate PMDA if already installed ...
+Installing files ...
+Updating the PMCD control file, and notifying PMCD ...
+Check cisco metrics have appeared ... 5 metrics and 10 values</pre></div></div></li></ol></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5191707.html"><strong>Prev</strong>2.2.4.3. Controlling Access to PMCD with pmcd.conf</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5192380.html"><strong>Next</strong>2.3.2. PMDA Removal on a PCP Collector Host</a></li></ul></body></html>

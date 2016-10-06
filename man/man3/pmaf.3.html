@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMAF
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                __pmAFsetup
+               </b>
+               ,
+               <b>
+                __pmAFregister
+               </b>
+               ,
+               <b>
+                __pmAFunregister
+               </b>
+               ,
+               <b>
+                __pmAFblock
+               </b>
+               ,
+               <b>
+                __pmAFunblock
+               </b>
+               ,
+               <b>
+                __pmAFisempty
+               </b>
+               - event queue services for periodic asynchronous callbacks
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+                <br/>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/impl.h">
+                 pcp/impl.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                <br/>
+                int __pmAFsetup(const struct timeval *
+                <i>
+                 start
+                </i>
+                , const struct timeval *
+                <i>
+                 delta
+                </i>
+                , void *
+                <i>
+                 data
+                </i>
+                , void (*
+                <i>
+                 func
+                </i>
+                )(int, void *));
+                <br/>
+                int __pmAFregister(const struct timeval *
+                <i>
+                 delta
+                </i>
+                , void *
+                <i>
+                 data
+                </i>
+                , void (*
+                <i>
+                 func
+                </i>
+                )(int, void *));
+                <br/>
+                int __pmAFunregister(int
+                <i>
+                 afid
+                </i>
+                );
+                <br/>
+                void __pmAFblock(void);
+                <br/>
+                void __pmAFunblock(void);
+                <br/>
+                int __pmAFisempty(void);
+               </p>
+               <p>
+                cc ... -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               The routines implement an event queue and callback framework that supports
+              periodic evaluation of a series of events with varying frequencies
+              for Performance Co-Pilot (PCP) applications.
+               <p>
+                The
+                <b>
+                 <a href="/man/man1/pmlogger.1.html">
+                  pmlogger
+                 </a>
+                </b>
+                (1)
+              
+              application, the
+                <b>
+                 <a href="/man/man1/pmdatrace.1.html">
+                  pmdatrace
+                 </a>
+                </b>
+                (1)
+              
+              PMDA and the
+                <b>
+                 <a href="/man/man1/pmdahotproc.1.html">
+                  pmdahotproc
+                 </a>
+                </b>
+                (1)
+              
+              PMDA are the principal users of these services.
+               </p>
+               <p>
+                An event is created by calling
+                <b>
+                 __pmAFsetup
+                </b>
+                or
+                <b>
+                 __pmAFregister
+                </b>
+                and on success the return value is an event number greater than zero.
+              The event has associated event data identified by the opaque pointer
+                <i>
+                 data
+                </i>
+                .
+              
+              The event will occur with frequency
+                <i>
+                 delta
+                </i>
+                and each time the event occurs the function
+                <i>
+                 func
+                </i>
+                will be called with the event number and the event data as arguments.
+               </p>
+               <p>
+                If
+                <b>
+                 __pmAFsetup
+                </b>
+                is used then the first event is scheduled for the current time plus
+                <i>
+                 start
+                </i>
+                ,
+              
+              else if
+                <b>
+                 __pmAFregister
+                </b>
+                is used then the first event is scheduled for the current time plus
+                <i>
+                 delta
+                </i>
+                .
+               </p>
+               <p>
+                <i>
+                 func
+                </i>
+                is called in a SIGALRM signal handler context and so the routines
+              that may be safely called from
+                <i>
+                 func
+                </i>
+                are restricted to the so-called
+                <i>
+                 async-signal-safe
+                </i>
+                set.
+              In particular there must be no Standard I/O
+              calls nor calls to any of the
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/malloc.3.html">
+                  malloc
+                 </a>
+                </b>
+                (3)
+              
+              routines to modify the state of the heap.
+              Refer to the
+                <i>
+                 Pointer to a Function
+                </i>
+                Section of the POSIX.1-2013 document at
+                <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html">
+                 http://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html
+                </a>
+                for a fuller description.
+               </p>
+               <p>
+                The safest and simplest class of
+                <i>
+                 func
+                </i>
+                routines are those that do minimal processing, set some global state and return.
+              The real work associated with the event is done subsequently
+              from the application's main loop when the
+              global state change is detected.
+               </p>
+               <p>
+                Once the event occurs and the callback has been executed, the event
+              will be rescheduled for
+                <i>
+                 delta
+                </i>
+                into the future, except
+              if all the fields of
+                <i>
+                 delta
+                </i>
+                are zero, in which case
+              the event will not be rescheduled
+              (a ``one trip'' event).
+               </p>
+               <p>
+                Internally, events are processed serially so there is no
+              possibility of nested callbacks or re-entrant callbacks from the
+              event management routines.
+               </p>
+               <p>
+                Given an event number
+                <i>
+                 afid
+                </i>
+                ,
+                <b>
+                 __pmAFunregister
+                </b>
+                will permanently remove the corresponding entry from the event queue.
+               </p>
+               <p>
+                To control the event queue processing,
+                <b>
+                 __pmAFblock
+                </b>
+                and
+                <b>
+                 __pmAFunblock
+                </b>
+                may be used to explicitly block and unblock the dispatch of events.
+              This is most useful when the caller wishes to set up a number of
+              events via
+                <b>
+                 __pmAFsetup
+                </b>
+                or
+                <b>
+                 __pmAFregister
+                </b>
+                and complete the registration phase before the first
+              event callback occurs.
+               </p>
+               <p>
+                A call to
+                <b>
+                 __pmAFisempty
+                </b>
+                returns 1 or 0 depending on whether the event queue is empty or not.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3)
+               <a name="lbAF">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               <p>
+                <b>
+                 __pmAFsetup
+                </b>
+                ,
+                <b>
+                 __pmAFregister
+                </b>
+                and
+                <b>
+                 __pmAFunregister
+                </b>
+                return values less than zero in the case of an error.  These values
+              are PCP error codes, and may be used to produce error messages via
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                The routines support the standard PCP debug tracing, and the value
+                <b>
+                 DBG_TRACE_AF
+                </b>
+                (or
+                <b>
+                 -D af
+                </b>
+                on the command line)
+              will produce diagnostics on standard error that trace the enqueuing
+              and execution of events.
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                CAVEATS
+               </h2>
+               These routines rely on
+               <b>
+                <a href="http://man7.org/linux/man-pages/man2/setitimer.2.html">
+                 setitimer
+                </a>
+               </b>
+               (2)
+              
+              and manipulate the handling of
+               <b>
+                SIGALRM
+               </b>
+               signals, and hence are probably ill-suited for applications that
+              require direct and concurrent access to these services and resources.
+               <p>
+                If the callback functions are slow, or delayed, it is possible that
+              the event scheduling could fall behind and never catchup.  When this
+              begins to happen, events are silently skipped and rescheduled at the earliest
+              possible time in the future according to the fixed schedule defined
+              by the time of the call to
+                <b>
+                 __pmAFsetup
+                </b>
+                and the value of the
+                <i>
+                 start
+                </i>
+                and
+                <i>
+                 delta
+                </i>
+                arguments
+              (or defined by the time of the call to
+                <b>
+                 __pmAFregister
+                </b>
+                and the value of the
+                <i>
+                 delta
+                </i>
+                argument).
+               </p>
+               <p>
+                In addition, the semantics of the interval timer(s) and the global
+              state needed to support these services demand that applications
+              calling these routines must do so from a single thread.
+              This restriction is enforced at the
+                <b>
+                 <a href="/man/man3/pmapi.3.html">
+                  PMAPI
+                 </a>
+                </b>
+                (3),
+              
+              where routines may return the error code
+                <b>
+                 PM_ERR_THREAD
+                </b>
+                if the library detects calls from more than one thread.
+               </p>
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  CAVEATS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

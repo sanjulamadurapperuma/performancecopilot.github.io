@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">1.2.8.2. Set-Valued Performance Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="id5189302.html" title="1.2.8. Values for Performance Metrics" /><link rel="prev" href="id5189302.html" title="1.2.8. Values for Performance Metrics" /><link rel="next" href="id5189653.html" title="1.2.9. Collector and Monitor Roles" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5189302.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5189653.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5189346">
+      ⁠</a>1.2.8.2. Set-Valued Performance Metrics</h4></div></div></div><div class="para">
+						<a id="IG3137188878" class="indexterm"></a>Some performance metrics have a set of values or instances in each implementing performance metric domain. For example, one value for each disk, one value for each process, one value for each CPU, or one value for each activation of a given application.
+					</div><div class="para">
+						When a metric has multiple instances, the PCP framework does not pollute the Name Space with additional metric names; rather, a single metric may have an associated set of values. These multiple values are associated with the members of an <em class="firstterm">instance domain</em>, such that each instance has a unique instance identifier within the associated instance domain. For example, the “per CPU” instance domain may use the instance identifiers 0, 1, 2, 3, and so on to identify the configured processors in the system.
+					</div><div class="para">
+						Internally, instance identifiers are encoded as binary values, but each performance metric domain also supports corresponding strings as external names for the instance identifiers, and these names are used at the user interface to the PCP utilities.
+					</div><div class="para">
+						For example, the performance metric <code class="literal">disk.dev.total</code> counts I/O operations for each disk spindle, and the associated instance domain contains one member for each disk spindle. On a system with five specific disks, one value would be associated with each of the external and internal instance identifier pairs shown in <a class="xref" href="id5189346.html#id5189432">Table 1.1, “Sample Instance Identifiers for Disk Statistics ”</a>.
+					</div><div class="table"><a id="id5189432">
+      ⁠</a><p class="title"><strong>Table 1.1. Sample Instance Identifiers for Disk Statistics </strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols lt-7-rows" summary="Sample Instance Identifiers for Disk Statistics "><colgroup><col width="50%" /><col width="50%" /></colgroup><thead><tr valign="top"><th align="left" valign="bottom">
+									<div class="para">
+										External Instance Identifier
+									</div>
+									</th><th align="left" valign="bottom">
+									<div class="para">
+										Internal Instance Identifier
+									</div>
+									</th></tr></thead><tbody><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										disk0
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										131329
+									</div>
+									</td></tr><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										disk1
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										131330
+									</div>
+									</td></tr><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										disk2
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										131331
+									</div>
+									</td></tr><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										disk3
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										131841
+									</div>
+									</td></tr><tr valign="top"><td align="left" valign="top">
+									<div class="para">
+										disk4
+									</div>
+									</td><td align="left" valign="top">
+									<div class="para">
+										131842
+									</div>
+									</td></tr></tbody></table></div></div><div class="para">
+						Multiple performance metrics may be associated with a single instance domain.
+					</div><div class="para">
+						Each performance metric domain may dynamically establish the instances within an instance domain. For example, there may be one instance for the metric <code class="literal">kernel.percpu.idle</code> on a workstation, but multiple instances on a multiprocessor server. Even more dynamic is <code class="literal">filesys.free</code>, where the values report the amount of free space per file system, and the number of values tracks the mounting and unmounting of local filesystems.
+					</div><div class="para">
+						PCP arranges for information describing instance domains to be exported from the performance metric domains to the applications that require this information. Applications may also choose to retrieve values for all instances of a performance metric, or some arbitrary subset of the available instances.
+					</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5189302.html"><strong>Prev</strong>1.2.8. Values for Performance Metrics</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5189653.html"><strong>Next</strong>1.2.9. Collector and Monitor Roles</a></li></ul></body></html>

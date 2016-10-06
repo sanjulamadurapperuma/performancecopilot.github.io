@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMREP
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmrep
+               </b>
+               - performance metrics reporter
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pmrep
+               </b>
+               [
+               <b>
+                -CdGHLpruUVxz?
+               </b>
+               ]
+              [
+               <b>
+                -a
+               </b>
+               <i>
+                archive
+               </i>
+               ]
+              [
+               <b>
+                --archive-folio
+               </b>
+               <i>
+                folio
+               </i>
+               ]
+              [
+               <b>
+                -A
+               </b>
+               <i>
+                align
+               </i>
+               ]
+              [
+               <b>
+                -b
+               </b>
+               <i>
+                space-scale
+               </i>
+               ]
+              [
+               <b>
+                -c
+               </b>
+               <i>
+                config
+               </i>
+               ]
+              [
+               <b>
+                --container
+               </b>
+               <i>
+                container
+               </i>
+               ]
+              [
+               <b>
+                -e
+               </b>
+               <i>
+                derived
+               </i>
+               ]
+              [
+               <b>
+                -E
+               </b>
+               <i>
+                lines
+               </i>
+               ]
+              [
+               <b>
+                -f
+               </b>
+               <i>
+                format
+               </i>
+               ]
+              [
+               <b>
+                -F
+               </b>
+               <i>
+                outfile
+               </i>
+               ]
+              [
+               <b>
+                -h
+               </b>
+               <i>
+                host
+               </i>
+               ]
+              [
+               <b>
+                -K
+               </b>
+               <i>
+                spec
+               </i>
+               ]
+              [
+               <b>
+                -l
+               </b>
+               <i>
+                delimiter
+               </i>
+               ]
+              [
+               <b>
+                -o
+               </b>
+               <i>
+                output
+               </i>
+               ]
+              [
+               <b>
+                -O
+               </b>
+               <i>
+                origin
+               </i>
+               ]
+              [
+               <b>
+                -P
+               </b>
+               <i>
+                precision
+               </i>
+               ]
+              [
+               <b>
+                -q
+               </b>
+               <i>
+                count-scale
+               </i>
+               ]
+              [
+               <b>
+                -s
+               </b>
+               <i>
+                samples
+               </i>
+               ]
+              [
+               <b>
+                -S
+               </b>
+               <i>
+                starttime
+               </i>
+               ]
+              [
+               <b>
+                -t
+               </b>
+               <i>
+                interval
+               </i>
+               ]
+              [
+               <b>
+                -T
+               </b>
+               <i>
+                endtime
+               </i>
+               ]
+              [
+               <b>
+                -w
+               </b>
+               <i>
+                width
+               </i>
+               ]
+              [
+               <b>
+                -y
+               </b>
+               <i>
+                time-scale
+               </i>
+               ]
+              [
+               <b>
+                -Z
+               </b>
+               <i>
+                timezone
+               </i>
+               ]
+               <i>
+                metricspec [...]
+               </i>
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmrep
+               </b>
+               is a customizable performance metrics reporting tool.
+              Any available performance metric, live or archived, system and/or application,
+              can be selected for reporting using one of the output alternatives listed below
+              together with applicable formatting options.
+               <p>
+                <b>
+                 pmrep
+                </b>
+                collects the selected metric values through the facilities of the
+              Performance Co-Pilot (PCP), see
+                <b>
+                 <a href="/man/man1/pcpintro.1.html">
+                  PCPIntro
+                 </a>
+                </b>
+                (1).
+              
+              The metrics to be reported are specified on the command line, in a
+              configuration file, or both.
+              Metrics can be automatically converted and scaled using the PCP facilities,
+              either by default or by per-metric scaling specifications.
+              In addition to the existing metrics, derived metrics can be defined using the
+              arithmetic expressions described in
+                <b>
+                 <a href="/man/man3/pmregisterderived.3.html">
+                  pmRegisterDerived
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                Unless directed to another host by the
+                <b>
+                 -h
+                </b>
+                option,
+                <b>
+                 pmrep
+                </b>
+                will contact the Performance Metrics Collector Daemon (PMCD, see
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1))
+              
+              on the local host.
+               </p>
+               <p>
+                The
+                <b>
+                 -a
+                </b>
+                option causes
+                <b>
+                 pmrep
+                </b>
+                to use the specified set of archive logs rather than connecting to a PMCD.
+              The
+                <b>
+                 -a
+                </b>
+                and
+                <b>
+                 -h
+                </b>
+                options are mutually exclusive.
+               </p>
+               <p>
+                The
+                <b>
+                 -L
+                </b>
+                option causes
+                <b>
+                 pmrep
+                </b>
+                to use a local context to collect metrics from DSO PMDAs (Performance
+              Metrics Domain Agents, ``plugins'') on the local host without PMCD.
+              Only some metrics are available in this mode.
+              The
+                <b>
+                 -a
+                </b>
+                ,
+                <b>
+                 -h
+                </b>
+                ,
+              
+              and
+                <b>
+                 -L
+                </b>
+                options are mutually exclusive.
+               </p>
+               <p>
+                The metrics of interest are named in the
+                <i>
+                 metricspec
+                </i>
+                argument(s).
+              If a metricspec specifies a non-leaf node in the
+              Performance Metrics Name Space (PMNS), then
+                <b>
+                 pmrep
+                </b>
+                will recursively descend the PMNS and report on all leaf nodes (i.e.,
+              metrics) for that metricspec.
+              (Use for example
+                <b>
+                 <a href="/man/man1/pminfo.1.html">
+                  pminfo
+                 </a>
+                </b>
+                (1)
+              
+              to list all the leaf nodes and their descriptions.)
+               </p>
+               <p>
+                A
+                <i>
+                 metricspec
+                </i>
+                has three different forms. First, on the command line it can start with
+              a colon (``:'') to indicate a
+                <i>
+                 metricset
+                </i>
+                to be read from a
+                <b>
+                 pmrep
+                </b>
+                configuration file (see
+                <b>
+                 <a href="/man/man5/pmrep.conf.5.html">
+                  pmrep.conf
+                 </a>
+                </b>
+                (5))
+              
+              which can then consist of any number of metricspecs.
+              Second, a
+                <i>
+                 metricspec
+                </i>
+                starting with non-colon specifies a PMNS node as described above,
+              optionally followed by metric formatting definitions (applicable only to
+              leaf nodes).
+              This so-called
+                <i>
+                 compact form
+                </i>
+                of a metricspec is defined as follows:
+               </p>
+               <p>
+               </p>
+               <pre>
+              metric[,label[,instance[,unit/scale[,type[,width]]]]]
+              </pre>
+               <p>
+                A valid PMNS node
+              (
+                <i>
+                 metric
+                </i>
+                )
+              
+              is mandatory.
+              It can be followed by a text
+                <i>
+                 label
+                </i>
+                used by supporting output targets (such as
+                <i>
+                 csv
+                </i>
+                and
+                <i>
+                 stdout
+                </i>
+                ,
+              
+              see below).
+              The optional
+                <i>
+                 instance
+                </i>
+                definition is currently unimplemented.
+              An optional
+                <i>
+                 unit/scale
+                </i>
+                is applicable for dimension-compatible, non-string, and (currently)
+              non-raw metrics.
+              (See below for supported
+                <i>
+                 unit/scale
+                </i>
+                specifications.)
+              By default, cumulative counter metrics are converted to rates.
+              If the optional
+                <i>
+                 type
+                </i>
+                field is set to
+                <b>
+                 raw
+                </b>
+                then this rate conversion is disabled, unit/scale specification is
+              (currently) ignored and raw values are reported instead.
+              Finally, for supporting output targets (currently:
+                <i>
+                 stdout
+                </i>
+                )
+              
+              a numeric
+                <i>
+                 width
+                </i>
+                can be used to set the width of the output column for this metric.
+              Too-wide numeric values for output will not be printed (apart from
+              decimal places, numeric values will never be silently truncated).
+              Too-wide strings will be truncated.
+               </p>
+               <p>
+                As a special case with metrics that are counters with time units
+              (nanoseconds to hours), the
+                <i>
+                 unit/scale
+                </i>
+                can be used to change the default reporting (for example,
+              milliseconds / second) to normalize to the range zero to one
+              by setting this to
+                <b>
+                 sec
+                </b>
+                (see also
+                <b>
+                 -y
+                </b>
+                ).
+               </p>
+               <p>
+                The following
+                <i>
+                 metricspec
+                </i>
+                requests the metric
+                <b>
+                 kernel.all.sysfork
+                </b>
+                to be reported under the label
+                <b>
+                 forks
+                </b>
+                ,
+              
+              converting to the default rate count/s in an
+                <b>
+                 8
+                </b>
+                wide column.
+              Although the definitions in this
+                <i>
+                 compact form
+                </i>
+                are optional, they must always be provided in the order specified above.
+               </p>
+               <p>
+               </p>
+               <pre>
+              kernel.all.sysfork,forks,,,,8
+              </pre>
+               <p>
+                The third form of a metricspec is valid only in
+                <b>
+                 <a href="/man/man5/pmrep.conf.5.html">
+                  pmrep.conf
+                 </a>
+                </b>
+                (5).
+               </p>
+               <p>
+                Derived metrics are specified like PMNS leaf node metrics.
+               </p>
+               <p>
+                Configuration file options override the corresponding built-in
+              default values (if any).
+              Command line options override the
+              corresponding configuration file options (if any).
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                COMMAND LINE OPTIONS
+               </h2>
+               The available command line options are:
+               <dl compact="">
+                <dt>
+                 <b>
+                  -a
+                 </b>
+                </dt>
+                <dd>
+                 Performance metric values are retrieved from the set of Performance Co-Pilot
+              (PCP) archive log files identified by the argument
+                 <i>
+                  archive
+                 </i>
+                 ,
+              
+              which is a comma-separated list of names, each
+              of which may be the base name of an archive or the name of a directory containing
+              one or more archives.
+              See also
+                 <b>
+                  -u
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  --archive-folio
+                 </b>
+                </dt>
+                <dd>
+                 Read metric source archives from the PCP archive
+                 <i>
+                  folio
+                 </i>
+                 (see
+                 <b>
+                  <a href="/man/man1/mkaf.1.html">
+                   mkaf
+                  </a>
+                 </b>
+                 (1)).
+                </dd>
+                <dt>
+                 <b>
+                  -A
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, force the initial sample to be
+              aligned on the boundary of a natural time unit
+                 <i>
+                  align
+                 </i>
+                 .
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  align
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -b
+                 </b>
+                </dt>
+                <dd>
+                 <i>
+                  Unit/scale
+                 </i>
+                 for space (byte) metrics, possible values include
+                 <b>
+                  bytes
+                 </b>
+                 ,
+                 <b>
+                  Kbytes
+                 </b>
+                 ,
+                 <b>
+                  KB
+                 </b>
+                 ,
+                 <b>
+                  Mbytes
+                 </b>
+                 ,
+                 <b>
+                  MB
+                 </b>
+                 ,
+              
+              and so forth up to
+                 <b>
+                  Ebytes
+                 </b>
+                 ,
+                 <b>
+                  EB
+                 </b>
+                 .
+              
+              This option will
+                 <i>
+                  not
+                 </i>
+                 override possible per-metric specifications.
+              See also
+                 <b>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -c
+                 </b>
+                </dt>
+                <dd>
+                 Specify the
+                 <i>
+                  config
+                 </i>
+                 file to use.
+              The default is the first found of:
+                 <b>
+                  ./pmrep.conf
+                 </b>
+                 ,
+                 <b>
+                  $HOME/.pmrep.conf
+                 </b>
+                 ,
+                 <b>
+                  $HOME/pcp/pmrep.conf
+                 </b>
+                 ,
+              
+              and
+                 <b>
+                  $PCP_SYSCONF_DIR/pmrep/pmrep.conf
+                 </b>
+                 .
+              
+              See
+                 <b>
+                  <a href="/man/man5/pmrep.conf.5.html">
+                   pmrep.conf
+                  </a>
+                 </b>
+                 (5).
+              
+              Unlike with other options,
+                 <i>
+                  config
+                 </i>
+                 must be separated by a space from
+                 <b>
+                  -c
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  --container
+                 </b>
+                </dt>
+                <dd>
+                 Fetch performance metrics from the specified
+                 <i>
+                  container
+                 </i>
+                 ,
+              
+              either local or remote (see
+                 <b>
+                  -h
+                 </b>
+                 ).
+                </dd>
+                <dt>
+                 <b>
+                  -C
+                 </b>
+                </dt>
+                <dd>
+                 Exit before reporting any values, but after parsing the configuration
+              and metrics and printing possible headers.
+                </dd>
+                <dt>
+                 <b>
+                  -d
+                 </b>
+                </dt>
+                <dd>
+                 When replaying from an archive, this option requests that the prevailing
+              real-time delay be applied between samples (see
+                 <b>
+                  -t
+                 </b>
+                 )
+              
+              to effect a pause, rather than the default behaviour of replaying  at
+              full speed.
+                </dd>
+                <dt>
+                 <b>
+                  -e
+                 </b>
+                </dt>
+                <dd>
+                 Specify
+                 <i>
+                  derived
+                 </i>
+                 performance metrics. If
+                 <i>
+                  derived
+                 </i>
+                 starts with a slash (``/'') or with a dot (``.'') it will be
+              interpreted as a derived metrics configuration file, otherwise it will
+              be interpreted as comma-separated derived metric expressions.
+              For details see
+                 <b>
+                  <a href="/man/man3/pmloadderivedconfig.3.html">
+                   pmLoadDerivedConfig
+                  </a>
+                 </b>
+                 (3)
+              
+              and
+                 <b>
+                  <a href="/man/man3/pmregisterderived.3.html">
+                   pmRegisterDerived
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -E
+                 </b>
+                </dt>
+                <dd>
+                 Repeat the header every
+                 <i>
+                  lines
+                 </i>
+                 of output.
+                </dd>
+                <dt>
+                 <b>
+                  -f
+                 </b>
+                </dt>
+                <dd>
+                 Use the
+                 <i>
+                  format
+                 </i>
+                 string for formatting the timestamp.
+              The format will be used with
+              Python's
+                 <b>
+                  datetime.strftime
+                 </b>
+                 method which is mostly the same as that described in
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+                   strftime
+                  </a>
+                 </b>
+                 (3).
+              
+              An empty
+                 <i>
+                  format
+                 </i>
+                 string (i.e., '') will remove the timestamps from the output.
+              The default with stdout is
+                 <b>
+                  %H:%M:%S
+                 </b>
+                 .
+              
+              The default with csv is
+                 <b>
+                  %Y-%m-%d %H:%M:%S
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -F
+                 </b>
+                </dt>
+                <dd>
+                 Specify the output file
+                 <i>
+                  outfile
+                 </i>
+                 .
+              
+              See
+                 <b>
+                  -o
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -G
+                 </b>
+                </dt>
+                <dd>
+                 Do not include global metrics in reporting (see
+                 <b>
+                  <a href="/man/man5/pmrep.conf.5.html">
+                   pmrep.conf
+                  </a>
+                 </b>
+                 (5)).
+                </dd>
+                <dt>
+                 <b>
+                  -h
+                 </b>
+                </dt>
+                <dd>
+                 Fetch performance metrics from
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              on
+                 <i>
+                  host
+                 </i>
+                 ,
+              
+              rather than the default localhost.
+                </dd>
+                <dt>
+                 <b>
+                  -H
+                 </b>
+                </dt>
+                <dd>
+                 Do not print any headers.
+                </dd>
+                <dt>
+                 <b>
+                  -K
+                 </b>
+                </dt>
+                <dd>
+                 When fetching metrics from a local context (see
+                 <b>
+                  -L
+                 </b>
+                 ),
+              
+              the
+                 <b>
+                  -K
+                 </b>
+                 option may be used to control the DSO PMDAs that should be made
+              accessible.
+              The
+                 <i>
+                  spec
+                 </i>
+                 argument conforms to the syntax described in
+                 <b>
+                  <a href="/man/man3/pmspeclocalpmda.3.html">
+                   __pmSpecLocalPMDA
+                  </a>
+                  (3).
+                 </b>
+                 More than one
+                 <b>
+                  -K
+                 </b>
+                 option may be used.
+                </dd>
+                <dt>
+                 <b>
+                  -l
+                 </b>
+                </dt>
+                <dd>
+                 Specify the
+                 <i>
+                  delimiter
+                 </i>
+                 that separates each column of
+                 <i>
+                  csv
+                 </i>
+                 or
+                 <i>
+                  stdout
+                 </i>
+                 output.
+              The
+                 <i>
+                  delimiter
+                 </i>
+                 may only be a single character.
+              The default for
+                 <i>
+                  stdout
+                 </i>
+                 is two spaces (``  '') and comma (``,'') for
+                 <i>
+                  csv
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -L
+                 </b>
+                </dt>
+                <dd>
+                 Use a local context to collect metrics from DSO PMDAs on the local host
+              without PMCD.
+              See also
+                 <b>
+                  -K
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -o
+                 </b>
+                </dt>
+                <dd>
+                 Use
+                 <i>
+                  output
+                 </i>
+                 target for reporting.
+              The default target is
+                 <i>
+                  stdout
+                 </i>
+                 .
+              
+              The available target alternatives are:
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     <i>
+                      archive
+                     </i>
+                    </dt>
+                    <dd>
+                     Record metrics into a PCP archive which can later be replayed with PCP
+              tools, including
+                     <b>
+                      pmrep
+                     </b>
+                     itself. See
+                     <b>
+                      <a href="/man/man5/pcp-archive.5.html">
+                       pcp-archive
+                      </a>
+                     </b>
+                     (5)
+              
+              and
+                     <b>
+                      <a href="/man/man1/pcpintro.1.html">
+                       PCPIntro
+                      </a>
+                     </b>
+                     (1)
+              
+              for details about PCP archive files.
+              Requires
+                     <b>
+                      -F
+                     </b>
+                     .
+                    </dd>
+                    <dt>
+                     <i>
+                      csv
+                     </i>
+                    </dt>
+                    <dd>
+                     Print metrics in CSV format (subject to formatting options).
+                    </dd>
+                    <dt>
+                     <i>
+                      stdout
+                     </i>
+                    </dt>
+                    <dd>
+                     Print metrics to stdout (format subject to formatting options).
+                    </dd>
+                    <dt>
+                     <i>
+                      zabbix
+                     </i>
+                    </dt>
+                    <dd>
+                     Send metrics to a Zabbix server.
+              See
+                     <b>
+                      <a href="/man/man5/pmrep.conf.5.html">
+                       pmrep.conf
+                      </a>
+                     </b>
+                     (5)
+              
+              for the needed Zabbix configuration options.
+              This target is currently
+                     <i>
+                      experimental
+                     </i>
+                     .
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <b>
+                  -O
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, start reporting at
+                 <i>
+                  origin
+                 </i>
+                 within the time window (see
+                 <b>
+                  -S
+                 </b>
+                 and
+                 <b>
+                  -T
+                 </b>
+                 ).
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  origin
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -p
+                 </b>
+                </dt>
+                <dd>
+                 Print timestamps.
+              By default no timestamps are printed.
+                </dd>
+                <dt>
+                 <b>
+                  -P
+                 </b>
+                </dt>
+                <dd>
+                 Use
+                 <i>
+                  precision
+                 </i>
+                 for numeric non-integer output values.
+              If the value is too wide for its column width,
+                 <i>
+                  precision
+                 </i>
+                 is reduced one by one until the value fits, or not printed at all if it
+              does not.
+              The default is to use 3 decimal places (when applicable).
+                </dd>
+                <dt>
+                 <b>
+                  -q
+                 </b>
+                </dt>
+                <dd>
+                 <i>
+                  Unit/scale
+                 </i>
+                 for count metrics, possible values include
+                 <b>
+                  count x 10^-1
+                 </b>
+                 ,
+                 <b>
+                  count
+                 </b>
+                 ,
+                 <b>
+                  count x 10
+                 </b>
+                 ,
+                 <b>
+                  count x 10^2
+                 </b>
+                 ,
+              
+              and so forth from
+                 <b>
+                  10^-8
+                 </b>
+                 to
+                 <b>
+                  10^7
+                 </b>
+                 .
+              
+              
+              (These values are currently space-sensitive.)
+              This option will
+                 <i>
+                  not
+                 </i>
+                 override possible per-metric specifications.
+              See also
+                 <b>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -r
+                 </b>
+                </dt>
+                <dd>
+                 Output raw metric values, do not convert cumulative counters to rates.
+              This option
+                 <i>
+                  will
+                 </i>
+                 override possible per-metric specifications.
+                </dd>
+                <dt>
+                 <b>
+                  -s
+                 </b>
+                </dt>
+                <dd>
+                 The argument
+                 <i>
+                  samples
+                 </i>
+                 defines the number of samples to be retrieved and reported.
+              If
+                 <i>
+                  samples
+                 </i>
+                 is 0 or
+                 <b>
+                  -s
+                 </b>
+                 is not specified,
+                 <b>
+                  pmrep
+                 </b>
+                 will sample and report continuously (in real time mode) or until the end
+              of the set of PCP archives (in archive mode).
+              See also
+                 <b>
+                  -T
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -S
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, the report will be restricted to those
+              records logged at or after
+                 <i>
+                  starttime
+                 </i>
+                 .
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  starttime
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -t
+                 </b>
+                </dt>
+                <dd>
+                 The default update
+                 <i>
+                  interval
+                 </i>
+                 may be set to something other than the default 1 second.
+              The
+                 <i>
+                  interval
+                 </i>
+                 argument follows the syntax described in
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1),
+              
+              and in the simplest form may be an unsigned integer (the implied units
+              in this case are seconds).
+              See also the
+                 <b>
+                  -T
+                 </b>
+                 and
+                 <b>
+                  -u
+                 </b>
+                 options.
+                </dd>
+                <dt>
+                 <b>
+                  -T
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, the report will be restricted to those
+              records logged before or at
+                 <i>
+                  endtime
+                 </i>
+                 .
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  endtime
+                 </i>
+                 .
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    When used to define the runtime before
+                    <b>
+                     pmrep
+                    </b>
+                    will exit,
+              if no
+                    <i>
+                     samples
+                    </i>
+                    is given (see
+                    <b>
+                     -s
+                    </b>
+                    ) then the number of
+              reported samples depends on
+                    <i>
+                     interval
+                    </i>
+                    (see
+                    <b>
+                     -t
+                    </b>
+                    ).
+              If
+                    <i>
+                     samples
+                    </i>
+                    is given then
+                    <i>
+                     interval
+                    </i>
+                    will be adjusted to allow reporting of
+                    <i>
+                     samples
+                    </i>
+                    during runtime.
+              In case all of
+                    <b>
+                     -T
+                    </b>
+                    ,
+                    <b>
+                     -s
+                    </b>
+                    ,
+              
+              and
+                    <b>
+                     -t
+                    </b>
+                    are given,
+                    <i>
+                     endtime
+                    </i>
+                    determines the actual time
+                    <b>
+                     pmrep
+                    </b>
+                    will run.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <b>
+                  -u
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, by default values are reported
+              according to the selected sample interval (
+                 <b>
+                  -t
+                 </b>
+                 option), not according to the actual record interval in an archive.
+              To this effect PCP interpolates the values to be reported based on the
+              records in the archive.
+              With the
+                 <b>
+                  -u
+                 </b>
+                 option uninterpolated reporting is enabled, every recorded value for the
+              selected metrics is reported and the requested sample interval (
+                 <b>
+                  -t
+                 </b>
+                 )
+              
+              is ignored.
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    So for example, if a PCP archive contains recorded values for every 10
+              seconds and the requested sample interval is 1 hour, by default
+                    <b>
+                     pmrep
+                    </b>
+                    will use an interpolation scheme to compute the values of the requested
+              metrics from the values recorded in the proximity of these requested
+              metrics and values for every 1 hour are reported.
+              With
+                    <b>
+                     -u
+                    </b>
+                    every record every 10 seconds are used as such (the reported values
+              are still subject to rate conversion, use
+                    <b>
+                     -r
+                    </b>
+                    to disable).
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <b>
+                  -U
+                 </b>
+                </dt>
+                <dd>
+                 Omit unit information from of headers.
+                </dd>
+                <dt>
+                 <b>
+                  -V
+                 </b>
+                </dt>
+                <dd>
+                 Display version number and exit.
+                </dd>
+                <dt>
+                 <b>
+                  -w
+                 </b>
+                </dt>
+                <dd>
+                 Set the stdout output column
+                 <i>
+                  width
+                 </i>
+                 .
+              
+              Strings will be truncated to this width.
+              The default
+                 <i>
+                  width
+                 </i>
+                 is the shortest that can fit the metric label, the forced minimum is 3.
+              This option will
+                 <i>
+                  not
+                 </i>
+                 override possible per-metric specifications.
+                </dd>
+                <dt>
+                 <b>
+                  -x
+                 </b>
+                </dt>
+                <dd>
+                 Print extended header.
+                </dd>
+                <dt>
+                 <b>
+                  -y
+                 </b>
+                </dt>
+                <dd>
+                 <i>
+                  Unit/scale
+                 </i>
+                 for time metrics, possible values include
+                 <b>
+                  nanosec
+                 </b>
+                 ,
+                 <b>
+                  ns
+                 </b>
+                 ,
+                 <b>
+                  microsec
+                 </b>
+                 ,
+                 <b>
+                  us
+                 </b>
+                 ,
+                 <b>
+                  millisec
+                 </b>
+                 ,
+                 <b>
+                  ms
+                 </b>
+                 ,
+              
+              and so forth up to
+                 <b>
+                  hour
+                 </b>
+                 ,
+                 <b>
+                  hr
+                 </b>
+                 .
+              
+              This option will
+                 <i>
+                  not
+                 </i>
+                 override possible per-metric specifications.
+              See also
+                 <b>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -z
+                 </b>
+                </dt>
+                <dd>
+                 Use the local timezone of the host that is the source of the
+              performance metrics, as identified by either the
+                 <b>
+                  -h
+                 </b>
+                 or the
+                 <b>
+                  -a
+                 </b>
+                 options.
+              The default is to use the timezone of the local host.
+                </dd>
+                <dt>
+                 <b>
+                  -Z
+                 </b>
+                </dt>
+                <dd>
+                 Use
+                 <i>
+                  timezone
+                 </i>
+                 when displaying the date and time.
+                 <i>
+                  Timezone
+                 </i>
+                 is in the format of the environment variable
+                 <b>
+                  TZ
+                 </b>
+                 as described in
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+                   environ
+                  </a>
+                 </b>
+                 (7).
+                </dd>
+                <dt>
+                 <b>
+                  -?
+                 </b>
+                </dt>
+                <dd>
+                 Display usage message and exit.
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                EXAMPLES
+               </h2>
+               The following examples use the PCP facilities for collecting the metric
+              values, no external utilities are needed.
+              The examples expect the default configuration file to contain the
+               <i>
+                metricset
+               </i>
+               specifications.
+               <p>
+                Display network interface statistics on the local host:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              $ pmrep network.interface.total.bytes
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                Display per-device disk reads and writes from the host
+                <i>
+                 server1
+                </i>
+                using two seconds interval and CSV output format:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              $ pmrep -h server1 -o csv -t 2s disk.dev.read disk.dev.write
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                Display timestamped
+                <b>
+                 <a href="/man/man8/vmstat.8.html">
+                  vmstat
+                 </a>
+                </b>
+                (8)
+              
+              like information using MBs instead of bytes and also include the number
+              of in-use inodes:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              $ pmrep -p -b MB vfs.inodes.count :vmstat
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                Display
+                <b>
+                 sar -w
+                </b>
+                and
+                <b>
+                 sar -W
+                </b>
+                like information at the same time from the PCP archive
+                <i>
+                 ./20150921.09.13
+                </i>
+                showing values recorded between 3 - 5 PM:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              $ pmrep -a ./20150921.09.13 -S @15:00 -T @17:00 :sar-w :sar-W
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                Record all 389 Directory Server, XFS file system and CPU/disk/memory
+              related metrics every five seconds for the next five minutes to the PCP
+              archive
+                <i>
+                 ./a
+                </i>
+                :
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              $ pmrep -o archive -F ./a -t 5s -T 5m ds389 xfs kernel.all.cpu disk mem
+              </pre>
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  pmrep.conf
+                 </b>
+                </dt>
+                <dd>
+                 <b>
+                  pmrep
+                 </b>
+                 configuration file (see
+                 <b>
+                  -c
+                 </b>
+                 ).
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_SYSCONF_DIR/pmrep/pmrep.conf
+                 </b>
+                </dt>
+                <dd>
+                 System provided configuration file.
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                BUGS
+               </h2>
+               No command line option can follow metrics.
+               <p>
+                Specifying instances is not yet supported.
+                <a name="lbAI">
+                </a>
+               </p>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parametrize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <i>
+                /etc/pcp.conf
+               </i>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAJ">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/mkaf.1.html">
+                 mkaf
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp.1.html">
+                 pcp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-atop.1.html">
+                 pcp-atop
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmchart.1.html">
+                 pmchart
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcollectl.1.html">
+                 pmcollectl
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmdiff.1.html">
+                 pmdiff
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmdumplog.1.html">
+                 pmdumplog
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmdumptext.1.html">
+                 pmdumptext
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pminfo.1.html">
+                 pminfo
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmiostat.1.html">
+                 pmiostat
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlogextract.1.html">
+                 pmlogextract
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlogsummary.1.html">
+                 pmlogsummary
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmprobe.1.html">
+                 pmprobe
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmstat.1.html">
+                 pmstat
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmval.1.html">
+                 pmval
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/sar.1.html">
+                 sar
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmspeclocalpmda.3.html">
+                 __pmSpecLocalPMDA
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmloadderivedconfig.3.html">
+                 pmLoadDerivedConfig
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmparseunitsstr.3.html">
+                 pmParseUnitsStr
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmregisterderived.3.html">
+                 pmRegisterDerived
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+                 strftime
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man5/pcp-archive.5.html">
+                 pcp-archive
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="/man/man5/pmns.5.html">
+                 pmns
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="/man/man5/pmrep.conf.5.html">
+                 pmrep.conf
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+                 environ
+                </a>
+               </b>
+               (7)
+              
+              and
+               <b>
+                <a href="/man/man8/vmstat.8.html">
+                 vmstat
+                </a>
+               </b>
+               (8).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  COMMAND LINE OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  EXAMPLES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  BUGS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAJ">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

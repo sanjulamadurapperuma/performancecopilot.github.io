@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">1.2.7. Descriptions for Performance Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE79836-PARENT.html" title="1.2. Conceptual Foundations" /><link rel="prev" href="LE94677-PARENT.html" title="1.2.6. Performance Metrics Name Space" /><link rel="next" href="id5189302.html" title="1.2.8. Values for Performance Metrics" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE94677-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5189302.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5189172">
+      ⁠</a>1.2.7. Descriptions for Performance Metrics</h3></div></div></div><div class="para">
+					<a id="ITch01-149" class="indexterm"></a><a id="ITch01-150" class="indexterm"></a> Through the various performance metric domains, the PCP must support a wide range of formats and semantics for performance metrics. This <em class="firstterm">metadata</em> describing the performance metrics includes the following:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							The internal identifier, Performance Metric Identifier (PMID), for the metric
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG3137188876" class="indexterm"></a>The format and encoding for the values of the metric, for example, an unsigned 32-bit integer or a string or a 64-bit IEEE format floating point number
+						</div></li><li class="listitem"><div class="para">
+							The semantics of the metric, particularly the interpretation of the values as free-running counters or instantaneous values
+						</div></li><li class="listitem"><div class="para">
+							The dimensionality of the values, in the dimensions of events, space, and time
+						</div></li><li class="listitem"><div class="para">
+							The scale of values; for example, bytes, kilobytes (KB), or megabytes (MB) for the space dimension
+						</div></li><li class="listitem"><div class="para">
+							An indication if the metric may have one or many associated values
+						</div></li><li class="listitem"><div class="para">
+							Short (and extended) help text describing the metric
+						</div></li></ul></div><div class="para">
+					For each metric, this metadata is defined within the associated PMDA, and PCP arranges for the information to be exported to performance tools that use the metadata when interpreting the values for each metric.
+				</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE94677-PARENT.html"><strong>Prev</strong>1.2.6. Performance Metrics Name Space</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5189302.html"><strong>Next</strong>1.2.8. Values for Performance Metrics</a></li></ul></body></html>

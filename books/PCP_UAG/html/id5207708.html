@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">6.2.3.6. PCP Archive Contents</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE92914-PARENT.html" title="6.2.3. Archive Log File Management" /><link rel="prev" href="id5207540.html" title="6.2.3.5. Configuration of pmlogger" /><link rel="next" href="LE57424-PARENT.html" title="6.3. Cookbook for Archive Logging" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5207540.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE57424-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5207708">
+      ⁠</a>6.2.3.6. PCP Archive Contents</h4></div></div></div><div class="para">
+						<a id="IG31371888268" class="indexterm"></a><a id="IG31371888269" class="indexterm"></a>Once a PCP archive log has been created, the <code class="command">pmdumplog</code> utility may be used to display various information about the contents of the archive. For example, start with the following command:
+					</div><div class="para">
+						<code class="literal">pmdumplog -l ${PCP_LOG_DIR}/pmlogger/www.sgi.com/19960731</code>
+					</div><div class="para">
+						It might produce the following output:
+					</div><pre class="literallayout">Log Label (Log Format Version 1)
+Performance metrics from host www.sgi.com
+     commencing Wed Jul 31 00:16:34.941 1996
+     ending     Thu Aug  1 00:18:01.468 1996</pre><div class="para">
+						The simplest way to discover what performance metrics are contained within a set of archives is to use <code class="literal">pminfo</code> as shown in <a class="xref" href="id5207708.html#Z984165598sdc">Example 6.1, “Using <code class="literal">pminfo</code> to Obtain Archive Information”</a>:
+					</div><div class="example"><a id="Z984165598sdc">
+      ⁠</a><p class="title"><strong>Example 6.1. Using <code class="literal">pminfo</code> to Obtain Archive Information</strong></p><div class="example-contents"><pre class="literallayout"><code class="literal">pminfo -a ${PCP_LOG_DIR}/pmlogger/www.sgi.com/19960731 network.mbuf</code>
+network.mbuf.alloc 
+network.mbuf.typealloc
+network.mbuf.clustalloc
+network.mbuf.clustfree
+network.mbuf.failed
+network.mbuf.waited
+network.mbuf.drained</pre></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5207540.html"><strong>Prev</strong>6.2.3.5. Configuration of pmlogger</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE57424-PARENT.html"><strong>Next</strong>6.3. Cookbook for Archive Logging</a></li></ul></body></html>

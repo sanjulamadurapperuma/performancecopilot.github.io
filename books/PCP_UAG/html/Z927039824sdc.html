@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.8. Management of pmie Processes</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="prev" href="Z927039566sdc.html" title="5.7. Creating pmie Rules with pmieconf" /><link rel="next" href="id5205585.html" title="5.8.2. Global Files and Directories" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="Z927039566sdc.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5205585.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="Z927039824sdc">
+      ⁠</a>5.8. Management of <code class="command">pmie</code> Processes</h2></div></div></div><div class="para">
+				<a id="IG31371888237" class="indexterm"></a>The <code class="command">pmie</code> process can be run as a daemon as part of the system startup sequence, and can thus be used to perform automated, live performance monitoring of a running system. To do this, run these commands (as superuser):
+			</div><pre class="literallayout"><strong class="userinput"><code>chkconfig pmie on</code></strong>
+<strong class="userinput"><code>${PCP_RC_DIR}/pmie start</code></strong></pre><div class="para">
+				By default, these enable a single <code class="command">pmie</code> process monitoring the local host, with the default set of <code class="command">pmieconf</code> rules enabled (for more information about <code class="command">pmieconf</code>, see <a class="xref" href="Z927039566sdc.html">Section 5.7, “Creating <code class="command">pmie</code> Rules with <code class="command">pmieconf</code>”</a>). <a class="xref" href="Z927039824sdc.html#Z930363467sdc">Procedure 5.3, “Add a New <code class="command">pmie</code> Instance to the <code class="command">pmie</code> Daemon Management Framework”</a> illustrates how you can use these commands to start any number of <code class="command">pmie</code> processes to monitor local or remote machines.
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="procedure"><a id="Z930363467sdc">
+      ⁠</a><p class="title"><strong>Procedure 5.3. Add a New <code class="command">pmie</code> Instance to the <code class="command">pmie</code> Daemon Management Framework</strong></p><ol class="1"><li class="step"><div class="para">
+						Use a text editor (as superuser) to edit the <code class="command">pmie</code><code class="filename">${PCP_PMIECONTROL_PATH}</code> and <code class="filename">${PCP_PMIECONTROL_PATH}.d</code> control files. Notice the default entry, which looks like this:
+					</div><pre class="literallayout">#Host           P?  S?  Log File                                  Arguments
+LOCALHOSTNAME   y   n   PCP_LOG_DIR/pmie/LOCALHOSTNAME/pmie.log   -c config.default</pre><div class="para">
+						This entry is used to enable a local <code class="command">pmie</code> process. Add a new entry for a remote host on your local network (for example, <code class="literal">venus</code>), by using your <code class="command">pmie</code> configuration file (see <a class="xref" href="Z927039566sdc.html">Section 5.7, “Creating <code class="command">pmie</code> Rules with <code class="command">pmieconf</code>”</a>):
+					</div><pre class="literallayout">
+#Host           P?  S?  Log File                                  Arguments
+venus           n   n   PCP_LOG_DIR/pmie/venus/pmie.log           -c config.demo
+</pre><div class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+							Without an absolute path, the configuration file (<code class="literal">-c</code> above) will be resolved using <code class="filename">${PCP_SYSCONF_DIR}/pmie</code> - if <code class="filename">config.demo</code> was created in <a class="xref" href="Z927039566sdc.html#Z930357878sdc">Procedure 5.2, “Modify <code class="command">pmieconf</code> Rules and Generate a <code class="command">pmie</code> File”</a> it would be used here for host <code class="literal">venus</code>, otherwise a new configuration file will be generated using the default rules (at <code class="filename">${PCP_SYSCONF_DIR}/pmie/config.demo</code>).
+						</div></div></div></li><li class="step"><div class="para">
+						Enable <code class="command">pmie</code> daemon management: 
+<pre class="literallayout"><strong class="userinput"><code>chkconfig pmie on</code></strong></pre>
+					</div><div class="para">
+						This simple step allows <code class="command">pmie</code> to be started as part of your machine's boot process.
+					</div></li><li class="step"><div class="para">
+						Start the two <code class="command">pmie</code> daemons. At the end of this step, you should see two new <code class="command">pmie</code> processes monitoring the local and remote hosts:
+					</div><pre class="literallayout">${PCP_RC_DIR}/pmie start
+Performance Co-Pilot starting inference engine(s) ...
+</pre><div class="para">
+						Wait a few moments while the startup scripts run. The <code class="command">pmie</code> start script uses the <code class="command">pmie_check</code> script to do most of its work.
+					</div><div class="para">
+						Verify that the <code class="command">pmie</code> processes have started:
+					</div><pre class="literallayout"><strong class="userinput"><code>pcp</code></strong>
+Performance Co-Pilot configuration on pluto:
+
+ platform: Linux pluto 3.10.0-0.rc7.64.el7.x86_64 #1 SMP
+ hardware: 8 cpus, 2 disks, 23960MB RAM
+ timezone: EST-10
+     pmcd: Version 3.11.3-1, 8 agents
+     pmda: pmcd proc xfs linux mmv infiniband gluster elasticsearch
+     <em class="replaceable">pmie: pluto: ${PCP_LOG_DIR}/pmie/pluto/pmie.log</em>
+           <em class="replaceable">venus: ${PCP_LOG_DIR}/pmie/venus/pmie.log</em></pre></li></ol></div><div class="para">
+				If a remote host is not up at the time when <code class="command">pmie</code> is started, the <code class="command">pmie</code> process may exit. <code class="command">pmie</code> processes may also exit if the local machine is starved of memory resources. To counter these adverse cases, it can be useful to have a <code class="command">crontab</code> entry running. Adding an entry as shown in <a class="xref" href="Z927039824sdc.html#id5208584">Section 5.8.1, “Add a <code class="command">pmie</code> <code class="command">crontab</code> Entry”</a> ensures that if one of the configured <code class="command">pmie</code> processes exits, it is automatically restarted.
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+					Depending on your platform, the <code class="command">crontab</code> entry discussed here may already have been installed for you, as part of the package installation process. In this case, the file <code class="filename">/etc/cron.d/pcp-pmie</code> will exist, and the rest of this section can be skipped.
+				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5208584">
+      ⁠</a>5.8.1. Add a <code class="command">pmie</code> <code class="command">crontab</code> Entry</h3></div></div></div><div class="para">
+					To activate the maintenance and housekeeping scripts for a collection of inference engines, execute the following tasks while logged into the local host as the superuser (<code class="literal">root</code>):
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="orderedlist"><ol><li class="listitem"><div class="para">
+							Augment the <code class="filename">crontab</code> file for the <code class="literal">pcp</code> user. For example:
+						</div><pre class="literallayout"><strong class="userinput"><code>crontab -l -u pcp &gt; ${HOME}/crontab.txt</code></strong></pre></li><li class="listitem"><div class="para">
+							Edit <code class="filename">${HOME}/crontab.txt</code>, adding lines similar to those from the sample <code class="filename">${PCP_VAR_DIR}/config/pmie/crontab</code> file for <code class="literal">pmie_daily</code> and <code class="literal">pmie_check</code>; for example:
+						</div><pre class="literallayout"># daily processing of pmie logs
+10     0     *     *     *    ${PCP_BINADM_DIR}/pmie_daily
+# every 30 minutes, check pmie instances are running
+25,55  *     *     *     *    ${PCP_BINADM_DIR}/pmie_check</pre></li><li class="listitem"><div class="para">
+							Make these changes permanent with this command:
+						</div><pre class="literallayout"><strong class="userinput"><code>crontab -u pcp &lt; ${HOME}/crontab.txt</code></strong></pre></li></ol></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="Z927039566sdc.html"><strong>Prev</strong>5.7. Creating pmie Rules with pmieconf</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5205585.html"><strong>Next</strong>5.8.2. Global Files and Directories</a></li></ul></body></html>

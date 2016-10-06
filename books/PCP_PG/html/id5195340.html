@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.8. Integration of a PMDA</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE98072-PARENT.html" title="Chapter 2. Writing a PMDA" /><link rel="prev" href="id5195283.html" title="2.7.3.  dbpmda Debug Utility" /><link rel="next" href="id5197100.html" title="2.8.2. Upgrading a PMNS to Include Metrics from a New PMDA" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5195283.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5197100.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5195340">
+      ⁠</a>2.8. Integration of a PMDA</h2></div></div></div><div class="para">
+				<a id="IG31340177237" class="indexterm"></a>Several steps are required to install (or remove) a PMDA from a production PMCD environment without affecting the operation of other PMDAs or related visualization and logging tools.<a id="IG31340177238" class="indexterm"></a>
+			</div><div class="para">
+				The PMDA typically would have its own directory below <code class="filename">${PCP_PMDAS_DIR}</code> into which several files would be installed. In the description in <a class="xref" href="id5195340.html#LE55181-PARENT">Section 2.8.1, “Installing a PMDA”</a>, the PMDA of interest is assumed to be known by the name <code class="filename">newbie</code>, hence the PMDA directory would be <code class="filename">${PCP_PMDAS_DIR}/newbie</code>.
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+					Any installation or removal of a PMDA involves updating files and directories that are typically well protected. Hence the procedures described in this section must be executed as the superuser.
+				</div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE55181-PARENT">
+      ⁠</a>2.8.1. Installing a PMDA</h3></div></div></div><div class="para">
+					A PMDA is fully installed when these tasks are completed:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							<a id="IG31340177239" class="indexterm"></a>Help text has been installed in a place where the PMDA can find it, usually in the PMDA directory <code class="filename">${PCP_PMDAS_DIR}/newbie</code>.
+						</div></li><li class="listitem"><div class="para">
+							The name space has been updated in the <code class="filename">${PCP_VAR_DIR}/pmns</code> directory.
+						</div></li><li class="listitem"><div class="para">
+							The PMDA binary has been installed, usually in the directory <code class="filename">${PCP_PMDAS_DIR}/newbie</code>.
+						</div></li><li class="listitem"><div class="para">
+							The <code class="filename">${PCP_PMCDCONF_PATH}</code> file has been updated.
+						</div></li><li class="listitem"><div class="para">
+							The PMCD process has been restarted or notified (with a <code class="literal">SIGHUP</code> signal) that the new PMDA exists.
+						</div></li></ul></div><div class="para">
+					The <code class="filename">Makefile</code> should include an <code class="literal">install</code> target to compile and link the PMDA (as a DSO, or a daemon or both) in the PMDA directory. The <code class="literal">clobber</code> target should remove any files created as a by-product of the <code class="literal">install</code> target.<a id="IG31340177240" class="indexterm"></a>
+				</div><div class="para">
+					You may wish to use <code class="filename">${PCP_PMDAS_DIR}/simple/Makefile</code> as a template for constructing a new PMDA <code class="filename">Makefile</code>; changing the assignment of <code class="literal">IAM</code> from <code class="literal">simple</code> to <code class="literal">newbie</code> would account for most of the required changes.
+				</div><div class="para">
+					The <code class="filename">Install</code> script should make use of the generic procedures defined in the script <code class="filename">${PCP_SHARE_DIR}/lib/pmdaproc.sh</code>, and may be as straightforward as the one used for the trivial PMDA, shown in <a class="xref" href="id5195340.html#Z976309325sdc">Example 2.33, “ <code class="filename">Install</code> Script for the Trivial PMDA”</a>:
+				</div><div class="example"><a id="Z976309325sdc">
+      ⁠</a><p class="title"><strong>Example 2.33.  <code class="filename">Install</code> Script for the Trivial PMDA</strong></p><div class="example-contents"><pre class="programlisting">. ${PCP_DIR}/etc/pcp.env
+. ${PCP_SHARE_DIR}/lib/pmdaproc.sh
+
+iam=trivial
+pmda_interface=2
+
+pmdaSetup
+pmdainstall
+exit</pre></div></div><div class="para">
+					The variables, shown in <a class="xref" href="id5195340.html#id5195779">Table 2.1, “Variables to Control Behavior of Generic <code class="filename">pmdaproc.sh</code> Procedures”</a>, may be assigned values to modify the behavior of the <code class="literal">pmdaSetup</code> and <code class="literal">pmdainstall</code> procedures from <code class="filename">${PCP_SHARE_DIR}/lib/pmdaproc.sh</code>.
+				</div><div class="table"><a id="id5195779">
+      ⁠</a><p class="title"><strong>Table 2.1. Variables to Control Behavior of Generic <code class="filename">pmdaproc.sh</code> Procedures</strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols gt-14-rows" summary="Variables to Control Behavior of Generic pmdaproc.sh Procedures"><colgroup><col width="29%" /><col width="54%" /><col width="17%" /></colgroup><thead><tr valign="top"><th align="left" valign="bottom"> <div class="para">
+									Shell Variable
+								</div>
+								 </th><th align="left" valign="bottom"> <div class="para">
+									Use
+								</div>
+								 </th><th align="left" valign="bottom"> <div class="para">
+									Default
+								</div>
+								 </th></tr></thead><tbody><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$iam</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Name of the PMDA; assignment to this variable is mandatory.
+								</div>
+								 <div class="para">
+									Example: <code class="literal">iam=newbie</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$dso_opt</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Can this PMDA be installed as a DSO?
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">false</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$daemon_opt</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Can this PMDA be installed as a daemon?
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">true</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$perl_opt</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Is this PMDA a perl script?
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">false</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$python_opt</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Is this PMDA a python script?
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">false</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$pipe_opt</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									If installed as a daemon PMDA, is the default IPC via pipes?
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">true</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$socket_opt</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									If installed as a daemon PMDA, is the default IPC via an Internet socket?
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">false</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$socket_inet_def</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									If installed as a daemon PMDA, and the IPC method uses an Internet socket, the default port number.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$ipc_prot</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									IPC style for PDU exchanges involving a daemon PMDA; <code class="literal">binary</code> or <code class="literal">text</code>.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">binary</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$check_delay</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Delay in seconds between installing PMDA and checking if metrics are available.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">3</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$args</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Additional command-line arguments passed to a daemon PMDA.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$pmda_interface</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Version of the <code class="filename">libpcp_pmda</code> library required, used to determine the version for generating help text files.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">1</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$pmns_source</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The name of the PMNS file (by default relative to the PMDA directory).
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">pmns</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$pmns_name</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									First-level name for this PMDA's metrics in the PMNS.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">$iam</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$help_source</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The name of the help file (by default relative to the PMDA directory).
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">help</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$pmda_name</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The name of the executable for a daemon PMDA.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">pmda$iam</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$dso_name</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The name of the shared library for a DSO PMDA.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">pmda$iam.$dso_suffix</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$dso_entry</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The name of the initialization function for a DSO PMDA.
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">${iam}_init</code>
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$domain</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The numerical PMDA domain number (from <code class="filename">domain.h</code>).
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$SYMDOM</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The symbolic name of the PMDA domain number (from <code class="filename">domain.h</code>).
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal">$status</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Exit status for the shell script
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									<code class="literal">0</code>
+								</div>
+								 </td></tr></tbody></table></div></div><div class="para">
+					In addition, the variables <code class="literal">do_pmda</code> and <code class="literal">do_check</code> will be set to reflect the intention to install the PMDA (as opposed to install just the PMNS) and to check the availability of the metrics once the PMDA is installed. By default, each variable is <code class="literal">true</code>; however, the command-line options <code class="literal">-N</code> and <code class="literal">-Q</code> to <code class="filename">Install</code> may be used to set the variables to <code class="literal">false</code>, as follows: <code class="literal">do_pmda</code> (<code class="command">-N</code>) and <code class="literal">do_check</code> (<code class="literal">-N</code> or <code class="literal">-Q</code>).
+				</div><div class="para">
+					The variables may also have their assignments changed by the user's response to the common prompt as shown in <a class="xref" href="id5195340.html#Z976309844sdc">Example 2.34, “Changing Variable Assignments”</a>:
+				</div><div class="example"><a id="Z976309844sdc">
+      ⁠</a><p class="title"><strong>Example 2.34. Changing Variable Assignments</strong></p><div class="example-contents"><pre class="programlisting">You will need to choose an appropriate configuration for installation 
+of the ... Performance Metrics Domain Agent (PMDA).
+  collector   collect performance statistics on this system
+  monitor     allow this system to monitor local and/or remote systems
+  both        collector and monitor configuration for this system</pre></div></div><div class="para">
+					Obviously, for anything but the most trivial PMDA, after calling the <code class="filename">pmdaSetup</code> procedure, the <code class="filename">Install</code> script should also prompt for any PMDA-specific parameters, which are typically accumulated in the <em class="replaceable">args</em> variable and used by the <code class="literal">pmdainstall</code> procedure.
+				</div><div class="para">
+					The detailed operation of the <code class="filename">pmdainstall</code> procedure involves the following tasks:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							Using default assignments, and interaction where ambiguity exists, determine the PMDA type (DSO or daemon) and the IPC parameters, if any.
+						</div></li><li class="listitem"><div class="para">
+							Copy the <code class="filename">$pmns_source</code> file, replacing symbolic references to <code class="literal">SYMDOM</code> by the desired numeric domain number from <code class="literal">domain.</code>
+						</div></li><li class="listitem"><div class="para">
+							Merge the PMDA's name space into the PCP name space at the non-leaf node identified by <code class="filename">$pmns_name</code>.
+						</div></li><li class="listitem"><div class="para">
+							If any <code class="command">pmchart</code> views can be found (files with names ending in “.pmchart”), copy these to the standard directory (<code class="filename">${PCP_VAR_DIR}/config/pmchart</code>) with the “.pmchart” suffix removed.
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177241" class="indexterm"></a>Create new help files from <code class="literal">$help_source</code> after replacing symbolic references to <code class="literal">SYMDOM</code> by the desired numeric domain number from <code class="literal">domain</code>.
+						</div></li><li class="listitem"><div class="para">
+							Terminate the old daemon PMDA, if any.
+						</div></li><li class="listitem"><div class="para">
+							Use the <code class="filename">Makefile</code> to build the appropriate executables.
+						</div></li><li class="listitem"><div class="para">
+							Add the PMDA specification to PMCD's configuration file (<code class="filename">${PCP_PMCDCONF_PATH}</code>).
+						</div></li><li class="listitem"><div class="para">
+							Notify PMCD. To minimize the impact on the services PMCD provides, sending a <code class="literal">SIGHUP</code> to PMCD forces it to reread the configuration file and start, restart, or remove any PMDAs that have changed since the file was last read. However, if the newly installed PMDA must run using a different privilege level to PMCD then PMCD must be restarted. This is because PMCD runs unprivileged after initially starting the PMDAs.
+						</div></li><li class="listitem"><div class="para">
+							Check that the metrics from the new PMDA are available.
+						</div></li></ul></div><div class="para">
+					There are some PMDA changes that may trick PMCD into thinking nothing has changed, and not restarting the PMDA. Most notable are changes to the PMDA executable. In these cases, you may need to explicitly remove the PMDA as described in <a class="xref" href="Z976310185sdc.html">Section 2.8.3, “Removing a PMDA”</a>, or more drastically, restart PMCD as follows: <a id="IG31340177242" class="indexterm"></a>
+				</div><pre class="literallayout"># <strong class="userinput"><code>${PCP_RC_DIR}/pcp start</code></strong></pre><div class="para">
+					<a id="IG31340177243" class="indexterm"></a>The files <code class="filename">${PCP_PMDAS_DIR}/*/Install</code> provide a wealth of examples that may be used to construct a new PMDA <code class="filename">Install</code> script.
+				</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5195283.html"><strong>Prev</strong>2.7.3.  dbpmda Debug Utility</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5197100.html"><strong>Next</strong>2.8.2. Upgrading a PMNS to Include Metrics from a...</a></li></ul></body></html>

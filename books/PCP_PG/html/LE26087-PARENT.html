@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">4.7. Trace API</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE25915-PARENT.html" title="Chapter 4. Instrumenting Applications" /><link rel="prev" href="id5213903.html" title="4.6.3. Configuring the Trace PMDA" /><link rel="next" href="id5214714.html" title="4.7.2. Point Tracing" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5213903.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5214714.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE26087-PARENT">
+      ⁠</a>4.7. Trace API</h2></div></div></div><div class="para">
+				<a id="IG31340177502" class="indexterm"></a> <a id="IG31340177503" class="indexterm"></a>The <code class="filename">libpcp_trace</code> Application Programming Interface (API) is called from C, C++, Fortran, and Java. Each language has access to the complete set of functionality offered by <code class="filename">libpcp_trace</code>. In some cases, the calling conventions differ slightly between languages. This section presents an overview of each of the different tracing mechanisms offered by the API, as well as an explanation of their mappings to the actual performance metrics exported by the trace PMDA.
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5214320">
+      ⁠</a>4.7.1. Transactions </h3></div></div></div><div class="para">
+					<a id="IG31340177504" class="indexterm"></a> <a id="IG31340177505" class="indexterm"></a> <a id="IG31340177506" class="indexterm"></a> <a id="IG31340177507" class="indexterm"></a>Paired calls to the <code class="command">pmtracebegin</code> and <code class="command">pmtraceend</code> API functions result in transaction data being sent to the trace PMDA with a measure of the time interval between the two calls. This interval is the transaction service time. Using the <code class="command">pmtraceabort</code> call causes data for that particular transaction to be discarded. The trace PMDA exports transaction data through the following <code class="literal">trace.transact</code> metrics listed in <a class="xref" href="LE26087-PARENT.html#id5214410">Table 4.2, “ <code class="literal">trace.transact</code> Metrics”</a>:
+				</div><div class="table"><a id="id5214410">
+      ⁠</a><p class="title"><strong>Table 4.2.  <code class="literal">trace.transact</code> Metrics</strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols lt-7-rows" summary=" trace.transact Metrics"><colgroup><col width="44%" /><col width="56%" /></colgroup><thead><tr valign="top"><th align="left" valign="bottom"> <div class="para">
+									Metric
+								</div>
+								 </th><th align="left" valign="bottom"> <div class="para">
+									Description
+								</div>
+								 </th></tr></thead><tbody><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal"> <a id="IG31340177508" class="indexterm"></a> trace.transact.ave_time</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The average service time per transaction type. This time is calculated over the last sample duration.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal"> <a id="IG31340177509" class="indexterm"></a> trace.transact.count</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The running count for each transaction type seen since the trace PMDA started.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal"> <a id="IG31340177510" class="indexterm"></a> trace.transact.max_time</code>
+								</div>
+								 <div class="para">
+									<code class="literal"></code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The maximum service time per transaction type within the last sample duration.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal"> <a id="IG31340177511" class="indexterm"></a> trace.transact.min_time</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The minimum service time per transaction type within the last sample duration.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal"> <a id="IG31340177512" class="indexterm"></a> trace.transact.rate</code>
+								</div>
+								 <div class="para">
+									 
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The average rate at which each transaction type is completed. The rate is calculated over the last sample duration.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="literal"> <a id="IG31340177513" class="indexterm"></a> trace.transact.total_time</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									The cumulative time spent processing each transaction since the trace PMDA started running.
+								</div>
+								 </td></tr></tbody></table></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5213903.html"><strong>Prev</strong>4.6.3. Configuring the Trace PMDA</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5214714.html"><strong>Next</strong>4.7.2. Point Tracing </a></li></ul></body></html>

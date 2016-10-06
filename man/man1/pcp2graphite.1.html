@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP2GRAPHITE
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pcp2graphite
+               </b>
+               - pcp-to-graphite metrics exporter
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pcp2graphite
+               </b>
+               [
+               <b>
+                -h
+               </b>
+               <i>
+                hostspec
+               </i>
+               ]
+              [
+               <b>
+                -a
+               </b>
+               <i>
+                archive
+               </i>
+               ]
+              [
+               <b>
+                -L
+               </b>
+               ]
+              [
+               <b>
+                -O
+               </b>
+               <i>
+                origin
+               </i>
+               ]
+              [
+               <b>
+                -T
+               </b>
+               <i>
+                finish
+               </i>
+               ]
+              [
+               <b>
+                -s
+               </b>
+               <i>
+                samples
+               </i>
+               ]
+              [
+               <b>
+                -t
+               </b>
+               <i>
+                delta
+               </i>
+               ]
+              [
+               <b>
+                -g
+               </b>
+               <i>
+                graphitehost
+               </i>
+               ]
+              [
+               <b>
+                -p
+               </b>
+               <i>
+                pickleport
+               </i>
+               ]
+              [
+               <b>
+                -P
+               </b>
+               <i>
+                textport
+               </i>
+               ]
+              [
+               <b>
+                -r
+               </b>
+               <i>
+                pickleprotocol
+               </i>
+               ]
+              [
+               <b>
+                -u
+               </b>
+               <i>
+                units
+               </i>
+               ]
+              [
+               <b>
+                -m
+               </b>
+               <i>
+                prefix
+               </i>
+               ]
+               <i>
+                metricname
+               </i>
+               ...
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pcp2graphite
+               </b>
+               is a PCP metric exporter.
+              It relays hierarchies of the
+               <b>
+                <a href="/man/man5/pmns.5.html">
+                 pmns
+                </a>
+               </b>
+               (5)
+              
+              to a designated
+              Graphite (Carbon/Whisper) database by periodically polling, then
+              copying/converting relevant numerical metrics across the Graphite
+              "text" or "pickled" TCP protocols.  Metric values are optionally
+              scaled to a given unit/scale, but are not rate-converted.  Metric
+              names may be prefixed and are somewhat canonicalized to fit the
+              Graphite namespace rules.
+               <p>
+                The data transfer will continue on a best-effort basis until the
+              program is interrupted.  Temporary errors are ignored.  Multiple
+              copies of this program may be run in parallel, to populate different
+              Graphite databases or subtrees, with different scaling or sampling
+              intervals.
+               </p>
+               <p>
+                The
+                <b>
+                 <a href="/man/man1/pmmgr.1.html">
+                  pmmgr
+                 </a>
+                </b>
+                (1)
+              
+              daemon can be used to ensure one or more
+                <b>
+                 pcp2grapite
+                </b>
+                instances start at system boot time.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                OPTIONS
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -h
+                 </b>
+                 <i>
+                  hostspec
+                 </i>
+                </dt>
+                <dd>
+                 Extract metrics from the specified
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              daemon, using a host specification as described on
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1).
+              
+              The default is
+                 <b>
+                  local:
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -a
+                 </b>
+                 <i>
+                  archive
+                 </i>
+                </dt>
+                <dd>
+                 Extract metrics from the given set of archives,
+              which is a comma-separated list of names, each
+              of which may be the base name of an archive or the name of a directory containing
+              one or more archives.
+                </dd>
+                <dt>
+                 <b>
+                  -L
+                 </b>
+                </dt>
+                <dd>
+                 Extract metrics from the local context PCP PMDAs.
+                </dd>
+                <dt>
+                 <b>
+                  -t
+                 </b>
+                 <i>
+                  delta
+                 </i>
+                </dt>
+                <dd>
+                 Specify the polling interval in seconds.  If live, polling is aligned to
+              natural multiples of this interval.  The default is
+                 <b>
+                  60
+                 </b>
+                 seconds.
+                </dd>
+                <dt>
+                 <b>
+                  -O
+                 </b>
+                 <i>
+                  origin
+                 </i>
+                </dt>
+                <dd>
+                 Set the time origin for archive scanning.  The default is the start of the
+              set of archives.
+                </dd>
+                <dt>
+                 <b>
+                  -T
+                 </b>
+                 <i>
+                  finish
+                 </i>
+                </dt>
+                <dd>
+                 Set the time finish for archive scanning.  The default is the end of the
+              set of archives.
+                </dd>
+                <dt>
+                 <b>
+                  -s
+                 </b>
+                 <i>
+                  samples
+                 </i>
+                </dt>
+                <dd>
+                 Set the maximum number of samples to relay.  The default is unlimited.
+                </dd>
+                <dt>
+                 <b>
+                  -g
+                 </b>
+                 <i>
+                  graphitehost
+                 </i>
+                </dt>
+                <dd>
+                 Specify the graphite carbon-cache server where the relayed data is to
+              be relayed.  The default is
+                 <b>
+                  localhost
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -p
+                 </b>
+                 <i>
+                  pickleport
+                 </i>
+                </dt>
+                <dd>
+                 Select the more efficient "pickled" encoding for carbon-cache
+              communication, and use the given TCP port.  This is the default, using
+              port
+                 <b>
+                  2004
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -P
+                 </b>
+                 <i>
+                  textport
+                 </i>
+                </dt>
+                <dd>
+                 Alternately, select the less efficient "text" encoding for carbon-cache
+              communication, and use the given TCP port.  This protocol is not
+              default, because it requires a separate TCP connection for each
+              metric.  The typical port is
+                 <b>
+                  2003
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -r
+                 </b>
+                 <i>
+                  pickleprotocol
+                 </i>
+                </dt>
+                <dd>
+                 Select the protocol for the "pickled" encoding. The possible values are:
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     •
+                    </dt>
+                    <dd>
+                     0 - ASCII protocol (the slowest),
+                    </dd>
+                    <dt>
+                     •
+                    </dt>
+                    <dd>
+                     1 - old binary protocol - pre Python 2.3,
+                    </dd>
+                    <dt>
+                     •
+                    </dt>
+                    <dd>
+                     2 - new binary protocol introduced in Python 2.3.
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     The default is
+                     <b>
+                      0
+                     </b>
+                     .
+                    </dt>
+                    <dd>
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <b>
+                  -u
+                 </b>
+                 <i>
+                  units
+                 </i>
+                </dt>
+                <dd>
+                 Rescale the metrics to the given UNITS string, as parsed by the
+                 <i>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </i>
+                 (3)
+              
+              function.  This must be dimensionally consistent with the underlying
+              PCP metric.  The default is to perform no scaling.
+                </dd>
+                <dt>
+                 <b>
+                  -m
+                 </b>
+                 <i>
+                  prefix
+                 </i>
+                </dt>
+                <dd>
+                 Use the given string as a prefix for all PMNS metrics relayed to Graphite.
+              The default is
+                 <b>
+                  pcp.
+                 </b>
+                 (note the period at the end).
+                </dd>
+                <dt>
+                 <i>
+                  metricname
+                 </i>
+                </dt>
+                <dd>
+                 Relay all numeric metrics nested at or below the given name in the PMNS.
+              This option may be repeated.  This is a compulsory option, having no
+              default.
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmparseunitsstr.3.html">
+                 pmParseUnitsStr
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="http://graphite.wikidot.com/">
+                 http://graphite.wikidot.com/
+                </a>
+               </b>
+               ,
+               <b>
+                <a href="/man/man1/pmmgr.1.html">
+                 pmmgr
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmval.1.html">
+                 pmval
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5)
+              
+              and
+               <b>
+                <a href="/man/man5/pmns.5.html">
+                 pmns
+                </a>
+               </b>
+               (5).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

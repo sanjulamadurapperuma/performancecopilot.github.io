@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP-MPSTAT
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               pcp-mpstat - Report CPU and Interrupt related statistics.
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pcp mpstat [ -A ] [ -u ] [ -V ] [ -I {
+               </b>
+               <b>
+                SUM | CPU | SCPU | ALL } ] [ -P {
+               </b>
+               <i>
+                cpu1,cpu2
+               </i>
+               <b>
+                [,...] | ON | ALL } ] [ -t
+               </b>
+               <i>
+                interval
+               </i>
+               <b>
+                ] [ -s
+               </b>
+               <i>
+                count
+               </i>
+               <b>
+                ] [ -a
+               </b>
+               <i>
+                pcp-archive
+               </i>
+               <b>
+                ]
+               </b>
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               The
+               <b>
+                pcp mpstat
+               </b>
+               command writes to standard output activities for each available processor,
+              processor 0 being the first one. If no activity/option has been selected, then the
+              default report is the CPU utilization
+               <b>
+                [ -u ]
+               </b>
+               report.
+               <p>
+                The
+                <i>
+                 interval
+                </i>
+                parameter specifies the amount of time in seconds between each report. Default is one second.
+              The value of
+                <i>
+                 count
+                </i>
+                parameter determines the number of samples to be displayed.
+              Default is continous.
+               </p>
+               <p>
+               </p>
+               <p>
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                OPTIONS
+               </h2>
+               <dl compact="">
+                <dt>
+                 -A
+                </dt>
+                <dd>
+                 This option is equivalent to specifying
+                 <b>
+                  -u -I ALL -P ALL
+                 </b>
+                </dd>
+                <dt>
+                 -I { SUM | CPU | SCPU | ALL }
+                </dt>
+                <dd>
+                 Report interrupts statistics.
+                 <p>
+                  With the
+                  <b>
+                   SUM
+                  </b>
+                  keyword, the
+                  <b>
+                   pcp mpstat
+                  </b>
+                  command reports the total number of interrupts per processor.
+              The following values are displayed:
+                 </p>
+                 <p>
+                  <b>
+                   CPU
+                  </b>
+                 </p>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Processor number. The keyword
+                     <i>
+                      all
+                     </i>
+                     indicates that statistics are calculated as averages among all
+              processors.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     intr/s
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the total number of interrupts received per second by
+              the CPU or CPUs.
+                    </dd>
+                   </dl>
+                   <p>
+                    With the
+                    <b>
+                     CPU
+                    </b>
+                    keyword, the number of each individual interrupt received per
+              second by the CPU or CPUs is displayed. Interrupts are those under the kernel.percpu.interrupts metric tree.
+                   </p>
+                   <p>
+                    With the
+                    <b>
+                     SCPU
+                    </b>
+                    keyword, the number of each individual software interrupt received per
+              second by the CPU or CPUs is displayed. Software interrupts are those under
+                    <br/>
+                    the kernel.percpu.softirqs tree
+                   </p>
+                   <p>
+                    The
+                    <b>
+                     ALL
+                    </b>
+                    keyword is equivalent to specifying all the keywords above and
+              therefore all the interrupts statistics are displayed.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 -P { cpu1,cpu2[,...] | ON | ALL }
+                </dt>
+                <dd>
+                 Indicate the processor number for which statistics are to be reported.
+                 <i>
+                  cpu1 and cpu2
+                 </i>
+                 are the processor numbers. A list of required processor numbers can be provided. Note that processor 0 is the first processor.
+                 <p>
+                  The
+                  <b>
+                   ON
+                  </b>
+                  keyword indicates that statistics are to be reported for every
+              online processor, whereas the
+                  <b>
+                   ALL
+                  </b>
+                  keyword indicates that statistics are to be reported for all processors.
+                 </p>
+                </dd>
+                <dt>
+                 -u
+                </dt>
+                <dd>
+                 Report CPU utilization. The following values are displayed:
+                 <p>
+                  <b>
+                   CPU
+                  </b>
+                 </p>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Processor number. The keyword
+                     <i>
+                      ALL
+                     </i>
+                     indicates that statistics are calculated as averages among all
+              processors.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %usr
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of CPU utilization that occurred while
+              executing at the user level (application).
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %nice
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of CPU utilization that occurred while
+              executing at the user level with nice priority.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %sys
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of CPU utilization that occurred while
+              executing at the system level (kernel). Note that this does not
+              include time spent servicing hardware and software interrupts.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %iowait
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of time that the CPU or CPUs were idle during which
+              the system had an outstanding disk I/O request.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %irq
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of time spent by the CPU or CPUs to service hardware
+              interrupts.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %soft
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of time spent by the CPU or CPUs to service software
+              interrupts.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %steal
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of time spent in involuntary wait by the virtual CPU
+              or CPUs while the hypervisor was servicing another virtual processor.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %guest
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of time spent by the CPU or CPUs to run a virtual
+              processor.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %gnice
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of time spent by the CPU or CPUs to run a niced
+              guest.
+                    </dd>
+                   </dl>
+                   <p>
+                    <b>
+                     %idle
+                    </b>
+                   </p>
+                   <dl compact="">
+                    <dt>
+                    </dt>
+                    <dd>
+                     Show the percentage of time that the CPU or CPUs were idle and the system
+              did not have an outstanding disk I/O request.
+                    </dd>
+                   </dl>
+                   <p>
+                    Note: On SMP machines a processor that does not have any activity at all
+              is a disabled (offline) processor.
+                   </p>
+                  </dd>
+                 </dl>
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 -a  FILE , --archive = FILE
+                </dt>
+                <dd>
+                 Causes pcp-mpstat to use the specified archive than connecting to PMCD. The argument to -a is a comma-separated
+              list of names, each of which may be the base name of an archive or the name of a directory containing one or more archives. Archives can be created using
+                 <b>
+                  <a href="/man/man1/pmlogger.1.html">
+                   pmlogger
+                  </a>
+                 </b>
+                 (1).
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 -s  N , --samples = N
+                </dt>
+                <dd>
+                 Set the number of samples to be displayed. Since the first sample is used for the rate conversion of some of the metrics, the total number of samples reported are one less that N. Default is continous.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 -t DELTA , --interval = DELTA
+                </dt>
+                <dd>
+                 Set the interval between two samples. Default is one second.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 -V
+                </dt>
+                <dd>
+                 Print version number then exit.
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                EXAMPLES
+               </h2>
+               <b>
+                pcp mpstat -t 2 -s 5
+               </b>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Display four reports of global statistics among all processors at two second intervals.
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 pcp mpstat -P ALL -t 2 -s 5
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Display four reports of statistics for all processors at two second intervals.
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                NOTES
+               </h2>
+               <b>
+                pcp-mpstat
+               </b>
+               is inspired by the
+               <b>
+                <a href="/man/man1/mpstat.1.html">
+                 mpstat
+                </a>
+               </b>
+               (1)
+              
+              command and aims to be command line and output compatible with it.
+               <p>
+               </p>
+               <p>
+                <a name="lbAH">
+                </a>
+               </p>
+               <h2>
+                ENVIRONMENT
+               </h2>
+               <b>
+                TZ
+               </b>
+               and
+               <b>
+                LC_TIME
+               </b>
+               environment variables can be used to override the default date display format for pcp-mpstat.
+               <a name="lbAI">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcp.1.html">
+                 pcp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/mpstat.1.html">
+                 mpstat
+                </a>
+                (1),
+               </b>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmparseinterval.3.html">
+                 pmParseInterval
+                </a>
+               </b>
+               (3)
+               <b>
+                <a href="/man/man3/pmtraversepmns.3.html">
+                 pmTraversePMNS
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+                 environ
+                </a>
+               </b>
+               (7).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  EXAMPLES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  NOTES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

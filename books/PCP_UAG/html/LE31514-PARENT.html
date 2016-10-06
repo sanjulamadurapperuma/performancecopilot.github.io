@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.5. Developing and Debugging pmie Rules</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="prev" href="LE60280-PARENT.html" title="5.4. pmie Examples" /><link rel="next" href="LE91221-PARENT.html" title="5.6. Caveats and Notes on pmie" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE60280-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE91221-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE31514-PARENT">
+      ⁠</a>5.5. Developing and Debugging <code class="command">pmie</code> Rules</h2></div></div></div><div class="para">
+				<a id="ITch06-20" class="indexterm"></a>Given the <code class="literal">-d</code> command line option, <code class="command">pmie</code> executes in interactive mode, and the user is presented with a menu of options:
+			</div><pre class="literallayout">pmie debugger commands
+     f [file-name]      - load expressions from given file or stdin
+     l [expr-name]      - list named expression or all expressions
+     r [interval]       - run for given or default interval
+     S time-spec        - set start time for run
+     T time-spec        - set default interval for run command
+     v [expr-name]      - print subexpression for %h, %i and %v bindings
+     h or ?             - print this menu of commands
+     q                  - quit
+pmie&gt;</pre><div class="para">
+				If both the <code class="literal">-d</code> option and a filename are present, the expressions in the given file are loaded before entering interactive mode. Interactive mode is useful for debugging new rules.
+			</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE60280-PARENT.html"><strong>Prev</strong>5.4. pmie Examples</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE91221-PARENT.html"><strong>Next</strong>5.6. Caveats and Notes on pmie</a></li></ul></body></html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.4. Performance Metric Descriptions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97135-PARENT.html" title="Chapter 3. PMAPI--The Performance Metrics API" /><link rel="prev" href="id5198049.html" title="3.3. Current PMAPI Context" /><link rel="next" href="LE82331-PARENT.html" title="3.5. Performance Metrics Values" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5198049.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="LE82331-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE11914-PARENT">
+      ⁠</a>3.4. Performance Metric Descriptions</h2></div></div></div><div class="para">
+				<a id="IG31340177268" class="indexterm"></a>For each defined performance metric, there is associated metadata encoded in a performance metric description (<code class="command">pmDesc</code> structure) that describes the format and semantics of the performance metric. The <code class="command">pmDesc</code> structure, in <a class="xref" href="LE11914-PARENT.html#Z976548425sdc">Example 3.2, “ <code class="command">pmDesc</code> Structure”</a>, provides all of the information required to interpret and manipulate a performance metric through the PMAPI. It has the following declaration:
+			</div><div class="example"><a id="Z976548425sdc">
+      ⁠</a><p class="title"><strong>Example 3.2.  <code class="command">pmDesc</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">/* Performance Metric Descriptor */
+typedef struct {
+    pmID    pmid;   /* unique identifier */
+    int     type;   /* base data type (see below) */
+    pmInDom indom;  /* instance domain */
+    int     sem;    /* semantics of value (see below) */
+    pmUnits units;  /* dimension and units (see below) */
+} pmDesc;</pre></div></div><div class="para">
+				The <code class="literal">type</code> field in the <code class="filename">pmDesc</code> structure describes various encodings of a metric's value. Its value will be one of the following constants:
+			</div><pre class="programlisting">/* pmDesc.type - data type of metric values */
+#define PM_TYPE_NOSUPPORT -1   /* not in this version */
+#define PM_TYPE_32        0    /* 32-bit signed integer */
+#define PM_TYPE_U32       1    /* 32-bit unsigned integer */
+#define PM_TYPE_64        2    /* 64-bit signed integer */
+#define PM_TYPE_U64       3    /* 64-bit unsigned integer */
+#define PM_TYPE_FLOAT     4    /* 32-bit floating point */
+#define PM_TYPE_DOUBLE    5    /* 64-bit floating point */
+#define PM_TYPE_STRING    6    /* array of char */
+#define PM_TYPE_AGGREGATE 7    /* arbitrary binary data */
+#define PM_TYPE_AGGREGATE_STATIC 8 /* static pointer to aggregate */
+#define PM_TYPE_EVENT     9    /* packed pmEventArray */
+#define PM_TYPE_UNKNOWN   255  /* used in pmValueBlock not pmDesc */</pre><div class="para">
+				<a id="IG31340177269" class="indexterm"></a>By convention <code class="literal">PM_TYPE_STRING</code> is interpreted as a classic C-style null byte terminated string.
+			</div><div class="para">
+				<a id="IG31340177269nat" class="indexterm"></a>Event records are encoded as a packed array of strongly-typed, well-defined records within a <code class="literal">pmResult</code> structure, using a container metric with a value of type <code class="literal">PM_TYPE_EVENT</code>.
+			</div><div class="para">
+				<a id="IG31340177270" class="indexterm"></a>If the value of a performance metric is of type <code class="literal">PM_TYPE_STRING</code>, <code class="literal">PM_TYPE_AGGREGATE</code>, <code class="literal">PM_TYPE_AGGREGATE_STATIC</code>, or <code class="literal">PM_TYPE_EVENT</code>, the interpretation of that value is unknown to many PCP components. In the case of the aggregate types, the application using the value and the Performance Metrics Domain Agent (PMDA) providing the value must have some common understanding about how the value is structured and interpreted. Strings can be manipulated using the standard C libraries. Event records contain timestamps, event flags and event parameters, and the PMAPI provides support for unpacking an event record - see the <code class="command">pmUnpackEventRecords(3)</code> man page for details. Further discussion on event metrics and event records can be found in <a class="xref" href="id5199202.html">Section 3.6, “Performance Event Metrics”</a>.
+			</div><div class="para">
+				<a id="IG31340177271" class="indexterm"></a> <code class="literal">PM_TYPE_NOSUPPORT</code> indicates that the PCP collection framework knows about the metric, but the corresponding service or application is either not configured or is at a revision level that does not provide support for this performance metric.
+			</div><div class="para">
+				The semantics of the performance metric is described by the <code class="literal">sem</code> field of a <code class="filename">pmDesc</code> structure and uses the following constants:
+			</div><pre class="programlisting">/* pmDesc.sem - semantics of metric values */
+#define PM_SEM_COUNTER  1  /* cumulative count, monotonic increasing */
+#define PM_SEM_INSTANT  3  /* instantaneous value continuous domain */
+#define PM_SEM_DISCRETE 4  /* instantaneous value discrete domain */</pre><div class="para">
+				<a id="IG31340177272" class="indexterm"></a> <a id="IG31340177273" class="indexterm"></a>Each value for a performance metric is assumed to be drawn from a set of values that can be described in terms of their dimensionality and scale by a compact encoding, as follows:
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+						The dimensionality is defined by a power, or index, in each of three orthogonal dimensions: Space, Time, and Count (dimensionless). For example, I/O throughput is Space<sup>1</sup>.Time<sup>-1</sup>, while the running total of system calls is Count<sup>1</sup>, memory allocation is Space<sup>1</sup>, and average service time per event is Time<sup>1</sup>.Count<sup>-1</sup>.
+					</div></li><li class="listitem"><div class="para">
+						In each dimension, a number of common scale values are defined that may be used to better encode ranges that might otherwise exhaust the precision of a 32-bit value. For example, a metric with dimension Space<sup>1</sup>.Time<sup>-1</sup> may have values encoded using the scale megabytes per second.
+					</div></li></ul></div><div class="para">
+				<a id="IG31340177274" class="indexterm"></a>This information is encoded in the <code class="filename">pmUnits</code> data structure, shown in <a class="xref" href="LE11914-PARENT.html#Z1034792511tls">Example 3.3, “ <code class="filename">pmUnits</code> and <code class="filename">pmDesc</code> Structures”</a>. It is embedded in the <code class="filename">pmDesc</code> structure :
+			</div><div class="para">
+				The structures are as follows:
+			</div><div class="example"><a id="Z1034792511tls">
+      ⁠</a><p class="title"><strong>Example 3.3.  <code class="filename">pmUnits</code> and <code class="filename">pmDesc</code> Structures</strong></p><div class="example-contents"><pre class="programlisting">/*
+ * Encoding for the units (dimensions and
+ * scale) for Performance Metric Values
+ *
+ * For example, a pmUnits struct of
+ * { 1, -1, 0, PM_SPACE_MBYTE, PM_TIME_SEC, 0 }
+ * represents Mbytes/sec, while 
+ * { 0, 1, -1, 0, PM_TIME_HOUR, 6 }
+ * represents hours/million-events
+ */
+typedef struct {
+    int pad:8;
+    int scaleCount:4; /* one of PM_COUNT_* below */
+    int scaleTime:4;  /* one of PM_TIME_* below */
+    int scaleSpace:4; /* one of PM_SPACE_* below */    
+    int dimCount:4;   /* event dimension */
+    int dimTime:4;    /* time dimension */
+    int dimSpace:4;   /* space dimension
+} pmUnits;   /* dimensional units and scale of value */
+/* pmUnits.scaleSpace */
+#define PM_SPACE_BYTE 0  /* bytes */
+#define PM_SPACE_KBYTE 1 /* Kilobytes (1024) */
+#define PM_SPACE_MBYTE 2 /* Megabytes (1024^2) */
+#define PM_SPACE_GBYTE 3 /* Gigabytes (1024^3) */
+#define PM_SPACE_TBYTE 4 /* Terabytes (1024^4) */
+/* pmUnits.scaleTime */
+#define PM_TIME_NSEC 0   /* nanoseconds */
+#define PM_TIME_USEC 1   /* microseconds */
+#define PM_TIME_MSEC 2   /* milliseconds */
+#define PM_TIME_SEC 3    /* seconds */
+#define PM_TIME_MIN 4    /* minutes */
+#define PM_TIME_HOUR 5   /* hours */
+/*
+ * pmUnits.scaleCount (e.g. count events, syscalls,
+ * interrupts, etc.) -- these are simply powers of 10,
+ * and not enumerated here.
+ * e.g. 6 for 10^6, or -3 for 10^-3
+ */
+#define PM_COUNT_ONE 0 /* 1 */</pre></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5198049.html"><strong>Prev</strong>3.3. Current PMAPI Context</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE82331-PARENT.html"><strong>Next</strong>3.5. Performance Metrics Values</a></li></ul></body></html>

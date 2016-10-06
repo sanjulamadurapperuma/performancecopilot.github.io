@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP-COLLECTL
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmcollectl
+               </b>
+               ,
+               <b>
+                pcp-collectl
+               </b>
+               - collect data that describes the current system status
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pcp collectl
+               </b>
+               [
+               <b>
+                -f
+               </b>
+               <i>
+                file
+               </i>
+               |
+               <b>
+                -p
+               </b>
+               <i>
+                file
+               </i>
+               ...]
+               <i>
+                [options
+               </i>
+               ...]
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pcp-collectl
+               </b>
+               is a system-level performance monitoring utility that records or displays
+              specific operating system data for one or more sets of subsystems.
+              Any of the subsystems (such as CPU, Disks, Memory or Sockets) can be
+              included or excluded from data collection.
+              Data can either be displayed immediately to a terminal, or stored in files
+              for retrospective analysis.
+               <p>
+                <b>
+                 pcp-collectl
+                </b>
+                is a
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/python.1.html">
+                  python
+                 </a>
+                </b>
+                (1)
+              
+              script providing much of the functionality available from the
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/collectl.1.html">
+                  collectl
+                 </a>
+                </b>
+                (1)
+              
+              Linux utility (which happens to be written in
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/perl.1.html">
+                  perl
+                 </a>
+                </b>
+                (1)).
+               </p>
+               <p>
+                It makes use of the Performance Co-Pilot (PCP) toolkit to
+              simplify its implementation, as well as provide more of the
+                <b>
+                 collectl
+                </b>
+                functionality on platforms other than Linux.
+               </p>
+               <p>
+                <b>
+                 pcp-collectl
+                </b>
+                has two primary modes of operation:
+               </p>
+               <dl compact="">
+                <dt>
+                 1.
+                </dt>
+                <dd>
+                 Record Mode (
+                 <b>
+                  -f
+                 </b>
+                 or
+                 <b>
+                  --filename
+                 </b>
+                 option) which reads data
+              from a live system and writes output to a file or displays it on a terminal.
+                </dd>
+                <dt>
+                 2.
+                </dt>
+                <dd>
+                 Playback Mode (
+                 <b>
+                  -p
+                 </b>
+                 or
+                 <b>
+                  -a
+                 </b>
+                 option) which reads data
+              from one or more PCP archive files and displays output on a terminal.
+              Note that these files are
+                 <i>
+                  not
+                 </i>
+                 raw
+                 <b>
+                  collectl
+                 </b>
+                 format data, rather they are archives created by the
+                 <b>
+                  <a href="/man/man1/pmlogger.1.html">
+                   pmlogger
+                  </a>
+                 </b>
+                 (1)
+              
+              utility (possibly indirectly, through use of the
+                 <b>
+                  -f
+                 </b>
+                 option to
+                 <b>
+                  pcp-collectl
+                 </b>
+                 ).
+                </dd>
+               </dl>
+               <p>
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                RECORD MODE OPTIONS
+               </h2>
+               In this mode data is taken from a
+               <b>
+                live
+               </b>
+               system and either displayed on the terminal or written to a PCP archive.
+               <p>
+                <b>
+                 -h host
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Display metrics from
+                 <i>
+                  host
+                 </i>
+                 instead of displaying metrics from the local host.
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 -c, --count samples
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 The number of samples to record.
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 -f, --filename filename
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 This is the name of a PCP archive to write the output to.
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 -i, --interval interval
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 This is the sampling interval in seconds.  The default is 1 second.
+                </dd>
+               </dl>
+               <b>
+                -R, --runtime duration
+               </b>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Specify the duration of data collection where the duration is a number followed
+              by one of
+                 <b>
+                  wdhms,
+                 </b>
+                 indicating how many weeks, days, hours, minutes or seconds
+              the collection is to be taken for.
+                </dd>
+               </dl>
+               <p>
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                PLAYBACK MODE OPTIONS
+               </h2>
+               In this mode, data is read from one or more PCP data files that were
+              generated with the recording option, or indirectly via the
+               <b>
+                pmlogger
+               </b>
+               utility.
+               <p>
+                <b>
+                 -f, --filename filename
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 If specified, this is the name of a PCP archive to write the output to (rather
+              than the terminal).
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 -p, --playback filename
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Read data from the specified PCP archive folio files(s) - refer to
+                 <b>
+                  <a href="/man/man1/pmafm.1.html">
+                   pmafm
+                  </a>
+                 </b>
+                 (1)
+              
+              for archive folio details.
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 -a, --archive filename
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Read data from the specified PCP raw archive files(s). The argument is
+              a comma-separated list of names, each
+              of which may be the base name of an archive or the name of a directory containing
+              one or more archives.
+                </dd>
+               </dl>
+               <p>
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                COMMON OPTIONS
+               </h2>
+               The following options are supported in both record and playback modes.
+               <p>
+                <b>
+                 --help
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Display standard help message.
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 -s, --subsys subsystem
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 This field controls which subsystem data is to be collected or played back
+              for. The rules for displaying results vary depending on the type of data to be
+              displayed.  If you write data for CPUs and DISKs to a raw file and play it back
+              with -sc, you will only see CPU data.  If you play it back with
+                 <b>
+                  -scm
+                 </b>
+                 you
+              will still only see CPU data since memory data was not collected.  
+              
+              
+              
+              
+              
+              To see the current set of default subsystems,
+              which are a subset of this full list,
+              use
+                 <b>
+                  -h
+                 </b>
+                 .
+                 <p>
+                 </p>
+                 <p>
+                  The default is "cdn", which stands for CPU, Disk and Network summary data.
+                 </p>
+                 <dl compact="">
+                  <dt>
+                   <b>
+                    SUMMARY SUBSYSTEMS
+                   </b>
+                  </dt>
+                  <dd>
+                  </dd>
+                 </dl>
+                 <p>
+                  <br/>
+                  c - CPU
+                  <br/>
+                  d - Disk
+                  <br/>
+                  f - NFS V3 Data
+                  <br/>
+                  j - Interrupts
+                  <br/>
+                  m - Memory
+                  <br/>
+                  n - Networks
+                 </p>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                  </dd>
+                 </dl>
+                 <p>
+                 </p>
+                 <dl compact="">
+                  <dt>
+                   <b>
+                    DETAIL SUBSYSTEMS
+                   </b>
+                  </dt>
+                  <dd>
+                  </dd>
+                 </dl>
+                 <p>
+                  This is the set of
+                  <b>
+                   detail
+                  </b>
+                  data from which in most cases the corresponding summary data is
+              derived.
+              So, if one has 3 disks and chooses
+                  <b>
+                   -sd,
+                  </b>
+                  one will only see a single total taken
+              across all 3 disks.  If one
+              chooses
+                  <b>
+                   -sD,
+                  </b>
+                  individual disk totals will be reported but no totals.
+                 </p>
+                 <p>
+                  <br/>
+                  C - CPU
+                  <br/>
+                  D - Disk
+                  <br/>
+                  F - NFS Data
+                  <br/>
+                  J - Interrupts
+                  <br/>
+                  M - Memory node data, which is also known as NUMA data
+                  <br/>
+                  N - Networks
+                 </p>
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 --verbose
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Display output in verbose mode.  This often displays more data than in the default mode.  When 
+              displaying detail data, verbose mode is forced.  Furthermore, if summary data for a single 
+              subsystem is to be displayed in verbose mode, the headers are only repeated occasionally whereas
+              if multiple subsystems are involved each needs their own header.
+                </dd>
+               </dl>
+               <p>
+                <a name="lbAH">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/collectl.1.html">
+                 collectl
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/collectl2pcp.1.html">
+                 collectl2pcp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/perl.1.html">
+                 perl
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/python.1.html">
+                 python
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlogger.1.html">
+                 pmlogger
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmafm.1.html">
+                 pmafm
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmprobe.1.html">
+                 pmprobe
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmrep.1.html">
+                 pmrep
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+              
+              and
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  RECORD MODE OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  PLAYBACK MODE OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  COMMON OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

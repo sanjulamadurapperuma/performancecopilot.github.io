@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.3.7. pmie Rule Expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE90227-PARENT.html" title="5.3. Specification Language for pmie" /><link rel="prev" href="LE97708-PARENT.html" title="5.3.6.4. Quantification Operators" /><link rel="next" href="LE87294-PARENT.html" title="5.3.8. pmie Intrinsic Operators" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE97708-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE87294-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5202519">
+      ⁠</a>5.3.7. <code class="command">pmie</code> Rule Expressions</h3></div></div></div><div class="para">
+					<a id="IG31371888206" class="indexterm"></a>Rule expressions for <code class="command">pmie</code> have the following syntax:
+				</div><pre class="literallayout">lexpr -&gt; <em class="replaceable">actions</em> ;</pre><div class="para">
+					The semantics are as follows:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							If the logical expression <code class="literal">lexpr</code> evaluates <code class="literal">true</code>, then perform the <em class="replaceable">actions</em> that follow. Otherwise, do not perform the <em class="replaceable">actions</em>.
+						</div></li><li class="listitem"><div class="para">
+							It is required that <code class="literal">lexpr</code> has a singular truth value. Aggregation and quantification operators must have been applied to reduce multiple truth values to a single value.
+						</div></li><li class="listitem"><div class="para">
+							When executed, an <em class="replaceable">action</em> completes with a success/failure status.
+						</div></li><li class="listitem"><div class="para">
+							One or more <em class="replaceable">actions</em> may appear; consecutive <em class="replaceable">actions</em> are separated by operators that control the execution of subsequent <em class="replaceable">actions</em>, as follows:
+						</div><div class="variablelist"><a id="Z926963018sdc">
+      ⁠</a><dl class="variablelist"><dt><span class="term"><em class="replaceable">action-1 </em><code class="literal">&amp;</code></span></dt><dd><div class="para">
+										Always execute subsequent actions (serial execution).
+									</div></dd><dt><span class="term"><em class="replaceable">action-1 </em><strong class="userinput"><code>|</code></strong> </span></dt><dd><div class="para">
+										If <em class="replaceable">action-1</em> fails, execute subsequent actions, otherwise skip the subsequent actions (alternation).
+									</div></dd></dl></div></li></ul></div><div class="para">
+					An <em class="replaceable">action</em> is composed of a keyword to identify the action method, an optional <em class="replaceable">time</em> specification, and one or more arguments.
+				</div><div class="para">
+					A <em class="replaceable">time</em> specification uses the same syntax as a valid time interval that may be assigned to <code class="literal">delta</code>, as described in <a class="xref" href="LE88708-PARENT.html">Section 5.3.2, “Setting Evaluation Frequency”</a>. If the <em class="replaceable">action</em> is executed and the <em class="replaceable">time</em> specification is present, <code class="command">pmie</code> will suppress any subsequent execution of this <em class="replaceable">action</em> until the wall clock time has advanced by <em class="replaceable">time</em>.
+				</div><div class="para">
+					The arguments are passed directly to the action method.
+				</div><div class="para">
+					The following action methods are provided:
+				</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">shell</code></span></dt><dd><div class="para">
+								The single argument is passed to the shell for execution. This <em class="replaceable">action</em> is implemented using <code class="literal">system</code> in the background. The <em class="replaceable">action</em> does not wait for the system call to return, and succeeds unless the fork fails.
+							</div></dd><dt><span class="term"><code class="literal">alarm</code></span></dt><dd><div class="para">
+								<a id="IG31371888207" class="indexterm"></a>A notifier containing a time stamp, a single <em class="replaceable">argument</em> as a message, and a <span class="guilabel"><strong>Cancel</strong></span> button is posted on the current display screen (as identified by the <code class="literal">DISPLAY</code> environment variable). Each alarm <em class="replaceable">action</em> first checks if its notifier is already active. If there is an identical active notifier, a duplicate notifier is not posted. The action succeeds unless the fork fails.
+							</div></dd><dt><span class="term"><code class="literal">syslog</code></span></dt><dd><div class="para">
+								<a id="IG31371888208" class="indexterm"></a><a id="IG31371888209" class="indexterm"></a>A message is written into the system log. If the first word of the first argument is <code class="literal">-p</code>, the second word is interpreted as the priority (see the <code class="command">syslog(3)</code> man page); the message tag is <code class="literal">pcp-pmie</code>. The remaining argument is the message to be written to the system log. This action always succeeds.
+							</div></dd><dt><span class="term"><code class="literal">print</code></span></dt><dd><div class="para">
+								<a id="IG31371888210" class="indexterm"></a>A message containing a time stamp in <code class="command">ctime(3)</code> format and the argument is displayed out to standard output (<code class="command">stdout</code>). This action always succeeds.
+							</div></dd></dl></div><div class="para">
+					Within the argument passed to an action method, the following expansions are supported to allow some of the context from the logical expression on the left to appear to be embedded in the argument:
+				</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">%h</code></span></dt><dd><div class="para">
+								The value of a <em class="replaceable">host</em> that makes the expression true.
+							</div></dd><dt><span class="term"><code class="literal">%i</code></span></dt><dd><div class="para">
+								The value of an <em class="replaceable">instance</em> that makes the expression true.
+							</div></dd><dt><span class="term"><code class="literal">%v</code></span></dt><dd><div class="para">
+								The value of a performance metric from the logical expression.
+							</div></dd></dl></div><div class="para">
+					<a id="IG31371888211" class="indexterm"></a>Some ambiguity may occur in respect to which host, instance, or performance metric is bound to a %-token. In most cases, the leftmost binding in the top-level subexpression is used. You may need to use <code class="command">pmie</code> in the interactive debugging mode (specify the <code class="literal">-d</code> command line option) in conjunction with the <code class="literal">-W</code> command line option to discover which subexpressions contributes to the %-token bindings.
+				</div><div class="para">
+					<a class="xref" href="id5202519.html#Z983833504sdc">Example 5.7, “Rule Expression Options ”</a> illustrates some of the options when constructing rule expressions:
+				</div><div class="example"><a id="Z983833504sdc">
+      ⁠</a><p class="title"><strong>Example 5.7. Rule Expression Options </strong></p><div class="example-contents"><pre class="literallayout">some_inst ( disk.dev.total &gt; 60 ) 
+       -&gt; syslog 10 mins "[%i] busy, %v IOPS " &amp; 
+          shell 1 hour "echo \ 
+               'Disk %i is REALLY busy. Running at %v I/Os per second' \ 
+               | Mail -s 'pmie alarm' sysadm";</pre></div></div><div class="para">
+					<a id="IG31371888212" class="indexterm"></a>In this case, <code class="literal">%v</code> and <code class="literal">%i</code> are both associated with the instances for the metric <code class="literal">disk.dev.total</code> that make the expression true. If more than one instance makes the expression true (more than one disk is busy), then the argument is formed by concatenating the result from each %-token binding. The text added to the system log file might be as shown in <a class="xref" href="id5202519.html#Z983833442sdc">Example 5.8, “System Log Text”</a>:
+				</div><div class="example"><a id="Z983833442sdc">
+      ⁠</a><p class="title"><strong>Example 5.8. System Log Text</strong></p><div class="example-contents"><pre class="literallayout">Aug 6 08:12:44 5B:gonzo pcp-pmie[3371]:
+                         [disk1] busy, 3.7 IOPS [disk2] busy, 0.3 IOPS</pre></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+						When <code class="command">pmie</code> is processing performance metrics from a set of PCP archive logs, the <em class="replaceable">actions</em> will be processed in the expected manner; however, the action methods are modified to report a textual facsimile of the <em class="replaceable">action</em> on the standard output.
+					</div></div></div><div class="para">
+					Consider the rule in <a class="xref" href="id5202519.html#Z983833364sdc">Example 5.9, “Standard Output”</a>:
+				</div><div class="example"><a id="Z983833364sdc">
+      ⁠</a><p class="title"><strong>Example 5.9. Standard Output</strong></p><div class="example-contents"><pre class="literallayout">delta = 2 sec;  // more often for demonstration purposes 
+percpu  = "kernel.percpu"; 
+// Unusual usr-sys split when some CPU is more than 20% in usr mode 
+// and sys mode is at least 1.5 times usr mode 
+// 
+cpu_usr_sys = some_inst ( 
+        $percpu.cpu.sys &gt; $percpu.cpu.user * 1.5 &amp;&amp; 
+        $percpu.cpu.user &gt; 0.2 
+   ) -&gt;  alarm "Unusual sys time: " "%i ";</pre><div class="para">
+						When evaluated against an archive, the following output is generated (the alarm action produces a message on standard output):
+					</div><pre class="literallayout"><strong class="userinput"><code>pmafm ${HOME}/f4 pmie cpu.head cpu.00</code></strong>
+alarm Wed Aug  7 14:54:48 2012: Unusual sys time: cpu0 
+alarm Wed Aug  7 14:54:50 2012: Unusual sys time: cpu0 
+alarm Wed Aug  7 14:54:52 2012: Unusual sys time: cpu0 
+alarm Wed Aug  7 14:55:02 2012: Unusual sys time: cpu0 
+alarm Wed Aug  7 14:55:06 2012: Unusual sys time: cpu0</pre></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE97708-PARENT.html"><strong>Prev</strong>5.3.6.4. Quantification Operators</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE87294-PARENT.html"><strong>Next</strong>5.3.8. pmie Intrinsic Operators</a></li></ul></body></html>

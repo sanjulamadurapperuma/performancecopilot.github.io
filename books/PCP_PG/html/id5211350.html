@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8.11.11.  pmPrintValue Function</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE44064-PARENT.html" title="3.8.11. PMAPI Ancillary Support Services" /><link rel="prev" href="id5211303.html" title="3.8.11.10.  pmNumberStr Function" /><link rel="next" href="id5211504.html" title="3.8.11.12.  pmflush Function" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5211303.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5211504.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5211350">
+      ⁠</a>3.8.11.11.  <code class="command">pmPrintValue</code> Function</h4></div></div></div><pre class="literallayout">void pmPrintValue(FILE *<em class="replaceable">f</em>, int <em class="replaceable">valfmt</em>, int <em class="replaceable">type</em>, const pmValue *<em class="replaceable">val</em>,
+int <em class="replaceable">minwidth</em>)
+<code class="command">Python:</code>
+pmPrintValue(FILE* <em class="replaceable">file</em>, pmResult <em class="replaceable">pmresult</em>, <em class="replaceable">pmdesc</em>, <em class="replaceable">vset_index</em>, <em class="replaceable">vlist_index</em>, <em class="replaceable">min_width</em>)</pre><div class="para">
+						<a id="IG31340177435" class="indexterm"></a> <a id="IG31340177436" class="indexterm"></a>The value of a single performance metric (as identified by <em class="replaceable">val</em>) is printed on the standard I/O stream identified by <em class="replaceable">f</em>. The value of the performance metric is interpreted according to the format of <em class="replaceable">val</em> as defined by <em class="replaceable">valfmt</em> (from a <code class="command">pmValueSet</code> within a <code class="filename">pmResult</code>) and the generic description of the metric's type from a <code class="command">pmDesc</code> structure, passed in through.
+					</div><div class="para">
+						If the converted value is less than <em class="replaceable">minwidth</em> characters wide, it will have leading spaces to pad the output to a width of <em class="replaceable">minwidth</em> characters.
+					</div><div class="para">
+						<a class="xref" href="id5211350.html#Z976565414sdc">Example 3.17, “Using <code class="command">pmPrintValue</code> to Print Values”</a> illustrates using <code class="command">pmPrintValue</code> to print the values from a <code class="filename">pmResult</code> structure returned via <code class="command">pmFetch</code>:
+					</div><div class="example"><a id="Z976565414sdc">
+      ⁠</a><p class="title"><strong>Example 3.17. Using <code class="command">pmPrintValue</code> to Print Values</strong></p><div class="example-contents"><pre class="programlisting">    int         numpmid, i, j, sts;
+    pmID        pmidlist[10];
+    pmDesc      desc[10];
+    pmResult    *result;
+
+    /* set up PMAPI context, numpmid and pmidlist[] ... */
+    /* get metric descriptors */
+    for (i = 0; i &lt; numpmid; i++) {
+        if ((sts = pmLookupDesc(pmidlist[i], &amp;desc[i])) &lt; 0) {
+            printf("pmLookupDesc(pmid=%s): %s\n",
+                          pmIDStr(pmidlist[i]), pmErrStr(sts));
+            exit(1);
+        }
+    }
+    if ((sts = pmFetch(numpmid, pmidlist, &amp;result)) &gt;= 0) {
+        /* once per metric */
+        for (i = 0; i &lt; result-&gt;numpmid; i++) {
+            printf("PMID: %s", pmIDStr(result-&gt;vset[i]-&gt;pmid));
+            /* once per instance for this metric */
+            for (j = 0; j &lt; result-&gt;vset[i]-&gt;numval; j++) {
+                printf(" [%d]", result-&gt;vset[i]-&gt;vlist[j].inst);
+                pmPrintValue(stdout, result-&gt;vset[i]-&gt;valfmt,
+                             desc[i].type,
+                             &amp;result-&gt;vset[i]-&gt;vlist[j],
+                             8);
+            }
+            putchar('\n');
+        }
+        pmFreeResult(result);
+    }
+    else
+        printf("pmFetch: %s\n", pmErrStr(sts));</pre></div></div><div class="para">
+						Print the value of a <em class="replaceable">pmresult</em> pointed to by <em class="replaceable">vset_index</em>/<em class="replaceable">vlist_index</em> and described by <em class="replaceable">pmdesc</em>. The format of a pmResult is described in <a class="link" href="LE82331-PARENT.html#IG31340177277"><span class="emphasis"><em>pmResult</em></span></a> The python bindings can use sys.__stdout__ as a value for <em class="replaceable">file</em> to display to stdout.
+					</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5211303.html"><strong>Prev</strong>3.8.11.10.  pmNumberStr Function</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5211504.html"><strong>Next</strong>3.8.11.12.  pmflush Function</a></li></ul></body></html>

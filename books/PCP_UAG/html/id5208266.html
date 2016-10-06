@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">6.3.2. Other Logger Configurations</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE57424-PARENT.html" title="6.3. Cookbook for Archive Logging" /><link rel="prev" href="LE57424-PARENT.html" title="6.3. Cookbook for Archive Logging" /><link rel="next" href="id5208588.html" title="6.3.3. Archive Log Administration" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE57424-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5208588.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5208266">
+      ⁠</a>6.3.2. Other Logger Configurations</h3></div></div></div><div class="para">
+					Assume you wish to create archive logs on the local host for performance metrics collected from the remote host <code class="literal">venus</code>. Execute all of the following tasks while logged into the local host as the superuser (<code class="literal">root</code>).
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="procedure"><a id="id5208288">
+      ⁠</a><p class="title"><strong>Procedure 6.1. Creating Archive Logs</strong></p><ol class="1"><li class="step"><div class="para">
+							Create a suitable <code class="command">pmlogger</code> configuration file. There are several options:
+						</div><div class="itemizedlist"><ul><li class="listitem"><div class="para">
+									Run the <code class="command">pmlogconf(1)</code> utility to generate a configuration file, and (optionally) interactively customize it further to suit local needs.
+								</div><pre class="literallayout"><strong class="userinput"><code>${PCP_BINADM_DIR}/pmlogconf ${PCP_SYSCONF_DIR}/pmlogger/config.venus</code></strong>
+Creating config file "${PCP_SYSCONF_DIR}/pmlogger/config.venus" using default settings
+
+<strong class="userinput"><code>${PCP_BINADM_DIR}/pmlogconf ${PCP_SYSCONF_DIR}/pmlogger/config.venus</code></strong>
+
+Group: utilization per CPU
+Log this group? [n] y
+Logging interval? [default] 
+
+Group: utilization (usr, sys, idle, ...) over all CPUs
+Log this group? [y] y
+Logging interval? [default] 
+
+Group: per spindle disk activity
+Log this group? [n] y
+
+...</pre></li><li class="listitem"><div class="para">
+									Do nothing - a default configuration will be created in the following step, using <code class="command">pmlogconf(1)</code> probing and automatic file generation based on the metrics available at the remote host. The <code class="filename">${PCP_RC_DIR}/pmlogger</code> start script handles this.
+								</div></li><li class="listitem"><div class="para">
+									Manually - create a configuration file with a text editor, or arrange to have one put in place by configuration management tools like <a href="https://puppetlabs.com/">Puppet</a> or <a href="http://www.opscode.com/chef/">Chef</a>.
+								</div></li></ul></div></li><li class="step"><div class="para">
+							Edit <code class="filename">${PCP_PMLOGGERCONTROL_PATH}</code>, or one of the <code class="filename">${PCP_PMLOGGERCONTROL_PATH}.d</code> files. Using the line for <code class="literal">remote</code> as a template, add the following line:
+						</div><pre class="literallayout"><strong class="userinput"><code>venus n n PCP_LOG_DIR/pmlogger/venus -r -T24h10m -c config.venus</code></strong></pre></li><li class="step"><div class="para">
+							Start <code class="command">pmlogger</code>:
+						</div><pre class="literallayout"><strong class="userinput"><code>${PCP_BINADM_DIR}/pmlogger_check</code></strong>
+Restarting pmlogger for host "venus" ..... done</pre></li><li class="step"><div class="para">
+							Verify that the <code class="command">pmlogger</code> instance is running:
+						</div><pre class="literallayout"><strong class="userinput"><code>pcp</code></strong>
+Performance Co-Pilot configuration on pluto:
+
+ platform: Linux pluto 3.10.0-0.rc7.64.el7.x86_64 #1 SMP
+ hardware: 8 cpus, 2 disks, 23960MB RAM
+ timezone: EST-10
+     pmcd: Version 3.8.3-1, 8 agents
+     pmda: pmcd proc linux xfs mmv infiniband gluster elasticsearch
+     <em class="replaceable">pmlogger: primary logger: pluto/20130815.10.00</em>
+           <em class="replaceable">venus.redhat.com: venus/20130815.11.15</em>
+<strong class="userinput"><code>pmlc</code></strong>
+pmlc&gt; <strong class="userinput"><code>show loggers</code></strong>
+The following pmloggers are running on pluto:
+        primary (19144) 5141
+pmlc&gt; <strong class="userinput"><code>connect 5141</code></strong>
+pmlc&gt; <strong class="userinput"><code>status</code></strong>
+<em class="replaceable">pmlogger [5141] on host pluto is logging metrics from host venus</em>
+log started      Thu Aug 15 11:15:39 2013 (times in local time)
+last log entry   Thu Aug 15 11:47:39 2013
+current time     Thu Aug 15 11:48:13 2013
+log volume       0
+log size         146160</pre></li></ol></div><div class="para">
+					To create archive logs on the local host for performance metrics collected from multiple remote hosts, repeat the steps in <a class="xref" href="id5208266.html#id5208288">Procedure 6.1, “Creating Archive Logs”</a> for each remote host (each with a new <code class="filename">control</code> file entry).
+				</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE57424-PARENT.html"><strong>Prev</strong>6.3. Cookbook for Archive Logging</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5208588.html"><strong>Next</strong>6.3.3. Archive Log Administration</a></li></ul></body></html>

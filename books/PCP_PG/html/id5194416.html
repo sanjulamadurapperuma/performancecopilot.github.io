@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.6.2.2. Simple PMDA</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5194087.html" title="2.6.2. Common Initialization" /><link rel="prev" href="id5194087.html" title="2.6.2. Common Initialization" /><link rel="next" href="id5194563.html" title="2.6.3. Daemon Initialization" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5194087.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5194563.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5194416">
+      ⁠</a>2.6.2.2. Simple PMDA</h4></div></div></div><div class="para">
+						<a id="IG31340177216" class="indexterm"></a> <a id="IG31340177217" class="indexterm"></a> <a id="IG31340177218" class="indexterm"></a> <a id="IG31340177219" class="indexterm"></a>In <a class="xref" href="id5194416.html#Z976058770sdc">Example 2.30, “Initialization in the Simple PMDA”</a>, the simple PMDA uses its own callbacks to handle <code class="literal">PDU_FETCH</code> and <code class="literal">PDU_RESULT</code> request PDUs (for <code class="command">pmFetch</code> and <code class="command">pmStore</code> operations respectively), as well as providing <code class="command">pmdaFetch</code> with the callback <code class="command">simple_fetchCallBack</code>.
+					</div><div class="example"><a id="Z976058770sdc">
+      ⁠</a><p class="title"><strong>Example 2.30. Initialization in the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">static int      isDSO = 1;              /* =0 I am a daemon */
+static char     *username;
+
+void simple_init(pmdaInterface *dp)
+{
+    if (isDSO)
+        pmdaDSO(dp, PMDA_INTERFACE_2, “simple DSO”,
+                “${PCP_PMDAS_DIR}/simple/help”);
+    else
+        __pmSetProcessIdentity(username);
+
+    if (dp-&gt;status != 0)
+        return;
+
+    dp-&gt;version.any.fetch = simple_fetch;
+    dp-&gt;version.any.store = simple_store;
+    dp-&gt;version.any.instance = simple_instance;
+    pmdaSetFetchCallBack(dp, simple_fetchCallBack);
+    pmdaInit(dp, indomtab, sizeof(indomtab)/sizeof(indomtab[0]),
+             metrictab, sizeof(metrictab)/sizeof(metrictab[0]));
+}</pre></div></div><div class="para">
+						Once again, the simple PMDA may be installed either as a daemon PMDA or a DSO PMDA. The static variable <em class="replaceable">isDSO</em> indicates whether the PMDA is running as a DSO or as a daemon. A daemon PMDA always changes the value of this variable to 0 in <code class="literal">main</code>, for PMDAs that can operate in both modes.
+					</div><div class="para">
+						Remember also, as described earlier, <code class="command">simple_fetch</code> is dealing with a single request for (possibly many) values for metrics from the PMDA, and <code class="command">simple_fetchCallBack</code> is its little helper, dealing with just one metric and one instance (optionally, if the metric happens to have an instance domain) within that larger request.
+					</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5194087.html"><strong>Prev</strong>2.6.2. Common Initialization</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5194563.html"><strong>Next</strong>2.6.3. Daemon Initialization</a></li></ul></body></html>

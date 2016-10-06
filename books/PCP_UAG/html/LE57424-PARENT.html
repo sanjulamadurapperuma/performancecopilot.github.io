@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">6.3. Cookbook for Archive Logging</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE93354-PARENT.html" title="Chapter 6. Archive Logging" /><link rel="prev" href="id5207708.html" title="6.2.3.6. PCP Archive Contents" /><link rel="next" href="id5208266.html" title="6.3.2. Other Logger Configurations" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5207708.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5208266.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE57424-PARENT">
+      ⁠</a>6.3. Cookbook for Archive Logging</h2></div></div></div><div class="para">
+				<a id="IG31371888270" class="indexterm"></a><a id="IG31371888271" class="indexterm"></a>The following sections present a checklist of tasks that may be performed to enable PCP archive logging with minimal effort. For a complete explanation, refer to the other sections in this chapter and the man pages for <code class="command">pmlogger </code> and related tools.
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5207850">
+      ⁠</a>6.3.1. Primary Logger</h3></div></div></div><div class="para">
+					<a id="IG31371888272" class="indexterm"></a>Assume you wish to activate primary archive logging on the PCP collector host <code class="literal">pluto</code>. Execute the following while logged into <code class="literal">pluto</code> as the superuser (<code class="literal">root</code>).
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="orderedlist"><ol><li class="listitem"><div class="para">
+							Start <code class="command">pmcd</code> and <code class="command">pmlogger</code>:
+						</div><pre class="literallayout"><strong class="userinput"><code>chkconfig pmcd on</code></strong>
+<strong class="userinput"><code>chkconfig pmlogger on</code></strong>
+<strong class="userinput"><code>${PCP_RC_DIR}/pmcd start</code></strong>
+Starting pmcd ...
+<strong class="userinput"><code>${PCP_RC_DIR}/pmlogger start</code></strong>
+Starting pmlogger ...</pre></li><li class="listitem"><div class="para">
+							Verify that the primary <code class="command">pmlogger</code> instance is running:
+						</div><pre class="literallayout"><strong class="userinput"><code>pcp</code></strong>
+Performance Co-Pilot configuration on pluto:
+
+ platform: Linux pluto 3.10.0-0.rc7.64.el7.x86_64 #1 SMP
+ hardware: 8 cpus, 2 disks, 23960MB RAM
+ timezone: EST-10
+     pmcd: Version 3.8.3-1, 8 agents
+     pmda: pmcd proc xfs linux mmv infiniband gluster elasticsearch
+     <em class="replaceable">pmlogger: primary logger: pluto/20130815.10.00</em>
+     pmie: pluto: ${PCP_LOG_DIR}/pmie/pluto/pmie.log
+           venus: ${PCP_LOG_DIR}/pmie/venus/pmie.log</pre></li><li class="listitem"><div class="para">
+							Verify that the archive files are being created in the expected place:
+						</div><pre class="literallayout"><strong class="userinput"><code>ls ${PCP_LOG_DIR}/pmlogger/pluto</code></strong>
+20130815.10.00.0
+20130815.10.00.index
+20130815.10.00.meta
+Latest
+pmlogger.log</pre></li><li class="listitem"><div class="para">
+							Verify that no errors are being logged, and the rate of expected growth of the archives:
+						</div><pre class="literallayout"><strong class="userinput"><code>cat ${PCP_LOG_DIR}/pmlogger/pluto/pmlogger.log</code></strong>
+Log for pmlogger on pluto started Thu Aug 15 10:00:11 2013
+
+Config parsed
+Starting primary logger for host "pluto"
+Archive basename: 20130815.00.10
+
+Group [26 metrics] {
+	hinv.map.lvname
+	...
+	hinv.ncpu
+} logged once: 1912 bytes
+
+Group [11 metrics] {
+	kernel.all.cpu.user
+	...
+	kernel.all.load
+} logged every 60 sec: 372 bytes or 0.51 Mbytes/day
+
+...</pre></li></ol></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5207708.html"><strong>Prev</strong>6.2.3.6. PCP Archive Contents</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5208266.html"><strong>Next</strong>6.3.2. Other Logger Configurations</a></li></ul></body></html>

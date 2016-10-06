@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP-FREE
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pcp-free
+               </b>
+               - report on free and used memory in the system
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pcp
+               </b>
+               [
+               <i>
+                pcp options
+               </i>
+               ]
+               <b>
+                free
+               </b>
+               [
+               <b>
+                -bkmgoltV
+               </b>
+               ] [
+               <b>
+                -c
+               </b>
+               <i>
+                count
+               </i>
+               ] [
+               <b>
+                -s
+               </b>
+               <i>
+                interval
+               </i>
+               ]
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pcp-free
+               </b>
+               gives a summary display of the total amount of free and used
+              physical memory and swap in the system, as well as the caches
+              used by the kernel.
+               <p>
+                When invoked via the
+                <b>
+                 <a href="/man/man1/pcp.1.html">
+                  pcp
+                 </a>
+                </b>
+                (1)
+              
+              command, the
+                <b>
+                 -h
+                </b>
+                /
+                <b>
+                 --host
+                </b>
+                ,
+                <b>
+                 -a
+                </b>
+                /
+                <b>
+                 --archive
+                </b>
+                ,
+                <b>
+                 -O
+                </b>
+                /
+                <b>
+                 --origin
+                </b>
+                ,
+                <b>
+                 -s
+                </b>
+                /
+                <b>
+                 --samples
+                </b>
+                ,
+                <b>
+                 -t
+                </b>
+                /
+                <b>
+                 --interval
+                </b>
+                ,
+                <b>
+                 -Z
+                </b>
+                /
+                <b>
+                 --timezone
+                </b>
+                and several other
+                <i>
+                 pcp options
+                </i>
+                become indirectly available.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h3>
+                Options
+               </h3>
+               The
+               <b>
+                -b
+               </b>
+               /
+               <b>
+                --bytes
+               </b>
+               switch displays the amount of memory in bytes; the
+               <b>
+                -k
+               </b>
+               /
+               <b>
+                --kilobytes
+               </b>
+               switch (set by default) displays it in kilobytes;
+              the
+               <b>
+                -m
+               </b>
+               /
+               <b>
+                --megabytes
+               </b>
+               switch displays it in megabytes.
+               <p>
+                The
+                <b>
+                 -t
+                </b>
+                /
+                <b>
+                 --total
+                </b>
+                switch displays a line containing the totals.
+               </p>
+               <p>
+                The
+                <b>
+                 -o
+                </b>
+                switch disables the display of a "buffer adjusted" line.
+              If the
+                <b>
+                 -o
+                </b>
+                option is not specified,
+                <b>
+                 free
+                </b>
+                subtracts buffer memory
+              from the used memory and adds it to the free memory reported.
+               </p>
+               <p>
+                The
+                <b>
+                 -s
+                </b>
+                /
+                <b>
+                 --interval
+                </b>
+                switch activates continuous polling
+                <i>
+                 delay
+                </i>
+                seconds apart.
+              You may specify any floating point number for
+                <i>
+                 delay
+                </i>
+                , or indeed any valid
+                <b>
+                 <a href="/man/man3/pmparseinterval.3.html">
+                  pmParseInterval
+                 </a>
+                </b>
+                (3)
+              
+              specification, which includes microsecond resolution delay times.
+              This can be used in conjunction with the
+                <b>
+                 -c
+                </b>
+                /
+                <b>
+                 --samples
+                </b>
+                option
+              to terminate the display after
+                <i>
+                 count
+                </i>
+                iterations.
+               </p>
+               <p>
+                The
+                <b>
+                 -l
+                </b>
+                switch shows detailed low and high memory statistics.
+               </p>
+               <p>
+                The current version of
+                <b>
+                 pcp-free
+                </b>
+                can be queried using the
+                <b>
+                 -V
+                </b>
+                /
+                <b>
+                 --version
+                </b>
+                option.
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                NOTES
+               </h2>
+               <b>
+                pcp-free
+               </b>
+               is inspired by the
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/free.1.html">
+                 free
+                </a>
+               </b>
+               (1)
+              
+              command and aims to be command line and output compatible with it.
+               <p>
+                The shared memory column should be ignored; it is obsolete.
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcp.1.html">
+                 pcp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/free.1.html">
+                 free
+                </a>
+                (1),
+               </b>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmparseinterval.3.html">
+                 pmParseInterval
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+                 environ
+                </a>
+               </b>
+               (7).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                 <dl>
+                  <dt>
+                   <a href="#lbAE">
+                    Options
+                   </a>
+                  </dt>
+                  <dd>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  NOTES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/news.html'>News</a>
+                  </li>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

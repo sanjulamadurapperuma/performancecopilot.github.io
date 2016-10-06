@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.5. PMDA Interface</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE98072-PARENT.html" title="Chapter 2. Writing a PMDA" /><link rel="prev" href="id5191869.html" title="2.4.5. Management of Evolution within a PMDA" /><link rel="next" href="id5193658.html" title="2.5.2. PMDA Structures" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5191869.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5193658.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE21831-PARENT">
+      ⁠</a>2.5. PMDA Interface</h2></div></div></div><div class="para">
+				<a id="IG31340177178" class="indexterm"></a>This section describes an interface for the request handling callbacks in a PMDA. This interface is used by PMCD for communicating with DSO PMDAs and is also used by daemon PMDAs with <code class="command">pmdaMain</code>.
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5192358">
+      ⁠</a>2.5.1. Overview</h3></div></div></div><div class="para">
+					Both daemon and DSO PMDAs must handle multiple request types from PMCD. A daemon PMDA communicates with PMCD using the PDU protocol, while a DSO PMDA defines callbacks for each request type. To avoid duplicating this PDU processing (in the case of a PMDA that can be installed either as a daemon or as a DSO), and to allow a consistent framework, <code class="command">pmdaMain</code> can be used by a daemon PMDA as a wrapper to handle the communication protocol using the same callbacks as a DSO PMDA. This allows a PMDA to be built as both a daemon and a DSO, and then to be installed as either.
+				</div><div class="para">
+					To further simplify matters, default callbacks are declared in <code class="filename">&lt;pcp/pmda.h&gt;</code>:
+				</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+							<a id="IG31340177179" class="indexterm"></a> <code class="command">pmdaFetch</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177180" class="indexterm"></a> <code class="command">pmdaProfile</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177181" class="indexterm"></a> <code class="command">pmdaInstance</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177182" class="indexterm"></a> <code class="command">pmdaDesc</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177183" class="indexterm"></a> <code class="command">pmdaText</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177184" class="indexterm"></a> <code class="command">pmdaStore</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340177nat" class="indexterm"></a> <code class="command">pmdaPMID</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340178nat" class="indexterm"></a> <code class="command">pmdaName</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340179nat" class="indexterm"></a> <code class="command">pmdaChildren</code>
+						</div></li><li class="listitem"><div class="para">
+							<a id="IG31340180nat" class="indexterm"></a> <code class="command">pmdaAttribute</code>
+						</div></li></ul></div><div class="para">
+					<a id="IG31340177185" class="indexterm"></a>Each callback takes a <code class="filename">pmdaExt</code> structure as its last argument. This structure contains all the information that is required by the default callbacks in most cases. The one exception is <code class="command">pmdaFetch</code>, which needs an additional callback to instantiate the current value for each supported combination of a performance metric and an instance.
+				</div><div class="para">
+					Therefore, for most PMDAs all the communication with PMCD is automatically handled by functions in <code class="filename">libpcp.so</code> and <code class="filename">libpcp_pmda.so</code>.
+				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5192570">
+      ⁠</a>2.5.1.1. Trivial PMDA</h4></div></div></div><div class="para">
+						<a id="IG31340177186" class="indexterm"></a>The trivial PMDA uses all of the default callbacks as shown in <a class="xref" href="LE21831-PARENT.html#Z964109292sdc">Example 2.16, “Request Handling Callbacks in the Trivial PMDA”</a>. The additional callback for <code class="command">pmdaFetch</code> is defined as <code class="command">trivial_fetchCallBack</code>:
+					</div><div class="example"><a id="Z964109292sdc">
+      ⁠</a><p class="title"><strong>Example 2.16. Request Handling Callbacks in the Trivial PMDA</strong></p><div class="example-contents"><pre class="programlisting">static int
+trivial_fetchCallBack(pmdaMetric *mdesc, unsigned int inst, pmAtomValue *atom)
+{
+   __pmID_int      *idp = (__pmID_int *)&amp;(mdesc-&gt;m_desc.pmid);
+
+   if (idp-&gt;cluster != 0 || idp-&gt;item != 0)
+       return PM_ERR_PMID;
+   if (inst != PM_IN_NULL)
+       return PM_ERR_INST;
+   atom-&gt;l = time(NULL);
+   return 0;
+}</pre><div class="para">
+							<a id="IG31340177187" class="indexterm"></a>This function checks that the PMID and instance are valid, and then places the metric value for the current time into the <code class="filename">pmAtomValue</code> structure.
+						</div></div></div><div class="para">
+						The callback is set up by a call to <code class="command">pmdaSetFetchCallBack</code> in <code class="command">trivial_init</code>. As a rule of thumb, the API routines with named ending with <code class="command">CallBack</code> are helpers for the higher PDU handling routines like <code class="command">pmdaFetch</code>. The latter are set directly using the PMDA Interface Structures, as described in <a class="xref" href="id5193658.html">Section 2.5.2, “PMDA Structures”</a>.
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5192681">
+      ⁠</a>2.5.1.2. Simple PMDA</h4></div></div></div><div class="para">
+						<a id="IG31340177188" class="indexterm"></a> <a id="IG31340177189" class="indexterm"></a>The simple PMDA callback for <code class="command">pmdaFetch</code> is more complicated because it supports more metrics, some metrics are instantiated with each fetch, and one instance domain is dynamic. The default <code class="command">pmdaFetch</code> callback, shown in <a class="xref" href="LE21831-PARENT.html#Z964110950sdc">Example 2.17, “Request Handling Callbacks in the Simple PMDA”</a>, is replaced by <code class="command">simple_fetch</code> in <code class="command">simple_init</code>, which increments the number of fetches and updates the instance domain for <code class="literal">INDOM_NOW</code> before calling <code class="command">pmdaFetch</code>:
+					</div><div class="example"><a id="Z964110950sdc">
+      ⁠</a><p class="title"><strong>Example 2.17. Request Handling Callbacks in the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">static int
+simple_fetch(int numpmid, pmID pmidlist[], pmResult **resp, pmdaExt *pmda)
+{
+    numfetch++;
+    simple_timenow_check();
+    simple_timenow_refresh();
+    return pmdaFetch(numpmid, pmidlist, resp, pmda);
+}</pre></div></div><div class="para">
+						<a id="IG31340177190" class="indexterm"></a>The callback for <code class="command">pmdaFetch</code> is defined as <code class="command">simple_fetchCallBack</code>. The PMID is extracted from the <code class="filename">pmdaMetric</code> structure, and if valid, the appropriate field in the <code class="filename">pmAtomValue</code> structure is set. The available types and associated fields are described further in <a class="xref" href="LE11914-PARENT.html">Section 3.4, “Performance Metric Descriptions”</a> and <a class="xref" href="id5209112.html#Z976562908sdc">Example 3.16, “ <code class="filename">pmAtomValue</code> Structure”</a>.
+					</div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+							Note that PMID validity checking need only check the cluster and item numbers, the domain number is guaranteed to be valid and the PMDA should make no assumptions about the actual domain number being used at this point.
+						</div></div></div><div class="para">
+						The <code class="literal">simple.numfetch</code> metric has no instance domain and is easily handled first as shown in <a class="xref" href="LE21831-PARENT.html#Z976306482sdc">Example 2.18, “ <code class="literal">simple.numfetch</code> Metric”</a>:
+					</div><div class="example"><a id="Z976306482sdc">
+      ⁠</a><p class="title"><strong>Example 2.18.  <code class="literal">simple.numfetch</code> Metric</strong></p><div class="example-contents"><pre class="programlisting">static int
+simple_fetchCallBack(pmdaMetric *mdesc, unsigned int inst, pmAtomValue *atom)
+{
+   int             i;
+   static int      oldfetch;
+   static double   usr, sys;
+   __pmID_int      *idp = (__pmID_int *)&amp;(mdesc-&gt;m_desc.pmid);
+
+   if (inst != PM_IN_NULL &amp;&amp;
+       !(idp-&gt;cluster == 0 &amp;&amp; idp-&gt;item == 1) &amp;&amp;
+       !(idp-&gt;cluster == 2 &amp;&amp; idp-&gt;item == 4))
+       return PM_ERR_INST;
+   if (idp-&gt;cluster == 0) {
+       if (idp-&gt;item == 0) {                   /* simple.numfetch */
+           atom-&gt;l = numfetch;
+       }</pre></div></div><div class="para">
+						<a id="IG31340177191" class="indexterm"></a>In <a class="xref" href="LE21831-PARENT.html#Z976049747sdc">Example 2.19, “ <code class="literal">simple.color</code> Metric”</a>, the <code class="literal">inst</code> parameter is used to specify which instance is required for the <code class="literal">simple.color</code> metric:
+					</div><div class="example"><a id="Z976049747sdc">
+      ⁠</a><p class="title"><strong>Example 2.19.  <code class="literal">simple.color</code> Metric</strong></p><div class="example-contents"><pre class="programlisting">       else if (idp-&gt;item == 1) {              /* simple.color */
+            switch (inst) {
+            case 0:                             /* red */
+                red = (red + 1) % 256;
+                atom-&gt;l = red;
+                break;
+            case 1:                             /* green */
+                green = (green + 1) % 256;
+                atom-&gt;l = green;
+                break;
+            case 2:                             /* blue */
+                blue = (blue + 1) % 256;
+                atom-&gt;l = blue;
+                break;
+            default:
+                return PM_ERR_INST;
+            }
+       }
+       else
+           return PM_ERR_PMID;</pre></div></div><div class="para">
+						<a id="IG31340177192" class="indexterm"></a>In <a class="xref" href="LE21831-PARENT.html#Z976049353sdc">Example 2.20, “ <code class="literal">simple.time</code> Metric”</a>, the <code class="literal">simple.time</code> metric is in a second cluster and has a simple optimization to reduce the overhead of calling <code class="command">times</code> twice on the same fetch and return consistent values from a single call to <code class="command">times</code> when both metrics <code class="literal">simple.time.user</code> and <code class="literal">simple.time.sys</code> are requested in a single <code class="command">pmFetch</code>. The previous fetch count is used to determine if the <code class="filename">usr</code> and <code class="filename">sys</code> values should be updated:
+					</div><div class="example"><a id="Z976049353sdc">
+      ⁠</a><p class="title"><strong>Example 2.20.  <code class="literal">simple.time</code> Metric</strong></p><div class="example-contents"><pre class="programlisting">   else if (idp-&gt;cluster == 1) {               /* simple.time */
+       if (oldfetch &lt; numfetch) {
+           __pmProcessRunTimes(&amp;usr, &amp;sys);
+           oldfetch = numfetch;
+       }
+       if (idp-&gt;item == 2)                     /* simple.time.user */
+           atom-&gt;d = usr;
+       else if (idp-&gt;item == 3)                /* simple.time.sys */
+           atom-&gt;d = sys;
+       else
+           return PM_ERR_PMID;
+    }</pre></div></div><div class="para">
+						<a id="IG31340177193" class="indexterm"></a>In <a class="xref" href="LE21831-PARENT.html#Z976049020sdc">Example 2.21, “ <code class="literal">simple.now</code> Metric”</a>, the <code class="literal">simple.now</code> metric is in a third cluster and uses <code class="literal">inst</code> again to select a specific instance from the <code class="literal">INDOM_NOW</code> instance domain. The values associated with instances in this instance domain are managed using the <code class="command">pmdaCache(3)</code> helper routines, which provide efficient interfaces for managing more complex instance domains:
+					</div><div class="example"><a id="Z976049020sdc">
+      ⁠</a><p class="title"><strong>Example 2.21.  <code class="literal">simple.now</code> Metric</strong></p><div class="example-contents"><pre class="programlisting">    else if (idp-&gt;cluster == 2) {
+        if (idp-&gt;item == 4) {                 /* simple.now */
+            struct timeslice *tsp;
+            sts = pmdaCacheLookup(*now_indom, inst, NULL, (void *)&amp;tsp);
+            if (sts != PMDA_CACHE_ACTIVE) {
+                if (sts &lt; 0)
+                    __pmNotifyErr(LOG_ERR, "pmdaCacheLookup failed: inst=%d: %s",
+                                  inst, pmErrStr(sts));
+                return PM_ERR_INST;
+            }
+            atom-&gt;l = tsp-&gt;tm_field;
+        }
+        else 
+            return PM_ERR_PMID;
+    }</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5193108">
+      ⁠</a>2.5.1.3.  <code class="literal">simple_store</code> in the Simple PMDA</h4></div></div></div><div class="para">
+						<a id="IG31340177194" class="indexterm"></a> <a id="IG31340177195" class="indexterm"></a>The simple PMDA permits some of the metrics it supports to be modified by <code class="command">pmStore</code> as shown in <a class="xref" href="LE21831-PARENT.html#Z964111850sdc">Example 2.22, “ <code class="literal">simple_store</code> in the Simple PMDA”</a>. For additional information, see the <code class="command">pmstore(1)</code> and <code class="command">pmStore(3)</code> man pages.
+					</div><div class="example"><a id="Z964111850sdc">
+      ⁠</a><p class="title"><strong>Example 2.22.  <code class="literal">simple_store</code> in the Simple PMDA</strong></p><div class="example-contents"><div class="para">
+							<a id="IG31340177196" class="indexterm"></a>The <code class="command">pmdaStore</code> callback (which returns <code class="literal">PM_ERR_PERMISSION</code> to indicate no metrics can be altered) is replaced by <code class="command">simple_store</code> in <code class="command">simple_init</code>. This replacement function must take the same arguments so that it can be assigned to the function pointer in the <code class="filename">pmdaInterface</code> structure.
+						</div><div class="para">
+							The function traverses the <code class="literal">pmResult</code> and checks the cluster and unit of each PMID to ensure that it corresponds to a metric that can be changed. Checks are made on the values to ensure they are within range before being assigned to variables in the PMDA that hold the current values for exported metrics:
+						</div><pre class="programlisting">static int
+simple_store(pmResult *result, pmdaExt *pmda)
+{
+    int         i, j, val, sts = 0;
+    pmAtomValue av;
+    pmValueSet  *vsp = NULL;
+    __pmID_int  *pmidp = NULL;
+
+    /* a store request may affect multiple metrics at once */
+    for (i = 0; i &lt; result-&gt;numpmid; i++) {
+        vsp = result-&gt;vset[i];
+        pmidp = (__pmID_int *)&amp;vsp-&gt;pmid;
+        if (pmidp-&gt;cluster == 0) {  /* storable metrics are cluster 0 */
+            switch (pmidp-&gt;item) {
+            case 0:                           /* simple.numfetch */
+                val = vsp-&gt;vlist[0].value.lval;
+                if (val &lt; 0) {
+                    sts = PM_ERR_SIGN;
+                    val = 0;
+                }
+                numfetch = val;
+                break;
+            case 1:                             /* simple.color */
+                /* a store request may affect multiple instances at once */
+                for (j = 0; j &lt; vsp-&gt;numval &amp;&amp; sts == 0; j++) {
+                    val = vsp-&gt;vlist[j].value.lval;
+                    if (val &lt; 0) {
+                        sts = PM_ERR_SIGN;
+                        val = 0;
+                    } if (val &gt; 255) {
+                        sts = PM_ERR_CONV;
+                        val = 255;
+                    }</pre></div></div><div class="para">
+						<a id="IG31340177197" class="indexterm"></a>The <code class="literal">simple.color</code> metric has an instance domain that must be searched because any or all instances may be specified. Any instances that are not supported in this instance domain should cause an error value of <code class="literal">PM_ERR_INST</code> to be returned as shown in <a class="xref" href="LE21831-PARENT.html#Z976051081sdc">Example 2.23, “ <code class="literal">simple.color</code> and <code class="literal">PM_ERR_INST</code> Errors”</a>:
+					</div><div class="example"><a id="Z976051081sdc">
+      ⁠</a><p class="title"><strong>Example 2.23.  <code class="literal">simple.color</code> and <code class="literal">PM_ERR_INST</code> Errors</strong></p><div class="example-contents"><pre class="programlisting">                       switch (vsp-&gt;vlist[j].inst) {
+                       case 0:                         /* red */
+                           red = val;
+                           break;
+                       case 1:                         /* green */
+                           green = val;
+                           break;
+                       case 2:                         /* blue */
+                           blue = val;
+                           break;
+                       default:
+                           sts = PM_ERR_INST;
+                       }</pre></div></div><div class="para">
+						<a id="IG31340177198" class="indexterm"></a>Any other PMIDs in cluster 0 that are not supported by the simple PMDA should result in an error value of <code class="literal">PM_ERR_PMID</code> as shown in <a class="xref" href="LE21831-PARENT.html#Z976307148sdc">Example 2.24, “ <code class="literal">PM_ERR_PMID</code> Errors”</a>:
+					</div><div class="example"><a id="Z976307148sdc">
+      ⁠</a><p class="title"><strong>Example 2.24.  <code class="literal">PM_ERR_PMID</code> Errors</strong></p><div class="example-contents"><pre class="programlisting">                default:
+                    sts = PM_ERR_PMID;
+                    break;
+            }
+        }</pre></div></div><div class="para">
+						Any metrics that cannot be altered should generate an error value of <code class="literal">PM_ERR_PERMISSION</code>, and metrics not supported by the PMDA should result in an error value of <code class="literal">PM_ERR_PMID</code> as shown in <a class="xref" href="LE21831-PARENT.html#Z976050822sdc">Example 2.25, “ <code class="literal">PM_ERR_PERMISSION</code> and <code class="literal">PM_ERR_PMID</code> Errors”</a>:
+					</div><div class="example"><a id="Z976050822sdc">
+      ⁠</a><p class="title"><strong>Example 2.25.  <code class="literal">PM_ERR_PERMISSION</code> and <code class="literal">PM_ERR_PMID</code> Errors</strong></p><div class="example-contents"><pre class="programlisting">        else if ((pmidp-&gt;cluster == 1 &amp;&amp;
+                 (pmidp-&gt;item == 2 || pmidp-&gt;item == 3)) ||
+                 (pmidp-&gt;cluster == 2 &amp;&amp; pmidp-&gt;item == 4)) {
+            sts = PM_ERR_PERMISSION;
+            break;
+        }
+        else {
+            sts = PM_ERR_PMID;
+            break;
+        }
+    }
+    return sts;
+}</pre><div class="para">
+							The structure <code class="literal">pmdaExt</code> <em class="replaceable">pmda</em> argument is not used by the <code class="command">simple_store</code> function above.
+						</div></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+							When using storable metrics, it is important to consider the implications. It is possible <code class="command">pmlogger</code> is actively sampling the metric being modified, for example, which may cause unexpected results to be persisted in an archive. Consider also the use of client credentials, available via the <code class="command">attribute</code> callback of the <code class="filename">pmdaInterface</code> structure, to appropriately limit access to any modifications that might be made via your storable metrics.
+						</div></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5193469">
+      ⁠</a>2.5.1.4. Return Codes for <code class="command">pmdaFetch</code> Callbacks</h4></div></div></div><div class="para">
+						In <code class="literal">PMDA_INTERFACE_1</code> and <code class="literal">PMDA_INTERFACE_2</code>, the return codes for the <code class="command">pmdaFetch</code> callback function are defined:
+					</div><div class="variablelist"><dl class="variablelist"><dt><span class="term">Value</span></dt><dd><div class="para">
+									Meaning
+								</div></dd><dt><span class="term">&lt; 0</span></dt><dd><div class="para">
+									Error code (for example, <code class="literal">PM_ERR_PMID</code>, <code class="literal">PM_ERR_INST</code> or <code class="literal">PM_ERR_AGAIN</code>)
+								</div></dd><dt><span class="term">0</span></dt><dd><div class="para">
+									Success
+								</div></dd></dl></div><div class="para">
+						In <code class="literal">PMDA_INTERFACE_3</code> and all later versions, the return codes for the <code class="command">pmdaFetch</code> callback function are defined:
+					</div><div class="variablelist"><dl class="variablelist"><dt><span class="term">Value</span></dt><dd><div class="para">
+									Meaning
+								</div></dd><dt><span class="term">&lt; 0</span></dt><dd><div class="para">
+									Error code (for example, <code class="literal">PM_ERR_PMID</code>, <code class="literal">PM_ERR_INST</code>)
+								</div></dd><dt><span class="term">0</span></dt><dd><div class="para">
+									Metric value not currently available
+								</div></dd><dt><span class="term">&gt; 0</span></dt><dd><div class="para">
+									Success
+								</div></dd></dl></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5191869.html"><strong>Prev</strong>2.4.5. Management of Evolution within a PMDA</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5193658.html"><strong>Next</strong>2.5.2. PMDA Structures</a></li></ul></body></html>

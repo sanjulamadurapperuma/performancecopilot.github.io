@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.3.3. Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97285-PARENT.html" title="2.3. Domains, Metrics, and Instances" /><link rel="prev" href="id5189538.html" title="2.3.2. Domains" /><link rel="next" href="id5190312.html" title="2.3.3.2. Semantics" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5189538.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5190312.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE98565-PARENT">
+      ⁠</a>2.3.3. Metrics</h3></div></div></div><div class="para">
+					<a id="IG31340177114" class="indexterm"></a> <a id="IG31340177115" class="indexterm"></a>A PMDA provides support for a collection of metrics. In addition to the obvious performance metrics, and the measures of time, activity and resource utilization, the metrics should also describe how the target domain has been configured, as this can greatly affect the correct interpretation of the observed performance. For example, metrics that describe network transfer rates should also describe the number and type of network interfaces connected to the host (<code class="literal">hinv.ninterface</code>, <code class="literal">network.interface.speed</code>, <code class="literal">network.interface.duplex</code>, and so on)
+				</div><div class="para">
+					<a id="IG31340177116" class="indexterm"></a> <a id="IG31340177117" class="indexterm"></a>In addition, the metrics should describe how the PMDA has been configured. For example, if the PMDA was periodically probing a system to measure quality of service, there should be metrics for the delay between probes, the number of probes attempted, plus probe success and failure counters. It may also be appropriate to allow values to be stored (see the <code class="command">pmstore(1)</code> man page) into the delay metric, so that the delay used by the PMDA can be altered dynamically.
+				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5189689">
+      ⁠</a>2.3.3.1. Data Structures</h4></div></div></div><div class="para">
+						<a id="IG31340177118" class="indexterm"></a> <a id="IG31340177119" class="indexterm"></a> <a id="IG31340177120" class="indexterm"></a>Each metric must be described in a <code class="filename">pmDesc</code> structure; see the <code class="command">pmLookupDesc(3)</code> man page:
+					</div><pre class="programlisting">typedef struct { 
+    pmID        pmid;           /* unique identifier */ 
+    int         type;           /* base data type */ 
+    pmInDom     indom;          /* instance domain */ 
+    int         sem;            /* semantics of value */ 
+    pmUnits     units;          /* dimension and units */ 
+} pmDesc;</pre><div class="para">
+						This structure contains the following fields:
+					</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"> <code class="literal">pmid</code> </span></dt><dd><div class="para">
+									A unique identifier, Performance Metric Identifier (PMID), that differentiates this metric from other metrics across the union of all PMDAs
+								</div></dd><dt><span class="term"> <code class="literal">type</code> </span></dt><dd><div class="para">
+									A data type indicator showing whether the format is an integer (32 or 64 bit, signed or unsigned); float; double; string; or arbitrary aggregate of binary data
+								</div></dd><dt><span class="term"> <code class="literal">indom</code> </span></dt><dd><div class="para">
+									An instance domain identifier that links this metric to an instance domain
+								</div></dd><dt><span class="term"> <code class="literal">sem</code> </span></dt><dd><div class="para">
+									An encoding of the value's semantics (counter, instantaneous, or discrete)
+								</div></dd><dt><span class="term"> <code class="literal">units</code> </span></dt><dd><div class="para">
+									A description of the value's units based on dimension and scale in the three orthogonal dimensions of space, time, and count (or events)
+								</div></dd></dl></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+							This information can be observed for metrics from any active PMDA using <code class="command">pminfo</code> command line options, for example: 
+<pre class="literallayout"> $ <strong class="userinput"><code>pminfo -d -m network.interface.out.drops</code></strong>
+
+ network.interface.out.drops PMID: 60.3.11
+     Data Type: 64-bit unsigned int  InDom: 60.3 0xf000003
+     Semantics: counter  Units: count</pre>
+						</div></div></div><div class="para">
+						<a id="IG31340177121" class="indexterm"></a>Symbolic constants of the form <code class="literal">PM_TYPE_*</code>, <code class="literal">PM_SEM_*</code>, <code class="literal">PM_SPACE_*</code>, <code class="literal">PM_TIME_*</code>, and <code class="literal">PM_COUNT_*</code> are defined in the <code class="filename">&lt;pcp/pmapi.h&gt;</code> header file. You may use them to initialize the elements of a <code class="literal">pmDesc</code> structure. The <code class="literal">pmID</code> type is an unsigned integer that can be safely cast to a <code class="filename">__pmID_int</code> structure, which contains fields defining the metric's (PMDA's) domain, cluster, and item number as shown in <a class="xref" href="LE98565-PARENT.html#Z1033577630tls">Example 2.3, “ <code class="filename">__pmID_int</code> Structure”</a>:
+					</div><div class="para">
+						<div class="example"><a id="Z1033577630tls">
+      ⁠</a><p class="title"><strong>Example 2.3.  <code class="filename">__pmID_int</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct { 
+        int             flag:1;
+        unsigned int    domain:9;
+        unsigned int    cluster:12;
+        unsigned int    item:10;
+} __pmID_int;</pre></div></div>
+
+					</div><div class="para">
+						For additional information, see the <code class="filename">&lt;pcp/impl.h&gt;</code> file.
+					</div><div class="para">
+						<a id="IG31340177122" class="indexterm"></a>The <code class="literal">flag</code> field should be ignored. The <code class="literal">domain</code> number should be set at run time when the PMDA is initialized. The <code class="literal">PMDA_PMID</code> macro defined in <code class="filename">&lt;pcp/pmapi.h&gt;</code> can be used to set the <code class="literal">cluster</code> and <code class="literal">item</code> fields at compile time, as these should always be known and fixed for a particular metric.
+					</div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+							The three components of the PMID should correspond exactly to the three-part definition of the PMID for the corresponding metric in the PMNS described in <a class="xref" href="LE83854-PARENT.html">Section 2.4.3, “Name Space”</a>.
+						</div></div></div><div class="para">
+						<a id="IG31340177123" class="indexterm"></a>A table of <code class="filename">pmdaMetric</code> structures should be defined within the PMDA, with one structure per metric as shown in <a class="xref" href="LE98565-PARENT.html#Z976036629sdc">Example 2.4, “ <code class="filename">pmdaMetric</code> Structure”</a>.
+					</div><div class="example"><a id="Z976036629sdc">
+      ⁠</a><p class="title"><strong>Example 2.4.  <code class="filename">pmdaMetric</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct { 
+    void        *m_user;        /* for users external use */ 
+    pmDesc      m_desc;         /* metric description */ 
+} pmdaMetric;</pre></div></div><div class="para">
+						This structure contains a <code class="filename">pmDesc</code> structure and a handle that allows PMDA-specific structures to be associated with each metric. For example, <code class="literal">m_user</code> could be a pointer to a global variable containing the metric value, or a pointer to a function that may be called to instantiate the metric's value.
+					</div><div class="para">
+						<a id="IG31340177124" class="indexterm"></a>The trivial PMDA, shown in <a class="xref" href="LE98565-PARENT.html#Z963521873sdc">Example 2.5, “Trivial PMDA”</a>, has only a singular metric (that is, no instance domain):
+					</div><div class="example"><a id="Z963521873sdc">
+      ⁠</a><p class="title"><strong>Example 2.5. Trivial PMDA</strong></p><div class="example-contents"><pre class="programlisting">static pmdaMetric metrictab[] = {
+/* time */
+ { NULL,
+   { PMDA_PMID(0, 1), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
+     PMDA_PMUNITS(0, 1, 0, 0, PM_TIME_SEC, 0) }, },
+};</pre><div class="para">
+							This single metric (<code class="literal">trivial.time</code>) has the following:
+						</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+									A PMID with a cluster of 0 and an item of 1. Note that this is not yet a complete PMID, the domain number which identifies the PMDA will be combined with it at runtime.
+								</div></li><li class="listitem"><div class="para">
+									An unsigned 32-bit integer (<code class="literal">PM_TYPE_U32</code>)
+								</div></li><li class="listitem"><div class="para">
+									<a id="IG31340177125" class="indexterm"></a>A singular value and hence no instance domain (<code class="literal">PM_INDOM_NULL</code>)
+								</div></li><li class="listitem"><div class="para">
+									<a id="IG31340177126" class="indexterm"></a>An instantaneous semantic value (<code class="literal">PM_SEM_INSTANT</code>)
+								</div></li><li class="listitem"><div class="para">
+									Dimension “time” and the units “seconds”
+								</div></li></ul></div></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5189538.html"><strong>Prev</strong>2.3.2. Domains</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5190312.html"><strong>Next</strong>2.3.3.2. Semantics</a></li></ul></body></html>

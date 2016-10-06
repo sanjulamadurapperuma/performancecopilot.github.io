@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">6.5.4. Identifying an Active pmlogger Process</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE80113-PARENT.html" title="6.5. Archive Logging Troubleshooting" /><link rel="prev" href="id5209840.html" title="6.5.3. Primary pmlogger Cannot Start" /><link rel="next" href="id5210268.html" title="6.5.5. Illegal Label Record" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5209840.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5210268.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5210097">
+      ⁠</a>6.5.4. Identifying an Active <code class="command">pmlogger</code> Process</h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">Symptom:</span></dt><dd><div class="para">
+								<a id="IG31371888306" class="indexterm"></a>You have a PCP archive log that is demonstrably growing, but do not know the identify of the associated <code class="command">pmlogger</code> process.
+							</div></dd><dt><span class="term">Cause:</span></dt><dd><div class="para">
+								The PID is not obvious from the log, or the archive name may not be obvious from the output of the <code class="command">ps</code> command.
+							</div></dd><dt><span class="term">Resolution:</span></dt><dd><div class="para">
+								If the archive basename is <code class="filename">foo</code>, run the following commands:
+							</div><pre class="literallayout"><strong class="userinput"><code>pmdumplog -l foo</code></strong>
+<code class="literal">Log Label (Log Format Version 1)</code>
+Performance metrics from host gonzo 
+     commencing Wed Aug  7 00:10:09.214 1996 
+     ending     Wed Aug  7 16:10:09.155 1996 
+
+<strong class="userinput"><code>pminfo -a foo -f pmcd.pmlogger</code></strong> 
+pmcd.pmlogger.host
+     inst [10728 or "10728"] value "gonzo"
+pmcd.pmlogger.port
+     inst [10728 or "10728"] value 4331
+pmcd.pmlogger.archive
+     inst [10728 or "10728"] value "<em class="replaceable">/usr/var/adm/pcplog/gonzo/foo</em>"</pre><div class="para">
+								All of the information describing the creator of the archive is revealed and, in particular, the instance identifier for the PMCD metrics (<code class="literal">10728</code> in the example above) is the PID of the <code class="command">pmlogger</code> instance, which may be used to control the process via <code class="command">pmlc</code>.
+							</div></dd></dl></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5209840.html"><strong>Prev</strong>6.5.3. Primary pmlogger Cannot Start</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5210268.html"><strong>Next</strong>6.5.5. Illegal Label Record</a></li></ul></body></html>

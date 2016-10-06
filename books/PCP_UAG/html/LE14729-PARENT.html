@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.3.2. Time Window Options</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE76997-PARENT.html" title="3.3. Time Duration and Control" /><link rel="prev" href="LE76997-PARENT.html" title="3.3. Time Duration and Control" /><link rel="next" href="id5195323.html" title="3.3.3. Timezone Options" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE76997-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5195323.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE14729-PARENT">
+      ⁠</a>3.3.2. Time Window Options</h3></div></div></div><div class="para">
+					<a id="IG31371888133" class="indexterm"></a><a id="IG31371888134" class="indexterm"></a>The following options may be used with most PCP tools (typically when the source of the performance metrics is a PCP archive log) to tailor the beginning and end points of a display, the sample origin, and the sample time alignment to your convenience.
+				</div><div class="para">
+					The <code class="literal">-S</code>, <code class="literal">-T</code>, <code class="literal">-O</code> and <code class="literal">-A</code> command line options are used by PCP applications to define a time window of interest.
+				</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">-S </code> <em class="replaceable">duration</em></span></dt><dd><div class="para">
+								The start option may be used to request that the display start at the nominated time. By default, the first sample of performance data is retrieved immediately in real-time mode, or coincides with the first sample of data of the first archive in a set of PCP archive logs in archive mode. For archive mode, the <code class="literal">-S</code> option may be used to specify a later time for the start of sampling. By default, if <em class="replaceable">duration</em> is an integer, the units are assumed to be seconds.
+							</div><div class="para">
+								To specify an offset from the beginning of a set of PCP archives (in archive mode) simply specify the offset as the <em class="replaceable">duration</em>. For example, the following entry retrieves the first sample of data at exactly 30 minutes from the beginning of a set of PCP archives.
+							</div><div class="para">
+								
+<pre class="literallayout">-S 30min</pre>
+							</div><div class="para">
+								To specify an offset from the end of a set of PCP archives, prefix the <em class="replaceable">duration</em> with a minus sign. In this case, the first sample time precedes the end of archived data by the given <em class="replaceable">duration</em>. For example, the following entry retrieves the first sample exactly one hour preceding the last sample in a set of PCP archives.
+							</div><div class="para">
+								
+<pre class="literallayout">-S -1hour</pre>
+							</div><div class="para">
+								To specify the calendar date and time (local time in the reporting timezone) for the first sample, use the <code class="literal">ctime(3)</code> syntax preceded by an “at” sign (@). For example, the following entry specifies the date and time to be used.
+							</div><div class="para">
+								
+<pre class="literallayout">-S '@ Mon Mar 4 13:07:47 2013'</pre>
+							</div><div class="para">
+								Note that this format corresponds to the output format of the <code class="command">date</code> command for easy “cut and paste.” However, be sure to enclose the string in quotes so it is preserved as a single argument for the PCP tool.
+							</div><div class="para">
+								For more complete information on the date and time syntax, see the <code class="command">PCPIntro(1)</code> man page.
+							</div></dd><dt><span class="term"><code class="literal">-T </code> <em class="replaceable">duration</em> </span></dt><dd><div class="para">
+								The terminate option may be used to request that the display stop at the time designated by <em class="replaceable">duration</em>. By default, the PCP tools keep sampling performance data indefinitely (in real-time mode) or until the end of a set of PCP archives (in archive mode). The <code class="literal">-T</code> option may be used to specify an earlier time to terminate sampling.
+							</div><div class="para">
+								The interpretation for the <em class="replaceable">duration</em> argument in a <code class="literal">-T</code> option is the same as for the <code class="literal">-S</code> option, except for an unsigned time interval that is interpreted as being an offset from the start of the time window as defined by the default (now for real time, else start of archive set) or by a <code class="literal">-S</code> option. For example, these options define a time window that spans 45 minutes, after an initial offset (or delay) of 1 hour:
+<pre class="literallayout">-S 1hour -T 45mins</pre>
+							</div></dd><dt><span class="term"><code class="literal">-O </code> <em class="replaceable">duration</em></span></dt><dd><div class="para">
+								By default, samples are fetched from the start time (see the description of the <code class="literal">-S</code> option) to the terminate time (see the description of the <code class="literal">-T</code> option). The offset <code class="literal">-O</code> option allows the specification of a time between the start time and the terminate time where the tool should position its initial sample time. This option is useful when initial attention is focused at some point within a larger time window of interest, or when one PCP tool wishes to launch another PCP tool with a common current point of time within a shared time window.
+							</div><div class="para">
+								The <em class="replaceable">duration</em> argument accepted by <code class="literal">-O</code> conforms to the same syntax and semantics as the <em class="replaceable"> duration</em> argument for <code class="literal">-T</code>. For example, these options specify that the initial position should be the end of the time window:
+<pre class="literallayout">-O -0</pre>
+							</div><div class="para">
+								This is most useful with the <code class="command">pmchart</code> command to display the tail-end of the history up to the end of the time window.
+							</div></dd><dt><span class="term"><code class="literal">-A </code> <em class="replaceable">alignment</em></span></dt><dd><div class="para">
+								By default, performance data samples do not necessarily happen at any natural unit of measured time. The <code class="literal">-A</code> switch may be used to force the initial sample to be on the specified <em class="replaceable">alignment</em>. For example, these three options specify alignment on seconds, half hours, and whole hours:
+<pre class="literallayout">-A 1sec 
+-A 30min 
+-A 1hour</pre>
+							</div><div class="para">
+								The <code class="literal">-A</code> option advances the time to achieve the desired alignment as soon as possible after the start of the time window, whether this is the default window, or one specified with some combination of <code class="literal">-A</code> and <code class="literal">-O</code> command line options.
+							</div></dd></dl></div><div class="para">
+					Obviously the time window may be overspecified by using multiple options from the set <code class="literal">-t</code>, <code class="literal">-s</code>, <code class="literal">-S</code>, <code class="literal">-T</code>, <code class="literal">-A</code>, and <code class="literal">-O</code>. Similarly, the time window may shrink to nothing by injudicious choice of options.
+				</div><div class="para">
+					In all cases, the parsing of these options applies heuristics guided by the principal of “least surprise”; the time window is always well-defined (with the end never earlier than the start), but may shrink to nothing in the extreme.
+				</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE76997-PARENT.html"><strong>Prev</strong>3.3. Time Duration and Control</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5195323.html"><strong>Next</strong>3.3.3. Timezone Options</a></li></ul></body></html>

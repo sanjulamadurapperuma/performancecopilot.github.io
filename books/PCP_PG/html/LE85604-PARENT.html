@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8.9. PMAPI Archive-Specific Services</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5199561.html" title="3.8. PMAPI Procedural Interface" /><link rel="prev" href="id5206798.html" title="3.8.8.3.  pmRecordSetup Function" /><link rel="next" href="id5207673.html" title="3.8.9.2.  pmGetArchiveEnd Function" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5206798.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5207673.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE85604-PARENT">
+      ⁠</a>3.8.9. PMAPI Archive-Specific Services</h3></div></div></div><div class="para">
+					The functions described in this section provide archive-specific services.
+				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5207510">
+      ⁠</a>3.8.9.1.  <code class="command">pmGetArchiveLabel</code> Function</h4></div></div></div><pre class="programlisting">int pmGetArchiveLabel(pmLogLabel *<em class="replaceable">lp</em>)
+<code class="command">Python:</code>
+pmLogLabel <em class="replaceable">loglabel</em> = pmGetArchiveLabel()</pre><div class="para">
+						<a id="IG31340177399" class="indexterm"></a> <a id="IG31340177400" class="indexterm"></a> <a id="IG31340177401" class="indexterm"></a>Provided the current PMAPI context is associated with a set of PCP archive logs, the <code class="command">pmGetArchiveLabel</code> function may be used to fetch the label record from the first archive in the set of archives. The structure returned through <em class="replaceable">lp</em> is as shown in <a class="xref" href="LE85604-PARENT.html#Z976561683sdc">Example 3.15, “ <code class="filename">pmLogLabel</code> Structure”</a>:
+					</div><div class="example"><a id="Z976561683sdc">
+      ⁠</a><p class="title"><strong>Example 3.15.  <code class="filename">pmLogLabel</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">/*
+ * Label Record at the start of every log file - as exported above the PMAPI ...
+ */
+#define PM_TZ_MAXLEN    40
+#define PM_LOG_MAXHOSTLEN   64
+#define PM_LOG_MAGIC    0x50052600
+#define PM_LOG_VERS01   0x1
+#define PM_LOG_VERS02   0x2
+#define PM_LOG_VOL_TI   -2      /* temporal index */
+#define PM_LOG_VOL_META -1      /* meta data */
+typedef struct {
+    int            ll_magic;          /* PM_LOG_MAGIC | log format version no. */
+    pid_t          ll_pid;            /* PID of logger */
+    struct timeval ll_start;          /* start of this log */
+    char           ll_hostname[PM_LOG_MAXHOSTLEN]; /* name of collection host */
+    char           ll_tz[PM_TZ_MAXLEN];            /* $TZ at collection host */
+} pmLogLabel;</pre></div></div><div class="para">
+						The python bindings get the label record from the archive.
+					</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5206798.html"><strong>Prev</strong>3.8.8.3.  pmRecordSetup Function</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5207673.html"><strong>Next</strong>3.8.9.2.  pmGetArchiveEnd Function</a></li></ul></body></html>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.4. pmie Examples</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="prev" href="id5203810.html" title="5.3.8.3. Transitional Operators" /><link rel="next" href="LE31514-PARENT.html" title="5.5. Developing and Debugging pmie Rules" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5203810.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE31514-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE60280-PARENT">
+      ⁠</a>5.4. <code class="command">pmie</code> Examples</h2></div></div></div><div class="para">
+				<a id="ITch06-18" class="indexterm"></a>The examples presented in this section are task-oriented and use the full power of the <code class="command">pmie</code> specification language as described in <a class="xref" href="LE90227-PARENT.html">Section 5.3, “Specification Language for <code class="command">pmie</code>”</a>.
+			</div><div class="para">
+				<a id="IG31371888228" class="indexterm"></a>Source code for the <code class="command">pmie</code> examples in this chapter, and many more examples, is provided within the <em class="citetitle">PCP Tutorials and Case Studies</em>. <a class="xref" href="LE60280-PARENT.html#Z928441343sdc">Example 5.10, “Monitoring CPU Utilization”</a> and <a class="xref" href="LE60280-PARENT.html#Z928441176sdc">Example 5.11, “Monitoring Disk Activity ”</a> illustrate monitoring CPU utilization and disk activity.
+			</div><div class="example"><a id="Z928441343sdc">
+      ⁠</a><p class="title"><strong>Example 5.10. Monitoring CPU Utilization</strong></p><div class="example-contents"><pre class="literallayout">// Some Common Performance Monitoring Scenarios
+//
+// The CPU Group
+//
+delta = 2 sec;  // more often for demonstration purposes
+// common prefixes
+//
+percpu  = "kernel.percpu";
+all     = "kernel.all";
+// Unusual usr-sys split when some CPU is more than 20% in usr mode
+// and sys mode is at least 1.5 times usr mode
+//
+cpu_usr_sys =
+       some_inst (
+           $percpu.cpu.sys &gt; $percpu.cpu.user * 1.5 &amp;&amp;
+           $percpu.cpu.user &gt; 0.2
+       )
+           -&gt;  alarm "Unusual sys time: " "%i ";
+// Over all CPUs, syscall_rate &gt; 1000 * no_of_cpus
+//
+cpu_syscall =
+       $all.syscall &gt; 1000 count/sec * hinv.ncpu
+       -&gt;  print "high aggregate syscalls: %v";
+// Sustained high syscall rate on a single CPU
+//
+delta = 30 sec;
+percpu_syscall =
+       some_inst (
+           $percpu.syscall &gt; 2000 count/sec
+       )
+           -&gt; syslog "Sustained syscalls per second? " "[%i] %v ";
+// the 1 minute load average exceeds 5 * number of CPUs on any host
+hosts = ":gonzo :moomba";   // change as required
+delta = 1 minute;           // no need to evaluate more often than this
+high_load =
+     some_host (
+           $all.load $hosts #'1 minute' &gt; 5 * hinv.ncpu
+       )
+           -&gt; alarm "High Load Average? " "%h: %v ";</pre></div></div><div class="example"><a id="Z928441176sdc">
+      ⁠</a><p class="title"><strong>Example 5.11. Monitoring Disk Activity </strong></p><div class="example-contents"><pre class="literallayout">// Some Common Performance Monitoring Scenarios
+//
+// The Disk Group
+//
+delta = 15 sec;         // often enough for disks?
+// common prefixes
+//
+disk    = "disk";
+// Any disk performing more than 40 I/Os per second, sustained over
+// at least 30 seconds is probably busy
+//
+delta = 30 seconds;
+disk_busy =
+       some_inst (
+           $disk.dev.total &gt; 40 count/sec
+       )
+]      -&gt; shell "Mail -s 'Heavy systained disk traffic' sysadm";
+// Try and catch bursts of activity ... more than 60 I/Os per second
+// for at least 25% of 8 consecutive 3 second samples
+//
+delta = 3 sec;
+disk_burst =
+       some_inst (
+           25%_sample (
+               $disk.dev.total @0..7 &gt; 60 count/sec
+           )
+       )
+       -&gt; alarm "Disk Burst? " "%i ";
+// any SCSI disk controller performing more than 3 Mbytes per
+// second is busy
+// Note: the obscure 512 is to convert blocks/sec to byte/sec,
+//       and pmie handles the rest of the scale conversion
+//
+some_inst $disk.ctl.blktotal * 512 &gt; 3 Mbyte/sec
+           -&gt; alarm "Busy Disk Controller: " "%i ";</pre></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5203810.html"><strong>Prev</strong>5.3.8.3. Transitional Operators</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE31514-PARENT.html"><strong>Next</strong>5.5. Developing and Debugging pmie Rules</a></li></ul></body></html>

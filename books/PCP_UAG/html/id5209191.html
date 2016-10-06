@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">6.4.5. Using pmlc</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="Z930642977sdc.html" title="6.4. Other Archive Logging Features and Services" /><link rel="prev" href="id5209027.html" title="6.4.4. Primary Logger" /><link rel="next" href="LE80113-PARENT.html" title="6.5. Archive Logging Troubleshooting" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5209027.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE80113-PARENT.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5209191">
+      ⁠</a>6.4.5. Using <code class="command">pmlc</code></h3></div></div></div><div class="para">
+					<a id="IG31371888298" class="indexterm"></a><a id="ITch07-17" class="indexterm"></a>You may tailor <code class="command">pmlogger</code> dynamically with the <code class="command">pmlc</code> command (if it is configured to allow access to this functionality). Normally, the <code class="command">pmlogger</code> configuration is read at startup. If you choose to modify the <code class="filename">config</code> file to change the parameters under which <code class="command">pmlogger</code> operates, you must stop and restart the program for your changes to have effect. Alternatively, you may change parameters whenever required by using the <code class="command">pmlc</code> interface.
+				</div><div class="para">
+					To run the <code class="command">pmlc</code> tool, enter:
+				</div><pre class="literallayout"><strong class="userinput"><code>pmlc</code></strong></pre><div class="para">
+					By default, <code class="command">pmlc</code> acts on the primary instance of <code class="command">pmlogger</code> on the current host. See the <code class="command">pmlc(1)</code> man page for a description of command line options. When it is invoked, <code class="command">pmlc</code> presents you with a prompt:
+				</div><pre class="literallayout">pmlc&gt;</pre><div class="para">
+					You may obtain a listing of the available commands by entering a question mark (?) and pressing <span class="keycap"><strong>Enter</strong></span>. You see output similar to that in <a class="xref" href="id5209191.html#Z984165791sdc">Example 6.3, “Listing Available Commands ”</a>:
+				</div><div class="example"><a id="Z984165791sdc">
+      ⁠</a><p class="title"><strong>Example 6.3. Listing Available Commands </strong></p><div class="example-contents"><pre class="literallayout">     show loggers [@&lt;host&gt;]           display &lt;pid&gt;s of running pmloggers
+     connect _logger_id [@&lt;host&gt;]     connect to designated pmlogger
+     status                           information about connected pmlogger
+     query metric-list                show logging state of metrics
+     new volume                       start a new log volume
+     flush                            flush the log buffers to disk
+     log { mandatory | advisory } on &lt;interval&gt; _metric-list
+     log { mandatory | advisory } off _metric-list
+     log mandatory maybe _metric-list
+     timezone local|logger|'&lt;timezone&gt;' change reporting timezone
+     help                               print this help message
+     quit                               exit from pmlc
+     _logger_id   is  primary | &lt;pid&gt; | port &lt;n&gt;
+     _metric-list is  _metric-spec | { _metric-spec ... }
+     _metric-spec is  &lt;metric-name&gt; | &lt;metric-name&gt; [ &lt;instance&gt; ... ]</pre><div class="para">
+						Here is an example:
+					</div><pre class="literallayout"><strong class="userinput"><code>pmlc</code></strong>
+pmlc&gt; <strong class="userinput"><code>show loggers @babylon</code></strong>
+The following pmloggers are running on babylon:
+       primary (1892)
+pmlc&gt; <strong class="userinput"><code>connect 1892 @babylon</code></strong>
+pmlc&gt; <strong class="userinput"><code>log advisory on 2 secs disk.dev.read</code></strong>
+pmlc&gt; <strong class="userinput"><code>query disk.dev</code></strong>
+disk.dev.read
+       adv  on  nl       5 min  [131073 or “disk1”]
+       adv  on  nl       5 min  [131074 or “disk2”]
+pmlc&gt; <strong class="userinput"><code>quit</code></strong></pre></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+						Any changes to the set of logged metrics made via <code class="command">pmlc</code> are not saved, and are lost the next time <code class="command">pmlogger</code> is started with the same configuration file. Permanent changes are made by modifying the <code class="command">pmlogger</code> configuration file(s).
+					</div></div></div><div class="para">
+					Refer to the <code class="command">pmlc(1)</code> and <code class="command">pmlogger(1)</code> man pages for complete details.
+				</div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5209027.html"><strong>Prev</strong>6.4.4. Primary Logger</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE80113-PARENT.html"><strong>Next</strong>6.5. Archive Logging Troubleshooting</a></li></ul></body></html>
