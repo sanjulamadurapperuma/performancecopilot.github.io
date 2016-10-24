@@ -1,3 +1,2 @@
 PCPGIT=/source/git/pcp
-DSTLOCAL=/source/git/performancecopilot
-URL=http://www.pcp.io
+PCPWEB=/source/git/performancecopilot.github.io

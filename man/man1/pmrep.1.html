@@ -163,6 +163,14 @@
                ]
               [
                <b>
+                -i
+               </b>
+               <i>
+                instances
+               </i>
+               ]
+              [
+               <b>
                 -K
                </b>
                <i>
@@ -465,7 +473,16 @@
                 <i>
                  instance
                 </i>
-                definition is currently unimplemented.
+                definition restricts
+                <i>
+                 csv
+                </i>
+                and
+                <i>
+                 stdout
+                </i>
+                reporting to the specified instances (so non-matching instances
+              will be filtered).
               An optional
                 <i>
                  unit/scale
@@ -553,7 +570,7 @@
               kernel.all.sysfork,forks,,,,8
               </pre>
                <p>
-                The third form of a metricspec is valid only in
+                The third form of a metricspec is described and valid only in
                 <b>
                  <a href="/man/man5/pmrep.conf.5.html">
                   pmrep.conf
@@ -937,6 +954,78 @@
                 </dt>
                 <dd>
                  Do not print any headers.
+                </dd>
+                <dt>
+                 <b>
+                  -i
+                 </b>
+                </dt>
+                <dd>
+                 Report only the listed
+                 <i>
+                  instances
+                 </i>
+                 (if present).
+              By default all current instances are reported.
+              This is a global option that is used for all metrics unless a
+              metric-specific instance definition is provided as part of a
+                 <i>
+                  metricspec
+                 </i>
+                 .
+              
+              Metrics without instances are reported as usual.
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    The list may consist of one or more comma-separated instances.
+              The instance name may be quoted with single (') or double (")
+              quotes for those cases where the instance name contains commas
+              or white space. Note that on the command line when specifying
+              more than one instance, all the names must be quoted.
+                   </p>
+                   <p>
+                    Multiple
+                    <b>
+                     -i
+                    </b>
+                    options are allowed as an alternative way of specifying more than
+              one instance of interest.
+                   </p>
+                   <p>
+                    As an example, the following would report the same instances:
+                    <b>
+                    </b>
+                   </p>
+                   <p>
+                   </p>
+                   <pre>
+              $ pmrep -i "'1 minute','5 minute'" kernel.all.load
+              $ pmrep -i '"1 minute","5 minute"' kernel.all.load
+              $ pmrep -i "'1 minute'" -i "'5 minute'" kernel.all.load
+              $ pmrep kernel.all.load,,"'1 minute','5 minute'"
+              $ pmrep kernel.all.load,,'"1 minute","5 minute"'
+              
+              </pre>
+                   <p>
+                   </p>
+                   <p>
+                    However, this would report only the 1-minute instance:
+                    <b>
+                    </b>
+                   </p>
+                   <p>
+                   </p>
+                   <pre>
+              $ pmrep -i '"1 minute","5 minute"' kernel.all.load,,"1 minute"
+              
+              </pre>
+                   <p>
+                   </p>
+                  </dd>
+                 </dl>
                 </dd>
                 <dt>
                  <b>
@@ -1785,11 +1874,8 @@
                 BUGS
                </h2>
                No command line option can follow metrics.
-               <p>
-                Specifying instances is not yet supported.
-                <a name="lbAI">
-                </a>
-               </p>
+               <a name="lbAI">
+               </a>
                <h2>
                 PCP ENVIRONMENT
                </h2>
@@ -2104,7 +2190,7 @@
                     <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
                   </li>
                   <li>
-                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
                   </li>
                   <li>
                     <a href='/community.html'>Contributing</a>
@@ -2152,7 +2238,7 @@
         <div class='row'>
           <div class='colspan2-2'>
             <p class='legal'>
-              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
             </p>
           </div>
         </div>

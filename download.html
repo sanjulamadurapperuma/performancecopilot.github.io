@@ -78,14 +78,14 @@
                 <div class='col__module--img'>
                   <img src='/images/debian.png'>
                   <h3>Debian / Ubuntu</h3>
-                  <pre>apt-get install pcp&#x000A;invoke-rc.d pcp start&#x000A;</pre>
+                  <pre>apt-get install pcp&#x000A;invoke-rc.d pmcd start&#x000A;invoke-rc.d pmie start&#x000A;invoke-rc.d pmlogger start&#x000A;</pre>
                 </div>
               </div>
               <div class='colspan12-6 colspan8-4 colspan6-3 colspan2-2 as-grid with-gutter'>
                 <div class='col__module--img'>
                   <img src='/images/fedora.png'>
                   <h3>Fedora / RHEL</h3>
-                  <pre>yum install pcp&#x000A;# RHEL 6&#x000A;service pcp start&#x000A;# RHEL 7 / Fedora&#x000A;systemctl start pmcd&#x000A;systemctl start pmlogger&#x000A;</pre>
+                  <pre>yum install pcp&#x000A;# RHEL 6&#x000A;service pmcd start&#x000A;service pmlogger start&#x000A;service pmie start&#x000A;# RHEL 7 / Fedora&#x000A;systemctl start pmcd&#x000A;systemctl start pmie&#x000A;systemctl start pmlogger&#x000A;</pre>
                 </div>
               </div>
             </section>
@@ -99,7 +99,7 @@
                   <img src='/images/opensuse.png'>
                   <h3>openSUSE</h3>
                   <p>
-                    <a href='http://software.opensuse.org/package/pcp'>Direct Install</a>
+                    <a href='https://software.opensuse.org/package/pcp'>Direct Install</a>
                     link
                   </p>
                 </div>
@@ -156,9 +156,7 @@
                   </p>
                   <p>
                     Git clone from the
-                    <a href='https://github.com/performancecopilot'>github</a>
-                    PCP project, or
-                    <a href='http://git.pcp.io/cgi-bin/gitweb.cgi?p=pcp/pcp.git;a=summary'>git://git.pcp.io/pcp</a>
+                    <a href='https://github.com/performancecopilot/pcp'>PCP repository</a>
                   </p>
                   <br>
                   <p>
@@ -170,12 +168,20 @@
                     <a href='https://github.com/pcolby/pcp-pmda-qpid.git'>git://github.com/pcolby/pcp-pmda-qpid.git</a>
                   </p>
                   <p>
-                    Javascript frontends:
-                    <a href='https://sourceware.org/git/?p=pcpfans.git;a=shortlog;h=refs/heads/webjs'>git://sourceware.org/pcpfans.git webjs</a>
+                    Java instrumentation:
+                    <a href='https://github.com/performancecopilot/parfait'>git://github.com/performancecopilot/parfait.git</a>
                   </p>
                   <p>
                     Netflix Vector frontend:
                     <a href='https://github.com/Netflix/vector'>git://github.com/Netflix/Vector.git</a>
+                  </p>
+                  <p>
+                    Other Javascript frontends:
+                    <a href='https://github.com/performancecopilot/pcp-webjs'>git://github.com/performancecopilot/pcp-webjs.git</a>
+                  </p>
+                  <p>
+                    PDF graph converter:
+                    <a href='https://github.com/performancecopilot/pcp2pdf'>git://github.com/performancecopilot/pcp2pdf.git</a>
                   </p>
                 </div>
               </div>
@@ -212,7 +218,7 @@
                     <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
                   </li>
                   <li>
-                    <a href='http://www.pcp.io/roadmap'>Roadmap</a>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
                   </li>
                   <li>
                     <a href='/community.html'>Contributing</a>
@@ -260,7 +266,7 @@
         <div class='row'>
           <div class='colspan2-2'>
             <p class='legal'>
-              Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
             </p>
           </div>
         </div>
