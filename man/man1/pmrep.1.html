@@ -259,6 +259,14 @@
                ]
               [
                <b>
+                -X
+               </b>
+               <i>
+                label
+               </i>
+               ]
+              [
+               <b>
                 -y
                </b>
                <i>
@@ -881,13 +889,21 @@
                   format
                  </i>
                  string (i.e., '') will remove the timestamps from the output.
-              The default with stdout is
+              The default with
+                 <i>
+                  stdout
+                 </i>
+                 is
                  <b>
                   %H:%M:%S
                  </b>
                  .
               
-              The default with csv is
+              The default with
+                 <i>
+                  csv
+                 </i>
+                 is
                  <b>
                   %Y-%m-%d %H:%M:%S
                  </b>
@@ -1598,7 +1614,11 @@
                  </b>
                 </dt>
                 <dd>
-                 Set the stdout output column
+                 Set the
+                 <i>
+                  stdout
+                 </i>
+                 output column
                  <i>
                   width
                  </i>
@@ -1623,6 +1643,42 @@
                 </dt>
                 <dd>
                  Print extended header.
+                </dd>
+                <dt>
+                 <b>
+                  -X
+                 </b>
+                </dt>
+                <dd>
+                 Swap columns and rows in
+                 <i>
+                  stdout
+                 </i>
+                 output, reporting one instance per
+              line, using
+                 <i>
+                  label
+                 </i>
+                 as the label for instance column (set to an empty
+              string
+                 <b>
+                  ""
+                 </b>
+                 to enable swapping without a specific label).
+              This is convenient to allow easily using
+                 <b>
+                  <a href="/man/man1/grep.1.html">
+                   grep
+                  </a>
+                 </b>
+                 (1)
+              
+              to filter results or to more closely mimic other utilities.
+              See also
+                 <b>
+                  -i
+                 </b>
+                 .
                 </dd>
                 <dt>
                  <b>
