@@ -150,7 +150,15 @@
                <i>
                 metricname
                </i>
-               ...]
+               |
+               <i>
+                pmid
+               </i>
+               |
+               <i>
+                indom
+               </i>
+               ]...
                <a name="lbAD">
                </a>
                <h2>
@@ -221,6 +229,34 @@
                  metricname
                 </i>
                 argument is given, the root of the PMNS is used.
+               </p>
+               <p>
+                If the
+                <i>
+                 metricname
+                </i>
+                argument is in numeric dotted notation, it is interpreted as either
+              a 3-dotted
+                <i>
+                 pmid
+                </i>
+                (metric identifier - domain, cluster, item numbers) or
+              a 2-dotted
+                <i>
+                 indom
+                </i>
+                (instance domain identifier - domain, serial number).
+              In the
+                <i>
+                 pmid
+                </i>
+                case, a reverse PMID-to-name lookup is performed, and in the
+                <i>
+                 indom
+                </i>
+                case, the instance domain is reported on directly.
+              This latter mode can be used to report the instance domain
+              ``one line'' and long form help text summaries.
                </p>
                <p>
                 Unless directed to another host by the

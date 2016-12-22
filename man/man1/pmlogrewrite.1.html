@@ -1773,6 +1773,57 @@
                  <p>
                  </p>
                  <p>
+                  TYPE
+              
+              
+              IF
+                  <i>
+                   oldtype
+                  </i>
+                  -&gt;
+                  <i>
+                   newtype
+                  </i>
+                 </p>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    The same as the preceding
+              
+              TYPE
+              
+              clause, except the type of the metric is only changed to
+                    <i>
+                     newtype
+                    </i>
+                    if the type of the metric in
+                    <i>
+                     inlog
+                    </i>
+                    is
+                    <i>
+                     oldtype.
+                    </i>
+                   </p>
+                   <p>
+                    This useful in cases where the type of
+                    <i>
+                     metricid
+                    </i>
+                    in
+                    <i>
+                     inlog
+                    </i>
+                    may be platform dependent and so more than one type rewriting rule is
+              required.
+                   </p>
+                  </dd>
+                 </dl>
+                 <p>
+                 </p>
+                 <p>
                   UNITS
               
               
@@ -1959,6 +2010,24 @@
               metric 60.51.* { pmid -&gt; 123.*.* }
               # only one instance domain for Linux proc metrics
               indom 60.9 { indom -&gt; 123.0 }
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                If the metric foo.count_em was exported as a native ``long'' then it
+              could be a 32-bit integer on some platforms and a 64-bit integer on
+              other platforms.  Subsequent investigations show the value is in
+              fact unsigned, so the following rules could be used.
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              metric foo.count_em {
+                      type if 32 -&gt; U32
+                      type if 64 -&gt; U64
+              }
               </pre>
                 </dd>
                </dl>
