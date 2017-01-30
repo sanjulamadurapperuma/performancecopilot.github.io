@@ -40,7 +40,7 @@
             <div class='manpage'>
               ﻿
                <h1>
-                PMDAMYSQL
+                PMDADOCKER
                </h1>
                Section: User Commands  (1)
                <br/>
@@ -57,267 +57,262 @@
                 NAME
                </h2>
                <b>
-                pmdamysql
+                pmdadocker
                </b>
-               - MySQL and MariaDB database PMDA
+               - docker performance metrics domain agent (PMDA)
                <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                $PCP_PMDAS_DIR/pmdadocker
+               </b>
+               [
+               <b>
+                -d
+               </b>
+               <i>
+                domain
+               </i>
+               ]
+              [
+               <b>
+                -l
+               </b>
+               <i>
+                logfile
+               </i>
+               ]
+               <a name="lbAD">
                </a>
                <h2>
                 DESCRIPTION
                </h2>
                <b>
-                pmdamysql
+                pmdadocker
                </b>
-               is a Performance Co-Pilot
-               <font size="-1">
-                PMDA
-               </font>
-               which extracts
-              live performance data from a running MySQL or MariaDB database.
-               <a name="lbAD">
+               is a docker Performance Metrics Domain Agent (PMDA) which exposes
+              performance metrics as reported from the Docker Remote API.
+               <p>
+                A brief description of the
+                <b>
+                 pmdadocker
+                </b>
+                command line options follows:
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -d
+                 </b>
+                </dt>
+                <dd>
+                 It is absolutely crucial that the performance metrics
+                 <i>
+                  domain
+                 </i>
+                 number specified here is unique and consistent.
+              That is,
+                 <i>
+                  domain
+                 </i>
+                 should be different for every PMDA on the one host, and the same
+                 <i>
+                  domain
+                 </i>
+                 number should be used for the same PMDA on all hosts.
+                </dd>
+                <dt>
+                 <b>
+                  -l
+                 </b>
+                </dt>
+                <dd>
+                 Location of the log file.  By default, a log file named
+                 <i>
+                  docker.log
+                 </i>
+                 is written in the current directory of
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              when
+                 <b>
+                  pmdadocker
+                 </b>
+                 is started, i.e.
+                 <b>
+                  $PCP_LOG_DIR/pmcd
+                 </b>
+                 .
+              
+              If the log file cannot
+              be created or is not writable, output is written to the standard error instead.
+                </dd>
+               </dl>
+               <p>
+                Remote API metric requests are activated automatically and are fetched
+              on a timer.  This timer is represented as a by
+                <b>
+                 pmdadocker
+                </b>
+                via the
+                <b>
+                 docker.control.timing .
+                </b>
+               </p>
+               <p>
+               </p>
+               <p>
+                <b>
+                 pmdadocker
+                </b>
+                will iterate over three different
+                <b>
+                 docker
+                </b>
+                remote API calls:
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  /containers/$ID/json
+                 </b>
+                </dt>
+                <dd>
+                 Container metrics regarding the current state of the container. Such as PID,
+              name or if the container is running.
+                </dd>
+                <dt>
+                 <b>
+                  /version
+                 </b>
+                </dt>
+                <dd>
+                 Basic version metrics about the current docker deamon in use.
+                </dd>
+                <dt>
+                 <b>
+                  /containers/$ID/stats?steam=0
+                 </b>
+                </dt>
+                <dd>
+                 More in depth memory and cpu metrics of the container.
+                </dd>
+               </dl>
+               <a name="lbAE">
                </a>
                <h2>
                 INSTALLATION
                </h2>
-               <b>
-                pmdamysql
-               </b>
-               uses a configuration file from (in this order):
-               <dl compact="">
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 /etc/pcpdbi.conf
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 <tt>
-                  $PCP_PMDAS_DIR
-                 </tt>
-                 /mysql/mysql.conf
-                </dd>
-               </dl>
+               If you want access to the names, help text and values for the docker
+              performance metrics, do the following as root:
                <p>
-                This file can contain overridden values (Perl code) for the settings
-              listed at the start of pmdamysql.pl, namely:
                </p>
-               <dl compact="">
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 database name (see
-                 <font size="-1">
-                  <i>
-                   <a href="http://man7.org/linux/man-pages/man3/dbi.3.html">
-                    DBI
-                   </a>
-                  </i>
-                 </font>
-                 <i>
-                 </i>
-                 (3) for details, default is "DBI:mysql:mysql")
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 database username (default is "dbmonitor")
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 database password (default is "dbmonitor")
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 login account (default is "pcp")
-                </dd>
-               </dl>
+               <pre>
+              # cd $PCP_PMDAS_DIR/docker
+              # ./Install
+              </pre>
                <p>
-                On some versions of MariaDB (10+) the performance schema is disabled by
-              default, and must be enabled for the PMDA to function.
-              This is achieved by adding the string "performance_schema" into
-              the "[mysqld]" section of the MariaDB configuration file (either
-                <i>
-                 my.cnf
-                </i>
-                or
-                <i>
-                 my.ini
-                </i>
-                ).
-              
-              The "SHOW ENGINES" SQL statement shows support for the performance schema.
+                If you want to undo the installation (and remove both PMDAs),
+              do the following as root:
                </p>
                <p>
-                Once these initial setup actions are complete, you can access the names and
-              values for the mysql performance metrics by doing the following as root:
                </p>
-               <p>
-                <br/>
-                # cd $PCP_PMDAS_DIR/mysql
-                <br/>
-                <br/>
-                # ./Install
-               </p>
-               <p>
-                To uninstall, do the following as root:
-               </p>
-               <p>
-                <br/>
-                # cd $PCP_PMDAS_DIR/mysql
-                <br/>
-                <br/>
-                # ./Remove
-               </p>
+               <pre>
+              # cd $PCP_PMDAS_DIR/docker
+              # ./Remove
+              </pre>
                <p>
                 <b>
-                 pmdamysql
+                 pmdadocker
                 </b>
                 is launched by
-                <i>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </i>
-                (1) and should never be executed 
-              directly. The Install and Remove scripts notify
-                <i>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </i>
-                (1) when the 
-              agent is installed or removed.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                Binary Status values in text
-               </h2>
-               Some of the status values are in the form of
-               <font size="-1">
-                YES/NO
-               </font>
-               or
-               <font size="-1">
-                ON/OFF
-               </font>
-               .
-               <p>
-                Since these cannot be interpreted by tools like
                 <b>
-                 <a href="/man/man1/pmie.1.html">
-                  pmie
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
                  </a>
                 </b>
-                (1),
+                (1)
               
-              they have been duplicated with a _num extension
-              and the values of 1 (
-                <font size="-1">
-                 YES/ON
-                </font>
-                ) or 0 (
-                <font size="-1">
-                 NO/OFF
-                </font>
-                ).
+              and should never be executed directly.
+              The Install and Remove scripts notify
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              when the agent is installed or removed.
                 <a name="lbAF">
                 </a>
                </p>
-               <h3>
-                Eg:
-               </h3>
-               <a name="ixAAB">
-               </a>
-               <dl compact="">
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 mysql.slave_status.slave_io_running
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 mysql.slave_status.slave_io_running_num
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
                <h2>
                 FILES
                </h2>
                <dl compact="">
                 <dt>
                  <b>
-                  /etc/pcpdbi.conf
+                  $PCP_PMCDCONF_PATH
                  </b>
                 </dt>
                 <dd>
-                 configuration file for all
-                 <font size="-1">
-                  PCP
-                 </font>
-                 database monitors
-                </dd>
-                <dt>
+                 command line options used to launch
                  <b>
-                  $PCP_PMDAS_DIR/mysql/mysql.conf
-                 </b>
-                </dt>
-                <dd>
-                 configuration file for
-                 <b>
-                  pmdamysql
+                  pmdadocker
                  </b>
                 </dd>
                 <dt>
                  <b>
-                  $PCP_PMDAS_DIR/mysql/Install
+                  $PCP_PMDAS_DIR/docker/help
+                 </b>
+                </dt>
+                <dd>
+                 default help text file for the docker metrics
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/docker/Install
                  </b>
                 </dt>
                 <dd>
                  installation script for the
                  <b>
-                  pmdamysql
+                  pmdadocker
                  </b>
                  agent
                 </dd>
                 <dt>
                  <b>
-                  $PCP_PMDAS_DIR/mysql/Remove
+                  $PCP_PMDAS_DIR/docker/Remove
                  </b>
                 </dt>
                 <dd>
                  undo installation script for the
                  <b>
-                  pmdamysql
+                  pmdadocker
                  </b>
                  agent
                 </dd>
                 <dt>
                  <b>
-                  $PCP_LOG_DIR/pmcd/mysql.log
+                  $PCP_LOG_DIR/pmcd/docker.log
                  </b>
                 </dt>
                 <dd>
-                 default log file for error messages from
+                 default log file for error messages and other information from
                  <b>
-                  pmdamysql
+                  pmdadocker
                  </b>
                 </dd>
                </dl>
-               <a name="lbAH">
+               <a name="lbAG">
                </a>
                <h2>
                 PCP ENVIRONMENT
@@ -326,30 +321,27 @@
                <b>
                 PCP_
                </b>
-               are used to parameterize
-              the file and directory names used by
-               <b>
-                PCP
-               </b>
-               . On each installation, the
-              file
+               are used to parameterize the file and directory names
+              used by PCP.
+              On each installation, the file
                <b>
                 /etc/pcp.conf
                </b>
-               contains the local values for these variables. 
+               contains the local values for these variables.
               The
                <b>
                 $PCP_CONF
                </b>
-               variable may be used to specify an alternative 
-              configuration file, as described in
-               <i>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
                 <a href="/man/man5/pcp.conf.5.html">
                  pcp.conf
                 </a>
-               </i>
+               </b>
                (5).
-               <a name="lbAI">
+               <a name="lbAH">
                </a>
                <h2>
                 SEE ALSO
@@ -367,25 +359,25 @@
                </b>
                (1),
                <b>
-                <a href="/man/man1/pmdadbping.1.html">
-                 pmdadbping
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
                 </a>
                </b>
-               (1),
+               (5),
                <b>
-                <a href="/man/man1/pmie.1.html">
-                 pmie
+                <a href="/man/man5/pcp.env.5.html">
+                 pcp.env
                 </a>
                </b>
-               (1)
+               (5),
               
               and
                <b>
-                <a href="http://man7.org/linux/man-pages/man3/dbi.3.html">
-                 DBI
+                <a href="/man/man1/docker.1.html">
+                 docker
                 </a>
                </b>
-               (3).
+               (1).
                <p>
                </p>
                <hr/>
@@ -404,50 +396,41 @@
                 </dd>
                 <dt>
                  <a href="#lbAC">
-                  DESCRIPTION
+                  SYNOPSIS
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
                  <a href="#lbAD">
-                  INSTALLATION
+                  DESCRIPTION
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
                  <a href="#lbAE">
-                  Binary Status values in text
+                  INSTALLATION
                  </a>
                 </dt>
                 <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAF">
-                    Eg:
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
                 </dd>
                 <dt>
-                 <a href="#lbAG">
+                 <a href="#lbAF">
                   FILES
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAH">
+                 <a href="#lbAG">
                   PCP ENVIRONMENT
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAI">
+                 <a href="#lbAH">
                   SEE ALSO
                  </a>
                 </dt>

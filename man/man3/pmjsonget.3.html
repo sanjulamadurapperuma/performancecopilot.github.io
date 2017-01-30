@@ -40,7 +40,7 @@
             <div class='manpage'>
               ﻿
                <h1>
-                PMJSONINIT
+                PMJSONGET
                </h1>
                Section: C Library Functions (3)
                <br/>
@@ -56,6 +56,10 @@
                <h2>
                 NAME
                </h2>
+               <b>
+                pmjsonGet
+               </b>
+               ,
                <b>
                 pmjsonInit
                </b>
@@ -84,25 +88,44 @@
                </b>
                <p>
                 <br/>
-                int pmjsonInitIndom(int
+                typedef int (*json_get)(void *
                 <i>
-                 fd
+                 buffer
                 </i>
-                , json_metric_desc *
+                , int
+                <i>
+                 length
+                </i>
+                , void *
+                <i>
+                 data
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmjsonGet(json_metric_desc *
                 <i>
                  json_metrics
                 </i>
-                ,
-              int
+                , int
                 <i>
-                 num_metrics
+                 nmetrics
                 </i>
                 , pmInDom
                 <i>
                  indom
                 </i>
+                , json_get
+                <i>
+                 callback
+                </i>
+                , void *
+                <i>
+                 data
+                </i>
                 );
-                <br/>
+               </p>
+               <p>
                 <br/>
                 int pmjsonInit(int
                 <i>
@@ -112,12 +135,31 @@
                 <i>
                  json_metrics
                 </i>
-                ,
-              int
+                , int
                 <i>
-                 num_metrics
+                 nmetrics
                 </i>
                 );
+                <br/>
+                <br/>
+                int pmjsonInitIndom(int
+                <i>
+                 fd
+                </i>
+                , json_metric_desc *
+                <i>
+                 json_metrics
+                </i>
+                , int
+                <i>
+                 nmetrics
+                </i>
+                , pmInDom
+                <i>
+                 indom
+                </i>
+                );
+                <br/>
                </p>
                <p>
                 cc ... -lpcp_web
@@ -127,35 +169,24 @@
                <h2>
                 DESCRIPTION
                </h2>
-               <p>
-                <b>
-                 pmjsonInitIndom
-                </b>
-                creates and initializes JSON metric extraction
-              functionality for PCP metrics with instance domains.
+               <b>
+                pmjsonGet
+               </b>
+               performs metric value extraction from JSON strings for a
+              Performance Metric Domain Agent (
+               <b>
+                <a href="/man/man3/pmda.3.html">
+                 PMDA
+                </a>
+               </b>
+               (3)).
               Metrics and instances are defined by the
-                <i>
-                 json_metrics
-                </i>
-                parameter.
+               <i>
+                json_metrics
+               </i>
+               parameter.
               The result of parsing is the extraction of values for the requested
               metrics (as defined in the json_pointer field) in the values field.
-               </p>
-               <p>
-                <b>
-                 pmjsonInit
-                </b>
-                specifies a call to the JSON parsing and metric
-              value extraction functionality where there are no instance domains,
-              or the PMDA wishes to perform instance domain operations itself.
-               </p>
-               <p>
-                <i>
-                 fd
-                </i>
-                is an open file descriptor from which the JSON document will
-              be read.
-               </p>
                <p>
                 <i>
                  json_metrics
@@ -167,11 +198,31 @@
                  pmAtomValue
                 </i>
                 where the data is stored, as well as the instance
-              domain in the even the PMDA in question has multiple domains.
+              domain in the event the PMDA has multiple instance domains.
+              The number of elements in the
+                <i>
+                 json_metrics
+                </i>
+                array is indicated by the
+                <i>
+                 nmetrics
+                </i>
+                parameter.
+               </p>
+               <p>
+                Interfaces for common cases are provided -
+                <b>
+                 pmjsonInit
+                </b>
+                specifies
+              a call to the JSON parsing and metric value extraction functionality
+              where there are no instance domains (or the PMDA wishes to perform
+              instance domain operations itself) and where data can be read directly
+              from an open file descriptor.
                 <b>
                  pmjsonInitIndom
                 </b>
-                will endeavour to make use of the
+                is similar, but makes use of the
                 <b>
                  <a href="/man/man3/pmdacacheadd.3.html">
                   pmdaCacheAdd
@@ -180,26 +231,39 @@
                 (3)
               
               function where possible.
-              In the event that no
-                <i>
-                 indom
-                </i>
-                is needed, PM_INDOM_NULL should be
-              passed, or
-                <b>
-                 pmjsonInit
-                </b>
-                used instead.
                </p>
                <p>
+                The JSON string must be provided by the
                 <i>
-                 num_metrics
+                 callback
                 </i>
-                is the number of elements in in the array of
+                function.
+              This function is passed a memory
                 <i>
-                 json_metrics
+                 buffer
                 </i>
+                of
+                <i>
+                 length
+                </i>
+                bytes and
+              an opaque user
+                <i>
+                 data
+                </i>
+                pointer which is unchanged from the original
+              call to
+                <b>
+                 pmjsonGet
+                </b>
                 .
+              
+              The returned result must be the number of bytes written into
+                <i>
+                 buffer
+                </i>
+                ,
+              zero when no more data is available or less than zero on error conditions.
                </p>
                <p>
                 <i>
@@ -235,8 +299,10 @@
                <h2>
                 EXAMPLE
                </h2>
+               For the sample JSON document:
+               <p>
+               </p>
                <pre>
-              For the sample JSON document:
               {
                   "Name": "/clever_almeida",
                   "State": {
@@ -252,11 +318,15 @@
                       "StartedAt": "2016-07-18T14:10:58.52487316Z"
                   }
               }
-              
-              A possible corresponding json_metric array would be as follows for the
+              </pre>
+               <p>
+                A possible corresponding json_metric array would be as follows for the
               Pid, Name, and metrics to indicate whether the container is Running,
               Paused, or Restarting.
-              
+               </p>
+               <p>
+               </p>
+               <pre>
               static json_metric_desc json_metrics[] = {
                   { "State/Pid", 0, 1, {0}, ""},
                   { "Name", 0, 1, {0}, ""},
@@ -270,7 +340,7 @@
                <h2>
                 RETURN CODE
                </h2>
-               The function returns zero on success, otherwise an error code suitable
+               The functions return zero on success, otherwise an error code suitable
               for passing to
                <b>
                 <a href="/man/man3/pmerrstr_r.3.html">
@@ -285,6 +355,12 @@
                <h2>
                 SEE ALSO
                </h2>
+               <b>
+                <a href="/man/man3/pmda.3.html">
+                 PMDA
+                </a>
+               </b>
+               (3),
                <b>
                 <a href="/man/man3/pmerrstr_r.3.html">
                  pmErrStr_r

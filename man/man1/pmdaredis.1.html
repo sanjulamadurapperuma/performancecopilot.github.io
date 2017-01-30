@@ -40,7 +40,7 @@
             <div class='manpage'>
               ﻿
                <h1>
-                PMDAMYSQL
+                PMDAREDIS
                </h1>
                Section: User Commands  (1)
                <br/>
@@ -57,112 +57,101 @@
                 NAME
                </h2>
                <b>
-                pmdamysql
+                pmdaredis
                </b>
-               - MySQL and MariaDB database PMDA
+               - Redis performance metrics domain agent (PMDA)
                <a name="lbAC">
                </a>
                <h2>
                 DESCRIPTION
                </h2>
-               <b>
-                pmdamysql
-               </b>
-               is a Performance Co-Pilot
+               This
                <font size="-1">
                 PMDA
                </font>
-               which extracts
-              live performance data from a running MySQL or MariaDB database.
-               <a name="lbAD">
-               </a>
-               <h2>
-                INSTALLATION
-               </h2>
-               <b>
-                pmdamysql
-               </b>
-               uses a configuration file from (in this order):
+               extracts performance data from sending the INFO command
+              to a Redis (redis.io) server, which includes:
                <dl compact="">
                 <dt>
                  •
                 </dt>
                 <dd>
-                 /etc/pcpdbi.conf
+                 General information about the Redis server
                 </dd>
                 <dt>
                  •
                 </dt>
                 <dd>
-                 <tt>
-                  $PCP_PMDAS_DIR
-                 </tt>
-                 /mysql/mysql.conf
+                 Client connections
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 Memory consumption
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 Persistence statistics
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 Replication statistics
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 CPU consumption statistics
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 Redis command statistics
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 Redis Cluster statistics
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 Database related statistics
                 </dd>
                </dl>
                <p>
-                This file can contain overridden values (Perl code) for the settings
-              listed at the start of pmdamysql.pl, namely:
-               </p>
-               <dl compact="">
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 database name (see
-                 <font size="-1">
-                  <i>
-                   <a href="http://man7.org/linux/man-pages/man3/dbi.3.html">
-                    DBI
-                   </a>
-                  </i>
-                 </font>
-                 <i>
-                 </i>
-                 (3) for details, default is "DBI:mysql:mysql")
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 database username (default is "dbmonitor")
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 database password (default is "dbmonitor")
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 login account (default is "pcp")
-                </dd>
-               </dl>
-               <p>
-                On some versions of MariaDB (10+) the performance schema is disabled by
-              default, and must be enabled for the PMDA to function.
-              This is achieved by adding the string "performance_schema" into
-              the "[mysqld]" section of the MariaDB configuration file (either
-                <i>
-                 my.cnf
-                </i>
-                or
-                <i>
-                 my.ini
-                </i>
-                ).
-              
-              The "SHOW ENGINES" SQL statement shows support for the performance schema.
-               </p>
-               <p>
-                Once these initial setup actions are complete, you can access the names and
-              values for the mysql performance metrics by doing the following as root:
+                The hostname (localhost), port (6379 by default) and other configuration
+              information must be specified in the
+                <tt>
+                 $PCP_PMDAS_DIR
+                </tt>
+                /redis/redis.conf file.
                </p>
                <p>
                 <br/>
-                # cd $PCP_PMDAS_DIR/mysql
+                # cd $PCP_PMDAS_DIR/redis
+                <br/>
+                <br/>
+                # [ edit redis.conf ]
+                <br/>
+                <br/>
+                host=localhost.localdomain:6379
+               </p>
+               <p>
+                Once this is setup, you can access the names and values for the
+              redis performance metrics by doing the following as root:
+               </p>
+               <p>
+                <br/>
+                # cd $PCP_PMDAS_DIR/redis
                 <br/>
                 <br/>
                 # ./Install
@@ -172,14 +161,14 @@
                </p>
                <p>
                 <br/>
-                # cd $PCP_PMDAS_DIR/mysql
+                # cd $PCP_PMDAS_DIR/redis
                 <br/>
                 <br/>
                 # ./Remove
                </p>
                <p>
                 <b>
-                 pmdamysql
+                 pmdaredis
                 </b>
                 is launched by
                 <i>
@@ -196,128 +185,58 @@
                 </i>
                 (1) when the 
               agent is installed or removed.
-                <a name="lbAE">
+                <a name="lbAD">
                 </a>
                </p>
-               <h2>
-                Binary Status values in text
-               </h2>
-               Some of the status values are in the form of
-               <font size="-1">
-                YES/NO
-               </font>
-               or
-               <font size="-1">
-                ON/OFF
-               </font>
-               .
-               <p>
-                Since these cannot be interpreted by tools like
-                <b>
-                 <a href="/man/man1/pmie.1.html">
-                  pmie
-                 </a>
-                </b>
-                (1),
-              
-              they have been duplicated with a _num extension
-              and the values of 1 (
-                <font size="-1">
-                 YES/ON
-                </font>
-                ) or 0 (
-                <font size="-1">
-                 NO/OFF
-                </font>
-                ).
-                <a name="lbAF">
-                </a>
-               </p>
-               <h3>
-                Eg:
-               </h3>
-               <a name="ixAAB">
-               </a>
-               <dl compact="">
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 mysql.slave_status.slave_io_running
-                </dd>
-                <dt>
-                 •
-                </dt>
-                <dd>
-                 mysql.slave_status.slave_io_running_num
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
                <h2>
                 FILES
                </h2>
                <dl compact="">
                 <dt>
                  <b>
-                  /etc/pcpdbi.conf
+                  $PCP_PMDAS_DIR/redis/redis.conf
                  </b>
                 </dt>
                 <dd>
-                 configuration file for all
-                 <font size="-1">
-                  PCP
-                 </font>
-                 database monitors
+                 mandatory configuration file listing monitored redis instances
                 </dd>
                 <dt>
                  <b>
-                  $PCP_PMDAS_DIR/mysql/mysql.conf
-                 </b>
-                </dt>
-                <dd>
-                 configuration file for
-                 <b>
-                  pmdamysql
-                 </b>
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/mysql/Install
+                  $PCP_PMDAS_DIR/redis/Install
                  </b>
                 </dt>
                 <dd>
                  installation script for the
                  <b>
-                  pmdamysql
+                  pmdaredis
                  </b>
                  agent
                 </dd>
                 <dt>
                  <b>
-                  $PCP_PMDAS_DIR/mysql/Remove
+                  $PCP_PMDAS_DIR/redis/Remove
                  </b>
                 </dt>
                 <dd>
                  undo installation script for the
                  <b>
-                  pmdamysql
+                  pmdaredis
                  </b>
                  agent
                 </dd>
                 <dt>
                  <b>
-                  $PCP_LOG_DIR/pmcd/mysql.log
+                  $PCP_LOG_DIR/pmcd/redis.log
                  </b>
                 </dt>
                 <dd>
                  default log file for error messages from
                  <b>
-                  pmdamysql
+                  pmdaredis
                  </b>
                 </dd>
                </dl>
-               <a name="lbAH">
+               <a name="lbAE">
                </a>
                <h2>
                 PCP ENVIRONMENT
@@ -349,43 +268,17 @@
                 </a>
                </i>
                (5).
-               <a name="lbAI">
+               <a name="lbAF">
                </a>
                <h2>
                 SEE ALSO
                </h2>
                <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
                 <a href="/man/man1/pmcd.1.html">
                  pmcd
                 </a>
                </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdadbping.1.html">
-                 pmdadbping
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmie.1.html">
-                 pmie
-                </a>
-               </b>
-               (1)
-              
-              and
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/dbi.3.html">
-                 DBI
-                </a>
-               </b>
-               (3).
+               (1).
                <p>
                </p>
                <hr/>
@@ -411,43 +304,20 @@
                 </dd>
                 <dt>
                  <a href="#lbAD">
-                  INSTALLATION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  Binary Status values in text
-                 </a>
-                </dt>
-                <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAF">
-                    Eg:
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
                   FILES
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAH">
+                 <a href="#lbAE">
                   PCP ENVIRONMENT
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAI">
+                 <a href="#lbAF">
                   SEE ALSO
                  </a>
                 </dt>
