@@ -58,9 +58,6 @@
                         <li>
                           <a href='#blocked'>Blocked process detection and reporting</a>
                         </li>
-                        <li>
-                          <a href='#pmlogger'>Optimized logging of unchanging performance metrics</a>
-                        </li>
                       </ul>
                     </li>
                     <li>
@@ -277,45 +274,6 @@
               <a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
               ,
               <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
-            </p>
-            <br>
-          </div>
-        </div>
-        <div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
-          <div class='col__module--img'>
-            <a name='pmlogger'></a>
-            <h3>Optimized logging of unchanging performance metrics</h3>
-            <p>
-              The PCP
-              <a href='http://man7.org/linux/man-pages/man1/pmlogger.1.html'>pmlogger</a>
-              records statistics from a running machine.  Some of these metrics vary
-              frequently over time, but there is a large subset that vary infrequently.
-            </p>
-            <p>
-              This project will implement changes to pmlogger to only log these metrics
-              when the metric values or set of instances changes.  A secondary phase will
-              involve post-processing existing log files to remove duplicate information.
-            </p>
-            <p>
-              <strong>Expected results:</strong>
-              A new command line option to pmlogger to only log changing metrics, and a
-              utility to prune existing archives.
-            </p>
-            <p>
-              <strong>Prerequisite knowledge:</strong>
-              C programming
-            </p>
-            <p>
-              <strong>Skill level:</strong>
-              Intermediate-Advanced
-            </p>
-            <p>
-              <strong>Mentors:</strong>
-              <a href='mailto:minnus@buffalo.edu'>Martins Innus</a>
-              ,
-              <a href='mailto:kenj@internode.on.net'>Ken McDonell</a>
-              ,
-              <a href='mailto:brolley@redhat.com'>Dave Brolley</a>
             </p>
             <br>
           </div>
