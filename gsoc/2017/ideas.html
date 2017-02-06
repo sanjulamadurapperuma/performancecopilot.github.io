@@ -89,6 +89,9 @@
                           <a href='#rubylang'>Instrumentation of Ruby applications</a>
                         </li>
                         <li>
+                          <a href='#rustlang'>Instrumentation of Rust applications</a>
+                        </li>
+                        <li>
                           <a href='#parfait'>Java Metric Coverage</a>
                         </li>
                         <li>
@@ -483,6 +486,68 @@
               <a href='mailto:ryan@doylenet.net'>Ryan Doyle</a>
               ,
               <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
+            </p>
+            <br>
+          </div>
+        </div>
+        <div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
+          <div class='col__module--img'>
+            <a name='rustlang'></a>
+            <h3>Instrumentation of Rust applications</h3>
+            <p>
+              PCP supports a mechanism for developers to expose metrics inside their
+              own applications.  There are three existing implementations - one for each
+              of C, Java and Go.  This project expands that to include Rust.
+            </p>
+            <p>
+              <strong>Expected results:</strong>
+              The project will be implemented in three stages:
+              <ul>
+                <li>
+                  Create a library to write out the MMVv1/2 format.
+                </li>
+                <li>
+                  Create a higher-level API for developers to use to add metrics to
+                  their applications.
+                </li>
+                <li>
+                  Minimal, and if time permits larger and more comprehensive examples on real-world usage of the library.
+                  Perhaps integrating with existing libraries/frameworks in rust, like the go-kit integration for speed.
+                </li>
+              </ul>
+            </p>
+            <p>
+              <strong>Prerequisite knowledge:</strong>
+              Rust and C programming
+            </p>
+            <p>
+              <strong>Skill level:</strong>
+              Intermediate-Advanced
+            </p>
+            <p>
+              <strong>Further reading:</strong>
+              <ul>
+                <li>
+                  <a href='https://github.com/performancecopilot/speed'>Speed</a>
+                  Native Golang implementation, 2016 GSoC project
+                </li>
+                <li>
+                  <a href='https://github.com/performancecopilot/parfait'>Parfait</a>
+                  Native Java implementation
+                </li>
+                <li>
+                  <a href='https://github.com/performancecopilot/pcp/blob/master/src/include/pcp/mmv_stats.h'>libpcp_mmv</a>
+                  C implementation, also used for C++, Python and Perl code
+                </li>
+              </ul>
+            </p>
+            <p>
+              <strong>Mentors:</strong>
+              <a href='mailto:ryan@doylenet.net'>Ryan Doyle</a>
+              ,
+              <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
+              ,
+              <a href='mailto:dextrous93@gmail.com'>Suyash</a>
             </p>
             <br>
           </div>
