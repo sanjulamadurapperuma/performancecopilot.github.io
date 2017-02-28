@@ -115,7 +115,7 @@
                <p>
                 Derived metrics provide a way of extending the Performance Metrics
               Name Space (PMNS) with new metrics defined at the PCP client-side using
-              arithmetic expressions over the existing performance metrics.
+              expressions over the existing performance metrics.
                </p>
                <p>
                 Typical uses would be to aggregate a number of similar metrics to provide
@@ -150,7 +150,7 @@
                 <i>
                  expr
                 </i>
-                is an arithmetic expression defining how the values of
+                is an expression defining how the values of
                 <i>
                  name
                 </i>
@@ -176,7 +176,7 @@
                 <b>
                  pmRegisterDerived
                 </b>
-                is called, but semantic checking is deferred until each new context
+                is called, but semantic checking is deferred until each new PMAPI context
               is created with
                 <b>
                  <a href="/man/man3/pmnewcontext.3.html">
@@ -195,12 +195,17 @@
               
               at which time the PMNS and metadata is available to
               allow semantic checking and the metadata of the derived metrics
-              to be established.
+              to be fetched.
               This means
                 <b>
                  pmRegisterDerived
                 </b>
-                does not apply retrospectively to any open contexts, so the normal
+                does not apply retrospectively to any open PMAPI contexts, nor
+              to any PMAPI contexts already open at the time
+                <b>
+                 pmRegisterDerived
+                </b>
+                is called, so the normal
               use would be to make all calls to
                 <b>
                  pmRegisterDerived
@@ -291,10 +296,11 @@
                  *
                 </dt>
                 <dd>
-                 Terminal elements are either names of existing metrics or integer constants.
+                 Terminal elements are either names of existing metrics or numeric constants.
               Recursive definitions are not allowed, so only the names of regular
-              metrics (not other derived metrics) may be used. Integer constants are
-              constrained to the precision of 32-bit unsigned integers.
+              metrics (not other derived metrics) may be used. Numeric constants are
+              either integers constrained to the precision of 32-bit unsigned integers
+              or double precision floating point numbers.
                 </dd>
                 <dt>
                  *
@@ -310,6 +316,34 @@
               is evaluated as
               
               a+(b*c)
+              .
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 C-style relational operators are supported, namely - ``&lt;'', ``&lt;='', ``=='',
+              ``&gt;='', ``&gt;'' and ``!=''.
+              Relational expresssions return a value as a 32-bit unsigned number being
+              0 for false and 1 for true.
+              The expected operator precedence rules 
+              apply, so arithmetic operators have higher precence that relational operators,
+              and
+              
+              a-b&gt;c+d
+              
+              is evaluated as
+              
+              (a-b)&gt;(c+d)
+              .
+              All the relational operators have equal precedence, so the (slightly odd)
+              expression involving consecutive relational operators
+              
+              a&gt;b!=c
+              
+              is evaluated as
+              
+              (a&gt;b)!=c.
                 </dd>
                 <dt>
                  *
@@ -548,10 +582,35 @@
               the expressions are sound.
                </p>
                <p>
-                In a binary expression, if the semantics of both operands is not
+                In an arithmetic expression or a relational expression, if the semantics of both operands is not
               a counter (i.e. PM_SEM_INSTANT or PM_SEM_DISCRETE) then the result
               will have semantics PM_SEM_INSTANT unless both operands are
               PM_SEM_DISCRETE in which case the result is also PM_SEM_DISCRETE.
+               </p>
+               <p>
+                For an arithmetic expression, the dimension of each operand must be the same.
+              For a relational expression, the dimension of each operand must be the same,
+              except that numeric constants (with no dimension) are allowed, e.g. in the expression
+              
+              network.interface.in.drops &gt; 0
+              
+              .
+               </p>
+               <p>
+                To prevent arbitrary and non-sensical combinations
+              some restrictions apply to expressions that combine metrics with
+              counter semantics to produce a result with counter semantics.
+              For an arithmetic expression, if both operands have the semantics of
+              a counter, then only addition or subraction is allowed, or if the
+              left operand is a counter and the right operand is not, then only
+              multiplication or division are allowed, or if the left operand is
+              not a counter and the right operand is a counter, then only multiplication
+              is allowed.
+               </p>
+               <p>
+                Because relational expressions use the current value only and produce
+              a result that is not a counter, either or both operands of a relational expression
+              may be counters.
                </p>
                <p>
                 The mapping of the pmUnits of the metadata uses the following rules:
@@ -752,8 +811,16 @@
                 <b>
                  pmRegisterDerived
                 </b>
-                is called, errors found during semantic checking are reported
-              using
+                is called, errors found during semantic checking (when
+              any subsequent calls to
+                <b>
+                 pmNewContext (3)
+                </b>
+                or
+                <b>
+                 pmReconnectContext (3)
+                </b>
+                succeed) are reported using
                 <b>
                  <a href="/man/man3/pmprintf.3.html">
                   pmprintf
@@ -1202,6 +1269,12 @@
                <b>
                 <a href="/man/man3/pmnewcontext.3.html">
                  pmNewContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmprintf.3.html">
+                 pmprintf
                 </a>
                </b>
                (3)
