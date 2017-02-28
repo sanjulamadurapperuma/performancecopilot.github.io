@@ -58,6 +58,9 @@
                         <li>
                           <a href='#blocked'>Blocked process detection and reporting</a>
                         </li>
+                        <li>
+                          <a href='#dmstats'>Device Mapper statistics</a>
+                        </li>
                       </ul>
                     </li>
                     <li>
@@ -675,6 +678,52 @@
               <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
               ,
               <a href='mailto:lberk@redhat.com'>Lukas Berk</a>
+            </p>
+            <br>
+          </div>
+        </div>
+        <div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
+          <div class='col__module--img'>
+            <a name='dmstats'></a>
+            <h3>device-mapper statistics PMDA</h3>
+            <p>
+              The device-mapper statistics framework (dmstats) provides flexible
+              IO statistics for device-mapper block devices, including logical
+              volumes, multipath and RAID devices, as well as thinly-provisioned
+              and cache volumes.
+              A command line tool,
+              <a href='https://www.mankier.com/8/dmstats'>dmstats,</a>
+              allows administrators to configure and use the facility directly.
+              This project will use the dmstats API to allow dmstats performance
+              data to be made available to PCP users via a new PCP PMDA.
+              The primary API for dmstats is C but an experimental Python API
+              exists and may be suitable for prototyping.
+              The project will explore not only exporting simple counter and
+              metric values, but will also evaluate the feasibility of including
+              support for advanced features including dmstats latency and IO
+              distribution histograms.
+            </p>
+            <p>
+              <strong>Expected results:</strong>
+              A PCP PMDA for the dmstats subsystem will be designed, implemented,
+              tested and documented. The PMDA need not implement all the available
+              dmstats functionality immediately but it should be designed in such
+              a way as to permit future extension and enhancement.
+            </p>
+            <p>
+              <strong>Prerequisite knowledge:</strong>
+              C, Python (optional), some knowledge of logical volume management and
+              software defined storage is a bonus.
+            </p>
+            <p>
+              <strong>Skill level:</strong>
+              Intermediate-Advanced
+            </p>
+            <p>
+              <strong>Mentors:</strong>
+              <a href='mailto:bmr@redhat.com'>Bryn M. Reeves</a>
+              ,
+              <a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
             </p>
             <br>
           </div>
