@@ -58,9 +58,18 @@
                         <li>
                           <a href='#blocked'>Blocked process detection and reporting</a>
                         </li>
+                      </ul>
+                    </li>
+                    <li>
+                      New Instrumentation
+                      <ul>
                         <li>
                           <a href='#dmstats'>Device Mapper statistics</a>
                         </li>
+                        <li>
+                          <a href='#ebpf'>Instrumentation with eBPF</a>
+                        </li>
+                        <li></li>
                       </ul>
                     </li>
                     <li>
@@ -286,6 +295,53 @@
               <a href='mailto:bmr@redhat.com'>Bryn M. Reeves</a>
               ,
               <a href='mailto:goodwinos@gmail.com'>Mark Goodwin</a>
+            </p>
+            <br>
+          </div>
+        </div>
+        <div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
+          <div class='col__module--img'>
+            <a name='ebpf'></a>
+            <h3>Instrumentation with eBPF</h3>
+            <p>
+              eBPF (extended Berkeley Packet Filtering) is the latest tracing
+              capability added to the Linux kernel, which is an enhancement over
+              <a href='https://en.wikipedia.org/wiki/Berkeley_Packet_Filter'>BPF .</a>
+              It is an in-kernel bytecode machine that can be used for tracing,
+              instrumentation and other capabilities.
+              It can be used to create custom metrics by either instrumenting the kernel
+              or a userspace program.
+            </p>
+            <p>
+              Tools like
+              <a href='https://iovisor.github.io/bcc/'>bcc</a>
+              have an elegant API and scripts (in python) to
+              use the eBPF interface to instrument the kernel/processes.
+            </p>
+            <p>
+              <strong>Expected results:</strong>
+              A PCP PMDA (using bcc) for the bpf subsystem will be
+              designed, implemented, tested and documented.
+              The PMDA can implement a few basic metrics and it should be extensible,
+              so that it can be enhanced.
+              The student is expected to gain insights on Linux kernel and user-space
+              instrumentation.
+            </p>
+            <p>
+              <strong>Prerequisite knowledge:</strong>
+              Python (optional), C, Linux kernel.
+            </p>
+            <p>
+              <strong>Skill level:</strong>
+              Intermediate-Advanced
+            </p>
+            <p>
+              <strong>Mentors:</strong>
+              <a href='mailto:hemant@linux.vnet.ibm.com'>Hemant Kumar</a>
+              ,
+              <a href='mailto:goodwinos@gmail.com'>Mark Goodwin</a>
+              ,
+              <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
             </p>
             <br>
           </div>
