@@ -322,12 +322,21 @@
                  *
                 </dt>
                 <dd>
+                 Unary negation may be used, e.g. 
+              
+              -3*some.metric
+              .
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
                  C-style relational operators are supported, namely - ``&lt;'', ``&lt;='', ``=='',
               ``&gt;='', ``&gt;'' and ``!=''.
               Relational expresssions return a value as a 32-bit unsigned number being
               0 for false and 1 for true.
               The expected operator precedence rules 
-              apply, so arithmetic operators have higher precence that relational operators,
+              apply, so arithmetic operators have higher precedence than relational operators,
               and
               
               a-b&gt;c+d
@@ -343,13 +352,356 @@
               
               is evaluated as
               
-              (a&gt;b)!=c.
+              (a&gt;b)!=c
+              .
                 </dd>
                 <dt>
                  *
                 </dt>
                 <dd>
-                 Parenthesis may be used for grouping.
+                 C-style boolean operators are supported, namely - ``&amp;&amp;'' and ``||''.
+              Boolean expresssions return a value as a 32-bit unsigned number being
+              0 for false and 1 for true.
+              The expected operator precedence rules 
+              apply, so relational operators have higher precedence than boolean operators
+              ``&amp;&amp;'' or ``||'',
+              and
+              
+              a&gt;b*c&amp;&amp;d&lt;=e+f
+              
+              is evaluated as
+              
+              (a&gt;(b*c))&amp;&amp;(d&lt;=(e+f))
+              .
+              Both the boolean operators have equal precedence, so the
+              expression involving consecutive boolean operators
+              
+              a&gt;=b||b&gt;c&amp;&amp;d!=e||f&gt;g
+              
+              is evaluated as
+              
+              (((a&gt;=b)||(b&gt;c))&amp;&amp;(d!=e))||(f&gt;g)
+              .
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 Additionally, the ``!'' operator may be used to negate a boolean or
+              relational expression, returning a value as a 32-bit unsigned number being
+              0 for false and 1 for true.
+              The expected operator precedence rules
+              apply, so boolean (and relational) operators have higher precedence
+              than boolean negation,
+              and
+              
+              !a&gt;b||c&lt;d
+              
+              is evaluated as
+              
+              !((a&gt;b)||(c&lt;d)),
+              while
+              
+              !a&lt;b+c
+              
+              is evaluated as
+              
+              !(a&lt;(b+c))
+              .
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 C-style ternary conditional expressions are supported. In general terms
+              the expression
+              
+              check ? foo : bar
+               is evaluated as
+                 <tt>
+                  foo
+                 </tt>
+                 (the ``true'' operand) if
+                 <tt>
+                  check
+                 </tt>
+                 (the ``guard'') is true, else the
+              expression evaluates to
+                 <tt>
+                  bar
+                 </tt>
+                 (the ``false'' operand).
+              Some special semantic rules apply to the ``guard'' expression and
+              the other two operand expressions:
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     (a)
+                    </dt>
+                    <dd>
+                     Each expression may involve a singular value or a set of values (when
+              the expression involves one or more metrics with an instance domain).
+                    </dd>
+                    <dt>
+                     (b)
+                    </dt>
+                    <dd>
+                     <b>
+                      All
+                     </b>
+                     expressions with a set of values must be defined over the
+                     <b>
+                      same
+                     </b>
+                     instance domain.
+                    </dd>
+                    <dt>
+                     (c)
+                    </dt>
+                    <dd>
+                     Both operand expressions must have the
+                     <b>
+                      same
+                     </b>
+                     metadata, so same metric type and same semantics (dimension and scale).
+                    </dd>
+                    <dt>
+                     (d)
+                    </dt>
+                    <dd>
+                     The ``guard'' expression must have an aritmetic, or relational or boolean value,
+              so that it can be evaluated as 0 for false, else true.
+                    </dd>
+                    <dt>
+                     (e)
+                    </dt>
+                    <dd>
+                     If the ``guard'' expression has a singular value and one or more of
+              the other operand expressions involves an instance domain, the ``guard''
+              applies to all instances.
+                    </dd>
+                    <dt>
+                     (f)
+                    </dt>
+                    <dd>
+                     If the ``guard'' expression has a set of values and one or more of
+              the other operand expressions involves an instance domain, the ``guard''
+              is evaluated once for each instance (there must be one instance
+              domain as per rule (b) above).
+                    </dd>
+                    <dt>
+                     (g)
+                    </dt>
+                    <dd>
+                     If one of the operand expressions has a singular value and the other has
+              a set of values, and the singular value is selected based on the
+              evaluation of the ``guard'', then the result is a set of values
+              (all the same) with instance enumeration being taken from the other
+              operand expression. For example in the expression:
+              
+              foo ? scalar : set
+              , if
+                     <tt>
+                      foo
+                     </tt>
+                     is true, then the result is a set of values
+              (all having the same value,
+                     <tt>
+                      scalar
+                     </tt>
+                     ) over
+              the instance domain of
+                     <tt>
+                      set
+                     </tt>
+                     .
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 Numeric constants can also be specified using the
+              
+              mkconst()
+              
+              constructor which takes a number of arguments: the first is a numeric
+              constant (either integer or floating point), then follow one or more
+              parameters of the form
+                 <i>
+                  tag=value
+                 </i>
+                 or
+                 <i>
+                  tag=
+                 </i>
+                 value 
+              
+              where the allowed values of
+                 <i>
+                  tag
+                 </i>
+                 and
+                 <i>
+                  value
+                 </i>
+                 are as follows:
+                 <center>
+                  <table border="">
+                   <tr>
+                    <td>
+                     <table>
+                      <tr valign="top">
+                       <td align="center">
+                        tag
+                       </td>
+                       <td align="center">
+                        value
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        type
+                       </td>
+                       <td>
+                        one of the numeric metric types from &lt;
+                        <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                         pcp/pmapi.h
+                        </a>
+                        &gt;, stripped of the
+                        <b>
+                         PM_TYPE_
+                        </b>
+                        prefix, so
+                        <tt>
+                         32
+                        </tt>
+                        ,
+                        <tt>
+                         U32
+                        </tt>
+                        ,
+                        <tt>
+                         64
+                        </tt>
+                        ,
+                        <tt>
+                         U64
+                        </tt>
+                        ,
+                        <tt>
+                         FLOAT
+                        </tt>
+                        or
+                        <tt>
+                         DOUBLE
+                        </tt>
+                        .
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        semantics
+                       </td>
+                       <td>
+                        one of the semantic types from &lt;
+                        <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                         pcp/pmapi.h
+                        </a>
+                        &gt;, stripped of the
+                        <b>
+                         PM_SEM_
+                        </b>
+                        prefix, so
+                        <tt>
+                         COUNTER
+                        </tt>
+                        ,
+                        <tt>
+                         INSTANT
+                        </tt>
+                        or
+                        <tt>
+                         DISCRETE
+                        </tt>
+                        .
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        units
+                       </td>
+                       <td>
+                        a specification of dimension and scale (together forming the units),
+              in the syntax accepted by
+                        <b>
+                         <a href="/man/man3/pmparseunitsstr.3.html">
+                          pmParseUnitsStr
+                         </a>
+                        </b>
+                        (3).
+                        <br/>
+                       </td>
+                      </tr>
+                     </table>
+                    </td>
+                   </tr>
+                  </table>
+                 </center>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    The
+                    <i>
+                     value
+                    </i>
+                    may optionally be enclosed in double quotes, and may appear in any
+              mix of upper and/or lower case.
+              The
+                    <i>
+                     tag
+                    </i>
+                    must be in lower case as shown in the table above.
+                   </p>
+                   <p>
+                    This is most useful when the expression semantics require matching
+              type and/or semantics and/or units for operands, e.g.
+                    <br/>
+                    myalarm = rate(disk.dev.total_bytes) &gt; mkconst(400, units="Kbyte/sec")
+              avg_io_size = delta(disk.dev.total) == 0 ? \
+                    <br/>
+                    -mkconst(1.0, semantics=instant, units="kbyte / count") : \
+                    <br/>
+                    delta(disk.dev.total_bytes) / delta(disk.dev.total)
+                   </p>
+                  </dd>
+                 </dl>
                 </dd>
                 <dt>
                  *
@@ -563,6 +915,12 @@
                    </tr>
                   </table>
                  </center>
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
+                 Parenthesis may be used for explicit grouping.
                 </dd>
                 <dt>
                  *
@@ -1086,16 +1444,6 @@
                <h2>
                 CAVEATS
                </h2>
-               <p>
-                Unary negation is not supported, so the following expressions would be
-              syntactically incorrect,
-              
-              -3*abc
-              
-              and
-              
-              -this.number
-               </p>
                <p>
                 Derived metrics are not available when using
                 <b>
