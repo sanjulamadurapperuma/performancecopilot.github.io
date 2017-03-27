@@ -195,7 +195,7 @@
               
               at which time the PMNS and metadata is available to
               allow semantic checking and the metadata of the derived metrics
-              to be fetched.
+              to be determined.
               This means
                 <b>
                  pmRegisterDerived
@@ -306,7 +306,7 @@
                  *
                 </dt>
                 <dd>
-                 The usual binary arithmetic operators are supported, namely - addition (``+''),
+                 The usual binary arithmetic operators are supported, namely addition (``+''),
               subtraction (``-''), multiplication (``*'') and division (``/'') with
               the normal precedence rules where multiplication and division have
               higher precedence than addition and subtraction, so
@@ -331,7 +331,7 @@
                  *
                 </dt>
                 <dd>
-                 C-style relational operators are supported, namely - ``&lt;'', ``&lt;='', ``=='',
+                 C-style relational operators are supported, namely ``&lt;'', ``&lt;='', ``=='',
               ``&gt;='', ``&gt;'' and ``!=''.
               Relational expresssions return a value as a 32-bit unsigned number being
               0 for false and 1 for true.
@@ -359,12 +359,11 @@
                  *
                 </dt>
                 <dd>
-                 C-style boolean operators are supported, namely - ``&amp;&amp;'' and ``||''.
+                 C-style boolean operators are supported, namely and (``&amp;&amp;'') and or (``||'').
               Boolean expresssions return a value as a 32-bit unsigned number being
               0 for false and 1 for true.
               The expected operator precedence rules 
-              apply, so relational operators have higher precedence than boolean operators
-              ``&amp;&amp;'' or ``||'',
+              apply, so relational operators have higher precedence than boolean operators,
               and
               
               a&gt;b*c&amp;&amp;d&lt;=e+f
@@ -399,7 +398,8 @@
               
               is evaluated as
               
-              !((a&gt;b)||(c&lt;d)),
+              !((a&gt;b)||(c&lt;d))
+              ,
               while
               
               !a&lt;b+c
@@ -466,13 +466,13 @@
                      <b>
                       same
                      </b>
-                     metadata, so same metric type and same semantics (dimension and scale).
+                     metadata, so the same metric type, semantics and units (dimension and scale).
                     </dd>
                     <dt>
                      (d)
                     </dt>
                     <dd>
-                     The ``guard'' expression must have an aritmetic, or relational or boolean value,
+                     The ``guard'' expression must have an aritmetic or relational or boolean value,
               so that it can be evaluated as 0 for false, else true.
                     </dd>
                     <dt>
@@ -541,9 +541,7 @@
                  <i>
                   tag=
                  </i>
-                 value 
-              
-              where the allowed values of
+                 where the allowed values of
                  <i>
                   tag
                  </i>
@@ -581,10 +579,8 @@
                          pcp/pmapi.h
                         </a>
                         &gt;, stripped of the
-                        <b>
-                         PM_TYPE_
-                        </b>
-                        prefix, so
+              PM_TYPE_
+              prefix, so
                         <tt>
                          32
                         </tt>
@@ -627,10 +623,8 @@
                          pcp/pmapi.h
                         </a>
                         &gt;, stripped of the
-                        <b>
-                         PM_SEM_
-                        </b>
-                        prefix, so
+              PM_SEM_
+              prefix, so
                         <tt>
                          COUNTER
                         </tt>
@@ -693,7 +687,7 @@
                     This is most useful when the expression semantics require matching
               type and/or semantics and/or units for operands, e.g.
                     <br/>
-                    myalarm = rate(disk.dev.total_bytes) &gt; mkconst(400, units="Kbyte/sec")
+                    idle = mem.util.free &gt; mkconst(10485760, units=Kbyte)
               avg_io_size = delta(disk.dev.total) == 0 ? \
                     <br/>
                     -mkconst(1.0, semantics=instant, units="kbyte / count") : \
@@ -707,11 +701,47 @@
                  *
                 </dt>
                 <dd>
+                 Expressions may be rescaled using the
+              
+              rescale
+              
+              function that takes two arguments.  The first is an
+              arithmetic expression to be
+              rescaled, and the second is the desired units after rescaling that
+              is a string value in the syntax accepted by
+                 <b>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </b>
+                 (3).
+              
+              For example:
+                 <br/>
+                 rescale(network.interface.total.bytes, "Mbytes/hour")
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    The expression and the desired units must both have the same dimension,
+              e.g Space=1, Time=-1 and Count=0 in the example above.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
                  The following unary functions operate on a single performance metric
               and return one or more values.
               For all functions (except
               
               count()
+              ,
+              
+              defined()
               
               and
               
@@ -758,6 +788,49 @@
                        </td>
                        <td>
                         A singular instance being the count of the number of instances for the metric x.
+              As a special case, if fetching the metric x returns an error, then
+              
+              count(x)
+              
+              will be 0.
+                        <br/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td colspan="2">
+                        <hr/>
+                       </td>
+                      </tr>
+                      <tr valign="top">
+                       <td>
+                        defined(x)
+                       </td>
+                       <td>
+                        A boolean value that is true (``1'') if the metric
+              
+              x
+              
+              is defined in the PMNS, else false (``0'').
+              The function is evaluated when a new PMAPI context
+              is created with
+                        <b>
+                         <a href="/man/man3/pmnewcontext.3.html">
+                          pmNewContext
+                         </a>
+                        </b>
+                        (3)
+              
+              or re-established with
+                        <b>
+                         <a href="/man/man3/pmreconnectcontext.3.html">
+                          pmReconnectContext
+                         </a>
+                        </b>
+                        (3).
+              
+              So any subsequent changes to the PMNS after the PMAPI
+              context has been established will not change the value
+              of this function in the expression evaluation.
                         <br/>
                        </td>
                       </tr>
@@ -926,6 +999,12 @@
                  *
                 </dt>
                 <dd>
+                 Lines beginning with ``#'' are treated as comments and ignored.
+                </dd>
+                <dt>
+                 *
+                </dt>
+                <dd>
                  White space is ignored.
                 </dd>
                </dl>
@@ -978,7 +1057,7 @@
                  *
                 </dt>
                 <dd>
-                 If both operands have a dimension of COUNT and the scales are not
+                 If both operands have a dimension of Count and the scales are not
               the same, use the larger scale and convert the values of the operand
               with the smaller scale.
                 </dd>
@@ -986,7 +1065,7 @@
                  *
                 </dt>
                 <dd>
-                 If both operands have a dimension of TIME and the scales are not
+                 If both operands have a dimension of Time and the scales are not
               the same, use the larger scale and convert the values of the operand
               with the smaller scale.
                 </dd>
@@ -994,7 +1073,7 @@
                  *
                 </dt>
                 <dd>
-                 If both operands have a dimension of SPACE and the scales are not
+                 If both operands have a dimension of Space and the scales are not
               the same, use the larger scale and convert the values of the operand
               with the smaller scale.
                 </dd>
@@ -1220,11 +1299,20 @@
               used in the definition of the derived metric &lt;name1&gt;.
                 </dd>
                 <dt>
-                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Illegal operator for counters
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; : &lt;operand&gt; Different &lt;metadata&gt; for ternary operands
                 </dt>
                 <dd>
-                 If both operands have the semantics of counter, only addition or subtraction
-              make sense, so multiplication and division are not allowed.
+                 For a ternary expression, the ``true'' operand and the ``false'' operand
+              must have exactly the same metadata, so type, semantics, instance domain,
+              and units (dimension and scale).
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Dimensions are not the same
+                </dt>
+                <dd>
+                 Operands must have the same units (dimension and scale) for each of
+              addition, subtraction, the relational operators and the boolean ``and''
+              or ``or'' operators.
                 </dd>
                 <dt>
                  Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Illegal operator for counter and non-counter
@@ -1238,6 +1326,13 @@
                  a counter.
                 </dd>
                 <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Illegal operator for counters
+                </dt>
+                <dd>
+                 If both operands have the semantics of counter, only addition or subtraction
+              make sense, so multiplication and division are not allowed.
+                </dd>
+                <dt>
                  Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Illegal operator for non-counter and counter
                 </dt>
                 <dd>
@@ -1249,18 +1344,15 @@
                  a counter.
                 </dd>
                 <dt>
-                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Non-arithmetic type for &lt;left-or-right&gt; operand
+                 Semantic error: derived metric &lt;metric&gt; &lt;expr&gt; RESCALE &lt;units&gt;: Incompatible dimensions
                 </dt>
                 <dd>
-                 The binary arithmetic operators are only allowed with operands with an
-              arithmetic type (integer of various sizes and signedness, float or
-              double).
-                </dd>
-                <dt>
-                 Semantic error: derived metric &lt;name&gt;: &lt;function&gt;(&lt;operand&gt;): Non-arithmetic operand for function
-                </dt>
-                <dd>
-                 The unary functions are only defined if the operand has arithmetic type.
+                 The parameters &lt;expr&gt; and &lt;units&gt; to the
+              
+              rescale
+              
+              function must have the same dimension along the axes of Time,
+              Space and Count.
                 </dd>
                 <dt>
                  Semantic error: derived metric &lt;name&gt;: Incorrect time dimension for operand
@@ -1285,6 +1377,63 @@
               the derived metrics has a value "per second" (Time dimension of -1). 
               If the operand metric's Time dimension is 1, then
               the derived metrics has a value of time utilization (Time dimension of 0).
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;function&gt;(&lt;operand&gt;): Non-arithmetic operand for function
+                </dt>
+                <dd>
+                 The unary functions are only defined if the operand has arithmetic type.
+              Similarly the first argument to the
+              
+              rescale
+              
+              function must be of arithmetic type.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;expr&gt; ? ...: Non-arithmetic operand for ternary guard
+                </dt>
+                <dd>
+                 The first expression for a ternary operator must have an arithmetic type.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: ... - ...: Non-arithmetic operand for unary negation
+                </dt>
+                <dd>
+                 Unary negation only makes sense if the following expression
+              has an arithmetic type.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Non-arithmetic type for &lt;left-or-right&gt; operand
+                </dt>
+                <dd>
+                 The binary arithmetic operators are only allowed with operands with an
+              arithmetic type (integer of various sizes and signedness, float or
+              double).
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;operand&gt; &lt;op&gt; &lt;operand&gt;: Non-counter and not dimensionless &lt;left-or-right&gt; operand
+                </dt>
+                <dd>
+                 For multiplication or division or any of the relational operators, if
+              one of the operands has the semantics of a counter and the other
+              has the semantics of a non-counter (instantaneous or discrete) then
+              the non-counter operand must have no units (dimension and scale).
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;expr&gt; ? &lt;expr&gt; : &lt;expr&gt;: Non-scalar ternary guard with scalar expressions
+                </dt>
+                <dd>
+                 If the ``true'' and ``false'' operands of a ternary expression have
+              a scalar value, then the ``guard'' expression must also have a
+              scalar value.
+                </dd>
+                <dt>
+                 Semantic error: derived metric &lt;name&gt;: &lt;expr&gt; &lt;op&gt; &lt;expr&gt;: Operands should have the same instance domain
+                </dt>
+                <dd>
+                 For all of the binary operators (arithmetic and relational), if both
+              operands have non-scalar values, then they must be defined over the
+              same instance domain.
                 </dd>
                </dl>
                <a name="lbAF">
