@@ -1,40 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.5. PMDA Interface</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE98072-PARENT.html" title="Chapter 2. Writing a PMDA" /><link rel="prev" href="id5191869.html" title="2.4.5. Management of Evolution within a PMDA" /><link rel="next" href="id5193658.html" title="2.5.2. PMDA Structures" />
-<meta xmlns="" charset="utf-8" />
-<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-<meta xmlns="" content="initial-scale=1" name="viewport" />
-<title xmlns="">Performance Co-Pilot</title>
-<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
-</head><body>
-    <header xmlns="" class="global-header">
-      <div class="row">
-        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
-          <a href="/index.html">Performance Co-Pilot</a>
-        </h1>
-        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
-          <ul>
-            <li>
-              <a href="/features.html">Features</a>
-            </li>
-            <li>
-              <a href="/documentation.html">Documentation</a>
-            </li>
-            <li>
-              <a href="/download.html">Download</a>
-            </li>
-            <li>
-              <a href="/community.html">Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5191869.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5193658.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="LE21831-PARENT">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.5. PMDA Interface</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE98072-PARENT.html" title="Chapter 2. Writing a PMDA" /><link rel="prev" href="id5191869.html" title="2.4.5. Management of Evolution within a PMDA" /><link rel="next" href="id5193658.html" title="2.5.2. PMDA Structures" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5191869.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5193658.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE21831-PARENT">
       ⁠</a>2.5. PMDA Interface</h2></div></div></div><div class="para">
 				<a id="IG31340177178" class="indexterm"></a>This section describes an interface for the request handling callbacks in a PMDA. This interface is used by PMCD for communicating with DSO PMDAs and is also used by daemon PMDAs with <code class="command">pmdaMain</code>.
-			</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5192358">
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5192358">
       ⁠</a>2.5.1. Overview</h3></div></div></div><div class="para">
 					Both daemon and DSO PMDAs must handle multiple request types from PMCD. A daemon PMDA communicates with PMCD using the PDU protocol, while a DSO PMDA defines callbacks for each request type. To avoid duplicating this PDU processing (in the case of a PMDA that can be installed either as a daemon or as a DSO), and to allow a consistent framework, <code class="command">pmdaMain</code> can be used by a daemon PMDA as a wrapper to handle the communication protocol using the same callbacks as a DSO PMDA. This allows a PMDA to be built as both a daemon and a DSO, and then to be installed as either.
 				</div><div class="para">
@@ -63,7 +31,7 @@
 					<a id="IG31340177185" class="indexterm"></a>Each callback takes a <code class="filename">pmdaExt</code> structure as its last argument. This structure contains all the information that is required by the default callbacks in most cases. The one exception is <code class="command">pmdaFetch</code>, which needs an additional callback to instantiate the current value for each supported combination of a performance metric and an instance.
 				</div><div class="para">
 					Therefore, for most PMDAs all the communication with PMCD is automatically handled by functions in <code class="filename">libpcp.so</code> and <code class="filename">libpcp_pmda.so</code>.
-				</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5192570">
+				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5192570">
       ⁠</a>2.5.1.1. Trivial PMDA</h4></div></div></div><div class="para">
 						<a id="IG31340177186" class="indexterm"></a>The trivial PMDA uses all of the default callbacks as shown in <a class="xref" href="LE21831-PARENT.html#Z964109292sdc">Example 2.16, “Request Handling Callbacks in the Trivial PMDA”</a>. The additional callback for <code class="command">pmdaFetch</code> is defined as <code class="command">trivial_fetchCallBack</code>:
 					</div><div class="example"><a id="Z964109292sdc">
@@ -82,7 +50,7 @@ trivial_fetchCallBack(pmdaMetric *mdesc, unsigned int inst, pmAtomValue *atom)
 							<a id="IG31340177187" class="indexterm"></a>This function checks that the PMID and instance are valid, and then places the metric value for the current time into the <code class="filename">pmAtomValue</code> structure.
 						</div></div></div><div class="para">
 						The callback is set up by a call to <code class="command">pmdaSetFetchCallBack</code> in <code class="command">trivial_init</code>. As a rule of thumb, the API routines with named ending with <code class="command">CallBack</code> are helpers for the higher PDU handling routines like <code class="command">pmdaFetch</code>. The latter are set directly using the PMDA Interface Structures, as described in <a class="xref" href="id5193658.html">Section 2.5.2, “PMDA Structures”</a>.
-					</div></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5192681">
+					</div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5192681">
       ⁠</a>2.5.1.2. Simple PMDA</h4></div></div></div><div class="para">
 						<a id="IG31340177188" class="indexterm"></a> <a id="IG31340177189" class="indexterm"></a>The simple PMDA callback for <code class="command">pmdaFetch</code> is more complicated because it supports more metrics, some metrics are instantiated with each fetch, and one instance domain is dynamic. The default <code class="command">pmdaFetch</code> callback, shown in <a class="xref" href="LE21831-PARENT.html#Z964110950sdc">Example 2.17, “Request Handling Callbacks in the Simple PMDA”</a>, is replaced by <code class="command">simple_fetch</code> in <code class="command">simple_init</code>, which increments the number of fetches and updates the instance domain for <code class="literal">INDOM_NOW</code> before calling <code class="command">pmdaFetch</code>:
 					</div><div class="example"><a id="Z964110950sdc">
@@ -168,7 +136,7 @@ simple_fetchCallBack(pmdaMetric *mdesc, unsigned int inst, pmAtomValue *atom)
         }
         else 
             return PM_ERR_PMID;
-    }</pre></div></div></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5193108">
+    }</pre></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5193108">
       ⁠</a>2.5.1.3.  <code class="literal">simple_store</code> in the Simple PMDA</h4></div></div></div><div class="para">
 						<a id="IG31340177194" class="indexterm"></a> <a id="IG31340177195" class="indexterm"></a>The simple PMDA permits some of the metrics it supports to be modified by <code class="command">pmStore</code> as shown in <a class="xref" href="LE21831-PARENT.html#Z964111850sdc">Example 2.22, “ <code class="literal">simple_store</code> in the Simple PMDA”</a>. For additional information, see the <code class="command">pmstore(1)</code> and <code class="command">pmStore(3)</code> man pages.
 					</div><div class="example"><a id="Z964111850sdc">
@@ -249,7 +217,7 @@ simple_store(pmResult *result, pmdaExt *pmda)
 							The structure <code class="literal">pmdaExt</code> <em class="replaceable">pmda</em> argument is not used by the <code class="command">simple_store</code> function above.
 						</div></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
 							When using storable metrics, it is important to consider the implications. It is possible <code class="command">pmlogger</code> is actively sampling the metric being modified, for example, which may cause unexpected results to be persisted in an archive. Consider also the use of client credentials, available via the <code class="command">attribute</code> callback of the <code class="filename">pmdaInterface</code> structure, to appropriately limit access to any modifications that might be made via your storable metrics.
-						</div></div></div></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5193469">
+						</div></div></div></div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5193469">
       ⁠</a>2.5.1.4. Return Codes for <code class="command">pmdaFetch</code> Callbacks</h4></div></div></div><div class="para">
 						In <code class="literal">PMDA_INTERFACE_1</code> and <code class="literal">PMDA_INTERFACE_2</code>, the return codes for the <code class="command">pmdaFetch</code> callback function are defined:
 					</div><div class="variablelist"><dl class="variablelist"><dt><span class="term">Value</span></dt><dd><div class="para">
@@ -268,79 +236,4 @@ simple_store(pmResult *result, pmdaExt *pmda)
 									Metric value not currently available
 								</div></dd><dt><span class="term">&gt; 0</span></dt><dd><div class="para">
 									Success
-								</div></dd></dl></div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5191869.html"><strong>Prev</strong>2.4.5. Management of Evolution within a PMDA</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5193658.html"><strong>Next</strong>2.5.2. PMDA Structures</a></li></ul></div></div></div></div>
-<footer xmlns="" class="global-footer is-typeset">
-  <div class="row-parent">
-    <div class="row">
-      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Main Menu</h4>
-            <ul>
-              <li>
-                <a href="/features.html">Features</a>
-              </li>
-              <li>
-                <a href="/documentation.html">Documentation</a>
-              </li>
-              <li>
-                <a class="download" href="/download.html">Download</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Developers</h4>
-            <ul>
-              <li>
-                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
-              </li>
-              <li>
-                <a href="/community.html">Contributing</a>
-              </li>
-              <li>
-                <a href="/team.html">Team</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>About</h4>
-            <ul>
-              <li>
-                <a href="/news.html">News</a>
-              </li>
-              <li>
-                <a href="/testimonials.html">Testimonials</a>
-              </li>
-              <li>
-                <a href="/faq.html">FAQ</a>
-              </li>
-              <li>
-                <a href="/website.html">Website</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Get Social</h4>
-            <ul>
-              <li>
-                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
-              </li>
-              <li>
-                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
-              </li>
-            </ul>
-          </div>
-        </div></section>
-    </div>
-    <div class="row">
-      <div class="colspan2-2">
-        <p class="legal">
-          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
-        </p>
-      </div>
-    </div>
-  </div>
-</footer>
-</body></html>
+								</div></dd></dl></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5191869.html"><strong>Prev</strong>2.4.5. Management of Evolution within a PMDA</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5193658.html"><strong>Next</strong>2.5.2. PMDA Structures</a></li></ul></body></html>

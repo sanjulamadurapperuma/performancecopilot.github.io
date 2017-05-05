@@ -168,7 +168,19 @@
                  </b>
                  (3),
               
-              then this should be set to NULL.
+              then this should be set to NULL, otherwise
+                 <i>
+                  helptext
+                 </i>
+                 will be copied, so the storage associated with
+                 <i>
+                  helptext
+                 </i>
+                 may be released after the call to
+                 <b>
+                  pmdaDSO
+                 </b>
+                 .
                 </dd>
                </dl>
                <p>

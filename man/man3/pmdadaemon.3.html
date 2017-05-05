@@ -188,6 +188,26 @@
                   pmdaGetOpt
                  </b>
                  .
+                 <i>
+                  logfile
+                 </i>
+                 will be copied with
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man3/strdup.3.html">
+                   strdup
+                  </a>
+                 </b>
+                 (3),
+              
+              so the storage associated with
+                 <i>
+                  logfile
+                 </i>
+                 may be released after the call to
+                 <b>
+                  pmdaDaemon
+                 </b>
+                 .
                 </dd>
                 <dt>
                  <i>
@@ -223,7 +243,27 @@
                  </b>
                  (3),
               
-              then this should be set to NULL.
+              then this should be set to NULL, otherwise
+                 <i>
+                  helptext
+                 </i>
+                 will be copied with
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man3/strdup.3.html">
+                   strdup
+                  </a>
+                 </b>
+                 (3),
+              
+              so the storage associated with
+                 <i>
+                  helptext
+                 </i>
+                 may be released after the call to
+                 <b>
+                  pmdaDaemon
+                 </b>
+                 .
                 </dd>
                </dl>
                <p>
