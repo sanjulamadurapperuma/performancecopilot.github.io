@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8.11. PMAPI Ancillary Support Services</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5199561.html" title="3.8. PMAPI Procedural Interface" /><link rel="prev" href="LE73955-PARENT.html" title="3.8.10. PMAPI Time Control Services" /><link rel="next" href="id5209050.html" title="3.8.11.2.  pmErrStr Function" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE73955-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5209050.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE44064-PARENT">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8.11. PMAPI Ancillary Support Services</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5199561.html" title="3.8. PMAPI Procedural Interface" /><link rel="prev" href="LE73955-PARENT.html" title="3.8.10. PMAPI Time Control Services" /><link rel="next" href="id5209050.html" title="3.8.11.2.  pmErrStr Function" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE73955-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5209050.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE44064-PARENT">
       ⁠</a>3.8.11. PMAPI Ancillary Support Services</h3></div></div></div><div class="para">
 					<a id="IG31340177417" class="indexterm"></a> <a id="IG31340177418" class="indexterm"></a>The functions described in this section provide services that are complementary to, but not necessarily a part of, the distributed manipulation of performance metrics delivered by the PCP components.
-				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5208965">
+				</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5208965">
       ⁠</a>3.8.11.1.  <code class="command">pmGetConfig</code> Function</h4></div></div></div><pre class="literallayout">char *pmGetConfig(const char <em class="replaceable">*variable</em>)
 <code class="command">Python:</code>
 "env variable value = pmGetConfig("env variable")</pre><div class="para">
@@ -15,4 +47,79 @@
 						If this function returns, the returned value points to a string in the environment; and so although the function returns the same type as the <code class="command">getenv</code> function (which should probably be a <code class="literal">const char *</code>), changing the content of the string is not recommended.
 					</div><div class="para">
 						The python bindings return a value for environment variable <em class="replaceable">"env variable"</em> from environment or pcp config file.
-					</div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE73955-PARENT.html"><strong>Prev</strong>3.8.10. PMAPI Time Control Services</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5209050.html"><strong>Next</strong>3.8.11.2.  pmErrStr Function</a></li></ul></body></html>
+					</div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE73955-PARENT.html"><strong>Prev</strong>3.8.10. PMAPI Time Control Services</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5209050.html"><strong>Next</strong>3.8.11.2.  pmErrStr Function</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

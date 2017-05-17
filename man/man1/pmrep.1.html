@@ -70,7 +70,7 @@
                </b>
                [
                <b>
-                -CdGHLpruUVxz?
+                -CdGHILpruUvVxz?
                </b>
                ]
               [
@@ -761,16 +761,6 @@
                   </a>
                  </b>
                  (5).
-              
-              Unlike with other options,
-                 <i>
-                  config
-                 </i>
-                 must be separated by a space from
-                 <b>
-                  -c
-                 </b>
-                 .
                 </dd>
                 <dt>
                  <b>
@@ -990,7 +980,11 @@
                  </i>
                  .
               
-              Metrics without instances are reported as usual.
+              By default metrics without instances are reported as usual, use
+                 <b>
+                  -v
+                 </b>
+                 to change this.
                  <dl compact="">
                   <dt>
                   </dt>
@@ -1042,6 +1036,23 @@
                    </p>
                   </dd>
                  </dl>
+                </dd>
+                <dt>
+                 <b>
+                  -I
+                 </b>
+                </dt>
+                <dd>
+                 Ignore incompatible metrics. By default incompatible metrics
+              (that is, their type is unsupported or they cannot be scaled
+              as requested) will cause
+                 <b>
+                  pmrep
+                 </b>
+                 to terminate with an error message.
+              With this option all incompatible metrics are silently omitted
+              from reporting. This may be especially useful when requesting
+              non-leaf nodes of the PMNS tree for reporting.
                 </dd>
                 <dt>
                  <b>
@@ -1602,6 +1613,24 @@
                 </dd>
                 <dt>
                  <b>
+                  -v
+                 </b>
+                </dt>
+                <dd>
+                 Omit single-valued ``flat'' metrics from reporting when instances
+              were requested.
+              See
+                 <b>
+                  -i
+                 </b>
+                 and
+                 <b>
+                  -I
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
                   -V
                  </b>
                 </dt>
@@ -1804,7 +1833,7 @@
                </i>
                specifications.
                <p>
-                Display network interface statistics on the local host:
+                Display network interface metrics on the local host:
                </p>
                <dl compact="">
                 <dt>
@@ -1812,6 +1841,22 @@
                 <dd>
                  <pre>
               $ pmrep network.interface.total.bytes
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                Display all outgoing network metrics for the
+                <i>
+                 wlan0
+                </i>
+                interface:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              $ pmrep -i wlan0 -v network.interface.out
               </pre>
                 </dd>
                </dl>
@@ -1927,12 +1972,6 @@
                <a name="lbAH">
                </a>
                <h2>
-                BUGS
-               </h2>
-               No command line option can follow metrics.
-               <a name="lbAI">
-               </a>
-               <h2>
                 PCP ENVIRONMENT
                </h2>
                Environment variables with the prefix
@@ -1959,7 +1998,7 @@
                 </a>
                </b>
                (5).
-               <a name="lbAJ">
+               <a name="lbAI">
                </a>
                <h2>
                 SEE ALSO
@@ -2193,20 +2232,13 @@
                 </dd>
                 <dt>
                  <a href="#lbAH">
-                  BUGS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
                   PCP ENVIRONMENT
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAJ">
+                 <a href="#lbAI">
                   SEE ALSO
                  </a>
                 </dt>
@@ -2261,9 +2293,6 @@
               <div class='col__module'>
                 <h4>About</h4>
                 <ul>
-                  <li>
-                    <a href='/news.html'>News</a>
-                  </li>
                   <li>
                     <a href='/testimonials.html'>Testimonials</a>
                   </li>

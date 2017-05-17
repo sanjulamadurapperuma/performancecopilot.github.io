@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.3.3. Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97285-PARENT.html" title="2.3. Domains, Metrics, and Instances" /><link rel="prev" href="id5189538.html" title="2.3.2. Domains" /><link rel="next" href="id5190312.html" title="2.3.3.2. Semantics" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5189538.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5190312.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE98565-PARENT">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.3.3. Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97285-PARENT.html" title="2.3. Domains, Metrics, and Instances" /><link rel="prev" href="id5189538.html" title="2.3.2. Domains" /><link rel="next" href="id5190312.html" title="2.3.3.2. Semantics" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5189538.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5190312.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE98565-PARENT">
       ⁠</a>2.3.3. Metrics</h3></div></div></div><div class="para">
 					<a id="IG31340177114" class="indexterm"></a> <a id="IG31340177115" class="indexterm"></a>A PMDA provides support for a collection of metrics. In addition to the obvious performance metrics, and the measures of time, activity and resource utilization, the metrics should also describe how the target domain has been configured, as this can greatly affect the correct interpretation of the observed performance. For example, metrics that describe network transfer rates should also describe the number and type of network interfaces connected to the host (<code class="literal">hinv.ninterface</code>, <code class="literal">network.interface.speed</code>, <code class="literal">network.interface.duplex</code>, and so on)
 				</div><div class="para">
 					<a id="IG31340177116" class="indexterm"></a> <a id="IG31340177117" class="indexterm"></a>In addition, the metrics should describe how the PMDA has been configured. For example, if the PMDA was periodically probing a system to measure quality of service, there should be metrics for the delay between probes, the number of probes attempted, plus probe success and failure counters. It may also be appropriate to allow values to be stored (see the <code class="command">pmstore(1)</code> man page) into the delay metric, so that the delay used by the PMDA can be altered dynamically.
-				</div><div class="section"><div class="titlepage"><div><div><h4 class="title"><a id="id5189689">
+				</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5189689">
       ⁠</a>2.3.3.1. Data Structures</h4></div></div></div><div class="para">
 						<a id="IG31340177118" class="indexterm"></a> <a id="IG31340177119" class="indexterm"></a> <a id="IG31340177120" class="indexterm"></a>Each metric must be described in a <code class="filename">pmDesc</code> structure; see the <code class="command">pmLookupDesc(3)</code> man page:
 					</div><pre class="programlisting">typedef struct { 
@@ -77,4 +109,79 @@
 									<a id="IG31340177126" class="indexterm"></a>An instantaneous semantic value (<code class="literal">PM_SEM_INSTANT</code>)
 								</div></li><li class="listitem"><div class="para">
 									Dimension “time” and the units “seconds”
-								</div></li></ul></div></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5189538.html"><strong>Prev</strong>2.3.2. Domains</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5190312.html"><strong>Next</strong>2.3.3.2. Semantics</a></li></ul></body></html>
+								</div></li></ul></div></div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5189538.html"><strong>Prev</strong>2.3.2. Domains</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5190312.html"><strong>Next</strong>2.3.3.2. Semantics</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>
