@@ -40,7 +40,7 @@
             <div class='manpage'>
               ﻿
                <h1>
-                PMFREERESULT
+                PMFREELABELSETS
                </h1>
                Section: C Library Functions (3)
                <br/>
@@ -57,9 +57,9 @@
                 NAME
                </h2>
                <b>
-                pmFreeResult
+                pmFreeLabelSets
                </b>
-               - release storage allocated for performance metrics values
+               - release storage allocated for performance metric labels
                <a name="lbAC">
                </a>
                <h2>
@@ -73,9 +73,13 @@
                 &gt;
                </b>
                <p>
-                void pmFreeResult(pmResult *
+                void pmFreeLabelSets(pmLabelSet *
                 <i>
-                 result
+                 sets
+                </i>
+                , int
+                <i>
+                 nsets
                 </i>
                 );
                </p>
@@ -87,17 +91,22 @@
                <h2>
                 DESCRIPTION
                </h2>
-               The variable sized results returned by
+               The array of label
+               <i>
+                sets
+               </i>
+               returned by
                <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
+                <a href="/man/man3/pmgetlabels.3.html">
+                 pmGetLabels
                 </a>
                </b>
                (3)
               
-              are allocated below the
+              and related APIs are allocated below the
               Performance Metrics Application Programming Interface (PMAPI)
-              using a combination of dynamic (i.e.
+              using a variety of calls to the system's dynamic memory
+              allocation (i.e.
                <b>
                 <a href="http://man7.org/linux/man-pages/man3/malloc.3.html">
                  malloc
@@ -105,29 +114,30 @@
                </b>
                (3))
               
-              and specialized allocation strategies.
+              interfaces.
                <p>
                 Applications should call
                 <b>
-                 pmFreeResult
+                 pmFreeLabelSets
                 </b>
-                to release the storage previously allocated for
+                to release the storage previously allocated for the label
                 <i>
-                 result
+                 sets
                 </i>
-                by
+                array when access to the structure is no longer needed.
+              The return value from
                 <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
+                 pmGetLabels
                 </b>
-                (3),
-              
-              when the application no longer requires access to the
+                indicates the number of elements in the label
                 <i>
-                 pmResult
+                 sets
                 </i>
-                structure.
+                array, and this should be passed in using the
+                <i>
+                 nsets
+                </i>
+                parameter.
                </p>
                <p>
                 Under
@@ -136,19 +146,21 @@
                 </b>
                 circumstances should an application use
                 <i>
-                 free(result)
+                 free(labelset)
                 </i>
                 to release storage previously allocated for a
                 <i>
-                 pmResult
+                 pmLabelSet
                 </i>
                 by
                 <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
+                 <a href="/man/man3/pmgetlabels.3.html">
+                  pmGetLabels
                  </a>
                 </b>
-                (3).
+                (3)
+              
+              or related APIs.
                 <a name="lbAE">
                 </a>
                </p>
@@ -170,8 +182,8 @@
               
               and
                <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
+                <a href="/man/man3/pmgetlabels.3.html">
+                 pmGetLabels
                 </a>
                </b>
                (3).

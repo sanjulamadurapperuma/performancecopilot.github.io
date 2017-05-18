@@ -40,7 +40,7 @@
             <div class='manpage'>
               ﻿
                <h1>
-                PMFREERESULT
+                PMMERGELABELS
                </h1>
                Section: C Library Functions (3)
                <br/>
@@ -57,9 +57,13 @@
                 NAME
                </h2>
                <b>
-                pmFreeResult
+                pmMergeLabels
                </b>
-               - release storage allocated for performance metrics values
+               ,
+               <b>
+                pmMergeLabelSets
+               </b>
+               - merge sets of performance metric labels
                <a name="lbAC">
                </a>
                <h2>
@@ -73,9 +77,39 @@
                 &gt;
                </b>
                <p>
-                void pmFreeResult(pmResult *
+                int pmMergeLabels(char **
                 <i>
-                 result
+                 sets
+                </i>
+                , int
+                <i>
+                 nsets
+                </i>
+                , char *
+                <i>
+                 buffer
+                </i>
+                , int
+                <i>
+                 length
+                </i>
+                );
+                <br/>
+                int pmMergeLabelSets(pmLabelSet **
+                <i>
+                 sets
+                </i>
+                , int
+                <i>
+                 nsets
+                </i>
+                , char *
+                <i>
+                 buffer
+                </i>
+                , int
+                <i>
+                 length
                 </i>
                 );
                </p>
@@ -87,80 +121,134 @@
                <h2>
                 DESCRIPTION
                </h2>
-               The variable sized results returned by
                <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
+                pmMergeLabels
+               </b>
+               takes multiple (
+               <i>
+                nsets
+               </i>
+               )
+              
+              performance metric label
+               <i>
+                sets
+               </i>
+               and merges them into a single result
+               <i>
+                buffer
+               </i>
+               of
+               <i>
+                length
+               </i>
+               bytes.
+              Both the input
+               <i>
+                sets
+               </i>
+               and the result
+               <i>
+                buffer
+               </i>
+               are
+               <i>
+                name
+               </i>
+               :
+               <i>
+                value
+               </i>
+               pairs in the "JSONB" format described on
+               <b>
+                <a href="/man/man1/pmgetlabels.1.html">
+                 pmGetLabels
                 </a>
                </b>
-               (3)
-              
-              are allocated below the
-              Performance Metrics Application Programming Interface (PMAPI)
-              using a combination of dynamic (i.e.
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/malloc.3.html">
-                 malloc
-                </a>
-               </b>
-               (3))
-              
-              and specialized allocation strategies.
+               (1).
                <p>
-                Applications should call
-                <b>
-                 pmFreeResult
-                </b>
-                to release the storage previously allocated for
+                The format of the
                 <i>
-                 result
+                 pmLabelSet
                 </i>
-                by
+                data structure is described in detail in
                 <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3),
-              
-              when the application no longer requires access to the
-                <i>
-                 pmResult
-                </i>
-                structure.
-               </p>
-               <p>
-                Under
-                <b>
-                 no
-                </b>
-                circumstances should an application use
-                <i>
-                 free(result)
-                </i>
-                to release storage previously allocated for a
-                <i>
-                 pmResult
-                </i>
-                by
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
+                 <a href="/man/man3/pmgetlabels.3.html">
+                  pmGetLabels
                  </a>
                 </b>
                 (3).
+               </p>
+               <p>
+                Although names may repeat across the provided label
+                <i>
+                 sets
+                </i>
+                ,
+              
+              duplicate names are not allowed in the final
+                <i>
+                 buffer
+                </i>
+                .
+              
+              Any label names occuring in more than one of the input label
+                <i>
+                 sets
+                </i>
+                are reduced to one using the rules described in the "PRECEDENCE"
+              section of
+                <b>
+                 pmGetLabels
+                </b>
+                .
+              
+              The position of each element in the
+                <i>
+                 sets
+                </i>
+                array is significant in terms of the precedence rules - earlier
+              positions are taken to be of lower precedence to later positions.
+               </p>
+               <p>
+                Values must be primitive JSON entities (e.g. numbers, strings),
+              one-dimensional arrays or maps (i.e. simple associative arrays).
+               </p>
+               <p>
                 <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               On success, both
+               <b>
+                pmMergeLabels
+               </b>
+               and
+               <b>
+                pmMergeLabelSets
+               </b>
+               returns the number of bytes written into the supplied
+               <i>
+                buffer
+               </i>
+               .
+               <p>
+                Failure to parse the input strings, failure to allocate memory, or any
+              internal inconsistencies found will result in a negative return code.
+                <a name="lbAF">
                 </a>
                </p>
                <h2>
                 SEE ALSO
                </h2>
                <b>
-                <a href="http://man7.org/linux/man-pages/man3/malloc.3.html">
-                 malloc
+                <a href="/man/man1/pminfo.1.html">
+                 pminfo
                 </a>
                </b>
-               (3),
+               (1),
                <b>
                 <a href="/man/man3/pmapi.3.html">
                  PMAPI
@@ -170,8 +258,8 @@
               
               and
                <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
+                <a href="/man/man3/pmgetlabels.3.html">
+                 pmGetLabels
                 </a>
                </b>
                (3).
@@ -207,6 +295,13 @@
                 </dd>
                 <dt>
                  <a href="#lbAE">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
                   SEE ALSO
                  </a>
                 </dt>
