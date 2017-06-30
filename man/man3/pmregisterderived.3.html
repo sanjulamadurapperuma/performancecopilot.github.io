@@ -688,7 +688,8 @@
               type and/or semantics and/or units for operands, e.g.
                     <br/>
                     idle = mem.util.free &gt; mkconst(10485760, units=Kbyte)
-              avg_io_size = delta(disk.dev.total) == 0 ? \
+                    <br/>
+                    avg_io_size = delta(disk.dev.total) == 0 ? \
                     <br/>
                     -mkconst(1.0, semantics=instant, units="kbyte / count") : \
                     <br/>
@@ -1251,13 +1252,21 @@
                 is called, errors found during semantic checking (when
               any subsequent calls to
                 <b>
-                 pmNewContext (3)
+                 <a href="/man/man3/pmnewcontext.3.html">
+                  pmNewContext
+                 </a>
                 </b>
-                or
+                (3)
+              
+              or
                 <b>
-                 pmReconnectContext (3)
+                 <a href="/man/man3/pmreconnectcontext.3.html">
+                  pmReconnectContext
+                 </a>
                 </b>
-                succeed) are reported using
+                (3)
+              
+              succeed) are reported using
                 <b>
                  <a href="/man/man3/pmprintf.3.html">
                   pmprintf

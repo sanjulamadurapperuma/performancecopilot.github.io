@@ -75,31 +75,43 @@
                <b>
                 -s
                </b>
-               N] [
+               N]
+              [
                <b>
                 -t
                </b>
-               DELTA] [
+               DELTA]
+              [
                <b>
                 -I
                </b>
-               ] [
+               ]
+              [
                <b>
                 -a
                </b>
-               FILE]  [
+               FILE]
+              [
+               <b>
+                -f
+               </b>
+               FORMAT]
+              [
                <b>
                 -G
                </b>
-               NAME] [
+               NAME]
+              [
                <b>
                 -U
                </b>
-               [USERNAME]] [
+               [USERNAME]]
+              [
                <b>
                 -p
                </b>
-               PID1,PID2..] [
+               PID1,PID2..]
+              [
                <b>
                 -R
                </b>
@@ -107,17 +119,21 @@
                <b>
                 -r/-k
                </b>
-               ] [
+               ]
+              [
                <b>
                 -V
                </b>
-               ] [
+               ]
+              [
                <b>
                 -?
                </b>
                ]
-               <a name="lbAD">
-               </a>
+               <p>
+                <a name="lbAD">
+                </a>
+               </p>
                <h2>
                 DESCRIPTION
                </h2>
@@ -221,6 +237,21 @@
                   </a>
                  </b>
                  (1).
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -f
+                 </b>
+                </dt>
+                <dd>
+                 Use the format string for formatting the timestamp. The format will be used with Python's datetime.strftime method which is mostly the same as that described
+              in
+                 <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+                  strftime
+                 </a>
+                 (3). An empty format string(i.e,"") will remove the timestamps from the output. The default with stdout is %H:%M:%S.
                  <p>
                  </p>
                 </dd>

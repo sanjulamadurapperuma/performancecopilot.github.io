@@ -128,6 +128,11 @@
                ]
               [
                <b>
+                -C
+               </b>
+               ]
+              [
+               <b>
                 -P
                </b>
                ]
@@ -511,6 +516,27 @@
                  (1)),
               
               or archive file, or the PM_CONTEXT_LOCAL.
+                </dd>
+                <dt>
+                 <b>
+                  -C
+                 </b>
+                </dt>
+                <dd>
+                 Mandatory authentication mode, where all host specifications at context
+              creation time must be accompanied by credentials (username and password).
+              These are then passed to
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              when creating the context.
+              In addition, subsequent PMAPI context operations require matching
+              HTTP Basic authentication credentials.
+              This setting is incompatible with the permissive mode of operation.
                 </dd>
                 <dt>
                  <b>

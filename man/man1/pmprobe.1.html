@@ -70,7 +70,7 @@
                </b>
                [
                <b>
-                -fIiLVvz
+                -fFIiLVvz
                </b>
                ]
               [
@@ -164,6 +164,25 @@
                  metricname
                 </i>
                 argument is given, the root of the namespace is used.
+               </p>
+               <p>
+                This recursive expansion of the PMNS can be inhibited by the
+                <b>
+                 -F
+                </b>
+                (go faster) option, which reduces the number of roundtrips to
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              when the
+                <i>
+                 metricname
+                </i>
+                arguments are known to be leaf nodes ahead of time.
                </p>
                <p>
                 The output format is spartan and intended for use in wrapper

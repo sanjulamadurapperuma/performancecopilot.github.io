@@ -77,6 +77,7 @@
                 &gt;
                </b>
                <p>
+                <br/>
                 int pmMergeLabels(char **
                 <i>
                  sets
@@ -94,6 +95,8 @@
                  length
                 </i>
                 );
+               </p>
+               <p>
                 <br/>
                 int pmMergeLabelSets(pmLabelSet **
                 <i>
@@ -110,6 +113,14 @@
                 , int
                 <i>
                  length
+                </i>
+                , int (*
+                <i>
+                 filter
+                </i>
+                )(const pmLabel *, const char *, void *), void *
+                <i>
+                 arg
                 </i>
                 );
                </p>
@@ -167,7 +178,16 @@
                </b>
                (1).
                <p>
-                The format of the
+                The
+                <b>
+                 pmMergeLabelSets
+                </b>
+                interface serves the same purpose, but allows for indexed
+                <i>
+                 sets
+                </i>
+                of labels to be merged.
+              The format of the
                 <i>
                  pmLabelSet
                 </i>
@@ -213,6 +233,46 @@
                <p>
                 Values must be primitive JSON entities (e.g. numbers, strings),
               one-dimensional arrays or maps (i.e. simple associative arrays).
+               </p>
+               <p>
+                In addition to using indexed label
+                <i>
+                 sets
+                </i>
+                the
+                <b>
+                 pmMergeLabelSets
+                </b>
+                interface provides an optional
+                <i>
+                 filter
+                </i>
+                callback function.
+              If non-NULL, this function will be called for each label that
+              would be added to the output
+                <i>
+                 buffer
+                </i>
+                ,
+              
+              allowing finer-grained control over the final merged set.
+              This mechanism can be used to
+                <i>
+                 filter
+                </i>
+                individual labels based on their name, value, and/or flags.
+              If the
+                <i>
+                 filter
+                </i>
+                function returns zero (false), then the given label is filtered
+              from the resulting set.
+              Any non-zero return value indicates that the label should be
+              included in the
+                <i>
+                 buffer
+                </i>
+                .
                </p>
                <p>
                 <a name="lbAE">
