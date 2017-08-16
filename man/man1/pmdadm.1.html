@@ -69,7 +69,7 @@
                 pmdadm
                </b>
                is a Performance Metrics Domain Agent (PMDA) which exports
-              metric values for Devic Mapper on the local system.
+              metric values for Device Mapper on the local system.
                <p>
                 This PMDA collects its data through the
                 <b>
@@ -79,7 +79,18 @@
                 </b>
                 (8)
               
-              utility and requires that the program is installed in order to function.
+              utility, dmstats API and requires that the program is installed in order to function.
+               </p>
+               <p>
+                In addition, at least a statistics region must be created to use
+                <b>
+                 <a href="/man/man8/dmstats.8.html">
+                  dmstats
+                 </a>
+                </b>
+                (8)
+              
+              in order to get the basic counter value.
                </p>
                <p>
                 Further details on device mapper can be found at
@@ -182,6 +193,167 @@
                <a name="lbAF">
                </a>
                <h2>
+                dmstats metric
+               </h2>
+               This PMDA use the dmstats API (the userspace device-mapper support
+              library) to allow dmstats performance data.
+               <br/>
+               Using this PMDA, users need the userspace device-mapper support library (libdevmapper)
+              and the userspace command line tool (dmstats).
+              Before getting the statistics metric, statistics regions have to be created.
+              When creating the statistics regions of all device-mapper device under /dev/mapper as below:
+               <p>
+                <tt>
+                </tt>
+                # dmstats create --alldevices
+                <br/>
+               </p>
+               <p>
+                Further Detail on
+                <b>
+                 <a href="/man/man8/dmstats.8.html">
+                  dmstats
+                 </a>
+                 (8)
+                </b>
+                can be found at man page.
+                <br/>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  Basic Counters
+                 </b>
+                </dt>
+                <dd>
+                 Basic counters provide access to the raw counter data from the kernel,
+              allowing further processing to be carried out by another program.
+                 <br/>
+                 The Kernel provides thirteen separate counters for each statistics area.
+              The first eleven of these match the counters provided in /proc/diskstats
+              or /sys/block/*/*/stat. The final pair provide separate counters for
+              read and write time.
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     <b>
+                      dmstats.read
+                     </b>
+                    </dt>
+                    <dd>
+                     Count of reads completed this interval per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dm.reads_merged
+                     </b>
+                    </dt>
+                    <dd>
+                     Count of reads merged this interval per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.read_bytes
+                     </b>
+                    </dt>
+                    <dd>
+                     Count of kbytes read this interval per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.reads_time
+                     </b>
+                    </dt>
+                    <dd>
+                     Accumulated duration of all read requests per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.write
+                     </b>
+                    </dt>
+                    <dd>
+                     Count of writes completed this interval per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.writes_merged
+                     </b>
+                    </dt>
+                    <dd>
+                     Count of writes completed this interval per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.write_bytes
+                     </b>
+                    </dt>
+                    <dd>
+                     Count of kbytes write this interval per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.writes_time
+                     </b>
+                    </dt>
+                    <dd>
+                     Accumulated duration of all write requests per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.in_progress
+                     </b>
+                    </dt>
+                    <dd>
+                     Count of requests currently in progress per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.io_ticks
+                     </b>
+                    </dt>
+                    <dd>
+                     Nanoseconds spent servicing request per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.queue_ticks
+                     </b>
+                    </dt>
+                    <dd>
+                     This field is incremented at each I/O start, I/O completion, I/O merge,
+              or read of these stats by the number of I/Os in progress multiplied by
+              the number of nanoseconds spent doing I/O since the last update of
+              this field. This can provide an easy measure of both I/O completion time
+              and the backlog that may be accumulating.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.read_ticks
+                     </b>
+                    </dt>
+                    <dd>
+                     Nanoseconds spent servicing reads per device-mapper device.
+                    </dd>
+                    <dt>
+                     <b>
+                      dmstats.write_ticks
+                     </b>
+                    </dt>
+                    <dd>
+                     Nanoseconds spent servicing writes per device-mapper device.
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
                 PCP ENVIRONMENT
                </h2>
                Environment variables with the prefix
@@ -198,12 +370,12 @@
                <b>
                 /etc/pcp.conf
                </b>
-               contains the local values for these variables. 
+               contains the local values for these variables.
               The
                <b>
                 $PCP_CONF
                </b>
-               variable may be used to specify an alternative 
+               variable may be used to specify an alternative
               configuration file, as described in
                <i>
                 <a href="/man/man5/pcp.conf.5.html">
@@ -211,7 +383,7 @@
                 </a>
                </i>
                (5).
-               <a name="lbAG">
+               <a name="lbAH">
                </a>
                <h2>
                 SEE ALSO
@@ -228,11 +400,17 @@
                 </a>
                </b>
                (1),
-              
-              and
                <b>
                 <a href="/man/man8/dmsetup.8.html">
                  dmsetup
+                </a>
+               </b>
+               (8),
+              
+              and
+               <b>
+                <a href="/man/man8/dmstats.8.html">
+                 dmstats
                 </a>
                </b>
                (8).
@@ -275,13 +453,20 @@
                 </dd>
                 <dt>
                  <a href="#lbAF">
-                  PCP ENVIRONMENT
+                  dmstats metric
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
                  <a href="#lbAG">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
                   SEE ALSO
                  </a>
                 </dt>

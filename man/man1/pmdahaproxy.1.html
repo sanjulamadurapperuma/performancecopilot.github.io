@@ -40,9 +40,9 @@
             <div class='manpage'>
               ﻿
                <h1>
-                PMMERGELABELS
+                PMDAHAPROXY
                </h1>
-               Section: C Library Functions (3)
+               Section: User Commands  (1)
                <br/>
                <a href="#index">
                 Index
@@ -57,272 +57,256 @@
                 NAME
                </h2>
                <b>
-                pmMergeLabels
+                pmdahaproxy
                </b>
-               ,
-               <b>
-                pmMergeLabelSets
-               </b>
-               - merge sets of performance metric labels
+               - HAProxy PMDA
                <a name="lbAC">
                </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                <br/>
-                int pmMergeLabels(char **
-                <i>
-                 sets
-                </i>
-                , int
-                <i>
-                 nsets
-                </i>
-                , char *
-                <i>
-                 buffer
-                </i>
-                , int
-                <i>
-                 length
-                </i>
-                );
-               </p>
-               <p>
-                <br/>
-                int pmMergeLabelSets(pmLabelSet **
-                <i>
-                 sets
-                </i>
-                , int
-                <i>
-                 nsets
-                </i>
-                , char *
-                <i>
-                 buffer
-                </i>
-                , int
-                <i>
-                 length
-                </i>
-                , int (*
-                <i>
-                 filter
-                </i>
-                )(const pmLabel *, const char *, void *), void *
-                <i>
-                 arg
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
                <h2>
                 DESCRIPTION
                </h2>
                <b>
-                pmMergeLabels
+                pmdahaproxy
                </b>
-               takes multiple (
-               <i>
-                nsets
-               </i>
-               )
-              
-              performance metric label
-               <i>
-                sets
-               </i>
-               and merges them into a single result
-               <i>
-                buffer
-               </i>
-               of
-               <i>
-                length
-               </i>
-               bytes.
-              Both the input
-               <i>
-                sets
-               </i>
-               and the result
-               <i>
-                buffer
-               </i>
-               are
-               <i>
-                name
-               </i>
-               :
-               <i>
-                value
-               </i>
-               pairs in the "JSONB" format described on
-               <b>
-                <a href="/man/man1/pmgetlabels.1.html">
-                 pmGetLabels
+               is a Performance Metrics Domain Agent (
+               <font size="-1">
+                PMDA
+               </font>
+               ) which
+              extracts live performance data from HAProxy statistic socket.
+               <p>
+                See the HAProxy documentation for detailed description of each metric.
+               </p>
+               <p>
+                <a name="lbAD">
                 </a>
+               </p>
+               <h2>
+                INSTALLATION
+               </h2>
+               <b>
+                pmdahaproxy
                </b>
-               (1).
+               reads an optional ini-style configuration file
+               <dl compact="">
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 <i>
+                  $PCP_PMDAS_DIR/haproxy/haproxy.conf
+                 </i>
+                </dd>
+               </dl>
                <p>
-                The
+                This file can contain in its
                 <b>
-                 pmMergeLabelSets
+                 [pmda]
                 </b>
-                interface serves the same purpose, but allows for indexed
-                <i>
-                 sets
-                </i>
-                of labels to be merged.
-              The format of the
-                <i>
-                 pmLabelSet
-                </i>
-                data structure is described in detail in
+                section overriding values
+              for the following PMDA options:
+               </p>
+               <dl compact="">
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 user
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 socket
+                </dd>
+               </dl>
+               <p>
+                By default,
                 <b>
-                 <a href="/man/man3/pmgetlabels.3.html">
-                  pmGetLabels
+                 root
+                </b>
+                and
+                <b>
+                 /var/lib/haproxy/stats
+                </b>
+                ,
+              are used as values for these options, respectively.
+               </p>
+               <p>
+                Note that the HAProxy statistics socket needs to be separately enabled
+              in the HAProxy configuration file; please refer to the HAProxy
+              configuration documentation for details. Depending on system and HAProxy
+              configuration, using non-root user may also be possible.
+               </p>
+               <p>
+                Once the needed setup is ready, you can test the connection and install
+              the PMDA to enable access to the names and values for the HAProxy
+              performance metrics. To install, do the following as root:
+               </p>
+               <p>
+                <br/>
+                # cd $PCP_PMDAS_DIR/haproxy
+                <br/>
+                <br/>
+                # ./connect
+                <br/>
+                <br/>
+                # ./Install
+               </p>
+               <p>
+                To uninstall, do the following as root:
+               </p>
+               <p>
+                <br/>
+                # cd $PCP_PMDAS_DIR/haproxy
+                <br/>
+                <br/>
+                # ./Remove
+               </p>
+               <p>
+                <b>
+                 pmdahaproxy
+                </b>
+                is launched by
+                <i>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
                  </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                Although names may repeat across the provided label
-                <i>
-                 sets
                 </i>
-                ,
-              
-              duplicate names are not allowed in the final
+                (1) and should never be executed
+              directly. The Install and Remove scripts notify
                 <i>
-                 buffer
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
                 </i>
-                .
-              
-              Any label names occuring in more than one of the input label
-                <i>
-                 sets
-                </i>
-                are reduced to one using the rules described in the "PRECEDENCE"
-              section of
-                <b>
-                 pmGetLabels
-                </b>
-                .
-              
-              The position of each element in the
-                <i>
-                 sets
-                </i>
-                array is significant in terms of the precedence rules - earlier
-              positions are taken to be of lower precedence to later positions.
-               </p>
-               <p>
-                Values must be primitive JSON entities (e.g. numbers, strings),
-              one-dimensional arrays or maps (i.e. simple associative arrays).
-               </p>
-               <p>
-                In addition to using indexed label
-                <i>
-                 sets
-                </i>
-                the
-                <b>
-                 pmMergeLabelSets
-                </b>
-                interface provides an optional
-                <i>
-                 filter
-                </i>
-                callback function.
-              If non-NULL, this function will be called for each label that
-              would be added to the output
-                <i>
-                 buffer
-                </i>
-                ,
-              
-              allowing finer-grained control over the final merged set.
-              This mechanism can be used to
-                <i>
-                 filter
-                </i>
-                individual labels based on their name, value, and/or flags.
-              If the
-                <i>
-                 filter
-                </i>
-                function returns zero (false), then the given label is filtered
-              from the resulting set.
-              Any non-zero return value indicates that the label should be
-              included in the
-                <i>
-                 buffer
-                </i>
-                .
-               </p>
-               <p>
+                (1) when the
+              agent is installed or removed.
                 <a name="lbAE">
                 </a>
                </p>
                <h2>
-                DIAGNOSTICS
+                FILES
                </h2>
-               On success, both
+               <dl compact="">
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/haproxy/haproxy.conf
+                 </b>
+                </dt>
+                <dd>
+                 configuration file for the
+                 <b>
+                  pmdahaproxy
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/haproxy/connect
+                 </b>
+                </dt>
+                <dd>
+                 connection test helper using the
+                 <b>
+                  pmdahaproxy
+                 </b>
+                 agent configuration
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/haproxy/Install
+                 </b>
+                </dt>
+                <dd>
+                 installation script for the
+                 <b>
+                  pmdahaproxy
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/haproxy/Remove
+                 </b>
+                </dt>
+                <dd>
+                 undo installation script for the
+                 <b>
+                  pmdahaproxy
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_LOG_DIR/pmcd/haproxy.log
+                 </b>
+                </dt>
+                <dd>
+                 default log file for messages from the
+                 <b>
+                  pmdahaproxy
+                 </b>
+                 agent
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
                <b>
-                pmMergeLabels
+                PCP_
                </b>
-               and
+               are used to parameterize
+              the file and directory names used by
                <b>
-                pmMergeLabelSets
+                PCP
                </b>
-               returns the number of bytes written into the supplied
+               . On each installation, the
+              file
+               <b>
+                /etc/pcp.conf
+               </b>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file, as described in
                <i>
-                buffer
-               </i>
-               .
-               <p>
-                Failure to parse the input strings, failure to allocate memory, or any
-              internal inconsistencies found will result in a negative return code.
-                <a name="lbAF">
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
                 </a>
-               </p>
+               </i>
+               (5).
+               <a name="lbAG">
+               </a>
                <h2>
                 SEE ALSO
                </h2>
                <b>
-                <a href="/man/man1/pminfo.1.html">
-                 pminfo
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
                 </a>
                </b>
                (1),
                <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
+                <a href="/man/man1/haproxy.1.html">
+                 haproxy
                 </a>
                </b>
-               (3)
+               (1),
               
               and
                <b>
-                <a href="/man/man3/pmgetlabels.3.html">
-                 pmGetLabels
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
                 </a>
                </b>
-               (3).
+               (1).
                <p>
                </p>
                <hr/>
@@ -341,27 +325,34 @@
                 </dd>
                 <dt>
                  <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
                   DESCRIPTION
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
+                 <a href="#lbAD">
+                  INSTALLATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
                  <a href="#lbAE">
-                  DIAGNOSTICS
+                  FILES
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
                  <a href="#lbAF">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
                   SEE ALSO
                  </a>
                 </dt>
