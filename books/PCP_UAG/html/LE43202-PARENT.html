@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.3. Managing Optional PMDAs</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE17127-PARENT.html" title="Chapter 2. Installing and Configuring Performance Co-Pilot" /><link rel="prev" href="id5191707.html" title="2.2.4.3. Controlling Access to PMCD with pmcd.conf" /><link rel="next" href="id5192380.html" title="2.3.2. PMDA Removal on a PCP Collector Host" />
-<meta xmlns="" charset="utf-8" />
-<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-<meta xmlns="" content="initial-scale=1" name="viewport" />
-<title xmlns="">Performance Co-Pilot</title>
-<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
-</head><body>
-    <header xmlns="" class="global-header">
-      <div class="row">
-        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
-          <a href="/index.html">Performance Co-Pilot</a>
-        </h1>
-        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
-          <ul>
-            <li>
-              <a href="/features.html">Features</a>
-            </li>
-            <li>
-              <a href="/documentation.html">Documentation</a>
-            </li>
-            <li>
-              <a href="/download.html">Download</a>
-            </li>
-            <li>
-              <a href="/community.html">Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5191707.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5192380.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="LE43202-PARENT">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.3. Managing Optional PMDAs</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE17127-PARENT.html" title="Chapter 2. Installing and Configuring Performance Co-Pilot" /><link rel="prev" href="id5191707.html" title="2.2.4.3. Controlling Access to PMCD with pmcd.conf" /><link rel="next" href="id5192380.html" title="2.3.2. PMDA Removal on a PCP Collector Host" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5191707.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5192380.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE43202-PARENT">
       ⁠</a>2.3. Managing Optional PMDAs</h2></div></div></div><div class="para">
 				<a id="ITch02-31" class="indexterm"></a>Some Performance Metrics Domain Agents (PMDAs) shipped with Performance Co-Pilot (PCP) are designed to be installed and activated on every collector host, for example, <code class="literal">linux</code>, <code class="literal">windows</code>, <code class="literal">darwin</code>, <code class="literal">pmcd</code>, and <code class="literal">process</code> PMDAs.
 			</div><div class="para">
@@ -40,7 +8,7 @@
 				Each PMDA has its own directory located below <code class="filename">${PCP_PMDAS_DIR}</code>. Each directory contains a <code class="filename">Remove</code> script to unconfigure the PMDA, remove the associated metrics from the PMNS, and restart the <code class="command"> pmcd</code> daemon; and an <code class="filename">Install</code> script to install the PMDA, update the PMNS, and restart the PMCD daemon.
 			</div><div class="para">
 				As a shortcut mechanism to support automated PMDA installation, a file named <code class="filename">.NeedInstall</code> can be created in a PMDA directory below <code class="filename">${PCP_PMDAS_DIR}</code>. The next restart of PCP services will invoke that PMDAs installation automatically, with default options taken.
-			</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE31599-PARENT">
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE31599-PARENT">
       ⁠</a>2.3.1. PMDA Installation on a PCP Collector Host</h3></div></div></div><div class="para">
 					<a id="ITch02-32" class="indexterm"></a>To install a PMDA you must perform a collector installation for each host on which the PMDA is required to export performance metrics. PCP provides a distributed metric namespace (PMNS) and metadata, so it is not necessary to install PMDAs (with their associated PMNS) on PCP monitor hosts.
 				</div><div class="para">
@@ -105,79 +73,4 @@ Installing pmchart view(s) ...
 Terminate PMDA if already installed ...
 Installing files ...
 Updating the PMCD control file, and notifying PMCD ...
-Check cisco metrics have appeared ... 5 metrics and 10 values</pre></div></div></li></ol></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5191707.html"><strong>Prev</strong>2.2.4.3. Controlling Access to PMCD with pmcd.conf</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5192380.html"><strong>Next</strong>2.3.2. PMDA Removal on a PCP Collector Host</a></li></ul></div></div></div></div>
-<footer xmlns="" class="global-footer is-typeset">
-  <div class="row-parent">
-    <div class="row">
-      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Main Menu</h4>
-            <ul>
-              <li>
-                <a href="/features.html">Features</a>
-              </li>
-              <li>
-                <a href="/documentation.html">Documentation</a>
-              </li>
-              <li>
-                <a class="download" href="/download.html">Download</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Developers</h4>
-            <ul>
-              <li>
-                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
-              </li>
-              <li>
-                <a href="/community.html">Contributing</a>
-              </li>
-              <li>
-                <a href="/team.html">Team</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>About</h4>
-            <ul>
-              <li>
-                <a href="/news.html">News</a>
-              </li>
-              <li>
-                <a href="/testimonials.html">Testimonials</a>
-              </li>
-              <li>
-                <a href="/faq.html">FAQ</a>
-              </li>
-              <li>
-                <a href="/website.html">Website</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Get Social</h4>
-            <ul>
-              <li>
-                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
-              </li>
-              <li>
-                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
-              </li>
-            </ul>
-          </div>
-        </div></section>
-    </div>
-    <div class="row">
-      <div class="colspan2-2">
-        <p class="legal">
-          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
-        </p>
-      </div>
-    </div>
-  </div>
-</footer>
-</body></html>
+Check cisco metrics have appeared ... 5 metrics and 10 values</pre></div></div></li></ol></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5191707.html"><strong>Prev</strong>2.2.4.3. Controlling Access to PMCD with pmcd.conf</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5192380.html"><strong>Next</strong>2.3.2. PMDA Removal on a PCP Collector Host</a></li></ul></body></html>

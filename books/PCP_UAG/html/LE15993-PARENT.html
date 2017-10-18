@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.2. Basic pmie Usage</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="prev" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="next" href="id5199666.html" title="5.2.2. Simple pmie Usage" />
-<meta xmlns="" charset="utf-8" />
-<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-<meta xmlns="" content="initial-scale=1" name="viewport" />
-<title xmlns="">Performance Co-Pilot</title>
-<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
-</head><body>
-    <header xmlns="" class="global-header">
-      <div class="row">
-        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
-          <a href="/index.html">Performance Co-Pilot</a>
-        </h1>
-        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
-          <ul>
-            <li>
-              <a href="/features.html">Features</a>
-            </li>
-            <li>
-              <a href="/documentation.html">Documentation</a>
-            </li>
-            <li>
-              <a href="/download.html">Download</a>
-            </li>
-            <li>
-              <a href="/community.html">Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE21414-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5199666.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="LE15993-PARENT">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.2. Basic pmie Usage</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="prev" href="LE21414-PARENT.html" title="Chapter 5. Performance Metrics Inference Engine" /><link rel="next" href="id5199666.html" title="5.2.2. Simple pmie Usage" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE21414-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5199666.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE15993-PARENT">
       ⁠</a>5.2. Basic <code class="command">pmie</code> Usage</h2></div></div></div><div class="para">
 				<a id="IG31371888186" class="indexterm"></a>This section presents and explains some basic examples of <code class="command">pmie</code> usage. The <code class="command">pmie</code> tool accepts the common PCP command line arguments, as described in <a class="xref" href="LE94335-PARENT.html">Chapter 3, <em>Common Conventions and Arguments</em></a>. In addition, <code class="command">pmie</code> accepts the following command line arguments:
 			</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">-d</code></span></dt><dd><div class="para">
@@ -46,7 +14,7 @@
 				One of the most basic invocations of this tool is this form:
 			</div><pre class="literallayout"><strong class="userinput"><code>pmie</code></strong> <em class="replaceable">filename</em></pre><div class="para">
 				In this form, the expressions to be evaluated are read from <em class="replaceable">filename</em>. In the absence of a given <em class="replaceable">filename</em>, expressions are read from standard input, which may be your system keyboard.
-			</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE23271-PARENT">
+			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE23271-PARENT">
       ⁠</a>5.2.1. <code class="command">pmie</code> use of PCP services</h3></div></div></div><div class="para">
 					<a id="ITch06-7" class="indexterm"></a>Before you use <code class="command">pmie</code>, it is strongly recommended that you familiarize yourself with the concepts from the <a class="xref" href="LE79836-PARENT.html">Section 1.2, “Conceptual Foundations”</a>. The discussion in this section serves as a very brief review of these concepts.
 				</div><div class="para">
@@ -79,79 +47,4 @@ kernel.percpu.cpu.user
     Data Type: 64-bit unsigned int  InDom: 60.0 0xf000000
     Semantics: counter  Units: millisec</pre></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
 						<a id="ITch06-8" class="indexterm"></a>A cumulative counter such as <code class="literal">kernel.percpu.cpu.user</code> is automatically converted by <code class="command">pmie</code> into a rate (measured in events per second, or count/second), while instantaneous values such as <code class="literal">mem.util.cached</code> are not subjected to rate conversion. Metrics with an instance domain (<code class="literal">InDom</code> in the <code class="command">pminfo</code> output) of <code class="literal">PM_INDOM_NULL</code> are singular and always produce one value per source. However, a metric like <code class="literal">kernel.percpu.cpu.user</code> has an instance domain, and may produce multiple values per source (in this case, it is one value for each configured CPU).
-					</div></div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE21414-PARENT.html"><strong>Prev</strong>Chapter 5. Performance Metrics Inference Engine</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5199666.html"><strong>Next</strong>5.2.2. Simple pmie Usage</a></li></ul></div></div></div></div>
-<footer xmlns="" class="global-footer is-typeset">
-  <div class="row-parent">
-    <div class="row">
-      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Main Menu</h4>
-            <ul>
-              <li>
-                <a href="/features.html">Features</a>
-              </li>
-              <li>
-                <a href="/documentation.html">Documentation</a>
-              </li>
-              <li>
-                <a class="download" href="/download.html">Download</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Developers</h4>
-            <ul>
-              <li>
-                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
-              </li>
-              <li>
-                <a href="/community.html">Contributing</a>
-              </li>
-              <li>
-                <a href="/team.html">Team</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>About</h4>
-            <ul>
-              <li>
-                <a href="/news.html">News</a>
-              </li>
-              <li>
-                <a href="/testimonials.html">Testimonials</a>
-              </li>
-              <li>
-                <a href="/faq.html">FAQ</a>
-              </li>
-              <li>
-                <a href="/website.html">Website</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Get Social</h4>
-            <ul>
-              <li>
-                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
-              </li>
-              <li>
-                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
-              </li>
-            </ul>
-          </div>
-        </div></section>
-    </div>
-    <div class="row">
-      <div class="colspan2-2">
-        <p class="legal">
-          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
-        </p>
-      </div>
-    </div>
-  </div>
-</footer>
-</body></html>
+					</div></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE21414-PARENT.html"><strong>Prev</strong>Chapter 5. Performance Metrics Inference Engine</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5199666.html"><strong>Next</strong>5.2.2. Simple pmie Usage</a></li></ul></body></html>

@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.6. Performance Event Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97135-PARENT.html" title="Chapter 3. PMAPI--The Performance Metrics API" /><link rel="prev" href="LE82331-PARENT.html" title="3.5. Performance Metrics Values" /><link rel="next" href="id5199204nat.html" title="3.6.2. Event Collector Considerations" />
-<meta xmlns="" charset="utf-8" />
-<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-<meta xmlns="" content="initial-scale=1" name="viewport" />
-<title xmlns="">Performance Co-Pilot</title>
-<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
-</head><body>
-    <header xmlns="" class="global-header">
-      <div class="row">
-        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
-          <a href="/index.html">Performance Co-Pilot</a>
-        </h1>
-        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
-          <ul>
-            <li>
-              <a href="/features.html">Features</a>
-            </li>
-            <li>
-              <a href="/documentation.html">Documentation</a>
-            </li>
-            <li>
-              <a href="/download.html">Download</a>
-            </li>
-            <li>
-              <a href="/community.html">Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE82331-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5199204nat.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="id5199202">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.6. Performance Event Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97135-PARENT.html" title="Chapter 3. PMAPI--The Performance Metrics API" /><link rel="prev" href="LE82331-PARENT.html" title="3.5. Performance Metrics Values" /><link rel="next" href="id5199204nat.html" title="3.6.2. Event Collector Considerations" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="LE82331-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5199204nat.html"><strong>Next</strong></a></li></ul><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="id5199202">
       ⁠</a>3.6. Performance Event Metrics</h2></div></div></div><div class="para">
 				In addition to performance metric values which are sampled by monitor tools, PCP supports the notion of performance event metrics which occur independently to any sampling frequency. These event metrics (PM_TYPE_EVENT) are delivered using a novel approach which allows both sampled and event trace data to be delivered via the same live wire protocol, the same on-disk archive format, and fundamentally using the same PMAPI services. In other words, a monitor tool may be sample and trace, simultaneously, using the PMAPI services discussed here.
 			</div><div class="para">
@@ -83,7 +51,7 @@ typedef struct {
     unsigned int     ep_type;       /* value type */
     int              ep_len;        /* bytes for type/len + vbuf */
     /* actual value (vbuf) here */
-} pmEventParameter;</pre></div></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5199203nat">
+} pmEventParameter;</pre></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5199203nat">
       ⁠</a>3.6.1. Event Monitor Considerations</h3></div></div></div><div class="para">
 					<a id="IG31340177280nat" class="indexterm"></a>In order to simplify the decoding of event record arrays, the PMAPI provides the <code class="command">pmUnpackEventRecords</code> function for monitor tools. This function is passed a pointer to a <code class="command">pmValueSet</code> associated with an event metric (within a <code class="command">pmResult</code>) from a <code class="command">pmFetch(3)</code>. For a given instance of that event metric, it returns an array of "unpacked" <code class="command">pmResult</code> structures for each event.
 				</div><div class="para">
@@ -166,79 +134,4 @@ void dump_event_record_parameters(pmValueSet *vsp)
         }
         free(name);
     }
-}</pre></div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE82331-PARENT.html"><strong>Prev</strong>3.5. Performance Metrics Values</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5199204nat.html"><strong>Next</strong>3.6.2. Event Collector Considerations</a></li></ul></div></div></div></div>
-<footer xmlns="" class="global-footer is-typeset">
-  <div class="row-parent">
-    <div class="row">
-      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Main Menu</h4>
-            <ul>
-              <li>
-                <a href="/features.html">Features</a>
-              </li>
-              <li>
-                <a href="/documentation.html">Documentation</a>
-              </li>
-              <li>
-                <a class="download" href="/download.html">Download</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Developers</h4>
-            <ul>
-              <li>
-                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
-              </li>
-              <li>
-                <a href="/community.html">Contributing</a>
-              </li>
-              <li>
-                <a href="/team.html">Team</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>About</h4>
-            <ul>
-              <li>
-                <a href="/news.html">News</a>
-              </li>
-              <li>
-                <a href="/testimonials.html">Testimonials</a>
-              </li>
-              <li>
-                <a href="/faq.html">FAQ</a>
-              </li>
-              <li>
-                <a href="/website.html">Website</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Get Social</h4>
-            <ul>
-              <li>
-                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
-              </li>
-              <li>
-                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
-              </li>
-            </ul>
-          </div>
-        </div></section>
-    </div>
-    <div class="row">
-      <div class="colspan2-2">
-        <p class="legal">
-          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
-        </p>
-      </div>
-    </div>
-  </div>
-</footer>
-</body></html>
+}</pre></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="LE82331-PARENT.html"><strong>Prev</strong>3.5. Performance Metrics Values</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5199204nat.html"><strong>Next</strong>3.6.2. Event Collector Considerations</a></li></ul></body></html>

@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">Chapter 6. Archive Logging</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="prev" href="id5205812.html" title="5.8.3. pmie Instances and Their Progress" /><link rel="next" href="LE46764-PARENT.html" title="6.2. Using Archive Logs with Performance Tools" />
-<meta xmlns="" charset="utf-8" />
-<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-<meta xmlns="" content="initial-scale=1" name="viewport" />
-<title xmlns="">Performance Co-Pilot</title>
-<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
-<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
-</head><body>
-    <header xmlns="" class="global-header">
-      <div class="row">
-        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
-          <a href="/index.html">Performance Co-Pilot</a>
-        </h1>
-        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
-          <ul>
-            <li>
-              <a href="/features.html">Features</a>
-            </li>
-            <li>
-              <a href="/documentation.html">Documentation</a>
-            </li>
-            <li>
-              <a href="/download.html">Download</a>
-            </li>
-            <li>
-              <a href="/community.html">Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5205812.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE46764-PARENT.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE93354-PARENT">
-      ⁠</a>Chapter 6. Archive Logging</h1></div></div></div><div class="toc"><p><strong>Table of Contents</strong></p><dl class="toc"><dt><span class="section"><a href="LE93354-PARENT.html#LE43411-PARENT">6.1. Introduction to Archive Logging</a></span></dt><dd><dl><dt><span class="section"><a href="LE93354-PARENT.html#id5206288">6.1.1. Archive Logs and the PMAPI</a></span></dt><dt><span class="section"><a href="LE93354-PARENT.html#id5206362">6.1.2. Retrospective Analysis Using Archive Logs</a></span></dt><dt><span class="section"><a href="LE93354-PARENT.html#id5206454">6.1.3. Using Archive Logs for Capacity Planning</a></span></dt></dl></dd><dt><span class="section"><a href="LE46764-PARENT.html">6.2. Using Archive Logs with Performance Tools</a></span></dt><dd><dl><dt><span class="section"><a href="LE46764-PARENT.html#id5206523">6.2.1. Coordination between <code class="command">pmlogger</code> and PCP tools</a></span></dt><dt><span class="section"><a href="id5206675.html">6.2.2. Administering PCP Archive Logs Using <code class="command">cron</code> Scripts </a></span></dt><dt><span class="section"><a href="LE92914-PARENT.html">6.2.3. Archive Log File Management</a></span></dt></dl></dd><dt><span class="section"><a href="LE57424-PARENT.html">6.3. Cookbook for Archive Logging</a></span></dt><dd><dl><dt><span class="section"><a href="LE57424-PARENT.html#id5207850">6.3.1. Primary Logger</a></span></dt><dt><span class="section"><a href="id5208266.html">6.3.2. Other Logger Configurations</a></span></dt><dt><span class="section"><a href="id5208588.html">6.3.3. Archive Log Administration</a></span></dt></dl></dd><dt><span class="section"><a href="Z930642977sdc.html">6.4. Other Archive Logging Features and Services</a></span></dt><dd><dl><dt><span class="section"><a href="Z930642977sdc.html#LE73509-PARENT">6.4.1. PCP Archive Folios</a></span></dt><dt><span class="section"><a href="id5208950.html">6.4.2. Manipulating Archive Logs with <code class="command">pmlogextract</code></a></span></dt><dt><span class="section"><a href="id5208951.html">6.4.3. Summarizing Archive Logs with <code class="command">pmlogsummary</code></a></span></dt><dt><span class="section"><a href="id5209027.html">6.4.4. Primary Logger</a></span></dt><dt><span class="section"><a href="id5209191.html">6.4.5. Using <code class="command">pmlc</code></a></span></dt></dl></dd><dt><span class="section"><a href="LE80113-PARENT.html">6.5. Archive Logging Troubleshooting</a></span></dt><dd><dl><dt><span class="section"><a href="LE80113-PARENT.html#id5209540">6.5.1. <code class="command">pmlogger</code> Cannot Write Log</a></span></dt><dt><span class="section"><a href="id5209654.html">6.5.2. Cannot Find Log</a></span></dt><dt><span class="section"><a href="id5209840.html">6.5.3. Primary <code class="command">pmlogger</code> Cannot Start</a></span></dt><dt><span class="section"><a href="id5210097.html">6.5.4. Identifying an Active <code class="command">pmlogger</code> Process</a></span></dt><dt><span class="section"><a href="id5210268.html">6.5.5. Illegal Label Record</a></span></dt><dt><span class="section"><a href="id5210389.html">6.5.6. Empty Archive Log Files or <code class="command">pmlogger</code> Exits Immediately </a></span></dt></dl></dd></dl></div><div class="para">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">Chapter 6. Archive Logging</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="prev" href="id5205812.html" title="5.8.3. pmie Instances and Their Progress" /><link rel="next" href="LE46764-PARENT.html" title="6.2. Using Archive Logs with Performance Tools" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5205812.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE46764-PARENT.html"><strong>Next</strong></a></li></ul><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE93354-PARENT">
+      ⁠</a>Chapter 6. Archive Logging</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="LE93354-PARENT.html#LE43411-PARENT">6.1. Introduction to Archive Logging</a></span></dt><dd><dl><dt><span class="section"><a href="LE93354-PARENT.html#id5206288">6.1.1. Archive Logs and the PMAPI</a></span></dt><dt><span class="section"><a href="LE93354-PARENT.html#id5206362">6.1.2. Retrospective Analysis Using Archive Logs</a></span></dt><dt><span class="section"><a href="LE93354-PARENT.html#id5206454">6.1.3. Using Archive Logs for Capacity Planning</a></span></dt></dl></dd><dt><span class="section"><a href="LE46764-PARENT.html">6.2. Using Archive Logs with Performance Tools</a></span></dt><dd><dl><dt><span class="section"><a href="LE46764-PARENT.html#id5206523">6.2.1. Coordination between <code class="command">pmlogger</code> and PCP tools</a></span></dt><dt><span class="section"><a href="id5206675.html">6.2.2. Administering PCP Archive Logs Using <code class="command">cron</code> Scripts </a></span></dt><dt><span class="section"><a href="LE92914-PARENT.html">6.2.3. Archive Log File Management</a></span></dt></dl></dd><dt><span class="section"><a href="LE57424-PARENT.html">6.3. Cookbook for Archive Logging</a></span></dt><dd><dl><dt><span class="section"><a href="LE57424-PARENT.html#id5207850">6.3.1. Primary Logger</a></span></dt><dt><span class="section"><a href="id5208266.html">6.3.2. Other Logger Configurations</a></span></dt><dt><span class="section"><a href="id5208588.html">6.3.3. Archive Log Administration</a></span></dt></dl></dd><dt><span class="section"><a href="Z930642977sdc.html">6.4. Other Archive Logging Features and Services</a></span></dt><dd><dl><dt><span class="section"><a href="Z930642977sdc.html#LE73509-PARENT">6.4.1. PCP Archive Folios</a></span></dt><dt><span class="section"><a href="id5208950.html">6.4.2. Manipulating Archive Logs with <code class="command">pmlogextract</code></a></span></dt><dt><span class="section"><a href="id5208951.html">6.4.3. Summarizing Archive Logs with <code class="command">pmlogsummary</code></a></span></dt><dt><span class="section"><a href="id5209027.html">6.4.4. Primary Logger</a></span></dt><dt><span class="section"><a href="id5209191.html">6.4.5. Using <code class="command">pmlc</code></a></span></dt></dl></dd><dt><span class="section"><a href="LE80113-PARENT.html">6.5. Archive Logging Troubleshooting</a></span></dt><dd><dl><dt><span class="section"><a href="LE80113-PARENT.html#id5209540">6.5.1. <code class="command">pmlogger</code> Cannot Write Log</a></span></dt><dt><span class="section"><a href="id5209654.html">6.5.2. Cannot Find Log</a></span></dt><dt><span class="section"><a href="id5209840.html">6.5.3. Primary <code class="command">pmlogger</code> Cannot Start</a></span></dt><dt><span class="section"><a href="id5210097.html">6.5.4. Identifying an Active <code class="command">pmlogger</code> Process</a></span></dt><dt><span class="section"><a href="id5210268.html">6.5.5. Illegal Label Record</a></span></dt><dt><span class="section"><a href="id5210389.html">6.5.6. Empty Archive Log Files or <code class="command">pmlogger</code> Exits Immediately </a></span></dt></dl></dd></dl></div><div class="para">
 			<a id="IG31371888239" class="indexterm"></a>Performance monitoring and management in complex systems demands the ability to accurately capture performance characteristics for subsequent review, analysis, and comparison. Performance Co-Pilot (PCP) provides extensive support for the creation and management of archive logs that capture a user-specified profile of performance information to support retrospective performance analysis.
 		</div><div class="para">
 			The following major sections are included in this chapter:
@@ -46,7 +14,7 @@
 					<a class="xref" href="Z930642977sdc.html">Section 6.4, “Other Archive Logging Features and Services”</a>, provides information about other archive logging features and sevices.
 				</div></li><li class="listitem"><div class="para">
 					<a class="xref" href="LE80113-PARENT.html">Section 6.5, “Archive Logging Troubleshooting”</a>, presents helpful directions if your archive logging implementation is not functioning correctly.
-				</div></li></ul></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="LE43411-PARENT">
+				</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE43411-PARENT">
       ⁠</a>6.1. Introduction to Archive Logging</h2></div></div></div><div class="para">
 				<a id="ITch07-2" class="indexterm"></a>Within the PCP, the <code class="command">pmlogger</code> utility may be configured to collect archives of performance metrics. The archive creation process is simple and very flexible, incorporating the following features:
 			</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
@@ -63,12 +31,12 @@
 						<a id="IG31371888242" class="indexterm"></a><code class="literal">cron</code>-based scripts to expedite the operational management, for example, log rotation, consolidation, and culling. Another helper tool, <code class="command">pmlogconf</code> can be used to generate suitable logging configurations for a variety of situations.
 					</div></li><li class="listitem"><div class="para">
 						<a id="IG31371888243" class="indexterm"></a><a id="IG31371888244" class="indexterm"></a>Archive folios as a convenient aggregation of multiple archive logs. Archive folios may be created with the <code class="command">mkaf</code> utility and processed with the <code class="command">pmafm</code> tool.
-					</div></li></ul></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5206288">
+					</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5206288">
       ⁠</a>6.1.1. Archive Logs and the PMAPI</h3></div></div></div><div class="para">
 					<a id="IG31371888245" class="indexterm"></a>Critical to the success of the PCP archive logging scheme is the fact that the library routines providing access to real-time feeds of performance metrics also provide access to the archive logs.
 				</div><div class="para">
 					<a id="IG31371888246" class="indexterm"></a>Live feeds (or real-time) sources of performance metrics and archives are literally interchangeable, with a single Performance Metrics Application Programming Interface (PMAPI) that preserves the same semantics for both styles of metric source. In this way, applications and tools developed against the PMAPI can automatically process either live or historical performance data.
-				</div></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5206362">
+				</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5206362">
       ⁠</a>6.1.2. Retrospective Analysis Using Archive Logs</h3></div></div></div><div class="para">
 					<a id="IG31371888247" class="indexterm"></a><a id="IG31371888248" class="indexterm"></a>One of the most important applications of archive logging services provided by PCP is in the area of retrospective analysis. In many cases, understanding today's performance problems can be assisted by side-by-side comparisons with yesterday's performance. With routine creation of performance archive logs, you can concurrently replay pictures of system performance for two or more periods in the past.
 				</div><div class="para">
@@ -81,82 +49,7 @@
 					Such analysis can be performed by constructing suitable expressions to capture the essence of common resource saturation problems, then periodically creating an archive and playing it against the expressions. For example, you may wish to create a daily performance audit (perhaps run by the <code class="command">cron</code> command) to detect performance regressions.
 				</div><div class="para">
 					For more about <code class="command">pmie</code>, see <a class="xref" href="LE21414-PARENT.html">Chapter 5, <em>Performance Metrics Inference Engine</em></a>.
-				</div></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5206454">
+				</div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="id5206454">
       ⁠</a>6.1.3. Using Archive Logs for Capacity Planning</h3></div></div></div><div class="para">
 					<a id="IG31371888249" class="indexterm"></a><a id="IG31371888250" class="indexterm"></a>By collecting performance archives with relatively long sampling periods, or by reducing the daily archives to produce summary logs, the capacity planner can collect the base data required for forward projections, and can estimate resource demands and explore “what if” scenarios by replaying data using visualization tools and the inference engine.
-				</div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5205812.html"><strong>Prev</strong>5.8.3. pmie Instances and Their Progress</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE46764-PARENT.html"><strong>Next</strong>6.2. Using Archive Logs with Performance Tools</a></li></ul></div></div></div></div>
-<footer xmlns="" class="global-footer is-typeset">
-  <div class="row-parent">
-    <div class="row">
-      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Main Menu</h4>
-            <ul>
-              <li>
-                <a href="/features.html">Features</a>
-              </li>
-              <li>
-                <a href="/documentation.html">Documentation</a>
-              </li>
-              <li>
-                <a class="download" href="/download.html">Download</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Developers</h4>
-            <ul>
-              <li>
-                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
-              </li>
-              <li>
-                <a href="/community.html">Contributing</a>
-              </li>
-              <li>
-                <a href="/team.html">Team</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>About</h4>
-            <ul>
-              <li>
-                <a href="/news.html">News</a>
-              </li>
-              <li>
-                <a href="/testimonials.html">Testimonials</a>
-              </li>
-              <li>
-                <a href="/faq.html">FAQ</a>
-              </li>
-              <li>
-                <a href="/website.html">Website</a>
-              </li>
-            </ul>
-          </div>
-        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
-          <div class="col__module">
-            <h4>Get Social</h4>
-            <ul>
-              <li>
-                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
-              </li>
-              <li>
-                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
-              </li>
-            </ul>
-          </div>
-        </div></section>
-    </div>
-    <div class="row">
-      <div class="colspan2-2">
-        <p class="legal">
-          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
-        </p>
-      </div>
-    </div>
-  </div>
-</footer>
-</body></html>
+				</div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5205812.html"><strong>Prev</strong>5.8.3. pmie Instances and Their Progress</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE46764-PARENT.html"><strong>Next</strong>6.2. Using Archive Logs with Performance Tools</a></li></ul></body></html>
