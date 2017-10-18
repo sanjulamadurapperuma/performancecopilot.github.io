@@ -123,13 +123,13 @@
                and other daemons running, and their archives/logs merged/rotated.
               It provides an alternative to the default
                <b>
-                <a href="http://man7.org/linux/man-pages/man1/cron.1.html">
-                 cron
-                </a>
+                pmlogger_daily
                </b>
-               (1)-based
-              
-              management scripts for
+               and
+               <b>
+                pmie_daily
+               </b>
+               scripts that administer
                <b>
                 pmlogger
                </b>
@@ -137,7 +137,13 @@
                <b>
                 pmie
                </b>
-               .
+               ``farms'' using
+               <b>
+                <a href="http://man7.org/linux/man-pages/man3/cron.3.html">
+                 cron
+                </a>
+               </b>
+               (3).
                <p>
                 <b>
                  pmmgr
@@ -149,14 +155,60 @@
                 </b>
                 runs in the foreground until interrupted.
               When signaled, it will stop its running daemons before exiting.
+                <a name="lbAE">
+                </a>
                </p>
-               <p>
-                A description of the command line options specific to
-                <b>
-                 pmmgr
-                </b>
-                follows:
-               </p>
+               <h2>
+                ALGORITHM
+               </h2>
+               Each poll interval,
+               <b>
+                pmmgr
+               </b>
+               computes a list of possible targets for a
+               <b>
+                pmcd
+               </b>
+               search.  This list is assembled from several configuration files,
+              and may include explicitly listed specifications, hosts discovered through
+              several different mechanisms, and/or individual containers running within them.
+              Once the list is assembled,
+               <b>
+                pmmgr
+               </b>
+               attempts to make a brief
+               <i>
+                pmNewContext
+               </i>
+               connection to each target, in order to check for the existence of an actual
+              running
+               <b>
+                pmcd
+               </b>
+               instance, and to extract a host-id.  The host-id is treated as a
+              unique identifier for the instance, so that redundant connection paths to the
+              same server can be filtered out.
+              Once the final list of live
+               <b>
+                pmcd
+               </b>
+               instances is identified, along with their unique host-ids, pmmgr ensures that
+              any requested pcp client daemons are started (or restarted) for them.  If any
+               <b>
+                pmcd
+               </b>
+               instances disappear from the list, its pcp client daemons are stopped.
+              This entire cycle repeats every poll interval.
+               <a name="lbAF">
+               </a>
+               <h2>
+                OPTIONS
+               </h2>
+               A description of the command line options specific to
+               <b>
+                pmmgr
+               </b>
+               follows:
                <dl compact="">
                 <dt>
                  <b>
@@ -226,7 +278,7 @@
                  adds more verbose tracing to standard output.
                 </dd>
                </dl>
-               <a name="lbAE">
+               <a name="lbAG">
                </a>
                <h2>
                 CONFIGURATION
@@ -246,7 +298,7 @@
               The individual files carry zero or more lines of 100% pure configuration
               text, and no comments.  (If desired, a configuration may be commented
               upon with any other file, such as a free-form README.)
-               <a name="lbAF">
+               <a name="lbAH">
                </a>
                <h3>
                 TARGET SELECTION
@@ -397,17 +449,6 @@
                  (1)
               
               manual page.
-              Each poll interval,
-                 <b>
-                  pmmgr
-                 </b>
-                 will attempt to make a brief
-                 <i>
-                  pmNewContext
-                 </i>
-                 connection to the host to check liveness.  It is not a problem if more than
-              one specification for the same host is listed, because the host-id processing
-              eliminates duplicates, and chooses an arbitrary specification among them.
               The default is to target pmcd at
                  <b>
                   local:
@@ -448,6 +489,35 @@
                   probe=192.168.1.0/24
                  </i>
                  to quickly scan the given IP address range.
+                </dd>
+                <dt>
+                 <i>
+                  target-kubectl-pod
+                 </i>
+                </dt>
+                <dd>
+                 If this file exists, pmmgr is assumed to run within a kubernetes cluster.
+              The line of the configuration file is appended to a
+                 <b>
+                  kubectl get pod
+                 </b>
+                 command line to discover IP addresses of all matching pods running nearby.
+                 <b>
+                  pmmgr extracts the
+                 </b>
+                 <b>
+                  .status.podIP
+                 </b>
+                 field from the kubernetes pod object(s) and tries to connect to each at
+              the default pmcd port number.  Use options like
+                 <i>
+                  -l service=foobar
+                 </i>
+                 to restrict the search with labels.  The default is to do
+                 <b>
+                  no kubectl
+                 </b>
+                 .
                 </dd>
                 <dt>
                  <i>
@@ -531,7 +601,7 @@
                  .
                 </dd>
                </dl>
-               <a name="lbAG">
+               <a name="lbAI">
                </a>
                <h3>
                 PMLOGGER CONFIGURATION
@@ -558,13 +628,13 @@
               This file contains one line of additional space-separated options
               for the
                  <b>
-                  pmie
+                  pmlogger
                  </b>
                  daemon.  (
                  <b>
                   pmmgr
                  </b>
-                 already adds -h, -f, -r, -l, and perhaps -c.)
+                 already adds -h, -H, -f, -r, -l, and perhaps -c.)
               The default is to maintain
                  <b>
                   no pmlogger
@@ -647,7 +717,7 @@
                  configuration.
                 </dd>
                </dl>
-               <a name="lbAH">
+               <a name="lbAJ">
                </a>
                <h3>
                 ARCHIVE LOG MANAGEMENT
@@ -670,7 +740,7 @@
                </b>
                offers several other options,
               each representing different performance and usability tradeoffs.
-               <a name="lbAI">
+               <a name="lbAK">
                </a>
                <h3>
                 ARCHIVE LOG MANAGEMENT - pmlogmerge
@@ -888,7 +958,7 @@
               quantity like "99999weeks".
                 </dd>
                </dl>
-               <a name="lbAJ">
+               <a name="lbAL">
                </a>
                <h3>
                 PMIE CONFIGURATION
@@ -982,7 +1052,7 @@
                  </b>
                 </dd>
                </dl>
-               <a name="lbAK">
+               <a name="lbAM">
                </a>
                <h3>
                 MONITOR DAEMON MANAGEMENT
@@ -1034,7 +1104,7 @@
                  files under the log directory.
                 </dd>
                </dl>
-               <a name="lbAL">
+               <a name="lbAN">
                </a>
                <h2>
                 FILES
@@ -1057,7 +1127,7 @@
                  default logging directory
                 </dd>
                </dl>
-               <a name="lbAM">
+               <a name="lbAO">
                </a>
                <h2>
                 PCP ENVIRONMENT
@@ -1086,7 +1156,7 @@
                 </a>
                </b>
                (5).
-               <a name="lbAN">
+               <a name="lbAP">
                </a>
                <h2>
                 SEE ALSO
@@ -1122,6 +1192,12 @@
                </b>
                (1),
                <b>
+                <a href="/man/man1/pmlogger_daily.1.html">
+                 pmlogger_daily
+                </a>
+               </b>
+               (1),
+               <b>
                 <a href="/man/man1/pmieconf.1.html">
                  pmieconf
                 </a>
@@ -1130,6 +1206,12 @@
                <b>
                 <a href="/man/man1/pmie.1.html">
                  pmie
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmie_daily.1.html">
+                 pmie_daily
                 </a>
                </b>
                (1),
@@ -1203,48 +1285,62 @@
                 </dd>
                 <dt>
                  <a href="#lbAE">
+                  ALGORITHM
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
                   CONFIGURATION
                  </a>
                 </dt>
                 <dd>
                  <dl>
                   <dt>
-                   <a href="#lbAF">
+                   <a href="#lbAH">
                     TARGET SELECTION
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAG">
+                   <a href="#lbAI">
                     PMLOGGER CONFIGURATION
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAH">
+                   <a href="#lbAJ">
                     ARCHIVE LOG MANAGEMENT
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAI">
+                   <a href="#lbAK">
                     ARCHIVE LOG MANAGEMENT - pmlogmerge
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAJ">
+                   <a href="#lbAL">
                     PMIE CONFIGURATION
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAK">
+                   <a href="#lbAM">
                     MONITOR DAEMON MANAGEMENT
                    </a>
                   </dt>
@@ -1253,21 +1349,21 @@
                  </dl>
                 </dd>
                 <dt>
-                 <a href="#lbAL">
+                 <a href="#lbAN">
                   FILES
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAM">
+                 <a href="#lbAO">
                   PCP ENVIRONMENT
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAN">
+                 <a href="#lbAP">
                   SEE ALSO
                  </a>
                 </dt>

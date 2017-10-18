@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP2ELASTICSEARCH
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pcp2elasticsearch
+               </b>
+               - pcp-to-elasticsearch metrics exporter
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pcp2elasticsearch
+               </b>
+               [
+               <b>
+                -CGHILrvV?
+               </b>
+               ]
+              [
+               <b>
+                -a
+               </b>
+               <i>
+                archive
+               </i>
+               ]
+              [
+               <b>
+                --archive-folio
+               </b>
+               <i>
+                folio
+               </i>
+               ]
+              [
+               <b>
+                -A
+               </b>
+               <i>
+                align
+               </i>
+               ]
+              [
+               <b>
+                -b
+               </b>
+               <i>
+                space-scale
+               </i>
+               ]
+              [
+               <b>
+                -c
+               </b>
+               <i>
+                config
+               </i>
+               ]
+              [
+               <b>
+                --container
+               </b>
+               <i>
+                container
+               </i>
+               ]
+              [
+               <b>
+                --daemonize
+               </b>
+               ]
+              [
+               <b>
+                -e
+               </b>
+               <i>
+                derived
+               </i>
+               ]
+              [
+               <b>
+                -g
+               </b>
+               <i>
+                URL
+               </i>
+               ]
+              [
+               <b>
+                -h
+               </b>
+               <i>
+                host
+               </i>
+               ]
+              [
+               <b>
+                -i
+               </b>
+               <i>
+                instances
+               </i>
+               ]
+              [
+               <b>
+                -K
+               </b>
+               <i>
+                spec
+               </i>
+               ]
+              [
+               <b>
+                -O
+               </b>
+               <i>
+                origin
+               </i>
+               ]
+              [
+               <b>
+                -P
+               </b>
+               <i>
+                precision
+               </i>
+               ]
+              [
+               <b>
+                -q
+               </b>
+               <i>
+                count-scale
+               </i>
+               ]
+              [
+               <b>
+                -s
+               </b>
+               <i>
+                samples
+               </i>
+               ]
+              [
+               <b>
+                -S
+               </b>
+               <i>
+                starttime
+               </i>
+               ]
+              [
+               <b>
+                -t
+               </b>
+               <i>
+                interval
+               </i>
+               ]
+              [
+               <b>
+                -T
+               </b>
+               <i>
+                endtime
+               </i>
+               ]
+              [
+               <b>
+                -x
+               </b>
+               <i>
+                index
+               </i>
+               ]
+              [
+               <b>
+                -X
+               </b>
+               <i>
+                host-id
+               </i>
+               ]
+              [
+               <b>
+                -y
+               </b>
+               <i>
+                time-scale
+               </i>
+               ]
+               <i>
+                metricspec [...]
+               </i>
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pcp2elasticsearch
+               </b>
+               is a customizable performance metrics exporter tool from PCP to
+              Elasticsearch.
+              Any available performance metric, live or archived, system and/or application,
+              can be selected for exporting using either command line arguments or a
+              configuration file.
+               <p>
+                <b>
+                 pcp2elasticsearch
+                </b>
+                is a close relative of
+                <b>
+                 <a href="/man/man1/pmrep.1.html">
+                  pmrep
+                 </a>
+                </b>
+                (1).
+              
+              Please refer to
+                <b>
+                 <a href="/man/man1/pmrep.1.html">
+                  pmrep
+                 </a>
+                </b>
+                (1)
+              
+              for the
+                <i>
+                 metricspec
+                </i>
+                description accepted on
+                <b>
+                 pcp2elasticsearch
+                </b>
+                command line and
+                <b>
+                 <a href="/man/man5/pmrep.conf.5.html">
+                  pmrep.conf
+                 </a>
+                </b>
+                (5)
+              
+              for description of the
+                <b>
+                 pcp2elasticsearch.conf
+                </b>
+                configuration file overall syntax, this page describes
+                <b>
+                 pcp2elasticsearch
+                </b>
+                specific options and configuration file differences with
+                <b>
+                 <a href="/man/man5/pmrep.conf.5.html">
+                  pmrep.conf
+                 </a>
+                </b>
+                (5).
+               </p>
+               <p>
+                Only the command line options listed on this page are supported,
+              other options recognized by
+                <b>
+                 <a href="/man/man1/pmrep.1.html">
+                  pmrep
+                 </a>
+                </b>
+                (1)
+              
+              are not supported.
+               </p>
+               <p>
+                Configuration file options override the corresponding built-in
+              default values (if any).
+              Command line options override the
+              corresponding configuration file options (if any).
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                CONFIGURATION FILE
+               </h2>
+               <b>
+                pcp2elasticsearch
+               </b>
+               uses a configuration file with overall syntax described in
+               <b>
+                <a href="/man/man5/pmrep.conf.5.html">
+                 pmrep.conf
+                </a>
+               </b>
+               (5).
+              
+              The following options are common with
+               <b>
+                pmrep.conf
+               </b>
+               :
+               <b>
+                version
+               </b>
+               ,
+               <b>
+                source
+               </b>
+               ,
+               <b>
+                speclocal
+               </b>
+               ,
+               <b>
+                derived
+               </b>
+               ,
+               <b>
+                header
+               </b>
+               ,
+               <b>
+                globals
+               </b>
+               ,
+               <b>
+                samples
+               </b>
+               ,
+               <b>
+                interval
+               </b>
+               ,
+               <b>
+                type
+               </b>
+               ,
+               <b>
+                ignore_incompat
+               </b>
+               ,
+               <b>
+                instances
+               </b>
+               ,
+               <b>
+                omit_flat
+               </b>
+               ,
+               <b>
+                precision
+               </b>
+               ,
+               <b>
+                count_scale
+               </b>
+               ,
+               <b>
+                space_scale
+               </b>
+               ,
+               <b>
+                time_scale
+               </b>
+               .
+              
+              The
+               <b>
+                output
+               </b>
+               option is recognized but ignored for
+               <b>
+                pmrep.conf
+               </b>
+               compatibility.
+               <p>
+                <b>
+                 pcp2elasticsearch specific options
+                </b>
+               </p>
+               <p>
+                es_server (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Specify the URL of Elasticsearch server to send the metrics to.
+              Corresponding command line option is
+                 <b>
+                  -g
+                 </b>
+                 .
+              Default is
+                 <b>
+                  <a href="http://localhost:9200/">
+                   http://localhost:9200/
+                  </a>
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                es_index (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Specify the Elasticsearch index for metric names.
+              Corresponding command line option is
+                 <b>
+                  -x
+                 </b>
+                 .
+              Default is
+                 <b>
+                  pcp
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                es_hostid (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Specify the Elasticsearch host-id for measurements.
+              Corresponding command line option is
+                 <b>
+                  -X
+                 </b>
+                 .
+              Defaults to the metrics source host.
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                COMMAND LINE OPTIONS
+               </h2>
+               The available command line options are:
+               <dl compact="">
+                <dt>
+                 <b>
+                  -a
+                 </b>
+                </dt>
+                <dd>
+                 Performance metric values are retrieved from the set of Performance Co-Pilot
+              (PCP) archive log files identified by the argument
+                 <i>
+                  archive
+                 </i>
+                 ,
+              
+              which is a comma-separated list of names, each
+              of which may be the base name of an archive or the name of a directory containing
+              one or more archives.
+                </dd>
+                <dt>
+                 <b>
+                  --archive-folio
+                 </b>
+                </dt>
+                <dd>
+                 Read metric source archives from the PCP archive
+                 <i>
+                  folio
+                 </i>
+                 (see
+                 <b>
+                  <a href="/man/man1/mkaf.1.html">
+                   mkaf
+                  </a>
+                 </b>
+                 (1)).
+                </dd>
+                <dt>
+                 <b>
+                  -A
+                 </b>
+                </dt>
+                <dd>
+                 Force the initial sample to be
+              aligned on the boundary of a natural time unit
+                 <i>
+                  align
+                 </i>
+                 .
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  align
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -b
+                 </b>
+                </dt>
+                <dd>
+                 <i>
+                  Unit/scale
+                 </i>
+                 for space (byte) metrics, possible values include
+                 <b>
+                  bytes
+                 </b>
+                 ,
+                 <b>
+                  Kbytes
+                 </b>
+                 ,
+                 <b>
+                  KB
+                 </b>
+                 ,
+                 <b>
+                  Mbytes
+                 </b>
+                 ,
+                 <b>
+                  MB
+                 </b>
+                 ,
+              
+              and so forth up to
+                 <b>
+                  Ebytes
+                 </b>
+                 ,
+                 <b>
+                  EB
+                 </b>
+                 .
+              
+              This option will
+                 <i>
+                  not
+                 </i>
+                 override possible per-metric specifications.
+              See also
+                 <b>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -c
+                 </b>
+                </dt>
+                <dd>
+                 Specify the
+                 <i>
+                  config
+                 </i>
+                 file to use.
+              The default is the first found of:
+                 <b>
+                  ./pcp2elasticsearch.conf
+                 </b>
+                 ,
+                 <b>
+                  $HOME/.pcp2elasticsearch.conf
+                 </b>
+                 ,
+                 <b>
+                  $HOME/pcp/pcp2elasticsearch.conf
+                 </b>
+                 ,
+              
+              and
+                 <b>
+                  $PCP_SYSCONF_DIR/pcp2elasticsearch.conf
+                 </b>
+                 .
+              
+              For details, see the above section and
+                 <b>
+                  <a href="/man/man5/pmrep.conf.5.html">
+                   pmrep.conf
+                  </a>
+                 </b>
+                 (5).
+                </dd>
+                <dt>
+                 <b>
+                  --container
+                 </b>
+                </dt>
+                <dd>
+                 Fetch performance metrics from the specified
+                 <i>
+                  container
+                 </i>
+                 ,
+              
+              either local or remote (see
+                 <b>
+                  -h
+                 </b>
+                 ).
+                </dd>
+                <dt>
+                 <b>
+                  -C
+                 </b>
+                </dt>
+                <dd>
+                 Exit before reporting any values, but after parsing the configuration
+              and metrics and printing possible headers.
+                </dd>
+                <dt>
+                 <b>
+                  --daemonize
+                 </b>
+                </dt>
+                <dd>
+                 Daemonize on startup.
+                </dd>
+                <dt>
+                 <b>
+                  -e
+                 </b>
+                </dt>
+                <dd>
+                 Specify
+                 <i>
+                  derived
+                 </i>
+                 performance metrics. If
+                 <i>
+                  derived
+                 </i>
+                 starts with a slash (``/'') or with a dot (``.'') it will be
+              interpreted as a derived metrics configuration file, otherwise it will
+              be interpreted as comma-separated derived metric expressions.
+              For details see
+                 <b>
+                  <a href="/man/man3/pmloadderivedconfig.3.html">
+                   pmLoadDerivedConfig
+                  </a>
+                 </b>
+                 (3)
+              
+              and
+                 <b>
+                  <a href="/man/man3/pmregisterderived.3.html">
+                   pmRegisterDerived
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -g
+                 </b>
+                </dt>
+                <dd>
+                 Elasticsearch server
+                 <i>
+                  URL
+                 </i>
+                 to send the metrics to.
+                </dd>
+                <dt>
+                 <b>
+                  -G
+                 </b>
+                </dt>
+                <dd>
+                 Do not include global metrics in reporting (see
+                 <b>
+                  <a href="/man/man5/pmrep.conf.5.html">
+                   pmrep.conf
+                  </a>
+                 </b>
+                 (5)).
+                </dd>
+                <dt>
+                 <b>
+                  -h
+                 </b>
+                </dt>
+                <dd>
+                 Fetch performance metrics from
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              on
+                 <i>
+                  host
+                 </i>
+                 ,
+              
+              rather than the default localhost.
+                </dd>
+                <dt>
+                 <b>
+                  -H
+                 </b>
+                </dt>
+                <dd>
+                 Do not print any headers.
+                </dd>
+                <dt>
+                 <b>
+                  -i
+                 </b>
+                </dt>
+                <dd>
+                 Report only the listed
+                 <i>
+                  instances
+                 </i>
+                 (if present).
+              By default all current instances are reported.
+              This is a global option that is used for all metrics unless a
+              metric-specific instance definition is provided as part of a
+                 <i>
+                  metricspec
+                 </i>
+                 .
+              
+              By default metrics without instances are reported as usual, use
+                 <b>
+                  -v
+                 </b>
+                 to change this.
+              Please refer to
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1)
+              
+              for more details on this option.
+                </dd>
+                <dt>
+                 <b>
+                  -I
+                 </b>
+                </dt>
+                <dd>
+                 Ignore incompatible metrics. By default incompatible metrics
+              (that is, their type is unsupported or they cannot be scaled
+              as requested) will cause
+                 <b>
+                  pcp2elasticsearch
+                 </b>
+                 to terminate with an error message.
+              With this option all incompatible metrics are silently omitted
+              from reporting. This may be especially useful when requesting
+              non-leaf nodes of the PMNS tree for reporting.
+                </dd>
+                <dt>
+                 <b>
+                  -K
+                 </b>
+                </dt>
+                <dd>
+                 When fetching metrics from a local context (see
+                 <b>
+                  -L
+                 </b>
+                 ),
+              
+              the
+                 <b>
+                  -K
+                 </b>
+                 option may be used to control the DSO PMDAs that should be made
+              accessible.
+              The
+                 <i>
+                  spec
+                 </i>
+                 argument conforms to the syntax described in
+                 <b>
+                  <a href="/man/man3/pmspeclocalpmda.3.html">
+                   __pmSpecLocalPMDA
+                  </a>
+                  (3).
+                 </b>
+                 More than one
+                 <b>
+                  -K
+                 </b>
+                 option may be used.
+                </dd>
+                <dt>
+                 <b>
+                  -L
+                 </b>
+                </dt>
+                <dd>
+                 Use a local context to collect metrics from DSO PMDAs on the local host
+              without PMCD.
+              See also
+                 <b>
+                  -K
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -O
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, start reporting at
+                 <i>
+                  origin
+                 </i>
+                 within the time window (see
+                 <b>
+                  -S
+                 </b>
+                 and
+                 <b>
+                  -T
+                 </b>
+                 ).
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  origin
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -P
+                 </b>
+                </dt>
+                <dd>
+                 Use
+                 <i>
+                  precision
+                 </i>
+                 for numeric non-integer output values.
+              The default is to use 3 decimal places (when applicable).
+                </dd>
+                <dt>
+                 <b>
+                  -q
+                 </b>
+                </dt>
+                <dd>
+                 <i>
+                  Unit/scale
+                 </i>
+                 for count metrics, possible values include
+                 <b>
+                  count x 10^-1
+                 </b>
+                 ,
+                 <b>
+                  count
+                 </b>
+                 ,
+                 <b>
+                  count x 10
+                 </b>
+                 ,
+                 <b>
+                  count x 10^2
+                 </b>
+                 ,
+              
+              and so forth from
+                 <b>
+                  10^-8
+                 </b>
+                 to
+                 <b>
+                  10^7
+                 </b>
+                 .
+              
+              
+              (These values are currently space-sensitive.)
+              This option will
+                 <i>
+                  not
+                 </i>
+                 override possible per-metric specifications.
+              See also
+                 <b>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -r
+                 </b>
+                </dt>
+                <dd>
+                 Output raw metric values, do not convert cumulative counters to rates.
+              This option
+                 <i>
+                  will
+                 </i>
+                 override possible per-metric specifications.
+                </dd>
+                <dt>
+                 <b>
+                  -s
+                 </b>
+                </dt>
+                <dd>
+                 The argument
+                 <i>
+                  samples
+                 </i>
+                 defines the number of samples to be retrieved and reported.
+              If
+                 <i>
+                  samples
+                 </i>
+                 is 0 or
+                 <b>
+                  -s
+                 </b>
+                 is not specified,
+                 <b>
+                  pcp2elasticsearch
+                 </b>
+                 will sample and report continuously (in real time mode) or until the end
+              of the set of PCP archives (in archive mode).
+              See also
+                 <b>
+                  -T
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -S
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, the report will be restricted to those
+              records logged at or after
+                 <i>
+                  starttime
+                 </i>
+                 .
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  starttime
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -t
+                 </b>
+                </dt>
+                <dd>
+                 The default update
+                 <i>
+                  interval
+                 </i>
+                 may be set to something other than the default 1 second.
+              The
+                 <i>
+                  interval
+                 </i>
+                 argument follows the syntax described in
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1),
+              
+              and in the simplest form may be an unsigned integer (the implied units
+              in this case are seconds).
+              See also the
+                 <b>
+                  -T
+                 </b>
+                 option.
+                </dd>
+                <dt>
+                 <b>
+                  -T
+                 </b>
+                </dt>
+                <dd>
+                 When reporting archived metrics, the report will be restricted to those
+              records logged before or at
+                 <i>
+                  endtime
+                 </i>
+                 .
+              
+              Refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)
+              
+              for a complete description of the syntax for
+                 <i>
+                  endtime
+                 </i>
+                 .
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    When used to define the runtime before
+                    <b>
+                     pcp2elasticsearch
+                    </b>
+                    will exit,
+              if no
+                    <i>
+                     samples
+                    </i>
+                    is given (see
+                    <b>
+                     -s
+                    </b>
+                    ) then the number of
+              reported samples depends on
+                    <i>
+                     interval
+                    </i>
+                    (see
+                    <b>
+                     -t
+                    </b>
+                    ).
+              If
+                    <i>
+                     samples
+                    </i>
+                    is given then
+                    <i>
+                     interval
+                    </i>
+                    will be adjusted to allow reporting of
+                    <i>
+                     samples
+                    </i>
+                    during runtime.
+              In case all of
+                    <b>
+                     -T
+                    </b>
+                    ,
+                    <b>
+                     -s
+                    </b>
+                    ,
+              
+              and
+                    <b>
+                     -t
+                    </b>
+                    are given,
+                    <i>
+                     endtime
+                    </i>
+                    determines the actual time
+                    <b>
+                     pcp2elasticsearch
+                    </b>
+                    will run.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <b>
+                  -v
+                 </b>
+                </dt>
+                <dd>
+                 Omit single-valued ``flat'' metrics from reporting when instances
+              were requested.
+              See
+                 <b>
+                  -i
+                 </b>
+                 and
+                 <b>
+                  -I
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -V
+                 </b>
+                </dt>
+                <dd>
+                 Display version number and exit.
+                </dd>
+                <dt>
+                 <b>
+                  -x
+                 </b>
+                </dt>
+                <dd>
+                 Elasticsearch
+                 <i>
+                  index
+                 </i>
+                 for metric names.
+                </dd>
+                <dt>
+                 <b>
+                  -X
+                 </b>
+                </dt>
+                <dd>
+                 Elasticsearch
+                 <i>
+                  host-id
+                 </i>
+                 for measurements.
+                </dd>
+                <dt>
+                 <b>
+                  -y
+                 </b>
+                </dt>
+                <dd>
+                 <i>
+                  Unit/scale
+                 </i>
+                 for time metrics, possible values include
+                 <b>
+                  nanosec
+                 </b>
+                 ,
+                 <b>
+                  ns
+                 </b>
+                 ,
+                 <b>
+                  microsec
+                 </b>
+                 ,
+                 <b>
+                  us
+                 </b>
+                 ,
+                 <b>
+                  millisec
+                 </b>
+                 ,
+                 <b>
+                  ms
+                 </b>
+                 ,
+              
+              and so forth up to
+                 <b>
+                  hour
+                 </b>
+                 ,
+                 <b>
+                  hr
+                 </b>
+                 .
+              
+              This option will
+                 <i>
+                  not
+                 </i>
+                 override possible per-metric specifications.
+              See also
+                 <b>
+                  <a href="/man/man3/pmparseunitsstr.3.html">
+                   pmParseUnitsStr
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+                <dt>
+                 <b>
+                  -?
+                 </b>
+                </dt>
+                <dd>
+                 Display usage message and exit.
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                OUTPUT FORMAT
+               </h2>
+               First,
+               <b>
+                pcp2elasticsearch
+               </b>
+               sends this type definition to Elasticsearch:
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <br/>
+                 {
+                 <br/>
+                 "mappings": {
+                 <br/>
+                 "pcp-metric": {
+                 <br/>
+                 "properties": {
+                 <br/>
+                 "@timestamp": {
+                 <br/>
+                 "type": "date"
+                 <br/>
+                 },
+                 <br/>
+                 "host-id": {
+                 <br/>
+                 "type": "string"
+                 <br/>
+                 }
+                 <br/>
+                 }
+                 <br/>
+                 }
+                 <br/>
+                 }
+                 <br/>
+                 }
+                </dd>
+               </dl>
+               <p>
+                The actual metrics data document is similar to this example:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <br/>
+                 {
+                 <br/>
+                 "@host-id": "bozo",
+                 <br/>
+                 "mem": {
+                 <br/>
+                 "util": {
+                 <br/>
+                 "used": 4525820,
+                 <br/>
+                 "free": 3344000
+                 <br/>
+                 }
+                 <br/>
+                 },
+                 <br/>
+                 "@timestamp": 1507637520,
+                 <br/>
+                 "disk": {
+                 <br/>
+                 "partitions": {
+                 <br/>
+                 "@instances": [
+                 <br/>
+                 {
+                 <br/>
+                 "read": 1121,
+                 <br/>
+                 "@id": "sda1"
+                 <br/>
+                 },
+                 <br/>
+                 {
+                 <br/>
+                 "read": 77306,
+                 <br/>
+                 "@id": "sda2"
+                 <br/>
+                 },
+                 <br/>
+                 {
+                 <br/>
+                 "read": 131,
+                 <br/>
+                 "@id": "sda3"
+                 <br/>
+                 }
+                 <br/>
+                 ]
+                 <br/>
+                 }
+                 <br/>
+                 }
+                 <br/>
+                 }
+                </dd>
+               </dl>
+               <p>
+                <a name="lbAH">
+                </a>
+               </p>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  pcp2elasticsearch.conf
+                 </b>
+                </dt>
+                <dd>
+                 <b>
+                  pcp2elasticsearch
+                 </b>
+                 configuration file (see
+                 <b>
+                  -c
+                 </b>
+                 ).
+                </dd>
+               </dl>
+               <a name="lbAI">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parametrize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <i>
+                /etc/pcp.conf
+               </i>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAJ">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/mkaf.1.html">
+                 mkaf
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp.1.html">
+                 pcp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp2graphite.1.html">
+                 pcp2graphite
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp2influxdb.1.html">
+                 pcp2influxdb
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp2json.1.html">
+                 pcp2json
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp2xlsx.1.html">
+                 pcp2xlsx
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp2xml.1.html">
+                 pcp2xml
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp2zabbix.1.html">
+                 pcp2zabbix
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pminfo.1.html">
+                 pminfo
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmrep.1.html">
+                 pmrep
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmspeclocalpmda.3.html">
+                 __pmSpecLocalPMDA
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmloadderivedconfig.3.html">
+                 pmLoadDerivedConfig
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmparseunitsstr.3.html">
+                 pmParseUnitsStr
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmregisterderived.3.html">
+                 pmRegisterDerived
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man5/pcp-archive.5.html">
+                 pcp-archive
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5),
+               <b>
+                <a href="/man/man5/pmns.5.html">
+                 pmns
+                </a>
+               </b>
+               (5)
+              
+              and
+               <b>
+                <a href="/man/man5/pmrep.conf.5.html">
+                 pmrep.conf
+                </a>
+               </b>
+               (5).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  CONFIGURATION FILE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  COMMAND LINE OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  OUTPUT FORMAT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAJ">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

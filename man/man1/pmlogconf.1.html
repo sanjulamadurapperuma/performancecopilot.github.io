@@ -289,7 +289,22 @@
                 <b>
                  -c
                 </b>
-                option is used to add a message and timestamp indicating this fact.
+                option is used to indicate that
+                <i>
+                 pmlogconf
+                </i>
+                is in auto-create mode and no interactive dialog takes place.
+              The output
+                <i>
+                 configfile
+                </i>
+                has an additional comment message
+              and timestamp indicating this fact, so that it can be
+              identified and subsequently updated using
+                <b>
+                 -c
+                </b>
+                again.
               This option is not appropriate for interactive use of the tool.
                </p>
                <p>
@@ -419,17 +434,57 @@
                  •
                 </dt>
                 <dd>
-                 When the
+                 When either the
                  <b>
                   -r
                  </b>
-                 (reprobe) command line option is specified, every group (not just newly
+                 (reprobe) or the
+                 <b>
+                  -c
+                 </b>
+                 (auto-create) command line option is specified, every group (not just newly
               discovered ones) is reprocessed to see
               if it should be considered for inclusion in
                  <i>
                   configfile
                  </i>
                  .
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 If a group is found in
+                 <i>
+                  configfile
+                 </i>
+                 but the corresponding group does not exist below
+                 <i>
+                  groupsdir
+                 </i>
+                 (as would be the case when a group is made obsolete by a PCP upgrade)
+              then the handling of the group depends on the mode in which
+                 <i>
+                  pmlogconf
+                 </i>
+                 is being run.
+              With
+                 <b>
+                  -c
+                 </b>
+                 the corresponding group is culled from
+                 <i>
+                  configfile
+                 </i>
+                 ,
+              
+              otherwise the corresponding group is unchanged in
+                 <i>
+                  configfile
+                 </i>
+                 .
+              
+              In either case a warning is issued.
                 </dd>
                </dl>
                <p>

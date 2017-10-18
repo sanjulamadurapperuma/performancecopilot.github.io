@@ -59,7 +59,11 @@
                <b>
                 __pmParseDebug
                </b>
-               - convert a list of debug flags into an integer
+               ,
+               <b>
+                __pmSetDebugBits
+               </b>
+               - manipulate old-style PCP debugging control bit-fields
                <a name="lbAC">
                </a>
                <h2>
@@ -84,6 +88,8 @@
                  spec
                 </i>
                 );
+                <br/>
+                void __pmSetDebugBits(int value);
                </p>
                <p>
                 cc ... -lpcp
@@ -93,14 +99,37 @@
                <h2>
                 DESCRIPTION
                </h2>
-               <b>
-                __pmParseDebug
-               </b>
-               parses
-               <i>
-                spec
-               </i>
-               assuming it to be a comma separated list of PCP debug flags.
+               <p>
+                These routine have been deprecated and may be removed in a future
+              Performance Co-Pilot (PCP) release.
+              Please refer to
+                <b>
+                 <a href="/man/man3/pmsetdebug.3.html">
+                  pmSetDebug
+                 </a>
+                </b>
+                (3)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmcleardebug.3.html">
+                  pmClearDebug
+                 </a>
+                </b>
+                (3)
+              
+              for replacement functionality.
+               </p>
+               <p>
+                <b>
+                 __pmParseDebug
+                </b>
+                parses
+                <i>
+                 spec
+                </i>
+                assuming it to be a comma separated list of PCP debug flags.
+               </p>
                <p>
                 Each flag may be specified as an integer or the
               trailing portion of the symbolic name of the corresponding flag as reported
@@ -157,6 +186,32 @@
                  fetch
                 </b>
                 .
+               </p>
+               <p>
+                <b>
+                 __pmSetDebugBits
+                </b>
+                may be used to set the bit-fields directly using the encoding in
+                <i>
+                 value
+                </i>
+                .
+              
+              The effect is additive, so consecutive calls to
+                <b>
+                 __pmSetDebugBits
+                </b>
+                will set the conjunction of the bits in the
+                <i>
+                 value
+                </i>
+                arguments.  To clear the bit-fields, see
+                <b>
+                 <a href="/man/man3/pmcleardebug.3.html">
+                  pmClearDebug
+                 </a>
+                </b>
+                (3).
                 <a name="lbAE">
                 </a>
                </p>
@@ -168,7 +223,21 @@
                  pmdbg
                 </a>
                </b>
-               (1)
+               (1),
+               <b>
+                <a href="/man/man3/pmsetdebug.3.html">
+                 pmSetDebug
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmcleardebug.3.html">
+                 pmClearDebug
+                </a>
+               </b>
+               (3).
                <a name="lbAF">
                </a>
                <h2>

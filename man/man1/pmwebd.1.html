@@ -166,7 +166,7 @@
                ]
               [
                <b>
-                -I
+                -J
                </b>
                [
                <b>
@@ -427,33 +427,23 @@
                 </dd>
                 <dt>
                  <b>
-                  -I
+                  -J
                  </b>
                 </dt>
                 <dd>
-                 Attempt to open an entire directory as an archive when traversing the
-                 <b>
-                  -A
-                 </b>
-                 DIR paths to serve graphite-api metrics.  If successful, it can make the
-              metric names much shorter (omitting individual encoded file names) and span
-              across time.  If the attempt fails,
-                 <b>
-                  pmwebd
-                 </b>
-                 will recurse to each individual
-              archive file, just as though
-                 <b>
-                  -I
-                 </b>
-                 were not given.  The difference is that if
-              the
-                 <b>
-                  -I
-                 </b>
-                 attempt succeeds, a subdirectory is not recursed further, so if any
-              other archives or subdirectories are present, they won't be exposed to
-              graphite-api clients.
+                 When constructing graphite metric names, use the stored
+                 <i>
+                  hostname
+                 </i>
+                 instead of a archive pathname as the first component.  This virtually
+              unifies
+                 <i>
+                  all
+                 </i>
+                 archives found with the same hostname into a single
+              time series.  The host name is canonicalized: any symbol
+              characters other than _ (underscore), space, - (hyphen), and / (slash)
+              are replaced by _ (underscore).
                 </dd>
                 <dt>
                  <b>

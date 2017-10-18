@@ -601,7 +601,7 @@
                   case 3:
                     avp-&gt;cp = (char *)malloc(somesize);
                     /* place value in avp-&gt;cp */
-                    snprintf(avp-&gt;cp, somesize, ...);
+                    pmsprintf(avp-&gt;cp, somesize, ...);
                     return PMDA_FETCH_DYNAMIC;
               
                   default:

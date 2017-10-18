@@ -59,7 +59,7 @@
                <b>
                 pmdbg
                </b>
-               - translate Performance Co-Pilot debug control flags
+               - report Performance Co-Pilot debug options
                <a name="lbAC">
                </a>
                <h2>
@@ -79,6 +79,11 @@
                <b>
                 -l
                </b>
+               [
+               <b>
+                -o
+               </b>
+               ]
                <br/>
                <b>
                 pmdbg
@@ -100,8 +105,12 @@
                 DESCRIPTION
                </h2>
                The components of the Performance Co-Pilot (PCP) use
-              a global vector of bit-fields
-              to control diagnostic and debug output.
+              a global mechanism to control diagnostic and debug output.
+              Historically this was a vector of bit-fields but this was later
+              replaced by an array of debug options.
+              All of the bit-field debug controls have an equivalent in the new
+              scheme, but some new debug options cannot be represented in the
+              old bit-field scheme.
                <p>
                 <b>
                  pmdbg
@@ -110,8 +119,16 @@
                 <b>
                  -l
                 </b>
-                argument prints out the mnemonic and decimal values of all
-              the bit-fields in the debug control vector.
+                argument prints out all the debug options.
+              Without the
+                <b>
+                 -o
+                </b>
+                argument the output lists the name of each option and some
+              descriptive text.
+              Otherwise the output is for only the old bit-fields
+              with the mnemonic and decimal values of each
+              the bit-field along with some descriptive text.
                </p>
                <p>
                 <b>
@@ -133,7 +150,10 @@
                 </b>
                 (3)
               
-              and reports the corresponding decimal value.  This is most useful
+              and reports the corresponding decimal value.
+              This use is not required in the new scheme, but for the old
+              bit-fields scheme it was
+              useful
               when debugging and wanting to set the internal value of the
               control vector (
                 <b>
@@ -148,9 +168,20 @@
                  </a>
                 </b>
                 (1).
+              
+              For the new scheme, the same effect can be achieved using
+              the name of the option(s) and calling
+                <b>
+                 <a href="/man/man3/pmsetdebug.3.html">
+                  pmSetDebug
+                 </a>
+                </b>
+                (3)
+              
+              from within the debugger.
                </p>
                <p>
-                In the alternative usage, the
+                The alternative usage also relates to the old bit-field scheme and the
                 <i>
                  code
                 </i>
@@ -172,25 +203,24 @@
                  -D
                 </b>
                 <i>
-                 N
+                 name
                 </i>
-                command-line syntax to enable debug control.
-                <b>
-                 pmdbg
-                </b>
-                is designed to help choose an appropriate value for
+                [,
                 <i>
-                 N
+                 name
                 </i>
-                .
+                ...]
+              command-line syntax to enable debug control using the name(s) of
+              the desired debug options.
                </p>
                <p>
                 Alternatively the initial value of the debug control flags may be set
-              to a value
+              to either a value
                 <i>
                  N
                 </i>
-                using the environment variable
+                (old scheme) or a comma-separated list if option name(s) (new scheme)
+              using the environment variable
                 <b>
                  $PCP_DEBUG
                 </b>
@@ -247,6 +277,24 @@
                 </a>
                </b>
                (1),
+               <b>
+                <a href="/man/man3/pmsetdebug.3.html">
+                 pmSetDebug
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmcleardebug.3.html">
+                 pmClearDebug
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmparsedebug.3.html">
+                 __pmParseDebug
+                </a>
+               </b>
+               (3),
                <b>
                 <a href="/man/man5/pcp.conf.5.html">
                  pcp.conf

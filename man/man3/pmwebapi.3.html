@@ -152,10 +152,23 @@
                 </dd>
                </dl>
                <p>
-                The number (a 32-bit unsigned decimal) is then used in all later operations.
+                The number (a 32-bit unsigned decimal) is then used in all later
+              operations.
                </p>
                <p>
                 <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                CONTEXT CREATION: configurable permanent contexts
+               </h2>
+               <p>
+                In addition, permanent contexts may be created by pmwebd at
+              initialization using its -h, -a, -L command line options, so that a
+              set of fixed NNNNN numbers may be made available to web clients.
+               </p>
+               <p>
+                <a name="lbAF">
                 </a>
                </p>
                <h2>
@@ -198,7 +211,7 @@
                  </p>
                 </dd>
                </dl>
-               <a name="lbAF">
+               <a name="lbAG">
                </a>
                <h3>
                 METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
@@ -320,7 +333,7 @@
                  </p>
                 </dd>
                </dl>
-               <a name="lbAG">
+               <a name="lbAH">
                </a>
                <h3>
                 METRIC VALUE: pmFetch
@@ -381,7 +394,7 @@
               are not currently supported.
                </p>
                <p>
-                <a name="lbAH">
+                <a name="lbAI">
                 </a>
                </p>
                <h3>
@@ -453,7 +466,7 @@
                 </dd>
                </dl>
                <p>
-                <a name="lbAI">
+                <a name="lbAJ">
                 </a>
                </p>
                <h3>
@@ -506,7 +519,7 @@
                  </p>
                 </dd>
                </dl>
-               <a name="lbAJ">
+               <a name="lbAK">
                </a>
                <h3>
                 METRIC STORE: pmStore
@@ -570,7 +583,7 @@
                 </dd>
                </dl>
                <p>
-                <a name="lbAK">
+                <a name="lbAL">
                 </a>
                </p>
                <h3>
@@ -590,7 +603,7 @@
                  </p>
                 </dd>
                </dl>
-               <a name="lbAL">
+               <a name="lbAM">
                </a>
                <h3>
                 CONTEXT COPY: pmDupContext
@@ -609,7 +622,7 @@
                  </p>
                 </dd>
                </dl>
-               <a name="lbAM">
+               <a name="lbAN">
                </a>
                <h3>
                 CONTEXT CLOSE: pmDestroyContext
@@ -630,8 +643,95 @@
                  </p>
                 </dd>
                </dl>
-               <a name="lbAN">
+               <a name="lbAO">
                </a>
+               <h3>
+                PROMETHEUS
+               </h3>
+               <p>
+                Prometheus exporting of live metrics from a preexisting PMWEBAPI context
+              is available:
+               </p>
+               <p>
+                The general form of the requests is:
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  /pmapi/NNNNN/metrics?target=NAME1,NAME2,...
+                 </b>
+                </dt>
+                <dd>
+                 Fetch current values for given named metrics.
+                </dd>
+               </dl>
+               <p>
+                For all numeric metrics with the given NAME prefixes, create a
+              prometheus text export format giving their current value and related
+              metadata.  The response has text/plain type rather than JSON, and is
+              designed to be ingested by a Prometheus server, or pcp's own
+              pmdaprometheus.
+               </p>
+               <p>
+                The native PCP metric metadata (metric name, semantics and units) are first output with the
+                <b>
+                 # PCP
+                </b>
+                prefix.
+              If the units string is empty, then
+                <b>
+                 none
+                </b>
+                is output.
+              The units metadata string may contain spaces and extends to the end of the line.
+              Prometheus metric types are heuristically inferred from PCP
+              metric types, and units/scales are converted to base
+              seconds/bytes/count if possible, with a corresponding suffix added to
+              the metric name.
+              PCP metric names are mapped so that
+                <b>
+                 .
+                </b>
+                are exchanged with
+                <b>
+                 :
+                </b>
+                .  Instance domain instances are represented as Prometheus labels
+              with quoted instance names.
+               </p>
+               <p>
+                <br/>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              # PCP proc.nprocs instant none
+              # HELP proc:nprocs instantaneous number of processes
+              # TYPE proc:nprocs gauge
+              proc:nprocs 7
+              
+              # PCP kernel.pernode.cpu.intr counter millisec
+              # HELP kernel:pernode:cpu:intr_seconds_total total interrupt CPU time from /proc/stat for each node
+              # TYPE kernel:pernode:cpu:intr_seconds_total counter
+              kernel:pernode:cpu:intr_seconds_total{instance="node0"} 25603.540000000001
+              
+              # PCP filesys.blocksize instant byte
+              # HELP filesys:blocksize_bytes Size of each block on mounted filesystem (Bytes)
+              # TYPE filesys:blocksize_bytes gauge
+              filesys:blocksize_bytes{instance="/dev/mapper/docker-253:0-83713-9a130460b46163fcf4443710db3159dea6bb5ec2aaca108515839a7a28c191ce"} 4096
+              filesys:blocksize_bytes{instance="/dev/mapper/VolGroup00-root17"} 4096
+              
+              </pre>
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <p>
+                <a name="lbAP">
+                </a>
+               </p>
                <h2>
                 GRAPHITE
                </h2>
@@ -678,7 +778,21 @@
                       1
                      </td>
                      <td>
-                      the pathname of the archive .meta file
+                      encoded pathname of the archive .meta file (default),
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td align="center">
+                     </td>
+                     <td align="center">
+                     </td>
+                     <td>
+                      or canonicalized archive hostname (
+                      <i>
+                       -J
+                      </i>
+                      mode)
                       <br/>
                      </td>
                     </tr>
@@ -780,7 +894,7 @@
                  </p>
                 </dd>
                </dl>
-               <a name="lbAO">
+               <a name="lbAQ">
                </a>
                <h2>
                 SEE ALSO
@@ -849,63 +963,77 @@
                 </dd>
                 <dt>
                  <a href="#lbAE">
+                  CONTEXT CREATION: configurable permanent contexts
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
                   PMAPI OPERATIONS
                  </a>
                 </dt>
                 <dd>
                  <dl>
                   <dt>
-                   <a href="#lbAF">
+                   <a href="#lbAG">
                     METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAG">
+                   <a href="#lbAH">
                     METRIC VALUE: pmFetch
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAH">
+                   <a href="#lbAI">
                     INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAI">
+                   <a href="#lbAJ">
                     INSTANCE PROFILE: pmAddProfile, pmDelProfile
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAJ">
+                   <a href="#lbAK">
                     METRIC STORE: pmStore
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAK">
+                   <a href="#lbAL">
                     DERIVED METRICS: pmRegisterDerived
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAL">
+                   <a href="#lbAM">
                     CONTEXT COPY: pmDupContext
                    </a>
                   </dt>
                   <dd>
                   </dd>
                   <dt>
-                   <a href="#lbAM">
+                   <a href="#lbAN">
                     CONTEXT CLOSE: pmDestroyContext
+                   </a>
+                  </dt>
+                  <dd>
+                  </dd>
+                  <dt>
+                   <a href="#lbAO">
+                    PROMETHEUS
                    </a>
                   </dt>
                   <dd>
@@ -913,14 +1041,14 @@
                  </dl>
                 </dd>
                 <dt>
-                 <a href="#lbAN">
+                 <a href="#lbAP">
                   GRAPHITE
                  </a>
                 </dt>
                 <dd>
                 </dd>
                 <dt>
-                 <a href="#lbAO">
+                 <a href="#lbAQ">
                   SEE ALSO
                  </a>
                 </dt>

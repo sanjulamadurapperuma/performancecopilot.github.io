@@ -345,6 +345,24 @@
                 </dd>
                </dl>
                <p>
+                daemonize (bool)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to daemonize on startup. Corresponding command line option is
+                 <b>
+                  --daemonize
+                 </b>
+                 .  Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
                 header (bool)
                </p>
                <dl compact="">
@@ -646,6 +664,32 @@
                 </dd>
                </dl>
                <p>
+                extcsv (bool)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to write extended CSV output similar to
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man1/sadf.1.html">
+                   sadf
+                  </a>
+                 </b>
+                 (1).
+              
+              Corresponding command line option is
+                 <b>
+                  -k
+                 </b>
+                 . Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
                 extheader (bool)
                </p>
                <dl compact="">
@@ -815,75 +859,6 @@
                  </b>
                  section but are typically used only in custom sections as they are
               applicable only to certain output targets.
-                </dd>
-               </dl>
-               <p>
-                zabbix_server (string) (zabbix output target only)
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 Hostname or IP address of Zabbix server to send the metrics to. If a
-              host is monitored by a proxy, proxy hostname or IP address should be
-              used instead. Undefined by default.
-                </dd>
-               </dl>
-               <p>
-                zabbix_port (integer) (zabbix output target only)
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 Specify port number of server trapper running on the server.
-              Default is
-                 <b>
-                  10051
-                 </b>
-                 .
-                </dd>
-               </dl>
-               <p>
-                zabbix_host (string) (zabbix output target only)
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 Specify agent hostname as registered in Zabbix frontend. Host IP address
-              and DNS name will not work. Undefined by default.
-                </dd>
-               </dl>
-               <p>
-                zabbix_interval (string) (zabbix output target only)
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 Indicates the interval to send the metrics to the Zabbix server. This
-              can be longer than the generic
-                 <i>
-                  interval
-                 </i>
-                 to minimize the overhead
-              when communicating with the server (as each send creates a new
-              connection). Follows the time syntax described in
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPIntro
-                  </a>
-                 </b>
-                 (1).
-              
-              Defaults to the generic
-                 <i>
-                  interval
-                 </i>
-                 . Zabbix tools send at most 250
-              metrics at a time. Ignored when reading metrics from PCP archives,
-              in which case metrics will be sent roughly at 250 metric batches.
                 </dd>
                </dl>
                <a name="lbAG">
@@ -1112,8 +1087,7 @@
                   </dt>
                   <dd>
                    Defines the unit/scale conversion for the metric. Needs to be
-              dimension-compatible and is used with non-string and (currently)
-              non-raw metrics.
+              dimension-compatible and is used with non-string metrics.
               For allowed values, see
                    <b>
                     <a href="/man/man1/pmrep.1.html">
@@ -1315,17 +1289,11 @@
                 </a>
                </b>
                (3),
-               <b>
-                <a href="/man/man3/pmregisterderived.3.html">
-                 pmRegisterDerived
-                </a>
-               </b>
-               (3)
               
               and
                <b>
-                <a href="/man/man3/zbxpcp.3.html">
-                 zbxpcp
+                <a href="/man/man3/pmregisterderived.3.html">
+                 pmRegisterDerived
                 </a>
                </b>
                (3).

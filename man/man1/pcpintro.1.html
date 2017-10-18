@@ -603,6 +603,35 @@
                  </b>
                  (7).
                 </dd>
+                <dt>
+                 <b>
+                  -D
+                 </b>
+                 <i>
+                  debugspec
+                 </i>
+                </dt>
+                <dd>
+                 Sets the PCP debugging options to
+                 <i>
+                  debugspec
+                 </i>
+                 to enable diagnostics and tracing that is most helpful for developers or
+              when trying to diagnose the misbehaviour of a PCP application.
+                 <i>
+                  debugspec
+                 </i>
+                 should be a comma-separated list of debugging option name(s) and/or decimal integers,
+              see
+                 <b>
+                  <a href="/man/man1/pmdbg.1.html">
+                   pmdbg
+                  </a>
+                 </b>
+                 (1)
+              
+              for a description of the supported option names and values.
+                </dd>
                </dl>
                <a name="lbAH">
                </a>
@@ -1897,14 +1926,23 @@
                  </b>
                 </dt>
                 <dd>
-                 When set, this variable provides an alternate way to initialize
-              the value used to control diagnostic and debug output (the default
-              value is 0 to suppress this output).
+                 When set, this variable provides an alternate to the
+                 <b>
+                  -D
+                 </b>
+                 command line option described above to initialize
+              the diagnostic and debug options.
               The value for
                  <b>
                   $PCP_DEBUG
                  </b>
-                 should be a decimal integer, see
+                 is the same as for the
+                 <b>
+                  -D
+                 </b>
+                 command line option, namely 
+              a comma-separated list of debugging option name(s), and/or
+              decimal integers, see
                  <b>
                   <a href="/man/man1/pmdbg.1.html">
                    pmdbg
@@ -1912,7 +1950,7 @@
                  </b>
                  (1)
               
-              for a description of the supported values.
+              for a description of the supported option names and values.
                 </dd>
                 <dt>
                  <b>
@@ -1987,6 +2025,81 @@
                     list or the expanded list of files that is not a file, or is not a directory
               or is not accessible (due to permissions or a bad symbolic link) will
               be silently ignored.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <b>
+                  PCP_IGNORE_MARK_RECORDS
+                 </b>
+                </dt>
+                <dd>
+                 When PCP archives logs are created there may be temporal gaps associated
+              with discontinuities in the time series of logged data, e.g. when
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              is restarted or when multiple archive logs are concatenated with
+                 <b>
+                  <a href="/man/man1/pmlogextract.1.html">
+                   pmlogextract
+                  </a>
+                 </b>
+                 (1).
+              
+              These discontinuities are internally noted with a &lt;mark&gt; record in
+              the PCP archive logs, and
+              value interpolation as described in
+                 <b>
+                  <a href="/man/man3/pmsetmode.3.html">
+                   pmSetMode
+                  </a>
+                 </b>
+                 (3)
+              
+              is not supported across &lt;mark&gt; records (because
+              the values before and after a &lt;mark&gt; record are not necessarily from
+              a continuous time series).
+              Sometimes the user knows the data semantics are sound in the region
+              of the &lt;mark&gt; records, and
+                 <b>
+                  $PCP_IGNORE_MARK_RECORDS
+                 </b>
+                 may be used to suppress the default behaviour.
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    If
+                    <b>
+                     PCP_IGNORE_MARK_RECORDS
+                    </b>
+                    is set (but has no value) then all &lt;mark&gt; records will be ignored.
+              Otherwise the value
+                    <b>
+                     $PCP_IGNORE_MARK_RECORDS
+                    </b>
+                    follows the syntax for an
+                    <i>
+                     interval
+                    </i>
+                    argument described above for the
+                    <b>
+                     -t
+                    </b>
+                    option, and &lt;mark&gt; records will be ignored if the time gap between
+              the last record before the &lt;mark&gt; and the first record after the
+              &lt;mark&gt; is not more than
+                    <i>
+                     interval
+                    </i>
+                    .
                    </p>
                   </dd>
                  </dl>
