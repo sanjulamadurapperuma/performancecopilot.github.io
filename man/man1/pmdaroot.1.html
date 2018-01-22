@@ -1,465 +1,469 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMDAROOT
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmdaroot
-               </b>
-               - a privileged PMCD helper performance metrics domain agent
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                $PCP_PMDAS_DIR/root/pmdaroot
-               </b>
-               [
-               <b>
-                -d
-               </b>
-               <i>
-                domain
-               </i>
-               ]
-              [
-               <b>
-                -l
-               </b>
-               <i>
-                logfile
-               </i>
-               ]
-              [
-               <b>
-                -s
-               </b>
-               <i>
-                sockname
-               </i>
-               ]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmdaroot
-               </b>
-               is a special Performance Metrics Domain Agent (PMDA) which cooperates
-              closely with
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1)
-              
-              and other PMDAs to provide limited privileged services to these
-              unprivileged processes.
-               <p>
-                In this role it is used to discover operating system containers running
-              on the local host.
-              It also enables access to performance data from within those containers
-              by other PMDAs running on the bare-metal host, using the
-                <b>
-                 <a href="/man/man3/pmdarootconnect.3.html">
-                  pmdaRootConnect
-                 </a>
-                </b>
-                (3)
-              
-              and the associated namespace interfaces.
-               </p>
-               <p>
-                Like all other PMDAs, it also exports performance metrics from the domain
-              it controls.
-              Currently, this is limited to information about the containers on the
-              local system, and currently only Docker containers can be detected.
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -d
-                 </b>
-                </dt>
-                <dd>
-                 It is absolutely crucial that the performance metrics
-                 <i>
-                  domain
-                 </i>
-                 number specified here is unique and consistent.
-              That is,
-                 <i>
-                  domain
-                 </i>
-                 should be different for every PMDA on the one host, and the same
-                 <i>
-                  domain
-                 </i>
-                 number should be used for the same PMDA on all hosts.
-                </dd>
-                <dt>
-                 <b>
-                  -l
-                 </b>
-                </dt>
-                <dd>
-                 Location of the log file.  By default, a log file named
-                 <i>
-                  root.log
-                 </i>
-                 is written in the current directory of
-                 <b>
-                  <a href="/man/man1/pmcd.1.html">
-                   pmcd
-                  </a>
-                 </b>
-                 (1)
-              
-              when
-                 <b>
-                  pmdaroot
-                 </b>
-                 is started, i.e.
-                 <b>
-                  $PCP_LOG_DIR/pmcd
-                 </b>
-                 .
-              
-              If the log file cannot
-              be created or is not writable, output is written to the standard error instead.
-                </dd>
-                <dt>
-                 <b>
-                  -s
-                 </b>
-                </dt>
-                <dd>
-                 Location of the
-                 <b>
-                  <a href="/man/man7/unix.7.html">
-                   unix
-                  </a>
-                 </b>
-                 (7)
-              
-              domain socket for communication with clients seeking privileged operations.
-              By default, a socket file named
-                 <b>
-                  $PCP_TMP_DIR/pmcd/root.socket
-                 </b>
-                 is used.
-                </dd>
-               </dl>
-               <a name="lbAE">
-               </a>
-               <h2>
-                INSTALLATION
-               </h2>
-               Access to the names, help text and values for the kernel performance
-              metrics is available by default - unlike most other agents, no action
-              is required to enable them and they should not be removed.
-               <a name="lbAF">
-               </a>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/root/help
-                 </b>
-                </dt>
-                <dd>
-                 default help text file for metrics exported by the root PMDA.
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_LOG_DIR/pmcd/root.log
-                 </b>
-                </dt>
-                <dd>
-                 default log file for error messages and other information from
-              the root PMDA.
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_TMP_DIR/pmcd/root.socket
-                 </b>
-                </dt>
-                <dd>
-                 default socket file for communication with root PMDA clients.
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAH">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmda.3.html">
-                 PMDA
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmdarootconnect.3.html">
-                 pmdaRootConnect
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man7/unix.7.html">
-                 unix
-                </a>
-               </b>
-               (7).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  INSTALLATION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMDAROOT
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmdaroot
+ </b>
+ - a privileged PMCD helper performance metrics domain agent
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_PMDAS_DIR/root/pmdaroot
+ </b>
+ [
+ <b>
+  -d
+ </b>
+ <i>
+  domain
+ </i>
+ ]
+[
+ <b>
+  -l
+ </b>
+ <i>
+  logfile
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  sockname
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmdaroot
+ </b>
+ is a special Performance Metrics Domain Agent (PMDA) which cooperates
+closely with
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1)
+
+and other PMDAs to provide limited privileged services to these
+unprivileged processes.
+ <p>
+  In this role it is used to discover operating system containers running
+on the local host.
+It also enables access to performance data from within those containers
+by other PMDAs running on the bare-metal host, using the
+  <b>
+   <a href="/man/man3/pmdarootconnect.3.html">
+    pmdaRootConnect
+   </a>
+  </b>
+  (3)
+
+and the associated namespace interfaces.
+ </p>
+ <p>
+  Like all other PMDAs, it also exports performance metrics from the domain
+it controls.
+Currently, this is limited to information about the containers on the
+local system, and currently only Docker containers can be detected.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -d
+   </b>
+  </dt>
+  <dd>
+   It is absolutely crucial that the performance metrics
+   <i>
+    domain
+   </i>
+   number specified here is unique and consistent.
+That is,
+   <i>
+    domain
+   </i>
+   should be different for every PMDA on the one host, and the same
+   <i>
+    domain
+   </i>
+   number should be used for the same PMDA on all hosts.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+  </dt>
+  <dd>
+   Location of the log file.  By default, a log file named
+   <i>
+    root.log
+   </i>
+   is written in the current directory of
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+when
+   <b>
+    pmdaroot
+   </b>
+   is started, i.e.
+   <b>
+    $PCP_LOG_DIR/pmcd
+   </b>
+   .
+
+If the log file cannot
+be created or is not writable, output is written to the standard error instead.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+  </dt>
+  <dd>
+   Location of the
+   <b>
+    <a href="/man/man7/unix.7.html">
+     unix
+    </a>
+   </b>
+   (7)
+
+domain socket for communication with clients seeking privileged operations.
+By default, a socket file named
+   <b>
+    $PCP_TMP_DIR/pmcd/root.socket
+   </b>
+   is used.
+  </dd>
+ </dl>
+ <a name="lbAE">
+ </a>
+ <h2>
+  INSTALLATION
+ </h2>
+ Access to the names, help text and values for the kernel performance
+metrics is available by default - unlike most other agents, no action
+is required to enable them and they should not be removed.
+ <a name="lbAF">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/root/help
+   </b>
+  </dt>
+  <dd>
+   default help text file for metrics exported by the root PMDA.
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmcd/root.log
+   </b>
+  </dt>
+  <dd>
+   default log file for error messages and other information from
+the root PMDA.
+  </dd>
+  <dt>
+   <b>
+    $PCP_TMP_DIR/pmcd/root.socket
+   </b>
+  </dt>
+  <dd>
+   default socket file for communication with root PMDA clients.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAH">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdarootconnect.3.html">
+   pmdaRootConnect
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man7/unix.7.html">
+   unix
+  </a>
+ </b>
+ (7).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    INSTALLATION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

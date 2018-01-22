@@ -1,805 +1,809 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMSETMODE
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmSetMode
-               </b>
-               - set collection time parameters for the current PMAPI context
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                int pmSetMode(int
-                <i>
-                 mode
-                </i>
-                , const struct timeval *
-                <i>
-                 when
-                </i>
-                , int
-                <i>
-                 delta
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmSetMode
-               </b>
-               is used to define the collection time and/or mode for accessing
-              performance metrics and meta-data in the current
-              Performance Metrics Application Programming Interface (PMAPI)
-              context.
-              This mode affects the semantics of subsequent calls to the following
-              PMAPI routines:
-               <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmfetcharchive.3.html">
-                 pmFetchArchive
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupdesc.3.html">
-                 pmLookupDesc
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetindom.3.html">
-                 pmGetInDom
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupindom.3.html">
-                 pmLookupInDom
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmnameindom.3.html">
-                 pmNameInDom
-                </a>
-               </b>
-               (3).
-               <p>
-                If
-                <i>
-                 mode
-                </i>
-                is
-                <b>
-                 PM_MODE_LIVE
-                </b>
-                then all information is returned from the active pool of performance metrics
-              as of the time that the PMAPI call is made, and the other two parameters to
-                <b>
-                 pmSetMode
-                </b>
-                are ignored.
-                <b>
-                 PM_MODE_LIVE
-                </b>
-                is the default mode when a new PMAPI context of type
-                <b>
-                 PM_CONTEXT_HOST
-                </b>
-                is created.
-               </p>
-               <p>
-                If the
-                <i>
-                 mode
-                </i>
-                is not
-                <b>
-                 PM_MODE_LIVE
-                </b>
-                ,
-              
-              then the
-                <i>
-                 when
-                </i>
-                parameter defines a time origin, and all requests for meta-data (metric
-              descriptions and instance identifiers from the instance domains) will be
-              processed to reflect the state of the meta-data as of the time origin, i.e. we
-              use the last state of this information at, or before, the time origin.
-               </p>
-               <p>
-                If the
-                <i>
-                 mode
-                </i>
-                is
-                <b>
-                 PM_MODE_INTERP
-                </b>
-                then, in the case of
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3),
-              
-              the underlying code will use an interpolation scheme to compute the values of
-              the metrics from the values recorded for times in the proximity of the time
-              origin.
-              A
-                <i>
-                 mode
-                </i>
-                of
-                <b>
-                 PM_MODE_INTERP
-                </b>
-                may only be used with an archive context.
-               </p>
-               <p>
-                If the
-                <i>
-                 mode
-                </i>
-                is
-                <b>
-                 PM_MODE_FORW
-                </b>
-                then, in the case of
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3),
-              
-              the collection of recorded metric values will be scanned in a forwards
-              direction in time, until values for at least one of the requested metrics is
-              located after the time origin, and then all requested metrics stored in the
-              set of archives at that time will be returned with the corresponding timestamp.
-              A
-                <i>
-                 mode
-                </i>
-                of
-                <b>
-                 PM_MODE_FORW
-                </b>
-                may only be used with an archive context.
-               </p>
-               <p>
-                If the
-                <i>
-                 mode
-                </i>
-                is
-                <b>
-                 PM_MODE_BACK
-                </b>
-                then, the situation is the same as for
-                <b>
-                 PM_MODE_FORW
-                </b>
-                ,
-              
-              except a
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3)
-              
-              will be serviced by scanning the collection of recorded metrics in a backwards
-              direction in time for metrics before the time origin.
-              A
-                <i>
-                 mode
-                </i>
-                of
-                <b>
-                 PM_MODE_BACK
-                </b>
-                may only be used with an archive context.
-               </p>
-               <p>
-                If the
-                <i>
-                 mode
-                </i>
-                is
-                <b>
-                 PM_MODE_FORW
-                </b>
-                or
-                <b>
-                 PM_MODE_BACK
-                </b>
-                ,
-              
-              and no qualifying metrics can be found in the requested direction of searching
-              before the end or start of the set of archive
-              logs is found, then
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3)
-              
-              returns the special error indicator,
-                <b>
-                 PM_ERR_EOL
-                </b>
-                .
-               </p>
-               <p>
-                For
-                <i>
-                 mode
-                </i>
-                s
-              
-              other than
-                <b>
-                 PM_MODE_LIVE
-                </b>
-                ,
-              
-              after each successful
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3),
-              
-              the time origin is reset to the timestamp returned via the
-                <i>
-                 pmResult
-                </i>
-                structure from
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                The
-                <b>
-                 pmSetMode
-                </b>
-                parameter
-                <i>
-                 delta
-                </i>
-                defines an additional number of time units that should be used to adjust the
-              time origin (forwards or backwards), after the new time origin from the
-                <i>
-                 pmResult
-                </i>
-                has been determined.
-              This automatic adjustment of the time origin only occurs when the
-                <i>
-                 mode
-                </i>
-                is
-                <b>
-                 PM_MODE_INTERP
-                </b>
-                ,
-              
-              and the adjustment is applied, even if the
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3)
-              
-              fails because the time origin is outside the range defined by
-              the records in a set of archive logs, i.e. returns
-                <b>
-                 PM_ERR_EOL
-                </b>
-                .
-               </p>
-               <p>
-               </p>
-               <p>
-                By default
-                <i>
-                 delta
-                </i>
-                is interpreted as milliseconds (but see the LARGE DELTA VALUES
-              section below).
-               </p>
-               <p>
-                Using these
-                <i>
-                 mode
-                </i>
-                options, an application can implement replay, playback, fast forward, reverse,
-              etc. for performance metric values held in the set of archive logs by alternating calls
-              to
-                <b>
-                 pmSetMode
-                </b>
-                and
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                As a special case, if
-                <i>
-                 when
-                </i>
-                is
-                <b>
-                 NULL
-                </b>
-                then the
-                <i>
-                 mode
-                </i>
-                and
-                <i>
-                 delta
-                </i>
-                arguments are used as described above, but the current time in the archive
-              is not altered.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                EXAMPLES
-               </h2>
-               The following code fragment may be used to dump just those values
-              recorded in an archive in correct temporal sequence, for a selected set of
-              performance metrics; this uses the default collection time mechanisms.
-               <p>
-               </p>
-               <pre>
-              pmNewContext(PM_CONTEXT_ARCHIVE, "myarchive");
-              while (pmFetch(npmid, pmidlist, &amp;result) != PM_ERR_EOL) {
-                  /*
-                   * process real metric values as of result-&gt;timestamp
-                   */
-                  . . .
-                  pmFreeResult(result);
-              }
-              </pre>
-               <p>
-                Alternatively, to replay interpolated metrics from the log in reverse
-              chronological order, at 10 second intervals (of recorded time), the following
-              code fragment could be used.
-               </p>
-               <p>
-               </p>
-               <pre>
-              struct timeval mytime;
-              
-              mytime.tv_sec = 0x7fffffff; /* or use pmGetArchiveEnd(&amp;mtime) */
-              pmSetMode(PM_MODE_BACK, &amp;mytime, 0);
-              pmFetchArchive(&amp;result);
-              mytime = result-&gt;timestamp;
-              pmFreeResult(result);
-              pmSetMode(PM_MODE_INTERP | PM_XTB_SET(PM_TIME_SEC), &amp;mytime, -10);
-              
-              while (pmFetch(numpmid, pmidlist, &amp;result) != PM_ERR_EOL) {
-                  /*
-                   * process interpolated metric values as of
-                   * result-&gt;timestamp
-                   */
-                  . . .
-                  pmFreeResult(result);
-              }
-              </pre>
-               <a name="lbAF">
-               </a>
-               <h2>
-                LARGE DELTA VALUES
-               </h2>
-               Because
-               <i>
-                delta
-               </i>
-               is an
-               <i>
-                int
-               </i>
-               and treated as milliseconds by default there is a limit on the maximum
-              absolute value of
-               <i>
-                delta
-               </i>
-               that can be specified with this default interpretation, namely about 24 days if a signed
-               <i>
-                int
-               </i>
-               has 31 bits of precision.
-              To accommodate longer values of
-               <i>
-                delta
-               </i>
-               the high-order bits of the
-               <i>
-                mode
-               </i>
-               parameter is also used to optionally set the units of time for the
-               <i>
-                delta
-               </i>
-               parameter. To specify the units of time use the
-               <b>
-                PM_XTB_SET
-               </b>
-               macro with one of the values
-               <b>
-                PM_TIME_NSEC
-               </b>
-               ,
-               <b>
-                PM_TIME_MSEC
-               </b>
-               ,
-               <b>
-                PM_TIME_SEC
-               </b>
-               ,
-              
-              etc.
-              to set the
-               <i>
-                mode
-               </i>
-               as follows:
-               <p>
-                PM_MODE_INTERP | PM_XTB_SET(PM_TIME_XXXX)
-               </p>
-               <p>
-                The following code shows how this could be done if the desired
-                <i>
-                 delta
-                </i>
-                is initially encoded in
-                <i>
-                 interval
-                </i>
-                (a struct timeval).
-               </p>
-               <p>
-               </p>
-               <pre>
-              struct timeval interval;
-              int mode;
-              
-              mode = ...
-              
-              if (abs(interval.tv_sec / (3600*24)) &lt;= 24) {
-                  /* default encoding of milliseconds is fine */
-                  mode = PM_MODE_INTERP;
-                  delta = interval.tv_sec * 1000 + (interval.tv_usec + 500)/ 1000;
-              }
-              else {
-                  /* encode delta in units of seconds */
-                  mode = PM_MODE_INTERP | PM_XTB_SET(PM_TIME_SEC);
-                  delta = interval.tv_sec + (interval.tv_usec + 500000)/ 1000000;
-              }
-              </pre>
-               <p>
-                For millisecond encoding of
-                <i>
-                 delta
-                </i>
-                ,
-              
-              using
-                <b>
-                 PM_XTB_SET(PM_TIME_MSEC)
-                </b>
-                is functionally equivalent to not using
-                <b>
-                 PM_XTB_SET
-                </b>
-                at all.
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmfetcharchive.3.html">
-                 pmFetchArchive
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetindom.3.html">
-                 pmGetInDom
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupdesc.3.html">
-                 pmLookupDesc
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupindom.3.html">
-                 pmLookupInDom
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmnameindom.3.html">
-                 pmNameInDom
-                </a>
-               </b>
-               (3).
-               <a name="lbAH">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  PM_ERR_MODE
-                 </b>
-                </dt>
-                <dd>
-                 The
-                 <i>
-                  mode
-                 </i>
-                 parameter is invalid
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  EXAMPLES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  LARGE DELTA VALUES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMSETMODE
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmSetMode
+ </b>
+ - set collection time parameters for the current PMAPI context
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  int pmSetMode(int
+  <i>
+   mode
+  </i>
+  , const struct timeval *
+  <i>
+   when
+  </i>
+  , int
+  <i>
+   delta
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmSetMode
+ </b>
+ is used to define the collection time and/or mode for accessing
+performance metrics and meta-data in the current
+Performance Metrics Application Programming Interface (PMAPI)
+context.
+This mode affects the semantics of subsequent calls to the following
+PMAPI routines:
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmfetcharchive.3.html">
+   pmFetchArchive
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetindom.3.html">
+   pmGetInDom
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupindom.3.html">
+   pmLookupInDom
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmnameindom.3.html">
+   pmNameInDom
+  </a>
+ </b>
+ (3).
+ <p>
+  If
+  <i>
+   mode
+  </i>
+  is
+  <b>
+   PM_MODE_LIVE
+  </b>
+  then all information is returned from the active pool of performance metrics
+as of the time that the PMAPI call is made, and the other two parameters to
+  <b>
+   pmSetMode
+  </b>
+  are ignored.
+  <b>
+   PM_MODE_LIVE
+  </b>
+  is the default mode when a new PMAPI context of type
+  <b>
+   PM_CONTEXT_HOST
+  </b>
+  is created.
+ </p>
+ <p>
+  If the
+  <i>
+   mode
+  </i>
+  is not
+  <b>
+   PM_MODE_LIVE
+  </b>
+  ,
+
+then the
+  <i>
+   when
+  </i>
+  parameter defines a time origin, and all requests for meta-data (metric
+descriptions and instance identifiers from the instance domains) will be
+processed to reflect the state of the meta-data as of the time origin, i.e. we
+use the last state of this information at, or before, the time origin.
+ </p>
+ <p>
+  If the
+  <i>
+   mode
+  </i>
+  is
+  <b>
+   PM_MODE_INTERP
+  </b>
+  then, in the case of
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3),
+
+the underlying code will use an interpolation scheme to compute the values of
+the metrics from the values recorded for times in the proximity of the time
+origin.
+A
+  <i>
+   mode
+  </i>
+  of
+  <b>
+   PM_MODE_INTERP
+  </b>
+  may only be used with an archive context.
+ </p>
+ <p>
+  If the
+  <i>
+   mode
+  </i>
+  is
+  <b>
+   PM_MODE_FORW
+  </b>
+  then, in the case of
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3),
+
+the collection of recorded metric values will be scanned in a forwards
+direction in time, until values for at least one of the requested metrics is
+located after the time origin, and then all requested metrics stored in the
+set of archives at that time will be returned with the corresponding timestamp.
+A
+  <i>
+   mode
+  </i>
+  of
+  <b>
+   PM_MODE_FORW
+  </b>
+  may only be used with an archive context.
+ </p>
+ <p>
+  If the
+  <i>
+   mode
+  </i>
+  is
+  <b>
+   PM_MODE_BACK
+  </b>
+  then, the situation is the same as for
+  <b>
+   PM_MODE_FORW
+  </b>
+  ,
+
+except a
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3)
+
+will be serviced by scanning the collection of recorded metrics in a backwards
+direction in time for metrics before the time origin.
+A
+  <i>
+   mode
+  </i>
+  of
+  <b>
+   PM_MODE_BACK
+  </b>
+  may only be used with an archive context.
+ </p>
+ <p>
+  If the
+  <i>
+   mode
+  </i>
+  is
+  <b>
+   PM_MODE_FORW
+  </b>
+  or
+  <b>
+   PM_MODE_BACK
+  </b>
+  ,
+
+and no qualifying metrics can be found in the requested direction of searching
+before the end or start of the set of archive
+logs is found, then
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3)
+
+returns the special error indicator,
+  <b>
+   PM_ERR_EOL
+  </b>
+  .
+ </p>
+ <p>
+  For
+  <i>
+   mode
+  </i>
+  s
+
+other than
+  <b>
+   PM_MODE_LIVE
+  </b>
+  ,
+
+after each successful
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3),
+
+the time origin is reset to the timestamp returned via the
+  <i>
+   pmResult
+  </i>
+  structure from
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  The
+  <b>
+   pmSetMode
+  </b>
+  parameter
+  <i>
+   delta
+  </i>
+  defines an additional number of time units that should be used to adjust the
+time origin (forwards or backwards), after the new time origin from the
+  <i>
+   pmResult
+  </i>
+  has been determined.
+This automatic adjustment of the time origin only occurs when the
+  <i>
+   mode
+  </i>
+  is
+  <b>
+   PM_MODE_INTERP
+  </b>
+  ,
+
+and the adjustment is applied, even if the
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3)
+
+fails because the time origin is outside the range defined by
+the records in a set of archive logs, i.e. returns
+  <b>
+   PM_ERR_EOL
+  </b>
+  .
+ </p>
+ <p>
+ </p>
+ <p>
+  By default
+  <i>
+   delta
+  </i>
+  is interpreted as milliseconds (but see the LARGE DELTA VALUES
+section below).
+ </p>
+ <p>
+  Using these
+  <i>
+   mode
+  </i>
+  options, an application can implement replay, playback, fast forward, reverse,
+etc. for performance metric values held in the set of archive logs by alternating calls
+to
+  <b>
+   pmSetMode
+  </b>
+  and
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  As a special case, if
+  <i>
+   when
+  </i>
+  is
+  <b>
+   NULL
+  </b>
+  then the
+  <i>
+   mode
+  </i>
+  and
+  <i>
+   delta
+  </i>
+  arguments are used as described above, but the current time in the archive
+is not altered.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  EXAMPLES
+ </h2>
+ The following code fragment may be used to dump just those values
+recorded in an archive in correct temporal sequence, for a selected set of
+performance metrics; this uses the default collection time mechanisms.
+ <p>
+ </p>
+ <pre>
+pmNewContext(PM_CONTEXT_ARCHIVE, "myarchive");
+while (pmFetch(npmid, pmidlist, &amp;result) != PM_ERR_EOL) {
+    /*
+     * process real metric values as of result-&gt;timestamp
+     */
+    . . .
+    pmFreeResult(result);
+}
+</pre>
+ <p>
+  Alternatively, to replay interpolated metrics from the log in reverse
+chronological order, at 10 second intervals (of recorded time), the following
+code fragment could be used.
+ </p>
+ <p>
+ </p>
+ <pre>
+struct timeval mytime;
+
+mytime.tv_sec = 0x7fffffff; /* or use pmGetArchiveEnd(&amp;mtime) */
+pmSetMode(PM_MODE_BACK, &amp;mytime, 0);
+pmFetchArchive(&amp;result);
+mytime = result-&gt;timestamp;
+pmFreeResult(result);
+pmSetMode(PM_MODE_INTERP | PM_XTB_SET(PM_TIME_SEC), &amp;mytime, -10);
+
+while (pmFetch(numpmid, pmidlist, &amp;result) != PM_ERR_EOL) {
+    /*
+     * process interpolated metric values as of
+     * result-&gt;timestamp
+     */
+    . . .
+    pmFreeResult(result);
+}
+</pre>
+ <a name="lbAF">
+ </a>
+ <h2>
+  LARGE DELTA VALUES
+ </h2>
+ Because
+ <i>
+  delta
+ </i>
+ is an
+ <i>
+  int
+ </i>
+ and treated as milliseconds by default there is a limit on the maximum
+absolute value of
+ <i>
+  delta
+ </i>
+ that can be specified with this default interpretation, namely about 24 days if a signed
+ <i>
+  int
+ </i>
+ has 31 bits of precision.
+To accommodate longer values of
+ <i>
+  delta
+ </i>
+ the high-order bits of the
+ <i>
+  mode
+ </i>
+ parameter is also used to optionally set the units of time for the
+ <i>
+  delta
+ </i>
+ parameter. To specify the units of time use the
+ <b>
+  PM_XTB_SET
+ </b>
+ macro with one of the values
+ <b>
+  PM_TIME_NSEC
+ </b>
+ ,
+ <b>
+  PM_TIME_MSEC
+ </b>
+ ,
+ <b>
+  PM_TIME_SEC
+ </b>
+ ,
+
+etc.
+to set the
+ <i>
+  mode
+ </i>
+ as follows:
+ <p>
+  PM_MODE_INTERP | PM_XTB_SET(PM_TIME_XXXX)
+ </p>
+ <p>
+  The following code shows how this could be done if the desired
+  <i>
+   delta
+  </i>
+  is initially encoded in
+  <i>
+   interval
+  </i>
+  (a struct timeval).
+ </p>
+ <p>
+ </p>
+ <pre>
+struct timeval interval;
+int mode;
+
+mode = ...
+
+if (abs(interval.tv_sec / (3600*24)) &lt;= 24) {
+    /* default encoding of milliseconds is fine */
+    mode = PM_MODE_INTERP;
+    delta = interval.tv_sec * 1000 + (interval.tv_usec + 500)/ 1000;
+}
+else {
+    /* encode delta in units of seconds */
+    mode = PM_MODE_INTERP | PM_XTB_SET(PM_TIME_SEC);
+    delta = interval.tv_sec + (interval.tv_usec + 500000)/ 1000000;
+}
+</pre>
+ <p>
+  For millisecond encoding of
+  <i>
+   delta
+  </i>
+  ,
+
+using
+  <b>
+   PM_XTB_SET(PM_TIME_MSEC)
+  </b>
+  is functionally equivalent to not using
+  <b>
+   PM_XTB_SET
+  </b>
+  at all.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmfetcharchive.3.html">
+   pmFetchArchive
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetindom.3.html">
+   pmGetInDom
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupindom.3.html">
+   pmLookupInDom
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmnameindom.3.html">
+   pmNameInDom
+  </a>
+ </b>
+ (3).
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    PM_ERR_MODE
+   </b>
+  </dt>
+  <dd>
+   The
+   <i>
+    mode
+   </i>
+   parameter is invalid
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    LARGE DELTA VALUES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

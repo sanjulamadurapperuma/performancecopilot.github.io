@@ -1,449 +1,453 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMADDPROFILE
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmAddProfile
-               </b>
-               - add instance(s) to the current PMAPI instance profile
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                int pmAddProfile(pmInDom
-                <i>
-                 indom
-                </i>
-                , int
-                <i>
-                 numinst
-                </i>
-                , int *
-                <i>
-                 instlist
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               The set of instances for performance metrics returned from a
-               <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
-                </a>
-               </b>
-               (3)
-              
-              call may be filtered or restricted using an instance profile.
-              There is one instance profile for each context the application
-              creates at the Performance Metrics Application Programming Interface 
-              (
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3)),
-              
-              and each instance profile may include instances from one or more
-              instance domains (see
-               <b>
-                <a href="/man/man3/pmlookupdesc.3.html">
-                 pmLookupDesc
-                </a>
-               </b>
-               (3)).
-               <p>
-                <b>
-                 pmAddProfile
-                </b>
-                may be used to
-              add new instance specifications to the instance profile of the current
-              PMAPI context.
-               </p>
-               <p>
-                In the simplest variant, the list of instances identified by the
-                <i>
-                 instlist
-                </i>
-                argument for the
-                <i>
-                 indom
-                </i>
-                instance domain are added to the instance profile.
-              The list of instance
-              identifiers contains
-                <i>
-                 numinst
-                </i>
-                values.
-               </p>
-               <p>
-                The
-                <i>
-                 indom
-                </i>
-                value would normally be extracted from a call to
-                <b>
-                 <a href="/man/man3/pmlookupdesc.3.html">
-                  pmLookupDesc
-                 </a>
-                </b>
-                (3)
-              
-              for a particular performance metric, and the instances in
-                <i>
-                 instlist
-                </i>
-                would typically be determined by calls to
-                <b>
-                 <a href="/man/man3/pmgetindom.3.html">
-                  pmGetInDom
-                 </a>
-                </b>
-                (3)
-              
-              or
-                <b>
-                 <a href="/man/man3/pmlookupindom.3.html">
-                  pmLookupInDom
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                To select all instances in all instance domains, use
-               </p>
-               <p>
-               </p>
-               <pre>
-              pmAddProfile(PM_INDOM_NULL, 0, (int *)0)
-              </pre>
-               <p>
-                This is the only case where
-                <i>
-                 indom
-                </i>
-                may be equal to
-                <b>
-                 PM_INDOM_NULL
-                </b>
-                .
-              
-              If
-                <i>
-                 numinst
-                </i>
-                is zero, or
-                <i>
-                 instlist
-                </i>
-                is NULL, then all instances in
-                <i>
-                 indom
-                </i>
-                are selected.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmdelprofile.3.html">
-                 pmDelProfile
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetindom.3.html">
-                 pmGetInDom
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupdesc.3.html">
-                 pmLookupDesc
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupindom.3.html">
-                 pmLookupInDom
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmnewcontext.3.html">
-                 pmNewContext
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmusecontext.3.html">
-                 pmUseContext
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmwhichcontext.3.html">
-                 pmWhichContext
-                </a>
-               </b>
-               (3).
-               <a name="lbAF">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  PM_ERR_PROFILESPEC
-                 </b>
-                </dt>
-                <dd>
-                 <i>
-                  indom
-                 </i>
-                 was
-                 <b>
-                  PM_INDOM_NULL
-                 </b>
-                 and
-                 <i>
-                  instlist
-                 </i>
-                 was not empty
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                CAVEAT
-               </h2>
-               It is possible to add non-existent instance domains and non-existent instances
-              to an instance profile.  None of the routines that use the instance profile
-              will ever issue an error if you do this.  The cost of checking, when checking
-              is possible, outweighs any benefits.
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  CAVEAT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMADDPROFILE
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmAddProfile
+ </b>
+ - add instance(s) to the current PMAPI instance profile
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  int pmAddProfile(pmInDom
+  <i>
+   indom
+  </i>
+  , int
+  <i>
+   numinst
+  </i>
+  , int *
+  <i>
+   instlist
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ The set of instances for performance metrics returned from a
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3)
+
+call may be filtered or restricted using an instance profile.
+There is one instance profile for each context the application
+creates at the Performance Metrics Application Programming Interface 
+(
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3)),
+
+and each instance profile may include instances from one or more
+instance domains (see
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3)).
+ <p>
+  <b>
+   pmAddProfile
+  </b>
+  may be used to
+add new instance specifications to the instance profile of the current
+PMAPI context.
+ </p>
+ <p>
+  In the simplest variant, the list of instances identified by the
+  <i>
+   instlist
+  </i>
+  argument for the
+  <i>
+   indom
+  </i>
+  instance domain are added to the instance profile.
+The list of instance
+identifiers contains
+  <i>
+   numinst
+  </i>
+  values.
+ </p>
+ <p>
+  The
+  <i>
+   indom
+  </i>
+  value would normally be extracted from a call to
+  <b>
+   <a href="/man/man3/pmlookupdesc.3.html">
+    pmLookupDesc
+   </a>
+  </b>
+  (3)
+
+for a particular performance metric, and the instances in
+  <i>
+   instlist
+  </i>
+  would typically be determined by calls to
+  <b>
+   <a href="/man/man3/pmgetindom.3.html">
+    pmGetInDom
+   </a>
+  </b>
+  (3)
+
+or
+  <b>
+   <a href="/man/man3/pmlookupindom.3.html">
+    pmLookupInDom
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  To select all instances in all instance domains, use
+ </p>
+ <p>
+ </p>
+ <pre>
+pmAddProfile(PM_INDOM_NULL, 0, (int *)0)
+</pre>
+ <p>
+  This is the only case where
+  <i>
+   indom
+  </i>
+  may be equal to
+  <b>
+   PM_INDOM_NULL
+  </b>
+  .
+
+If
+  <i>
+   numinst
+  </i>
+  is zero, or
+  <i>
+   instlist
+  </i>
+  is NULL, then all instances in
+  <i>
+   indom
+  </i>
+  are selected.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdelprofile.3.html">
+   pmDelProfile
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetindom.3.html">
+   pmGetInDom
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupindom.3.html">
+   pmLookupInDom
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmusecontext.3.html">
+   pmUseContext
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmwhichcontext.3.html">
+   pmWhichContext
+  </a>
+ </b>
+ (3).
+ <a name="lbAF">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    PM_ERR_PROFILESPEC
+   </b>
+  </dt>
+  <dd>
+   <i>
+    indom
+   </i>
+   was
+   <b>
+    PM_INDOM_NULL
+   </b>
+   and
+   <i>
+    instlist
+   </i>
+   was not empty
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  CAVEAT
+ </h2>
+ It is possible to add non-existent instance domains and non-existent instances
+to an instance profile.  None of the routines that use the instance profile
+will ever issue an error if you do this.  The cost of checking, when checking
+is possible, outweighs any benefits.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

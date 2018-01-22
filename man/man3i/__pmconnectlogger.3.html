@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMCONNECTLOGGER
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  __pmConnectLogger
+ </b>
+ - connect to a performance metrics logger control port
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include "pmapi.h"
+  <br/>
+  #include "libpcp.h"
+  <br/>
+ </b>
+ <p>
+  int __pmConnectLogger(const char *
+  <i>
+   hostname
+  </i>
+  , int
+  <i>
+   pid
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  CAVEAT
+ </h2>
+ This documentation is intended for internal Performance Co-Pilot
+(PCP) developer use.
+ <p>
+  These interfaces are not part of the PCP APIs that are guaranteed to
+remain fixed across releases, and they may not work, or may provide
+different semantics at some point in the future.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ Each instance of the Performance Co-Pilot (PCP) archive logger program
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+supports a control port on which
+ <b>
+  <a href="/man/man3/pmcontrollog.3.html">
+   __pmControlLog
+  </a>
+ </b>
+ (3)
+
+requests are received, and responses sent.
+Optionally, the
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+instance may be designated the ``primary'' logger.
+ <p>
+  <b>
+   __pmConnectLogger
+  </b>
+  may be used to establish a control port connection to the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instance identified by process id
+  <i>
+   pid
+  </i>
+  on the host
+  <i>
+   hostname
+  </i>
+  .
+ </p>
+ <p>
+  One special case is supported; for the reserved
+  <i>
+   pid
+  </i>
+  value of
+  <b>
+   PM_LOG_CONTROL_PORT
+  </b>
+  the requested connection is to the
+control port for the ``primary'' logger, whatever its process
+id might be.
+ </p>
+ <p>
+  On success,
+  <b>
+   __pmConnectLogger
+  </b>
+  returns a non-negative integer, that is a file descriptor that may be used
+in subsequent communication with the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instance, e.g. for
+  <b>
+   <a href="/man/man3/pmcontrollog.3.html">
+    __pmControlLog
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  As the control port to
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+is not mulitplexed, applications using
+  <b>
+   __pmConnectLogger
+  </b>
+  should use
+  <b>
+   <a href="http://man7.org/linux/man-pages/man2/close.2.html">
+    close
+   </a>
+  </b>
+  (2)
+
+to terminate the connection to
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+as soon as they have finished communicating.
+ </p>
+ <p>
+  If the application connects, and the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instance subsequently terminates, e.g. because the associated
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+instance is terminated, the application will have to explicitly
+re-establish connection to a re-started
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instance by calling
+  <b>
+   __pmConnectLogger
+  </b>
+  again.
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmcontrollog.3.html">
+   __pmControlLog
+  </a>
+ </b>
+ (3).
+ <a name="lbAG">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    PM_ERR_PERMISSION
+   </b>
+  </dt>
+  <dd>
+   no permission to connect to the specified
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+instance
+  </dd>
+  <dt>
+   <b>
+    -ECONNREFUSED
+   </b>
+  </dt>
+  <dd>
+   the designated
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+instance does not exist
+  </dd>
+  <dt>
+   <b>
+    -EEADDRINUSE
+   </b>
+  </dt>
+  <dd>
+   the requested control port is already in use
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

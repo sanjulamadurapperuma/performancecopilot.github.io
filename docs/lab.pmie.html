@@ -1,1832 +1,1836 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='docpage'>
-              ﻿
-               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
-                <font size="7">
-                 Automated reasoning with
-                 <i>
-                  pmie
-                 </i>
-                </font>
-               </h1>
-               <p>
-                <br/>
-               </p>
-               <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
-                <tr>
-                 <td>
-                  <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
-              pmie
-              dkvis
-              pminfo
-              pmchart
-              pmdumplog</pre>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                For many systems, the performance data is produced in volumes and at
-              rates that require some sort of automated and intelligent filtering by
-              which the mundane data can be removed from the interesting information.
-               </p>
-               <p>
-                Once interesting information has been found, there are a variety of
-              actions that may be appropriate.
-               </p>
-               <p>
-                The Performance Metrics Inference Engine (
-                <i>
-                 pmie
-                </i>
-                ) is the tool
-              within PCP that is designed for automated filtering and reasoning
-              about performance.
-               </p>
-               <p>
-                For an explanation of Performance Co-Pilot terms and acronyms, consult
-              the
-                <a href="glossary.html">
-                 PCP glossary
-                </a>
-                .
-               </p>
-               <br/>
-               <ul>
-                <li>
-                 <a href="#basics">
-                  <i>
-                   pmie
-                  </i>
-                  basics
-                 </a>
-                </li>
-                <li>
-                 <a href="#repeat">
-                  Action repetition and launching arbitrary actions
-                 </a>
-                </li>
-                <li>
-                 <a href="#value-sets">
-                  Rule evaluation over sets of values
-                 </a>
-                </li>
-                <li>
-                 <a href="#predicates">
-                  Forms of
-                  <i>
-                   pmie
-                  </i>
-                  predicate
-                 </a>
-                 <ul>
-                  <li>
-                   <a href="#exist">
-                    Existential quantification
-                   </a>
-                  </li>
-                  <li>
-                   <a href="#universal">
-                    Universal quantification
-                   </a>
-                  </li>
-                  <li>
-                   <a href="#percentile">
-                    Percentile quantification
-                   </a>
-                  </li>
-                  <li>
-                   <a href="#others">
-                    Other predicates
-                   </a>
-                  </li>
-                 </ul>
-                </li>
-                <li>
-                 <a href="#expr">
-                  <i>
-                   pmie
-                  </i>
-                  expressions
-                 </a>
-                </li>
-                <li>
-                 <a href="#actions">
-                  Actions and parameter substitution of predicate context
-                 </a>
-                </li>
-                <li>
-                 <a href="#audit">
-                  Performance audit using archives
-                 </a>
-                </li>
-                <li>
-                 <a href="#interval">
-                  Influence of the update interval
-                 </a>
-                </li>
-               </ul>
-               <br/>
-               <p>
-                <i>
-                 pmie
-                </i>
-                evaluates a set of assertions against a time-series of
-              performance metric values collected in real-time from PMCD on one or
-              more hosts or from one or more PCP archives.
-               </p>
-               <p>
-                For those assertions that are found to be true,
-                <i>
-                 pmie
-                </i>
-                is able
-              to print messages, activate alarms, write syslog entries and launch
-              arbitrary programs.
-               </p>
-               <p>
-                Typical
-                <i>
-                 pmie
-                </i>
-                usage might include:
-               </p>
-               <ul>
-                <li>
-                 monitoring for exceptional performance conditions
-                </li>
-                <li>
-                 raising alarms
-                </li>
-                <li>
-                 automated filtering of acceptable performance
-                </li>
-                <li>
-                 early warning of pending performance problems
-                </li>
-                <li>
-                 "call home" to the support center
-                </li>
-                <li>
-                 retrospective performance audits
-                </li>
-                <li>
-                 evaluating assertions about "before and after"
-                  performance in the context of upgrades or system reconfiguration
-                </li>
-                <li>
-                 hypothesis evaluation for capacity planning
-                </li>
-                <li>
-                 as part of the
-                 <i>
-                  post mortem
-                 </i>
-                 analysis following a system failure
-                </li>
-               </ul>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="basics">
-                      <i>
-                       pmie
-                      </i>
-                      basics
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                The simplest rules test thresholds and are formed from expressions
-              involving performance metrics and constants.  For example, the following
-              statement:
-               </p>
-               <pre>
-              <i>    If the context switch rate exceeds 2000 switches per second</i>
-              <i>    then activate an alarm notifier</i>
-              </pre>
-               <p>
-                may be translated into the following
-                <i>
-                 pmie
-                </i>
-                rule:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="200" src="images/pmie_rule1.png" width="495"/>
-                </p>
-               </center>
-               <p>
-                where the "alarm" action launches an information dialog with
-              the specified message.
-               </p>
-               <p>
-                Other
-                <i>
-                 pmie
-                </i>
-                actions are discussed later in the
-                <a href="#actions">
-                 Actions and parameter substitution of predicate context
-                </a>
-                section.
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td>
-                  <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                   <tr>
-                    <td width="50%">
-                     <br/>
-                     Generate alot of context switches, and watch 'em:
-                     <br/>
-                     <pre><b>
-              $ . /etc/pcp.env
-              $ pmie -v -c $PCP_DEMOS_DIR/pmie/pswitch.pmie &amp;
-              $ pmchart -t 1sec -c $PCP_DEMOS_DIR/pmie/pswitch.view &amp;
-              $ while true; do sleep 0; done &amp;
-              $ jobs
-              [1]- Running     pmie -v -c $PCP_DEMOS_DIR/pmie/pswitch.pmie &amp;
-              [2]- Running     pmchart -t 0.5sec -c $PCP_DEMOS_DIR/pmie/pswitch.view &amp;
-              [3]+ Running     while true; do sleep 0; done &amp;
-              </b></pre>
-                     <br/>
-                     <b>
-                      Important:
-                     </b>
-                     the above test case can be quite intrusive on low processor
-              count machines, so remember to terminate it when you've finished this tutorial:
-                     <pre><b>
-              $ jobs
-              ...
-              [3]+ Running     while true; do sleep 0; done &amp;
-              $ fg %3
-              </b></pre>
-                    </td>
-                   </tr>
-                  </table>
-                 </td>
-                 <td>
-                  <img align="RIGHT" alt="" border="0" src="images/cpu_pswitch.png"/>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="repeat">
-                      Action repetition and launching arbitrary actions
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Sometimes it is useful for an action not to be repeated for a time.
-              For example, the English statement:
-               </p>
-               <pre><i>
-                  If the context switch rate exceeds 2000 switches per second
-                  then launch <b>top</b> in an <b>xterm</b> window
-                  but hold off repetition of the action for 5 minutes
-              </i></pre>
-               <p>
-                may be translated into the following
-                <i>
-                 pmie
-                </i>
-                rule:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="200" src="images/pmie_rule2.png" width="495"/>
-                </p>
-               </center>
-               <p>
-                Note the
-                <b>
-                 <tt>
-                  <font>
-                   shell
-                  </font>
-                 </tt>
-                </b>
-                keyword
-              introduces an arbitrary action in which any program can be launched.
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="value-sets">
-                      Rule evaluation over sets of values
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Each
-                <i>
-                 pmie
-                </i>
-                rule may be evaluated over a set of performance metric values.
-               </p>
-               <p>
-                Conceptually these sets of values are constructed for a single performance
-              metric by taking the cross product of observed values over the three
-              dimensions of:
-                <b>
-                 hosts
-                </b>
-                ,
-                <b>
-                 instances
-                </b>
-                and
-                <b>
-                 times
-                </b>
-                .
-               </p>
-               <p>
-                The default host is:
-               </p>
-               <ul>
-                <li>
-                 the host named in the
-                 <b>
-                  <tt>
-                   -h
-                  </tt>
-                 </b>
-                 command line option to
-                 <i>
-                  pmie
-                 </i>
-                 , or
-                </li>
-                <li>
-                 the host associated with the archive named in the first
-                 <b>
-                  <tt>
-                   -a
-                  </tt>
-                 </b>
-                 command line option to
-                 <i>
-                  pmie
-                 </i>
-                 , or
-                </li>
-                <li>
-                 the local host if neither
-                 <b>
-                  <tt>
-                   -h
-                  </tt>
-                 </b>
-                 nor
-                 <b>
-                  <tt>
-                   -a
-                  </tt>
-                 </b>
-                 appears on the command line.
-                </li>
-               </ul>
-               <p>
-                By default, a metric name represents the set of values formed by the
-              cross product of the default host for
-                <i>
-                 pmie
-                </i>
-                ,
-                <b>
-                 all
-                </b>
-                instances
-              and the current time.  If there is only one instance, then the set
-              contains a singular value.
-               </p>
-               <p>
-                For example
-                <b>
-                 <tt>
-                  filesys.free
-                 </tt>
-                </b>
-                is the most recent set of
-              values for the amount of free space on every mounted file system on the
-              default host, and may be represented by the shaded rectangle in the
-              following figure:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="226" src="images/pmie_axis1.png" width="396"/>
-                </p>
-               </center>
-               <p>
-                One or more suffix of the form
-                <b>
-                 <tt>
-                  #
-                  <i>
-                   instance
-                  </i>
-                 </tt>
-                </b>
-                (where
-                <tt>
-                 <i>
-                  instance
-                 </i>
-                </tt>
-                is the external instance identifier)
-              after a metric name restricts the set of values on the default host
-              for
-                <i>
-                 pmie
-                </i>
-                , to the
-                <b>
-                 nominated
-                </b>
-                instances and the current time.
-              If
-                <i>
-                 <tt>
-                  instance
-                 </tt>
-                </i>
-                includes any special characters then it
-              should be enclosed in single quotes.
-               </p>
-               <p>
-                For example
-                <b>
-                 <tt>
-                  filesys.free #'/usr'
-                 </tt>
-                </b>
-                is the most recent
-              value for the amount of free space on the
-                <i>
-                 /usr
-                </i>
-                file system on the
-              default host, and may be represented as follows:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="226" src="images/pmie_axis2.png" width="396"/>
-                </p>
-               </center>
-               <p>
-                One or more suffix of the form
-                <b>
-                 <tt>
-                  :
-                  <i>
-                   hostname
-                  </i>
-                 </tt>
-                </b>
-                after
-              a metric name changes the set of values to include
-                <b>
-                 all
-                </b>
-                instances
-              on the
-                <b>
-                 nominated
-                </b>
-                hosts, at the current time.
-               </p>
-               <p>
-                For example
-                <b>
-                 <tt>
-                  filesys.free :otherhost
-                 </tt>
-                </b>
-                is the most
-              recent set of values for the amount of free space on every mounted file
-              system on the host
-                <b>
-                 otherhost
-                </b>
-                , and may be represented as follows:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="226" src="images/pmie_axis3.png" width="396"/>
-                </p>
-               </center>
-               <p>
-                A suffix of the form
-                <b>
-                 <tt>
-                  @
-                  <i>
-                   N..M
-                  </i>
-                 </tt>
-                </b>
-                after a metric name
-              changes the set of values to be that formed by
-                <b>
-                 all
-                </b>
-                instances on
-              the default host for
-                <i>
-                 pmie
-                </i>
-                , at the sample times
-                <b>
-                 <i>
-                  <tt>
-                   N
-                  </tt>
-                 </i>
-                </b>
-                ,
-                <b>
-                 <i>
-                  <tt>
-                   N+1
-                  </tt>
-                 </i>
-                </b>
-                , ...
-                <b>
-                 <i>
-                  <tt>
-                   M
-                  </tt>
-                 </i>
-                </b>
-                <tt>
-                </tt>
-                <b>
-                 back
-                </b>
-                from the current time.
-               </p>
-               <p>
-                And finally more than one type of suffix may be used to control enumeration
-              in each of the three axis directions.
-               </p>
-               <p>
-                For example
-                <b>
-                 <tt>
-                  filesys.free #'/usr' @0..3
-                 </tt>
-                </b>
-                refers to
-              the default host, restricts the instances and enumerates the time.
-              This may be represented as follows:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="226" src="images/pmie_axis4.png" width="396"/>
-                </p>
-               </center>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="predicates">
-                      Forms of
-                      <i>
-                       pmie
-                      </i>
-                      predicate
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <h3>
-                <a name="exist">
-                 Existential quantification
-                </a>
-               </h3>
-               <p>
-                The predicate
-                <b>
-                 <tt>
-                  <font>
-                   some_inst
-                  </font>
-                 </tt>
-                </b>
-                <tt>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                is true if there is some instance of a metric that
-              makes
-                <i>
-                 <tt>
-                  expr
-                 </tt>
-                </i>
-                true.
-               </p>
-               <p>
-                Existential quantification over hosts and consecutive samples is also
-              supported by
-                <b>
-                 <tt>
-                  <font>
-                   some_host
-                  </font>
-                 </tt>
-                </b>
-                <tt>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                and
-                <b>
-                 <tt>
-                  <font>
-                   some_sample
-                  </font>
-                 </tt>
-                </b>
-                <tt>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                .
-               </p>
-               <p>
-                For example, the English statement:
-               </p>
-               <pre>
-              <i>    if some disk is doing a lot of I/O</i>
-              <i>    then launch a visible alarm</i>
-              </pre>
-               <p>
-                may be translated into the following
-                <i>
-                 pmie
-                </i>
-                rule:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="120" src="images/pmie_rule3.png" width="495"/>
-                </p>
-               </center>
-               <br/>
-               <h3>
-                <a name="universal">
-                 Universal quantification
-                </a>
-               </h3>
-               <p>
-                The predicate
-                <b>
-                 <tt>
-                  <font>
-                   all_inst
-                  </font>
-                 </tt>
-                </b>
-                <tt>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                is true if
-                <i>
-                 <tt>
-                  expr
-                 </tt>
-                </i>
-                is true for every
-              instance of a metric.
-               </p>
-               <p>
-                Universal quantification over hosts and consecutive samples is also
-              supported by
-                <b>
-                 <tt>
-                  <font>
-                   all_host
-                  </font>
-                 </tt>
-                </b>
-                <tt>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                and
-                <b>
-                 <tt>
-                  <font>
-                   all_sample
-                  </font>
-                 </tt>
-                </b>
-                <tt>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                .
-               </p>
-               <p>
-                Quantification predicates may be nested.
-               </p>
-               <p>
-                For example, the English statement:
-               </p>
-               <pre>
-              <i>    if for every one of the last 5 samples,</i>
-              <i>    some disk (but not necessarily the same disk) is doing a lot of I/O</i>
-              <i>    then launch a visible alarm</i>
-              </pre>
-               <p>
-                may be translated into the following
-                <i>
-                 pmie
-                </i>
-                rule:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="140" src="images/pmie_rule4.png" width="540"/>
-                </p>
-               </center>
-               <p>
-                Note that reversing the nesting of the universal and existential predicates produces
-              a rule which has slightly different English semantics, namely:
-               </p>
-               <pre>
-              <i>    if the same disk has been doing a lot of I/O</i>
-              <i>    for every one of the last 5 samples,</i>
-              <i>    then launch a visible alarm</i>
-              </pre>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="140" src="images/pmie_rule5.png" width="540"/>
-                </p>
-               </center>
-               <br/>
-               <h3>
-                <a name="percentile">
-                 Percentile quantification
-                </a>
-               </h3>
-               <p>
-                The predicate
-                <tt>
-                 <i>
-                  <font>
-                   N
-                  </font>
-                 </i>
-                 <b>
-                  <font>
-                   %_inst
-                  </font>
-                 </b>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                is true if
-                <i>
-                 <tt>
-                  expr
-                 </tt>
-                </i>
-                is true for
-                <i>
-                 <tt>
-                  N
-                 </tt>
-                </i>
-                percent
-              of the instances of a metric.
-               </p>
-               <p>
-                Percentile quantification over hosts and consecutive samples is also
-              supported by
-                <tt>
-                 <i>
-                  <font>
-                   N
-                  </font>
-                 </i>
-                 <b>
-                  <font>
-                   %_host
-                  </font>
-                 </b>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                and
-                <tt>
-                 <i>
-                  <font>
-                   N
-                  </font>
-                 </i>
-                 <b>
-                  <font>
-                   %_sample
-                  </font>
-                 </b>
-                 <i>
-                  expr
-                 </i>
-                </tt>
-                .
-               </p>
-               <p>
-                For example, the English phrase:
-               </p>
-               <pre>
-              <i>    if at least 30% of the disks are doing a lot of I/O</i>
-              <i>    then launch a visible alarm</i>
-              </pre>
-               <p>
-                may be translated into the following
-                <i>
-                 pmie
-                </i>
-                expression:
-               </p>
-               <center>
-                <p align="CENTER">
-                 <img alt="" height="120" src="images/pmie_rule3.png" width="495"/>
-                </p>
-               </center>
-               <br/>
-               <h3>
-                <a name="others">
-                 Other predicates
-                </a>
-               </h3>
-               <p>
-                Instance quantification:
-                <b>
-                 <tt>
-                  <font>
-                   match_inst
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   nomatch_inst
-                  </font>
-                 </tt>
-                </b>
-               </p>
-               <p>
-                Value aggregation:
-                <b>
-                 <tt>
-                  <font>
-                   avg_inst
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   sum_inst
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   avg_host
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   sum_host
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   avg_sample
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   sum_sample
-                  </font>
-                 </tt>
-                </b>
-               </p>
-               <p>
-                Value extrema:
-                <b>
-                 <tt>
-                  <font>
-                   min_inst
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   max_inst
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   min_host
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   max_host
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   min_sample
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   max_sample
-                  </font>
-                 </tt>
-                </b>
-               </p>
-               <p>
-                Value set cardinality:
-                <b>
-                 <tt>
-                  <font>
-                   count_inst
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   count_host
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   count_sample
-                  </font>
-                 </tt>
-                </b>
-               </p>
-               <p>
-                Trends:
-                <b>
-                 <tt>
-                  <font>
-                   rising
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   falling
-                  </font>
-                 </tt>
-                 ,
-                 <tt>
-                  <font>
-                   rate
-                  </font>
-                 </tt>
-                </b>
-               </p>
-               <p>
-                These predicates are discussed in depth in the
-                <i>
-                 pmie
-                </i>
-                manual page.
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="expr">
-                      <i>
-                       pmie
-                      </i>
-                      expressions
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                <i>
-                 pmie
-                </i>
-                expressions are very similar to the C programming language;
-              especially with regard to arithmetic, relational and Boolean operators,
-              and the use of parenthesis for grouping.
-               </p>
-               <p>
-                The
-                <i>
-                 pmie
-                </i>
-                language allows macro definition and textual substitution
-              for common expressions and metric names.
-               </p>
-               <pre>
-                  // Macro for later use ...
-                  bc = "buffer_cache";
-              
-                  // Using the above macro
-                  // If the buffer cache is in use (more than 50 read requests)
-                  // with hit ratio less than 90%, then popup an alarm
-                  $bc.getblks &gt; 50 &amp;&amp; $bc.getfound / $bc.getblks &lt; 0.9
-                      -&gt; alarm "poor buffer cache hit rate";
-              
-              </pre>
-               <p>
-                All calculations are done in double precision, where default units are
-                <b>
-                 bytes
-                </b>
-                ,
-                <b>
-                 seconds
-                </b>
-                and
-                <b>
-                 counts
-                </b>
-                .
-              Note that this can sometimes cause surprises:
-               </p>
-               <pre>
-                  mem.freemem &gt; 10;
-              </pre>
-               <p>
-                will always be true, unlike
-               </p>
-               <pre>
-                  mem.freemem &gt; 10 Mbyte;
-              </pre>
-               <p>
-                Metrics with "counter" semantics have their units, semantics
-              and values converted to rates.  For example, the metric
-                <b>
-                 <tt>
-                  network.interface.total.bytes
-                 </tt>
-                </b>
-                measures the number of bytes passed
-              across all of the configured network interfaces.  The metric is a counter and the
-              units are
-                <b>
-                 <tt>
-                  bytes
-                 </tt>
-                </b>
-                .  If
-                <i>
-                 pmie
-                </i>
-                finds the value of
-                <b>
-                 <tt>
-                  network.interface.total.bytes
-                 </tt>
-                </b>
-                to be 10000 and 15000 on consecutive
-              fetches 5 seconds apart, then the
-                <i>
-                 pmie
-                </i>
-                expression
-               </p>
-               <pre>
-                  <b><tt>kernel.interface.total.bytes;</tt></b>
-              </pre>
-               <p>
-                would have the value
-                <b>
-                 1000
-                </b>
-                and the units of
-                <b>
-                 <tt>
-                  bytes/second
-                 </tt>
-                </b>
-                .
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="actions">
-                      Actions and parameter substitution of predicate context
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                The available
-                <i>
-                 pmie
-                </i>
-                actions are:
-               </p>
-               <ul>
-                <li>
-                 <b>
-                  <tt>
-                   <font>
-                    alarm
-                   </font>
-                  </tt>
-                 </b>
-                 - popup alarm notifier
-                </li>
-                <li>
-                 <b>
-                  <tt>
-                   <font>
-                    shell
-                   </font>
-                  </tt>
-                 </b>
-                 - launch any program
-                </li>
-                <li>
-                 <b>
-                  <tt>
-                   <font>
-                    syslog
-                   </font>
-                  </tt>
-                 </b>
-                 - write an entry in the system log
-                </li>
-                <li>
-                 <b>
-                  <tt>
-                   <font>
-                    print
-                   </font>
-                  </tt>
-                 </b>
-                 - print message to standard output
-                </li>
-               </ul>
-               <p>
-                Within the arguments that follow the action keyword, parameter substitution
-              may be used to incorporate some context from the predicate in the arguments
-              to the actions.  For example, when using
-                <b>
-                 <tt>
-                  <font>
-                   some_host
-                  </font>
-                 </tt>
-                </b>
-                or
-                <b>
-                 <tt>
-                  <font>
-                   some_inst
-                  </font>
-                 </tt>
-                </b>
-                in a predicate, it is most helpful to know "which hosts" or "which instances"
-              made the condition true.
-               </p>
-               <p>
-                The following substitutions are available:
-               </p>
-               <ul>
-                <li>
-                 <b>
-                  <tt>
-                   <font>
-                    %h
-                   </font>
-                  </tt>
-                 </b>
-                 appearing in an action is replaced by the qualifying hosts
-                </li>
-                <li>
-                 <b>
-                  <tt>
-                   <font>
-                    %i
-                   </font>
-                  </tt>
-                 </b>
-                 appearing in an action is replaced by the qualifying instances
-                </li>
-                <li>
-                 <b>
-                  <tt>
-                   <font>
-                    %v
-                   </font>
-                  </tt>
-                 </b>
-                 appearing in an action is replaced by value of the left-most top-level
-              expression in the expression tree that represents the parsed condition
-                </li>
-               </ul>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="audit">
-                      Performance audit using archives
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                In this exercise, we shall use
-                <i>
-                 pmie
-                </i>
-                to investigate performance from 
-              a PCP archive.
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td>
-                  <table border="0" cellpadding="10" cellspacing="10" width="100%">
-                   <tr>
-                    <td width="50%">
-                     <br/>
-                     Use
-                     <i>
-                      pmdumplog
-                     </i>
-                     to report the details of when the archive was created and from which host the archive was created:
-                     <br/>
-                     <pre><b>
-              $ . /etc/pcp.env
-              $ tar xzf $PCP_DEMOS_DIR/tutorials/pmie.tar.gz
-              $ pmdumplog -L pmie/babylon.perdisk
-              Log Label (Log Format Version 2)
-              Performance metrics from host babylon
-                commencing Wed Jan 25 08:17:48.460 1995
-                ending     Wed Jan 25 14:12:48.457 1995
-              Archive timezone: PST8PDT
-              PID for pmlogger: 18496
-              </b></pre>
-                     <i>
-                      Yes, PCP archives from
-                      <b>
-                       that
-                      </b>
-                      long ago still work today!
-                     </i>
-                     <br/>
-                     <br/>
-                     From running the command:
-                     <br/>
-                     <pre><b>
-              $ dkvis -a pmie/babylon.perdisk &amp;
-              </b></pre>
-                     we can visually determine which disks and which controllers are active.
-                    </td>
-                   </tr>
-                  </table>
-                 </td>
-                 <td>
-                  <img align="RIGHT" alt="" border="0" src="images/dkvis.png"/>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                This is easy, which is good.
-              However, consider the situation where we have a large number of 
-              separate archives, possibly collected from different machines and with 
-              different disk configurations.  We'd like to be able to quickly process 
-              these archives, and filter out the extraneous information, to focus on 
-              those times at which the disks were busy, how busy they were, etc.
-               </p>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="50%">
-                  <br/>
-                  Using the
-                  <i>
-                   pmie
-                  </i>
-                  configuration file in
-                  <a href="pmie/disk.pmie">
-                   pmie/disk.pmie
-                  </a>
-                  as a starting point, run this against the archive:
-                  <br/>
-                  <pre><b>
-              $ pmie -t 5min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
-              </b></pre>
-                  <br/>
-                  Copy the configuration file and extend it by adding new rules to report 
-              different messages for each of the following:
-                  <ol>
-                   <li>
-                    some disk is doing more than 30 reads per second (make use of the
-                    <b>
-                     <tt>
-                      disk.dev.read
-                     </tt>
-                    </b>
-                    metric)
-                   </li>
-                   <li>
-                    some disk is doing more than 30 writes per second (make use of the
-                    <b>
-                     <tt>
-                      disk.dev.write
-                     </tt>
-                    </b>
-                    metric)
-                   </li>
-                   <li>
-                    some disk has a high I/O rate (consider a high I/O rate to be when the 
-              transfers are greater than 40 per second), and where reads contribute 
-              greater than ninety-five percent of the total transfers
-                   </li>
-                   <li>
-                    some disk has a high I/O rate (as defined above) and the system's 1
-              minute load average is greater than 5 (make use of the "1
-              minute" instance for the
-                    <b>
-                     <tt>
-                      kernel.all.load
-                     </tt>
-                    </b>
-                    metric).
-                   </li>
-                  </ol>
-                  <p>
-                   Use the
-                   <i>
-                    pmie/babylon.perdisk
-                   </i>
-                   archive extracted earlier to cross check your rules as you add each one.
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <h4>
-                <i>
-                 Hints:
-                </i>
-               </h4>
-               <ul>
-                <li>
-                 Make sure you sample the archive every 5 minutes (
-                 <b>
-                  -t 5min
-                 </b>
-                 on the command line).
-                </li>
-                <li>
-                 You'll need to use existential quantification (the
-                 <b>
-                  some_inst
-                 </b>
-                 keyword) in all of the rules.
-                </li>
-                <li>
-                 When producing the final rule, start with the load average metric using the command:
-                 <br/>
-                 <br/>
-                 <tt>
-                  <b>
-                   $ pminfo -f kernel.all.load
-                  </b>
-                 </tt>
-                 <br/>
-                 <br/>
-                 Notice there are three values corresponding to the 1, 5 and 15 minute load average.
-                 <br/>
-                 For
-                 <i>
-                  pmie
-                 </i>
-                 the metric
-                 <tt>
-                  <b>
-                   kernel.all.load
-                  </b>
-                 </tt>
-                 is a set of
-                 <b>
-                  three
-                 </b>
-                 values, one for each instance at each point
-              of time.  To choose
-                 <b>
-                  one
-                 </b>
-                 instance append the
-                 <tt>
-                  <b>
-                   #
-                  </b>
-                 </tt>
-                 qualifier to the name of the metric and the name of a particular instance,
-              e.g.
-                 <tt>
-                  <b>
-                   kernel.all.load #'1 minute'
-                  </b>
-                 </tt>
-                 .
-                </li>
-                <li>
-                 The
-                 <i>
-                  pmie(1)
-                 </i>
-                 man page describes the
-                 <i>
-                  pmie
-                 </i>
-                 language in detail.
-                </li>
-                <li>
-                 You may find it helpful to use
-                 <i>
-                  dkvis
-                 </i>
-                 to visually predict 
-              when the rules should be triggered.  Using the
-                 <b>
-                  PCP Archive Time Control
-                 </b>
-                 dialog, you can position the
-                 <i>
-                  dkvis
-                 </i>
-                 display at the time where
-                 <i>
-                  pmie
-                 </i>
-                 is reporting interesting activity.
-                </li>
-               </ul>
-               <p>
-                When all else fails, the solution is at
-                <a href="pmie/answer.pmie">
-                 pmie/answer.pmie
-                </a>
-                .
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="interval">
-                      Influence of the update interval
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                As a final exercise, investigate the effects of using different update 
-              intervals on the
-                <i>
-                 pmie
-                </i>
-                command line (the
-                <b>
-                 -t
-                </b>
-                option) with 
-              the initial configuration file and archive from the previous exercise.
-               </p>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="50%">
-                  <br/>
-                  Try each of the following:
-                  <br/>
-                  <pre><b>
-              $ pmie -t 5min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
-              $ pmie -t 6min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
-              $ pmie -t 10min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
-              </b></pre>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Why does the number of reported incidents decline as the rule evaluation interval increases?
-               </p>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="50%">
-                  <br/>
-                  Repeat the exercise but use
-                  <i>
-                   pmchart
-                  </i>
-                  :
-                  <br/>
-                  <pre><b>
-              $ pmchart -t 5min -a pmie/babylon.perdisk &amp;
-              </b></pre>
-                  <br/>
-                  Use the
-                  <b>
-                   New Chart...
-                  </b>
-                  command of the
-                  <b>
-                   File
-                  </b>
-                  menu to plot
-              the
-                  <b>
-                   <tt>
-                    disk.dev.total
-                   </tt>
-                  </b>
-                  metric for the disk
-                  <b>
-                   jag3d5
-                  </b>
-                  :
-                  <p>
-                  </p>
-                  <ul>
-                   <li>
-                    Enter the name
-                    <tt>
-                     disk.dev.total
-                    </tt>
-                    into the Metric Selection dialog.
-                   </li>
-                   <li>
-                    There should be 54 instances of the metric listed.
-              	Find the instance
-                    <b>
-                     jag3d5
-                    </b>
-                    , select it, and press OK.
-                   </li>
-                  </ul>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Use the PCP Archive Time Control dialog to change the
-                <b>
-                 <i>
-                  Interval
-                 </i>
-                </b>
-                .
-               </p>
-               <p>
-                By using
-                <b>
-                 smaller
-                </b>
-                values of the update interval, can you 
-              deduce the sampling rate of the data in the PCP archive?
-               </p>
-               <h4>
-                <i>
-                 Hint:
-                </i>
-               </h4>
-               <ul>
-                <li>
-                 From a PCP archive you can get a dump of the raw data and timestamps
-              when the data for a particular metric was collected using the command:
-                 <br/>
-                 <br/>
-                 <tt>
-                  <b>
-                   $ pmdumplog pmie/babylon.perdisk disk.dev.total | more
-                  </b>
-                 </tt>
-                 <br/>
-                 <br/>
-                </li>
-               </ul>
-               <p>
-                <br/>
-               </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='docpage'>
+﻿
+ <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+  <font size="7">
+   Automated reasoning with
+   <i>
+    pmie
+   </i>
+  </font>
+ </h1>
+ <p>
+  <br/>
+ </p>
+ <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
+  <tr>
+   <td>
+    <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
+pmie
+dkvis
+pminfo
+pmchart
+pmdumplog</pre>
+   </td>
+  </tr>
+ </table>
+ <p>
+  For many systems, the performance data is produced in volumes and at
+rates that require some sort of automated and intelligent filtering by
+which the mundane data can be removed from the interesting information.
+ </p>
+ <p>
+  Once interesting information has been found, there are a variety of
+actions that may be appropriate.
+ </p>
+ <p>
+  The Performance Metrics Inference Engine (
+  <i>
+   pmie
+  </i>
+  ) is the tool
+within PCP that is designed for automated filtering and reasoning
+about performance.
+ </p>
+ <p>
+  For an explanation of Performance Co-Pilot terms and acronyms, consult
+the
+  <a href="glossary.html">
+   PCP glossary
+  </a>
+  .
+ </p>
+ <br/>
+ <ul>
+  <li>
+   <a href="#basics">
+    <i>
+     pmie
+    </i>
+    basics
+   </a>
+  </li>
+  <li>
+   <a href="#repeat">
+    Action repetition and launching arbitrary actions
+   </a>
+  </li>
+  <li>
+   <a href="#value-sets">
+    Rule evaluation over sets of values
+   </a>
+  </li>
+  <li>
+   <a href="#predicates">
+    Forms of
+    <i>
+     pmie
+    </i>
+    predicate
+   </a>
+   <ul>
+    <li>
+     <a href="#exist">
+      Existential quantification
+     </a>
+    </li>
+    <li>
+     <a href="#universal">
+      Universal quantification
+     </a>
+    </li>
+    <li>
+     <a href="#percentile">
+      Percentile quantification
+     </a>
+    </li>
+    <li>
+     <a href="#others">
+      Other predicates
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   <a href="#expr">
+    <i>
+     pmie
+    </i>
+    expressions
+   </a>
+  </li>
+  <li>
+   <a href="#actions">
+    Actions and parameter substitution of predicate context
+   </a>
+  </li>
+  <li>
+   <a href="#audit">
+    Performance audit using archives
+   </a>
+  </li>
+  <li>
+   <a href="#interval">
+    Influence of the update interval
+   </a>
+  </li>
+ </ul>
+ <br/>
+ <p>
+  <i>
+   pmie
+  </i>
+  evaluates a set of assertions against a time-series of
+performance metric values collected in real-time from PMCD on one or
+more hosts or from one or more PCP archives.
+ </p>
+ <p>
+  For those assertions that are found to be true,
+  <i>
+   pmie
+  </i>
+  is able
+to print messages, activate alarms, write syslog entries and launch
+arbitrary programs.
+ </p>
+ <p>
+  Typical
+  <i>
+   pmie
+  </i>
+  usage might include:
+ </p>
+ <ul>
+  <li>
+   monitoring for exceptional performance conditions
+  </li>
+  <li>
+   raising alarms
+  </li>
+  <li>
+   automated filtering of acceptable performance
+  </li>
+  <li>
+   early warning of pending performance problems
+  </li>
+  <li>
+   "call home" to the support center
+  </li>
+  <li>
+   retrospective performance audits
+  </li>
+  <li>
+   evaluating assertions about "before and after"
+    performance in the context of upgrades or system reconfiguration
+  </li>
+  <li>
+   hypothesis evaluation for capacity planning
+  </li>
+  <li>
+   as part of the
+   <i>
+    post mortem
+   </i>
+   analysis following a system failure
+  </li>
+ </ul>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="basics">
+        <i>
+         pmie
+        </i>
+        basics
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  The simplest rules test thresholds and are formed from expressions
+involving performance metrics and constants.  For example, the following
+statement:
+ </p>
+ <pre>
+<i>    If the context switch rate exceeds 2000 switches per second</i>
+<i>    then activate an alarm notifier</i>
+</pre>
+ <p>
+  may be translated into the following
+  <i>
+   pmie
+  </i>
+  rule:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="200" src="images/pmie_rule1.png" width="495"/>
+  </p>
+ </center>
+ <p>
+  where the "alarm" action launches an information dialog with
+the specified message.
+ </p>
+ <p>
+  Other
+  <i>
+   pmie
+  </i>
+  actions are discussed later in the
+  <a href="#actions">
+   Actions and parameter substitution of predicate context
+  </a>
+  section.
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td>
+    <table border="0" cellpadding="10" cellspacing="20" width="100%">
+     <tr>
+      <td width="50%">
+       <br/>
+       Generate alot of context switches, and watch 'em:
+       <br/>
+       <pre><b>
+$ . /etc/pcp.env
+$ pmie -v -c $PCP_DEMOS_DIR/pmie/pswitch.pmie &amp;
+$ pmchart -t 1sec -c $PCP_DEMOS_DIR/pmie/pswitch.view &amp;
+$ while true; do sleep 0; done &amp;
+$ jobs
+[1]- Running     pmie -v -c $PCP_DEMOS_DIR/pmie/pswitch.pmie &amp;
+[2]- Running     pmchart -t 0.5sec -c $PCP_DEMOS_DIR/pmie/pswitch.view &amp;
+[3]+ Running     while true; do sleep 0; done &amp;
+</b></pre>
+       <br/>
+       <b>
+        Important:
+       </b>
+       the above test case can be quite intrusive on low processor
+count machines, so remember to terminate it when you've finished this tutorial:
+       <pre><b>
+$ jobs
+...
+[3]+ Running     while true; do sleep 0; done &amp;
+$ fg %3
+</b></pre>
+      </td>
+     </tr>
+    </table>
+   </td>
+   <td>
+    <img align="RIGHT" alt="" border="0" src="images/cpu_pswitch.png"/>
+   </td>
+  </tr>
+ </table>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="repeat">
+        Action repetition and launching arbitrary actions
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Sometimes it is useful for an action not to be repeated for a time.
+For example, the English statement:
+ </p>
+ <pre><i>
+    If the context switch rate exceeds 2000 switches per second
+    then launch <b>top</b> in an <b>xterm</b> window
+    but hold off repetition of the action for 5 minutes
+</i></pre>
+ <p>
+  may be translated into the following
+  <i>
+   pmie
+  </i>
+  rule:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="200" src="images/pmie_rule2.png" width="495"/>
+  </p>
+ </center>
+ <p>
+  Note the
+  <b>
+   <tt>
+    <font>
+     shell
+    </font>
+   </tt>
+  </b>
+  keyword
+introduces an arbitrary action in which any program can be launched.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="value-sets">
+        Rule evaluation over sets of values
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Each
+  <i>
+   pmie
+  </i>
+  rule may be evaluated over a set of performance metric values.
+ </p>
+ <p>
+  Conceptually these sets of values are constructed for a single performance
+metric by taking the cross product of observed values over the three
+dimensions of:
+  <b>
+   hosts
+  </b>
+  ,
+  <b>
+   instances
+  </b>
+  and
+  <b>
+   times
+  </b>
+  .
+ </p>
+ <p>
+  The default host is:
+ </p>
+ <ul>
+  <li>
+   the host named in the
+   <b>
+    <tt>
+     -h
+    </tt>
+   </b>
+   command line option to
+   <i>
+    pmie
+   </i>
+   , or
+  </li>
+  <li>
+   the host associated with the archive named in the first
+   <b>
+    <tt>
+     -a
+    </tt>
+   </b>
+   command line option to
+   <i>
+    pmie
+   </i>
+   , or
+  </li>
+  <li>
+   the local host if neither
+   <b>
+    <tt>
+     -h
+    </tt>
+   </b>
+   nor
+   <b>
+    <tt>
+     -a
+    </tt>
+   </b>
+   appears on the command line.
+  </li>
+ </ul>
+ <p>
+  By default, a metric name represents the set of values formed by the
+cross product of the default host for
+  <i>
+   pmie
+  </i>
+  ,
+  <b>
+   all
+  </b>
+  instances
+and the current time.  If there is only one instance, then the set
+contains a singular value.
+ </p>
+ <p>
+  For example
+  <b>
+   <tt>
+    filesys.free
+   </tt>
+  </b>
+  is the most recent set of
+values for the amount of free space on every mounted file system on the
+default host, and may be represented by the shaded rectangle in the
+following figure:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="226" src="images/pmie_axis1.png" width="396"/>
+  </p>
+ </center>
+ <p>
+  One or more suffix of the form
+  <b>
+   <tt>
+    #
+    <i>
+     instance
+    </i>
+   </tt>
+  </b>
+  (where
+  <tt>
+   <i>
+    instance
+   </i>
+  </tt>
+  is the external instance identifier)
+after a metric name restricts the set of values on the default host
+for
+  <i>
+   pmie
+  </i>
+  , to the
+  <b>
+   nominated
+  </b>
+  instances and the current time.
+If
+  <i>
+   <tt>
+    instance
+   </tt>
+  </i>
+  includes any special characters then it
+should be enclosed in single quotes.
+ </p>
+ <p>
+  For example
+  <b>
+   <tt>
+    filesys.free #'/usr'
+   </tt>
+  </b>
+  is the most recent
+value for the amount of free space on the
+  <i>
+   /usr
+  </i>
+  file system on the
+default host, and may be represented as follows:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="226" src="images/pmie_axis2.png" width="396"/>
+  </p>
+ </center>
+ <p>
+  One or more suffix of the form
+  <b>
+   <tt>
+    :
+    <i>
+     hostname
+    </i>
+   </tt>
+  </b>
+  after
+a metric name changes the set of values to include
+  <b>
+   all
+  </b>
+  instances
+on the
+  <b>
+   nominated
+  </b>
+  hosts, at the current time.
+ </p>
+ <p>
+  For example
+  <b>
+   <tt>
+    filesys.free :otherhost
+   </tt>
+  </b>
+  is the most
+recent set of values for the amount of free space on every mounted file
+system on the host
+  <b>
+   otherhost
+  </b>
+  , and may be represented as follows:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="226" src="images/pmie_axis3.png" width="396"/>
+  </p>
+ </center>
+ <p>
+  A suffix of the form
+  <b>
+   <tt>
+    @
+    <i>
+     N..M
+    </i>
+   </tt>
+  </b>
+  after a metric name
+changes the set of values to be that formed by
+  <b>
+   all
+  </b>
+  instances on
+the default host for
+  <i>
+   pmie
+  </i>
+  , at the sample times
+  <b>
+   <i>
+    <tt>
+     N
+    </tt>
+   </i>
+  </b>
+  ,
+  <b>
+   <i>
+    <tt>
+     N+1
+    </tt>
+   </i>
+  </b>
+  , ...
+  <b>
+   <i>
+    <tt>
+     M
+    </tt>
+   </i>
+  </b>
+  <tt>
+  </tt>
+  <b>
+   back
+  </b>
+  from the current time.
+ </p>
+ <p>
+  And finally more than one type of suffix may be used to control enumeration
+in each of the three axis directions.
+ </p>
+ <p>
+  For example
+  <b>
+   <tt>
+    filesys.free #'/usr' @0..3
+   </tt>
+  </b>
+  refers to
+the default host, restricts the instances and enumerates the time.
+This may be represented as follows:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="226" src="images/pmie_axis4.png" width="396"/>
+  </p>
+ </center>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="predicates">
+        Forms of
+        <i>
+         pmie
+        </i>
+        predicate
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <h3>
+  <a name="exist">
+   Existential quantification
+  </a>
+ </h3>
+ <p>
+  The predicate
+  <b>
+   <tt>
+    <font>
+     some_inst
+    </font>
+   </tt>
+  </b>
+  <tt>
+   <i>
+    expr
+   </i>
+  </tt>
+  is true if there is some instance of a metric that
+makes
+  <i>
+   <tt>
+    expr
+   </tt>
+  </i>
+  true.
+ </p>
+ <p>
+  Existential quantification over hosts and consecutive samples is also
+supported by
+  <b>
+   <tt>
+    <font>
+     some_host
+    </font>
+   </tt>
+  </b>
+  <tt>
+   <i>
+    expr
+   </i>
+  </tt>
+  and
+  <b>
+   <tt>
+    <font>
+     some_sample
+    </font>
+   </tt>
+  </b>
+  <tt>
+   <i>
+    expr
+   </i>
+  </tt>
+  .
+ </p>
+ <p>
+  For example, the English statement:
+ </p>
+ <pre>
+<i>    if some disk is doing a lot of I/O</i>
+<i>    then launch a visible alarm</i>
+</pre>
+ <p>
+  may be translated into the following
+  <i>
+   pmie
+  </i>
+  rule:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="120" src="images/pmie_rule3.png" width="495"/>
+  </p>
+ </center>
+ <br/>
+ <h3>
+  <a name="universal">
+   Universal quantification
+  </a>
+ </h3>
+ <p>
+  The predicate
+  <b>
+   <tt>
+    <font>
+     all_inst
+    </font>
+   </tt>
+  </b>
+  <tt>
+   <i>
+    expr
+   </i>
+  </tt>
+  is true if
+  <i>
+   <tt>
+    expr
+   </tt>
+  </i>
+  is true for every
+instance of a metric.
+ </p>
+ <p>
+  Universal quantification over hosts and consecutive samples is also
+supported by
+  <b>
+   <tt>
+    <font>
+     all_host
+    </font>
+   </tt>
+  </b>
+  <tt>
+   <i>
+    expr
+   </i>
+  </tt>
+  and
+  <b>
+   <tt>
+    <font>
+     all_sample
+    </font>
+   </tt>
+  </b>
+  <tt>
+   <i>
+    expr
+   </i>
+  </tt>
+  .
+ </p>
+ <p>
+  Quantification predicates may be nested.
+ </p>
+ <p>
+  For example, the English statement:
+ </p>
+ <pre>
+<i>    if for every one of the last 5 samples,</i>
+<i>    some disk (but not necessarily the same disk) is doing a lot of I/O</i>
+<i>    then launch a visible alarm</i>
+</pre>
+ <p>
+  may be translated into the following
+  <i>
+   pmie
+  </i>
+  rule:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="140" src="images/pmie_rule4.png" width="540"/>
+  </p>
+ </center>
+ <p>
+  Note that reversing the nesting of the universal and existential predicates produces
+a rule which has slightly different English semantics, namely:
+ </p>
+ <pre>
+<i>    if the same disk has been doing a lot of I/O</i>
+<i>    for every one of the last 5 samples,</i>
+<i>    then launch a visible alarm</i>
+</pre>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="140" src="images/pmie_rule5.png" width="540"/>
+  </p>
+ </center>
+ <br/>
+ <h3>
+  <a name="percentile">
+   Percentile quantification
+  </a>
+ </h3>
+ <p>
+  The predicate
+  <tt>
+   <i>
+    <font>
+     N
+    </font>
+   </i>
+   <b>
+    <font>
+     %_inst
+    </font>
+   </b>
+   <i>
+    expr
+   </i>
+  </tt>
+  is true if
+  <i>
+   <tt>
+    expr
+   </tt>
+  </i>
+  is true for
+  <i>
+   <tt>
+    N
+   </tt>
+  </i>
+  percent
+of the instances of a metric.
+ </p>
+ <p>
+  Percentile quantification over hosts and consecutive samples is also
+supported by
+  <tt>
+   <i>
+    <font>
+     N
+    </font>
+   </i>
+   <b>
+    <font>
+     %_host
+    </font>
+   </b>
+   <i>
+    expr
+   </i>
+  </tt>
+  and
+  <tt>
+   <i>
+    <font>
+     N
+    </font>
+   </i>
+   <b>
+    <font>
+     %_sample
+    </font>
+   </b>
+   <i>
+    expr
+   </i>
+  </tt>
+  .
+ </p>
+ <p>
+  For example, the English phrase:
+ </p>
+ <pre>
+<i>    if at least 30% of the disks are doing a lot of I/O</i>
+<i>    then launch a visible alarm</i>
+</pre>
+ <p>
+  may be translated into the following
+  <i>
+   pmie
+  </i>
+  expression:
+ </p>
+ <center>
+  <p align="CENTER">
+   <img alt="" height="120" src="images/pmie_rule3.png" width="495"/>
+  </p>
+ </center>
+ <br/>
+ <h3>
+  <a name="others">
+   Other predicates
+  </a>
+ </h3>
+ <p>
+  Instance quantification:
+  <b>
+   <tt>
+    <font>
+     match_inst
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     nomatch_inst
+    </font>
+   </tt>
+  </b>
+ </p>
+ <p>
+  Value aggregation:
+  <b>
+   <tt>
+    <font>
+     avg_inst
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     sum_inst
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     avg_host
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     sum_host
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     avg_sample
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     sum_sample
+    </font>
+   </tt>
+  </b>
+ </p>
+ <p>
+  Value extrema:
+  <b>
+   <tt>
+    <font>
+     min_inst
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     max_inst
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     min_host
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     max_host
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     min_sample
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     max_sample
+    </font>
+   </tt>
+  </b>
+ </p>
+ <p>
+  Value set cardinality:
+  <b>
+   <tt>
+    <font>
+     count_inst
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     count_host
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     count_sample
+    </font>
+   </tt>
+  </b>
+ </p>
+ <p>
+  Trends:
+  <b>
+   <tt>
+    <font>
+     rising
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     falling
+    </font>
+   </tt>
+   ,
+   <tt>
+    <font>
+     rate
+    </font>
+   </tt>
+  </b>
+ </p>
+ <p>
+  These predicates are discussed in depth in the
+  <i>
+   pmie
+  </i>
+  manual page.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="expr">
+        <i>
+         pmie
+        </i>
+        expressions
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  <i>
+   pmie
+  </i>
+  expressions are very similar to the C programming language;
+especially with regard to arithmetic, relational and Boolean operators,
+and the use of parenthesis for grouping.
+ </p>
+ <p>
+  The
+  <i>
+   pmie
+  </i>
+  language allows macro definition and textual substitution
+for common expressions and metric names.
+ </p>
+ <pre>
+    // Macro for later use ...
+    bc = "buffer_cache";
+
+    // Using the above macro
+    // If the buffer cache is in use (more than 50 read requests)
+    // with hit ratio less than 90%, then popup an alarm
+    $bc.getblks &gt; 50 &amp;&amp; $bc.getfound / $bc.getblks &lt; 0.9
+        -&gt; alarm "poor buffer cache hit rate";
+
+</pre>
+ <p>
+  All calculations are done in double precision, where default units are
+  <b>
+   bytes
+  </b>
+  ,
+  <b>
+   seconds
+  </b>
+  and
+  <b>
+   counts
+  </b>
+  .
+Note that this can sometimes cause surprises:
+ </p>
+ <pre>
+    mem.freemem &gt; 10;
+</pre>
+ <p>
+  will always be true, unlike
+ </p>
+ <pre>
+    mem.freemem &gt; 10 Mbyte;
+</pre>
+ <p>
+  Metrics with "counter" semantics have their units, semantics
+and values converted to rates.  For example, the metric
+  <b>
+   <tt>
+    network.interface.total.bytes
+   </tt>
+  </b>
+  measures the number of bytes passed
+across all of the configured network interfaces.  The metric is a counter and the
+units are
+  <b>
+   <tt>
+    bytes
+   </tt>
+  </b>
+  .  If
+  <i>
+   pmie
+  </i>
+  finds the value of
+  <b>
+   <tt>
+    network.interface.total.bytes
+   </tt>
+  </b>
+  to be 10000 and 15000 on consecutive
+fetches 5 seconds apart, then the
+  <i>
+   pmie
+  </i>
+  expression
+ </p>
+ <pre>
+    <b><tt>kernel.interface.total.bytes;</tt></b>
+</pre>
+ <p>
+  would have the value
+  <b>
+   1000
+  </b>
+  and the units of
+  <b>
+   <tt>
+    bytes/second
+   </tt>
+  </b>
+  .
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="actions">
+        Actions and parameter substitution of predicate context
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  The available
+  <i>
+   pmie
+  </i>
+  actions are:
+ </p>
+ <ul>
+  <li>
+   <b>
+    <tt>
+     <font>
+      alarm
+     </font>
+    </tt>
+   </b>
+   - popup alarm notifier
+  </li>
+  <li>
+   <b>
+    <tt>
+     <font>
+      shell
+     </font>
+    </tt>
+   </b>
+   - launch any program
+  </li>
+  <li>
+   <b>
+    <tt>
+     <font>
+      syslog
+     </font>
+    </tt>
+   </b>
+   - write an entry in the system log
+  </li>
+  <li>
+   <b>
+    <tt>
+     <font>
+      print
+     </font>
+    </tt>
+   </b>
+   - print message to standard output
+  </li>
+ </ul>
+ <p>
+  Within the arguments that follow the action keyword, parameter substitution
+may be used to incorporate some context from the predicate in the arguments
+to the actions.  For example, when using
+  <b>
+   <tt>
+    <font>
+     some_host
+    </font>
+   </tt>
+  </b>
+  or
+  <b>
+   <tt>
+    <font>
+     some_inst
+    </font>
+   </tt>
+  </b>
+  in a predicate, it is most helpful to know "which hosts" or "which instances"
+made the condition true.
+ </p>
+ <p>
+  The following substitutions are available:
+ </p>
+ <ul>
+  <li>
+   <b>
+    <tt>
+     <font>
+      %h
+     </font>
+    </tt>
+   </b>
+   appearing in an action is replaced by the qualifying hosts
+  </li>
+  <li>
+   <b>
+    <tt>
+     <font>
+      %i
+     </font>
+    </tt>
+   </b>
+   appearing in an action is replaced by the qualifying instances
+  </li>
+  <li>
+   <b>
+    <tt>
+     <font>
+      %v
+     </font>
+    </tt>
+   </b>
+   appearing in an action is replaced by value of the left-most top-level
+expression in the expression tree that represents the parsed condition
+  </li>
+ </ul>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="audit">
+        Performance audit using archives
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  In this exercise, we shall use
+  <i>
+   pmie
+  </i>
+  to investigate performance from 
+a PCP archive.
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td>
+    <table border="0" cellpadding="10" cellspacing="10" width="100%">
+     <tr>
+      <td width="50%">
+       <br/>
+       Use
+       <i>
+        pmdumplog
+       </i>
+       to report the details of when the archive was created and from which host the archive was created:
+       <br/>
+       <pre><b>
+$ . /etc/pcp.env
+$ tar xzf $PCP_DEMOS_DIR/tutorials/pmie.tar.gz
+$ pmdumplog -L pmie/babylon.perdisk
+Log Label (Log Format Version 2)
+Performance metrics from host babylon
+  commencing Wed Jan 25 08:17:48.460 1995
+  ending     Wed Jan 25 14:12:48.457 1995
+Archive timezone: PST8PDT
+PID for pmlogger: 18496
+</b></pre>
+       <i>
+        Yes, PCP archives from
+        <b>
+         that
+        </b>
+        long ago still work today!
+       </i>
+       <br/>
+       <br/>
+       From running the command:
+       <br/>
+       <pre><b>
+$ dkvis -a pmie/babylon.perdisk &amp;
+</b></pre>
+       we can visually determine which disks and which controllers are active.
+      </td>
+     </tr>
+    </table>
+   </td>
+   <td>
+    <img align="RIGHT" alt="" border="0" src="images/dkvis.png"/>
+   </td>
+  </tr>
+ </table>
+ <p>
+  This is easy, which is good.
+However, consider the situation where we have a large number of 
+separate archives, possibly collected from different machines and with 
+different disk configurations.  We'd like to be able to quickly process 
+these archives, and filter out the extraneous information, to focus on 
+those times at which the disks were busy, how busy they were, etc.
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="50%">
+    <br/>
+    Using the
+    <i>
+     pmie
+    </i>
+    configuration file in
+    <a href="pmie/disk.pmie">
+     pmie/disk.pmie
+    </a>
+    as a starting point, run this against the archive:
+    <br/>
+    <pre><b>
+$ pmie -t 5min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
+</b></pre>
+    <br/>
+    Copy the configuration file and extend it by adding new rules to report 
+different messages for each of the following:
+    <ol>
+     <li>
+      some disk is doing more than 30 reads per second (make use of the
+      <b>
+       <tt>
+        disk.dev.read
+       </tt>
+      </b>
+      metric)
+     </li>
+     <li>
+      some disk is doing more than 30 writes per second (make use of the
+      <b>
+       <tt>
+        disk.dev.write
+       </tt>
+      </b>
+      metric)
+     </li>
+     <li>
+      some disk has a high I/O rate (consider a high I/O rate to be when the 
+transfers are greater than 40 per second), and where reads contribute 
+greater than ninety-five percent of the total transfers
+     </li>
+     <li>
+      some disk has a high I/O rate (as defined above) and the system's 1
+minute load average is greater than 5 (make use of the "1
+minute" instance for the
+      <b>
+       <tt>
+        kernel.all.load
+       </tt>
+      </b>
+      metric).
+     </li>
+    </ol>
+    <p>
+     Use the
+     <i>
+      pmie/babylon.perdisk
+     </i>
+     archive extracted earlier to cross check your rules as you add each one.
+    </p>
+   </td>
+  </tr>
+ </table>
+ <h4>
+  <i>
+   Hints:
+  </i>
+ </h4>
+ <ul>
+  <li>
+   Make sure you sample the archive every 5 minutes (
+   <b>
+    -t 5min
+   </b>
+   on the command line).
+  </li>
+  <li>
+   You'll need to use existential quantification (the
+   <b>
+    some_inst
+   </b>
+   keyword) in all of the rules.
+  </li>
+  <li>
+   When producing the final rule, start with the load average metric using the command:
+   <br/>
+   <br/>
+   <tt>
+    <b>
+     $ pminfo -f kernel.all.load
+    </b>
+   </tt>
+   <br/>
+   <br/>
+   Notice there are three values corresponding to the 1, 5 and 15 minute load average.
+   <br/>
+   For
+   <i>
+    pmie
+   </i>
+   the metric
+   <tt>
+    <b>
+     kernel.all.load
+    </b>
+   </tt>
+   is a set of
+   <b>
+    three
+   </b>
+   values, one for each instance at each point
+of time.  To choose
+   <b>
+    one
+   </b>
+   instance append the
+   <tt>
+    <b>
+     #
+    </b>
+   </tt>
+   qualifier to the name of the metric and the name of a particular instance,
+e.g.
+   <tt>
+    <b>
+     kernel.all.load #'1 minute'
+    </b>
+   </tt>
+   .
+  </li>
+  <li>
+   The
+   <i>
+    pmie(1)
+   </i>
+   man page describes the
+   <i>
+    pmie
+   </i>
+   language in detail.
+  </li>
+  <li>
+   You may find it helpful to use
+   <i>
+    dkvis
+   </i>
+   to visually predict 
+when the rules should be triggered.  Using the
+   <b>
+    PCP Archive Time Control
+   </b>
+   dialog, you can position the
+   <i>
+    dkvis
+   </i>
+   display at the time where
+   <i>
+    pmie
+   </i>
+   is reporting interesting activity.
+  </li>
+ </ul>
+ <p>
+  When all else fails, the solution is at
+  <a href="pmie/answer.pmie">
+   pmie/answer.pmie
+  </a>
+  .
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="interval">
+        Influence of the update interval
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  As a final exercise, investigate the effects of using different update 
+intervals on the
+  <i>
+   pmie
+  </i>
+  command line (the
+  <b>
+   -t
+  </b>
+  option) with 
+the initial configuration file and archive from the previous exercise.
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="50%">
+    <br/>
+    Try each of the following:
+    <br/>
+    <pre><b>
+$ pmie -t 5min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
+$ pmie -t 6min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
+$ pmie -t 10min -a pmie/babylon.perdisk &lt; pmie/disk.pmie
+</b></pre>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Why does the number of reported incidents decline as the rule evaluation interval increases?
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="50%">
+    <br/>
+    Repeat the exercise but use
+    <i>
+     pmchart
+    </i>
+    :
+    <br/>
+    <pre><b>
+$ pmchart -t 5min -a pmie/babylon.perdisk &amp;
+</b></pre>
+    <br/>
+    Use the
+    <b>
+     New Chart...
+    </b>
+    command of the
+    <b>
+     File
+    </b>
+    menu to plot
+the
+    <b>
+     <tt>
+      disk.dev.total
+     </tt>
+    </b>
+    metric for the disk
+    <b>
+     jag3d5
+    </b>
+    :
+    <p>
+    </p>
+    <ul>
+     <li>
+      Enter the name
+      <tt>
+       disk.dev.total
+      </tt>
+      into the Metric Selection dialog.
+     </li>
+     <li>
+      There should be 54 instances of the metric listed.
+	Find the instance
+      <b>
+       jag3d5
+      </b>
+      , select it, and press OK.
+     </li>
+    </ul>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Use the PCP Archive Time Control dialog to change the
+  <b>
+   <i>
+    Interval
+   </i>
+  </b>
+  .
+ </p>
+ <p>
+  By using
+  <b>
+   smaller
+  </b>
+  values of the update interval, can you 
+deduce the sampling rate of the data in the PCP archive?
+ </p>
+ <h4>
+  <i>
+   Hint:
+  </i>
+ </h4>
+ <ul>
+  <li>
+   From a PCP archive you can get a dump of the raw data and timestamps
+when the data for a particular metric was collected using the command:
+   <br/>
+   <br/>
+   <tt>
+    <b>
+     $ pmdumplog pmie/babylon.perdisk disk.dev.total | more
+    </b>
+   </tt>
+   <br/>
+   <br/>
+  </li>
+ </ul>
+ <p>
+  <br/>
+ </p>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

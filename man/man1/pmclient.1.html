@@ -1,723 +1,727 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMCLIENT
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmclient
-               </b>
-               ,
-               <b>
-                pmclient_fg
-               </b>
-               - a simple performance metrics client
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmclient
-               </b>
-               [
-               <b>
-                -a
-               </b>
-               <i>
-                archive
-               </i>
-               ]
-              [
-               <b>
-                -h
-               </b>
-               <i>
-                host
-               </i>
-               ]
-              [
-               <b>
-                -n
-               </b>
-               <i>
-                pmnsfile
-               </i>
-               ]
-              [
-               <b>
-                -P
-               </b>
-               ]
-              [
-               <b>
-                -S
-               </b>
-               <i>
-                numsec
-               </i>
-               ]
-              [
-               <b>
-                -s
-               </b>
-               <i>
-                samples
-               </i>
-               ]
-              [
-               <b>
-                -t
-               </b>
-               <i>
-                interval
-               </i>
-               ]
-              [
-               <b>
-                -Z
-               </b>
-               <i>
-                timezone
-               </i>
-               ]
-              [
-               <b>
-                -z
-               </b>
-               ]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmclient
-               </b>
-               and
-               <b>
-                pmclient_fg
-               </b>
-               are simple clients that use the Performance Metrics Application
-              Programming Interface (PMAPI) to report some high-level system
-              performance metrics.
-               <p>
-                The real value of these tools 
-              is as sample clients using the
-                <b>
-                 <a href="/man/man3/pmapi.3.html">
-                  PMAPI
-                 </a>
-                </b>
-                (3),
-              
-              interfaces and to this end the source
-              code is included with
-              the Performance Co-Pilot (PCP) package (see
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1)),
-              
-              and is typically installed in
-                <i>
-                 /usr/share/pcp/demos/pmclient
-                </i>
-                .
-               </p>
-               <p>
-                The
-                <b>
-                 pmclient_fg
-                </b>
-                program
-              differs to
-                <b>
-                 pmclient
-                </b>
-                in that it uses the fetchgroup API extension to the PMAPI,
-              see
-                <b>
-                 <a href="/man/man3/pmfetchgroup.3.html">
-                  pmFetchGroup
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                Normally
-                <b>
-                 pmclient
-                </b>
-                operates on the distributed Performance Metrics Name Space (PMNS),
-              however if the
-                <b>
-                 -n
-                </b>
-                option is specified an alternative local PMNS is loaded from the file
-                <i>
-                 pmnsfile
-                </i>
-                .
-               </p>
-               <p>
-                Unless directed to another host by the
-                <b>
-                 -h
-                </b>
-                option, or to an archive by the
-                <b>
-                 -a
-                </b>
-                option,
-                <b>
-                 pmclient
-                </b>
-                will contact the Performance Metrics Collector Daemon (PMCD)
-              on the local host to obtain the required information.
-              The argument to
-                <b>
-                 -a
-                </b>
-                is a comma-separated list of names, each
-              of which may be the base name of an archive or the name of a directory containing
-              one or more archives.
-              The
-                <b>
-                 -a
-                </b>
-                and
-                <b>
-                 -h
-                </b>
-                options are mutually exclusive.
-               </p>
-               <p>
-                By default,
-                <b>
-                 pmclient
-                </b>
-                reports the time of day according to the local timezone on the
-              system where
-                <b>
-                 pmclient
-                </b>
-                is run.
-              The
-                <b>
-                 -Z
-                </b>
-                option changes the timezone to
-                <i>
-                 timezone
-                </i>
-                in the format of the environment variable
-                <b>
-                 TZ
-                </b>
-                as described in
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-                  environ
-                 </a>
-                </b>
-                (7).
-              
-              The
-                <b>
-                 -z
-                </b>
-                option changes the timezone to the local timezone at the host that
-              is the source of the performance metrics, as identified via either the
-                <b>
-                 -h
-                </b>
-                or
-                <b>
-                 -a
-                </b>
-                options.
-               </p>
-               <p>
-                Other options control the specific information to be reported.
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -P
-                 </b>
-                </dt>
-                <dd>
-                 The default behavior for replaying a set of archives, is to replay at
-              full speed.  The
-                 <b>
-                  -P
-                 </b>
-                 option may be used in conjunction with a set of archives, to request that
-              the prevailing real-time delay be applied between samples (see
-                 <b>
-                  -t
-                 </b>
-                 )
-              
-              to effect a pause.
-                </dd>
-                <dt>
-                 <b>
-                  -S
-                 </b>
-                 <i>
-                  numsec
-                 </i>
-                </dt>
-                <dd>
-                 The
-                 <b>
-                  -S
-                 </b>
-                 option may be used in conjunction with a set of archives to request that
-              display start at the time
-                 <i>
-                  numsec
-                 </i>
-                 seconds from the start of the set of archives.
-                </dd>
-                <dt>
-                 <b>
-                  -s
-                 </b>
-                 <i>
-                  samples
-                 </i>
-                </dt>
-                <dd>
-                 The argument
-                 <i>
-                  samples
-                 </i>
-                 defines the number of samples to be retrieved and reported.
-              If samples is 0 or
-                 <b>
-                  -s
-                 </b>
-                 is not specified,
-                 <b>
-                  pmclient
-                 </b>
-                 will sample and report continuously (in real time mode)
-              or until the end of the set of PCP archives (in archive mode).
-                </dd>
-                <dt>
-                 <b>
-                  -t
-                 </b>
-                 <i>
-                  interval
-                 </i>
-                </dt>
-                <dd>
-                 The default update
-                 <i>
-                  interval
-                 </i>
-                 may be set to something other than the
-              default 5 seconds.
-              The
-                 <i>
-                  interval
-                 </i>
-                 argument follows the syntax described in
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPIntro
-                  </a>
-                 </b>
-                 (1),
-              
-              and in the simplest form may be an unsigned integer (the implied
-              units in this case are seconds).
-                </dd>
-               </dl>
-               <p>
-                The output from
-                <b>
-                 pmclient
-                </b>
-                is directed to standard output, and lists
-               </p>
-               <dl compact="">
-                <dt>
-                 +
-                </dt>
-                <dd>
-                 Aggregate CPU utilization, in the range 0 to 1.
-                </dd>
-                <dt>
-                 +
-                </dt>
-                <dd>
-                 If the system has more than 1 CPU, the ordinal
-              number of the busiest CPU, in the range 0 to ...
-                </dd>
-                <dt>
-                 +
-                </dt>
-                <dd>
-                 If the system has more than 1 CPU, the CPU utilization for the busiest CPU.
-                </dd>
-                <dt>
-                 +
-                </dt>
-                <dd>
-                 Real free memory in Mbytes.
-                </dd>
-                <dt>
-                 +
-                </dt>
-                <dd>
-                 Aggregate physical disk I/O operations per second (IOPS).
-                </dd>
-                <dt>
-                 +
-                </dt>
-                <dd>
-                 Load average over the last 1 minute and over the last 15 minutes.
-                </dd>
-               </dl>
-               <p>
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_DEMOS_DIR/pmclient
-                 </b>
-                </dt>
-                <dd>
-                 source code, documentation, configuration files and Makefile
-              when the PCP development package is installed
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmchart.1.html">
-                 pmchart
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumptext.1.html">
-                 pmdumptext
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmgenmap.1.html">
-                 pmgenmap
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pminfo.1.html">
-                 pminfo
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmrep.1.html">
-                 pmrep
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmstat.1.html">
-                 pmstat
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmval.1.html">
-                 pmval
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmfetchgroup.3.html">
-                 pmFetchGroup
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <a name="lbAH">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               All are generated on standard error, and are intended to be self-explanatory.
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMCLIENT
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmclient
+ </b>
+ ,
+ <b>
+  pmclient_fg
+ </b>
+ - a simple performance metrics client
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmclient
+ </b>
+ [
+ <b>
+  -a
+ </b>
+ <i>
+  archive
+ </i>
+ ]
+[
+ <b>
+  -h
+ </b>
+ <i>
+  host
+ </i>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -P
+ </b>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  numsec
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  samples
+ </i>
+ ]
+[
+ <b>
+  -t
+ </b>
+ <i>
+  interval
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+[
+ <b>
+  -z
+ </b>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmclient
+ </b>
+ and
+ <b>
+  pmclient_fg
+ </b>
+ are simple clients that use the Performance Metrics Application
+Programming Interface (PMAPI) to report some high-level system
+performance metrics.
+ <p>
+  The real value of these tools 
+is as sample clients using the
+  <b>
+   <a href="/man/man3/pmapi.3.html">
+    PMAPI
+   </a>
+  </b>
+  (3),
+
+interfaces and to this end the source
+code is included with
+the Performance Co-Pilot (PCP) package (see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)),
+
+and is typically installed in
+  <i>
+   /usr/share/pcp/demos/pmclient
+  </i>
+  .
+ </p>
+ <p>
+  The
+  <b>
+   pmclient_fg
+  </b>
+  program
+differs to
+  <b>
+   pmclient
+  </b>
+  in that it uses the fetchgroup API extension to the PMAPI,
+see
+  <b>
+   <a href="/man/man3/pmfetchgroup.3.html">
+    pmFetchGroup
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  Normally
+  <b>
+   pmclient
+  </b>
+  operates on the distributed Performance Metrics Name Space (PMNS),
+however if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative local PMNS is loaded from the file
+  <i>
+   pmnsfile
+  </i>
+  .
+ </p>
+ <p>
+  Unless directed to another host by the
+  <b>
+   -h
+  </b>
+  option, or to an archive by the
+  <b>
+   -a
+  </b>
+  option,
+  <b>
+   pmclient
+  </b>
+  will contact the Performance Metrics Collector Daemon (PMCD)
+on the local host to obtain the required information.
+The argument to
+  <b>
+   -a
+  </b>
+  is a comma-separated list of names, each
+of which may be the base name of an archive or the name of a directory containing
+one or more archives.
+The
+  <b>
+   -a
+  </b>
+  and
+  <b>
+   -h
+  </b>
+  options are mutually exclusive.
+ </p>
+ <p>
+  By default,
+  <b>
+   pmclient
+  </b>
+  reports the time of day according to the local timezone on the
+system where
+  <b>
+   pmclient
+  </b>
+  is run.
+The
+  <b>
+   -Z
+  </b>
+  option changes the timezone to
+  <i>
+   timezone
+  </i>
+  in the format of the environment variable
+  <b>
+   TZ
+  </b>
+  as described in
+  <b>
+   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+    environ
+   </a>
+  </b>
+  (7).
+
+The
+  <b>
+   -z
+  </b>
+  option changes the timezone to the local timezone at the host that
+is the source of the performance metrics, as identified via either the
+  <b>
+   -h
+  </b>
+  or
+  <b>
+   -a
+  </b>
+  options.
+ </p>
+ <p>
+  Other options control the specific information to be reported.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -P
+   </b>
+  </dt>
+  <dd>
+   The default behavior for replaying a set of archives, is to replay at
+full speed.  The
+   <b>
+    -P
+   </b>
+   option may be used in conjunction with a set of archives, to request that
+the prevailing real-time delay be applied between samples (see
+   <b>
+    -t
+   </b>
+   )
+
+to effect a pause.
+  </dd>
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    numsec
+   </i>
+  </dt>
+  <dd>
+   The
+   <b>
+    -S
+   </b>
+   option may be used in conjunction with a set of archives to request that
+display start at the time
+   <i>
+    numsec
+   </i>
+   seconds from the start of the set of archives.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    samples
+   </i>
+  </dt>
+  <dd>
+   The argument
+   <i>
+    samples
+   </i>
+   defines the number of samples to be retrieved and reported.
+If samples is 0 or
+   <b>
+    -s
+   </b>
+   is not specified,
+   <b>
+    pmclient
+   </b>
+   will sample and report continuously (in real time mode)
+or until the end of the set of PCP archives (in archive mode).
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   The default update
+   <i>
+    interval
+   </i>
+   may be set to something other than the
+default 5 seconds.
+The
+   <i>
+    interval
+   </i>
+   argument follows the syntax described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1),
+
+and in the simplest form may be an unsigned integer (the implied
+units in this case are seconds).
+  </dd>
+ </dl>
+ <p>
+  The output from
+  <b>
+   pmclient
+  </b>
+  is directed to standard output, and lists
+ </p>
+ <dl compact="">
+  <dt>
+   +
+  </dt>
+  <dd>
+   Aggregate CPU utilization, in the range 0 to 1.
+  </dd>
+  <dt>
+   +
+  </dt>
+  <dd>
+   If the system has more than 1 CPU, the ordinal
+number of the busiest CPU, in the range 0 to ...
+  </dd>
+  <dt>
+   +
+  </dt>
+  <dd>
+   If the system has more than 1 CPU, the CPU utilization for the busiest CPU.
+  </dd>
+  <dt>
+   +
+  </dt>
+  <dd>
+   Real free memory in Mbytes.
+  </dd>
+  <dt>
+   +
+  </dt>
+  <dd>
+   Aggregate physical disk I/O operations per second (IOPS).
+  </dd>
+  <dt>
+   +
+  </dt>
+  <dd>
+   Load average over the last 1 minute and over the last 15 minutes.
+  </dd>
+ </dl>
+ <p>
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_DEMOS_DIR/pmclient
+   </b>
+  </dt>
+  <dd>
+   source code, documentation, configuration files and Makefile
+when the PCP development package is installed
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumptext.1.html">
+   pmdumptext
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmgenmap.1.html">
+   pmgenmap
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmstat.1.html">
+   pmstat
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmval.1.html">
+   pmval
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmfetchgroup.3.html">
+   pmFetchGroup
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error, and are intended to be self-explanatory.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLOCALPMDA
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ Updated:
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  __pmLocalPMDA
+ </b>
+ - change the table of DSO PMDAs for PM_CONTEXT_LOCAL contexts
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include "pmapi.h"
+  <br/>
+  #include "libpcp.h"
+ </b>
+ <p>
+  <br/>
+  int __pmLocalPMDA(int
+  <i>
+   op
+  </i>
+  , int
+  <i>
+   domain
+  </i>
+  , const char *
+  <i>
+   name
+  </i>
+  , const char *
+  <i>
+   init
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  CAVEAT
+ </h2>
+ This documentation is intended for internal Performance Co-Pilot
+(PCP) developer use.
+ <p>
+  These interfaces are not part of the PCP APIs that are guaranteed to
+remain fixed across releases, and they may not work, or may provide
+different semantics at some point in the future.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ PCP contexts of type
+ <b>
+  PM_CONTEXT_LOCAL
+ </b>
+ are used by clients that wish to fetch metrics directly from one or more PMDAs on
+the local host without involving
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1).
+
+A PMDA that is to be used in this way must have been built as a
+Dynamic Shared Object (DSO).
+ <p>
+  Historically the table of PMDAs available for use with
+  <b>
+   PM_CONTEXT_LOCAL
+  </b>
+  was hardcoded to the following:
+ </p>
+ <dl compact="">
+  <dt>
+   *
+  </dt>
+  <dd>
+   The PMDA (or PMDAs) that export the operating system performance data
+and data about process activity.
+  </dd>
+  <dt>
+   *
+  </dt>
+  <dd>
+   The
+   <b>
+    mmv
+   </b>
+   PMDA.
+  </dd>
+  <dt>
+   *
+  </dt>
+  <dd>
+   The
+   <b>
+    sample
+   </b>
+   PMDA provided
+   <b>
+    $PCP_LITE_SAMPLE
+   </b>
+   or
+   <b>
+    $PMDA_LOCAL_SAMPLE
+   </b>
+   is set in the environment - used mostly for QA and testing.
+  </dd>
+ </dl>
+ <p>
+  The initial table of PMDAs available for use with
+  <b>
+   PM_CONTEXT_LOCAL
+  </b>
+  is now generated dynamically from all those PMDAs that have been
+installed as DSOs on the local host.
+The one exception is the ``pmcd''
+PMDA which only operates correctly in the address space of a running
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+process and so is not available to an application using a
+  <b>
+   PM_CONTEXT_LOCAL
+  </b>
+  context.
+ </p>
+ <p>
+  <b>
+   __pmLocalPMDA
+  </b>
+  provides a number of services to amend the table of PMDAs
+available for use with
+  <b>
+   PM_CONTEXT_LOCAL
+  </b>
+  .
+ </p>
+ <p>
+  The
+  <i>
+   op
+  </i>
+  argument specifies the what should be done and takes one of the following
+values and actions:
+ </p>
+ <dl compact="">
+  <dt>
+   PM_LOCAL_ADD
+  </dt>
+  <dd>
+   Append an entry to the table for the PMDA with a Performance Metrics Domain
+(PMD) of
+   <i>
+    domain
+   </i>
+   ,
+
+the path to the DSO PMDA is given by
+   <i>
+    path
+   </i>
+   and the PMDA's initialization routine is
+   <i>
+    init
+   </i>
+   .
+  </dd>
+  <dt>
+   PM_LOCAL_DEL
+  </dt>
+  <dd>
+   Removes all entries in the table where the
+   <i>
+    domain
+   </i>
+   matches, or the
+   <i>
+    path
+   </i>
+   matches.  Setting the arguments
+   <i>
+    domain
+   </i>
+   to -1 or
+   <i>
+    path
+   </i>
+   to
+   <b>
+    NULL
+   </b>
+   to force matching on the
+   <i>
+    other
+   </i>
+   argument.
+The
+   <i>
+    init
+   </i>
+   argument is ignored.
+  </dd>
+  <dt>
+   PM_LOCAL_CLEAR
+  </dt>
+  <dd>
+   Remove all entries from the table.  All the other arguments are ignored
+in this case.
+  </dd>
+ </dl>
+ <p>
+  The
+  <i>
+   domain
+  </i>
+  ,
+  <i>
+   name
+  </i>
+  and
+  <i>
+   init
+  </i>
+  arguments have similar syntax and semantics to the associated fields
+in the
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+configuration file.
+The one difference is the
+  <i>
+   path
+  </i>
+  argument which is used by
+  <b>
+   __pmLocalPMDA
+  </b>
+  to find a likely looking DSO by searching in this order:
+  <b>
+   $PCP_PMDAS_DIR
+  </b>
+  /
+  <i>
+   path
+  </i>
+  ,
+  <i>
+   path
+  </i>
+  ,
+  <b>
+   $PCP_PMDAS_DIR
+  </b>
+  /
+  <i>
+   path
+  </i>
+  .
+  <i>
+   dso-suffix
+  </i>
+  and finally
+  <i>
+   path
+  </i>
+  .
+  <i>
+   dso-suffix
+  </i>
+  (
+  <i>
+   dso-suffix
+  </i>
+  is the local platform specific default file name suffix for a DSO, e.g.
+  <b>
+   so
+  </b>
+  for Linux,
+  <b>
+   dylib
+  </b>
+  for Mac OS X,
+  <b>
+   dll
+  </b>
+  for Windows,
+etc.).
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  RETURN VALUE
+ </h2>
+ In most cases,
+ <b>
+  __pmLocalPMDA
+ </b>
+ returns 0
+to indicate success.
+If
+ <i>
+  op
+ </i>
+ is invalid, then the return value is
+ <b>
+  PM_ERR_CONV
+ </b>
+ else if there is no matching table entry found for a
+ <b>
+  PM_LOCAL_DEL
+ </b>
+ operation, PM_ERR_INDOM is returned.
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmspeclocalpmda.3.html">
+   __pmSpecLocalPMDA
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    RETURN VALUE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

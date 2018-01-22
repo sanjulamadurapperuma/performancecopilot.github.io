@@ -1,535 +1,539 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMTRACE
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmtrace
-               </b>
-               - command line performance instrumentation
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmtrace
-               </b>
-               [
-               <b>
-                -q
-               </b>
-               ]
-              [
-               <b>
-                -c
-               </b>
-               <i>
-                value
-               </i>
-               |
-               <b>
-                -e
-               </b>
-               <i>
-                command
-               </i>
-               |
-               <b>
-                -v
-               </b>
-               <i>
-                value
-               </i>
-               ]
-              [
-               <b>
-                -h
-               </b>
-               <i>
-                host
-               </i>
-               ]
-              [
-               <b>
-                -S
-               </b>
-               <i>
-                state
-               </i>
-               ]
-               <i>
-                tag
-               </i>
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmtrace
-               </b>
-               provides a simple command line interface to the trace Performance Metrics Domain
-              Agent (PMDA) and the associated
-               <i>
-                pcp_trace
-               </i>
-               library.
-               <p>
-                The default
-                <b>
-                 pmtrace
-                </b>
-                behavior is to provide point trace data to the trace PMDA, using the
-                <i>
-                 tag
-                </i>
-                argument as the identifying name associated with each trace point.
-              The
-                <i>
-                 tag
-                </i>
-                then becomes an instance identifier within the set of trace.point metrics.
-               </p>
-               <p>
-                The
-                <b>
-                 -e
-                </b>
-                option allows an arbitrary
-                <i>
-                 command
-                </i>
-                to be executed.
-              This
-                <i>
-                 command
-                </i>
-                will be measured as a transaction since it has well defined
-              start and end points.  The information is made available through the
-              trace.transact metrics.
-               </p>
-               <p>
-                Trace data can be sent to the trace PMDA running on
-                <i>
-                 host
-                </i>
-                ,
-              
-              rather than the localhost, using
-              the
-                <b>
-                 -h
-                </b>
-                option.
-              This overrides use of the environment variable
-                <b>
-                 PCP_TRACE_HOST
-                </b>
-                .
-               </p>
-               <p>
-                The
-                <b>
-                 -q
-                </b>
-                option suppresses messages from a successful trace, so that
-                <b>
-                 pmtrace
-                </b>
-                runs quietly.
-               </p>
-               <p>
-                The
-                <b>
-                 -c
-                </b>
-                option allows an arbitrary counter
-                <i>
-                 value
-                </i>
-                to be exported through
-              the trace.count metrics, while the
-                <b>
-                 -v
-                </b>
-                option allows an arbitrary floating point
-                <i>
-                 value
-                </i>
-                to be exported through
-              the trace.observe metrics
-               </p>
-               <p>
-                The
-                <b>
-                 -S
-                </b>
-                option enables internal debugging and tracing.  The value of
-                <i>
-                 state
-                </i>
-                is a bit-wise combination of debug flags as defined in
-                <b>
-                 <a href="/man/man3/pmtracestate.3.html">
-                  pmtracestate
-                 </a>
-                </b>
-                (3),
-              
-              and may be specified using the decimal or hexadecimal syntax prescribed
-              by
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/strtol.3.html">
-                  strtol
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                ENVIRONMENT
-               </h2>
-               Since
-               <b>
-                pmtrace
-               </b>
-               uses the
-               <i>
-                libpcp_trace
-               </i>
-               library routines, the environment variables
-               <b>
-                PCP_TRACE_HOST
-               </b>
-               ,
-               <b>
-                PCP_TRACE_PORT
-               </b>
-               , and
-               <b>
-                PCP_TRACE_TIMEOUT
-               </b>
-               are all honored.
-              Refer to
-               <b>
-                <a href="/man/man3/pmdatrace.3.html">
-                 pmdatrace
-                </a>
-               </b>
-               (3)
-              
-              for a detailed description of the semantics of each.
-               <a name="lbAF">
-               </a>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_DEMOS_DIR/trace/pmtrace.c
-                 </b>
-                </dt>
-                <dd>
-                 source code for
-                 <b>
-                  pmtrace
-                 </b>
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAH">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdatrace.1.html">
-                 pmdatrace
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmprobe.1.html">
-                 pmprobe
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-              
-              and
-               <b>
-                <a href="/man/man3/pmdatrace.3.html">
-                 pmdatrace
-                </a>
-               </b>
-               (3).
-               <a name="lbAI">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               All are generated on standard error and are intended to be self-explanatory.
-               <p>
-                The
-                <b>
-                 pmtrace
-                </b>
-                exit status is always zero except when the
-                <b>
-                 -e
-                </b>
-                option is in use, in which case the exit status of
-                <i>
-                 command
-                </i>
-                is returned.
-               </p>
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMTRACE
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmtrace
+ </b>
+ - command line performance instrumentation
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmtrace
+ </b>
+ [
+ <b>
+  -q
+ </b>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  value
+ </i>
+ |
+ <b>
+  -e
+ </b>
+ <i>
+  command
+ </i>
+ |
+ <b>
+  -v
+ </b>
+ <i>
+  value
+ </i>
+ ]
+[
+ <b>
+  -h
+ </b>
+ <i>
+  host
+ </i>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  state
+ </i>
+ ]
+ <i>
+  tag
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmtrace
+ </b>
+ provides a simple command line interface to the trace Performance Metrics Domain
+Agent (PMDA) and the associated
+ <i>
+  pcp_trace
+ </i>
+ library.
+ <p>
+  The default
+  <b>
+   pmtrace
+  </b>
+  behavior is to provide point trace data to the trace PMDA, using the
+  <i>
+   tag
+  </i>
+  argument as the identifying name associated with each trace point.
+The
+  <i>
+   tag
+  </i>
+  then becomes an instance identifier within the set of trace.point metrics.
+ </p>
+ <p>
+  The
+  <b>
+   -e
+  </b>
+  option allows an arbitrary
+  <i>
+   command
+  </i>
+  to be executed.
+This
+  <i>
+   command
+  </i>
+  will be measured as a transaction since it has well defined
+start and end points.  The information is made available through the
+trace.transact metrics.
+ </p>
+ <p>
+  Trace data can be sent to the trace PMDA running on
+  <i>
+   host
+  </i>
+  ,
+
+rather than the localhost, using
+the
+  <b>
+   -h
+  </b>
+  option.
+This overrides use of the environment variable
+  <b>
+   PCP_TRACE_HOST
+  </b>
+  .
+ </p>
+ <p>
+  The
+  <b>
+   -q
+  </b>
+  option suppresses messages from a successful trace, so that
+  <b>
+   pmtrace
+  </b>
+  runs quietly.
+ </p>
+ <p>
+  The
+  <b>
+   -c
+  </b>
+  option allows an arbitrary counter
+  <i>
+   value
+  </i>
+  to be exported through
+the trace.count metrics, while the
+  <b>
+   -v
+  </b>
+  option allows an arbitrary floating point
+  <i>
+   value
+  </i>
+  to be exported through
+the trace.observe metrics
+ </p>
+ <p>
+  The
+  <b>
+   -S
+  </b>
+  option enables internal debugging and tracing.  The value of
+  <i>
+   state
+  </i>
+  is a bit-wise combination of debug flags as defined in
+  <b>
+   <a href="/man/man3/pmtracestate.3.html">
+    pmtracestate
+   </a>
+  </b>
+  (3),
+
+and may be specified using the decimal or hexadecimal syntax prescribed
+by
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/strtol.3.html">
+    strtol
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  ENVIRONMENT
+ </h2>
+ Since
+ <b>
+  pmtrace
+ </b>
+ uses the
+ <i>
+  libpcp_trace
+ </i>
+ library routines, the environment variables
+ <b>
+  PCP_TRACE_HOST
+ </b>
+ ,
+ <b>
+  PCP_TRACE_PORT
+ </b>
+ , and
+ <b>
+  PCP_TRACE_TIMEOUT
+ </b>
+ are all honored.
+Refer to
+ <b>
+  <a href="/man/man3/pmdatrace.3.html">
+   pmdatrace
+  </a>
+ </b>
+ (3)
+
+for a detailed description of the semantics of each.
+ <a name="lbAF">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_DEMOS_DIR/trace/pmtrace.c
+   </b>
+  </dt>
+  <dd>
+   source code for
+   <b>
+    pmtrace
+   </b>
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAH">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdatrace.1.html">
+   pmdatrace
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmprobe.1.html">
+   pmprobe
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+
+and
+ <b>
+  <a href="/man/man3/pmdatrace.3.html">
+   pmdatrace
+  </a>
+ </b>
+ (3).
+ <a name="lbAI">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-explanatory.
+ <p>
+  The
+  <b>
+   pmtrace
+  </b>
+  exit status is always zero except when the
+  <b>
+   -e
+  </b>
+  option is in use, in which case the exit status of
+  <i>
+   command
+  </i>
+  is returned.
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

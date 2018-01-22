@@ -1,434 +1,438 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                QMC_METRIC
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                QmcMetric
-               </b>
-               - container for a metric and all its values
-               <a name="lbAC">
-               </a>
-               <h2>
-                C++ SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/Metric.h">
-                 pcp/pmc/Metric.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                CC ... -lpcp_pmc -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               A
-               <b>
-                QmcMetric
-               </b>
-               object is a container for a single metric and all its values.
-               <p>
-                The
-                <b>
-                 QmcMetricValue
-                </b>
-                structure is used to hold the instance index, values and errors of each
-              instance.  In the case of a singular metric, a single
-                <b>
-                 QmcMetricValue
-                </b>
-                object is used.
-               </p>
-               <p>
-                A
-                <b>
-                 QmcMetric
-                </b>
-                object consists of a list of
-                <b>
-                 QmcMetricValue
-                </b>
-                objects, indexes to the descriptors in the metric's
-                <b>
-                 QmcGroup
-                </b>
-                and
-                <b>
-                 QmcContext
-                </b>
-                and flags to indicate if the instances are explicit or implicit, and if
-              only active metrics are required after
-                <b>
-                 QmcMetric::updateIndom
-                </b>
-                is called.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                CONSTRUCTORS
-               </h2>
-               Metrics should be constructed through the
-               <b>
-                QmcGroup::addMetric
-               </b>
-               methods as this will ensure that the references to the metric's context,
-              descriptor and instance domain are correctly initialized.
-               <a name="lbAF">
-               </a>
-               <h2>
-                INSTANCES
-               </h2>
-               For metrics with an instance domain it is possible to add and remove any
-              instance, and also update the instance list to reflect changes in a dynamic
-              instance domain.
-               <dl compact="">
-                <dt>
-                 <b>
-                  bool updateIndom();
-                 </b>
-                </dt>
-                <dd>
-                 Update the metric to include new instances.  This method will first call
-                 <b>
-                  QmcContext::update
-                 </b>
-                 to update the instance domain.  If the
-                 <i>
-                  active
-                 </i>
-                 flag is set in the
-                 <b>
-                  QmcGroup::addMetric
-                 </b>
-                 call, only instances will exported by the metric, otherwise the metric will
-              export all instances listed in the domain.
-                 <p>
-                  The ordering of instances may change as a result of this call.  Instances
-              that already existed will keep their current and previous values and errors,
-              even if they are in a different order.
-                 </p>
-                </dd>
-                <dt>
-                 <b>
-                  int addInst(QString const&amp; name);
-                 </b>
-                </dt>
-                <dd>
-                 Add the instance
-                 <b>
-                  name
-                 </b>
-                 to the metric.  If the instance does not exist in the instance domain,
-              a
-                 <b>
-                  <a href="/man/man3/pmapi.3.html">
-                   PMAPI
-                  </a>
-                 </b>
-                 (3)
-              
-              error will be returned.  This method ignores the value of the
-                 <i>
-                  active
-                 </i>
-                 flag set in the
-                 <b>
-                  QmcMetric
-                 </b>
-                 constructor.
-                </dd>
-                <dt>
-                 <b>
-                  void removeInst(uint_t index);
-                 </b>
-                </dt>
-                <dd>
-                 Remove the instance at position
-                 <i>
-                  index
-                 </i>
-                 from the metric.
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmc.3.html">
-                 QMC
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmc_context.3.html">
-                 QMC_Context
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmc_group.3.html">
-                 QMC_Group
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmflush.3.html">
-                 pmflush
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmprintf.3.html">
-                 pmprintf
-                </a>
-               </b>
-               (3).
-               <a name="lbAH">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               Error messages are generated using
-               <b>
-                <a href="/man/man3/pmprintf.3.html">
-                 pmprintf
-                </a>
-               </b>
-               (3)
-              
-              but are not flushed. It is the responsibility of the user to call
-               <b>
-                <a href="/man/man3/pmflush.3.html">
-                 pmflush
-                </a>
-               </b>
-               (3)
-              
-              to output any messages.
-               <p>
-                Additional diagnostics may be activated by adding the option
-                <b>
-                 pmc
-                </b>
-                to the global debugging specification, as described in
-                <b>
-                 <a href="/man/man3/pmsetdebug.3.html">
-                  pmSetDebug
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C++ SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  CONSTRUCTORS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  INSTANCES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  QMC_METRIC
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  QmcMetric
+ </b>
+ - container for a metric and all its values
+ <a name="lbAC">
+ </a>
+ <h2>
+  C++ SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/Metric.h">
+   pcp/pmc/Metric.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  CC ... -lpcp_pmc -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ A
+ <b>
+  QmcMetric
+ </b>
+ object is a container for a single metric and all its values.
+ <p>
+  The
+  <b>
+   QmcMetricValue
+  </b>
+  structure is used to hold the instance index, values and errors of each
+instance.  In the case of a singular metric, a single
+  <b>
+   QmcMetricValue
+  </b>
+  object is used.
+ </p>
+ <p>
+  A
+  <b>
+   QmcMetric
+  </b>
+  object consists of a list of
+  <b>
+   QmcMetricValue
+  </b>
+  objects, indexes to the descriptors in the metric's
+  <b>
+   QmcGroup
+  </b>
+  and
+  <b>
+   QmcContext
+  </b>
+  and flags to indicate if the instances are explicit or implicit, and if
+only active metrics are required after
+  <b>
+   QmcMetric::updateIndom
+  </b>
+  is called.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  CONSTRUCTORS
+ </h2>
+ Metrics should be constructed through the
+ <b>
+  QmcGroup::addMetric
+ </b>
+ methods as this will ensure that the references to the metric's context,
+descriptor and instance domain are correctly initialized.
+ <a name="lbAF">
+ </a>
+ <h2>
+  INSTANCES
+ </h2>
+ For metrics with an instance domain it is possible to add and remove any
+instance, and also update the instance list to reflect changes in a dynamic
+instance domain.
+ <dl compact="">
+  <dt>
+   <b>
+    bool updateIndom();
+   </b>
+  </dt>
+  <dd>
+   Update the metric to include new instances.  This method will first call
+   <b>
+    QmcContext::update
+   </b>
+   to update the instance domain.  If the
+   <i>
+    active
+   </i>
+   flag is set in the
+   <b>
+    QmcGroup::addMetric
+   </b>
+   call, only instances will exported by the metric, otherwise the metric will
+export all instances listed in the domain.
+   <p>
+    The ordering of instances may change as a result of this call.  Instances
+that already existed will keep their current and previous values and errors,
+even if they are in a different order.
+   </p>
+  </dd>
+  <dt>
+   <b>
+    int addInst(QString const&amp; name);
+   </b>
+  </dt>
+  <dd>
+   Add the instance
+   <b>
+    name
+   </b>
+   to the metric.  If the instance does not exist in the instance domain,
+a
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+error will be returned.  This method ignores the value of the
+   <i>
+    active
+   </i>
+   flag set in the
+   <b>
+    QmcMetric
+   </b>
+   constructor.
+  </dd>
+  <dt>
+   <b>
+    void removeInst(uint_t index);
+   </b>
+  </dt>
+  <dd>
+   Remove the instance at position
+   <i>
+    index
+   </i>
+   from the metric.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmc.3.html">
+   QMC
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmc_context.3.html">
+   QMC_Context
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmc_group.3.html">
+   QMC_Group
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmflush.3.html">
+   pmflush
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmprintf.3.html">
+   pmprintf
+  </a>
+ </b>
+ (3).
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Error messages are generated using
+ <b>
+  <a href="/man/man3/pmprintf.3.html">
+   pmprintf
+  </a>
+ </b>
+ (3)
+
+but are not flushed. It is the responsibility of the user to call
+ <b>
+  <a href="/man/man3/pmflush.3.html">
+   pmflush
+  </a>
+ </b>
+ (3)
+
+to output any messages.
+ <p>
+  Additional diagnostics may be activated by adding the option
+  <b>
+   pmc
+  </b>
+  to the global debugging specification, as described in
+  <b>
+   <a href="/man/man3/pmsetdebug.3.html">
+    pmSetDebug
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C++ SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    CONSTRUCTORS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    INSTANCES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

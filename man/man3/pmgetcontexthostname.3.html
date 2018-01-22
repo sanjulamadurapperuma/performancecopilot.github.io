@@ -1,475 +1,479 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMGETCONTEXTHOSTNAME
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmGetContextHostName
-               </b>
-               ,
-               <b>
-                pmGetContextHostName_r
-               </b>
-               - return the hostname associated with a Performance Co-Pilot context
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                const char *pmGetContextHostName(int
-                <i>
-                 id
-                </i>
-                );
-                <br/>
-                char *pmGetContextHostName_r(int
-                <i>
-                 id
-                </i>
-                , char *
-                <i>
-                 buf
-                </i>
-                , int
-                <i>
-                 buflen
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               Given a valid PCP context identifier previously created with
-               <b>
-                <a href="/man/man3/pmnewcontext.3.html">
-                 pmNewContext
-                </a>
-               </b>
-               (3)
-              
-              or
-               <b>
-                <a href="/man/man3/pmdupcontext.3.html">
-                 pmDupContext
-                </a>
-               </b>
-               (3),
-              
-              the
-               <b>
-                pmGetContextHostName
-               </b>
-               function returns the hostname associated with
-               <i>
-                id
-               </i>
-               .
-              
-              The
-               <b>
-                pmGetContextHostName_r
-               </b>
-               function does the same, but stores the result in a user-supplied buffer
-               <i>
-                buf
-               </i>
-               of length
-               <i>
-                buflen
-               </i>
-               ,
-              
-              which should have room for at least
-               <b>
-                MAXHOSTNAMELEN
-               </b>
-               bytes.
-               <p>
-                If the context
-                <i>
-                 id
-                </i>
-                is associated with an archive source of data, the
-              hostname returned is extracted from the archive label using
-                <b>
-                 <a href="/man/man3/pmgetarchivelabel.3.html">
-                  pmGetArchiveLabel
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                For live contexts, an attempt will first be made to retrieve
-              the hostname from the PCP collector system using
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3)
-              
-              with the
-                <i>
-                 pmcd.hostname
-                </i>
-                metric.
-              This allows client tools using this interface to retrieve an
-              accurate host identifier even in the presence of port forwarding
-              and tunnelled connections.
-               </p>
-               <p>
-                Should this not succeed, then a fallback method is used.
-              For local contexts - with local meaning any of DSO, ``localhost''
-              or Unix domain socket connection - a hostname will be sought via
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/gethostname.3.html">
-                  gethostname
-                 </a>
-                </b>
-                (3).
-              
-              For other contexts, the hostname extracted from the initial
-              context host specification will be used.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                RETURN VALUE
-               </h2>
-               If
-               <i>
-                id
-               </i>
-               is not a valid PCP context identifier,
-              the returned hostname is a zero length string.
-               <a name="lbAF">
-               </a>
-               <h2>
-                NOTES
-               </h2>
-               <b>
-                pmGetContextHostName
-               </b>
-               returns a pointer to a static buffer,
-              so the returned value is only valid until the next call to
-               <b>
-                pmGetContextHostName
-               </b>
-               and hence is not thread-safe.
-              Multi-threaded applications should use
-               <b>
-                pmGetContextHostName_r
-               </b>
-               instead.
-               <a name="lbAG">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-              
-              Values for these variables may be obtained programmatically
-              using the
-               <b>
-                <a href="/man/man3/pmgetconfig.3.html">
-                 pmGetConfig
-                </a>
-               </b>
-               (3)
-              
-              function.
-               <a name="lbAH">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/gethostname.3.html">
-                 gethostname
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmdupcontext.3.html">
-                 pmDupContext
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetarchivelabel.3.html">
-                 pmGetArchiveLabel
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmnewcontext.3.html">
-                 pmNewContext
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  RETURN VALUE
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  NOTES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMGETCONTEXTHOSTNAME
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmGetContextHostName
+ </b>
+ ,
+ <b>
+  pmGetContextHostName_r
+ </b>
+ - return the hostname associated with a Performance Co-Pilot context
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  const char *pmGetContextHostName(int
+  <i>
+   id
+  </i>
+  );
+  <br/>
+  char *pmGetContextHostName_r(int
+  <i>
+   id
+  </i>
+  , char *
+  <i>
+   buf
+  </i>
+  , int
+  <i>
+   buflen
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ Given a valid PCP context identifier previously created with
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3)
+
+or
+ <b>
+  <a href="/man/man3/pmdupcontext.3.html">
+   pmDupContext
+  </a>
+ </b>
+ (3),
+
+the
+ <b>
+  pmGetContextHostName
+ </b>
+ function returns the hostname associated with
+ <i>
+  id
+ </i>
+ .
+
+The
+ <b>
+  pmGetContextHostName_r
+ </b>
+ function does the same, but stores the result in a user-supplied buffer
+ <i>
+  buf
+ </i>
+ of length
+ <i>
+  buflen
+ </i>
+ ,
+
+which should have room for at least
+ <b>
+  MAXHOSTNAMELEN
+ </b>
+ bytes.
+ <p>
+  If the context
+  <i>
+   id
+  </i>
+  is associated with an archive source of data, the
+hostname returned is extracted from the archive label using
+  <b>
+   <a href="/man/man3/pmgetarchivelabel.3.html">
+    pmGetArchiveLabel
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  For live contexts, an attempt will first be made to retrieve
+the hostname from the PCP collector system using
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3)
+
+with the
+  <i>
+   pmcd.hostname
+  </i>
+  metric.
+This allows client tools using this interface to retrieve an
+accurate host identifier even in the presence of port forwarding
+and tunnelled connections.
+ </p>
+ <p>
+  Should this not succeed, then a fallback method is used.
+For local contexts - with local meaning any of DSO, ``localhost''
+or Unix domain socket connection - a hostname will be sought via
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/gethostname.3.html">
+    gethostname
+   </a>
+  </b>
+  (3).
+
+For other contexts, the hostname extracted from the initial
+context host specification will be used.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  RETURN VALUE
+ </h2>
+ If
+ <i>
+  id
+ </i>
+ is not a valid PCP context identifier,
+the returned hostname is a zero length string.
+ <a name="lbAF">
+ </a>
+ <h2>
+  NOTES
+ </h2>
+ <b>
+  pmGetContextHostName
+ </b>
+ returns a pointer to a static buffer,
+so the returned value is only valid until the next call to
+ <b>
+  pmGetContextHostName
+ </b>
+ and hence is not thread-safe.
+Multi-threaded applications should use
+ <b>
+  pmGetContextHostName_r
+ </b>
+ instead.
+ <a name="lbAG">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+
+Values for these variables may be obtained programmatically
+using the
+ <b>
+  <a href="/man/man3/pmgetconfig.3.html">
+   pmGetConfig
+  </a>
+ </b>
+ (3)
+
+function.
+ <a name="lbAH">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/gethostname.3.html">
+   gethostname
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdupcontext.3.html">
+   pmDupContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetarchivelabel.3.html">
+   pmGetArchiveLabel
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    RETURN VALUE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    NOTES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

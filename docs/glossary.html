@@ -1,406 +1,410 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='docpage'>
-              ﻿
-               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
-                <font size="7">
-                 PCP Glossary
-                </font>
-               </h1>
-               <p>
-                <b>
-                 archive folio
-                </b>
-                - a collection of PCP
-                <a href="#archive">
-                 archive logs
-                </a>
-                that can be processed as a group using
-                <i>
-                 pmafm
-                </i>
-                .
-               </p>
-               <p>
-                <b>
-                 <a name="archive">
-                  archive log
-                 </a>
-                </b>
-                - a set of physical files containing a collection of
-                <a href="#metric">
-                 performance metrics
-                </a>
-                from a single
-                <a href="#collector">
-                 collector system
-                </a>
-                .  Archive logs are created by the program
-                <i>
-                 pmlogger
-                </i>
-                and may be used with any PCP tools to provide retrospective performance analysis.
-               </p>
-               <p>
-                <b>
-                 <a name="domain">
-                  domain
-                 </a>
-                 number
-                </b>
-                - each
-                <a href="#PMDA">
-                 PMDA
-                </a>
-                is assigned a unique identifier (or domain number) that differentiates PMDAs on a collector system.  For global consistency, a particular PMDA will be assigned the same domain number for
-                <b>
-                 all
-                </b>
-                <a href="#collector">
-                 collector systems
-                </a>
-                on which it is installed.
-               </p>
-               <p>
-                <b>
-                 <a name="collector">
-                  collector system
-                 </a>
-                </b>
-                - a host upon which a
-                <a href="#PMCD">
-                 PMCD
-                </a>
-                is running to collect and export
-                <a href="#metric">
-                 performance metrics
-                </a>
-                using the locally configured
-                <a href="#PMDA">
-                 PMDAs
-                </a>
-                .
-               </p>
-               <p>
-                <b>
-                 <a name="instance identifiers">
-                  instance
-                 </a>
-                </b>
-                <b>
-                 identifiers
-                </b>
-                - some
-                <a href="#metric">
-                 performance metrics
-                </a>
-                have an associated
-                <b>
-                 set
-                </b>
-                of values, e.g. the number of I/O disk operations is a metric, that has a set of values, one per disk spindle on any particular system.  Each value is associated with an instance identifier that may be used to differentiate between the values that particular performance metric.  Instance identifiers have both an internal (integer) encoding and an external (textual) name.
-               </p>
-               <p>
-                <b>
-                 instance domain
-                </b>
-                - the set of
-                <a href="#instance">
-                 instance identifiers
-                </a>
-                for a single
-                <a href="#metric">
-                 performance metric
-                </a>
-                .  Note that many metrics may share the same instance domain, e.g. per CPU, or per network interface, or per Web server, and the members of an instance domain are likely to be different on different hosts.
-               </p>
-               <p>
-                <b>
-                 <a name="monitor">
-                  monitor system
-                 </a>
-                </b>
-                - a host upon which the PCP monitor tools are installed to support the display, plotting, visualization and automated reasoning, using
-                <a href="#metric">
-                 performance metrics
-                </a>
-                fetched from a
-                <a href="#PMDA">
-                 PMDA
-                </a>
-                , or from a PCP archive log.
-               </p>
-               <p>
-                <b>
-                 <a name="PCP">
-                  PCP
-                 </a>
-                </b>
-                - the Performance Co-Pilot toolkit, a suite of tools useful for system level performance management.
-               </p>
-               <p>
-                <b>
-                 PCP GUI
-                </b>
-                - utilities that build on the base PCP software providing additional
-                <a href="#monitor">
-                 monitor
-                </a>
-                functionality, graphical user interface (GUI) tools in particular.
-               </p>
-               <p>
-                <b>
-                 PCP Glider
-                </b>
-                - a distribution of software that provides PCP and PCP GUI, along with essential supporting tools and libraries for the Microsoft Windows platform.
-               </p>
-               <p>
-                <b>
-                 <a name="metric">
-                  performance metric
-                 </a>
-                </b>
-                - any performance-related measurement of activity or resource utilization.
-               </p>
-               <p>
-                <b>
-                 PDU
-                </b>
-                - Protocol Data Unit.  In the PCP context this relates to the encoding of PCP requests into messages for transmission via TCP/IP.  PDUs are used to implement all communication between the PCP monitor tools and a
-                <a href="#PMCD">
-                 PMCD
-                </a>
-                , and between a PMCD and those
-                <a href="#PMDA">
-                 PMDAs
-                </a>
-                that execute as separate processes.
-               </p>
-               <p>
-                <b>
-                 <a name="PMAPI">
-                  PMAPI
-                 </a>
-                </b>
-                - Performance Metrics Application Programming Interface.  The interface by which an application developer gains access to PCP services that relate to the fetching of
-                <a href="#metric">
-                 performance metrics
-                </a>
-                .
-               </p>
-               <p>
-                <b>
-                 <a name="PMCD">
-                  PMCD
-                 </a>
-                </b>
-                - Performance Metrics Collection Daemon.  On each host configured as a PCP
-                <a href="#collector">
-                 collector
-                </a>
-                , the PMCD services in-coming requests and controls the operation of the
-                <a href="#PMDA">
-                 PMDAs
-                </a>
-                .
-               </p>
-               <p>
-                <b>
-                 <a name="PMDA">
-                  PMDA
-                 </a>
-                </b>
-                - Performance Metrics Domain Agent.  Each PMDA includes the methods necessary to instantiate
-                <a href="#metric">
-                 performance metrics
-                </a>
-                from a particular subsystem, e.g. the kernel or a RDBMS or an application, and is launched by the
-                <a href="#PMCD">
-                 PMCD
-                </a>
-                .  It is expected that customized PMDAs will be developed for applications with critical performance impacts.
-               </p>
-               <p>
-                <b>
-                 PMCS
-                </b>
-                - Performance Metrics Collection System.  The infrastructure used to collect, export and transport
-                <a href="#metric">
-                 performance metrics
-                </a>
-                , usually the combination of
-                <a href="#PMCD">
-                 PMCD
-                </a>
-                ,
-                <a href="#PMDA">
-                 PMDAs
-                </a>
-                and
-                <a href="#PMAPI">
-                 PMAPI
-                </a>
-                services.
-               </p>
-               <p>
-                <b>
-                 PMNS
-                </b>
-                - Performance Metrics Name Space.  A user-visible mapping between external names and PMIDs for
-                <a href="#metric">
-                 performance metrics
-                </a>
-                .  The PMNS is managed by
-                <a href="#pmcd">
-                 PMCD
-                </a>
-                and its
-                <a href="#PMDA">
-                 PMDAs
-                </a>
-                .
-               </p>
-               <p>
-                <b>
-                 PMID
-                </b>
-                - Performance Metrics Identifier.  Every
-                <a href="#metric">
-                 performance metric
-                </a>
-                has an associated unique identifier.  The high-order bits of the PMID encode the corresponding
-                <a href="#PMDA">
-                 PMDA
-                </a>
-                's
-                <a href="#domain">
-                 domain
-                </a>
-                number.
-               </p>
-               <p>
-                <br/>
-               </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='docpage'>
+﻿
+ <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+  <font size="7">
+   PCP Glossary
+  </font>
+ </h1>
+ <p>
+  <b>
+   archive folio
+  </b>
+  - a collection of PCP
+  <a href="#archive">
+   archive logs
+  </a>
+  that can be processed as a group using
+  <i>
+   pmafm
+  </i>
+  .
+ </p>
+ <p>
+  <b>
+   <a name="archive">
+    archive log
+   </a>
+  </b>
+  - a set of physical files containing a collection of
+  <a href="#metric">
+   performance metrics
+  </a>
+  from a single
+  <a href="#collector">
+   collector system
+  </a>
+  .  Archive logs are created by the program
+  <i>
+   pmlogger
+  </i>
+  and may be used with any PCP tools to provide retrospective performance analysis.
+ </p>
+ <p>
+  <b>
+   <a name="domain">
+    domain
+   </a>
+   number
+  </b>
+  - each
+  <a href="#PMDA">
+   PMDA
+  </a>
+  is assigned a unique identifier (or domain number) that differentiates PMDAs on a collector system.  For global consistency, a particular PMDA will be assigned the same domain number for
+  <b>
+   all
+  </b>
+  <a href="#collector">
+   collector systems
+  </a>
+  on which it is installed.
+ </p>
+ <p>
+  <b>
+   <a name="collector">
+    collector system
+   </a>
+  </b>
+  - a host upon which a
+  <a href="#PMCD">
+   PMCD
+  </a>
+  is running to collect and export
+  <a href="#metric">
+   performance metrics
+  </a>
+  using the locally configured
+  <a href="#PMDA">
+   PMDAs
+  </a>
+  .
+ </p>
+ <p>
+  <b>
+   <a name="instance identifiers">
+    instance
+   </a>
+  </b>
+  <b>
+   identifiers
+  </b>
+  - some
+  <a href="#metric">
+   performance metrics
+  </a>
+  have an associated
+  <b>
+   set
+  </b>
+  of values, e.g. the number of I/O disk operations is a metric, that has a set of values, one per disk spindle on any particular system.  Each value is associated with an instance identifier that may be used to differentiate between the values that particular performance metric.  Instance identifiers have both an internal (integer) encoding and an external (textual) name.
+ </p>
+ <p>
+  <b>
+   instance domain
+  </b>
+  - the set of
+  <a href="#instance">
+   instance identifiers
+  </a>
+  for a single
+  <a href="#metric">
+   performance metric
+  </a>
+  .  Note that many metrics may share the same instance domain, e.g. per CPU, or per network interface, or per Web server, and the members of an instance domain are likely to be different on different hosts.
+ </p>
+ <p>
+  <b>
+   <a name="monitor">
+    monitor system
+   </a>
+  </b>
+  - a host upon which the PCP monitor tools are installed to support the display, plotting, visualization and automated reasoning, using
+  <a href="#metric">
+   performance metrics
+  </a>
+  fetched from a
+  <a href="#PMDA">
+   PMDA
+  </a>
+  , or from a PCP archive log.
+ </p>
+ <p>
+  <b>
+   <a name="PCP">
+    PCP
+   </a>
+  </b>
+  - the Performance Co-Pilot toolkit, a suite of tools useful for system level performance management.
+ </p>
+ <p>
+  <b>
+   PCP GUI
+  </b>
+  - utilities that build on the base PCP software providing additional
+  <a href="#monitor">
+   monitor
+  </a>
+  functionality, graphical user interface (GUI) tools in particular.
+ </p>
+ <p>
+  <b>
+   PCP Glider
+  </b>
+  - a distribution of software that provides PCP and PCP GUI, along with essential supporting tools and libraries for the Microsoft Windows platform.
+ </p>
+ <p>
+  <b>
+   <a name="metric">
+    performance metric
+   </a>
+  </b>
+  - any performance-related measurement of activity or resource utilization.
+ </p>
+ <p>
+  <b>
+   PDU
+  </b>
+  - Protocol Data Unit.  In the PCP context this relates to the encoding of PCP requests into messages for transmission via TCP/IP.  PDUs are used to implement all communication between the PCP monitor tools and a
+  <a href="#PMCD">
+   PMCD
+  </a>
+  , and between a PMCD and those
+  <a href="#PMDA">
+   PMDAs
+  </a>
+  that execute as separate processes.
+ </p>
+ <p>
+  <b>
+   <a name="PMAPI">
+    PMAPI
+   </a>
+  </b>
+  - Performance Metrics Application Programming Interface.  The interface by which an application developer gains access to PCP services that relate to the fetching of
+  <a href="#metric">
+   performance metrics
+  </a>
+  .
+ </p>
+ <p>
+  <b>
+   <a name="PMCD">
+    PMCD
+   </a>
+  </b>
+  - Performance Metrics Collection Daemon.  On each host configured as a PCP
+  <a href="#collector">
+   collector
+  </a>
+  , the PMCD services in-coming requests and controls the operation of the
+  <a href="#PMDA">
+   PMDAs
+  </a>
+  .
+ </p>
+ <p>
+  <b>
+   <a name="PMDA">
+    PMDA
+   </a>
+  </b>
+  - Performance Metrics Domain Agent.  Each PMDA includes the methods necessary to instantiate
+  <a href="#metric">
+   performance metrics
+  </a>
+  from a particular subsystem, e.g. the kernel or a RDBMS or an application, and is launched by the
+  <a href="#PMCD">
+   PMCD
+  </a>
+  .  It is expected that customized PMDAs will be developed for applications with critical performance impacts.
+ </p>
+ <p>
+  <b>
+   PMCS
+  </b>
+  - Performance Metrics Collection System.  The infrastructure used to collect, export and transport
+  <a href="#metric">
+   performance metrics
+  </a>
+  , usually the combination of
+  <a href="#PMCD">
+   PMCD
+  </a>
+  ,
+  <a href="#PMDA">
+   PMDAs
+  </a>
+  and
+  <a href="#PMAPI">
+   PMAPI
+  </a>
+  services.
+ </p>
+ <p>
+  <b>
+   PMNS
+  </b>
+  - Performance Metrics Name Space.  A user-visible mapping between external names and PMIDs for
+  <a href="#metric">
+   performance metrics
+  </a>
+  .  The PMNS is managed by
+  <a href="#pmcd">
+   PMCD
+  </a>
+  and its
+  <a href="#PMDA">
+   PMDAs
+  </a>
+  .
+ </p>
+ <p>
+  <b>
+   PMID
+  </b>
+  - Performance Metrics Identifier.  Every
+  <a href="#metric">
+   performance metric
+  </a>
+  has an associated unique identifier.  The high-order bits of the PMID encode the corresponding
+  <a href="#PMDA">
+   PMDA
+  </a>
+  's
+  <a href="#domain">
+   domain
+  </a>
+  number.
+ </p>
+ <p>
+  <br/>
+ </p>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

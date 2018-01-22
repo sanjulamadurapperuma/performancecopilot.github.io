@@ -1,404 +1,408 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMNAMEINDOMARCHIVE
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmNameInDomArchive
-               </b>
-               - translate an instance identifier into an instance name
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                int pmNameInDomArchive(pmInDom
-                <i>
-                 indom
-                </i>
-                , int
-                <i>
-                 inst
-                </i>
-                , char **
-                <i>
-                 name
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               Provided that the current
-              Performance Metrics Application Programming Interface (PMAPI)
-              context is associated with a set of archive logs,
-               <b>
-                pmNameInDomArchive
-               </b>
-               will scan the union of all the instance domain metadata
-              for the instance domain
-               <i>
-                indom
-               </i>
-               ,
-              
-              locate the first instance with the internal instance identifier given
-              by
-               <i>
-                inst
-               </i>
-               ,
-              
-              and return the full external instance identification via
-               <i>
-                name
-               </i>
-               .
-               <p>
-                This routine is a specialized version of the more general PMAPI
-              routine
-                <b>
-                 pmNameInDom
-                </b>
-                .
-               </p>
-               <p>
-                The value for the instance domain
-                <i>
-                 indom
-                </i>
-                is typically extracted from a
-                <i>
-                 pmDesc
-                </i>
-                structure, following a call to
-                <b>
-                 <a href="/man/man3/pmlookupdesc.3.html">
-                  pmLookupDesc
-                 </a>
-                </b>
-                (3)
-              
-              for a particular performance metric.
-               </p>
-               <p>
-                The space for the value of
-                <i>
-                 name
-                </i>
-                will have been allocated in
-                <b>
-                 pmNameInDomArchive
-                </b>
-                with
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/malloc.3.html">
-                  malloc
-                 </a>
-                </b>
-                (3),
-              
-              and it is the responsibility of the caller to
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/free.3.html">
-                  free
-                 </a>
-                </b>
-                (3)
-              
-              the space when it is no longer required.
-               </p>
-               <p>
-                <b>
-                 pmNameInDomArchive
-                </b>
-                returns zero on success.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetconfig.3.html">
-                 pmGetConfig
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetindomarchive.3.html">
-                 pmGetInDomArchive
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupindomarchive.3.html">
-                 pmLookupInDomArchive
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmnameindom.3.html">
-                 pmNameInDom
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <a name="lbAF">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  PM_ERR_NOTARCHIVE
-                 </b>
-                </dt>
-                <dd>
-                 the current PMAPI context is not associated with a set of archive logs
-                </dd>
-                <dt>
-                 <b>
-                  PM_ERR_INDOM_LOG
-                 </b>
-                </dt>
-                <dd>
-                 <i>
-                  indom
-                 </i>
-                 is not a defined instance domain identifier for the set of archive logs
-                </dd>
-                <dt>
-                 <b>
-                  PM_ERR_INST_LOG
-                 </b>
-                </dt>
-                <dd>
-                 the instance identifier
-                 <i>
-                  inst
-                 </i>
-                 is not known for the instance domain
-                 <i>
-                  indom
-                 </i>
-                 in the set of archive logs
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMNAMEINDOMARCHIVE
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmNameInDomArchive
+ </b>
+ - translate an instance identifier into an instance name
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  int pmNameInDomArchive(pmInDom
+  <i>
+   indom
+  </i>
+  , int
+  <i>
+   inst
+  </i>
+  , char **
+  <i>
+   name
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ Provided that the current
+Performance Metrics Application Programming Interface (PMAPI)
+context is associated with a set of archive logs,
+ <b>
+  pmNameInDomArchive
+ </b>
+ will scan the union of all the instance domain metadata
+for the instance domain
+ <i>
+  indom
+ </i>
+ ,
+
+locate the first instance with the internal instance identifier given
+by
+ <i>
+  inst
+ </i>
+ ,
+
+and return the full external instance identification via
+ <i>
+  name
+ </i>
+ .
+ <p>
+  This routine is a specialized version of the more general PMAPI
+routine
+  <b>
+   pmNameInDom
+  </b>
+  .
+ </p>
+ <p>
+  The value for the instance domain
+  <i>
+   indom
+  </i>
+  is typically extracted from a
+  <i>
+   pmDesc
+  </i>
+  structure, following a call to
+  <b>
+   <a href="/man/man3/pmlookupdesc.3.html">
+    pmLookupDesc
+   </a>
+  </b>
+  (3)
+
+for a particular performance metric.
+ </p>
+ <p>
+  The space for the value of
+  <i>
+   name
+  </i>
+  will have been allocated in
+  <b>
+   pmNameInDomArchive
+  </b>
+  with
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/malloc.3.html">
+    malloc
+   </a>
+  </b>
+  (3),
+
+and it is the responsibility of the caller to
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+    free
+   </a>
+  </b>
+  (3)
+
+the space when it is no longer required.
+ </p>
+ <p>
+  <b>
+   pmNameInDomArchive
+  </b>
+  returns zero on success.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetconfig.3.html">
+   pmGetConfig
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetindomarchive.3.html">
+   pmGetInDomArchive
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupindomarchive.3.html">
+   pmLookupInDomArchive
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmnameindom.3.html">
+   pmNameInDom
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <a name="lbAF">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    PM_ERR_NOTARCHIVE
+   </b>
+  </dt>
+  <dd>
+   the current PMAPI context is not associated with a set of archive logs
+  </dd>
+  <dt>
+   <b>
+    PM_ERR_INDOM_LOG
+   </b>
+  </dt>
+  <dd>
+   <i>
+    indom
+   </i>
+   is not a defined instance domain identifier for the set of archive logs
+  </dd>
+  <dt>
+   <b>
+    PM_ERR_INST_LOG
+   </b>
+  </dt>
+  <dd>
+   the instance identifier
+   <i>
+    inst
+   </i>
+   is not known for the instance domain
+   <i>
+    indom
+   </i>
+   in the set of archive logs
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

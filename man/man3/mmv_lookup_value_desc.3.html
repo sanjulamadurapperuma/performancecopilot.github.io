@@ -1,327 +1,331 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                MMV_LOOKUP_VALUE_DESC
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               Updated:
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                mmv_lookup_value_desc
-               </b>
-               - find a value in the Memory Mapped Value file
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-                <br/>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/mmv_stats.h">
-                 pcp/mmv_stats.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                <br/>
-                pmAtomValue *mmv_lookup_value_desc(void *
-                <i>
-                 addr
-                </i>
-                , const char *
-                <i>
-                 metric
-                </i>
-                , const char *
-                <i>
-                 inst
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp_mmv -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <p>
-                <b>
-                 mmv_lookup_value_desc
-                </b>
-                searches for the value of the instance 
-              identified by the external instance name
-                <i>
-                 inst
-                </i>
-                of the metric
-                <i>
-                 metric
-                </i>
-                in the
-                <b>
-                 <a href="/man/man5/mmv.5.html">
-                  MMV
-                 </a>
-                </b>
-                (5) file.
-                <i>
-                 addr
-                </i>
-                is the address returned from
-                <b>
-                 mmv_stats_init
-                </b>
-                ().
-               </p>
-               <p>
-                The pointer returned points to a pmAtomValue union, which is
-              defined as follows:
-               </p>
-               <p>
-               </p>
-               <pre>
-                  typedef union {
-                      __int32_t   l;      /* 32-bit signed */
-                      __uint32_t  ul;     /* 32-bit unsigned */
-                      __int64_t   ll;     /* 64-bit signed */
-                      __uint64_t  ull;    /* 64-bit unsigned */
-                      float       f;      /* 32-bit floating point */
-                      double      d;      /* 64-bit floating point */
-                      char         *cp;   /* char ptr */
-                      pmValueBlock *vbp;  /* pmValueBlock ptr */
-                  } pmAtomValue;
-              </pre>
-               <p>
-                MMV string values should be set using either of the
-                <b>
-                 mmv_set_string
-                </b>
-                or
-                <b>
-                 mmv_set_strlen
-                </b>
-                routines.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                RETURNS
-               </h2>
-               The function returns the address inside of the memory mapped region
-              on success or NULL on failure.
-               <a name="lbAF">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/mmv_stats_init.3.html">
-                 mmv_stats_init
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/mmv_inc_value.3.html">
-                 mmv_inc_value
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man5/mmv.5.html">
-                 mmv
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  RETURNS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  MMV_LOOKUP_VALUE_DESC
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ Updated:
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  mmv_lookup_value_desc
+ </b>
+ - find a value in the Memory Mapped Value file
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+  <br/>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/mmv_stats.h">
+   pcp/mmv_stats.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  pmAtomValue *mmv_lookup_value_desc(void *
+  <i>
+   addr
+  </i>
+  , const char *
+  <i>
+   metric
+  </i>
+  , const char *
+  <i>
+   inst
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp_mmv -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <p>
+  <b>
+   mmv_lookup_value_desc
+  </b>
+  searches for the value of the instance 
+identified by the external instance name
+  <i>
+   inst
+  </i>
+  of the metric
+  <i>
+   metric
+  </i>
+  in the
+  <b>
+   <a href="/man/man5/mmv.5.html">
+    MMV
+   </a>
+  </b>
+  (5) file.
+  <i>
+   addr
+  </i>
+  is the address returned from
+  <b>
+   mmv_stats_init
+  </b>
+  ().
+ </p>
+ <p>
+  The pointer returned points to a pmAtomValue union, which is
+defined as follows:
+ </p>
+ <p>
+ </p>
+ <pre>
+    typedef union {
+        __int32_t   l;      /* 32-bit signed */
+        __uint32_t  ul;     /* 32-bit unsigned */
+        __int64_t   ll;     /* 64-bit signed */
+        __uint64_t  ull;    /* 64-bit unsigned */
+        float       f;      /* 32-bit floating point */
+        double      d;      /* 64-bit floating point */
+        char         *cp;   /* char ptr */
+        pmValueBlock *vbp;  /* pmValueBlock ptr */
+    } pmAtomValue;
+</pre>
+ <p>
+  MMV string values should be set using either of the
+  <b>
+   mmv_set_string
+  </b>
+  or
+  <b>
+   mmv_set_strlen
+  </b>
+  routines.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  RETURNS
+ </h2>
+ The function returns the address inside of the memory mapped region
+on success or NULL on failure.
+ <a name="lbAF">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/mmv_stats_init.3.html">
+   mmv_stats_init
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/mmv_inc_value.3.html">
+   mmv_inc_value
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man5/mmv.5.html">
+   mmv
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    RETURNS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

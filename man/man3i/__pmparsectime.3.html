@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMPARSECTIME
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  __pmParseCtime
+ </b>
+ - convert
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/ctime.3.html">
+   ctime
+  </a>
+ </b>
+ (3) string to
+ <b>
+  tm
+ </b>
+ structure
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include "pmapi.h"
+  <br/>
+  #include "libpcp.h"
+ </b>
+ <p>
+  int __pmParseCtime(const char *
+  <i>
+   string
+  </i>
+  , struct tm *
+  <i>
+   rslt
+  </i>
+  , char **
+  <i>
+   errmsg
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  CAVEAT
+ </h2>
+ This documentation is intended for internal Performance Co-Pilot
+(PCP) developer use.
+ <p>
+  These interfaces are not part of the PCP APIs that are guaranteed to
+remain fixed across releases, and they may not work, or may provide
+different semantics at some point in the future.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  __pmParseCtime
+ </b>
+ reverses the
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/asctime.3.html">
+   asctime
+  </a>
+ </b>
+ (3)
+
+function.  It accepts a
+ <b>
+  string
+ </b>
+ specifying a time, and fills in the given
+ <b>
+  tm
+ </b>
+ structure.
+ <p>
+  Either a fully specified
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/asctime.3.html">
+    asctime
+   </a>
+  </b>
+  (3)
+
+string like "Mon Mar  4 13:07:47 1996" or a partially specified time
+like '1996", "Mar 1996", "Mar 4 1996", "Mar", "13:07:47", "13:07",
+"Mar 4 13:07:47",... is accepted.  In addition, the seconds component
+may be a floating point number, for example "13:07:47.5".  The 12 hour
+clock is also supported, so "13:07" and "1:07 pm" are equivalent.
+ </p>
+ <p>
+  <b>
+   __pmParseCtime
+  </b>
+  returns 0 if successful.  It returns -1 and a dynamically allocated
+error message string in
+  <b>
+   errmsg
+  </b>
+  ,
+
+if the given
+  <b>
+   string
+  </b>
+  does not parse.  Be sure to
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+    free
+   </a>
+  </b>
+  (3)
+
+the error message string.
+ </p>
+ <p>
+  The
+  <b>
+   tm
+  </b>
+  structure returned in
+  <b>
+   rslt
+  </b>
+  should only be used as an argument to the
+  <b>
+   __pmConvertTime
+  </b>
+  function, as it contains encoded information that will only be
+correctly interpreted by
+  <b>
+   __pmConvertTime
+  </b>
+  .
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmparseinterval.3.html">
+   pmParseInterval
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmconverttime.3.html">
+   __pmConvertTime
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmparsetime.3.html">
+   __pmParseTime
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

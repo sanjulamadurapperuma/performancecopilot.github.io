@@ -1,1458 +1,1822 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMMGR
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmmgr
-               </b>
-               - pcp daemon manager
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmmgr
-               </b>
-               [
-               <b>
-                -v
-               </b>
-               ]
-              [
-               <b>
-                -c
-               </b>
-               <i>
-                config-directory
-               </i>
-               ]
-              [
-               <b>
-                -p
-               </b>
-               <i>
-                polling-interval
-               </i>
-               ]
-              [
-               <b>
-                -l
-               </b>
-               <i>
-                log-file
-               </i>
-               ]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmmgr
-               </b>
-               manages a collection of PCP daemons for a set of discovered local and
-              remote hosts running the Performance Metrics Collection Daemon (PMCD),
-              according to zero or more configuration directories.
-              It keeps a matching set of
-               <b>
-                pmie
-               </b>
-               ,
-               <b>
-                pmlogger
-               </b>
-               ,
-               <b>
-                pmrep
-               </b>
-               and other daemons running, and their archives/logs merged/rotated.
-              It provides an alternative to the default
-               <b>
-                pmlogger_daily
-               </b>
-               and
-               <b>
-                pmie_daily
-               </b>
-               scripts that administer
-               <b>
-                pmlogger
-               </b>
-               and
-               <b>
-                pmie
-               </b>
-               ``farms'' using
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/cron.3.html">
-                 cron
-                </a>
-               </b>
-               (3).
-               <p>
-                <b>
-                 pmmgr
-                </b>
-                is largely self-configuring and perseveres despite most run-time
-              errors.
-                <b>
-                 pmmgr
-                </b>
-                runs in the foreground until interrupted.
-              When signaled, it will stop its running daemons before exiting.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                ALGORITHM
-               </h2>
-               Each poll interval,
-               <b>
-                pmmgr
-               </b>
-               computes a list of possible targets for a
-               <b>
-                pmcd
-               </b>
-               search.  This list is assembled from several configuration files,
-              and may include explicitly listed specifications, hosts discovered through
-              several different mechanisms, and/or individual containers running within them.
-              Once the list is assembled,
-               <b>
-                pmmgr
-               </b>
-               attempts to make a brief
-               <i>
-                pmNewContext
-               </i>
-               connection to each target, in order to check for the existence of an actual
-              running
-               <b>
-                pmcd
-               </b>
-               instance, and to extract a host-id.  The host-id is treated as a
-              unique identifier for the instance, so that redundant connection paths to the
-              same server can be filtered out.
-              Once the final list of live
-               <b>
-                pmcd
-               </b>
-               instances is identified, along with their unique host-ids, pmmgr ensures that
-              any requested pcp client daemons are started (or restarted) for them.  If any
-               <b>
-                pmcd
-               </b>
-               instances disappear from the list, its pcp client daemons are stopped.
-              This entire cycle repeats every poll interval.
-               <a name="lbAF">
-               </a>
-               <h2>
-                OPTIONS
-               </h2>
-               A description of the command line options specific to
-               <b>
-                pmmgr
-               </b>
-               follows:
-               <dl compact="">
-                <dt>
-                 <b>
-                  -c
-                 </b>
-                </dt>
-                <dd>
-                 <i>
-                  directory
-                 </i>
-                 adds a given configuration directory to
-                 <b>
-                  pmmgr
-                 </b>
-                 .
-                 <b>
-                  pmmgr
-                 </b>
-                 can supervise
-              multiple different configurations at the same time, so this option may
-              be repeated.
-              Errors in the configuration may be noted to standard error, but
-                 <b>
-                  pmmgr
-                 </b>
-                 will fill in missing information with built-in defaults.
-              The default directory is
-                 <i>
-                  $PCP_SYSCONF_DIR/pmmgr
-                 </i>
-                </dd>
-                <dt>
-                 <b>
-                  -p
-                 </b>
-                </dt>
-                <dd>
-                 <i>
-                  polling-interval
-                 </i>
-                 sets the host-discovery polling interval to the given number of seconds.
-              The default is 60.  Daemons for a particular target host will be restarted
-              no more frequently than this interval.  There may be a short-lived thread
-              inside
-                 <b>
-                  pmmgr
-                 </b>
-                 for startup and shutdown of each daemon for each target host.
-                </dd>
-                <dt>
-                 <b>
-                  -l
-                 </b>
-                </dt>
-                <dd>
-                 <i>
-                  log-file
-                 </i>
-                 redirects standard output and error to the given log file, which is created anew
-                </dd>
-                <dt>
-                 <b>
-                  -v
-                 </b>
-                </dt>
-                <dd>
-                 adds more verbose tracing to standard output.
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                CONFIGURATION
-               </h2>
-               A
-               <b>
-                pmmgr
-               </b>
-               configuration identifies which hosts should be monitored, which
-              daemons should be maintained for them, and what options those daemons
-              should be run with.
-               <b>
-                pmmgr
-               </b>
-               uses a small number of files in a configuration directory,
-              instead of lines in a text file.
-              The individual files carry zero or more lines of 100% pure configuration
-              text, and no comments.  (If desired, a configuration may be commented
-              upon with any other file, such as a free-form README.)
-               <a name="lbAH">
-               </a>
-               <h3>
-                TARGET SELECTION
-               </h3>
-               This set of configuration files identifies where
-               <b>
-                pmmgr
-               </b>
-               should search
-              for
-               <b>
-                pmcd
-               </b>
-               instances, how to uniquely identify them, and where state
-              such as log files should be kept for each.  Ideally, a persistent and
-              unique host-id string is computed for each potential target pmcd from
-              specified metric values.  This host-id is also used as a subdirectory
-              name for locating daemon data.
-               <dl compact="">
-                <dt>
-                 <i>
-                  hostid-static
-                 </i>
-                </dt>
-                <dd>
-                 This file contains a single line specifying the static string that should be
-              used for the host-id value.  Specifying a value in this file overrides the
-                 <i>
-                  hostid-metrics
-                 </i>
-                 file specified below.  It should be noted that using this option will cause
-              all target pmcds to be assigned the same hostid.  Thus, this is useful in
-              monitoring single hosts, or if each monitored host has its own configuration
-              directory.
-                </dd>
-                <dt>
-                 <i>
-                  hostid-metrics
-                 </i>
-                </dt>
-                <dd>
-                 This file contains one or more lines of metric specifications in the format
-              accepted by
-                 <i>
-                  pmParseMetricSpec
-                 </i>
-                 .
-              
-              Metrics without instance specifiers mean all instances of that metric.
-              These are used to generate the
-                 <i>
-                  unique
-                 </i>
-                 host-id string for each
-                 <b>
-                  pmcd
-                 </b>
-                 server that
-                 <b>
-                  pmmgr
-                 </b>
-                 discovers.
-              Upon discovery,
-              all the metrics/instances named are queried, string values fetched, and
-              normalized/concatenated into a single hyphenated printable string.
-              The default is the single metric
-                 <b>
-                  pmcd.hostname
-                 </b>
-                 ,
-              
-              which is sufficient if all the hosts discovered have unique
-                 <a href="http://man7.org/linux/man-pages/man2/hostname.2.html">
-                  hostname
-                 </a>
-                 (2).  If
-              they don't, you should add other pcp metric specifications to set them apart
-              at your site.  The more you add, the longer the host-id string, but the more
-              likely that accidental duplication is prevented.
-                </dd>
-               </dl>
-               <p>
-                However, it may be desirable for a host-id to also be
-                <i>
-                 persistent
-                </i>
-                ,
-              
-              so that if the target host goes offline and later returns, the new
-              host-id matches the previous one, because then old and new histories can be joined.
-              This argues against using metrics whose values vary from boot to boot.
-               </p>
-               <p>
-                Some candidate metrics to consider:
-                <i>
-                 network.interface.hw_addr
-                </i>
-                ,
-                <i>
-                 network.interface.inet_addr[eth0]
-                </i>
-                ,
-                <i>
-                 network.interface.ipv6_addr
-                </i>
-                ,
-                <i>
-                 kernel.uname.nodename
-                </i>
-               </p>
-               <dl compact="">
-                <dt>
-                 <i>
-                  log-directory
-                 </i>
-                </dt>
-                <dd>
-                 This file contains the path of a directory beneath which the per-host-id
-              subdirectories are to be created by
-                 <b>
-                  pmmgr
-                 </b>
-                 .
-              
-              If it is not a full path, it
-              is implicitly relative to the configuration directory itself.  The default is
-                 <b>
-                  $PCP_LOG_DIR/pmmgr/
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <i>
-                  target-host
-                 </i>
-                </dt>
-                <dd>
-                 This file contains one or more lines containing
-                 <b>
-                  pmcd
-                 </b>
-                 host specifications, as described on the
-                 <i>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPintro
-                  </a>
-                 </i>
-                 (1)
-              
-              manual page.
-              The default is to target pmcd at
-                 <b>
-                  local:
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <i>
-                  target-discovery
-                 </i>
-                </dt>
-                <dd>
-                 This file contains one or more lines containing specifications for the
-                 <i>
-                  pmDiscoverServices
-                 </i>
-                 PMAPI call, each of which may map onto a fluctuating set of local or remote
-              pmcd servers.  Each poll interval,
-                 <b>
-                  pmmgr
-                 </b>
-                 will attempt to rerun discovery with
-              all of the given specifications.  Again, it is not a problem if more than one
-              specification matches the same actual pmcd: one confirmed access path is
-              arbitrarily selected.  The default is to do
-                 <b>
-                  no discovery
-                 </b>
-                 .
-              
-              Consider including
-                 <i>
-                  avahi,timeout=5
-                 </i>
-                 to rely in pmcd self-announcements on the local network (searching for up to
-              five seconds each time).  Consider including
-                 <i>
-                  probe=192.168.1.0/24
-                 </i>
-                 to quickly scan the given IP address range.
-                </dd>
-                <dt>
-                 <i>
-                  target-kubectl-pod
-                 </i>
-                </dt>
-                <dd>
-                 If this file exists, pmmgr is assumed to run within a kubernetes cluster.
-              The line of the configuration file is appended to a
-                 <b>
-                  kubectl get pod
-                 </b>
-                 command line to discover IP addresses of all matching pods running nearby.
-                 <b>
-                  pmmgr extracts the
-                 </b>
-                 <b>
-                  .status.podIP
-                 </b>
-                 field from the kubernetes pod object(s) and tries to connect to each at
-              the default pmcd port number.  Use options like
-                 <i>
-                  -l service=foobar
-                 </i>
-                 to restrict the search with labels.  The default is to do
-                 <b>
-                  no kubectl
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <i>
-                  subtarget-containers
-                 </i>
-                </dt>
-                <dd>
-                 If this file exists,
-                 <b>
-                  pmmgr
-                 </b>
-                 will scan each host that is found for
-              running containers.  For each running container, it will create
-              independent subtargets for running requested daemons.
-              The host-id string for these subtargets is the host's host-id
-              string, followed by a double-hyphen, then the full unique container
-              instance-name string.
-                </dd>
-                <dt>
-                 <i>
-                  target-threads
-                 </i>
-                </dt>
-                <dd>
-                 This file contains a limit on the number of concurrent threads
-              that analyze potential target pmcds for their hostids and/or
-              containers.  The default is
-                 <b>
-                  a few dozen threads per CPU core
-                 </b>
-                 ,
-              
-              if known.  Set this to zero if remote pmcds should be analyzed
-              sequentially.  A small number of threads is not a good idea if any
-              potential target pmcds are unreachable, since $PMCD_CONNECT_TIMEOUT
-              may be several seconds long each.
-                </dd>
-                <dt>
-                 <i>
-                  log-subdirectory-gc
-                 </i>
-                </dt>
-                <dd>
-                 This file may contain a time interval specification as per the
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPintro
-                  </a>
-                 </b>
-                 (1)
-              
-              manual page.
-              All subdirectories of the log-directory are
-              presumed to contain data for
-                 <b>
-                  pmmgr
-                 </b>
-                 -monitored
-              
-              servers.
-              Those that have not been modified in at least that long,
-              and not associated with a currently monitored target, are
-              deleted entirely.
-              This value should be longer than the longest interval that
-                 <b>
-                  pmmgr
-                 </b>
-                 normally recreates archives (such as due to
-                 <b>
-                  pmmgr
-                 </b>
-                 restarts, and
-                 <b>
-                  pmlogmerge
-                 </b>
-                 intervals).
-              The default value is
-                 <i>
-                  90days
-                 </i>
-                 .
-                </dd>
-               </dl>
-               <a name="lbAI">
-               </a>
-               <h3>
-                PMLOGGER CONFIGURATION
-               </h3>
-               This group of configuration options controls a
-               <b>
-                pmlogger
-               </b>
-               daemon for each host.  This may include generating its configuration,
-              and managing its archives.
-               <dl compact="">
-                <dt>
-                 <i>
-                  pmlogger
-                 </i>
-                </dt>
-                <dd>
-                 If and only if this file exists, pmmgr will maintain a
-                 <b>
-                  pmlogger
-                 </b>
-                 daemon for each
-              targeted host.
-              This file contains one line of additional space-separated options
-              for the
-                 <b>
-                  pmlogger
-                 </b>
-                 daemon.  (
-                 <b>
-                  pmmgr
-                 </b>
-                 already adds -h, -H, -f, -r, -l, and perhaps -c.)
-              The default is to maintain
-                 <b>
-                  no pmlogger
-                 </b>
-                 (and no other configuration in this section is processed).
-                </dd>
-                <dt>
-                 <i>
-                  pmlogger-timefmt
-                 </i>
-                </dt>
-                <dd>
-                 Specify a time format to use in the archive-* name for
-                 <b>
-                  pmlogger
-                 </b>
-                 generated archives. The default is "%Y%m%d.%H%M%S". Expected to be in
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
-                   strftime
-                  </a>
-                 </b>
-                 (3)
-              
-              format.
-                </dd>
-                <dt>
-                 <i>
-                  pmlogconf
-                 </i>
-                </dt>
-                <dd>
-                 If and only if this file exists,
-                 <b>
-                  pmmgr
-                 </b>
-                 will run
-                 <b>
-                  pmlogconf
-                 </b>
-                 to generate a configuration
-              file for each target
-                 <b>
-                  pmcd
-                 </b>
-                 .
-              
-              The file contains one line of space-separated additional
-              options for the
-                 <b>
-                  pmlogconf
-                 </b>
-                 program.
-                 <b>
-                  pmlogconf
-                 </b>
-                 's
-              
-              generated output file will be stored under
-              the log-directory/hostid subdirectory.  (
-                 <b>
-                  pmmgr
-                 </b>
-                 already adds -c, -r, and -h.)
-              The default is
-                 <b>
-                  no pmlogconf
-                 </b>
-                 ,
-              
-              so instead, the
-                 <b>
-                  pmlogger
-                 </b>
-                 file above should probably contain a -c option, to
-              specify a fixed
-                 <b>
-                  pmlogger
-                 </b>
-                 configuration.
-                </dd>
-               </dl>
-               <a name="lbAJ">
-               </a>
-               <h3>
-                ARCHIVE LOG MANAGEMENT
-               </h3>
-               Default
-               <b>
-                pmlogger
-               </b>
-               configurations can collect tens of megabytes of data
-              per day (possibly split into multiple archives), per target host.
-              If your disk space is less than infinite, or archive-splitting unwieldy,
-              this should be managed.  In the default, unmanaged case, the system
-              administrator is responsible for managing the individual
-               <i>
-                archive-*
-               </i>
-               files from the per-host logging subdirectories.
-               <b>
-                pmmgr
-               </b>
-               offers several other options,
-              each representing different performance and usability tradeoffs.
-               <a name="lbAK">
-               </a>
-               <h3>
-                ARCHIVE LOG MANAGEMENT - pmlogmerge
-               </h3>
-               This style of archive log management regularly creates a single merged
-              archive from prior archives for each target host, in effect lopping
-              off old data and appending the new.  A single merged archive can be
-              relatively large (defaults to approximately 100-400 MB per host), and
-              puts a corresponding I/O load on storage, but is most convenient for a
-              detailed long-timeframe analysis.
-              Once
-               <b>
-                pmlogger
-               </b>
-               is restarted, it
-              always creates a new archive, so in the steady state, there will be
-              one merged archive of recent history, and one current archive being
-              written-to by
-               <b>
-                pmlogger
-               </b>
-               .
-               <dl compact="">
-                <dt>
-                 <i>
-                  pmlogmerge
-                 </i>
-                </dt>
-                <dd>
-                 If this file exists,
-                 <b>
-                  pmmgr
-                 </b>
-                 will run
-                 <b>
-                  pmlogextract
-                 </b>
-                 to periodically merge together preexisting log archives for each
-              target pmcd into a single large one.  Then, the preexisting log
-              archives are deleted (including any prior merged ones).
-              This configuration file may contain a time interval specification as per the
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPintro
-                  </a>
-                 </b>
-                 (1)
-              
-              manual page, representing the period after which
-                 <b>
-                  pmlogger
-                 </b>
-                 should be temporarily stopped, and archives merged.
-              It represents the maximum amount of time that
-              the merged archive
-                 <i>
-                  lags
-                 </i>
-                 the present time.
-              The default is
-                 <i>
-                  24hours
-                 </i>
-                 .
-                </dd>
-                <dt>
-                 <i>
-                  pmlogmerge-granular
-                 </i>
-                </dt>
-                <dd>
-                 If this file also exists,
-                 <b>
-                  pmmgr
-                 </b>
-                 will merge only a subset of preexisting
-              log archives into the new one, instead of all of them, so as to
-              approximate a granular, aligned set of merged archives.
-              The subset chosen corresponds to the previous time interval specified by the
-                 <i>
-                  pmlogmerge
-                 </i>
-                 control file.
-              The default is
-                 <b>
-                  no granularity
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <i>
-                  pmlogcheck-corrupt-gc
-                 </i>
-                </dt>
-                <dd>
-                 Before archives are considered for merging, they are processed through
-                 <b>
-                  pmlogcheck
-                 </b>
-                 to check for corruption.
-              In the unlikely case of a
-              problem, such archives are renamed out of the way (named "corrupt-*"),
-              and retained up to a limited time.
-              This file specifies how long.
-              If this file exists, it the time interval it contains is the maximum age.
-              The default is
-                 <b>
-                  90days
-                 </b>
-                 .
-              
-              To store corrupt archives indefinitely, set this to a large
-              quantity like "99999weeks".
-                </dd>
-                <dt>
-                 <i>
-                  pmlogmerge-rewrite
-                 </i>
-                </dt>
-                <dd>
-                 If this file exists,
-                 <b>
-                  pmmgr
-                 </b>
-                 will run
-                 <b>
-                  pmlogrewrite -i
-                 </b>
-                 (plus any other options listed in this file) on each input archive before
-              merging it.  This will naturally require more disk I/O.  The default is
-                 <b>
-                  no rewriting
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <i>
-                  pmlogmerge-retain
-                 </i>
-                </dt>
-                <dd>
-                 <b>
-                  pmmgr
-                 </b>
-                 reduces/deletes any original-resolution archives after a time
-              period specified by this file, as measured by the file mtime.
-              The period will also be passed to
-                 <b>
-                  pmlogextract
-                 </b>
-                 as a negative parameter to
-                 <i>
-                  -S
-                 </i>
-                 .
-              The default is
-                 <i>
-                  14days
-                 </i>
-                 .
-              
-              To store archives indefinitely, set this to a large quantity
-              like "99999weeks".
-                </dd>
-                <dt>
-                 <i>
-                  pmlogreduce
-                 </i>
-                </dt>
-                <dd>
-                 If this file exists, then prior to removing archives that
-              expire past the
-                 <i>
-                  pmlogmerge-retain
-                 </i>
-                 period, they are processed with
-                 <b>
-                  pmlogreduce
-                 </b>
-                 to create reduced archives (named
-                 <b>
-                  reduced-*
-                 </b>
-                 ).  If the
-              file contains space-separated options, they are passed onto
-              pmlogreduce.  (By default, pmlogreduce down-samples to a
-              600-second interval.)
-                </dd>
-                <dt>
-                 <i>
-                  pmlogreduce-retain
-                 </i>
-                </dt>
-                <dd>
-                 If this file exists, then reduced archives (identified by the
-                 <b>
-                  reduced-*
-                 </b>
-                 pattern) are deleted after a time period
-              specified by this file, as measured from the file mtime.
-              Since this time is likely that of the pmlogreduce run, the
-              total retention time will be approximately the pmlogmerge-retain
-              time
-                 <b>
-                  plus
-                 </b>
-                 the pmlogreduce-retain time.
-              The default is
-                 <b>
-                  90days
-                 </b>
-                 .
-              
-              To store reduced archives indefinitely, set this to a large
-              quantity like "99999weeks".
-                </dd>
-               </dl>
-               <a name="lbAL">
-               </a>
-               <h3>
-                PMIE CONFIGURATION
-               </h3>
-               This group of configuration options controls a
-               <b>
-                pmie
-               </b>
-               daemon for each host.
-              This may include generating a custom configuration.
-               <dl compact="">
-                <dt>
-                 <i>
-                  pmie
-                 </i>
-                </dt>
-                <dd>
-                 If and only if this file exists, pmmgr will maintain a
-                 <b>
-                  pmie
-                 </b>
-                 daemon for each targeted
-                 <b>
-                  pmcd
-                 </b>
-                 .
-              
-              This file contains one line of additional space-separated options
-              for the
-                 <b>
-                  pmie
-                 </b>
-                 daemon.  (pmmgr already adds -h, -f, -l, and perhaps -c.)
-              The default is to maintain
-                 <b>
-                  no pmie
-                 </b>
-                 (and no other configuration in this section is processed).
-                </dd>
-                <dt>
-                 <i>
-                  pmieconf
-                 </i>
-                </dt>
-                <dd>
-                 If and only if this file exists,
-                 <b>
-                  pmmgr
-                 </b>
-                 will run
-                 <b>
-                  pmieconf
-                 </b>
-                 to generate a configuration
-              file for each target
-                 <b>
-                  pmcd
-                 </b>
-                 .
-              
-              The file contains one line of space-separated additional options for the
-                 <b>
-                  pmieconf
-                 </b>
-                 program.
-                 <b>
-                  pmieconf
-                 </b>
-                 -
-              
-              generated output file will be stored under
-              the log-directory/hostid subdirectory.  (
-                 <b>
-                  pmmgr
-                 </b>
-                 already adds -F, -c, and -f.)
-              The default is
-                 <b>
-                  no pmieconf
-                 </b>
-                 ,
-              
-              so instead, the
-                 <i>
-                  pmie
-                 </i>
-                 file above should probably contain a -c option, to
-              specify a fixed
-                 <b>
-                  pmie configuration.
-                 </b>
-                </dd>
-               </dl>
-               <a name="lbAM">
-               </a>
-               <h3>
-                MONITOR DAEMON MANAGEMENT
-               </h3>
-               <b>
-                pmmgr
-               </b>
-               may be used to invoke arbitrary PCP client programs for each target
-               <b>
-                pmcd
-               </b>
-               .
-              
-              This can enable automated invocation of reporting or relaying tools, such as
-               <b>
-                pmrep
-               </b>
-               ,
-               <b>
-                pcp2graphite
-               </b>
-               or
-               <b>
-                pcp2influxdb
-               </b>
-               without needing a specialized system service.
-               <dl compact="">
-                <dt>
-                 <i>
-                  monitor
-                 </i>
-                </dt>
-                <dd>
-                 If this file exists, then for each line in this file, a new background process will
-              be invoked.  (It is restarted if it exits.)  The line specifies the beginning of the
-              command line (including the program name);
-                 <b>
-                  pmmgr
-                 </b>
-                 appends a -h HOSTSPEC, and arranges
-              to collect the standard output and standard error into separate
-                 <b>
-                  monitor-NN.out
-                 </b>
-                 and
-                 <b>
-                  monitor-NN.err
-                 </b>
-                 files under the log directory.
-                </dd>
-               </dl>
-               <a name="lbAN">
-               </a>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_SYSCONF_DIR/pmmgr/
-                 </b>
-                </dt>
-                <dd>
-                 default configuration directory
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_LOG_DIR/pmmgr/
-                 </b>
-                </dt>
-                <dd>
-                 default logging directory
-                </dd>
-               </dl>
-               <a name="lbAO">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parametrize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAP">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/cron.1.html">
-                 cron
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogconf.1.html">
-                 pmlogconf
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger_daily.1.html">
-                 pmlogger_daily
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmieconf.1.html">
-                 pmieconf
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmie.1.html">
-                 pmie
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmie_daily.1.html">
-                 pmie_daily
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmrep.1.html">
-                 pmrep
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pcp2graphite.1.html">
-                 pcp2graphite
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pcp2influxdb.1.html">
-                 pcp2influxdb
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogreduce.1.html">
-                 pmlogreduce
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  ALGORITHM
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  OPTIONS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  CONFIGURATION
-                 </a>
-                </dt>
-                <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAH">
-                    TARGET SELECTION
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAI">
-                    PMLOGGER CONFIGURATION
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAJ">
-                    ARCHIVE LOG MANAGEMENT
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAK">
-                    ARCHIVE LOG MANAGEMENT - pmlogmerge
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAL">
-                    PMIE CONFIGURATION
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAM">
-                    MONITOR DAEMON MANAGEMENT
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <a href="#lbAN">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAO">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAP">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMMGR
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmmgr
+ </b>
+ - pcp daemon manager
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmmgr
+ </b>
+ [
+ <b>
+  -v
+ </b>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  config-directory
+ </i>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  polling-interval
+ </i>
+ ]
+[
+ <b>
+  -l
+ </b>
+ <i>
+  log-file
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmmgr
+ </b>
+ manages a collection of PCP daemons for a set of discovered local and
+remote hosts running the Performance Metrics Collection Daemon (PMCD),
+according to zero or more configuration directories.
+It keeps a matching set of
+ <b>
+  pmie
+ </b>
+ ,
+ <b>
+  pmlogger
+ </b>
+ ,
+ <b>
+  pmrep
+ </b>
+ and other daemons running, and their archives/logs merged/rotated.
+It provides an alternative to the default
+ <b>
+  pmlogger_daily
+ </b>
+ and
+ <b>
+  pmie_daily
+ </b>
+ scripts that administer
+ <b>
+  pmlogger
+ </b>
+ and
+ <b>
+  pmie
+ </b>
+ ``farms'' using
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/cron.3.html">
+   cron
+  </a>
+ </b>
+ (3).
+ <p>
+  <b>
+   pmmgr
+  </b>
+  is largely self-configuring and perseveres despite most run-time
+errors.
+  <b>
+   pmmgr
+  </b>
+  runs in the foreground until interrupted.
+When signaled, it will stop its running daemons before exiting.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  ALGORITHM
+ </h2>
+ Each poll interval,
+ <b>
+  pmmgr
+ </b>
+ computes a list of possible targets for a
+ <b>
+  pmcd
+ </b>
+ search.  This list is assembled from several configuration files,
+and may include explicitly listed specifications, hosts discovered through
+several different mechanisms, and/or individual containers running within them.
+Once the list is assembled,
+ <b>
+  pmmgr
+ </b>
+ attempts to make a brief
+ <i>
+  pmNewContext
+ </i>
+ connection to each target, in order to check for the existence of an actual
+running
+ <b>
+  pmcd
+ </b>
+ instance, and to extract a hostid.  The hostid is treated as a
+unique identifier for the instance, so that redundant connection paths to the
+same server can be filtered out.
+Once the final list of live
+ <b>
+  pmcd
+ </b>
+ instances is identified, along with their unique hostids,
+ <b>
+  pmmgr
+ </b>
+ ensures that
+any requested pcp client daemons are started (or restarted) for them.
+If any
+ <b>
+  pmcd
+ </b>
+ instances disappear from the list, its pcp client daemons are stopped.
+This entire cycle repeats every poll interval.
+ <a name="lbAF">
+ </a>
+ <h2>
+  OPTIONS
+ </h2>
+ A description of the command line options specific to
+ <b>
+  pmmgr
+ </b>
+ follows:
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+  </dt>
+  <dd>
+   <i>
+    directory
+   </i>
+   adds a given configuration directory to
+   <b>
+    pmmgr
+   </b>
+   .
+   <b>
+    pmmgr
+   </b>
+   can supervise
+multiple different configurations at the same time, so this option may
+be repeated.
+Errors in the configuration may be noted to standard error, but
+   <b>
+    pmmgr
+   </b>
+   will fill in missing information with built-in defaults.
+The default directory is
+   <i>
+    $PCP_SYSCONF_DIR/pmmgr
+   </i>
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+  </dt>
+  <dd>
+   <i>
+    polling-interval
+   </i>
+   sets the host-discovery polling interval to the given number of seconds.
+The default is 60.  Daemons for a particular target host will be restarted
+no more frequently than this interval.  There may be a short-lived thread
+inside
+   <b>
+    pmmgr
+   </b>
+   for startup and shutdown of each daemon for each target host.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+  </dt>
+  <dd>
+   <i>
+    log-file
+   </i>
+   redirects standard output and error to the given log file, which is created anew
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   adds more verbose tracing to standard output.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  CONFIGURATION
+ </h2>
+ <a name="lbAH">
+ </a>
+ <h3>
+  FILES
+ </h3>
+ A
+ <b>
+  pmmgr
+ </b>
+ configuration identifies which hosts should be monitored, which
+daemons should be maintained for them, and what options those daemons
+should be run with.
+ <b>
+  pmmgr
+ </b>
+ uses a small number of files in a configuration directory,
+instead of lines in a single text file.
+The individual files carry zero or more lines of 100% pure configuration
+text, and no comments.  (If desired, a configuration may be commented
+upon within other files, such as a free-form README.)
+ <p>
+  Some of the configuration files are forked into pairs: per-hostid and
+common.  This permits numerous almost-identical-configuration targets
+to be managed from the same configuration directory.  For these files,
+marked with
+  <b>
+   *
+  </b>
+  below,
+  <b>
+   pmmgr
+  </b>
+  will
+  <i>
+   concatenate
+  </i>
+  a
+per-hostid file (if it exists) and a common file (if it exists) in
+order to form the complete configuration item.
+ </p>
+ <p>
+  For example, for
+  <b>
+   pmie
+  </b>
+  configuration for target hostid
+  <b>
+   foo
+  </b>
+  ,
+  <b>
+   pmmgr
+  </b>
+  will search files named
+  <i>
+   pmie.foo
+  </i>
+  then
+  <i>
+   pmie
+  </i>
+  .  For
+single-line configuration items, the first file &amp; line found will
+"win"; for multi-line configuration items, they all "win".
+  <a name="lbAI">
+  </a>
+ </p>
+ <h3>
+  TARGET SELECTION
+ </h3>
+ This set of configuration files identifies where
+ <b>
+  pmmgr
+ </b>
+ should search
+for
+ <b>
+  pmcd
+ </b>
+ instances, how to uniquely identify them, and where state
+such as log files should be kept for each.  Ideally, a persistent and
+unique hostid string is computed for each potential target pmcd from
+specified metric values.  This hostid is also used as a subdirectory
+name for locating daemon data.  The rare empty hostid is mapped to "-".
+ <dl compact="">
+  <dt>
+   <i>
+    hostid-static
+   </i>
+  </dt>
+  <dd>
+   This file contains one or more lines specifying the static string that
+should be used as multiple distinct hostids for the same target
+   <b>
+    pmcd
+   </b>
+   .  Treatment of the distinct hostids may be customized using
+per-hostid configuration files.
+Specifying values in this file overrides the
+   <i>
+    hostid-metrics
+   </i>
+   file specified below.  It should be noted that using this option will cause
+all target pmcds to be assigned the same set of hostids.  Thus, this is
+useful in monitoring single hosts or if each monitored host has its own
+configuration directory.
+  </dd>
+  <dt>
+   <i>
+    hostid-metrics
+   </i>
+  </dt>
+  <dd>
+   This file contains one or more lines of metric specifications in the format
+accepted by
+   <i>
+    pmParseMetricSpec
+   </i>
+   .
+
+Metrics without instance specifiers mean all instances of that metric.
+These are used to generate the
+   <i>
+    unique
+   </i>
+   hostid string for each
+   <b>
+    pmcd
+   </b>
+   server that
+   <b>
+    pmmgr
+   </b>
+   discovers.
+Upon discovery,
+all the metrics/instances named are queried, string values fetched, and
+normalized/concatenated into a single hyphenated printable string.
+The default is the single metric
+   <b>
+    pmcd.hostname
+   </b>
+   ,
+
+which is sufficient if all the hosts discovered have unique
+   <a href="http://man7.org/linux/man-pages/man2/hostname.2.html">
+    hostname
+   </a>
+   (2).  If
+they don't, you should add other pcp metric specifications to set them apart
+at your site.  The more you add, the longer the hostid string, but the more
+likely that accidental duplication is prevented.
+  </dd>
+ </dl>
+ <p>
+  However, it may be desirable for a hostid to also be
+  <i>
+   persistent
+  </i>
+  ,
+
+so that if the target host goes offline and later returns, the new
+hostid matches the previous one, because then old and new histories can be joined.
+This argues against using metrics whose values vary from boot to boot.
+ </p>
+ <p>
+  Some candidate metrics to consider:
+  <i>
+   network.interface.hw_addr
+  </i>
+  ,
+  <i>
+   network.interface.inet_addr[eth0]
+  </i>
+  ,
+  <i>
+   network.interface.ipv6_addr
+  </i>
+  ,
+  <i>
+   kernel.uname.nodename
+  </i>
+ </p>
+ <dl compact="">
+  <dt>
+   <i>
+    log-directory
+   </i>
+  </dt>
+  <dd>
+   This file contains the path of a directory beneath which the per-hostid
+subdirectories are to be created by
+   <b>
+    pmmgr
+   </b>
+   .
+
+If it is not a full path, it
+is implicitly relative to the configuration directory itself.  The default is
+   <b>
+    $PCP_LOG_DIR/pmmgr/
+   </b>
+   .
+  </dd>
+  <dt>
+   <i>
+    target-host
+   </i>
+  </dt>
+  <dd>
+   This file contains one or more lines containing
+   <b>
+    pmcd
+   </b>
+   host specifications, as described on the
+   <i>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPintro
+    </a>
+   </i>
+   (1)
+
+manual page.
+The default is to target pmcd at
+   <b>
+    local:
+   </b>
+   .
+  </dd>
+  <dt>
+   <i>
+    target-discovery
+   </i>
+  </dt>
+  <dd>
+   This file contains one or more lines containing specifications for the
+   <i>
+    pmDiscoverServices
+   </i>
+   PMAPI call, each of which may map onto a fluctuating set of local or remote
+pmcd servers.  Each poll interval,
+   <b>
+    pmmgr
+   </b>
+   will attempt to rerun discovery with
+all of the given specifications.  Again, it is not a problem if more than one
+specification matches the same actual pmcd: one confirmed access path is
+arbitrarily selected.  The default is to do
+   <b>
+    no discovery
+   </b>
+   .
+
+Consider including
+   <i>
+    avahi,timeout=5
+   </i>
+   to rely in pmcd self-announcements on the local network (searching for up to
+five seconds each time).  Consider including
+   <i>
+    probe=192.168.1.0/24
+   </i>
+   to quickly scan the given IP address range.
+  </dd>
+  <dt>
+   <i>
+    target-kubectl-pod
+   </i>
+  </dt>
+  <dd>
+   If this file exists,
+   <b>
+    pmmgr
+   </b>
+   is assumed to run within a kubernetes cluster.
+The line of the configuration file is appended to a
+   <b>
+    kubectl get pod
+   </b>
+   command line to discover IP addresses of all matching pods running nearby.
+   <b>
+    pmmgr
+   </b>
+   extracts the
+   <b>
+    .status.podIP
+   </b>
+   field from the kubernetes pod object(s) and tries to connect to each at
+the default pmcd port number.  Use options like
+   <i>
+    -l service=foobar
+   </i>
+   to restrict the search with labels.  The default is to do
+   <b>
+    no kubectl
+   </b>
+   .
+  </dd>
+  <dt>
+   <i>
+    subtarget-containers
+   </i>
+  </dt>
+  <dd>
+   If this file exists,
+   <b>
+    pmmgr
+   </b>
+   will scan each host that is found for
+running containers.  For each running container, it will create
+independent subtargets for running requested daemons.
+The hostid string for these subtargets is the host's hostid
+string, followed by a double-hyphen, then the full unique container
+instance-name string.
+  </dd>
+  <dt>
+   <i>
+    target-threads
+   </i>
+  </dt>
+  <dd>
+   This file contains a limit on the number of concurrent threads
+that analyze potential target pmcds for their hostids and/or
+containers.  The default is
+   <b>
+    a few dozen threads per CPU core
+   </b>
+   ,
+
+if known.  Set this to zero if remote pmcds should be analyzed
+sequentially.  A small number of threads is not a good idea if any
+potential target pmcds are unreachable, since $PMCD_CONNECT_TIMEOUT
+may be several seconds long each.
+  </dd>
+  <dt>
+   <i>
+    log-subdirectory-gc
+   </i>
+  </dt>
+  <dd>
+   This file may contain a time interval specification as per the
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPintro
+    </a>
+   </b>
+   (1)
+
+manual page.
+All subdirectories of the log-directory are
+presumed to contain data for
+   <b>
+    pmmgr
+   </b>
+   -monitored
+
+servers.
+Those that have not been modified in at least that long,
+and not associated with a currently monitored target, are
+deleted entirely.
+This value should be longer than the longest interval that
+   <b>
+    pmmgr
+   </b>
+   normally recreates archives (such as due to
+   <b>
+    pmmgr
+   </b>
+   restarts, and
+   <b>
+    pmlogmerge
+   </b>
+   intervals).
+The default value is
+   <i>
+    90days
+   </i>
+   .
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h3>
+  PMLOGGER CONFIGURATION
+ </h3>
+ This group of configuration options controls a
+ <b>
+  pmlogger
+ </b>
+ daemon for each host.  This may include generating its configuration,
+and managing its archives.
+ <dl compact="">
+  <dt>
+   <i>
+    pmlogger*
+   </i>
+  </dt>
+  <dd>
+   If and only if this file exists,
+   <b>
+    pmmgr
+   </b>
+   will maintain a
+   <b>
+    pmlogger
+   </b>
+   daemon for each
+targeted host.
+This file contains one line of additional space-separated options
+for the
+   <b>
+    pmlogger
+   </b>
+   daemon.  (
+   <b>
+    pmmgr
+   </b>
+   already adds -h, -H, -f, -r, -l, and perhaps -c.)
+The default is to maintain
+   <b>
+    no pmlogger
+   </b>
+   (and no other configuration in this section is processed).
+  </dd>
+  <dt>
+   <i>
+    pmlogger-timefmt*
+   </i>
+  </dt>
+  <dd>
+   Specify a time format to use in the archive-* name for
+   <b>
+    pmlogger
+   </b>
+   generated archives. The default is "%Y%m%d.%H%M%S". Expected to be in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+     strftime
+    </a>
+   </b>
+   (3)
+
+format.
+  </dd>
+  <dt>
+   <i>
+    pmlogconf*
+   </i>
+  </dt>
+  <dd>
+   If and only if this file exists,
+   <b>
+    pmmgr
+   </b>
+   will run
+   <b>
+    pmlogconf
+   </b>
+   to generate a configuration
+file for each target
+   <b>
+    pmcd
+   </b>
+   .
+
+The file contains one line of space-separated additional
+options for the
+   <b>
+    pmlogconf
+   </b>
+   program.
+   <b>
+    pmlogconf
+   </b>
+   's
+
+generated output file will be stored under
+the log-directory/hostid subdirectory.  (
+   <b>
+    pmmgr
+   </b>
+   already adds -c, -r, and -h.)
+The default is
+   <b>
+    no pmlogconf
+   </b>
+   ,
+
+so instead, the
+   <b>
+    pmlogger
+   </b>
+   file above should probably contain a -c option, to
+specify a fixed
+   <b>
+    pmlogger
+   </b>
+   configuration.
+  </dd>
+ </dl>
+ <a name="lbAK">
+ </a>
+ <h3>
+  ARCHIVE LOG MANAGEMENT
+ </h3>
+ Default
+ <b>
+  pmlogger
+ </b>
+ configurations can collect tens of megabytes of data
+per day (possibly split into multiple archives), per target host.
+If your disk space is less than infinite, or archive-splitting unwieldy,
+this should be managed.  In the default, unmanaged case, the system
+administrator is responsible for managing the individual
+ <i>
+  archive-*
+ </i>
+ files from the per-host logging subdirectories.
+ <b>
+  pmmgr
+ </b>
+ offers several other options,
+each representing different performance and usability tradeoffs.
+ <a name="lbAL">
+ </a>
+ <h3>
+  ARCHIVE LOG MANAGEMENT - pmlogmerge
+ </h3>
+ This style of archive log management regularly creates a single merged
+archive from prior archives for each target host, in effect lopping
+off old data and appending the new.  A single merged archive can be
+relatively large (defaults to approximately 100-400 MB per host), and
+puts a corresponding I/O load on storage, but is most convenient for a
+detailed long-timeframe analysis.
+Once
+ <b>
+  pmlogger
+ </b>
+ is restarted, it
+always creates a new archive, so in the steady state, there will be
+one merged archive of recent history, and one current archive being
+written-to by
+ <b>
+  pmlogger
+ </b>
+ .
+ <dl compact="">
+  <dt>
+   <i>
+    pmlogmerge*
+   </i>
+  </dt>
+  <dd>
+   If this file exists,
+   <b>
+    pmmgr
+   </b>
+   will run
+   <b>
+    pmlogextract
+   </b>
+   to periodically merge together preexisting log archives for each
+target pmcd into a single large one.  Then, the preexisting log
+archives are deleted (including any prior merged ones).
+This configuration file may contain a time interval specification as per the
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPintro
+    </a>
+   </b>
+   (1)
+
+manual page, representing the period after which
+   <b>
+    pmlogger
+   </b>
+   should be temporarily stopped, and archives merged.
+It represents the maximum amount of time that
+the merged archive
+   <i>
+    lags
+   </i>
+   the present time.
+The default is
+   <i>
+    24hours
+   </i>
+   .
+  </dd>
+  <dt>
+   <i>
+    pmlogmerge-granular*
+   </i>
+  </dt>
+  <dd>
+   If this file also exists,
+   <b>
+    pmmgr
+   </b>
+   will merge only a subset of preexisting
+log archives into the new one, instead of all of them, so as to
+approximate a granular, aligned set of merged archives.
+The subset chosen corresponds to the previous time interval specified by the
+   <i>
+    pmlogmerge
+   </i>
+   control file.
+The default is
+   <b>
+    no granularity
+   </b>
+   .
+  </dd>
+  <dt>
+   <i>
+    pmlogcheck-corrupt-gc*
+   </i>
+  </dt>
+  <dd>
+   Before archives are considered for merging, they are processed through
+   <b>
+    pmlogcheck
+   </b>
+   to check for corruption.
+In the unlikely case of a
+problem, such archives are renamed out of the way (named "corrupt-*"),
+and retained up to a limited time.
+This file specifies how long.
+If this file exists, it the time interval it contains is the maximum age.
+The default is
+   <b>
+    90days
+   </b>
+   .
+
+To store corrupt archives indefinitely, set this to a large
+quantity like "99999weeks".
+  </dd>
+  <dt>
+   <i>
+    pmlogmerge-rewrite*
+   </i>
+  </dt>
+  <dd>
+   If this file exists,
+   <b>
+    pmmgr
+   </b>
+   will run
+   <b>
+    pmlogrewrite -i
+   </b>
+   (plus any other options listed in this file) on each input archive before
+merging it.  This will naturally require more disk I/O.  The default is
+   <b>
+    no rewriting
+   </b>
+   .
+  </dd>
+  <dt>
+   <i>
+    pmlogmerge-retain*
+   </i>
+  </dt>
+  <dd>
+   <b>
+    pmmgr
+   </b>
+   reduces/deletes any original-resolution archives after a time
+period specified by this file, as measured by the file mtime.
+The period will also be passed to
+   <b>
+    pmlogextract
+   </b>
+   as a negative parameter to
+   <i>
+    -S
+   </i>
+   .
+The default is
+   <i>
+    14days
+   </i>
+   .
+
+To store archives indefinitely, set this to a large quantity
+like "99999weeks".
+  </dd>
+  <dt>
+   <i>
+    pmlogreduce*
+   </i>
+  </dt>
+  <dd>
+   If this file exists, then prior to removing archives that
+expire past the
+   <i>
+    pmlogmerge-retain
+   </i>
+   period, they are processed with
+   <b>
+    pmlogreduce
+   </b>
+   to create reduced archives (named
+   <b>
+    reduced-*
+   </b>
+   ).  If the
+file contains space-separated options, they are passed onto
+pmlogreduce.  (By default, pmlogreduce down-samples to a
+600-second interval.)
+  </dd>
+  <dt>
+   <i>
+    pmlogreduce-retain*
+   </i>
+  </dt>
+  <dd>
+   If this file exists, then reduced archives (identified by the
+   <b>
+    reduced-*
+   </b>
+   pattern) are deleted after a time period
+specified by this file, as measured from the file mtime.
+Since this time is likely that of the pmlogreduce run, the
+total retention time will be approximately the pmlogmerge-retain
+time
+   <b>
+    plus
+   </b>
+   the pmlogreduce-retain time.
+The default is
+   <b>
+    90days
+   </b>
+   .
+
+To store reduced archives indefinitely, set this to a large
+quantity like "99999weeks".
+  </dd>
+  <dt>
+   <i>
+    disk-full-threshold
+   </i>
+  </dt>
+  <dd>
+   If this file exists, then
+   <b>
+    pmmgr
+   </b>
+   will track the disk space available
+where pmlogger archives are kept.  If that partition fills up
+past the configured percentage,
+   <b>
+    pmmgr
+   </b>
+   will linearly reduce the duration logs are kept via the
+   <i>
+    disk-full-retention
+   </i>
+   variable.
+   <p>
+    Values must be greater than zero, and expressed either a value
+between 0 and 1, or decimal value between 1 and 100.
+   </p>
+  </dd>
+  <dt>
+   <i>
+    disk-full-retention
+   </i>
+  </dt>
+  <dd>
+   If expressed, this variable scales the rate at which logs are culled when
+   <i>
+    disk-full-threshold
+   </i>
+   has been surpassed.  A lower percentage will cull logs more quickly (in
+favour of preserving disk space), while a higher percentage will opt to
+retain more pcp archives.
+   <center>
+    <table border="">
+     <tr>
+      <td>
+       <table>
+        <tr valign="top">
+         <td align="center">
+          Normalized Full Threshold
+         </td>
+         <td align="center">
+          Full Retention
+         </td>
+         <td align="center">
+          Final Retention Factor
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          1
+         </td>
+         <td align="center">
+          0.0
+         </td>
+         <td align="center">
+          0.0
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.75
+         </td>
+         <td align="center">
+          0.0
+         </td>
+         <td align="center">
+          0.25
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.5
+         </td>
+         <td align="center">
+          0.0
+         </td>
+         <td align="center">
+          0.5
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.0
+         </td>
+         <td align="center">
+          0.0
+         </td>
+         <td align="center">
+          1.0
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          1
+         </td>
+         <td align="center">
+          0.5
+         </td>
+         <td align="center">
+          0.5
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.75
+         </td>
+         <td align="center">
+          0.5
+         </td>
+         <td align="center">
+          0.625
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.5
+         </td>
+         <td align="center">
+          0.5
+         </td>
+         <td align="center">
+          0.75
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.0
+         </td>
+         <td align="center">
+          0.5
+         </td>
+         <td align="center">
+          1.0
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          1
+         </td>
+         <td align="center">
+          1.0
+         </td>
+         <td align="center">
+          1.0
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.75
+         </td>
+         <td align="center">
+          1.0
+         </td>
+         <td align="center">
+          1.0
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.5
+         </td>
+         <td align="center">
+          1.0
+         </td>
+         <td align="center">
+          1.0
+          <br/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td colspan="3">
+          <hr/>
+         </td>
+        </tr>
+        <tr valign="top">
+         <td align="center">
+          0.0
+         </td>
+         <td align="center">
+          1.0
+         </td>
+         <td align="center">
+          1.0
+          <br/>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+   </center>
+  </dd>
+ </dl>
+ <a name="lbAM">
+ </a>
+ <h3>
+  PMIE CONFIGURATION
+ </h3>
+ This group of configuration options controls a
+ <b>
+  pmie
+ </b>
+ daemon for each host.
+This may include generating a custom configuration.
+ <dl compact="">
+  <dt>
+   <i>
+    pmie*
+   </i>
+  </dt>
+  <dd>
+   If and only if this file exists,
+   <b>
+    pmmgr
+   </b>
+   will maintain a
+   <b>
+    pmie
+   </b>
+   daemon for each targeted
+   <b>
+    pmcd
+   </b>
+   .
+
+This file contains one line of additional space-separated options
+for the
+   <b>
+    pmie
+   </b>
+   daemon.  (
+   <b>
+    pmmgr
+   </b>
+   already adds -h, -f, -l, and perhaps -c.)
+The default is to maintain
+   <b>
+    no pmie
+   </b>
+   (and no other configuration in this section is processed).
+  </dd>
+  <dt>
+   <i>
+    pmieconf*
+   </i>
+  </dt>
+  <dd>
+   If and only if this file exists,
+   <b>
+    pmmgr
+   </b>
+   will run
+   <b>
+    pmieconf
+   </b>
+   to generate a configuration
+file for each target
+   <b>
+    pmcd
+   </b>
+   .
+
+The file contains one line of space-separated additional options for the
+   <b>
+    pmieconf
+   </b>
+   program.
+   <b>
+    pmieconf
+   </b>
+   -
+
+generated output file will be stored under
+the log-directory/hostid subdirectory.  (
+   <b>
+    pmmgr
+   </b>
+   already adds -F, -c, and -f.)
+The default is
+   <b>
+    no pmieconf
+   </b>
+   ,
+
+so instead, the
+   <i>
+    pmie
+   </i>
+   file above should probably contain a -c option, to
+specify a fixed
+   <b>
+    pmie configuration.
+   </b>
+  </dd>
+ </dl>
+ <a name="lbAN">
+ </a>
+ <h3>
+  MONITOR DAEMON MANAGEMENT
+ </h3>
+ <b>
+  pmmgr
+ </b>
+ may be used to invoke arbitrary PCP client programs for each target
+ <b>
+  pmcd
+ </b>
+ .
+
+This can enable automated invocation of reporting or relaying tools, such as
+ <b>
+  pmrep
+ </b>
+ ,
+ <b>
+  pcp2graphite
+ </b>
+ or
+ <b>
+  pcp2influxdb
+ </b>
+ without needing a specialized system service.
+ <dl compact="">
+  <dt>
+   <i>
+    monitor*
+   </i>
+  </dt>
+  <dd>
+   If this file exists, then for each line in this file, a new background process will
+be invoked.  (It is restarted if it exits.)  The line specifies the beginning of the
+command line (including the program name);
+   <b>
+    pmmgr
+   </b>
+   appends a -h HOSTSPEC, and arranges
+to collect the standard output and standard error into separate
+   <b>
+    monitor-NN.out
+   </b>
+   and
+   <b>
+    monitor-NN.err
+   </b>
+   files under the log directory.  Errors messages in the latter are transcribed
+to
+   <b>
+    pmmgr
+   </b>
+   's
+
+own logs.
+  </dd>
+ </dl>
+ <a name="lbAO">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_SYSCONF_DIR/pmmgr/
+   </b>
+  </dt>
+  <dd>
+   default configuration directory
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmmgr/
+   </b>
+  </dt>
+  <dd>
+   default logging directory
+  </dd>
+ </dl>
+ <a name="lbAP">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parametrize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAQ">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/cron.1.html">
+   cron
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogconf.1.html">
+   pmlogconf
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger_daily.1.html">
+   pmlogger_daily
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmieconf.1.html">
+   pmieconf
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmie.1.html">
+   pmie
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmie_daily.1.html">
+   pmie_daily
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcp2graphite.1.html">
+   pcp2graphite
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcp2influxdb.1.html">
+   pcp2influxdb
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogreduce.1.html">
+   pmlogreduce
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    ALGORITHM
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    OPTIONS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    CONFIGURATION
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAH">
+      FILES
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAI">
+      TARGET SELECTION
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAJ">
+      PMLOGGER CONFIGURATION
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAK">
+      ARCHIVE LOG MANAGEMENT
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAL">
+      ARCHIVE LOG MANAGEMENT - pmlogmerge
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAM">
+      PMIE CONFIGURATION
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAN">
+      MONITOR DAEMON MANAGEMENT
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAO">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAP">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAQ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

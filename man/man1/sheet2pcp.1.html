@@ -1,1354 +1,1345 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                SHEET2PCP
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                sheet2pcp
-               </b>
-               - import spreadsheet data and create a PCP archive
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                sheet2pcp
-               </b>
-               [
-               <b>
-                -h
-               </b>
-               <i>
-                host
-               </i>
-               ] [
-               <b>
-                -Z
-               </b>
-               <i>
-                timezone
-               </i>
-               ]
-               <i>
-                infile
-               </i>
-               <i>
-                mapfile
-               </i>
-               <i>
-                outfile
-               </i>
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                sheet2pcp
-               </b>
-               is intended to read a data spreadsheet (
-               <i>
-                infile
-               </i>
-               )
-              translate this into a Performance
-              Co-Pilot (
-               <font size="-1">
-                PCP
-               </font>
-               ) archive with the basename
-               <i>
-                outfile
-               </i>
-               .
-               <p>
-                The input spreadsheet can be in any of the common formats, provided
-              the appropriate Perl modules have been installed (see the
-                <b>
-                </b>
-                <font size="-1">
-                 <b>
-                  CAVEATS
-                 </b>
-                </font>
-                <b>
-                </b>
-                section below).  The spreadsheet must be normalized
-              so that each row contains data for the same time interval, and one
-              of the columns contains the date and time for the data in each
-              row.
-               </p>
-               <p>
-                The resultant
-                <font size="-1">
-                 PCP
-                </font>
-                archive may be used with all the
-                <font size="-1">
-                 PCP
-                </font>
-                client tools
-              to graph subsets of the data using
-                <b>
-                 <a href="/man/man1/pmchart.1.html">
-                  pmchart
-                 </a>
-                </b>
-                (1),
-              perform data reduction and reporting, filter with
-              the
-                <font size="-1">
-                 PCP
-                </font>
-                inference engine
-                <b>
-                 <a href="/man/man1/pmie.1.html">
-                  pmie
-                 </a>
-                </b>
-                (1), etc.
-               </p>
-               <p>
-                The
-                <i>
-                 mapfile
-                </i>
-                controls the import process and defines the data
-              mapping from the spreadsheet columns onto the
-                <font size="-1">
-                 PCP
-                </font>
-                data model.  The file
-              is written in
-                <font size="-1">
-                 XML
-                </font>
-                and conforms to the syntax defined in the
-                <b>
-                </b>
-                <font size="-1">
-                 <b>
-                  MAPPING
-                 </b>
-                </font>
-                <b>
-                </b>
-                <font size="-1">
-                 <b>
-                  CONFIGURATION
-                 </b>
-                </font>
-                <b>
-                </b>
-                section below.
-               </p>
-               <p>
-                A series of physical files will be created with the prefix
-                <i>
-                 outfile
-                </i>
-                .
-              These are
-                <i>
-                 outfile
-                </i>
-                <b>
-                 .0
-                </b>
-                (the performance data),
-                <i>
-                 outfile
-                </i>
-                <b>
-                 .meta
-                </b>
-                (the metadata that describes the performance data) and
-                <i>
-                 outfile
-                </i>
-                <b>
-                 .index
-                </b>
-                (a temporal index to improve efficiency of replay
-              operations for the archive).  If any of these files exists already,
-              then
-                <b>
-                 sheet2pcp
-                </b>
-                will
-                <b>
-                 not
-                </b>
-                overwrite them and will exit with an error
-              message.
-               </p>
-               <p>
-                The
-                <b>
-                 -h
-                </b>
-                option is an alternate to the
-                <b>
-                 hostname
-                </b>
-                attribute of the
-                <b>
-                 &lt;sheet&gt;
-                </b>
-                element in
-                <i>
-                 mapfile
-                </i>
-                described below.  If both are specified, the value from
-                <i>
-                 mapfile
-                </i>
-                is
-              used.
-               </p>
-               <p>
-                The
-                <b>
-                 -Z
-                </b>
-                option is an alternate to the
-                <b>
-                 timezone
-                </b>
-                attribute of the
-                <b>
-                 &lt;sheet&gt;
-                </b>
-                element in
-                <i>
-                 mapfile
-                </i>
-                described below.  If both are specified, the value from
-                <i>
-                 mapfile
-                </i>
-                is
-              used.
-               </p>
-               <p>
-                <b>
-                 sheet2pcp
-                </b>
-                is a Perl script that uses the PCP::LogImport Perl wrapper
-              around the
-                <font size="-1">
-                 PCP
-                </font>
-                <i>
-                 libpcp_import
-                </i>
-                library, and as such could be used as an example to develop new
-              tools to import other types of performance data and create
-                <font size="-1">
-                 PCP
-                </font>
-                archives.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                MAPPING CONFIGURATION
-               </h2>
-               <a name="ixAAB">
-               </a>
-               The
-               <i>
-                mapfile
-               </i>
-               contains specifications in standard
-               <font size="-1">
-                XML
-               </font>
-               format.
-               <p>
-                The whole specification is wrapped in a
-                <b>
-                 &lt;sheet&gt;
-                </b>
-                ...
-                <b>
-                 &lt;/sheet&gt;
-                </b>
-                element.
-              The
-                <b>
-                 sheet
-                </b>
-                tag supports the following optional attributes:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  heading
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAC">
-                 </a>
-                 Specifies the number of
-              heading rows to skip at the start of the spreadsheet before processing data.
-              Example: heading=1.
-                </dd>
-                <dt>
-                 <b>
-                  hostname
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAD">
-                 </a>
-                 Set the source hostname in the
-                 <font size="-1">
-                  PCP
-                 </font>
-                 archive (the
-              default is to use the hostname of the local host).
-              Example: hostname=some.where.com.
-                </dd>
-                <dt>
-                 <b>
-                  timezone
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAE">
-                 </a>
-                 Set the source timezone in the
-                 <font size="-1">
-                  PCP
-                 </font>
-                 archive (the
-              default is to use
-                 <font size="-1">
-                  UTC
-                 </font>
-                 ).  The timezone must have the
-              format +HHMM (for hours and minutes East of
-                 <font size="-1">
-                  UTC
-                 </font>
-                 ) or -HHMM (for hours
-              and minutes West of
-                 <font size="-1">
-                  UTC
-                 </font>
-                 ).  Note in particular that
-                 <b>
-                  neither
-                 </b>
-                 the
-                 <b>
-                  zoneinfo
-                 </b>
-                 (aka Olson) format, e.g. Europe/Paris, nor the Posix
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   TZ
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 format, e.g.
-                 <font size="-1">
-                  EST+5
-                 </font>
-                 is allowed.
-              Example: timezone=+1100.
-                </dd>
-                <dt>
-                 <b>
-                  datefmt
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAF">
-                 </a>
-                 The format of the date imported from the spreadsheet may be specified
-              as a concatenation of
-              values that specify the
-              order of the year (
-                 <b>
-                  Y
-                 </b>
-                 ), month (
-                 <b>
-                  M
-                 </b>
-                 ) and day (
-                 <b>
-                  D
-                 </b>
-                 ) fields in a date.
-              The supported variants are
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   DMY
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 (the default),
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   MDY
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 and
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   YMD
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 .
-              Example: datefmt=
-                 <font size="-1">
-                  YMD
-                 </font>
-                 .
-                </dd>
-               </dl>
-               <p>
-                A
-                <b>
-                 &lt;sheet&gt;
-                </b>
-                element contains
-              one or more metric specifications of
-              the form
-                <b>
-                 &lt;metric&gt;
-                </b>
-                <i>
-                 metricname
-                </i>
-                <b>
-                 &lt;/metric&gt;
-                </b>
-                .  The
-                <b>
-                 metric
-                </b>
-                tag supports the following optional attributes:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  pmid
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAG">
-                 </a>
-                 The Performance Metrics Identifier (
-                 <font size="-1">
-                  PMID
-                 </font>
-                 ), specified as 3 numbers
-              separated by a periods (.) to
-              set the
-                 <b>
-                  domain
-                 </b>
-                 ,
-                 <b>
-                  cluster
-                 </b>
-                 and
-                 <b>
-                  item
-                 </b>
-                 fields of the
-                 <font size="-1">
-                  PMID
-                 </font>
-                 , see
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   <a href="/man/man5/pmns.5.html">
-                    PMNS
-                   </a>
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 (5)
-              for more details of PMIDs.  If omitted, the
-                 <font size="-1">
-                  PMID
-                 </font>
-                 will be automatically
-              assigned by
-                 <b>
-                  <a href="/man/man3/pmiaddmetric.3.html">
-                   pmiAddMetric
-                  </a>
-                 </b>
-                 (3).
-              The value
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   PM_ID_NULL
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 may be used to explicitly nominate
-              the default behaviour.
-              Examples: pmid=60.0.2, pmid=
-                 <font size="-1">
-                  PM_ID_NULL
-                 </font>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  indom
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAH">
-                 </a>
-                 Each metric may have one or more values.  If a metric
-                 <b>
-                  always
-                 </b>
-                 has one value, it is singular and the Instance Domain should be set to
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   PM_INDOM_NULL
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 .
-              Otherwise
-                 <b>
-                  indom
-                 </b>
-                 should be specified as 2 numbers separated by a period (.)
-              to set the
-                 <b>
-                  domain
-                 </b>
-                 and
-                 <b>
-                  ordinal
-                 </b>
-                 fields of the Instance Domain, see
-              the
-                 <b>
-                  __pmInDom_int
-                 </b>
-                 typedef in
-                 <i>
-                  &lt;
-                  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/impl.h">
-                   pcp/impl.h
-                  </a>
-                  &gt;
-                 </i>
-                 .
-              Examples: indom=
-                 <font size="-1">
-                  PM_INDOM_NULL
-                 </font>
-                 , indom=60.3, indom=
-                 <font size="-1">
-                  PMI_DOMAIN
-                 </font>
-                 .4.
-              
-              More than
-              one metric can share the same Instance Domain when the metrics have defined
-              values over similar sets of instances, e.g. all the metrics for each network
-              interface.  It is standard practice for the
-                 <b>
-                  domain
-                 </b>
-                 field to be the
-              same for the
-                 <b>
-                  pmid
-                 </b>
-                 and the
-                 <b>
-                  indom
-                 </b>
-                 ; if the
-                 <b>
-                  pmid
-                 </b>
-                 attribute is missing,
-              then the
-                 <b>
-                  domain
-                 </b>
-                 field for the
-                 <b>
-                  indom
-                 </b>
-                 should be the reserved domain
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   PMI_DOMAIN
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 .
-              
-              If the
-                 <b>
-                  indom
-                 </b>
-                 attribute is omitted then the default Instance Domain for
-              the metric is
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   PM_INDOM_NULL
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  units
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAI">
-                 </a>
-                 The scale and dimension of the metric values along the axes of space, time
-              and count (events, messages, packets, etc.) is specified with a 6-tuple.
-              These values are passed to the
-                 <b>
-                  <a href="/man/man3/pmiunits.3.html">
-                   pmiUnits
-                  </a>
-                 </b>
-                 (3) function to generate a
-                 <i>
-                  pmUnits
-                 </i>
-                 structure.  Refer to
-                 <b>
-                  <a href="/man/man3/pmlookupdesc.3.html">
-                   pmLookupDesc
-                  </a>
-                 </b>
-                 (3) for a full description
-              of all the fields of this structure.
-              The default is to assign no scale or dimension to the metric, i.e. units=0,0,0,0,0,0.
-              Examples: units=0,1,0,0,PM_TIME_MSEC,0 (milliseconds),
-              units=1,-1,0,PM_SPACE_MBYTE,PM_TIME_SEC,0 (Mbytes/sec),
-              units=0,1,-1,0,PM_TIME_USEC,PM_COUNT_ONE (microseconds/event).
-                </dd>
-                <dt>
-                 <b>
-                  type
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAJ">
-                 </a>
-                 Defines the data type for the metric.
-              Refer to
-                 <b>
-                  <a href="/man/man3/pmlookupdesc.3.html">
-                   pmLookupDesc
-                  </a>
-                 </b>
-                 (3) for a full description
-              of the possible type values; the default is
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   PM_TYPE_FLOAT
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 .
-              Examples: type=
-                 <font size="-1">
-                  PM_TYPE_32
-                 </font>
-                 , type=
-                 <font size="-1">
-                  PM_TYPE_U64
-                 </font>
-                 , type=
-                 <font size="-1">
-                  PM_TYPE_STRING
-                 </font>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  sem
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAK">
-                 </a>
-                 Defines the semantics of the metric.
-              Refer to
-                 <b>
-                  <a href="/man/man3/pmlookupdesc.3.html">
-                   pmLookupDesc
-                  </a>
-                 </b>
-                 (3) for a full description
-              of the possible values; the default is
-                 <b>
-                 </b>
-                 <font size="-1">
-                  <b>
-                   PM_SEM_INSTANT
-                  </b>
-                 </font>
-                 <b>
-                 </b>
-                 .
-              Examples: sem=
-                 <font size="-1">
-                  PM_SEM_COUNTER
-                 </font>
-                 , type=
-                 <font size="-1">
-                  PM_SEM_DISCRETE
-                 </font>
-                 .
-                </dd>
-               </dl>
-               <p>
-                The remaining specifications define the data columns
-                <b>
-                 in order
-                </b>
-                using
-                <b>
-                 exactly
-                </b>
-                one
-                <b>
-                 &lt;datetime&gt;
-                </b>
-                <b>
-                 &lt;/datetime&gt;
-                </b>
-                element,
-              one or more
-                <b>
-                 &lt;data&gt;
-                </b>
-                <i>
-                 metricspec
-                </i>
-                <b>
-                 &lt;/data&gt;
-                </b>
-                elements
-              and
-              one or more
-                <b>
-                 &lt;skip&gt;
-                </b>
-                <b>
-                 &lt;/skip&gt;
-                </b>
-                elements.
-               </p>
-               <p>
-                The
-                <b>
-                 &lt;datetime&gt;
-                </b>
-                element defines the column in which a date and time will
-              be found to form the timestamp in the
-                <font size="-1">
-                 PCP
-                </font>
-                archive for all the data in
-              each row of the
-                <font size="-1">
-                 PCP
-                </font>
-                archive.
-               </p>
-               <p>
-                For the
-                <b>
-                 &lt;data&gt;
-                </b>
-                element,
-              a
-                <i>
-                 metricspec
-                </i>
-                consists of a metric name (as defined in an earlier
-                <b>
-                 &lt;metric&gt;
-                </b>
-                element), optionally followed by an instance name that is enclosed by square brackets,
-              e.g. &lt;data&gt;hinv.ncpu&lt;/data&gt;, &lt;data&gt;kernel.all.load[1 minute]&lt;/data&gt;.
-               </p>
-               <p>
-                The
-                <b>
-                 skip
-                </b>
-                tag defines the column that should be skipped when preparing
-              data for the
-                <font size="-1">
-                 PCP
-                </font>
-                archive.
-               </p>
-               <p>
-                The order of the
-                <b>
-                 &lt;datetime&gt;
-                </b>
-                ,
-                <b>
-                 &lt;data&gt;
-                </b>
-                and
-                <b>
-                 &lt;skip&gt;
-                </b>
-                elements matches the order of columns in the
-              spreadsheet.  If the number of elements is not the same as the number
-              of columns a warning is issued, and the extra elements or columns
-              generate no metric values in the output archive.
-                <a name="lbAF">
-                </a>
-               </p>
-               <h3>
-                <font size="-1">
-                 EXAMPLE
-                </font>
-               </h3>
-               <a name="ixAAL">
-               </a>
-               The
-               <i>
-                mapfile
-               </i>
-               ...
-               <p>
-                &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-                  &lt;sheet heading="1"&gt;
-                      &lt;!-- simple example --&gt;
-                      &lt;metric pmid="60.0.2" indom="60.0" units="0,1,0,0,PM_TIME_MSEC,0"
-                          type="PM_TYPE_U64" sem="PM_SEM_COUNTER"&gt;
-                      kernel.percpu.cpu.sys&lt;/metric&gt;
-                      &lt;datetime&gt;&lt;/datetime&gt;
-                      &lt;skip&gt;&lt;/skip&gt;
-                      &lt;data&gt;kernel.percpu.cpu.sys[cpu0]&lt;/data&gt;
-                      &lt;data&gt;kernel.percpu.cpu.sys[cpu1]&lt;/data&gt;
-                  &lt;/sheet&gt;
-               </p>
-               <p>
-                could be used for a spreadsheet in which the first few rows are ...
-               </p>
-               <p>
-                Date;"Status";"SysTime - 0";"SysTime - 1";
-                  26/01/2001 14:05:22;"Some Busy";0.750;0.133
-                  26/01/2001 14:05:37;"OK";0.150;0.273
-                  26/01/2001 14:05:52;"All Busy";0.733;0.653
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                CAVEATS
-               </h2>
-               <a name="ixAAM">
-               </a>
-               Only the first sheet from
-               <i>
-                infile
-               </i>
-               will be processed.
-               <p>
-                Additional Perl modules must be installed for the various spreadsheet formats,
-              although these are checked for ar run-time so only the modules required for
-              the specific types of spreadsheets you wish to process need be installed:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  *.csv
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAN">
-                 </a>
-                 Spreadsheets in the Comma Separated Values (
-                 <font size="-1">
-                  CSV
-                 </font>
-                 ) format require
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/text::csv_xs.3.html">
-                   Text::CSV_XS
-                  </a>
-                 </b>
-                 (3pm).
-                </dd>
-                <dt>
-                 <b>
-                  *.sxc
-                 </b>
-                 or
-                 <b>
-                  *.ods
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAO">
-                 </a>
-                 OpenOffice documents require
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/spreadsheet::readsxc.3.html">
-                   Spreadsheet::ReadSXC
-                  </a>
-                 </b>
-                 (3pm), which in turn
-              requires
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/archive::zip.3.html">
-                   Archive::Zip
-                  </a>
-                 </b>
-                 (3pm).
-                </dd>
-                <dt>
-                 <b>
-                  *.xls
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAP">
-                 </a>
-                 Classical Microsoft Office documents require
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/spreadsheet::parseexcel.3.html">
-                   Spreadsheet::ParseExcel
-                  </a>
-                 </b>
-                 (3pm),
-              which in turn requires
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/ole::storage_lite.3.html">
-                   OLE::Storage_Lite
-                  </a>
-                 </b>
-                 (3pm).
-                </dd>
-                <dt>
-                 <b>
-                  *.xlsx
-                 </b>
-                </dt>
-                <dd>
-                 <a name="ixAAQ">
-                 </a>
-                 Microsoft OpenXML documents require
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/spreadsheet::xlsx.3.html">
-                   Spreadsheet::XLSX
-                  </a>
-                 </b>
-                 (3pm).
-                 <b>
-                  sheet2pcp
-                 </b>
-                 does not appear to work with OpenXML documents saved from OpenOffice.
-                </dd>
-               </dl>
-               <a name="lbAH">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAI">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pmchart.1.html">
-                 pmchart
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmie.1.html">
-                 pmie
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/sed.1.html">
-                 sed
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmiaddmetric.3.html">
-                 pmiAddMetric
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupdesc.3.html">
-                 pmLookupDesc
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmiunits.3.html">
-                 pmiUnits
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/archive::zip.3.html">
-                 Archive::Zip
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/date::format.3.html">
-                 Date::Format
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/date::parse.3.html">
-                 Date::Parse
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="/man/man3/pcp::logimport.3.html">
-                 PCP::LogImport
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/ole::storage_lite.3.html">
-                 OLE::Storage_Lite
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/spreadsheet::parseexcel.3.html">
-                 Spreadsheet::ParseExcel
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/spreadsheet::readsxc.3.html">
-                 Spreadsheet::ReadSXC
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/spreadsheet::xlsx.3.html">
-                 Spreadsheet::XLSX
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/text::csv_xs.3.html">
-                 Text::CSV_XS
-                </a>
-               </b>
-               (3pm),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/xml::tokeparser.3.html">
-                 XML::TokeParser
-                </a>
-               </b>
-               (3pm)
-              
-              and
-               <b>
-                <a href="/man/man3/logimport.3.html">
-                 LOGIMPORT
-                </a>
-               </b>
-               (3).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  MAPPING CONFIGURATION
-                 </a>
-                </dt>
-                <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAF">
-                    <font size="-1">
-                     EXAMPLE
-                    </font>
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  CAVEATS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  SHEET2PCP
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  sheet2pcp
+ </b>
+ - import spreadsheet data and create a PCP archive
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  sheet2pcp
+ </b>
+ [
+ <b>
+  -h
+ </b>
+ <i>
+  host
+ </i>
+ ] [
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+ <i>
+  infile
+ </i>
+ <i>
+  mapfile
+ </i>
+ <i>
+  outfile
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  sheet2pcp
+ </b>
+ is intended to read a data spreadsheet (
+ <i>
+  infile
+ </i>
+ )
+translate this into a Performance
+Co-Pilot (
+ <font size="-1">
+  PCP
+ </font>
+ ) archive with the basename
+ <i>
+  outfile
+ </i>
+ .
+ <p>
+  The input spreadsheet can be in any of the common formats, provided
+the appropriate Perl modules have been installed (see the
+  <b>
+  </b>
+  <font size="-1">
+   <b>
+    CAVEATS
+   </b>
+  </font>
+  <b>
+  </b>
+  section below).  The spreadsheet must be ``normalized''
+so that each row contains data for the same time interval, and one
+of the columns contains the date and time for the data in each
+row.
+ </p>
+ <p>
+  The resultant
+  <font size="-1">
+   PCP
+  </font>
+  archive may be used with all the
+  <font size="-1">
+   PCP
+  </font>
+  client tools
+to graph subsets of the data using
+  <b>
+   <a href="/man/man1/pmchart.1.html">
+    pmchart
+   </a>
+  </b>
+  (1),
+perform data reduction and reporting, filter with
+the
+  <font size="-1">
+   PCP
+  </font>
+  inference engine
+  <b>
+   <a href="/man/man1/pmie.1.html">
+    pmie
+   </a>
+  </b>
+  (1), etc.
+ </p>
+ <p>
+  The
+  <i>
+   mapfile
+  </i>
+  controls the import process and defines the data
+mapping from the spreadsheet columns onto the
+  <font size="-1">
+   PCP
+  </font>
+  data model.  The file
+is written in
+  <font size="-1">
+   XML
+  </font>
+  and conforms to the syntax defined in the
+  <b>
+  </b>
+  <font size="-1">
+   <b>
+    MAPPING
+   </b>
+  </font>
+  <b>
+  </b>
+  <font size="-1">
+   <b>
+    CONFIGURATION
+   </b>
+  </font>
+  <b>
+  </b>
+  section below.
+ </p>
+ <p>
+  A series of physical files will be created with the prefix
+  <i>
+   outfile
+  </i>
+  .
+These are
+  <i>
+   outfile
+  </i>
+  <b>
+   .0
+  </b>
+  (the performance data),
+  <i>
+   outfile
+  </i>
+  <b>
+   .meta
+  </b>
+  (the metadata that describes the performance data) and
+  <i>
+   outfile
+  </i>
+  <b>
+   .index
+  </b>
+  (a temporal index to improve efficiency of replay
+operations for the archive).  If any of these files exists already,
+then
+  <b>
+   sheet2pcp
+  </b>
+  will
+  <b>
+   not
+  </b>
+  overwrite them and will exit with an error
+message.
+ </p>
+ <p>
+  The
+  <b>
+   -h
+  </b>
+  option is an alternate to the
+  <b>
+   hostname
+  </b>
+  attribute of the
+  <b>
+   &lt;sheet&gt;
+  </b>
+  element in
+  <i>
+   mapfile
+  </i>
+  described below.  If both are specified, the value from
+  <i>
+   mapfile
+  </i>
+  is
+used.
+ </p>
+ <p>
+  The
+  <b>
+   -Z
+  </b>
+  option is an alternate to the
+  <b>
+   timezone
+  </b>
+  attribute of the
+  <b>
+   &lt;sheet&gt;
+  </b>
+  element in
+  <i>
+   mapfile
+  </i>
+  described below.  If both are specified, the value from
+  <i>
+   mapfile
+  </i>
+  is
+used.
+ </p>
+ <p>
+  <b>
+   sheet2pcp
+  </b>
+  is a Perl script that uses the PCP::LogImport Perl wrapper
+around the
+  <font size="-1">
+   PCP
+  </font>
+  <i>
+   libpcp_import
+  </i>
+  library, and as such could be used as an example to develop new
+tools to import other types of performance data and create
+  <font size="-1">
+   PCP
+  </font>
+  archives.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  MAPPING CONFIGURATION
+ </h2>
+ <a name="ixAAB">
+ </a>
+ The
+ <i>
+  mapfile
+ </i>
+ contains specifications in standard
+ <font size="-1">
+  XML
+ </font>
+ format.
+ <p>
+  The whole specification is wrapped in a
+  <b>
+   &lt;sheet&gt;
+  </b>
+  ...
+  <b>
+   &lt;/sheet&gt;
+  </b>
+  element.
+The
+  <b>
+   sheet
+  </b>
+  tag supports the following optional attributes:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    heading
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAC">
+   </a>
+   Specifies the number of
+heading rows to skip at the start of the spreadsheet before processing data.
+Example: heading=``1''.
+  </dd>
+  <dt>
+   <b>
+    hostname
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAD">
+   </a>
+   Set the source hostname in the
+   <font size="-1">
+    PCP
+   </font>
+   archive (the
+default is to use the hostname of the local host).
+Example: hostname=``some.where.com''.
+  </dd>
+  <dt>
+   <b>
+    timezone
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAE">
+   </a>
+   Set the source timezone in the
+   <font size="-1">
+    PCP
+   </font>
+   archive (the
+default is to use
+   <font size="-1">
+    UTC
+   </font>
+   ).  The timezone must have the
+format +HHMM (for hours and minutes East of
+   <font size="-1">
+    UTC
+   </font>
+   ) or -HHMM (for hours
+and minutes West of
+   <font size="-1">
+    UTC
+   </font>
+   ).  Note in particular that
+   <b>
+    neither
+   </b>
+   the
+   <b>
+    zoneinfo
+   </b>
+   (aka Olson) format, e.g. Europe/Paris, nor the Posix
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     TZ
+    </b>
+   </font>
+   <b>
+   </b>
+   format, e.g.
+   <font size="-1">
+    EST+5
+   </font>
+   is allowed.
+Example: timezone=``+1100''.
+  </dd>
+  <dt>
+   <b>
+    datefmt
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAF">
+   </a>
+   The format of the date imported from the spreadsheet may be specified
+as a concatenation of
+values that specify the
+order of the year (
+   <b>
+    Y
+   </b>
+   ), month (
+   <b>
+    M
+   </b>
+   ) and day (
+   <b>
+    D
+   </b>
+   ) fields in a date.
+The supported variants are
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     DMY
+    </b>
+   </font>
+   <b>
+   </b>
+   (the default),
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     MDY
+    </b>
+   </font>
+   <b>
+   </b>
+   and
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     YMD
+    </b>
+   </font>
+   <b>
+   </b>
+   .
+Example: datefmt=``
+   <font size="-1">
+    YMD
+   </font>
+   ''.
+  </dd>
+ </dl>
+ <p>
+  A
+  <b>
+   &lt;sheet&gt;
+  </b>
+  element contains
+one or more metric specifications of
+the form
+  <b>
+   &lt;metric&gt;
+  </b>
+  <i>
+   metricname
+  </i>
+  <b>
+   &lt;/metric&gt;
+  </b>
+  .  The
+  <b>
+   metric
+  </b>
+  tag supports the following optional attributes:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    pmid
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAG">
+   </a>
+   The Performance Metrics Identifier (
+   <font size="-1">
+    PMID
+   </font>
+   ), specified as 3 numbers
+separated by a periods (.) to
+set the
+   <b>
+    domain
+   </b>
+   ,
+   <b>
+    cluster
+   </b>
+   and
+   <b>
+    item
+   </b>
+   fields of the
+   <font size="-1">
+    PMID
+   </font>
+   , see
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     <a href="/man/man5/pmns.5.html">
+      PMNS
+     </a>
+    </b>
+   </font>
+   <b>
+   </b>
+   (5)
+for more details of PMIDs.  If omitted, the
+   <font size="-1">
+    PMID
+   </font>
+   will be automatically
+assigned by
+   <b>
+    <a href="/man/man3/pmiaddmetric.3.html">
+     pmiAddMetric
+    </a>
+   </b>
+   (3).
+The value
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     PM_ID_NULL
+    </b>
+   </font>
+   <b>
+   </b>
+   may be used to explicitly nominate
+the default behaviour.
+Examples: pmid=``60.0.2'', pmid=``
+   <font size="-1">
+    PM_ID_NULL
+   </font>
+   ''.
+  </dd>
+  <dt>
+   <b>
+    indom
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAH">
+   </a>
+   Each metric may have one or more values.  If a metric
+   <b>
+    always
+   </b>
+   has one value, it is singular and the Instance Domain should be set to
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     PM_INDOM_NULL
+    </b>
+   </font>
+   <b>
+   </b>
+   .
+Otherwise
+   <b>
+    indom
+   </b>
+   should be specified as 2 numbers separated by a period (.)
+to set the
+   <b>
+    domain
+   </b>
+   and
+   <b>
+    ordinal
+   </b>
+   fields of the Instance Domain.
+Examples: indom=``
+   <font size="-1">
+    PM_INDOM_NULL
+   </font>
+   '', indom=``60.3'', indom=``
+   <font size="-1">
+    PMI_DOMAIN
+   </font>
+   .4''.
+
+More than
+one metric can share the same Instance Domain when the metrics have defined
+values over similar sets of instances, e.g. all the metrics for each network
+interface.  It is standard practice for the
+   <b>
+    domain
+   </b>
+   field to be the
+same for the
+   <b>
+    pmid
+   </b>
+   and the
+   <b>
+    indom
+   </b>
+   ; if the
+   <b>
+    pmid
+   </b>
+   attribute is missing,
+then the
+   <b>
+    domain
+   </b>
+   field for the
+   <b>
+    indom
+   </b>
+   should be the reserved domain
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     PMI_DOMAIN
+    </b>
+   </font>
+   <b>
+   </b>
+   .
+
+If the
+   <b>
+    indom
+   </b>
+   attribute is omitted then the default Instance Domain for
+the metric is
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     PM_INDOM_NULL
+    </b>
+   </font>
+   <b>
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    units
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAI">
+   </a>
+   The scale and dimension of the metric values along the axes of space, time
+and count (events, messages, packets, etc.) is specified with a 6-tuple.
+These values are passed to the
+   <b>
+    <a href="/man/man3/pmiunits.3.html">
+     pmiUnits
+    </a>
+   </b>
+   (3) function to generate a
+   <i>
+    pmUnits
+   </i>
+   structure.  Refer to
+   <b>
+    <a href="/man/man3/pmlookupdesc.3.html">
+     pmLookupDesc
+    </a>
+   </b>
+   (3) for a full description
+of all the fields of this structure.
+The default is to assign no scale or dimension to the metric, i.e. units=``0,0,0,0,0,0''.
+Examples: units=``0,1,0,0,PM_TIME_MSEC,0'' (milliseconds),
+units=``1,-1,0,PM_SPACE_MBYTE,PM_TIME_SEC,0'' (Mbytes/sec),
+units=``0,1,-1,0,PM_TIME_USEC,PM_COUNT_ONE'' (microseconds/event).
+  </dd>
+  <dt>
+   <b>
+    type
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAJ">
+   </a>
+   Defines the data type for the metric.
+Refer to
+   <b>
+    <a href="/man/man3/pmlookupdesc.3.html">
+     pmLookupDesc
+    </a>
+   </b>
+   (3) for a full description
+of the possible type values; the default is
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     PM_TYPE_FLOAT
+    </b>
+   </font>
+   <b>
+   </b>
+   .
+Examples: type=``
+   <font size="-1">
+    PM_TYPE_32
+   </font>
+   '', type=``
+   <font size="-1">
+    PM_TYPE_U64
+   </font>
+   '', type=``
+   <font size="-1">
+    PM_TYPE_STRING
+   </font>
+   ''.
+  </dd>
+  <dt>
+   <b>
+    sem
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAK">
+   </a>
+   Defines the semantics of the metric.
+Refer to
+   <b>
+    <a href="/man/man3/pmlookupdesc.3.html">
+     pmLookupDesc
+    </a>
+   </b>
+   (3) for a full description
+of the possible values; the default is
+   <b>
+   </b>
+   <font size="-1">
+    <b>
+     PM_SEM_INSTANT
+    </b>
+   </font>
+   <b>
+   </b>
+   .
+Examples: sem=``
+   <font size="-1">
+    PM_SEM_COUNTER
+   </font>
+   '', type=``
+   <font size="-1">
+    PM_SEM_DISCRETE
+   </font>
+   ''.
+  </dd>
+ </dl>
+ <p>
+  The remaining specifications define the data columns
+  <b>
+   in order
+  </b>
+  using
+  <b>
+   exactly
+  </b>
+  one
+  <b>
+   &lt;datetime&gt;
+  </b>
+  <b>
+   &lt;/datetime&gt;
+  </b>
+  element,
+one or more
+  <b>
+   &lt;data&gt;
+  </b>
+  <i>
+   metricspec
+  </i>
+  <b>
+   &lt;/data&gt;
+  </b>
+  elements
+and
+one or more
+  <b>
+   &lt;skip&gt;
+  </b>
+  <b>
+   &lt;/skip&gt;
+  </b>
+  elements.
+ </p>
+ <p>
+  The
+  <b>
+   &lt;datetime&gt;
+  </b>
+  element defines the column in which a date and time will
+be found to form the timestamp in the
+  <font size="-1">
+   PCP
+  </font>
+  archive for all the data in
+each row of the
+  <font size="-1">
+   PCP
+  </font>
+  archive.
+ </p>
+ <p>
+  For the
+  <b>
+   &lt;data&gt;
+  </b>
+  element,
+a
+  <i>
+   metricspec
+  </i>
+  consists of a metric name (as defined in an earlier
+  <b>
+   &lt;metric&gt;
+  </b>
+  element), optionally followed by an instance name that is enclosed by square brackets,
+e.g. &lt;data&gt;hinv.ncpu&lt;/data&gt;, &lt;data&gt;kernel.all.load[1 minute]&lt;/data&gt;.
+ </p>
+ <p>
+  The
+  <b>
+   skip
+  </b>
+  tag defines the column that should be skipped when preparing
+data for the
+  <font size="-1">
+   PCP
+  </font>
+  archive.
+ </p>
+ <p>
+  The order of the
+  <b>
+   &lt;datetime&gt;
+  </b>
+  ,
+  <b>
+   &lt;data&gt;
+  </b>
+  and
+  <b>
+   &lt;skip&gt;
+  </b>
+  elements matches the order of columns in the
+spreadsheet.  If the number of elements is not the same as the number
+of columns a warning is issued, and the extra elements or columns
+generate no metric values in the output archive.
+  <a name="lbAF">
+  </a>
+ </p>
+ <h3>
+  <font size="-1">
+   EXAMPLE
+  </font>
+ </h3>
+ <a name="ixAAL">
+ </a>
+ The
+ <i>
+  mapfile
+ </i>
+ ...
+ <p>
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;sheet heading="1"&gt;
+        &lt;!-- simple example --&gt;
+        &lt;metric pmid="60.0.2" indom="60.0" units="0,1,0,0,PM_TIME_MSEC,0"
+            type="PM_TYPE_U64" sem="PM_SEM_COUNTER"&gt;
+        kernel.percpu.cpu.sys&lt;/metric&gt;
+        &lt;datetime&gt;&lt;/datetime&gt;
+        &lt;skip&gt;&lt;/skip&gt;
+        &lt;data&gt;kernel.percpu.cpu.sys[cpu0]&lt;/data&gt;
+        &lt;data&gt;kernel.percpu.cpu.sys[cpu1]&lt;/data&gt;
+    &lt;/sheet&gt;
+ </p>
+ <p>
+  could be used for a spreadsheet in which the first few rows are ...
+ </p>
+ <p>
+  Date;"Status";"SysTime - 0";"SysTime - 1";
+    26/01/2001 14:05:22;"Some Busy";0.750;0.133
+    26/01/2001 14:05:37;"OK";0.150;0.273
+    26/01/2001 14:05:52;"All Busy";0.733;0.653
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  CAVEATS
+ </h2>
+ <a name="ixAAM">
+ </a>
+ Only the first sheet from
+ <i>
+  infile
+ </i>
+ will be processed.
+ <p>
+  Additional Perl modules must be installed for the various spreadsheet formats,
+although these are checked for ar run-time so only the modules required for
+the specific types of spreadsheets you wish to process need be installed:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    *.csv
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAN">
+   </a>
+   Spreadsheets in the Comma Separated Values (
+   <font size="-1">
+    CSV
+   </font>
+   ) format require
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/text::csv_xs.3.html">
+     Text::CSV_XS
+    </a>
+   </b>
+   (3pm).
+  </dd>
+  <dt>
+   <b>
+    *.sxc
+   </b>
+   or
+   <b>
+    *.ods
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAO">
+   </a>
+   OpenOffice documents require
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/spreadsheet::readsxc.3.html">
+     Spreadsheet::ReadSXC
+    </a>
+   </b>
+   (3pm), which in turn
+requires
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/archive::zip.3.html">
+     Archive::Zip
+    </a>
+   </b>
+   (3pm).
+  </dd>
+  <dt>
+   <b>
+    *.xls
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAP">
+   </a>
+   Classical Microsoft Office documents require
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/spreadsheet::parseexcel.3.html">
+     Spreadsheet::ParseExcel
+    </a>
+   </b>
+   (3pm),
+which in turn requires
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/ole::storage_lite.3.html">
+     OLE::Storage_Lite
+    </a>
+   </b>
+   (3pm).
+  </dd>
+  <dt>
+   <b>
+    *.xlsx
+   </b>
+  </dt>
+  <dd>
+   <a name="ixAAQ">
+   </a>
+   Microsoft OpenXML documents require
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/spreadsheet::xlsx.3.html">
+     Spreadsheet::XLSX
+    </a>
+   </b>
+   (3pm).
+   <b>
+    sheet2pcp
+   </b>
+   does not appear to work with OpenXML documents saved from OpenOffice.
+  </dd>
+ </dl>
+ <a name="lbAH">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAI">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmie.1.html">
+   pmie
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/sed.1.html">
+   sed
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmiaddmetric.3.html">
+   pmiAddMetric
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmiunits.3.html">
+   pmiUnits
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/archive::zip.3.html">
+   Archive::Zip
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/date::format.3.html">
+   Date::Format
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/date::parse.3.html">
+   Date::Parse
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="/man/man3/pcp::logimport.3.html">
+   PCP::LogImport
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/ole::storage_lite.3.html">
+   OLE::Storage_Lite
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/spreadsheet::parseexcel.3.html">
+   Spreadsheet::ParseExcel
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/spreadsheet::readsxc.3.html">
+   Spreadsheet::ReadSXC
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/spreadsheet::xlsx.3.html">
+   Spreadsheet::XLSX
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/text::csv_xs.3.html">
+   Text::CSV_XS
+  </a>
+ </b>
+ (3pm),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/xml::tokeparser.3.html">
+   XML::TokeParser
+  </a>
+ </b>
+ (3pm)
+
+and
+ <b>
+  <a href="/man/man3/logimport.3.html">
+   LOGIMPORT
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    MAPPING CONFIGURATION
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAF">
+      <font size="-1">
+       EXAMPLE
+      </font>
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    CAVEATS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

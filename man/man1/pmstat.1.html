@@ -1,1101 +1,1105 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMSTAT
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pcp-vmstat
-               </b>
-               ,
-               <b>
-                pmstat
-               </b>
-               - high-level system performance overview
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pcp
-               </b>
-               [
-               <i>
-                pcp options
-               </i>
-               ]
-               <b>
-                vmstat
-               </b>
-               [
-               <i>
-                interval
-               </i>
-               [
-               <i>
-                samples
-               </i>
-               ]]
-               <p>
-                <b>
-                 pmstat
-                </b>
-                [
-                <b>
-                 -gLlPxz
-                </b>
-                ]
-              [
-                <b>
-                 -A
-                </b>
-                <i>
-                 align
-                </i>
-                ]
-              [
-                <b>
-                 -a
-                </b>
-                <i>
-                 archive
-                </i>
-                ]
-              [
-                <b>
-                 -h
-                </b>
-                <i>
-                 host
-                </i>
-                ]
-              [
-                <b>
-                 -H
-                </b>
-                <i>
-                 file
-                </i>
-                ]
-              [
-                <b>
-                 -n
-                </b>
-                <i>
-                 pmnsfile
-                </i>
-                ]
-              [
-                <b>
-                 -O
-                </b>
-                <i>
-                 offset
-                </i>
-                ]
-              [
-                <b>
-                 -p
-                </b>
-                <i>
-                 port
-                </i>
-                ]
-              [
-                <b>
-                 -S
-                </b>
-                <i>
-                 starttime
-                </i>
-                ]
-              [
-                <b>
-                 -s
-                </b>
-                <i>
-                 samples
-                </i>
-                ]
-              [
-                <b>
-                 -T
-                </b>
-                <i>
-                 endtime
-                </i>
-                ]
-              [
-                <b>
-                 -t
-                </b>
-                <i>
-                 interval
-                </i>
-                ]
-              [
-                <b>
-                 -Z
-                </b>
-                <i>
-                 timezone
-                </i>
-                ]
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmstat
-               </b>
-               provides a one line summary of system performance every
-               <i>
-                interval
-               </i>
-               unit of time (the default is 5 seconds).
-               <b>
-                pmstat
-               </b>
-               is intended to monitor system performance at the highest level,
-              after which other tools may be used to examine subsystems in which
-              potential performance problems may be observed in greater detail.
-               <p>
-                <b>
-                 pcp-vmstat
-                </b>
-                is a simple wrapper for use with the
-                <b>
-                 <a href="/man/man1/pcp.1.html">
-                  pcp
-                 </a>
-                </b>
-                (1)
-              
-              command, providing a more familiar command line format for some
-              users.
-              It also enables the extended reporting option by default, see the
-                <i>
-                 -x
-                </i>
-                option below.
-               </p>
-               <p>
-                Multiple hosts may be monitored by supplying more than
-              one host with multiple
-                <b>
-                 -h
-                </b>
-                flags (for live monitoring) or by providing a name of the hostlist file, where
-              each line contain one host name, with
-                <b>
-                 -H,
-                </b>
-                or multiple
-                <b>
-                 -a
-                </b>
-                flags (for retrospective monitoring from sets of archives).
-               </p>
-               <p>
-                The
-                <b>
-                 -t
-                </b>
-                option may be used to change the default reporting
-                <i>
-                 interval
-                </i>
-                .
-              
-              The
-                <i>
-                 interval
-                </i>
-                argument follows the syntax described in
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1),
-              
-              and in the simplest form may be an unsigned integer (the implied
-              units in this case are seconds).
-               </p>
-               <p>
-                By default,
-                <b>
-                 pmstat
-                </b>
-                fetches metrics by connecting to the Performance Metrics Collector
-              Daemon (PMCD) on the local host.  If the
-                <b>
-                 -L
-                </b>
-                option is specified, then
-                <b>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </b>
-                (1)
-              
-              is bypassed, and metrics are fetched from PMDAs on the local host
-              using the standalone
-                <b>
-                 PM_CONTEXT_LOCAL
-                </b>
-                variant of
-                <b>
-                 <a href="/man/man3/pmnewcontext.3.html">
-                  pmNewContext
-                 </a>
-                </b>
-                (3).
-              
-              When the
-                <b>
-                 -h
-                </b>
-                option is specified,
-                <b>
-                 pmstat
-                </b>
-                connects to the
-                <b>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </b>
-                (1)
-              
-              on
-                <i>
-                 host
-                </i>
-                and fetches metrics from there.
-              As mentioned above, multiple hosts may be monitored
-              by supplying multiple
-                <b>
-                 -h
-                </b>
-                flags.
-               </p>
-               <p>
-                Alternatively, if the
-                <b>
-                 -a
-                </b>
-                option is used, the metrics are retrieved from the Performance Co-Pilot
-              archive log files identified by
-                <i>
-                 archive
-                </i>
-                ,
-              
-              which is a comma-separated list of names, each
-              of which may be the base name of an archive or the name of a directory containing
-              one or more archives.
-              Multiple sets of archives may be replayed by supplying multiple
-                <b>
-                 -a
-                </b>
-                flags.
-              When the
-                <b>
-                 -a
-                </b>
-                flag is used,
-              the
-                <b>
-                 -P
-                </b>
-                flag may also be used to pause the output after each interval.
-               </p>
-               <p>
-                Standalone mode can only connect to the local host, using a set of archives implies
-              a host name, and nominating a host precludes using an archive, so the options
-                <b>
-                 -L
-                </b>
-                ,
-                <b>
-                 -a
-                </b>
-                and
-                <b>
-                 -h
-                </b>
-                are mutually exclusive.
-               </p>
-               <p>
-                Normally
-                <b>
-                 pmstat
-                </b>
-                operates on the default Performance Metrics Name Space (PMNS), however
-              if the
-                <b>
-                 -n
-                </b>
-                option is specified an alternative namespace is loaded
-              from the file
-                <i>
-                 pmnsfile
-                </i>
-                .
-               </p>
-               <p>
-                If the
-                <b>
-                 -s
-                </b>
-                the option is specified,
-                <i>
-                 samples
-                </i>
-                defines the number of samples to be retrieved and reported.
-              If
-                <i>
-                 samples
-                </i>
-                is 0 or
-                <b>
-                 -s
-                </b>
-                is not specified,
-                <b>
-                 pmstat
-                </b>
-                will sample and report continuously - this is the default behavior.
-               </p>
-               <p>
-                When processing a set of archives,
-                <b>
-                 pmstat
-                </b>
-                may relinquish its own timing control, and operate as a ``slave'' of a
-                <b>
-                 <a href="/man/man1/pmtime.1.html">
-                  pmtime
-                 </a>
-                </b>
-                (1)
-              
-              process that uses a GUI dialog to provide timing control.
-              In this case, either the
-                <b>
-                 -g
-                </b>
-                option should be used to start
-                <b>
-                 pmstat
-                </b>
-                as the sole slave of a new
-                <b>
-                 <a href="/man/man1/pmtime.1.html">
-                  pmtime
-                 </a>
-                </b>
-                (1)
-              
-              instance, or
-                <b>
-                 -p
-                </b>
-                should be used to attach
-                <b>
-                 pmstat
-                </b>
-                to an existing
-                <b>
-                 <a href="/man/man1/pmtime.1.html">
-                  pmtime
-                 </a>
-                </b>
-                (1)
-              
-              instance via the IPC channel identified by the port argument.
-               </p>
-               <p>
-                The
-                <b>
-                 -S
-                </b>
-                ,
-                <b>
-                 -T
-                </b>
-                ,
-                <b>
-                 -O
-                </b>
-                and
-                <b>
-                 -A
-                </b>
-                options may be used to define a time window to restrict the
-              samples retrieved, set an initial origin within the time window,
-              or specify a ``natural'' alignment of the sample times; refer to
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1)
-              
-              for a complete description of these options.
-               </p>
-               <p>
-                The
-                <b>
-                 -l
-                </b>
-                option prints the last 7 characters of a hostname in summaries involving
-              more than one host (when more than one
-                <b>
-                 -h
-                </b>
-                option has been specified on the command line).
-               </p>
-               <p>
-                The
-                <b>
-                 -x
-                </b>
-                option (extended CPU metrics) causes two additional CPU metrics to be
-              reported, namely wait for I/O ("wa") and virtualisation steal time ("st").
-               </p>
-               <p>
-                The output from
-                <b>
-                 pmstat
-                </b>
-                is directed to standard output, and the columns
-              in the report are interpreted as follows:
-               </p>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  loadavg
-                 </b>
-                </dt>
-                <dd>
-                 The
-                 <i>
-                  1 minute
-                 </i>
-                 load average.
-                </dd>
-                <dt>
-                 <b>
-                  memory
-                 </b>
-                </dt>
-                <dd>
-                 The
-                 <b>
-                  swpd
-                 </b>
-                 column indicates average swap space used during the interval,
-              in Kbytes.
-              The
-                 <b>
-                  free
-                 </b>
-                 column indicates average free memory during the interval,
-              in Kbytes.
-              The
-                 <b>
-                  buff
-                 </b>
-                 column indicates average buffer memory in use during the interval,
-              in Kbytes.
-              The
-                 <b>
-                  cache
-                 </b>
-                 column indicates average cached memory in use during the interval,
-              in Kbytes.
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <p>
-                    If the values become large, they are reported as Mbytes
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     m
-                    </b>
-                    suffix)
-              
-              or Gbytes
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     g
-                    </b>
-                    suffix).
-                   </p>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <b>
-                  swap
-                 </b>
-                </dt>
-                <dd>
-                 The metrics in this area of the kernel instrumentation are of
-              varying value.  We try to report the average number of
-                 <b>
-                  pages
-                 </b>
-                 that are paged in (
-                 <b>
-                  pi
-                 </b>
-                 ) and out (
-                 <b>
-                  po
-                 </b>
-                 ) per second during
-              the interval.
-              If the corresponding page swapping metrics are unavailable, we report
-              the average rate per second
-              of swap
-                 <b>
-                  operations
-                 </b>
-                 in (
-                 <b>
-                  si
-                 </b>
-                 ) and out (
-                 <b>
-                  so
-                 </b>
-                 ) during the interval.
-              It is normal for the ``in'' values to be non-zero, but the system
-              is suffering memory stress if the ``out'' values are non-zero over
-              an extended period.
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <p>
-                    If the values become large, they are reported as thousands of
-              operations per second
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     K
-                    </b>
-                    suffix)
-              
-              or millions of operations per second
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     M
-                    </b>
-                    suffix).
-                   </p>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <b>
-                  io
-                 </b>
-                </dt>
-                <dd>
-                 The
-                 <b>
-                  bi
-                 </b>
-                 and
-                 <b>
-                  bo
-                 </b>
-                 columns indicate the average rate per second
-              of block input and block output operations (respectfully) during the interval.
-              Unless all file systems have a 1 Kbyte block size, these
-              rates do not directly indicate Kbytes transferred.
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <p>
-                    If the values become large, they are reported as thousands of
-              operations per second
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     K
-                    </b>
-                    suffix)
-              
-              or millions of operations per second
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     M
-                    </b>
-                    suffix).
-                   </p>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <b>
-                  system
-                 </b>
-                </dt>
-                <dd>
-                 Interrupt rate (
-                 <b>
-                  in
-                 </b>
-                 ) and
-              context switch rate (
-                 <b>
-                  cs
-                 </b>
-                 ).
-              Rates are expressed as average operations per second during the interval.
-              Note that the interrupt rate is normally at least
-                 <i>
-                  HZ
-                 </i>
-                 (the clock interrupt rate, usually 100)
-              interrupts per second.
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <p>
-                    If the values become large, they are reported as thousands of
-              operations per second
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     K
-                    </b>
-                    suffix)
-              
-              or millions of operations per second
-                    <b>
-                    </b>
-                    (
-                    <b>
-                     M
-                    </b>
-                    suffix).
-                   </p>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <b>
-                  cpu
-                 </b>
-                </dt>
-                <dd>
-                 Percentage of CPU time spent executing user and "nice user" code (
-                 <b>
-                  us
-                 </b>
-                 ),
-              system and interrupt processing code (
-                 <b>
-                  sy
-                 </b>
-                 ), idle loop (
-                 <b>
-                  id
-                 </b>
-                 ).
-                </dd>
-               </dl>
-               <p>
-                If any values for the associated performance metrics are unavailable,
-              the value appears as ``?'' in the output.
-               </p>
-               <p>
-                By default,
-                <b>
-                 pmstat
-                </b>
-                reports the time of day according to the local timezone on the
-              system where
-                <b>
-                 pmstat
-                </b>
-                is run.
-              The
-                <b>
-                 -Z
-                </b>
-                option changes the timezone to
-                <i>
-                 timezone
-                </i>
-                in the format of the environment variable
-                <b>
-                 TZ
-                </b>
-                as described in
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-                  environ
-                 </a>
-                </b>
-                (7).
-              
-              The
-                <b>
-                 -z
-                </b>
-                option changes the timezone to the local timezone at the
-              host that is the source of the performance metrics, as identified via
-              either the
-                <b>
-                 -h
-                </b>
-                or
-                <b>
-                 -a
-                </b>
-                options.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_VAR_DIR/pmns/
-                 </b>
-                 <i>
-                  *
-                 </i>
-                </dt>
-                <dd>
-                 default PMNS specification files
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_VAR_DIR/config/pmlogger/config.pmstat
-                 </b>
-                </dt>
-                <dd>
-                 <b>
-                  <a href="/man/man1/pmlogger.1.html">
-                   pmlogger
-                  </a>
-                 </b>
-                 (1)
-              
-              configuration for creating an archive suitable for replay with
-                 <b>
-                  pmstat
-                 </b>
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmclient.1.html">
-                 pmclient
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmtime.1.html">
-                 pmtime
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmnewcontext.3.html">
-                 pmNewContext
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <a name="lbAH">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               All are generated on standard error, and are intended to be self-explanatory.
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMSTAT
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pcp-vmstat
+ </b>
+ ,
+ <b>
+  pmstat
+ </b>
+ - high-level system performance overview
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pcp
+ </b>
+ [
+ <i>
+  pcp options
+ </i>
+ ]
+ <b>
+  vmstat
+ </b>
+ [
+ <i>
+  interval
+ </i>
+ [
+ <i>
+  samples
+ </i>
+ ]]
+ <p>
+  <b>
+   pmstat
+  </b>
+  [
+  <b>
+   -gLlPxz
+  </b>
+  ]
+[
+  <b>
+   -A
+  </b>
+  <i>
+   align
+  </i>
+  ]
+[
+  <b>
+   -a
+  </b>
+  <i>
+   archive
+  </i>
+  ]
+[
+  <b>
+   -h
+  </b>
+  <i>
+   host
+  </i>
+  ]
+[
+  <b>
+   -H
+  </b>
+  <i>
+   file
+  </i>
+  ]
+[
+  <b>
+   -n
+  </b>
+  <i>
+   pmnsfile
+  </i>
+  ]
+[
+  <b>
+   -O
+  </b>
+  <i>
+   offset
+  </i>
+  ]
+[
+  <b>
+   -p
+  </b>
+  <i>
+   port
+  </i>
+  ]
+[
+  <b>
+   -S
+  </b>
+  <i>
+   starttime
+  </i>
+  ]
+[
+  <b>
+   -s
+  </b>
+  <i>
+   samples
+  </i>
+  ]
+[
+  <b>
+   -T
+  </b>
+  <i>
+   endtime
+  </i>
+  ]
+[
+  <b>
+   -t
+  </b>
+  <i>
+   interval
+  </i>
+  ]
+[
+  <b>
+   -Z
+  </b>
+  <i>
+   timezone
+  </i>
+  ]
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmstat
+ </b>
+ provides a one line summary of system performance every
+ <i>
+  interval
+ </i>
+ unit of time (the default is 5 seconds).
+ <b>
+  pmstat
+ </b>
+ is intended to monitor system performance at the highest level,
+after which other tools may be used to examine subsystems in which
+potential performance problems may be observed in greater detail.
+ <p>
+  <b>
+   pcp-vmstat
+  </b>
+  is a simple wrapper for use with the
+  <b>
+   <a href="/man/man1/pcp.1.html">
+    pcp
+   </a>
+  </b>
+  (1)
+
+command, providing a more familiar command line format for some
+users.
+It also enables the extended reporting option by default, see the
+  <i>
+   -x
+  </i>
+  option below.
+ </p>
+ <p>
+  Multiple hosts may be monitored by supplying more than
+one host with multiple
+  <b>
+   -h
+  </b>
+  flags (for live monitoring) or by providing a name of the hostlist file, where
+each line contain one host name, with
+  <b>
+   -H,
+  </b>
+  or multiple
+  <b>
+   -a
+  </b>
+  flags (for retrospective monitoring from sets of archives).
+ </p>
+ <p>
+  The
+  <b>
+   -t
+  </b>
+  option may be used to change the default reporting
+  <i>
+   interval
+  </i>
+  .
+
+The
+  <i>
+   interval
+  </i>
+  argument follows the syntax described in
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1),
+
+and in the simplest form may be an unsigned integer (the implied
+units in this case are seconds).
+ </p>
+ <p>
+  By default,
+  <b>
+   pmstat
+  </b>
+  fetches metrics by connecting to the Performance Metrics Collector
+Daemon (PMCD) on the local host.  If the
+  <b>
+   -L
+  </b>
+  option is specified, then
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+is bypassed, and metrics are fetched from PMDAs on the local host
+using the standalone
+  <b>
+   PM_CONTEXT_LOCAL
+  </b>
+  variant of
+  <b>
+   <a href="/man/man3/pmnewcontext.3.html">
+    pmNewContext
+   </a>
+  </b>
+  (3).
+
+When the
+  <b>
+   -h
+  </b>
+  option is specified,
+  <b>
+   pmstat
+  </b>
+  connects to the
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+on
+  <i>
+   host
+  </i>
+  and fetches metrics from there.
+As mentioned above, multiple hosts may be monitored
+by supplying multiple
+  <b>
+   -h
+  </b>
+  flags.
+ </p>
+ <p>
+  Alternatively, if the
+  <b>
+   -a
+  </b>
+  option is used, the metrics are retrieved from the Performance Co-Pilot
+archive log files identified by
+  <i>
+   archive
+  </i>
+  ,
+
+which is a comma-separated list of names, each
+of which may be the base name of an archive or the name of a directory containing
+one or more archives.
+Multiple sets of archives may be replayed by supplying multiple
+  <b>
+   -a
+  </b>
+  flags.
+When the
+  <b>
+   -a
+  </b>
+  flag is used,
+the
+  <b>
+   -P
+  </b>
+  flag may also be used to pause the output after each interval.
+ </p>
+ <p>
+  Standalone mode can only connect to the local host, using a set of archives implies
+a host name, and nominating a host precludes using an archive, so the options
+  <b>
+   -L
+  </b>
+  ,
+  <b>
+   -a
+  </b>
+  and
+  <b>
+   -h
+  </b>
+  are mutually exclusive.
+ </p>
+ <p>
+  Normally
+  <b>
+   pmstat
+  </b>
+  operates on the default Performance Metrics Name Space (PMNS), however
+if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative namespace is loaded
+from the file
+  <i>
+   pmnsfile
+  </i>
+  .
+ </p>
+ <p>
+  If the
+  <b>
+   -s
+  </b>
+  the option is specified,
+  <i>
+   samples
+  </i>
+  defines the number of samples to be retrieved and reported.
+If
+  <i>
+   samples
+  </i>
+  is 0 or
+  <b>
+   -s
+  </b>
+  is not specified,
+  <b>
+   pmstat
+  </b>
+  will sample and report continuously - this is the default behavior.
+ </p>
+ <p>
+  When processing a set of archives,
+  <b>
+   pmstat
+  </b>
+  may relinquish its own timing control, and operate as a ``slave'' of a
+  <b>
+   <a href="/man/man1/pmtime.1.html">
+    pmtime
+   </a>
+  </b>
+  (1)
+
+process that uses a GUI dialog to provide timing control.
+In this case, either the
+  <b>
+   -g
+  </b>
+  option should be used to start
+  <b>
+   pmstat
+  </b>
+  as the sole slave of a new
+  <b>
+   <a href="/man/man1/pmtime.1.html">
+    pmtime
+   </a>
+  </b>
+  (1)
+
+instance, or
+  <b>
+   -p
+  </b>
+  should be used to attach
+  <b>
+   pmstat
+  </b>
+  to an existing
+  <b>
+   <a href="/man/man1/pmtime.1.html">
+    pmtime
+   </a>
+  </b>
+  (1)
+
+instance via the IPC channel identified by the port argument.
+ </p>
+ <p>
+  The
+  <b>
+   -S
+  </b>
+  ,
+  <b>
+   -T
+  </b>
+  ,
+  <b>
+   -O
+  </b>
+  and
+  <b>
+   -A
+  </b>
+  options may be used to define a time window to restrict the
+samples retrieved, set an initial origin within the time window,
+or specify a ``natural'' alignment of the sample times; refer to
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for a complete description of these options.
+ </p>
+ <p>
+  The
+  <b>
+   -l
+  </b>
+  option prints the last 7 characters of a hostname in summaries involving
+more than one host (when more than one
+  <b>
+   -h
+  </b>
+  option has been specified on the command line).
+ </p>
+ <p>
+  The
+  <b>
+   -x
+  </b>
+  option (extended CPU metrics) causes two additional CPU metrics to be
+reported, namely wait for I/O ("wa") and virtualisation steal time ("st").
+ </p>
+ <p>
+  The output from
+  <b>
+   pmstat
+  </b>
+  is directed to standard output, and the columns
+in the report are interpreted as follows:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    loadavg
+   </b>
+  </dt>
+  <dd>
+   The
+   <i>
+    1 minute
+   </i>
+   load average.
+  </dd>
+  <dt>
+   <b>
+    memory
+   </b>
+  </dt>
+  <dd>
+   The
+   <b>
+    swpd
+   </b>
+   column indicates average swap space used during the interval,
+in Kbytes.
+The
+   <b>
+    free
+   </b>
+   column indicates average free memory during the interval,
+in Kbytes.
+The
+   <b>
+    buff
+   </b>
+   column indicates average buffer memory in use during the interval,
+in Kbytes.
+The
+   <b>
+    cache
+   </b>
+   column indicates average cached memory in use during the interval,
+in Kbytes.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      If the values become large, they are reported as Mbytes
+      <b>
+      </b>
+      (
+      <b>
+       m
+      </b>
+      suffix)
+
+or Gbytes
+      <b>
+      </b>
+      (
+      <b>
+       g
+      </b>
+      suffix).
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <b>
+    swap
+   </b>
+  </dt>
+  <dd>
+   The metrics in this area of the kernel instrumentation are of
+varying value.  We try to report the average number of
+   <b>
+    pages
+   </b>
+   that are paged in (
+   <b>
+    pi
+   </b>
+   ) and out (
+   <b>
+    po
+   </b>
+   ) per second during
+the interval.
+If the corresponding page swapping metrics are unavailable, we report
+the average rate per second
+of swap
+   <b>
+    operations
+   </b>
+   in (
+   <b>
+    si
+   </b>
+   ) and out (
+   <b>
+    so
+   </b>
+   ) during the interval.
+It is normal for the ``in'' values to be non-zero, but the system
+is suffering memory stress if the ``out'' values are non-zero over
+an extended period.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      If the values become large, they are reported as thousands of
+operations per second
+      <b>
+      </b>
+      (
+      <b>
+       K
+      </b>
+      suffix)
+
+or millions of operations per second
+      <b>
+      </b>
+      (
+      <b>
+       M
+      </b>
+      suffix).
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <b>
+    io
+   </b>
+  </dt>
+  <dd>
+   The
+   <b>
+    bi
+   </b>
+   and
+   <b>
+    bo
+   </b>
+   columns indicate the average rate per second
+of block input and block output operations (respectfully) during the interval.
+Unless all file systems have a 1 Kbyte block size, these
+rates do not directly indicate Kbytes transferred.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      If the values become large, they are reported as thousands of
+operations per second
+      <b>
+      </b>
+      (
+      <b>
+       K
+      </b>
+      suffix)
+
+or millions of operations per second
+      <b>
+      </b>
+      (
+      <b>
+       M
+      </b>
+      suffix).
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <b>
+    system
+   </b>
+  </dt>
+  <dd>
+   Interrupt rate (
+   <b>
+    in
+   </b>
+   ) and
+context switch rate (
+   <b>
+    cs
+   </b>
+   ).
+Rates are expressed as average operations per second during the interval.
+Note that the interrupt rate is normally at least
+   <i>
+    HZ
+   </i>
+   (the clock interrupt rate, usually 100)
+interrupts per second.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      If the values become large, they are reported as thousands of
+operations per second
+      <b>
+      </b>
+      (
+      <b>
+       K
+      </b>
+      suffix)
+
+or millions of operations per second
+      <b>
+      </b>
+      (
+      <b>
+       M
+      </b>
+      suffix).
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <b>
+    cpu
+   </b>
+  </dt>
+  <dd>
+   Percentage of CPU time spent executing user and "nice user" code (
+   <b>
+    us
+   </b>
+   ),
+system and interrupt processing code (
+   <b>
+    sy
+   </b>
+   ), idle loop (
+   <b>
+    id
+   </b>
+   ).
+  </dd>
+ </dl>
+ <p>
+  If any values for the associated performance metrics are unavailable,
+the value appears as ``?'' in the output.
+ </p>
+ <p>
+  By default,
+  <b>
+   pmstat
+  </b>
+  reports the time of day according to the local timezone on the
+system where
+  <b>
+   pmstat
+  </b>
+  is run.
+The
+  <b>
+   -Z
+  </b>
+  option changes the timezone to
+  <i>
+   timezone
+  </i>
+  in the format of the environment variable
+  <b>
+   TZ
+  </b>
+  as described in
+  <b>
+   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+    environ
+   </a>
+  </b>
+  (7).
+
+The
+  <b>
+   -z
+  </b>
+  option changes the timezone to the local timezone at the
+host that is the source of the performance metrics, as identified via
+either the
+  <b>
+   -h
+  </b>
+  or
+  <b>
+   -a
+  </b>
+  options.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_VAR_DIR/pmns/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   default PMNS specification files
+  </dd>
+  <dt>
+   <b>
+    $PCP_VAR_DIR/config/pmlogger/config.pmstat
+   </b>
+  </dt>
+  <dd>
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+configuration for creating an archive suitable for replay with
+   <b>
+    pmstat
+   </b>
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmclient.1.html">
+   pmclient
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmtime.1.html">
+   pmtime
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error, and are intended to be self-explanatory.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

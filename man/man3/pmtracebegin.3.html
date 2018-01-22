@@ -1,1014 +1,1018 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMDATRACE
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmtracebegin
-               </b>
-               ,
-               <b>
-                pmtraceend
-               </b>
-               ,
-               <b>
-                pmtraceabort
-               </b>
-               ,
-               <b>
-                pmtracepoint
-               </b>
-               ,
-               <b>
-                pmtraceobs
-               </b>
-               ,
-               <b>
-                pmtracecounter
-               </b>
-               ,
-               <b>
-                pmtracestate
-               </b>
-               ,
-               <b>
-                pmtraceerrstr
-               </b>
-               - application-level performance instrumentation services
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/trace.h">
-                 pcp/trace.h
-                </a>
-                &gt;
-               </b>
-               <p>
-               </p>
-               <pre>
-              int pmtracebegin(const char *<i>tag</i>);
-              int pmtraceend(const char *<i>tag</i>);
-              int pmtraceabort(const char *<i>tag</i>);
-              int pmtracepoint(const char *<i>tag</i>);
-              int pmtraceobs(const char *<i>tag</i>, double <i>value</i>);
-              int pmtracecounter(const char *<i>tag</i>, double <i>value</i>);
-              char *pmtraceerrstr(int <i>code</i>);
-              int pmtracestate(int <i>flags</i>);
-              </pre>
-               <p>
-                cc ... -lpcp_trace
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                FORTRAN SYNOPSIS
-               </h2>
-               <b>
-               </b>
-               <pre>
-              character*(*) <i>tag</i>
-              integer <i>code</i>
-              integer <i>flags</i>
-              integer <i>state</i>
-              character*(*) <i>estr</i>
-              real*8 <i>value</i>
-              </pre>
-               <p>
-               </p>
-               <pre>
-              <i>code</i> = pmtracebegin(<i>tag</i>)
-              <i>code</i> = pmtraceend(<i>tag</i>)
-              <i>code</i> = pmtraceabort(<i>tag</i>)
-              <i>code</i> = pmtracepoint(<i>tag</i>)
-              <i>code</i> = pmtraceobs(<i>tag</i>, <i>value</i>)
-              <i>code</i> = pmtracecounter(<i>tag</i>, <i>value</i>)
-              pmtraceerrstr(<i>code</i>, <i>estr</i>)
-              <i>state</i> = pmtracestate(<i>flags</i>)
-              </pre>
-               <p>
-               </p>
-               <pre>
-              f77 ... -lpcp_trace  or<b>  f90 ... -lpcp_trace
-              </b></pre>
-               <a name="lbAE">
-               </a>
-               <h2>
-                JAVA SYNOPSIS
-               </h2>
-               <b>
-               </b>
-               <pre>
-              
-              import sgi.pcp.trace;
-              
-              int trace.pmtracebegin(String <i>tag</i>);
-              int trace.pmtraceend(String <i>tag</i>);
-              int trace.pmtraceabort(String <i>tag</i>);
-              int trace.pmtracepoint(String <i>tag</i>);
-              int trace.pmtraceobs(String <i>tag</i>, double <i>value</i>);
-              int trace.pmtracecounter(String <i>tag</i>, double <i>value</i>);
-              String trace.pmtraceerrstr(int <i>code</i>);
-              int trace.pmtracestate(int <i>flags</i>);
-              </pre>
-               <p>
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               The
-               <i>
-                pcp_trace
-               </i>
-               library functions provide a mechanism for identifying sections of a program
-              as transactions or events for use by the trace Performance Metrics Domain Agent
-              (refer to
-               <b>
-                <a href="/man/man1/pmdatrace.1.html">
-                 pmdatrace
-                </a>
-               </b>
-               (1)
-              
-              and
-               <b>
-                <a href="/man/man3/pmda.3.html">
-                 PMDA
-                </a>
-               </b>
-               (3)).
-               <p>
-                The monitoring of transactions using the Performance Co-Pilot (PCP)
-              infrastructure is initiated through a call to
-                <b>
-                 pmtracebegin
-                </b>
-                .
-              
-              Time will be recorded from the end of each
-                <b>
-                 pmtracebegin
-                </b>
-                call to the start of the following call to
-                <b>
-                 pmtraceend
-                </b>
-                ,
-              
-              where the same
-                <i>
-                 tag
-                </i>
-                identifier is used in both calls.
-              Following from this, no visible recording will occur until at least one call to
-                <b>
-                 pmtraceend
-                </b>
-                is made referencing a
-                <i>
-                 tag
-                </i>
-                previously used in a call to
-                <b>
-                 pmtracebegin
-                </b>
-                .
-               </p>
-               <p>
-                A transaction which is currently in progress can be cancelled by calling
-                <b>
-                 pmtraceabort
-                </b>
-                .
-              
-              No transaction data gathered for that particular transaction will be exported,
-              although data from previous and subsequent successful transactions with that
-                <i>
-                 tag
-                </i>
-                name are still exported.  This is most useful when an error condition
-              arises during transaction processing and the transaction does not run to
-              completion.
-               </p>
-               <p>
-                The
-                <i>
-                 tag
-                </i>
-                argument to
-                <b>
-                 pmtracebegin
-                </b>
-                ,
-                <b>
-                 pmtraceend
-                </b>
-                and
-                <b>
-                 pmtraceabort
-                </b>
-                is used to uniquely identify each transaction within the
-                <i>
-                 pcp_trace
-                </i>
-                library and later by the trace PMDA as the instance domain identifiers for the
-              transaction performance metrics which it exports.
-              These routines are most useful when used around blocks of code which are
-              likely to be executed a number of times over some relatively long time
-              period (in a daemon process, for example).
-               </p>
-               <p>
-                <b>
-                 pmtracebegin
-                </b>
-                has two distinct roles - firstly as the initiator of a new transaction,
-              and secondly as a mechanism for setting a new start time.
-              Similarly,
-                <b>
-                 pmtraceend
-                </b>
-                is used to register a new
-                <i>
-                 tag
-                </i>
-                and its initial state with the trace
-              PMDA, or alternatively to update the statistics which the PMDA currently
-              associates with the given
-                <i>
-                 tag
-                </i>
-                .
-               </p>
-               <p>
-                A second form of program instrumentation can be obtained from
-                <b>
-                 pmtracepoint
-                </b>
-                .
-              
-              This is a simpler form of monitoring as it exports only the number of times
-              that a particular point in a program has been passed.  This differs to the
-              transaction monitoring offered by
-                <b>
-                 pmtracebegin
-                </b>
-                and
-                <b>
-                 pmtraceend
-                </b>
-                ,
-              
-              which exports a running count of successful transaction completions as well as
-              statistics on the time interval between the start and end points of each
-              transaction.
-              This function is most useful when start and end points are not well defined.
-              Examples of this would be when the code branches in such a way that a transaction
-              cannot be clearly identified, or when processing does not follow a transactional
-              model, or the desired instrumentation is akin to event rates rather than event
-              service times.
-               </p>
-               <p>
-                The
-                <b>
-                 pmtraceobs
-                </b>
-                and
-                <b>
-                 pmtracecounter
-                </b>
-                functions have similar semantics to
-                <b>
-                 pmtracepoint
-                </b>
-                ,
-              
-              but also allow an arbitrary numeric
-                <i>
-                 value
-                </i>
-                to be passed to the trace
-              PMDA.
-              The most recent
-                <i>
-                 value
-                </i>
-                for each
-                <i>
-                 tag
-                </i>
-                is then immediately available
-              from the PMDA.  The only difference between
-                <b>
-                 pmtraceobs
-                </b>
-                and
-                <b>
-                 pmtracecounter
-                </b>
-                is that the value exported via
-                <b>
-                 pmtracecounter
-                </b>
-                is assumed to be a monotonically increasing counter value (e.g. the number
-              of bytes read from a socket), whereas the value exported via
-                <b>
-                 pmtraceobs
-                </b>
-                can be any value at all.
-               </p>
-               <p>
-                <b>
-                 pmtracestate
-                </b>
-                allows the application to set state
-                <i>
-                 flags
-                </i>
-                which are honoured by
-              subsequent calls to the
-                <i>
-                 pcp_trace
-                </i>
-                library routines.
-              There are currently two types of flag - debugging flags and the asynchronous
-              protocol flag.  A single call may specify a number of
-                <i>
-                 flags
-                </i>
-                together,
-              combined using a (bitwise) logical OR operation, and overrides the previous
-              state setting.
-               </p>
-               <p>
-                The debugging flags to
-                <b>
-                 pmtracestate
-                </b>
-                cause
-                <i>
-                 pcp_trace
-                </i>
-                to print diagnostic messages
-              on the standard output stream at important processing points.
-              The default protocol used between the trace PMDA and individual
-                <i>
-                 pcp_trace
-                </i>
-                client applications is a synchronous protocol, which allows for dropped
-              connections to be reestablished at a later stage should this become possible.
-              An asynchronous protocol is also available which does not provide the
-              reconnection capability, but which does away with much of the overhead
-              inherent in synchronous communication.
-              This behaviour can be toggled using the
-                <b>
-                 pmtracestate
-                </b>
-                call, but must be called before other calls to the library.  This
-              differs to the debugging state behaviour, which can be altered at any time.
-                <b>
-                 pmtracestate
-                </b>
-                returns the previous state (setting prior to being called).
-               </p>
-               <p>
-                The following table describes each of the
-                <b>
-                 pmtracestate
-                </b>
-                <i>
-                 flags
-                </i>
-                - examples of the use of these flags in each supported language are
-              given in the demo applications (refer to the ``FILES'' section below).
-               </p>
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      State Flags
-                     </td>
-                     <td align="center">
-                      Semantics
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="2">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      0  NONE
-                     </td>
-                     <td>
-                      Synchronous PDUs and no diagnostics (default)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      1  API
-                     </td>
-                     <td>
-                      Shows processing just below the API (debug)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      2  COMMS
-                     </td>
-                     <td>
-                      Shows network-related activity (debug)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      4  PDU
-                     </td>
-                     <td>
-                      Shows app&lt;-&gt;PMDA IPC traffic (debug)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      8  PDUBUF
-                     </td>
-                     <td>
-                      Shows internal IPC buffer management (debug)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      16 NOAGENT
-                     </td>
-                     <td>
-                      No PMDA communications at all (debug)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      32 ASYNC
-                     </td>
-                     <td>
-                      Use the asynchronous PDU protocol (control)
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-                Should any of the
-                <i>
-                 pcp_trace
-                </i>
-                library functions return a negative value,
-              an error has occurred.  This can be diagnosed further using the
-                <b>
-                 pmtraceerrstr
-                </b>
-                routine, which takes the negative return value as its
-                <i>
-                 code
-                </i>
-                argument,
-              and in the C-callable interface returns a pointer to the associated error
-              message.
-              This points into a static error table, and should therefore not be passed to
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/free.3.html">
-                  free
-                 </a>
-                </b>
-                (3).
-              
-              The Fortran-callable interface has a slightly different syntax, requiring the
-              destination character array to be passed in as the second argument.
-              The Java-callable interface returns a UTF-8 string, created using the JNI
-              (Java Native Interface) routine
-                <b>
-                 NewStringUTF
-                </b>
-                .
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                ENVIRONMENT
-               </h2>
-               The
-               <i>
-                pcp_trace
-               </i>
-               routines communicate with the trace PMDA via a socket connection, which by
-              default uses TCP/IP port number 4323.  This can be over-ridden by setting
-               <b>
-                PCP_TRACE_PORT
-               </b>
-               to a different port number when the application is
-              started.  The host where the trace PMDA is running is by default the
-              localhost, but this can be changed using
-               <b>
-                PCP_TRACE_HOST
-               </b>
-               .
-              When attempting to connect to a remote trace PMDA, after some specified time
-              interval has elapsed, the connection attempt will be aborted and an error
-              status will be returned.  The default timeout interval is 3 seconds, and this
-              can be modified by setting
-               <b>
-                PCP_TRACE_TIMEOUT
-               </b>
-               in the environment to a
-              real number of seconds for the desired timeout.  This is most useful in cases
-              where the remote host is at the end of a slow network, requiring longer
-              latencies to establish the connection correctly.
-               <a name="lbAH">
-               </a>
-               <h2>
-                NOTES
-               </h2>
-               The
-               <i>
-                pcp_trace
-               </i>
-               Java class interface has been developed and verified using
-              version 1.1 of the Java Native Interface (JNI) specification.
-               <a name="lbAI">
-               </a>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_DEMOS_DIR/trace/*.c
-                 </b>
-                </dt>
-                <dd>
-                 Sample C programs and source for
-                 <b>
-                  <a href="/man/man1/pmtrace.1.html">
-                   pmtrace
-                  </a>
-                 </b>
-                 (1).
-              
-              Use
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man1/make.1.html">
-                   make
-                  </a>
-                 </b>
-                 (1)
-              
-              to build these programs.
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_DEMOS_DIR/trace/fapp1.f
-                 </b>
-                </dt>
-                <dd>
-                 Sample Fortran program.
-              Call `make fortran77' or `make fortran90' to build this program.
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_DEMOS_DIR/trace/japp1.java
-                 </b>
-                </dt>
-                <dd>
-                 Sample Java program.
-              `make java' builds the java class file.
-                </dd>
-                <dt>
-                 <b>
-                  /usr/java/classes/sgi/pcp/trace.java
-                 </b>
-                </dt>
-                <dd>
-                 Java trace class definition.
-                </dd>
-               </dl>
-               <a name="lbAJ">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-              
-              Values for these variables may be obtained programmatically
-              using the
-               <i>
-                <a href="/man/man3/pmgetconfig.3.html">
-                 pmGetConfig
-                </a>
-               </i>
-               (3)
-              
-              function.
-               <a name="lbAK">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                file:$PCP_DOC_DIR/Tutorial/trace.html,
-               </b>
-               <b>
-                pcp.man.tutorial,
-               </b>
-               Provided the,
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/make.1.html">
-                 make
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdatrace.1.html">
-                 pmdatrace
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmprobe.1.html">
-                 pmprobe
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmtrace.1.html">
-                 pmtrace
-                </a>
-               </b>
-               (1),
-              
-              Relevant information is also available from the on-line PCP Tutorial,
-              subsystem from the PCP images has been installed, access the URL
-              and
-              from your web browser.
-               <a name="lbAL">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               A negative return value from a
-               <i>
-                pcp_trace
-               </i>
-               function indicates that an
-              error has occurred - if this is the case, the return value can be passed
-              to
-               <b>
-                pmtraceerrstr
-               </b>
-               to obtain the associated error message.
-               <p>
-                Success is indicated by a return value of zero.
-               </p>
-               <p>
-                <b>
-                 pmtracestate
-                </b>
-                also returns an integer representing the state
-                <i>
-                 flags
-                </i>
-                which were set
-              prior to the call.
-                <a name="lbAM">
-                </a>
-               </p>
-               <h2>
-                CAVEAT
-               </h2>
-               <p>
-                Applications that use
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-                  gethostbyname
-                 </a>
-                </b>
-                (3)
-              
-              should exercise caution because the static fields in
-                <i>
-                 struct hostent
-                </i>
-                may not be preserved across some
-                <i>
-                 pcp_trace
-                </i>
-                calls.
-              In particular,
-                <b>
-                 pmtracebegin
-                </b>
-                ,
-                <b>
-                 pmtraceend
-                </b>
-                ,
-                <b>
-                 pmtracepoint
-                </b>
-                ,
-                <b>
-                 pmtracecounter
-                </b>
-                ,
-              
-              and
-                <b>
-                 pmtraceobs
-                </b>
-                may all call
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-                  gethostbyname
-                 </a>
-                </b>
-                (3)
-              
-              internally.
-               </p>
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  FORTRAN SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  JAVA SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  NOTES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAJ">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAK">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAL">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAM">
-                  CAVEAT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMDATRACE
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmtracebegin
+ </b>
+ ,
+ <b>
+  pmtraceend
+ </b>
+ ,
+ <b>
+  pmtraceabort
+ </b>
+ ,
+ <b>
+  pmtracepoint
+ </b>
+ ,
+ <b>
+  pmtraceobs
+ </b>
+ ,
+ <b>
+  pmtracecounter
+ </b>
+ ,
+ <b>
+  pmtracestate
+ </b>
+ ,
+ <b>
+  pmtraceerrstr
+ </b>
+ - application-level performance instrumentation services
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/trace.h">
+   pcp/trace.h
+  </a>
+  &gt;
+ </b>
+ <p>
+ </p>
+ <pre>
+int pmtracebegin(const char *<i>tag</i>);
+int pmtraceend(const char *<i>tag</i>);
+int pmtraceabort(const char *<i>tag</i>);
+int pmtracepoint(const char *<i>tag</i>);
+int pmtraceobs(const char *<i>tag</i>, double <i>value</i>);
+int pmtracecounter(const char *<i>tag</i>, double <i>value</i>);
+char *pmtraceerrstr(int <i>code</i>);
+int pmtracestate(int <i>flags</i>);
+</pre>
+ <p>
+  cc ... -lpcp_trace
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  FORTRAN SYNOPSIS
+ </h2>
+ <b>
+ </b>
+ <pre>
+character*(*) <i>tag</i>
+integer <i>code</i>
+integer <i>flags</i>
+integer <i>state</i>
+character*(*) <i>estr</i>
+real*8 <i>value</i>
+</pre>
+ <p>
+ </p>
+ <pre>
+<i>code</i> = pmtracebegin(<i>tag</i>)
+<i>code</i> = pmtraceend(<i>tag</i>)
+<i>code</i> = pmtraceabort(<i>tag</i>)
+<i>code</i> = pmtracepoint(<i>tag</i>)
+<i>code</i> = pmtraceobs(<i>tag</i>, <i>value</i>)
+<i>code</i> = pmtracecounter(<i>tag</i>, <i>value</i>)
+pmtraceerrstr(<i>code</i>, <i>estr</i>)
+<i>state</i> = pmtracestate(<i>flags</i>)
+</pre>
+ <p>
+ </p>
+ <pre>
+f77 ... -lpcp_trace  or<b>  f90 ... -lpcp_trace
+</b></pre>
+ <a name="lbAE">
+ </a>
+ <h2>
+  JAVA SYNOPSIS
+ </h2>
+ <b>
+ </b>
+ <pre>
+
+import sgi.pcp.trace;
+
+int trace.pmtracebegin(String <i>tag</i>);
+int trace.pmtraceend(String <i>tag</i>);
+int trace.pmtraceabort(String <i>tag</i>);
+int trace.pmtracepoint(String <i>tag</i>);
+int trace.pmtraceobs(String <i>tag</i>, double <i>value</i>);
+int trace.pmtracecounter(String <i>tag</i>, double <i>value</i>);
+String trace.pmtraceerrstr(int <i>code</i>);
+int trace.pmtracestate(int <i>flags</i>);
+</pre>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ The
+ <i>
+  pcp_trace
+ </i>
+ library functions provide a mechanism for identifying sections of a program
+as transactions or events for use by the trace Performance Metrics Domain Agent
+(refer to
+ <b>
+  <a href="/man/man1/pmdatrace.1.html">
+   pmdatrace
+  </a>
+ </b>
+ (1)
+
+and
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3)).
+ <p>
+  The monitoring of transactions using the Performance Co-Pilot (PCP)
+infrastructure is initiated through a call to
+  <b>
+   pmtracebegin
+  </b>
+  .
+
+Time will be recorded from the end of each
+  <b>
+   pmtracebegin
+  </b>
+  call to the start of the following call to
+  <b>
+   pmtraceend
+  </b>
+  ,
+
+where the same
+  <i>
+   tag
+  </i>
+  identifier is used in both calls.
+Following from this, no visible recording will occur until at least one call to
+  <b>
+   pmtraceend
+  </b>
+  is made referencing a
+  <i>
+   tag
+  </i>
+  previously used in a call to
+  <b>
+   pmtracebegin
+  </b>
+  .
+ </p>
+ <p>
+  A transaction which is currently in progress can be cancelled by calling
+  <b>
+   pmtraceabort
+  </b>
+  .
+
+No transaction data gathered for that particular transaction will be exported,
+although data from previous and subsequent successful transactions with that
+  <i>
+   tag
+  </i>
+  name are still exported.  This is most useful when an error condition
+arises during transaction processing and the transaction does not run to
+completion.
+ </p>
+ <p>
+  The
+  <i>
+   tag
+  </i>
+  argument to
+  <b>
+   pmtracebegin
+  </b>
+  ,
+  <b>
+   pmtraceend
+  </b>
+  and
+  <b>
+   pmtraceabort
+  </b>
+  is used to uniquely identify each transaction within the
+  <i>
+   pcp_trace
+  </i>
+  library and later by the trace PMDA as the instance domain identifiers for the
+transaction performance metrics which it exports.
+These routines are most useful when used around blocks of code which are
+likely to be executed a number of times over some relatively long time
+period (in a daemon process, for example).
+ </p>
+ <p>
+  <b>
+   pmtracebegin
+  </b>
+  has two distinct roles - firstly as the initiator of a new transaction,
+and secondly as a mechanism for setting a new start time.
+Similarly,
+  <b>
+   pmtraceend
+  </b>
+  is used to register a new
+  <i>
+   tag
+  </i>
+  and its initial state with the trace
+PMDA, or alternatively to update the statistics which the PMDA currently
+associates with the given
+  <i>
+   tag
+  </i>
+  .
+ </p>
+ <p>
+  A second form of program instrumentation can be obtained from
+  <b>
+   pmtracepoint
+  </b>
+  .
+
+This is a simpler form of monitoring as it exports only the number of times
+that a particular point in a program has been passed.  This differs to the
+transaction monitoring offered by
+  <b>
+   pmtracebegin
+  </b>
+  and
+  <b>
+   pmtraceend
+  </b>
+  ,
+
+which exports a running count of successful transaction completions as well as
+statistics on the time interval between the start and end points of each
+transaction.
+This function is most useful when start and end points are not well defined.
+Examples of this would be when the code branches in such a way that a transaction
+cannot be clearly identified, or when processing does not follow a transactional
+model, or the desired instrumentation is akin to event rates rather than event
+service times.
+ </p>
+ <p>
+  The
+  <b>
+   pmtraceobs
+  </b>
+  and
+  <b>
+   pmtracecounter
+  </b>
+  functions have similar semantics to
+  <b>
+   pmtracepoint
+  </b>
+  ,
+
+but also allow an arbitrary numeric
+  <i>
+   value
+  </i>
+  to be passed to the trace
+PMDA.
+The most recent
+  <i>
+   value
+  </i>
+  for each
+  <i>
+   tag
+  </i>
+  is then immediately available
+from the PMDA.  The only difference between
+  <b>
+   pmtraceobs
+  </b>
+  and
+  <b>
+   pmtracecounter
+  </b>
+  is that the value exported via
+  <b>
+   pmtracecounter
+  </b>
+  is assumed to be a monotonically increasing counter value (e.g. the number
+of bytes read from a socket), whereas the value exported via
+  <b>
+   pmtraceobs
+  </b>
+  can be any value at all.
+ </p>
+ <p>
+  <b>
+   pmtracestate
+  </b>
+  allows the application to set state
+  <i>
+   flags
+  </i>
+  which are honoured by
+subsequent calls to the
+  <i>
+   pcp_trace
+  </i>
+  library routines.
+There are currently two types of flag - debugging flags and the asynchronous
+protocol flag.  A single call may specify a number of
+  <i>
+   flags
+  </i>
+  together,
+combined using a (bitwise) logical OR operation, and overrides the previous
+state setting.
+ </p>
+ <p>
+  The debugging flags to
+  <b>
+   pmtracestate
+  </b>
+  cause
+  <i>
+   pcp_trace
+  </i>
+  to print diagnostic messages
+on the standard output stream at important processing points.
+The default protocol used between the trace PMDA and individual
+  <i>
+   pcp_trace
+  </i>
+  client applications is a synchronous protocol, which allows for dropped
+connections to be reestablished at a later stage should this become possible.
+An asynchronous protocol is also available which does not provide the
+reconnection capability, but which does away with much of the overhead
+inherent in synchronous communication.
+This behaviour can be toggled using the
+  <b>
+   pmtracestate
+  </b>
+  call, but must be called before other calls to the library.  This
+differs to the debugging state behaviour, which can be altered at any time.
+  <b>
+   pmtracestate
+  </b>
+  returns the previous state (setting prior to being called).
+ </p>
+ <p>
+  The following table describes each of the
+  <b>
+   pmtracestate
+  </b>
+  <i>
+   flags
+  </i>
+  - examples of the use of these flags in each supported language are
+given in the demo applications (refer to the ``FILES'' section below).
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        State Flags
+       </td>
+       <td align="center">
+        Semantics
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="2">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        0  NONE
+       </td>
+       <td>
+        Synchronous PDUs and no diagnostics (default)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        1  API
+       </td>
+       <td>
+        Shows processing just below the API (debug)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        2  COMMS
+       </td>
+       <td>
+        Shows network-related activity (debug)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        4  PDU
+       </td>
+       <td>
+        Shows app&lt;-&gt;PMDA IPC traffic (debug)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        8  PDUBUF
+       </td>
+       <td>
+        Shows internal IPC buffer management (debug)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        16 NOAGENT
+       </td>
+       <td>
+        No PMDA communications at all (debug)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        32 ASYNC
+       </td>
+       <td>
+        Use the asynchronous PDU protocol (control)
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+  Should any of the
+  <i>
+   pcp_trace
+  </i>
+  library functions return a negative value,
+an error has occurred.  This can be diagnosed further using the
+  <b>
+   pmtraceerrstr
+  </b>
+  routine, which takes the negative return value as its
+  <i>
+   code
+  </i>
+  argument,
+and in the C-callable interface returns a pointer to the associated error
+message.
+This points into a static error table, and should therefore not be passed to
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+    free
+   </a>
+  </b>
+  (3).
+
+The Fortran-callable interface has a slightly different syntax, requiring the
+destination character array to be passed in as the second argument.
+The Java-callable interface returns a UTF-8 string, created using the JNI
+(Java Native Interface) routine
+  <b>
+   NewStringUTF
+  </b>
+  .
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  ENVIRONMENT
+ </h2>
+ The
+ <i>
+  pcp_trace
+ </i>
+ routines communicate with the trace PMDA via a socket connection, which by
+default uses TCP/IP port number 4323.  This can be over-ridden by setting
+ <b>
+  PCP_TRACE_PORT
+ </b>
+ to a different port number when the application is
+started.  The host where the trace PMDA is running is by default the
+localhost, but this can be changed using
+ <b>
+  PCP_TRACE_HOST
+ </b>
+ .
+When attempting to connect to a remote trace PMDA, after some specified time
+interval has elapsed, the connection attempt will be aborted and an error
+status will be returned.  The default timeout interval is 3 seconds, and this
+can be modified by setting
+ <b>
+  PCP_TRACE_TIMEOUT
+ </b>
+ in the environment to a
+real number of seconds for the desired timeout.  This is most useful in cases
+where the remote host is at the end of a slow network, requiring longer
+latencies to establish the connection correctly.
+ <a name="lbAH">
+ </a>
+ <h2>
+  NOTES
+ </h2>
+ The
+ <i>
+  pcp_trace
+ </i>
+ Java class interface has been developed and verified using
+version 1.1 of the Java Native Interface (JNI) specification.
+ <a name="lbAI">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_DEMOS_DIR/trace/*.c
+   </b>
+  </dt>
+  <dd>
+   Sample C programs and source for
+   <b>
+    <a href="/man/man1/pmtrace.1.html">
+     pmtrace
+    </a>
+   </b>
+   (1).
+
+Use
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/make.1.html">
+     make
+    </a>
+   </b>
+   (1)
+
+to build these programs.
+  </dd>
+  <dt>
+   <b>
+    $PCP_DEMOS_DIR/trace/fapp1.f
+   </b>
+  </dt>
+  <dd>
+   Sample Fortran program.
+Call `make fortran77' or `make fortran90' to build this program.
+  </dd>
+  <dt>
+   <b>
+    $PCP_DEMOS_DIR/trace/japp1.java
+   </b>
+  </dt>
+  <dd>
+   Sample Java program.
+`make java' builds the java class file.
+  </dd>
+  <dt>
+   <b>
+    /usr/java/classes/sgi/pcp/trace.java
+   </b>
+  </dt>
+  <dd>
+   Java trace class definition.
+  </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+
+Values for these variables may be obtained programmatically
+using the
+ <i>
+  <a href="/man/man3/pmgetconfig.3.html">
+   pmGetConfig
+  </a>
+ </i>
+ (3)
+
+function.
+ <a name="lbAK">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  file:$PCP_DOC_DIR/Tutorial/trace.html,
+ </b>
+ <b>
+  pcp.man.tutorial,
+ </b>
+ Provided the,
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/make.1.html">
+   make
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdatrace.1.html">
+   pmdatrace
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmprobe.1.html">
+   pmprobe
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmtrace.1.html">
+   pmtrace
+  </a>
+ </b>
+ (1),
+
+Relevant information is also available from the on-line PCP Tutorial,
+subsystem from the PCP images has been installed, access the URL
+and
+from your web browser.
+ <a name="lbAL">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ A negative return value from a
+ <i>
+  pcp_trace
+ </i>
+ function indicates that an
+error has occurred - if this is the case, the return value can be passed
+to
+ <b>
+  pmtraceerrstr
+ </b>
+ to obtain the associated error message.
+ <p>
+  Success is indicated by a return value of zero.
+ </p>
+ <p>
+  <b>
+   pmtracestate
+  </b>
+  also returns an integer representing the state
+  <i>
+   flags
+  </i>
+  which were set
+prior to the call.
+  <a name="lbAM">
+  </a>
+ </p>
+ <h2>
+  CAVEAT
+ </h2>
+ <p>
+  Applications that use
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+    gethostbyname
+   </a>
+  </b>
+  (3)
+
+should exercise caution because the static fields in
+  <i>
+   struct hostent
+  </i>
+  may not be preserved across some
+  <i>
+   pcp_trace
+  </i>
+  calls.
+In particular,
+  <b>
+   pmtracebegin
+  </b>
+  ,
+  <b>
+   pmtraceend
+  </b>
+  ,
+  <b>
+   pmtracepoint
+  </b>
+  ,
+  <b>
+   pmtracecounter
+  </b>
+  ,
+
+and
+  <b>
+   pmtraceobs
+  </b>
+  may all call
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+    gethostbyname
+   </a>
+  </b>
+  (3)
+
+internally.
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    FORTRAN SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    JAVA SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    NOTES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAM">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

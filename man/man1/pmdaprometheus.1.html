@@ -1,583 +1,560 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMDAPROMETHEUS
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmdaprometheus
-               </b>
-               - Prometheus PMDA
-               <a name="lbAC">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmdaprometheus
-               </b>
-               is a Performance Metrics Domain Agent (PMDA) which
-              creates PCP metrics from Prometheus endpoints, which provide HTTP based
-              access to application metrics.
-               <p>
-                Further details on the Prometheus exposition format can
-              be found at
-                <i>
-                 <a href="https://prometheus.io/docs/instrumenting/exposition_formats">
-                  https://prometheus.io/docs/instrumenting/exposition_formats
-                 </a>
-                </i>
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                METADATA SOURCES
-               </h2>
-               <b>
-                pmdaprometheus
-               </b>
-               scans the
-               <i>
-                $PCP_PMDAS_DIR/prometheus/metadata
-               </i>
-               directory, looking for metadata files (
-               <i>
-                *.json).
-               </i>
-               These JSON metadata files describe the names, types, etc.
-              of their associated Prometheus metrics for a given endpoint.
-              For example, let's assume the following simple Prometheus metric:
-               <p>
-               </p>
-               <pre>
-              # HELP go_goroutines Number of goroutines that currently exist.
-              # TYPE go_goroutines gauge
-              go_goroutines 86
-              </pre>
-               <p>
-                The associated metadata file would look like the following:
-               </p>
-               <p>
-               </p>
-               <pre>
-              {
-                "metrics": [
-                  {
-                    "semantics": "instantaneous",
-                    "type": "uint64",
-                    "units_str": "",
-                    "prometheus_name": "go_goroutines",
-                    "name": "go_goroutines",
-                    "description": "Number of goroutines that currently exist."
-                  }
-                ]
-              }
-              </pre>
-               <p>
-                Allowable values for each of the metadata fields are:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  semantics
-                 </b>
-                 =[counter, instantaneous]/
-                </dt>
-                <dd>
-                 the semantics of the metric
-                </dd>
-                <dt>
-                 <b>
-                  type
-                 </b>
-                 =[double, uint64]/
-                </dt>
-                <dd>
-                 the base data type of the metric
-                </dd>
-                <dt>
-                 <b>
-                  name
-                 </b>
-                 =
-                 <i>
-                  ,STRING/
-                 </i>
-                </dt>
-                <dd>
-                 name of the metric to be used in PCP
-                </dd>
-                <dt>
-                 <b>
-                  units_str
-                 </b>
-                 =
-                 <i>
-                  ,STRING/
-                 </i>
-                </dt>
-                <dd>
-                 the dimension and units of the metric which can be parsed by
-                 <i>
-                  <a href="/man/man3/pmparseunitsstr.3.html">
-                   pmParseUnitsStr
-                  </a>
-                 </i>
-                 (3)
-                </dd>
-                <dt>
-                 <b>
-                  prometheus_name
-                 </b>
-                 =
-                 <i>
-                  ,STRING/
-                 </i>
-                </dt>
-                <dd>
-                 complete metric name as used in Prometheus
-                </dd>
-                <dt>
-                 <b>
-                  description
-                 </b>
-                 =
-                 <i>
-                  ,STRING/
-                 </i>
-                </dt>
-                <dd>
-                 text description of the metric
-                </dd>
-               </dl>
-               <a name="lbAE">
-               </a>
-               <h2>
-                METADATA GENERATOR
-               </h2>
-               The
-               <b>
-                pmdaprometheus
-               </b>
-               metadata generation helper script
-              helps in providing initial content for the (heuristic-based)
-              metric metadata, from a Prometheus endpoint.
-               <p>
-                <b>
-                 $PCP_PMDAS_DIR/prometheus/Generate
-                </b>
-                [
-                <i>
-                 ,OPTIONS]
-                </i>
-               </p>
-               <p>
-                Mandatory arguments to long options are mandatory for short options too.
-              Following are the mandatory options:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -u
-                 </b>
-                 ,
-                 <b>
-                  --url
-                 </b>
-                 =
-                 <i>
-                  ,STRING/
-                 </i>
-                </dt>
-                <dd>
-                 URL of the Prometheus endpoint
-                </dd>
-                <dt>
-                 <b>
-                  -n
-                 </b>
-                 ,
-                 <b>
-                  --name
-                 </b>
-                 =
-                 <i>
-                  ,STRING/
-                 </i>
-                </dt>
-                <dd>
-                 name of the Prometheus endpoint
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                INSTALLATION
-               </h2>
-               Install the Prometheus PMDA by using the Install script as root:
-               <p>
-                <br/>
-                # cd $PCP_PMDAS_DIR/prometheus
-                <br/>
-                <br/>
-                # ./Install
-               </p>
-               <p>
-                To uninstall, do the following as root:
-               </p>
-               <p>
-                <br/>
-                # cd $PCP_PMDAS_DIR/prometheus
-                <br/>
-                <br/>
-                # ./Remove
-               </p>
-               <p>
-                <b>
-                 pmdaprometheus
-                </b>
-                is launched by
-                <i>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </i>
-                (1) and should never be executed
-              directly. The Install and Remove scripts notify
-                <i>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </i>
-                (1) when the
-              agent is installed or removed.
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/prometheus/Install
-                 </b>
-                </dt>
-                <dd>
-                 installation script for the
-                 <b>
-                  pmdaprometheus
-                 </b>
-                 agent
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/prometheus/Remove
-                 </b>
-                </dt>
-                <dd>
-                 undo installation script for the
-                 <b>
-                  pmdaprometheus
-                 </b>
-                 agent
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/prometheus/Generate
-                 </b>
-                </dt>
-                <dd>
-                 generate metadata describing available metrics based on heuristics
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/prometheus/metadata/
-                 </b>
-                </dt>
-                <dd>
-                 metadata files for the
-                 <b>
-                  pmdaprometheus
-                 </b>
-                 agent
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_LOG_DIR/pmcd/prometheus.log
-                 </b>
-                </dt>
-                <dd>
-                 default log file for error messages from
-                 <b>
-                  pmdaprometheus
-                 </b>
-                </dd>
-               </dl>
-               <a name="lbAH">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize
-              the file and directory names used by
-               <b>
-                PCP
-               </b>
-               . On each installation, the
-              file
-               <b>
-                /etc/pcp.conf
-               </b>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file, as described in
-               <i>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </i>
-               (5).
-               <a name="lbAI">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pminfo.1.html">
-                 pminfo
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmprobe.1.html">
-                 pmprobe
-                </a>
-               </b>
-               (1)
-              
-              and
-               <i>
-                <a href="https://prometheus.io/docs/instrumenting/exposition_formats">
-                 https://prometheus.io/docs/instrumenting/exposition_formats
-                </a>
-               </i>
-               .
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  METADATA SOURCES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  METADATA GENERATOR
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  INSTALLATION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMDA\*(IA
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmdaprometheus
+ </b>
+ - Prometheus PMDA
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_PMDAS_DIR/prometheus/pmdaprometheus
+ </b>
+ [
+ <b>
+  -c
+ </b>
+ <i>
+  config
+ </i>
+ ]
+[
+ <b>
+  -t
+ </b>
+ <i>
+  timeout
+ </i>
+ ]
+[
+ <b>
+  -u
+ </b>
+ <i>
+  user
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmdaprometheus
+ </b>
+ is a Performance Metrics Domain Agent (PMDA) which
+creates PCP metrics from Prometheus endpoints, which provide HTTP based
+access to application metrics.
+The default
+ <i>
+  config
+ </i>
+ directory is
+ <b>
+  $PCP_PMDAS_DIR/prometheus/urls.d/
+ </b>
+ ,
+see
+ <b>
+  SOURCES
+ </b>
+ below.
+The default URL fetch
+ <i>
+  timeout
+ </i>
+ is
+ <b>
+  2
+ </b>
+ seconds.
+The default
+ <i>
+  user
+ </i>
+ , if not specified, is the current user.
+ <p>
+  Further details on the Prometheus exposition format can
+be found at
+  <i>
+   <a href="https://prometheus.io/docs/instrumenting/exposition_formats">
+    https://prometheus.io/docs/instrumenting/exposition_formats
+   </a>
+  </i>
+ </p>
+ <p>
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  URL SOURCES
+ </h2>
+ As it runs,
+ <b>
+  pmdaprometheus
+ </b>
+ periodically scans the
+ <i>
+  $PCP_PMDAS_DIR/prometheus/urls.d
+ </i>
+ directory, looking for source url files (
+ <i>
+  *.url
+ </i>
+ ).
+
+Each .url file contains one complete HTTP or HTTPS URL at which to
+pmdaprometheus is to reach a Prometheus endpoint.  The server does not
+have to be up or stay running.  The pmda will relay data and metadata
+when/if they are up, and will return errors when/if they are down.
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  METRICS
+ </h2>
+ All metrics from a file named
+ <i>
+  FOO.url
+ </i>
+ will be exported as PCP metrics with the
+ <i>
+  prometheus.FOO.
+ </i>
+ prefix.  Therefore, the FOO name must be a valid component for PMNS metric
+names.  If the FOO name has multiple dot-separated components, the resulting
+PMNS names will present those components.  Users should avoid configurations
+with sources that mix levels of nesting, such as
+ <i>
+  FOO.BAR.url
+ </i>
+ <i>
+  FOO.BAZ.url
+ </i>
+ <i>
+  FOO.url
+ </i>
+ because metrics under FOO one may conflict with or hide FOO.BAR and FOO.BAZ
+subtrees.
+ <p>
+ </p>
+ <p>
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  LIMITATIONS
+ </h2>
+ <b>
+  pmdaprometheus
+ </b>
+ and
+ <b>
+  libpcp
+ </b>
+ internals impose some numerical constraints about the number of sources (4095),
+metrics (1024) within each source, and instance domain instances for each
+metric (4194304).
+ <p>
+ </p>
+ <p>
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  INSTALLATION
+ </h2>
+ Install the Prometheus PMDA by using the Install script as root:
+ <p>
+  <br/>
+  # cd $PCP_PMDAS_DIR/prometheus
+  <br/>
+  <br/>
+  # ./Install
+ </p>
+ <p>
+  To uninstall, do the following as root:
+ </p>
+ <p>
+  <br/>
+  # cd $PCP_PMDAS_DIR/prometheus
+  <br/>
+  <br/>
+  # ./Remove
+ </p>
+ <p>
+  <b>
+   pmdaprometheus
+  </b>
+  is launched by
+  <i>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </i>
+  (1) and should never be executed
+directly. The Install and Remove scripts notify
+  <i>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </i>
+  (1) when the
+agent is installed or removed.
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/prometheus/Install
+   </b>
+  </dt>
+  <dd>
+   installation script for the
+   <b>
+    pmdaprometheus
+   </b>
+   agent
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/prometheus/Remove
+   </b>
+  </dt>
+  <dd>
+   undo installation script for the
+   <b>
+    pmdaprometheus
+   </b>
+   agent
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/prometheus/urls.d/
+   </b>
+  </dt>
+  <dd>
+   source files for the
+   <b>
+    pmdaprometheus
+   </b>
+   agent
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmcd/prometheus.log
+   </b>
+  </dt>
+  <dd>
+   default log file for error messages from
+   <b>
+    pmdaprometheus
+   </b>
+  </dd>
+  <dt>
+   <b>
+    $PCP_VAR_DIR/
+   </b>
+  </dt>
+  <dd>
+   directory containing internal tables for ID number persistence
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by
+ <b>
+  PCP
+ </b>
+ . On each installation, the
+file
+ <b>
+  /etc/pcp.conf
+ </b>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <i>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </i>
+ (5).
+ <a name="lbAK">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmwebd.1.html">
+   pmwebd
+  </a>
+ </b>
+ (1),
+
+and
+ <i>
+  <a href="https://prometheus.io/docs/instrumenting/exposition_formats">
+   https://prometheus.io/docs/instrumenting/exposition_formats
+  </a>
+ </i>
+ .
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    URL SOURCES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    METRICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    LIMITATIONS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    INSTALLATION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

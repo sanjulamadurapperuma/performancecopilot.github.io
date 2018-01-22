@@ -1,1078 +1,1082 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMNEWLOG
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmnewlog
-               </b>
-               - stop and restart archive logging for PCP performance metrics
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                $PCP_BINADM_DIR/pmnewlog
-               </b>
-               [
-               <b>
-                -a
-               </b>
-               <i>
-                accessfile
-               </i>
-               ]
-              [
-               <b>
-                -C
-               </b>
-               <i>
-                saveconfig
-               </i>
-               ]
-              [
-               <b>
-                -c
-               </b>
-               <i>
-                configfile
-               </i>
-               ]
-              [
-               <b>
-                -N
-               </b>
-               ]
-              [
-               <b>
-                -n
-               </b>
-               <i>
-                pmnsfile
-               </i>
-               ]
-              [
-               <b>
-                -P
-               </b>
-               ]
-              [
-               <b>
-                -p
-               </b>
-               <i>
-                pid
-               </i>
-               ]
-              [
-               <b>
-                -s
-               </b>
-               ]
-              [
-               <b>
-                -V
-               </b>
-               ]
-              [
-               <i>
-                other pmlogger options
-               </i>
-               ]
-               <i>
-                archive
-               </i>
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmnewlog
-               </b>
-               may be used to stop and restart a running instance of
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1).
-              
-              This is most useful for managing multiple sets of
-              Performance Co-Pilot (PCP) archive logs.
-              These archive logs record the history of
-              performance metric values
-              that may be ``played back'' by other PCP
-              tools, and they
-              form the basis of the VCR paradigm and retrospective
-              performance analysis services common to the PCP toolkit.
-               <p>
-                In normal usage,
-                <b>
-                 pmnewlog
-                </b>
-                would be executed by
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man1/cron.1.html">
-                  cron
-                 </a>
-                </b>
-                (1)
-              
-              in the wee hours to terminate one PCP archive log and start another,
-              i.e. to perform log rotation.
-               </p>
-               <p>
-                Even more common, would be the execution of
-                <b>
-                 pmnewlog
-                </b>
-                from the PCP archive management script
-                <b>
-                 <a href="/man/man1/pmlogger_daily.1.html">
-                  pmlogger_daily
-                 </a>
-                </b>
-                (1).
-              
-              In this case, direct end-user execution of
-                <b>
-                 pmnewlog
-                </b>
-                is most unlikely.
-               </p>
-               <p>
-                The mandatory argument
-                <i>
-                 archive
-                </i>
-                is the base name for the physical files that will constitute
-              the new archive log.
-               </p>
-               <p>
-                The
-                <b>
-                 pmlogger
-                </b>
-                instance to be stopped and restarted must be running on the same system
-              as
-                <b>
-                 pmnewlog
-                </b>
-                and is either the primary logger (the default) or the logger with
-                <i>
-                 pid
-                </i>
-                as specified by the
-                <b>
-                 -p
-                </b>
-                option.
-               </p>
-               <p>
-                If the
-                <b>
-                 -n
-                </b>
-                option is specified, then
-                <b>
-                 pmnewlog
-                </b>
-                will use the namespace in the
-                <i>
-                 pmnsfile
-                </i>
-                ,
-              
-              rather than the default Performance Metrics Name Space (PMNS).
-               </p>
-               <p>
-                If no
-                <b>
-                 -c
-                </b>
-                option is specified,
-                <b>
-                 pmnewlog
-                </b>
-                will use
-                <b>
-                 <a href="/man/man1/pmlc.1.html">
-                  pmlc
-                 </a>
-                </b>
-                (1)
-              
-              to connect to the running
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              and so determine all those metrics and instances that are subject to
-                <b>
-                 mandatory
-                </b>
-                logging or
-                <b>
-                 advisory on
-                </b>
-                logging, and the associated logging frequencies.
-              This information is used to synthesize a new
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              configuration file.
-              If the
-                <b>
-                 -n
-                </b>
-                option is specified, it will also be used for these interactions with
-                <b>
-                 <a href="/man/man1/pmlc.1.html">
-                  pmlc
-                 </a>
-                </b>
-                (1).
-               </p>
-               <p>
-                If the
-                <b>
-                 -c
-                </b>
-                option is specified,
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              will be restarted with
-                <i>
-                 configfile
-                </i>
-                as the configuration file.
-              Normally
-                <i>
-                 configfile
-                </i>
-                would be the same configuration file used to start
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              in the first place, however note that since
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              is restarted, any changes to the logging status made
-              using
-                <b>
-                 <a href="/man/man1/pmlc.1.html">
-                  pmlc
-                 </a>
-                </b>
-                (1)
-              
-              will be lost, unless these have also been reflected in changes to
-                <i>
-                 configfile
-                </i>
-                .
-               </p>
-               <p>
-                If
-                <i>
-                 configfile
-                </i>
-                does not exist, then a search is made in the directory
-                <i>
-                 $PCP_VAR_DIR/config/pmlogger
-                </i>
-                for a file of the same name, and if found that file is used,
-              e.g. if
-                <i>
-                 config.mumble
-                </i>
-                does not exist in the current directory and
-              the file
-                <i>
-                 $PCP_VAR_DIR/config/pmlogger/config.mumble
-                </i>
-                does exist, then
-                <b>
-                 -c config.mumble
-                </b>
-                and
-                <b>
-                 -c $PCP_VAR_DIR/config/pmlogger/config.mumble
-                </b>
-                are equivalent.
-               </p>
-               <p>
-                Access controls specifications for the new
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              instance may optionally be provided via the
-                <b>
-                 -a
-                </b>
-                option.  The contents of
-                <i>
-                 accessfile
-                </i>
-                should start with the literal token
-                <b>
-                 [access]
-                </b>
-                and conform to the syntax of the access controls section
-              as described for
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1).
-               </p>
-               <p>
-                The
-                <b>
-                 -C
-                </b>
-                option may be used to save the configuration file that
-                <b>
-                 pmnewlog
-                </b>
-                passes to the newly launched
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1).
-               </p>
-               <p>
-                If the
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              instance needs to be started under the control of
-                <b>
-                 <a href="/man/man1/pmsocks.1.html">
-                  pmsocks
-                 </a>
-                </b>
-                (1)
-              
-              to connect to a
-                <b>
-                 pmcd
-                </b>
-                through a firewall, the
-                <b>
-                 -s
-                </b>
-                option may be used.
-               </p>
-               <p>
-                The
-                <b>
-                 -V
-                </b>
-                option enables verbose reporting of the activity.
-              By default no output is generated unless some error or warning condition is
-              encountered.
-               </p>
-               <p>
-                The
-                <b>
-                 -N
-                </b>
-                option enables a ``show me'' mode, where the actions are echoed,
-              but not executed, in the style of ``make -n''.
-              Using
-                <b>
-                 -N
-                </b>
-                in conjunction with
-                <b>
-                 -V
-                </b>
-                maximizes the diagnostic capabilities for debugging.
-               </p>
-               <p>
-                The
-                <i>
-                 other pmlogger options
-                </i>
-                are as described for
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1).
-              
-              Note that
-                <b>
-                 pmnewlog
-                </b>
-                does
-                <b>
-                 not
-                </b>
-                support the following options of
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1).
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -h
-                 </b>
-                 <i>
-                  host
-                 </i>
-                </dt>
-                <dd>
-                 <b>
-                  pmnewlog
-                 </b>
-                 determines the host to which the new
-                 <b>
-                  <a href="/man/man1/pmlogger.1.html">
-                   pmlogger
-                  </a>
-                 </b>
-                 (1)
-              
-              should connect based upon the current host connection for the
-              old
-                 <b>
-                  <a href="/man/man1/pmlogger.1.html">
-                   pmlogger
-                  </a>
-                 </b>
-                 (1).
-                </dd>
-                <dt>
-                 <b>
-                  -s
-                 </b>
-                 <i>
-                  samples
-                 </i>
-                </dt>
-                <dd>
-                 The new
-                 <b>
-                  <a href="/man/man1/pmlogger.1.html">
-                   pmlogger
-                  </a>
-                 </b>
-                 (1)
-              
-              is expected to be long running, and the
-                 <b>
-                  -s
-                 </b>
-                 option of
-                 <b>
-                  pmnewlog
-                 </b>
-                 takes precedence.
-                </dd>
-                <dt>
-                 <b>
-                  -T
-                 </b>
-                 <i>
-                  runtime
-                 </i>
-                </dt>
-                <dd>
-                 The new
-                 <b>
-                  <a href="/man/man1/pmlogger.1.html">
-                   pmlogger
-                  </a>
-                 </b>
-                 (1)
-              
-              is expected to be long running
-                </dd>
-                <dt>
-                 <b>
-                  -V
-                 </b>
-                 <i>
-                  version
-                 </i>
-                </dt>
-                <dd>
-                 The new
-                 <b>
-                  pmlogger
-                 </b>
-                 will always create the latest version PCP archive format, and the
-                 <b>
-                  -V
-                 </b>
-                 option of
-                 <b>
-                  pmnewlog
-                 </b>
-                 takes precedence.
-                </dd>
-                <dt>
-                 <b>
-                  -x
-                 </b>
-                 <i>
-                  fd
-                 </i>
-                </dt>
-                <dd>
-                 The launched
-                 <b>
-                  pmlogger
-                 </b>
-                 cannot be controlled by
-                 <b>
-                  <a href="/man/man3/pmrecordcontrol.3.html">
-                   pmRecordControl
-                  </a>
-                 </b>
-                 (3).
-                </dd>
-               </dl>
-               <a name="lbAE">
-               </a>
-               <h2>
-                EXAMPLE
-               </h2>
-               The following
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/sh.1.html">
-                 sh
-                </a>
-               </b>
-               (1)
-              
-              script
-              could be executed by root via
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/cron.1.html">
-                 cron
-                </a>
-               </b>
-               (1)
-              
-              to start a new set of archive logs for the primary logger each evening.
-              A more complete version of this script may be found in
-               <i>
-                $PCP_BINADM_DIR/pmlogger_daily
-               </i>
-               ,
-              
-              and is documented in the manual page for
-               <b>
-                <a href="/man/man1/pmlogger_daily.1.html">
-                 pmlogger_daily
-                </a>
-               </b>
-               (1).
-               <p>
-               </p>
-               <pre>
-              #!/bin/sh
-              # start new logs for PCP primary logger on this host
-              
-              # standard place for logs
-              LOGDIR=$PCP_LOG_DIR/pmlogger/`hostname`
-              
-              # each new log is named yymmdd.hh.mm
-              LOGNAME=`date "+%Y%m%d.%H.%M"`
-              
-              # do it
-              [ ! -d $LOGDIR ] &amp;&amp; mkdir -p $LOGDIR
-              cd $LOGDIR
-              $PCP_BINADM_DIR/pmnewlog -l $LOGDIR/pmlogger.log $LOGDIR
-              </pre>
-               <a name="lbAF">
-               </a>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <i>
-                  archive
-                 </i>
-                 <b>
-                  .meta
-                  <dd>
-                   metadata (metric descriptions, instance domains, etc.) for the archive log
-                  </dd>
-                  <dt>
-                  </dt>
-                 </b>
-                 <i>
-                  archive
-                 </i>
-                 <b>
-                  .0
-                  <dd>
-                   initial volume of metrics values (subsequent volumes have suffixes
-              1
-                  </dd>
-                 </b>
-                 ,
-                 <b>
-                  2
-                 </b>
-                 ,
-              
-              ...)
-                 <dt>
-                  <i>
-                   archive
-                  </i>
-                  <b>
-                   .index
-                   <dd>
-                    temporal index to support rapid random access to the other files in the
-              archive log
-                   </dd>
-                   <dt>
-                    $PCP_BINADM_DIR/pmlogger_daily
-                   </dt>
-                  </b>
-                 </dt>
-                </dt>
-                <dd>
-                 sample script to rotate archives for a number of loggers
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAH">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumplog.1.html">
-                 pmdumplog
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlc.1.html">
-                 pmlc
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger_daily.1.html">
-                 pmlogger_daily
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmsocks.1.html">
-                 pmsocks
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <a name="lbAI">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               Due to the precious nature of the archive logs,
-               <b>
-                pmnewlog
-               </b>
-               is rather paranoid in its checking and validation, and will try very
-              hard to ensure that an appropriately configured
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1)
-              
-              can be restarted, before terminating the existing
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1).
-               <p>
-                As a consequence of this checking,
-                <b>
-                 pmnewlog
-                </b>
-                tends to generate rather verbose error and warning messages.
-                <a name="lbAJ">
-                </a>
-               </p>
-               <h2>
-                CAVEATS
-               </h2>
-               If no
-               <i>
-                configfile
-               </i>
-               is specified, the method for synthesizing a configuration file using
-              a
-               <b>
-                <a href="/man/man1/pmlc.1.html">
-                 pmlc
-                </a>
-               </b>
-               (1)
-              
-              connection to the existing
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1)
-              
-              is, of necessity, incomplete.
-              In particular,
-              for metrics with dynamic underlying instance domains,
-              it is not possible to identify a configuration that logs
-               <b>
-                all
-               </b>
-               instances of a metric all of the time,
-              so rather the synthesized configuration file requests the continued logging
-              of the set of instances that exist at the time
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1)
-              
-              is interrogated by
-               <b>
-                pmnewlog
-               </b>
-               .
-               <p>
-                If this situation is a concern, a fixed configuration file should
-              be used, and passed to
-                <b>
-                 pmnewlog
-                </b>
-                via the
-                <b>
-                 -c
-                </b>
-                option.
-               </p>
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  EXAMPLE
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAJ">
-                  CAVEATS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMNEWLOG
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmnewlog
+ </b>
+ - stop and restart archive logging for PCP performance metrics
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_BINADM_DIR/pmnewlog
+ </b>
+ [
+ <b>
+  -a
+ </b>
+ <i>
+  accessfile
+ </i>
+ ]
+[
+ <b>
+  -C
+ </b>
+ <i>
+  saveconfig
+ </i>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  configfile
+ </i>
+ ]
+[
+ <b>
+  -N
+ </b>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -P
+ </b>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  pid
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ ]
+[
+ <b>
+  -V
+ </b>
+ ]
+[
+ <i>
+  other pmlogger options
+ </i>
+ ]
+ <i>
+  archive
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmnewlog
+ </b>
+ may be used to stop and restart a running instance of
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1).
+
+This is most useful for managing multiple sets of
+Performance Co-Pilot (PCP) archive logs.
+These archive logs record the history of
+performance metric values
+that may be ``played back'' by other PCP
+tools, and they
+form the basis of the VCR paradigm and retrospective
+performance analysis services common to the PCP toolkit.
+ <p>
+  In normal usage,
+  <b>
+   pmnewlog
+  </b>
+  would be executed by
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/cron.1.html">
+    cron
+   </a>
+  </b>
+  (1)
+
+in the wee hours to terminate one PCP archive log and start another,
+i.e. to perform log rotation.
+ </p>
+ <p>
+  Even more common, would be the execution of
+  <b>
+   pmnewlog
+  </b>
+  from the PCP archive management script
+  <b>
+   <a href="/man/man1/pmlogger_daily.1.html">
+    pmlogger_daily
+   </a>
+  </b>
+  (1).
+
+In this case, direct end-user execution of
+  <b>
+   pmnewlog
+  </b>
+  is most unlikely.
+ </p>
+ <p>
+  The mandatory argument
+  <i>
+   archive
+  </i>
+  is the base name for the physical files that will constitute
+the new archive log.
+ </p>
+ <p>
+  The
+  <b>
+   pmlogger
+  </b>
+  instance to be stopped and restarted must be running on the same system
+as
+  <b>
+   pmnewlog
+  </b>
+  and is either the primary logger (the default) or the logger with
+  <i>
+   pid
+  </i>
+  as specified by the
+  <b>
+   -p
+  </b>
+  option.
+ </p>
+ <p>
+  If the
+  <b>
+   -n
+  </b>
+  option is specified, then
+  <b>
+   pmnewlog
+  </b>
+  will use the namespace in the
+  <i>
+   pmnsfile
+  </i>
+  ,
+
+rather than the default Performance Metrics Name Space (PMNS).
+ </p>
+ <p>
+  If no
+  <b>
+   -c
+  </b>
+  option is specified,
+  <b>
+   pmnewlog
+  </b>
+  will use
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1)
+
+to connect to the running
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+and so determine all those metrics and instances that are subject to
+  <b>
+   mandatory
+  </b>
+  logging or
+  <b>
+   advisory on
+  </b>
+  logging, and the associated logging frequencies.
+This information is used to synthesize a new
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+configuration file.
+If the
+  <b>
+   -n
+  </b>
+  option is specified, it will also be used for these interactions with
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  If the
+  <b>
+   -c
+  </b>
+  option is specified,
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+will be restarted with
+  <i>
+   configfile
+  </i>
+  as the configuration file.
+Normally
+  <i>
+   configfile
+  </i>
+  would be the same configuration file used to start
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+in the first place, however note that since
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+is restarted, any changes to the logging status made
+using
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1)
+
+will be lost, unless these have also been reflected in changes to
+  <i>
+   configfile
+  </i>
+  .
+ </p>
+ <p>
+  If
+  <i>
+   configfile
+  </i>
+  does not exist, then a search is made in the directory
+  <i>
+   $PCP_VAR_DIR/config/pmlogger
+  </i>
+  for a file of the same name, and if found that file is used,
+e.g. if
+  <i>
+   config.mumble
+  </i>
+  does not exist in the current directory and
+the file
+  <i>
+   $PCP_VAR_DIR/config/pmlogger/config.mumble
+  </i>
+  does exist, then
+  <b>
+   -c config.mumble
+  </b>
+  and
+  <b>
+   -c $PCP_VAR_DIR/config/pmlogger/config.mumble
+  </b>
+  are equivalent.
+ </p>
+ <p>
+  Access controls specifications for the new
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instance may optionally be provided via the
+  <b>
+   -a
+  </b>
+  option.  The contents of
+  <i>
+   accessfile
+  </i>
+  should start with the literal token
+  <b>
+   [access]
+  </b>
+  and conform to the syntax of the access controls section
+as described for
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The
+  <b>
+   -C
+  </b>
+  option may be used to save the configuration file that
+  <b>
+   pmnewlog
+  </b>
+  passes to the newly launched
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  If the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instance needs to be started under the control of
+  <b>
+   <a href="/man/man1/pmsocks.1.html">
+    pmsocks
+   </a>
+  </b>
+  (1)
+
+to connect to a
+  <b>
+   pmcd
+  </b>
+  through a firewall, the
+  <b>
+   -s
+  </b>
+  option may be used.
+ </p>
+ <p>
+  The
+  <b>
+   -V
+  </b>
+  option enables verbose reporting of the activity.
+By default no output is generated unless some error or warning condition is
+encountered.
+ </p>
+ <p>
+  The
+  <b>
+   -N
+  </b>
+  option enables a ``show me'' mode, where the actions are echoed,
+but not executed, in the style of ``make -n''.
+Using
+  <b>
+   -N
+  </b>
+  in conjunction with
+  <b>
+   -V
+  </b>
+  maximizes the diagnostic capabilities for debugging.
+ </p>
+ <p>
+  The
+  <i>
+   other pmlogger options
+  </i>
+  are as described for
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1).
+
+Note that
+  <b>
+   pmnewlog
+  </b>
+  does
+  <b>
+   not
+  </b>
+  support the following options of
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1).
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   <b>
+    pmnewlog
+   </b>
+   determines the host to which the new
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+should connect based upon the current host connection for the
+old
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    samples
+   </i>
+  </dt>
+  <dd>
+   The new
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+is expected to be long running, and the
+   <b>
+    -s
+   </b>
+   option of
+   <b>
+    pmnewlog
+   </b>
+   takes precedence.
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    runtime
+   </i>
+  </dt>
+  <dd>
+   The new
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+is expected to be long running
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   <i>
+    version
+   </i>
+  </dt>
+  <dd>
+   The new
+   <b>
+    pmlogger
+   </b>
+   will always create the latest version PCP archive format, and the
+   <b>
+    -V
+   </b>
+   option of
+   <b>
+    pmnewlog
+   </b>
+   takes precedence.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   <i>
+    fd
+   </i>
+  </dt>
+  <dd>
+   The launched
+   <b>
+    pmlogger
+   </b>
+   cannot be controlled by
+   <b>
+    <a href="/man/man3/pmrecordcontrol.3.html">
+     pmRecordControl
+    </a>
+   </b>
+   (3).
+  </dd>
+ </dl>
+ <a name="lbAE">
+ </a>
+ <h2>
+  EXAMPLE
+ </h2>
+ The following
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/sh.1.html">
+   sh
+  </a>
+ </b>
+ (1)
+
+script
+could be executed by root via
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/cron.1.html">
+   cron
+  </a>
+ </b>
+ (1)
+
+to start a new set of archive logs for the primary logger each evening.
+A more complete version of this script may be found in
+ <i>
+  $PCP_BINADM_DIR/pmlogger_daily
+ </i>
+ ,
+
+and is documented in the manual page for
+ <b>
+  <a href="/man/man1/pmlogger_daily.1.html">
+   pmlogger_daily
+  </a>
+ </b>
+ (1).
+ <p>
+ </p>
+ <pre>
+#!/bin/sh
+# start new logs for PCP primary logger on this host
+
+# standard place for logs
+LOGDIR=$PCP_LOG_DIR/pmlogger/`hostname`
+
+# each new log is named yymmdd.hh.mm
+LOGNAME=`date "+%Y%m%d.%H.%M"`
+
+# do it
+[ ! -d $LOGDIR ] &amp;&amp; mkdir -p $LOGDIR
+cd $LOGDIR
+$PCP_BINADM_DIR/pmnewlog -l $LOGDIR/pmlogger.log $LOGDIR
+</pre>
+ <a name="lbAF">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <i>
+    archive
+   </i>
+   <b>
+    .meta
+    <dd>
+     metadata (metric descriptions, instance domains, etc.) for the archive log
+    </dd>
+    <dt>
+    </dt>
+   </b>
+   <i>
+    archive
+   </i>
+   <b>
+    .0
+    <dd>
+     initial volume of metrics values (subsequent volumes have suffixes
+1
+    </dd>
+   </b>
+   ,
+   <b>
+    2
+   </b>
+   ,
+
+...)
+   <dt>
+    <i>
+     archive
+    </i>
+    <b>
+     .index
+     <dd>
+      temporal index to support rapid random access to the other files in the
+archive log
+     </dd>
+     <dt>
+      $PCP_BINADM_DIR/pmlogger_daily
+     </dt>
+    </b>
+   </dt>
+  </dt>
+  <dd>
+   sample script to rotate archives for a number of loggers
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAH">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger_daily.1.html">
+   pmlogger_daily
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmsocks.1.html">
+   pmsocks
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <a name="lbAI">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Due to the precious nature of the archive logs,
+ <b>
+  pmnewlog
+ </b>
+ is rather paranoid in its checking and validation, and will try very
+hard to ensure that an appropriately configured
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+can be restarted, before terminating the existing
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1).
+ <p>
+  As a consequence of this checking,
+  <b>
+   pmnewlog
+  </b>
+  tends to generate rather verbose error and warning messages.
+  <a name="lbAJ">
+  </a>
+ </p>
+ <h2>
+  CAVEATS
+ </h2>
+ If no
+ <i>
+  configfile
+ </i>
+ is specified, the method for synthesizing a configuration file using
+a
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1)
+
+connection to the existing
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+is, of necessity, incomplete.
+In particular,
+for metrics with dynamic underlying instance domains,
+it is not possible to identify a configuration that logs
+ <b>
+  all
+ </b>
+ instances of a metric all of the time,
+so rather the synthesized configuration file requests the continued logging
+of the set of instances that exist at the time
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+is interrogated by
+ <b>
+  pmnewlog
+ </b>
+ .
+ <p>
+  If this situation is a concern, a fixed configuration file should
+be used, and passed to
+  <b>
+   pmnewlog
+  </b>
+  via the
+  <b>
+   -c
+  </b>
+  option.
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    CAVEATS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

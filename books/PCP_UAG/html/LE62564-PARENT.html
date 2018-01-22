@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">Chapter 8. Customizing and Extending PCP Services</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="prev" href="id5211850.html" title="7.4.3. Operational Management" /><link rel="next" href="LE80685-PARENT.html" title="8.2. PCP Tool Customization" /></head><body><p id="title"><a class="left" href="https://fedorahosted.org/publican"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://fedorahosted.org/publican"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul class="docnav top"><li class="previous"><a accesskey="p" href="id5211850.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE80685-PARENT.html"><strong>Next</strong></a></li></ul><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE62564-PARENT">
-      ⁠</a>Chapter 8. Customizing and Extending PCP Services</h1></div></div></div><div class="toc"><dl class="toc"><dt><span class="section"><a href="LE62564-PARENT.html#LE61335-PARENT">8.1. PMDA Customization</a></span></dt><dd><dl><dt><span class="section"><a href="LE62564-PARENT.html#LE43074-PARENT">8.1.1. Customizing the Summary PMDA</a></span></dt></dl></dd><dt><span class="section"><a href="LE80685-PARENT.html">8.2. PCP Tool Customization</a></span></dt><dd><dl><dt><span class="section"><a href="LE80685-PARENT.html#id5212794">8.2.1. Archive Logging Customization</a></span></dt><dt><span class="section"><a href="id5213167.html">8.2.2. Inference Engine Customization</a></span></dt></dl></dd><dt><span class="section"><a href="LE50224-PARENT.html">8.3. PMNS Management</a></span></dt><dd><dl><dt><span class="section"><a href="LE50224-PARENT.html#id5213650">8.3.1. PMNS Processing Framework</a></span></dt><dt><span class="section"><a href="id5213751.html">8.3.2. PMNS Syntax</a></span></dt></dl></dd><dt><span class="section"><a href="LE10270-PARENT.html">8.4. PMDA Development</a></span></dt><dt><span class="section"><a href="LE31248-PARENT.html">8.5. PCP Tool Development</a></span></dt></dl></div><div class="para">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">Chapter 8. Customizing and Extending PCP Services</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="prev" href="id5211850.html" title="7.4.3. Operational Management" /><link rel="next" href="LE80685-PARENT.html" title="8.2. PCP Tool Customization" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5211850.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE80685-PARENT.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="LE62564-PARENT">
+      ⁠</a>Chapter 8. Customizing and Extending PCP Services</h1></div></div></div><div class="toc"><p><strong>Table of Contents</strong></p><dl class="toc"><dt><span class="section"><a href="LE62564-PARENT.html#LE61335-PARENT">8.1. PMDA Customization</a></span></dt><dd><dl><dt><span class="section"><a href="LE62564-PARENT.html#LE43074-PARENT">8.1.1. Customizing the Summary PMDA</a></span></dt></dl></dd><dt><span class="section"><a href="LE80685-PARENT.html">8.2. PCP Tool Customization</a></span></dt><dd><dl><dt><span class="section"><a href="LE80685-PARENT.html#id5212794">8.2.1. Archive Logging Customization</a></span></dt><dt><span class="section"><a href="id5213167.html">8.2.2. Inference Engine Customization</a></span></dt></dl></dd><dt><span class="section"><a href="LE50224-PARENT.html">8.3. PMNS Management</a></span></dt><dd><dl><dt><span class="section"><a href="LE50224-PARENT.html#id5213650">8.3.1. PMNS Processing Framework</a></span></dt><dt><span class="section"><a href="id5213751.html">8.3.2. PMNS Syntax</a></span></dt></dl></dd><dt><span class="section"><a href="LE10270-PARENT.html">8.4. PMDA Development</a></span></dt><dt><span class="section"><a href="LE31248-PARENT.html">8.5. PCP Tool Development</a></span></dt></dl></div><div class="para">
 			<a id="IG31371888313" class="indexterm"></a><a id="IG31371888314" class="indexterm"></a> Performance Co-Pilot (PCP) has been developed to be fully extensible. The following sections summarize the various facilities provided to allow you to extend and customize PCP for your site:
 		</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
 					<a class="xref" href="LE62564-PARENT.html#LE61335-PARENT">Section 8.1, “PMDA Customization”</a>, describes the procedure for customizing the summary PMDA to export derived metrics formed by aggregation of base PCP metrics from one or more collector hosts.
@@ -12,12 +44,12 @@
 					<a class="xref" href="LE10270-PARENT.html">Section 8.4, “PMDA Development”</a>, details where to find further information to assist in the development of new PMDAs to extend the range of performance metrics available through the PCP infrastructure.
 				</div></li><li class="listitem"><div class="para">
 					<a class="xref" href="LE31248-PARENT.html">Section 8.5, “PCP Tool Development”</a>, outlines how new tools may be developed to process performance data from the PCP infrastructure.
-				</div></li></ul></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="LE61335-PARENT">
+				</div></li></ul></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="LE61335-PARENT">
       ⁠</a>8.1. PMDA Customization</h2></div></div></div><div class="para">
 				The generic procedures for installing and activating the optional PMDAs have been described in <a class="xref" href="LE43202-PARENT.html">Section 2.3, “Managing Optional PMDAs”</a>. In some cases, these procedures prompt the user for information based upon the local system or network configuration, application deployment, or processing profile to customize the PMDA and hence the performance metrics it exports.
 			</div><div class="para">
 				The summary PMDA is a special case that warrants further discussion.
-			</div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="LE43074-PARENT">
+			</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE43074-PARENT">
       ⁠</a>8.1.1. Customizing the Summary PMDA</h3></div></div></div><div class="para">
 					<a id="ITch09-1" class="indexterm"></a>The summary PMDA exports performance metrics derived from performance metrics made available by other PMDAs. It is described completely in the <code class="command">pmdasummary(1)</code> man page.
 				</div><div class="para">
@@ -84,15 +116,7 @@ summary.fs.cache_hit:  84.51</pre></li><li class="step"><div class="para">
 							From the <code class="literal">${PCP_PMDAS_DIR}/summary</code> directory, use this command:
 						</div><pre class="literallayout"><strong class="userinput"><code>./Install</code></strong></pre><div class="para">
 							You see the following output:
-						</div><pre class="literallayout">You need to choose an appropriate configuration for installation of
-the “summary” Performance Metrics Domain Agent (PMDA).
-
-collector collect performance statistics on this system
-monitor   allow this system to monitor local and/or remote systems
-both      collector and monitor configuration for this system
-
-Please enter c(ollector) or m(onitor) or b(oth) [b] <strong class="userinput"><code>both</code></strong>
-Interval between summary expression evaluation (seconds)? [10] <strong class="userinput"><code>10</code></strong>
+						</div><pre class="literallayout">Interval between summary expression evaluation (seconds)? [10] <strong class="userinput"><code>10</code></strong>
 Updating the Performance Metrics Name Space...
 Installing pmchart view(s) ...
 Terminate PMDA if already installed ...
@@ -122,4 +146,79 @@ interval:  5.00 sec
 							Note that the values are being sampled here by <code class="literal">pmval</code> every 5 seconds, but <code class="command">pmie</code> is passing only new values to the summary PMDA every 10 seconds. Both rates could be changed to suit the dynamics of your new metrics.
 						</div></li><li class="step"><div class="para">
 							You may now create <code class="command">pmchart</code> views, <code class="command">pmie</code> rules, and <code class="command">pmlogger</code> configurations to monitor and archive your new performance metrics.
-						</div></li></ol></div></div></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="id5211850.html"><strong>Prev</strong>7.4.3. Operational Management</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE80685-PARENT.html"><strong>Next</strong>8.2. PCP Tool Customization</a></li></ul></body></html>
+						</div></li></ol></div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5211850.html"><strong>Prev</strong>7.4.3. Operational Management</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE80685-PARENT.html"><strong>Next</strong>8.2. PCP Tool Customization</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

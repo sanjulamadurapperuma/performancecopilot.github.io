@@ -1,462 +1,466 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='docpage'>
-              ﻿
-               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
-                <font size="7">
-                 Comparing storage performance
-                </font>
-               </h1>
-               <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
-                <tr>
-                 <td>
-                  <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/>  <i>Tools</i><br/>
-              pmlogger
-              pmlogsummary
-              PCP::LogSummary
-              pmchart
-              pmafm
-              perl
-              fio
-              </pre>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                When comparing multiple storage (or any) systems in terms of performance, it is often useful to create a simulation of the load observed in the actual production environment.  Reasons for doing this mainly centre around the difficulty in running a production load in the evaluation environment.  For example, recreating databases, filesystems, sanitising user data, installing and configuring (possibly licensed) software, perhaps needing large amounts of time from specialists skilled in those areas - these can all be prohibitive.  In such situations it is ideal to model or simulate a workload rather than using an actual production load.  When comparing a new system to an existing one, or comparing competing technologies from different vendors, a quick way to run a simulated workload is invaluable.
-               </p>
-               <p>
-                PCP provides handy tools for providing confidence that a simulation matches reality.  Here we demonstrate several of these tools and techniques for applying them toward modelling a workload, using an iSCSI storage comparison as an example.  We will also use the open source
-                <i>
-                 <b>
-                  fio
-                 </b>
-                </i>
-                utility to generate the actual I/O workload, once we've used PCP to characterise it, and finally use PCP again to verify the simulations produced.
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     Step 1 - Gathering Baseline Data
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                For this example we will be using data gathered from two production systems - a NAS machine and a database.
-               </p>
-               <p>
-                These are extracts from production logs that showed a typical load for those two machines during business hours.  The data was gathered using
-                <i>
-                 pmlogger
-                </i>
-                and the archive management scripts
-                <i>
-                 pmlogger_daily
-                </i>
-                .  It was reduced to only the metrics of interest for our evaluation using
-                <i>
-                 pmlogextract
-                </i>
-                .  Setting up and managing logging of performance data in this way is demonstrated
-                <a href="lab.pmlogger.html">
-                 elsewhere
-                </a>
-                .
-               </p>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="70%">
-                  <br/>
-                  If you have the tutorial installed, in a command shell enter:
-                  <br/>
-                  <pre><b>
-              $ source /etc/pcp.conf
-              <br/>
-              $ tar xzf $PCP_DEMOS_DIR/tutorials/diskmodel.tgz
-              <br/>
-              $ cd diskmodel
-              <br/>
-              $ echo *
-              <br/><i>   model.fio model.pl model.view model.xls</i>
-              <br/><i>   dbdata.0 dbdata.index dbdata.meta</i>
-              <br/><i>   nasdata.0 nasdata.index nasdata.meta</i>
-              <br/><i>   nasread.out naswrite.out</i>
-              <br/>
-              $ pmafm model.folio run pmchart -t 15 -c model.view
-              <br/>
-              </b></pre>
-                  This command will provide the interactive charts seen here...
-                 </td>
-                 <td>
-                  <p align="RIGHT">
-                  </p>
-                  <center>
-                   <br/>
-                   <img align="RIGHT" alt="" border="0" src="images/model_dbload.png"/>
-                  </center>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                As an aside, the NAS is a Redhat Enterprise Linux 5 machine serving NFS, the database is running Windows Server 2008 and SQL Server 2008 - but this does not really matter for our modelling purposes.
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     Step 2 - Baseline Summary
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Next we use the
-                <i>
-                 <b>
-                  pmlogsummary
-                 </b>
-                </i>
-                utility to extract a statistical summary of key disk metrics.  We do this indirectly, in this example, using the
-                <i>
-                 PCP::LogSummary
-                </i>
-                Perl module and a custom wrapper script (
-                <a href="diskmodel/model.pl">
-                 model.pl
-                </a>
-                ).  This generates a spreadsheet with all of the key aspects of performance that our model must aim to reproduce.
-               </p>
-               <p>
-                As part of this phase of analysis, we must identify the key aspects of
-              the workload we are analysing and break it down into its components,
-              using information we know about the modelled environment.  This
-              level of breakdown is useful, as it lets us make informed statements later
-              about how well the model simulates each component.
-               </p>
-               <table border="0" cellpadding="10" cellspacing="10" width="100%">
-                <tr>
-                 <td>
-                  <p align="LEFT" valign="MIDDLE">
-                  </p>
-                  <center>
-                   <br/>
-                   <img align="LEFT" alt="" border="0" src="images/model_nasload.png"/>
-                  </center>
-                 </td>
-                 <td>
-                  <p>
-                   In this example we have a fairly simple NAS workload where files are
-              only ever written once (and never updated), and subsequently read many
-              times over, and never deleted.  We identify typical file sizes through
-              what we know about our production environment, and we know that we are
-              data dominated rather than metadata dominated - so the model will focus
-              on issuing sequential reads and writes to different files, using a mix
-              of I/O sizes that produce the averages and ratios identified in the
-              spreadsheet, and will never overwrite or truncate files.
-                  </p>
-                 </td>
-                </tr>
-                <tr>
-                 <td>
-                  <p>
-                   In the database case, we identify two workloads, with a total of three
-              components.  There is an interactive load (many small random reads
-              and regular log writes) and also a reporting (business intelligence)
-              load.  The interactive load is constant, has read and write components - the
-              write components include log writes once every minute, the reads are
-              constant and small (identified in the spreadsheet).  The reporting load
-              is completely read dominated (table scans).  The regular background write
-              activity does proceed during this time, so our model will cater for this
-              characteristic by generating the log write traffic separately and then
-              using that in both loads.
-                  </p>
-                 </td>
-                 <td>
-                  <p align="RIGHT">
-                  </p>
-                  <center>
-                   <br/>
-                   <img align="RIGHT" alt="" border="0" src="images/model_biload.png"/>
-                  </center>
-                 </td>
-                </tr>
-               </table>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td>
-                  Examine the (trivial)
-                  <a href="diskmodel/model.pl">
-                   model.pl
-                  </a>
-                  Perl script and note its basic control flow:
-                  <br/>
-                  <pre>
-              <b>$ cat model.pl</b>
-              # Setup some spreadsheet metadata - fonts, colors, etc
-              # Create a worksheet, configure a few columns
-              # Write data - starting at row 0 and column 0, moving across and down
-              </pre>
-                  If you have the PCP::LogSummary and SpreadSheet::WriteExcel Perl modules installed, run it:
-                  <br/>
-                  <pre>
-              <b>$ perl model.pl</b>
-              </pre>
-                 </td>
-                </tr>
-               </table>
-               <center>
-                <img alt="" border="1" height="552" src="images/model_spreadsheet.png" width="912"/>
-               </center>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     Step 3 - Simulation
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Armed with our workload summary, we will begin to produce a model.  To generate I/O we will use the Linux
-                <i>
-                 <b>
-                  fio
-                 </b>
-                </i>
-                utility.  This reads a workload description from a configuration file, preallocates files in a test directory, then runs the defined workload, and produces a statistical summary of the I/O characteristics observed.  In our case, where we are planning to compare different vendors storage, we are particular interested in the I/O latency characteristics while running our different workloads, and to a lesser extent the throughput and IOPS numbers - these should be constant thanks to our workload generator and as long as they are achieved, its the latency statistics that concern us (maximum, average, standard deviation).
-               </p>
-               <p>
-                The
-                <i>
-                 <b>
-                  fio
-                 </b>
-                </i>
-                configuration file which generates our workloads is
-                <a href="diskmodel/model.fio">
-                 model.fio
-                </a>
-                .  While testing the model, the I/O submission patterns have been monitored using the same techniques as before to ensure the generated load matches as closely as possible with production - this was an iterative process, fiddling
-                <b>
-                 fio
-                </b>
-                knobs until good matches were achieved.
-               </p>
-               <p>
-                Below are an extract of the results, highlighting some of the statistics that are of particular interest in our scenario.  These numbers suggest we have matched up with our production load from the spreadsheet (IOPs and throughput) and the latency numbers give good points of comparison when we run the model against other configurations.
-               </p>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td>
-                  Extracts from
-                  <a href="diskmodel/nasread.out">
-                   nasread.out
-                  </a>
-                  and
-                  <a href="diskmodel/nasread.out">
-                   naswrite.out
-                  </a>
-                  <br/>
-                  <pre>
-                Description  : [NAS reads workload model]
-                 read : io=739MB, bw=<b>2,523KB/s</b>, iops=<b>78</b>, runt=300003msec
-                  clat (usec): min=190, max=176K, avg=3343.45, stdev=2480.24
-                   lat (usec): min=191, max=176K, avg=3344.00, stdev=2480.24
-                  bw (KB/s) : min= 2301, max= 2808, per=25.02%, avg=2525.62, stdev=40.32
-                ...
-                Description  : [NAS writes workload model]
-                write: io=361MB, bw=<b>1,233KB/s</b>, iops=<b>37</b>, runt=300026msec
-                  clat (usec): min=276, max=1,325K, avg=2721.65, stdev=47070.32
-                   lat (usec): min=277, max=1,325K, avg=2722.20, stdev=47070.32
-                  bw (KB/s) : min=   34, max= 4486, per=25.12%, avg=1239.08, stdev=178.78
-              </pre>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     Step 4 - Profit!
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Now that we have an easily reproducible workload, we can throw it at any number of different devices (different vendors), configurations (different RAID configurations, with snapshots) and have a reasonable level of confidence that observations will resemble what would happen in production.
-               </p>
-               <p>
-                Note that the latency numbers that
-                <b>
-                 <i>
-                  fio
-                 </i>
-                </b>
-                has calculated for
-              us are excellent indicators - if we did not have these, we could make use
-              of the device utilisation PCP metrics (
-                <i>
-                 disk.dev.avactive
-                </i>
-                or
-                <i>
-                 disk.dev.idle
-                </i>
-                ) as alternate comparison points.
-               </p>
-               <p>
-                <br/>
-               </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='docpage'>
+﻿
+ <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+  <font size="7">
+   Comparing storage performance
+  </font>
+ </h1>
+ <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
+  <tr>
+   <td>
+    <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/>  <i>Tools</i><br/>
+pmlogger
+pmlogsummary
+PCP::LogSummary
+pmchart
+pmafm
+perl
+fio
+</pre>
+   </td>
+  </tr>
+ </table>
+ <p>
+  When comparing multiple storage (or any) systems in terms of performance, it is often useful to create a simulation of the load observed in the actual production environment.  Reasons for doing this mainly centre around the difficulty in running a production load in the evaluation environment.  For example, recreating databases, filesystems, sanitising user data, installing and configuring (possibly licensed) software, perhaps needing large amounts of time from specialists skilled in those areas - these can all be prohibitive.  In such situations it is ideal to model or simulate a workload rather than using an actual production load.  When comparing a new system to an existing one, or comparing competing technologies from different vendors, a quick way to run a simulated workload is invaluable.
+ </p>
+ <p>
+  PCP provides handy tools for providing confidence that a simulation matches reality.  Here we demonstrate several of these tools and techniques for applying them toward modelling a workload, using an iSCSI storage comparison as an example.  We will also use the open source
+  <i>
+   <b>
+    fio
+   </b>
+  </i>
+  utility to generate the actual I/O workload, once we've used PCP to characterise it, and finally use PCP again to verify the simulations produced.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       Step 1 - Gathering Baseline Data
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  For this example we will be using data gathered from two production systems - a NAS machine and a database.
+ </p>
+ <p>
+  These are extracts from production logs that showed a typical load for those two machines during business hours.  The data was gathered using
+  <i>
+   pmlogger
+  </i>
+  and the archive management scripts
+  <i>
+   pmlogger_daily
+  </i>
+  .  It was reduced to only the metrics of interest for our evaluation using
+  <i>
+   pmlogextract
+  </i>
+  .  Setting up and managing logging of performance data in this way is demonstrated
+  <a href="lab.pmlogger.html">
+   elsewhere
+  </a>
+  .
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    If you have the tutorial installed, in a command shell enter:
+    <br/>
+    <pre><b>
+$ source /etc/pcp.conf
+<br/>
+$ tar xzf $PCP_DEMOS_DIR/tutorials/diskmodel.tgz
+<br/>
+$ cd diskmodel
+<br/>
+$ echo *
+<br/><i>   model.fio model.pl model.view model.xls</i>
+<br/><i>   dbdata.0 dbdata.index dbdata.meta</i>
+<br/><i>   nasdata.0 nasdata.index nasdata.meta</i>
+<br/><i>   nasread.out naswrite.out</i>
+<br/>
+$ pmafm model.folio run pmchart -t 15 -c model.view
+<br/>
+</b></pre>
+    This command will provide the interactive charts seen here...
+   </td>
+   <td>
+    <p align="RIGHT">
+    </p>
+    <center>
+     <br/>
+     <img align="RIGHT" alt="" border="0" src="images/model_dbload.png"/>
+    </center>
+   </td>
+  </tr>
+ </table>
+ <p>
+  As an aside, the NAS is a Redhat Enterprise Linux 5 machine serving NFS, the database is running Windows Server 2008 and SQL Server 2008 - but this does not really matter for our modelling purposes.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       Step 2 - Baseline Summary
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Next we use the
+  <i>
+   <b>
+    pmlogsummary
+   </b>
+  </i>
+  utility to extract a statistical summary of key disk metrics.  We do this indirectly, in this example, using the
+  <i>
+   PCP::LogSummary
+  </i>
+  Perl module and a custom wrapper script (
+  <a href="diskmodel/model.pl">
+   model.pl
+  </a>
+  ).  This generates a spreadsheet with all of the key aspects of performance that our model must aim to reproduce.
+ </p>
+ <p>
+  As part of this phase of analysis, we must identify the key aspects of
+the workload we are analysing and break it down into its components,
+using information we know about the modelled environment.  This
+level of breakdown is useful, as it lets us make informed statements later
+about how well the model simulates each component.
+ </p>
+ <table border="0" cellpadding="10" cellspacing="10" width="100%">
+  <tr>
+   <td>
+    <p align="LEFT" valign="MIDDLE">
+    </p>
+    <center>
+     <br/>
+     <img align="LEFT" alt="" border="0" src="images/model_nasload.png"/>
+    </center>
+   </td>
+   <td>
+    <p>
+     In this example we have a fairly simple NAS workload where files are
+only ever written once (and never updated), and subsequently read many
+times over, and never deleted.  We identify typical file sizes through
+what we know about our production environment, and we know that we are
+data dominated rather than metadata dominated - so the model will focus
+on issuing sequential reads and writes to different files, using a mix
+of I/O sizes that produce the averages and ratios identified in the
+spreadsheet, and will never overwrite or truncate files.
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     In the database case, we identify two workloads, with a total of three
+components.  There is an interactive load (many small random reads
+and regular log writes) and also a reporting (business intelligence)
+load.  The interactive load is constant, has read and write components - the
+write components include log writes once every minute, the reads are
+constant and small (identified in the spreadsheet).  The reporting load
+is completely read dominated (table scans).  The regular background write
+activity does proceed during this time, so our model will cater for this
+characteristic by generating the log write traffic separately and then
+using that in both loads.
+    </p>
+   </td>
+   <td>
+    <p align="RIGHT">
+    </p>
+    <center>
+     <br/>
+     <img align="RIGHT" alt="" border="0" src="images/model_biload.png"/>
+    </center>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td>
+    Examine the (trivial)
+    <a href="diskmodel/model.pl">
+     model.pl
+    </a>
+    Perl script and note its basic control flow:
+    <br/>
+    <pre>
+<b>$ cat model.pl</b>
+# Setup some spreadsheet metadata - fonts, colors, etc
+# Create a worksheet, configure a few columns
+# Write data - starting at row 0 and column 0, moving across and down
+</pre>
+    If you have the PCP::LogSummary and SpreadSheet::WriteExcel Perl modules installed, run it:
+    <br/>
+    <pre>
+<b>$ perl model.pl</b>
+</pre>
+   </td>
+  </tr>
+ </table>
+ <center>
+  <img alt="" border="1" height="552" src="images/model_spreadsheet.png" width="912"/>
+ </center>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       Step 3 - Simulation
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Armed with our workload summary, we will begin to produce a model.  To generate I/O we will use the Linux
+  <i>
+   <b>
+    fio
+   </b>
+  </i>
+  utility.  This reads a workload description from a configuration file, preallocates files in a test directory, then runs the defined workload, and produces a statistical summary of the I/O characteristics observed.  In our case, where we are planning to compare different vendors storage, we are particular interested in the I/O latency characteristics while running our different workloads, and to a lesser extent the throughput and IOPS numbers - these should be constant thanks to our workload generator and as long as they are achieved, its the latency statistics that concern us (maximum, average, standard deviation).
+ </p>
+ <p>
+  The
+  <i>
+   <b>
+    fio
+   </b>
+  </i>
+  configuration file which generates our workloads is
+  <a href="diskmodel/model.fio">
+   model.fio
+  </a>
+  .  While testing the model, the I/O submission patterns have been monitored using the same techniques as before to ensure the generated load matches as closely as possible with production - this was an iterative process, fiddling
+  <b>
+   fio
+  </b>
+  knobs until good matches were achieved.
+ </p>
+ <p>
+  Below are an extract of the results, highlighting some of the statistics that are of particular interest in our scenario.  These numbers suggest we have matched up with our production load from the spreadsheet (IOPs and throughput) and the latency numbers give good points of comparison when we run the model against other configurations.
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td>
+    Extracts from
+    <a href="diskmodel/nasread.out">
+     nasread.out
+    </a>
+    and
+    <a href="diskmodel/nasread.out">
+     naswrite.out
+    </a>
+    <br/>
+    <pre>
+  Description  : [NAS reads workload model]
+   read : io=739MB, bw=<b>2,523KB/s</b>, iops=<b>78</b>, runt=300003msec
+    clat (usec): min=190, max=176K, avg=3343.45, stdev=2480.24
+     lat (usec): min=191, max=176K, avg=3344.00, stdev=2480.24
+    bw (KB/s) : min= 2301, max= 2808, per=25.02%, avg=2525.62, stdev=40.32
+  ...
+  Description  : [NAS writes workload model]
+  write: io=361MB, bw=<b>1,233KB/s</b>, iops=<b>37</b>, runt=300026msec
+    clat (usec): min=276, max=1,325K, avg=2721.65, stdev=47070.32
+     lat (usec): min=277, max=1,325K, avg=2722.20, stdev=47070.32
+    bw (KB/s) : min=   34, max= 4486, per=25.12%, avg=1239.08, stdev=178.78
+</pre>
+   </td>
+  </tr>
+ </table>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       Step 4 - Profit!
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Now that we have an easily reproducible workload, we can throw it at any number of different devices (different vendors), configurations (different RAID configurations, with snapshots) and have a reasonable level of confidence that observations will resemble what would happen in production.
+ </p>
+ <p>
+  Note that the latency numbers that
+  <b>
+   <i>
+    fio
+   </i>
+  </b>
+  has calculated for
+us are excellent indicators - if we did not have these, we could make use
+of the device utilisation PCP metrics (
+  <i>
+   disk.dev.avactive
+  </i>
+  or
+  <i>
+   disk.dev.idle
+  </i>
+  ) as alternate comparison points.
+ </p>
+ <p>
+  <br/>
+ </p>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

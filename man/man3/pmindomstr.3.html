@@ -1,439 +1,427 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMINDOMSTR
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmInDomStr
-               </b>
-               ,
-               <b>
-                pmInDomStr_r
-               </b>
-               - convert a performance metric instance domain identifier into a string
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                const char *pmInDomStr(pmInDom
-                <i>
-                 indom
-                </i>
-                );
-                <br/>
-                char *pmInDomStr_r(pmInDom
-                <i>
-                 indom
-                </i>
-                , char *
-                <i>
-                 buf
-                </i>
-                , int
-                <i>
-                 buflen
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               For use in error and diagnostic messages,
-               <b>
-                pmInDomStr
-               </b>
-               return a 'human readable' version of
-              the specified instance domain identifier.
-              The
-               <b>
-                pmInDomStr_r
-               </b>
-               function does the same, but stores the result in a user-supplied buffer
-               <i>
-                buf
-               </i>
-               of length
-               <i>
-                buflen
-               </i>
-               ,
-              
-              which should have room for at least 20 bytes.
-               <p>
-                The value for the instance domain
-                <i>
-                 indom
-                </i>
-                is typically extracted from a
-                <i>
-                 pmDesc
-                </i>
-                structure, following a call to
-                <b>
-                 <a href="/man/man3/pmlookupdesc.3.html">
-                  pmLookupDesc
-                 </a>
-                </b>
-                (3)
-              
-              for a particular performance metric.
-               </p>
-               <p>
-                Internally, an instance domain identifier is
-              encoded as follows;
-               </p>
-               <p>
-               </p>
-               <pre>
-              typedef struct {
-                  int             pad:2;
-                  unsigned int    domain:8;        /* the administrative PMD */
-                  unsigned int    serial:22;       /* unique within PMD */
-              } __pmInDom_int;
-              </pre>
-               <p>
-                <b>
-                 pmInDomStr
-                </b>
-                returns a string with each of the
-                <i>
-                 domain
-                </i>
-                and
-                <i>
-                 serial
-                </i>
-                subfields appearing as decimal numbers, separated by periods.
-               </p>
-               <p>
-                The string value returned by
-                <b>
-                 pmInDomStr
-                </b>
-                is held in a single static buffer, so the returned value is
-              only valid until the next call to
-                <b>
-                 pmInDomStr
-                </b>
-                .
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                NOTES
-               </h2>
-               <b>
-                pmInDomStr
-               </b>
-               returns a pointer to a static buffer and hence is not thread-safe.
-              Multi-threaded applications should use
-               <b>
-                pmInDomStr_r
-               </b>
-               instead.
-               <a name="lbAF">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-              
-              Values for these variables may be obtained programmatically
-              using the
-               <b>
-                <a href="/man/man3/pmgetconfig.3.html">
-                 pmGetConfig
-                </a>
-               </b>
-               (3)
-              
-              function.
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetconfig.3.html">
-                 pmGetConfig
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmidstr.3.html">
-                 pmIDStr
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmtypestr.3.html">
-                 pmTypeStr
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmsemstr.3.html">
-                 pmSemStr
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmunitsstr.3.html">
-                 pmUnitsStr
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupdesc.3.html">
-                 pmLookupDesc
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  NOTES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMINDOMSTR
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmInDomStr
+ </b>
+ ,
+ <b>
+  pmInDomStr_r
+ </b>
+ - convert a performance metric instance domain identifier into a string
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  const char *pmInDomStr(pmInDom
+  <i>
+   indom
+  </i>
+  );
+  <br/>
+  char *pmInDomStr_r(pmInDom
+  <i>
+   indom
+  </i>
+  , char *
+  <i>
+   buf
+  </i>
+  , int
+  <i>
+   buflen
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ For use in error and diagnostic messages,
+ <b>
+  pmInDomStr
+ </b>
+ return a 'human readable' version of
+the specified instance domain identifier.
+The
+ <b>
+  pmInDomStr_r
+ </b>
+ function does the same, but stores the result in a user-supplied buffer
+ <i>
+  buf
+ </i>
+ of length
+ <i>
+  buflen
+ </i>
+ ,
+
+which should have room for at least 20 bytes.
+ <p>
+  The value for the instance domain
+  <i>
+   indom
+  </i>
+  is typically extracted from a
+  <i>
+   pmDesc
+  </i>
+  structure, following a call to
+  <b>
+   <a href="/man/man3/pmlookupdesc.3.html">
+    pmLookupDesc
+   </a>
+  </b>
+  (3)
+
+for a particular performance metric.
+ </p>
+ <p>
+  Internally, an instance domain identifier is
+encoded with two fields: domain and serial.
+ </p>
+ <p>
+  <b>
+   pmInDomStr
+  </b>
+  returns a string with each of the fields
+appearing as decimal numbers, separated by periods.
+ </p>
+ <p>
+  The string value returned by
+  <b>
+   pmInDomStr
+  </b>
+  is held in a single static buffer, so the returned value is
+only valid until the next call to
+  <b>
+   pmInDomStr
+  </b>
+  .
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  NOTES
+ </h2>
+ <b>
+  pmInDomStr
+ </b>
+ returns a pointer to a static buffer and hence is not thread-safe.
+Multi-threaded applications should use
+ <b>
+  pmInDomStr_r
+ </b>
+ instead.
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+
+Values for these variables may be obtained programmatically
+using the
+ <b>
+  <a href="/man/man3/pmgetconfig.3.html">
+   pmGetConfig
+  </a>
+ </b>
+ (3)
+
+function.
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetconfig.3.html">
+   pmGetConfig
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmidstr.3.html">
+   pmIDStr
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmtypestr.3.html">
+   pmTypeStr
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmsemstr.3.html">
+   pmSemStr
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmunitsstr.3.html">
+   pmUnitsStr
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    NOTES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2016 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>
