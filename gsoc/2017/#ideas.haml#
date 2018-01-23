@@ -26,16 +26,23 @@
                           %a{:href => '#collectl'} PCP version of collectl
                         %li
                           %a{:href => '#logsummary'} Graphical Log Summaries
+                        %li
+                          %a{:href => '#blocked'} Blocked process detection and reporting
                     %li
                       New Instrumentation
                       %ul
                         %li
+                          %a{:href => '#dmstats'} Device Mapper statistics
+                        %li
                           %a{:href => '#ebpf'} Instrumentation with eBPF
+                        %li
                     %li
                       Web Projects
                       %ul
                         %li
                           %a{:href => '#vectorflames'} Flame Graphs in Vector
+                        %li
+                          %a{:href => '#vectorcustom'} Custom Graphs in Vector
                     %li
                       Installer Projects
                       %ul
@@ -49,14 +56,20 @@
                         %li
                           %a{:href => '#rubylang'} Instrumentation of Ruby applications
                         %li
+                          %a{:href => '#rustlang'} Instrumentation of Rust applications
+                        %li
                           %a{:href => '#parfait'} Java Metric Coverage
+                        %li
+                          %a{:href => '#hawkular'} Hawkular Metric Exporter
+                        %li
+                          %a{:href => '#prometheus'} Prometheus Metric Exporter
                   %br
 
               %div{:class => 'colspan12-4 colspan8-3 colspan6-2 colspan2-2 as-grid with-gutter'}
                 %div{:class => 'col__module--cta'}
                   %h2 Google
                   %h2 Summer of Code
-                  %h2 2018
+                  %h2 2017
                   %br
                     (
                     %a{:href => 'https://summerofcode.withgoogle.com'} Home
@@ -94,9 +107,9 @@
               %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
               ,
               %a{:href => 'mailto:ryan@doylenet.net'} Ryan Doyle
-            -#%p
-              -#%strong Interested students so far:
-              -#3
+            %p
+              %strong Interested students so far:
+              3
             %br
 
         %div{:class => 'colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'}
@@ -130,9 +143,93 @@
               %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
               ,
               %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
-            -#%p
+            %p
               %strong Interested students so far:
               2
+            %br
+
+        %div{:class => 'colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'}
+          %div{:class => 'col__module--img'}
+            %a{:name => 'blocked'}
+            %h3 Blocked process detection and reporting
+            %p
+              Processes can become blocked from running as they wait for resources.
+              This may be processor time, waiting for I/O, blocked waiting for some
+              other process, etc.  Understanding these delays can be critical for a
+              performance analyst optimizing elapsed time in a workflow.
+            %p
+              In last years Google Summer of Code, a student created the
+              %a{:href => 'http://man7.org/linux/man-pages/man1/pcp-pidstat.1.html'} pcp-pidstat
+              utility.
+              This year, that tool will be extended to detect and report on blocked
+              processes - showing when, why and by whom processes become blocked and
+              unblocked.
+            %p
+              %strong Expected results:
+              The student will extend their Python programming skills,
+              and can also expect to gain insight into the meaning of the kernel
+              data reported by this tool, and the sampling techniques it uses.
+            %p
+              %strong Prerequisite knowledge:
+              Python programming.
+            %p
+              %strong Skill level:
+              Intermediate
+            %p
+              %strong Mentors:
+              %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
+              ,
+              %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
+            %p
+              %strong Interested students so far:
+              2
+            %br
+
+        %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
+          %div{:class => 'col__module--img'}
+            %a{:name => 'dmstats'}
+            %h3 Device Mapper statistics
+            %p
+              The Linux kernel device mapper statistics framework (dmstats)
+              provides flexible IO statistics for device-mapper block devices,
+              including logical volumes, multipath and RAID devices, as well
+              as thinly-provisioned and cache volumes.
+
+              A command line tool,
+              %a{:href => 'https://www.mankier.com/8/dmstats'} dmstats,
+              allows administrators to configure and use the facility directly.
+
+              This project will use the dmstats API to allow dmstats performance
+              data to be made available to PCP users via a new PCP PMDA.
+
+              The primary API for dmstats is C but an experimental Python API
+              exists and may be suitable for prototyping.
+
+              The project will explore not only exporting simple counter and
+              metric values, but will also evaluate the feasibility of including
+              support for advanced features including dmstats latency and IO
+              distribution histograms.
+            %p
+              %strong Expected results:
+              A PCP PMDA for the dmstats subsystem will be designed, implemented,
+              tested and documented. The PMDA need not implement all the available
+              dmstats functionality immediately but it should be designed in such
+              a way as to permit future extension and enhancement.
+            %p
+              %strong Prerequisite knowledge:
+              C, Python (optional), some knowledge of logical volume management and
+              software defined storage is a bonus.
+            %p
+              %strong Skill level:
+              Intermediate-Advanced
+            %p
+              %strong Mentors:
+              %a{:href => 'mailto:bmr@redhat.com'} Bryn M. Reeves
+              ,
+              %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
+            %p
+              %strong Interested students so far:
+              1
             %br
 
         %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
@@ -173,7 +270,7 @@
               %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
               ,
               %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
-            -#%p
+            %p
               %strong Interested students so far:
               1
             %br
@@ -210,7 +307,7 @@
               %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
               ,
               %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
-            -#%p
+            %p
               %strong Interested students so far:
               1
             %br
@@ -247,9 +344,43 @@
               %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
               ,
               %a{:href => 'mailto:lberk@redhat.com'} Lukas Berk
-            -#%p
+            %p
               %strong Interested students so far:
               0
+            %br
+
+        %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
+          %div{:class => 'col__module--img'}
+            %a{:name => 'vectorcustom'}
+            %h3 Custom Graphs in Vector
+            %p
+              The
+              %a{:href => 'https://github.com/Netflix/vector/wiki/Getting-Started'} Vector
+              web application produces graphs and performance dashboards for live analysis.
+              The student will design and build a new Vector widget for creating
+              ad-hoc graphs, for arbitrary PCP metrics.
+            %p
+              %strong Expected results:
+              The
+              %a{:href => 'http://vectoross.io/docs/creating-widgets.html'} simple example
+              shows creation of a custom Vector widget by-hand, it gives an idea of the sorts
+              of configurable widget that we aim to generate.
+            %p
+              %strong Prerequisite knowledge:
+              JavaScript, Angular is a plus.
+            %p
+              %strong Skill level:
+              Intermediate
+            %p
+              %strong Mentors:
+              %a{:href => 'mailto:mspier@netflix.com'} Martin Spier
+              ,
+              %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
+              ,
+              %a{:href => 'mailto:hc3249@gmail.com'} Henry Chang
+            %p
+              %strong Interested students so far:
+              3
             %br
 
         %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
@@ -279,7 +410,7 @@
               %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
               ,
               %a{:href => 'mailto:kenj@internode.on.net'} Ken McDonell
-            -#%p
+            %p
               %strong Interested students so far:
               1
             %br
@@ -312,7 +443,7 @@
               %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
               ,
               %a{:href => 'mailto:psmith@aconex.com'} Paul Smith
-            -#%p
+            %p
               %strong Interested students so far:
               0
             %br
@@ -360,9 +491,59 @@
               %a{:href => 'mailto:ryan@doylenet.net'} Ryan Doyle
               ,
               %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
-            -#%p
+            %p
               %strong Interested students so far:
               0
+            %br
+
+        %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
+          %div{:class => 'col__module--img'}
+            %a{:name => 'rustlang'}
+            %h3 Instrumentation of Rust applications
+            %p
+              PCP supports a mechanism for developers to expose metrics inside their
+              own applications.  There are three existing implementations - one for each
+              of C, Java and Go.  This project expands that to include Rust.
+            %p
+              %strong Expected results:
+              The project will be implemented in three stages:
+              %ul
+                %li
+                  Create a library to write out the MMVv1/2 format.
+                %li
+                  Create a higher-level API for developers to use to add metrics to
+                  their applications.
+                %li
+                  Minimal, and if time permits larger and more comprehensive examples on real-world usage of the library. 
+                  Perhaps integrating with existing libraries/frameworks in rust, like the go-kit integration for speed.
+            %p
+              %strong Prerequisite knowledge:
+              Rust and C programming
+            %p
+              %strong Skill level:
+              Intermediate-Advanced
+            %p
+              %strong Further reading:
+              %ul
+                %li
+                  %a{:href => 'https://github.com/performancecopilot/speed'} Speed
+                  Native Golang implementation, 2016 GSoC project
+                %li
+                  %a{:href => 'https://github.com/performancecopilot/parfait'} Parfait
+                  Native Java implementation
+                %li
+                  %a{:href => 'https://github.com/performancecopilot/pcp/blob/master/src/include/pcp/mmv_stats.h'} libpcp_mmv
+                  C implementation, also used for C++, Python and Perl code
+            %p
+              %strong Mentors:
+              %a{:href => 'mailto:ryan@doylenet.net'} Ryan Doyle
+              ,
+              %a{:href => 'mailto:goodwinos@gmail.com'} Mark Goodwin
+              ,
+              %a{:href => 'mailto:dextrous93@gmail.com'} Suyash
+            %p
+              %strong Interested students so far:
+              1
             %br
 
         %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
@@ -414,58 +595,74 @@
 
         %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
           %div{:class => 'col__module--img'}
-            %a{:name => 'RESPpmproxy'}
-            %h3 RESP support in pmproxy
+            %a{:name => 'hawkular'}
+            %h3 Hawkular Metric Exporter
             %p
-              Redis 
-              %a{:href => 'http://redis.io'}
-              is an in-memory NoSQL data cache being used in PCP for
-              search and serving time series performance data. PCP
-              metadata and data keys are distributed across
-              potentially many Redis servers, and access to individual
-              keys is automated by PCP client library code, for PCP
-              client tools like pmseries(1). Direct access is
-              relatively non-intuitive for human operators and
-              developers - something we'd like to change.
-
-              Redis clients communicate with the Redis server using a protocol
-              called RESP
-              %a{:href => 'https://redis.io/topics/protocol'}
-              (REdis Serialization Protocol). It is a relatively
-              simple text-based protocol which can co-exist with other
-              protocols supported by the PCP pmproxy(1) daemon -
-              i.e. the native and secure PCP protocols.
-
-              This project involves extending pmproxy to support RESP, in a fashion
-              similar to the twemproxy
-              %a{:href => 'https://github.com/twitter/twemproxy/'}
-              (aka NutCracker) project, such that an arbitrary Redis client (like the
-              redis-cli
-              %a{:href => 'https://redis.io/topics/rediscli]'}
-              can access the distributed key store using the direct
-              key-to-server mapping mechanism used by the existing PCP
-              time series code.
+              The
+              %a{:href => 'http://www.hawkular.org'} Hawkular
+              open source monitoring solution provides a performance metric store
+              for metrics from arbitrary sources.
+              This project will use the PCP API to implement a bridge between the
+              low-level platform metrics (kernel, hardware, databases, and so on)
+              available from PCP and a Hawkular instance.
+              The project will explore not only exporting metric values, but also
+              other metric metadata available from PCP (such as units, value type,
+              semantics and labels) into Hawkular for a rich integration.
             %p
               %strong Expected results:
-              The student will gain a deep understanding of Redis, a popular
-              in-memory cache, and Performance Co-Pilot, a toolkit for system-level
-              performance analysis.
+              A Python utility will be designed, implemented, tested and documented
+              that uses the PCP APIs to export performance metrics to Hawkular, via
+              the Hawkular metrics REST interface.
             %p
               %strong Prerequisite knowledge:
-              Strong proficiency in C language programming is
-              required. Experience using and developing software on Linux would be
-              advantageous.
+              Python, Java knowledge a plus
             %p
               %strong Skill level:
-              Advanced
+              Intermediate
+            %p
+              %strong Mentors:
+              %a{:href => 'mailto:lberk@redhat.com'} Lukas Berk
+              ,
+              %a{:href => 'mailto:mwringe@redhat.com'} Matthew Wringe
+            %p
+              %strong Interested students so far:
+              1
+            %br
+
+        %div{:class => 'colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'}
+          %div{:class => 'col__module--img'}
+            %a{:name => 'prometheus'}
+            %h3 Prometheus Metric Exporter
+            %p
+              The
+              %a{:href => 'http://prometheus.io'} Prometheus
+              open source monitoring solution provides a performance metric store
+              for metrics from arbitrary sources.
+              This project will use the PCP API to implement a bridge between the
+              low-level platform metrics (kernel, hardware, databases, and so on)
+              available from PCP and a Prometheus instance.
+              The project will explore not only exporting metric values, but also
+              other metric metadata available from PCP (such as units, value type,
+              semantics and labels) into Prometheus for a rich integration.
+            %p
+              %strong Expected results:
+              A Python utility will be designed, implemented, tested and documented
+              that uses the PCP APIs to export performance metrics to Prometheus,
+              via the Prometheus exporter Python API.
+            %p
+              %strong Prerequisite knowledge:
+              Python, Golang knowledge a plus
+            %p
+              %strong Skill level:
+              Intermediate
             %p
               %strong Mentors:
               %a{:href => 'mailto:nathans@redhat.com'} Nathan Scott
               ,
               %a{:href => 'mailto:lberk@redhat.com'} Lukas Berk
-            -#%p
-              -#%strong Interested students so far:
-              -#1
+            %p
+              %strong Interested students so far:
+              1
             %br
 
     = Haml::Engine.new(File.read("assets/haml-includes/footer.haml")).render
