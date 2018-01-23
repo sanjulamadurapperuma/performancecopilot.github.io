@@ -551,61 +551,6 @@ Advanced
 <br>
 </div>
 </div>
-<div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
-<div class='col__module--img'>
-<a name='parfait'></a>
-<h3>Java Metric Coverage</h3>
-<p>
-The
-<a href='https://github.com/performancecopilot/parfait'>Parfait</a>
-project provides a java-agent for JVM applications exporting metrics
-into PCP. Typically these metrics are accessed via JMX initially.
-</p>
-<p>
-The issue we face is the lack of metadata associated with JMX beans -
-PCP needs to export the units, semantics and other metadata for these
-metrics.
-Currently we encode this information via Spring XML configuration in
-the parfait-agent directly.
-This project will implement a tool to aid automation of the process
-of tracking JMX metrics and categorising their metadata, building on
-the existing Spring-based Parfait agent code and support the addition
-of new metrics more easily.
-</p>
-<p>
-<strong>Expected results:</strong>
-A Java utility will be designed, implemented, tested and documented
-that reports on the available JMX metrics from a running application,
-and the performance metric metadata associated with each.  When new
-JMX beans are found, the utility will drive the process of applying
-performance-related metadata (such as units) before exporting values
-to PCP for recording, reporting, visualizing, inference and so on.
-</p>
-<p>
-<strong>Prerequisite knowledge:</strong>
-Java
-</p>
-<p>
-<strong>Skill level:</strong>
-Intermediate
-</p>
-<p>
-<strong>Mentors:</strong>
-<a href='mailto:nathans@redhat.com'>Nathan Scott</a>
-,
-<a href='mailto:jkang@redhat.com'>Jie Kang</a>
-,
-<a href='mailto:werner.keil@gmail.com'>Werner Keil</a>
-,
-<a href='mailto:psmith@aconex.com'>Paul Smith</a>
-</p>
-<p>
-<strong>Interested students so far:</strong>
-0
-</p>
-<br>
-</div>
-</div>
 </div>
 </div>
 <footer class='global-footer is-typeset'>
