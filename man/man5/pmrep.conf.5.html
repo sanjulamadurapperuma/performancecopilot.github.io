@@ -567,7 +567,8 @@ Allowed values are
    <b>
     type
    </b>
-   but does not override possible per-metric type specifications.
+   but does not override possible per-metric type
+specifications.
 Corresponding command line option is
    <b>
     -R
@@ -651,6 +652,84 @@ Defaults to
 Corresponding command line option is
    <b>
     -J
+   </b>
+   .
+Undefined (all instances are reported) by default.
+  </dd>
+ </dl>
+ <p>
+  overall_rank (boolean)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates that overall ranking should be performed.
+Corresponding command line option is
+   <b>
+    -2
+   </b>
+   .
+Defaults to
+   <b>
+    no
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  overall_rank_alt (boolean)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates that overall ranking with alternative output format
+should be performed.
+Corresponding command line option is
+   <b>
+    -3
+   </b>
+   .
+Defaults to
+   <b>
+    no
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  limit_filter (integer)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates the value to be used with limit filtering.
+Corresponding command line option is
+   <b>
+    -8
+   </b>
+   .
+Undefined (all instances are reported) by default.
+  </dd>
+ </dl>
+ <p>
+  limit_filter_force (integer)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   As
+   <b>
+    limit_filter
+   </b>
+   but overrides possible possible per-metric
+specifications.
+Corresponding command line option is
+   <b>
+    -9
    </b>
    .
 Undefined (all instances are reported) by default.
@@ -910,13 +989,33 @@ Defaults to
   </dd>
  </dl>
  <p>
+  dynamic_header (boolean)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates that a dynamic header should be used.
+Corresponding command line option is
+   <b>
+    -1
+   </b>
+   .
+Defaults to
+   <b>
+    no
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
   separate_header (boolean)
  </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   Indicates whether to print separate header.
+   Indicates whether to print a separate header.
 Corresponding command line option is
    <b>
     -g
@@ -1298,7 +1397,7 @@ by a dot and the specifier (as in
      </i>
     </dt>
     <dd>
-     Defines a text label for the metric used by supporting output targets.
+     Defines text label for the metric used by supporting output targets.
     </dd>
     <dt>
      <i>
@@ -1372,8 +1471,15 @@ For allowed values, see
      </i>
     </dt>
     <dd>
-     Defines how many decimals to use for numeric non-integer metric
-output values.
+     Defines precision for numeric non-integer output values.
+    </dd>
+    <dt>
+     <i>
+      limit
+     </i>
+    </dt>
+    <dd>
+     Defines value limit filter for numeric metric values.
     </dd>
    </dl>
   </dd>

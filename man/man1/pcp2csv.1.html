@@ -72,8 +72,20 @@
  </b>
  [
  <b>
-  -CdgGHIjkLnprRuUvVxz?
+  -123CdgGHIjkLnprRuUvVxz?
  </b>
+ ]
+[
+ <b>
+  -8
+ </b>
+ |
+ <b>
+  -9
+ </b>
+ <i>
+  limit
+ </i>
  ]
 [
  <b>
@@ -486,8 +498,7 @@ Second, a
    metricspec
   </i>
   starting with non-colon specifies a PMNS node as described above,
-optionally followed by metric formatting definitions (applicable
-only to leaf nodes).
+optionally followed by metric formatting definitions.
 This so-called
   <i>
    compact form
@@ -497,7 +508,7 @@ This so-called
  <p>
  </p>
  <pre>
-metric[,label[,instances[,unit/scale[,type[,width[,precision]]]]]]
+metric[,label[,instances[,unit/scale[,type[,width[,precision[,limit]]]]]]]
 </pre>
  <p>
   A valid PMNS node
@@ -566,11 +577,16 @@ a numeric
 Too-wide numeric values for output will not be printed (apart from
 trailing decimals, numeric values will never be silently truncated).
 Too-wide strings will be truncated.
-Lastly, a metric-specific
+Then, a metric-specific
   <i>
    precision
   </i>
   can be provided for numeric non-integer output values.
+Lastly, a metric-specific
+  <i>
+   limit
+  </i>
+  can be set for filtering numeric values per limit.
  </p>
  <p>
   As a special case with metrics that are counters with time units
@@ -665,6 +681,115 @@ file options (if any).
  </h2>
  The available command line options are:
  <dl compact="">
+  <dt>
+   <b>
+    -1
+   </b>
+  </dt>
+  <dd>
+   Print a new dynamically adjusted header every time changes in
+availability of metric and instance values occur.
+By default a static header that never changes is printed once.
+See also
+   <b>
+    -E
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -2
+   </b>
+  </dt>
+  <dd>
+   Perform overall ranking of instances in archive.
+By default ranking (see
+   <b>
+    -J
+   </b>
+   )
+
+and reporting happens on each interval.
+With this option all instances and values are ranked
+before a summary is reported.
+See
+   <b>
+    <a href="/man/man1/pmlogsummary.1.html">
+     pmlogsummary
+    </a>
+   </b>
+   (1)
+
+for further archive summary reporting alternatives,
+including averages and peak times for values.
+  </dd>
+  <dt>
+   <b>
+    -3
+   </b>
+  </dt>
+  <dd>
+   Like
+   <b>
+    -2
+   </b>
+   but print results in
+   <b>
+    pmrep
+   </b>
+   <i>
+    metricspec
+   </i>
+   format.
+  </dd>
+  <dt>
+   <b>
+    -8
+   </b>
+  </dt>
+  <dd>
+   Limit results to instances with values above/below
+   <i>
+    limit
+   </i>
+   .
+
+A positive integer will include instances with values
+at or above the limit in reporting.
+A negative integer will include instances with values
+at or below the limit in reporting.
+A value of zero performs no limit filtering.
+This option will
+   <i>
+    not
+   </i>
+   override possible per-metric specifications.
+See also
+   <b>
+    -J
+   </b>
+   and
+   <b>
+    -N
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -9
+   </b>
+  </dt>
+  <dd>
+   Like
+   <b>
+    -8
+   </b>
+   but this option
+   <i>
+    will
+   </i>
+   override per-metric specifications.
+  </dd>
   <dt>
    <b>
     -a
@@ -945,6 +1070,11 @@ and
     lines
    </i>
    of output.
+See also
+   <b>
+    -1
+   </b>
+   .
   </dd>
   <dt>
    <b>
@@ -1074,7 +1204,12 @@ rather than from the default localhost.
    <i>
     instances
    </i>
-   from current instances (if present).
+   from current instances (if present, see also
+   <b>
+    -j
+   </b>
+   ).
+
 By default all current instances are reported,
 except when writing an archive (see
    <b>
@@ -1082,7 +1217,7 @@ except when writing an archive (see
    </b>
    )
 
-when all instances are reported.
+when all instances, present and future, are reported.
 This is a global option that is used for all metrics unless a
 metric-specific instance definition is provided as part of a
    <i>
@@ -1193,28 +1328,11 @@ This allows capturing all filtered instances even if processes
 are restarted at some point (unlike without live filtering).
 Doing live filtering over a huge amount of instances naturally
 comes with some overhead so a bit of user caution is advised.
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      Since both
-      <i>
-       stdout
-      </i>
-      and
-      <i>
-       csv
-      </i>
-      output targets write a static header at the beginning this option
-can only be used with
-      <i>
-       archive
-      </i>
-      output.
-     </p>
-    </dd>
-   </dl>
+See also
+   <b>
+    -1
+   </b>
+   .
   </dd>
   <dt>
    <b>
@@ -1230,28 +1348,15 @@ can only be used with
 A positive integer will include highest valued instances in reporting.
 A negative integer will include lowest valued instances in reporting.
 A value of zero performs no ranking.
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      Since both
-      <i>
-       stdout
-      </i>
-      and
-      <i>
-       csv
-      </i>
-      output targets write a static header at the beginning this option
-is most useful with
-      <i>
-       archive
-      </i>
-      output.
-     </p>
-    </dd>
-   </dl>
+See also
+   <b>
+    -2
+   </b>
+   and
+   <b>
+    -8
+   </b>
+   .
   </dd>
   <dt>
    <b>
@@ -1597,7 +1702,7 @@ This option will
    </b>
   </dt>
   <dd>
-   As
+   Like
    <b>
     -P
    </b>
@@ -1955,7 +2060,7 @@ are still subject to rate conversion, use
    </b>
   </dt>
   <dd>
-   Omit unit information from of headers.
+   Omit unit information from headers.
   </dd>
   <dt>
    <b>
@@ -2017,7 +2122,7 @@ This option will
    </b>
   </dt>
   <dd>
-   As
+   Like
    <b>
     -w
    </b>
@@ -2250,6 +2355,71 @@ $ pmrep -i wlan0 -v network.interface.out
   </dd>
  </dl>
  <p>
+  Display timestamped
+  <b>
+   <a href="/man/man8/vmstat.8.html">
+    vmstat
+   </a>
+  </b>
+  (8)
+
+like information using megabytes instead of kilobytes and also include
+the number of inodes used (tab completes available metrics and
+after a colon metricsets with bash and zsh):
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+$ pmrep -p -B MB :vmstat vfs.inodes.count
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Display per-device disk reads and writes from the host
+  <i>
+   server1
+  </i>
+  using two seconds interval and
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/sadf.1.html">
+    sadf
+   </a>
+  </b>
+  (1)
+
+like CSV output format:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+$ pmrep -h server1 -t 2s -o csv -k disk.dev.read disk.dev.write
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Display processes using at least 100MB of memory using
+dynamic headers:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+$ pmrep -b MB -8 100 -1 proc.memory.rss
+</pre>
+  </dd>
+ </dl>
+ <p>
   Display the predefined set of metrics from the default
   <b>
    <a href="/man/man5/pmrep.conf.5.html">
@@ -2258,12 +2428,11 @@ $ pmrep -i wlan0 -v network.interface.out
   </b>
   (5)
 
-containing information about I/O issued by
+containing information about I/O issued by current
   <i>
    firefox
   </i>
-  (tab after the colon can be used to complete available
-metricset definitions):
+  process(es):
  </p>
  <dl compact="">
   <dt>
@@ -2273,47 +2442,6 @@ metricset definitions):
    </b>
    <pre>
 $ pmrep -i '.*firefox.*' :proc-io
-</pre>
-  </dd>
- </dl>
- <p>
-  Display per-device disk reads and writes from the host
-  <i>
-   server1
-  </i>
-  using two seconds interval and CSV output format:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -h server1 -o csv -t 2s disk.dev.read disk.dev.write
-</pre>
-  </dd>
- </dl>
- <p>
-  Display timestamped
-  <b>
-   <a href="/man/man8/vmstat.8.html">
-    vmstat
-   </a>
-  </b>
-  (8)
-
-like information using MBs instead of kilobytes and also include
-the number of in-use inodes:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -p -B MB vfs.inodes.count :vmstat
 </pre>
   </dd>
  </dl>
@@ -2344,9 +2472,28 @@ $ pmrep -a ./20150921.09.13 -S @15:00 -T @17:00 :sar-w :sar-W
   </dd>
  </dl>
  <p>
-  Record all 389 Directory Server, XFS file system and CPU/disk/memory
-related metrics every five seconds for the next five minutes to the PCP
-archive
+  Record most relevant CPU, memory, and I/O related information about
+every Java process on the system, present and future, to an archive
+  <i>
+   ./a
+  </i>
+  on one minute interval at every full minute in a background process:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+$ pmrep --daemonize -A 1m -t 1m -i '.*java.*' -j -o archive -F ./a \
+    :proc-info :proc-cpu :proc-mem :proc-io
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Record all 389 Directory Server, XFS file system, and CPU/memory/disk
+metrics every five seconds for five minutes to a PCP archive
   <i>
    ./a
   </i>
@@ -2359,7 +2506,7 @@ archive
    <b>
    </b>
    <pre>
-$ pmrep -o archive -F ./a -t 5s -T 5m ds389 xfs kernel.all.cpu disk mem
+$ pmrep -t 5s -T 5m -o archive -F ./a ds389 xfs kernel.all.cpu mem disk
 </pre>
   </dd>
  </dl>
@@ -2374,7 +2521,7 @@ which are the three most memory-consuming processes:
    <b>
    </b>
    <pre>
-$ pmrep -o archive -F ./a -J 3 -n proc.memory.rss proc.io
+$ pmrep -o archive -F ./a -J 3 -N proc.memory.rss proc.memory proc.io
 </pre>
   </dd>
  </dl>

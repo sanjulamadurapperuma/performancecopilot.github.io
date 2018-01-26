@@ -70,13 +70,28 @@
  <b>
   pmdajson
  </b>
- is a Performance Metrics Domain Agent (PMDA) which exports 
-metrics from arbitrary sources generating Javascript Object Notation (JSON)
-syntax, describing metric metadata and values.
+ is a Performance Metrics Domain Agent (PMDA) which exports
+metrics from arbitrary sources generating JavaScript Object Notation
+(JSON) syntax.
  <p>
-  Further details on the JSON format can be found at
-  <a href="http://www.json.org">
-   http://www.json.org
+  At least one pair of JSON inputs are required for
+  <b>
+   pmdajson
+  </b>
+  to
+provide metrics for PCP clients;
+one describing metric metadata and one containing metric values data.
+Metadata is read once from a file at PMDA startup while the data is read
+every time a request for metric values is made by a PCP client.
+The data is read either from a JSON file or an external command
+generating JSON output.
+More than one pair of JSON inputs can be used to support arbitrary number
+of metric sources in different configured directories.
+ </p>
+ <p>
+  The overall JSON format description is at
+  <a href="http://www.json.org/.">
+   http://www.json.org/.
   </a>
   <a name="lbAD">
   </a>
@@ -87,11 +102,91 @@ syntax, describing metric metadata and values.
  <b>
   pmdajson
  </b>
- searches the directories listed in the "directory_list"
-and "trusted_directory_list" config file options, looking for files
-called "metadata.json". These JSON metadata files describe the names,
-types, etc. of their associated JSON data. For example, let's assume
-the following simple JSON data file:
+ reads a mandatory JSON configuration file
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <dl compact="">
+      <dt>
+       •
+      </dt>
+      <dd>
+       <i>
+       </i>
+       <tt>
+        $PCP_PMDAS_DIR
+       </tt>
+       /json/config.json
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  This file can contain the following PMDA options using the JSON syntax:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <dl compact="">
+      <dt>
+       •
+      </dt>
+      <dd>
+       directory_list
+      </dd>
+      <dt>
+       •
+      </dt>
+      <dd>
+       trusted_directory_list
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  <b>
+   pmdajson
+  </b>
+  searches the directories listed for these options
+looking for files named
+  <i>
+   metadata.json
+  </i>
+  and (by default)
+  <i>
+   data.json
+  </i>
+  .
+The JSON metadata files describe the metric names, types, and
+other details of the associated JSON metric data.
+The JSON data file name is configurable, and can also be an external
+command instead of a periodically updated (by external tools) data file.
+ </p>
+ <p>
+  Each of these found JSON file/command pairs form a
+  <i>
+   JSON data source
+  </i>
+  .
+ </p>
+ <p>
+  For example, let us assume the following simple JSON data file that
+contains values for two metrics, one of type string and one numeric:
+ </p>
  <p>
  </p>
  <pre>
@@ -101,7 +196,11 @@ the following simple JSON data file:
   }
 </pre>
  <p>
-  The associated metadata file would look like the following:
+  For these metrics the metadata file needed by
+  <b>
+   pmdajson
+  </b>
+  would be:
  </p>
  <p>
  </p>
@@ -111,7 +210,7 @@ the following simple JSON data file:
       {
         "name": "string_value",
         "pointer": "/string_value",
-        "type": "string",
+        "type": "string"
       },
       {
         "name": "read_count",
@@ -123,75 +222,106 @@ the following simple JSON data file:
   }
 </pre>
  <p>
-  For more details on the JSON metadata format, see the README file
-included with
+  For further details on the JSON metadata format and options,
+see the README file included as part of
   <b>
    pmdajson
   </b>
-  .
+  installation.
   <a name="lbAE">
   </a>
  </p>
  <h2>
   SECURITY MODEL
  </h2>
- JSON sources that come from "directory_list" config file option
-aren't "trusted", and any command that needs to be run to get JSON
-data is run as user "nobody".
+ JSON data sources listed for the
+ <i>
+  directory_list
+ </i>
+ option are not
+trusted, meaning that if external commands to generate the needed
+JSON data are used, these commands are run as user
+ <b>
+  nobody
+ </b>
+ .
  <p>
-  JSON sources that come from "trusted_directory_list" config file
-option are trusted, and any command that needs to be run to get
-JSON data is run as user "root".
+  JSON data sources listed for the
+  <i>
+   trusted_directory_list
+  </i>
+  option
+are trusted, meaning that if external commands to generate the needed
+JSON data are used, these commands are run as user
+  <b>
+   root
+  </b>
+  .
  </p>
  <p>
-  For more details on security, see the README file
-included with
+  For further details on security and description on running external
+commands, see the README file included as part of
   <b>
    pmdajson
   </b>
-  .
+  installation.
   <a name="lbAF">
   </a>
  </p>
  <h2>
   INSTALLATION
  </h2>
- Install the json PMDA by using the Install script as root:
+ Install the JSON PMDA by using the Install script as root:
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/json
-  <br/>
-  <br/>
-  # ./Install
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/json
+# ./Install
+</pre>
+  </dd>
+ </dl>
  <p>
   To uninstall, do the following as root:
  </p>
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/json
-  <br/>
-  <br/>
-  # ./Remove
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/json
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   <b>
    pmdajson
   </b>
   is launched by
-  <i>
+  <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </i>
-  (1) and should never be executed 
-directly. The Install and Remove scripts notify
-  <i>
+  </b>
+  (1) and should never be
+executed directly.
+The Install and Remove scripts notify
+  <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </i>
-  (1) when the 
+  </b>
+  (1) when the
 agent is installed or removed.
   <a name="lbAG">
   </a>
@@ -201,33 +331,27 @@ agent is installed or removed.
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/json/Install
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /json/README
   </dt>
   <dd>
-   installation script for the
+   additional documentation for
    <b>
     pmdajson
    </b>
-   agent
+   used JSON files
   </dd>
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/json/Remove
-   </b>
-  </dt>
-  <dd>
-   undo installation script for the
-   <b>
-    pmdajson
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/json/config.json
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /json/config.json
   </dt>
   <dd>
    configuration file for the
@@ -237,15 +361,49 @@ agent is installed or removed.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/json.log
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /json/Install
   </dt>
   <dd>
-   default log file for error messages from
+   installation script for the
    <b>
     pmdajson
    </b>
+   agent
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /json/Remove
+  </dt>
+  <dd>
+   undo installation script for the
+   <b>
+    pmdajson
+   </b>
+   agent
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_LOG_DIR
+   </tt>
+   /pmcd/json.log
+  </dt>
+  <dd>
+   default log file for messages from the
+   <b>
+    pmdajson
+   </b>
+   agent
   </dd>
  </dl>
  <a name="lbAH">
@@ -258,27 +416,24 @@ agent is installed or removed.
   PCP_
  </b>
  are used to parameterize
-the file and directory names used by
- <b>
-  PCP
- </b>
- . On each installation, the
+the file and directory names used by PCP.
+On each installation, the
 file
- <b>
+ <i>
   /etc/pcp.conf
- </b>
- contains the local values for these variables. 
+ </i>
+ contains the local values for these variables.
 The
  <b>
   $PCP_CONF
  </b>
- variable may be used to specify an alternative 
+ variable may be used to specify an alternative
 configuration file, as described in
- <i>
+ <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
- </i>
+ </b>
  (5).
  <a name="lbAI">
  </a>
@@ -286,22 +441,22 @@ configuration file, as described in
   SEE ALSO
  </h2>
  <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
   </a>
  </b>
  (1),
  <b>
-  <a href="/man/man1/pminfo.1.html">
-   pminfo
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
   </a>
  </b>
  (1)
 
 and
  <b>
-  <a href="/man/man1/pmprobe.1.html">
-   pmprobe
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
   </a>
  </b>
  (1).

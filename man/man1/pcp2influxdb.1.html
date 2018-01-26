@@ -77,6 +77,18 @@
  ]
 [
  <b>
+  -8
+ </b>
+ |
+ <b>
+  -9
+ </b>
+ <i>
+  limit
+ </i>
+ ]
+[
+ <b>
   -a
  </b>
  <i>
@@ -366,6 +378,18 @@ for description of the
    </a>
   </b>
   (5).
+  <b>
+   <a href="/man/man1/pmrep.1.html">
+    pmrep
+   </a>
+  </b>
+  (1)
+
+also lists some usage examples of which most are applicable with
+  <b>
+   pcp2influxdb
+  </b>
+  as well.
  </p>
  <p>
   Only the command line options listed on this page are supported,
@@ -472,6 +496,14 @@ The following options are common with
  </b>
  ,
  <b>
+  limit_filter
+ </b>
+ ,
+ <b>
+  limit_filter_force
+ </b>
+ ,
+ <b>
   invert_filter
  </b>
  ,
@@ -496,19 +528,19 @@ The following options are common with
  </b>
  ,
  <b>
-  space_scale
- </b>
- ,
- <b>
-  time_scale
- </b>
- ,
- <b>
   count_scale_force
  </b>
  ,
  <b>
+  space_scale
+ </b>
+ ,
+ <b>
   space_scale_force
+ </b>
+ ,
+ <b>
+  time_scale
  </b>
  ,
  <b>
@@ -624,6 +656,54 @@ Corresponding command line option is
  </h2>
  The available command line options are:
  <dl compact="">
+  <dt>
+   <b>
+    -8
+   </b>
+  </dt>
+  <dd>
+   Limit results to instances with values above/below
+   <i>
+    limit
+   </i>
+   .
+
+A positive integer will include instances with values
+at or above the limit in reporting.
+A negative integer will include instances with values
+at or below the limit in reporting.
+A value of zero performs no limit filtering.
+This option will
+   <i>
+    not
+   </i>
+   override possible per-metric specifications.
+See also
+   <b>
+    -J
+   </b>
+   and
+   <b>
+    -N
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -9
+   </b>
+  </dt>
+  <dd>
+   Like
+   <b>
+    -8
+   </b>
+   but this option
+   <i>
+    will
+   </i>
+   override per-metric specifications.
+  </dd>
   <dt>
    <b>
     -a
@@ -956,8 +1036,13 @@ rather than from the default localhost.
    <i>
     instances
    </i>
-   from current instances (if present).
-By default all instances are reported.
+   from current instances (if present, see also
+   <b>
+    -j
+   </b>
+   ).
+
+By default all instances, present and future, are reported.
 This is a global option that is used for all metrics unless a
 metric-specific instance definition is provided as part of a
    <i>
@@ -1026,6 +1111,11 @@ comes with some overhead so a bit of user caution is advised.
 A positive integer will include highest valued instances in reporting.
 A negative integer will include lowest valued instances in reporting.
 A value of zero performs no ranking.
+See also
+   <b>
+    -8
+   </b>
+   .
   </dd>
   <dt>
    <b>
@@ -1231,7 +1321,7 @@ This option will
    </b>
   </dt>
   <dd>
-   As
+   Like
    <b>
     -P
    </b>
