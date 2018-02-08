@@ -277,7 +277,7 @@
   -X
  </b>
  <i>
-  host-id
+  hostid
  </i>
  ]
 [
@@ -615,6 +615,17 @@ Defaults to the metrics source host.
    <b>
     -8
    </b>
+   <i>
+    limit
+   </i>
+   ,
+   <b>
+    --limit-filter
+   </b>
+   =
+   <i>
+    limit
+   </i>
   </dt>
   <dd>
    Limit results to instances with values above/below
@@ -647,6 +658,17 @@ See also
    <b>
     -9
    </b>
+   <i>
+    limit
+   </i>
+   ,
+   <b>
+    --limit-filter-force
+   </b>
+   =
+   <i>
+    limit
+   </i>
   </dt>
   <dd>
    Like
@@ -663,6 +685,17 @@ See also
    <b>
     -a
    </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
   </dt>
   <dd>
    Performance metric values are retrieved from the set of Performance
@@ -706,6 +739,17 @@ or, less often, manually with
    <b>
     -A
    </b>
+   <i>
+    align
+   </i>
+   ,
+   <b>
+    --align
+   </b>
+   =
+   <i>
+    align
+   </i>
   </dt>
   <dd>
    Force the initial sample to be
@@ -733,6 +777,17 @@ for a complete description of the syntax for
    <b>
     -b
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --space-scale
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    <i>
@@ -787,6 +842,17 @@ See also
    <b>
     -B
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --space-scale-force
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    Like
@@ -803,6 +869,17 @@ See also
    <b>
     -c
    </b>
+   <i>
+    config
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    config
+   </i>
   </dt>
   <dd>
    Specify the
@@ -866,6 +943,10 @@ either local or remote (see
    <b>
     -C
    </b>
+   ,
+   <b>
+    --check
+   </b>
   </dt>
   <dd>
    Exit before reporting any values, but after parsing the configuration
@@ -883,6 +964,17 @@ and metrics and printing possible headers.
    <b>
     -e
    </b>
+   <i>
+    derived
+   </i>
+   ,
+   <b>
+    --derived
+   </b>
+   =
+   <i>
+    derived
+   </i>
   </dt>
   <dd>
    Specify
@@ -917,6 +1009,17 @@ and
    <b>
     -g
    </b>
+   <i>
+    URL
+   </i>
+   ,
+   <b>
+    --es-host
+   </b>
+   =
+   <i>
+    URL
+   </i>
   </dt>
   <dd>
    Elasticsearch server
@@ -928,6 +1031,10 @@ and
   <dt>
    <b>
     -G
+   </b>
+   ,
+   <b>
+    --no-globals
    </b>
   </dt>
   <dd>
@@ -943,6 +1050,17 @@ and
    <b>
     -h
    </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
   </dt>
   <dd>
    Fetch performance metrics from
@@ -965,6 +1083,10 @@ rather than from the default localhost.
    <b>
     -H
    </b>
+   ,
+   <b>
+    --no-header
+   </b>
   </dt>
   <dd>
    Do not print any headers.
@@ -973,6 +1095,17 @@ rather than from the default localhost.
    <b>
     -i
    </b>
+   <i>
+    instances
+   </i>
+   ,
+   <b>
+    --instances
+   </b>
+   =
+   <i>
+    instances
+   </i>
   </dt>
   <dd>
    Report only the listed
@@ -1013,6 +1146,10 @@ for more details on this option.
    <b>
     -I
    </b>
+   ,
+   <b>
+    --ignore-incompat
+   </b>
   </dt>
   <dd>
    Ignore incompatible metrics.
@@ -1032,6 +1169,10 @@ non-leaf nodes of the PMNS tree for reporting.
    <b>
     -j
    </b>
+   ,
+   <b>
+    --live-filter
+   </b>
   </dt>
   <dd>
    Perform instance live filtering.
@@ -1044,6 +1185,17 @@ comes with some overhead so a bit of user caution is advised.
    <b>
     -J
    </b>
+   <i>
+    rank
+   </i>
+   ,
+   <b>
+    --rank
+   </b>
+   =
+   <i>
+    rank
+   </i>
   </dt>
   <dd>
    Limit results to highest/lowest
@@ -1064,6 +1216,17 @@ See also
    <b>
     -K
    </b>
+   <i>
+    spec
+   </i>
+   ,
+   <b>
+    --spec-local
+   </b>
+   =
+   <i>
+    spec
+   </i>
   </dt>
   <dd>
    When fetching metrics from a local context (see
@@ -1099,6 +1262,10 @@ More than one
    <b>
     -L
    </b>
+   ,
+   <b>
+    --local-PMDA
+   </b>
   </dt>
   <dd>
    Use a local context to collect metrics from DSO PMDAs on the local host
@@ -1112,6 +1279,10 @@ See also
   <dt>
    <b>
     -n
+   </b>
+   ,
+   <b>
+    --invert-filter
    </b>
   </dt>
   <dd>
@@ -1135,6 +1306,17 @@ live filtering.
    <b>
     -N
    </b>
+   <i>
+    predicate
+   </i>
+   ,
+   <b>
+    --predicate
+   </b>
+   =
+   <i>
+    predicate
+   </i>
   </dt>
   <dd>
    Specify a comma-separated list of
@@ -1210,6 +1392,17 @@ it will be reported as usual.
    <b>
     -O
    </b>
+   <i>
+    origin
+   </i>
+   ,
+   <b>
+    --origin
+   </b>
+   =
+   <i>
+    origin
+   </i>
   </dt>
   <dd>
    When reporting archived metrics, start reporting at
@@ -1244,6 +1437,17 @@ for a complete description of the syntax for
    <b>
     -P
    </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision
+   </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Use
@@ -1262,6 +1466,17 @@ This option will
    <b>
     -0
    </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision-force
+   </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Like
@@ -1278,6 +1493,17 @@ This option will
    <b>
     -q
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --count-scale
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    <i>
@@ -1330,6 +1556,17 @@ See also
    <b>
     -Q
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --count-scale-force
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    Like
@@ -1346,6 +1583,10 @@ See also
    <b>
     -r
    </b>
+   ,
+   <b>
+    --raw
+   </b>
   </dt>
   <dd>
    Output raw metric values, do not convert cumulative counters to rates.
@@ -1359,9 +1600,13 @@ This option
    <b>
     -R
    </b>
+   ,
+   <b>
+    --raw-prefer
+   </b>
   </dt>
   <dd>
-   As
+   Like
    <b>
     -r
    </b>
@@ -1375,6 +1620,17 @@ This option
    <b>
     -s
    </b>
+   <i>
+    samples
+   </i>
+   ,
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    samples
+   </i>
   </dt>
   <dd>
    The argument
@@ -1406,6 +1662,17 @@ See also
    <b>
     -S
    </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
   </dt>
   <dd>
    When reporting archived metrics, the report will be restricted to those
@@ -1433,6 +1700,17 @@ for a complete description of the syntax for
    <b>
     -t
    </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
   </dt>
   <dd>
    The default update
@@ -1464,6 +1742,17 @@ See also the
    <b>
     -T
    </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
   </dt>
   <dd>
    When reporting archived metrics, the report will be restricted to those
@@ -1558,6 +1847,10 @@ and
    <b>
     -v
    </b>
+   ,
+   <b>
+    --omit-flat
+   </b>
   </dt>
   <dd>
    Omit single-valued ``flat'' metrics from reporting, only consider
@@ -1576,6 +1869,10 @@ See
    <b>
     -V
    </b>
+   ,
+   <b>
+    --version
+   </b>
   </dt>
   <dd>
    Display version number and exit.
@@ -1584,6 +1881,17 @@ See
    <b>
     -x
    </b>
+   <i>
+    index
+   </i>
+   ,
+   <b>
+    --es-index
+   </b>
+   =
+   <i>
+    index
+   </i>
   </dt>
   <dd>
    Elasticsearch
@@ -1596,11 +1904,22 @@ See
    <b>
     -X
    </b>
+   <i>
+    hostid
+   </i>
+   ,
+   <b>
+    --es-hostid
+   </b>
+   =
+   <i>
+    hostid
+   </i>
   </dt>
   <dd>
    Elasticsearch
    <i>
-    host-id
+    hostid
    </i>
    for measurements.
   </dd>
@@ -1608,6 +1927,17 @@ See
    <b>
     -y
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --time-scale
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    <i>
@@ -1666,6 +1996,17 @@ See also
    <b>
     -Y
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --time-scale-force
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    Like
@@ -1681,6 +2022,10 @@ See also
   <dt>
    <b>
     -?
+   </b>
+   ,
+   <b>
+    --help
    </b>
   </dt>
   <dd>

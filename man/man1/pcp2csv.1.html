@@ -685,6 +685,10 @@ file options (if any).
    <b>
     -1
    </b>
+   ,
+   <b>
+    --dynamic-header
+   </b>
   </dt>
   <dd>
    Print a new dynamically adjusted header every time changes in
@@ -699,6 +703,10 @@ See also
   <dt>
    <b>
     -2
+   </b>
+   ,
+   <b>
+    --overall-rank
    </b>
   </dt>
   <dd>
@@ -727,6 +735,10 @@ including averages and peak times for values.
    <b>
     -3
    </b>
+   ,
+   <b>
+    --overall-rank-alt
+   </b>
   </dt>
   <dd>
    Like
@@ -746,6 +758,17 @@ including averages and peak times for values.
    <b>
     -8
    </b>
+   <i>
+    limit
+   </i>
+   ,
+   <b>
+    --limit-filter
+   </b>
+   =
+   <i>
+    limit
+   </i>
   </dt>
   <dd>
    Limit results to instances with values above/below
@@ -778,6 +801,17 @@ See also
    <b>
     -9
    </b>
+   <i>
+    limit
+   </i>
+   ,
+   <b>
+    --limit-filter-force
+   </b>
+   =
+   <i>
+    limit
+   </i>
   </dt>
   <dd>
    Like
@@ -794,6 +828,17 @@ See also
    <b>
     -a
    </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
   </dt>
   <dd>
    Performance metric values are retrieved from the set of Performance
@@ -842,6 +887,17 @@ or, less often, manually with
    <b>
     -A
    </b>
+   <i>
+    align
+   </i>
+   ,
+   <b>
+    --align
+   </b>
+   =
+   <i>
+    align
+   </i>
   </dt>
   <dd>
    Force the initial sample to be
@@ -869,6 +925,17 @@ for a complete description of the syntax for
    <b>
     -b
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --space-scale
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    <i>
@@ -923,6 +990,17 @@ See also
    <b>
     -B
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --space-scale-force
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    Like
@@ -939,6 +1017,17 @@ See also
    <b>
     -c
    </b>
+   <i>
+    config
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    config
+   </i>
   </dt>
   <dd>
    Specify the
@@ -996,6 +1085,10 @@ either local or remote (see
    <b>
     -C
    </b>
+   ,
+   <b>
+    --check
+   </b>
   </dt>
   <dd>
    Exit before reporting any values, but after parsing the configuration
@@ -1004,6 +1097,10 @@ and metrics and printing possible headers.
   <dt>
    <b>
     -d
+   </b>
+   ,
+   <b>
+    --delay
    </b>
   </dt>
   <dd>
@@ -1029,6 +1126,17 @@ the default behaviour of replaying at full speed.
    <b>
     -e
    </b>
+   <i>
+    derived
+   </i>
+   ,
+   <b>
+    --derived
+   </b>
+   =
+   <i>
+    derived
+   </i>
   </dt>
   <dd>
    Specify
@@ -1063,6 +1171,17 @@ and
    <b>
     -E
    </b>
+   <i>
+    lines
+   </i>
+   ,
+   <b>
+    --repeat-header
+   </b>
+   =
+   <i>
+    lines
+   </i>
   </dt>
   <dd>
    Repeat the header every
@@ -1080,6 +1199,17 @@ See also
    <b>
     -f
    </b>
+   <i>
+    format
+   </i>
+   ,
+   <b>
+    --timestamp-format
+   </b>
+   =
+   <i>
+    format
+   </i>
   </dt>
   <dd>
    Use the
@@ -1127,6 +1257,17 @@ Defaults to
    <b>
     -F
    </b>
+   <i>
+    outfile
+   </i>
+   ,
+   <b>
+    --output-file
+   </b>
+   =
+   <i>
+    outfile
+   </i>
   </dt>
   <dd>
    Specify the output file
@@ -1145,6 +1286,10 @@ See
    <b>
     -g
    </b>
+   ,
+   <b>
+    --separate-header
+   </b>
   </dt>
   <dd>
    Output the column number and complete metric information,
@@ -1153,6 +1298,10 @@ one-per-line, before printing the metric values.
   <dt>
    <b>
     -G
+   </b>
+   ,
+   <b>
+    --no-globals
    </b>
   </dt>
   <dd>
@@ -1168,6 +1317,17 @@ one-per-line, before printing the metric values.
    <b>
     -h
    </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
   </dt>
   <dd>
    Fetch performance metrics from
@@ -1190,6 +1350,10 @@ rather than from the default localhost.
    <b>
     -H
    </b>
+   ,
+   <b>
+    --no-header
+   </b>
   </dt>
   <dd>
    Do not print any headers.
@@ -1198,6 +1362,17 @@ rather than from the default localhost.
    <b>
     -i
    </b>
+   <i>
+    instances
+   </i>
+   ,
+   <b>
+    --instances
+   </b>
+   =
+   <i>
+    instances
+   </i>
   </dt>
   <dd>
    Report only the listed
@@ -1302,6 +1477,10 @@ $ pmrep -i '"1 minute","5 minute"' 'kernel.all.load,,.*'
    <b>
     -I
    </b>
+   ,
+   <b>
+    --ignore-incompat
+   </b>
   </dt>
   <dd>
    Ignore incompatible metrics.
@@ -1321,6 +1500,10 @@ non-leaf nodes of the PMNS tree for reporting.
    <b>
     -j
    </b>
+   ,
+   <b>
+    --live-filter
+   </b>
   </dt>
   <dd>
    Perform instance live filtering.
@@ -1338,6 +1521,17 @@ See also
    <b>
     -J
    </b>
+   <i>
+    rank
+   </i>
+   ,
+   <b>
+    --rank
+   </b>
+   =
+   <i>
+    rank
+   </i>
   </dt>
   <dd>
    Limit results to highest/lowest
@@ -1362,6 +1556,10 @@ See also
    <b>
     -k
    </b>
+   ,
+   <b>
+    --extended-csv
+   </b>
   </dt>
   <dd>
    Write extended CSV output, similar to
@@ -1376,6 +1574,17 @@ See also
    <b>
     -K
    </b>
+   <i>
+    spec
+   </i>
+   ,
+   <b>
+    --spec-local
+   </b>
+   =
+   <i>
+    spec
+   </i>
   </dt>
   <dd>
    When fetching metrics from a local context (see
@@ -1411,6 +1620,17 @@ More than one
    <b>
     -l
    </b>
+   <i>
+    delimiter
+   </i>
+   ,
+   <b>
+    --delimiter
+   </b>
+   =
+   <i>
+    delimiter
+   </i>
   </dt>
   <dd>
    Specify the
@@ -1444,6 +1664,10 @@ the underscore (``_'') character.
    <b>
     -L
    </b>
+   ,
+   <b>
+    --local-PMDA
+   </b>
   </dt>
   <dd>
    Use a local context to collect metrics from DSO PMDAs on the local host
@@ -1457,6 +1681,10 @@ See also
   <dt>
    <b>
     -n
+   </b>
+   ,
+   <b>
+    --invert-filter
    </b>
   </dt>
   <dd>
@@ -1480,6 +1708,17 @@ live filtering.
    <b>
     -N
    </b>
+   <i>
+    predicate
+   </i>
+   ,
+   <b>
+    --predicate
+   </b>
+   =
+   <i>
+    predicate
+   </i>
   </dt>
   <dd>
    Specify a comma-separated list of
@@ -1555,6 +1794,17 @@ it will be reported as usual.
    <b>
     -o
    </b>
+   <i>
+    output
+   </i>
+   ,
+   <b>
+    --output
+   </b>
+   =
+   <i>
+    output
+   </i>
   </dt>
   <dd>
    Use
@@ -1633,6 +1883,17 @@ Requires
    <b>
     -O
    </b>
+   <i>
+    origin
+   </i>
+   ,
+   <b>
+    --origin
+   </b>
+   =
+   <i>
+    origin
+   </i>
   </dt>
   <dd>
    When reporting archived metrics, start reporting at
@@ -1667,6 +1928,10 @@ for a complete description of the syntax for
    <b>
     -p
    </b>
+   ,
+   <b>
+    --timestamps
+   </b>
   </dt>
   <dd>
    Print timestamps.
@@ -1676,6 +1941,17 @@ By default no timestamps are printed.
    <b>
     -P
    </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision
+   </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Use
@@ -1700,6 +1976,17 @@ This option will
    <b>
     -0
    </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision-force
+   </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Like
@@ -1716,6 +2003,17 @@ This option will
    <b>
     -q
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --count-scale
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    <i>
@@ -1768,6 +2066,17 @@ See also
    <b>
     -Q
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --count-scale-force
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    Like
@@ -1784,6 +2093,10 @@ See also
    <b>
     -r
    </b>
+   ,
+   <b>
+    --raw
+   </b>
   </dt>
   <dd>
    Output raw metric values, do not convert cumulative counters to rates.
@@ -1798,9 +2111,13 @@ This option
    <b>
     -R
    </b>
+   ,
+   <b>
+    --raw-prefer
+   </b>
   </dt>
   <dd>
-   As
+   Like
    <b>
     -r
    </b>
@@ -1814,6 +2131,17 @@ This option
    <b>
     -s
    </b>
+   <i>
+    samples
+   </i>
+   ,
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    samples
+   </i>
   </dt>
   <dd>
    The argument
@@ -1845,6 +2173,17 @@ See also
    <b>
     -S
    </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
   </dt>
   <dd>
    When reporting archived metrics, the report will be restricted to those
@@ -1872,6 +2211,17 @@ for a complete description of the syntax for
    <b>
     -t
    </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
   </dt>
   <dd>
    The default update
@@ -1907,6 +2257,17 @@ See also the
    <b>
     -T
    </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
   </dt>
   <dd>
    When reporting archived metrics, the report will be restricted to those
@@ -2001,6 +2362,10 @@ and
    <b>
     -u
    </b>
+   ,
+   <b>
+    --no-interpol
+   </b>
   </dt>
   <dd>
    When reporting archived metrics, by default values are reported
@@ -2058,6 +2423,10 @@ are still subject to rate conversion, use
    <b>
     -U
    </b>
+   ,
+   <b>
+    --no-unit-info
+   </b>
   </dt>
   <dd>
    Omit unit information from headers.
@@ -2065,6 +2434,10 @@ are still subject to rate conversion, use
   <dt>
    <b>
     -v
+   </b>
+   ,
+   <b>
+    --omit-flat
    </b>
   </dt>
   <dd>
@@ -2084,6 +2457,10 @@ See
    <b>
     -V
    </b>
+   ,
+   <b>
+    --version
+   </b>
   </dt>
   <dd>
    Display version number and exit.
@@ -2092,6 +2469,17 @@ See
    <b>
     -w
    </b>
+   <i>
+    width
+   </i>
+   ,
+   <b>
+    --width
+   </b>
+   =
+   <i>
+    width
+   </i>
   </dt>
   <dd>
    Set the
@@ -2120,6 +2508,17 @@ This option will
    <b>
     -W
    </b>
+   <i>
+    width
+   </i>
+   ,
+   <b>
+    --width-force
+   </b>
+   =
+   <i>
+    width
+   </i>
   </dt>
   <dd>
    Like
@@ -2136,6 +2535,10 @@ This option will
    <b>
     -x
    </b>
+   ,
+   <b>
+    --extended-header
+   </b>
   </dt>
   <dd>
    Print extended header.
@@ -2144,6 +2547,17 @@ This option will
    <b>
     -X
    </b>
+   <i>
+    label
+   </i>
+   ,
+   <b>
+    --colxrow
+   </b>
+   =
+   <i>
+    label
+   </i>
   </dt>
   <dd>
    Swap columns and rows in
@@ -2180,6 +2594,17 @@ See also
    <b>
     -y
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --time-scale
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    <i>
@@ -2238,6 +2663,17 @@ See also
    <b>
     -Y
    </b>
+   <i>
+    scale
+   </i>
+   ,
+   <b>
+    --time-scale-force
+   </b>
+   =
+   <i>
+    scale
+   </i>
   </dt>
   <dd>
    Like
@@ -2253,6 +2689,10 @@ See also
   <dt>
    <b>
     -z
+   </b>
+   ,
+   <b>
+    --hostzone
    </b>
   </dt>
   <dd>
@@ -2272,6 +2712,17 @@ The default is to use the timezone of the local host.
    <b>
     -Z
    </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
   </dt>
   <dd>
    Use
@@ -2300,6 +2751,10 @@ UTC offsets are used (so something like -Z EST+5 will become UTC-5).
   <dt>
    <b>
     -?
+   </b>
+   ,
+   <b>
+    --help
    </b>
   </dt>
   <dd>
@@ -2415,7 +2870,7 @@ dynamic headers:
    <b>
    </b>
    <pre>
-$ pmrep -b MB -8 100 -1 proc.memory.rss
+$ pmrep -b MB --limit-filter 100 --dynamic-header proc.memory.rss
 </pre>
   </dd>
  </dl>

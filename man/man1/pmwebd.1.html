@@ -702,11 +702,11 @@ output describing this error is sent to
    </b>
   </dt>
   <dd>
-   Increase the verbosity of the
+   Increase the verbosity of
    <b>
     pmwebd
    </b>
-   program as it logs to its standard output/error.
+   as it logs to its standard output/error.
   </dd>
   <dt>
    <b>
@@ -727,14 +727,13 @@ output describing this error is sent to
   SECURITY
  </h2>
  <p>
-  The current release of
   <b>
    pmwebd
   </b>
   is suitable for direct exposure to
 trusted networks only, due to several security limitations.  Most or
 all of these limitations may be worked around by use of a web
-application firewall (for example, an Apache HTTPD proxy), which would
+application firewall (for example, an Apache HTTP proxy), which would
 add the constraints and capabilities absent within
   <b>
    pmwebd
@@ -748,11 +747,10 @@ Such configuration is beyond the scope of this document.
    encryption/confidentiality
   </dt>
   <dd>
-   The
    <b>
     pmwebd
    </b>
-   program is does not currently support HTTPS (SSL/TLS), so
+   does not currently support HTTPS (SSL/TLS), so
 the HTTP traffic is not protected against network-level attacks.
   </dd>
   <dt>
@@ -778,22 +776,20 @@ authentication; see below.
    inbound admission control
   </dt>
   <dd>
-   The
    <b>
     pmwebd
    </b>
-   program does not impose access control on the origin or rate of its
-incoming requests.  It may be possible for some clients to starve others.
+   does not impose access control on the origin or rate of its incoming requests.
+It may be possible for some clients to starve others.
   </dd>
   <dt>
    outbound admission control
   </dt>
   <dd>
-   The
    <b>
     pmwebd
    </b>
-   program does not impose access control on outbound connections
+   does not impose access control on outbound connections
 when a new PMAPI context is created for a PMCD.
 (Without the
    <b>
