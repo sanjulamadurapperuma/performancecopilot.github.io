@@ -55,18 +55,18 @@ Analysis Tools
 <a href='#collectl'>PCP version of collectl</a>
 </li>
 <li>
-<a href='#datavis'>Performance Data Visualization and Analysis with PCP</a>
+<a href='#datavis'>Visualization and Analysis of PCP datasets</a>
 </li>
 </ul>
 </li>
 <li>
-New Instrumentation
+Integration Projects
 <ul>
 <li>
-<a href='#ebpf'>Instrumentation with eBPF</a>
+<a href='#metadata'>Metadata Label Support for Instrumented Applications</a>
 </li>
 <li>
-<a href='#RESPpmproxy'>RESP support in pmproxy</a>
+<a href='#RESP'>RESP (Redis) support in pmproxy</a>
 </li>
 </ul>
 </li>
@@ -86,14 +86,6 @@ Installer Projects
 </li>
 <li>
 <a href='#macosxpcp'>Mac OS X PCP Installer</a>
-</li>
-</ul>
-</li>
-<li>
-Integration Projects
-<ul>
-<li>
-<a href='#metadata'>Metadata Label Support for Instrumented Applications</a>
 </li>
 </ul>
 </li>
@@ -127,9 +119,10 @@ live and historical performance data from the local or remote hosts.
 <a href='http://hisham.hm/htop/'>HTOP</a>
 is a performance analysis utility reporting per-process metrics with
 good, customizable visualization of that data.
+</p>
+<p>
 This project will involve implementing a HTOP "platform" for PCP.
 </p>
-<p></p>
 <p>
 <strong>Expected results:</strong>
 A (C language) implementation of an HTOP backend using the PCP PMAPI,
@@ -173,8 +166,10 @@ An initial PCP implementation (pcp-collectl) of the
 utility provides some initial support for the same style of reports.
 This project will extend that initial code to complete the reporting
 coverage provided by the initial collectl utility.
-Additionally, the pcp-collectl utility will be updated to use modern
-PCP API extensions, improve the test coverage and documentation.
+The pcp-collectl utility will be updated to use the more modern
+<a href='http://man7.org/linux/man-pages/man1/pmrep.1.html'>pmrep</a>
+utility under the covers.
+Additionally, the test coverage and documentation will be improved.
 </p>
 <p>
 <strong>Expected results:</strong>
@@ -188,64 +183,13 @@ Python programming.
 </p>
 <p>
 <strong>Skill level:</strong>
-Intermediate
+Introductory-Intermediate
 </p>
 <p>
 <strong>Mentors:</strong>
 <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
 ,
 <a href='mailto:goodwinos@gmail.com'>Mark Goodwin</a>
-</p>
-<p>
-<strong>Interested students so far:</strong>
-0
-</p>
-<br>
-</div>
-</div>
-<div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
-<div class='col__module--img'>
-<a name='ebpf'></a>
-<h3>Instrumentation with eBPF</h3>
-<p>
-eBPF (extended Berkeley Packet Filtering) is the latest tracing
-capability added to the Linux kernel, which is an enhancement over
-<a href='https://en.wikipedia.org/wiki/Berkeley_Packet_Filter'>BPF .</a>
-It is an in-kernel bytecode machine that can be used for tracing,
-instrumentation and other capabilities.
-It can be used to create custom metrics by either instrumenting the kernel
-or a userspace program.
-</p>
-<p>
-Tools like
-<a href='https://iovisor.github.io/bcc/'>bcc</a>
-have an elegant API and scripts (in python) to
-use the eBPF interface to instrument the kernel/processes.
-</p>
-<p>
-<strong>Expected results:</strong>
-A PCP PMDA (using bcc) for the bpf subsystem will be
-designed, implemented, tested and documented.
-The PMDA can implement a few basic metrics and it should be extensible,
-so that it can be enhanced.
-The student is expected to gain insights on Linux kernel and user-space
-instrumentation.
-</p>
-<p>
-<strong>Prerequisite knowledge:</strong>
-Python, C, Linux kernel.
-</p>
-<p>
-<strong>Skill level:</strong>
-Intermediate-Advanced
-</p>
-<p>
-<strong>Mentors:</strong>
-<a href='mailto:hemant@linux.vnet.ibm.com'>Hemant Kumar</a>
-,
-<a href='mailto:goodwinos@gmail.com'>Mark Goodwin</a>
-,
-<a href='mailto:nathans@redhat.com'>Nathan Scott</a>
 </p>
 <p>
 <strong>Interested students so far:</strong>
@@ -257,16 +201,17 @@ Intermediate-Advanced
 <div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
 <div class='col__module--img'>
 <a name='datavis'></a>
-<h3>Performance Data Visualization and Analysis with PCP</h3>
+<h3>Visualization and Analysis of PCP datasets</h3>
 <p>
 The PCP
 <a href='http://man7.org/linux/man-pages/man1/pmlogger.1.html'>pmlogger</a>
 records performance statistics from a running machine,
 which can be efficiently queried and extracted as time
-series data using pmseries,
-<a href='http://man7.org/linux/man-pages/man1/pmrep.1.html'>pmrep,</a>
-<a href='http://man7.org/linux/man-pages/man1/pmwebd.1.html'>pmwebd</a>
-and other PCP client tools. This project will develop a
+series data using PCP tools like
+<a href='http://man7.org/linux/man-pages/man1/pmrep.1.html'>pmrep</a>
+</p>
+<p>
+This project will develop a
 Python application to query, extract, reformat and
 visualize PCP time series data using Python's extensive
 data-science class libraries (e.g.
@@ -315,6 +260,8 @@ Advanced
 <a href='http://www.brendangregg.com/flamegraphs.html'>Flame Graphs</a>
 are a visualization of profiled software, allowing frequently
 travelled code paths to be identified quickly and accurately.
+</p>
+<p>
 This project will implement an efficient interface between the
 <a href='https://github.com/Netflix/vector/wiki/Getting-Started'>Vector</a>
 web application, the Linux kernel eBPF and/or
@@ -353,7 +300,7 @@ Advanced
 </div>
 <div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
 <div class='col__module--img'>
-<a name='RESPpmproxy'></a>
+<a name='RESP'></a>
 <h3>RESP support in pmproxy</h3>
 <p>
 Redis
@@ -363,9 +310,11 @@ search and serving time series performance data. PCP
 metadata and data keys are distributed across
 potentially many Redis servers, and access to individual
 keys is automated by PCP client library code, for PCP
-client tools like pmseries(1). Direct access is
+client tools like pmseries(1).  Direct access is
 relatively non-intuitive for human operators and
 developers - something we'd like to change.
+</p>
+<p>
 Redis clients communicate with the Redis server using a protocol
 called RESP
 <a href='https://redis.io/topics/protocol'></a>
@@ -373,6 +322,8 @@ called RESP
 simple text-based protocol which can co-exist with other
 protocols supported by the PCP pmproxy(1) daemon -
 i.e. the native and secure PCP protocols.
+</p>
+<p>
 This project involves extending pmproxy to support RESP, in a fashion
 similar to the twemproxy
 <a href='https://github.com/twitter/twemproxy/'></a>
@@ -504,6 +455,8 @@ applications using shared memory backed by memory mapped files - the
 Recently PCP has been extended to provide arbitrary metric metadata in
 the form of key/value pairs - as an extension to the metadata it has
 always provided, namely units, semantics, type, and so on.
+</p>
+<p>
 This project will explore extending the memory-map instrumentation
 model with support for labels. Firstly, an extension to the memory
 mapped format to support labels will be devised by the student and
