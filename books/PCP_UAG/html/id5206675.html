@@ -46,7 +46,7 @@
 								Checks to see that all desired <code class="command">pmlogger</code> processes are running on your system, and invokes any that are missing for any reason.
 							</div></dd><dt><span class="term"><code class="literal">pmlogconf(1)</code></span></dt><dd><div class="para">
 								Generates suitable <code class="command">pmlogger</code> configuration files based on a pre-defined set of templates. It can probe the state of the system under observation to make informed decisions about which metrics to record. This is an extensible facility, allowing software upgrades and new PMDA installations to add to the existing set of templates.
-							</div></dd><dt><span class="term"><code class="command">pmsnap(1)</code></span></dt><dd><div class="para">
+							</div></dd><dt><span class="term"><code class="literal">pmsnap(1)</code></span></dt><dd><div class="para">
 								Generates graphic image snapshots of <code class="command">pmchart</code> performance charts at regular intervals.
 							</div></dd></dl></div><div class="para">
 					<a id="IG31371888259" class="indexterm"></a>The configuration files used by these scripts can be edited to suit your particular needs, and are generally controlled by the <code class="filename">${PCP_PMLOGGERCONTROL_PATH}</code> and <code class="filename">${PCP_PMLOGGERCONTROL_PATH}.d</code> files (<code class="literal">pmsnap</code> has an additional control file, <code class="filename">${PCP_PMSNAPCONTROL_PATH}</code>). Complete information on these scripts is available in the <code class="command">pmlogger_daily(1)</code> and <code class="command">pmsnap(1)</code> man pages.

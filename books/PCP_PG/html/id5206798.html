@@ -39,9 +39,9 @@ int <em class="replaceable">status</em> = pmRecordSetup("folio string", "creator
 					</div><div class="para">
 						Each record mode session involves one or more PCP archive logs; each is created using a dedicated <code class="command">pmlogger</code> process, with an overall Archive Folio format as understood by the <code class="command">pmafm</code> command, to name and collect all of the archive logs associated with a single recording session.
 					</div><div class="para">
-						The <code class="filename">pmRecordHost</code> structure is used to maintain state information between the creator of the recording session and the associated <code class="command">pmlogger</code> process(es). The structure, shown in <a class="xref" href="id5206798.html#Z976560662sdc">Example 3.14, “ <code class="filename">pmRecordHost</code> Structure”</a>, is defined as:
+						The <code class="filename">pmRecordHost</code> structure is used to maintain state information between the creator of the recording session and the associated <code class="command">pmlogger</code> process(es). The structure, shown in <a class="xref" href="id5206798.html#Z976560662sdc">Example 3.16, “ <code class="filename">pmRecordHost</code> Structure”</a>, is defined as:
 					</div><div class="example"><a id="Z976560662sdc">
-      ⁠</a><p class="title"><strong>Example 3.14.  <code class="filename">pmRecordHost</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
+      ⁠</a><p class="title"><strong>Example 3.16.  <code class="filename">pmRecordHost</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
     FILE   *f_config;    /* caller writes pmlogger configuration here */
     int    fd_ipc;       /* IPC channel to pmlogger */
     char   *logfile;     /* full pathname for pmlogger error logfile */

@@ -51,7 +51,7 @@
       ⁠</a><div class="figure-contents"><div class="mediaobject"><object data="images/syscallevent.svg" type="image/svg+xml"><img src="images/syscallevent.png" alt="Sample syscall entry point encoding" /></object></div></div><p class="title"><strong>Figure 3.2. Sample <code class="command">write(2)</code> syscall entry point encoding</strong></p></div>
 
 			</div><div class="para">
-				Event metrics and their associated information (parameters, timestamps, flags, and so on) are delivered to monitoring tools alongside sampled metrics as part of the <code class="command">pmResult</code> structure seen previously in <a class="xref" href="LE82331-PARENT.html#Z976549833sdc">Example 3.7, “ <code class="filename">pmResult</code> Structure”</a>.
+				Event metrics and their associated information (parameters, timestamps, flags, and so on) are delivered to monitoring tools alongside sampled metrics as part of the <code class="command">pmResult</code> structure seen previously in <a class="xref" href="LE82331-PARENT.html#Z976549833sdc">Example 3.9, “ <code class="filename">pmResult</code> Structure”</a>.
 			</div><div class="para">
 				The semantics of <code class="command">pmFetch(3)</code> specifying an event metric PMID are such that all events observed on the collector since the previous fetch (by this specific monitor client) are to transfered to the monitor. Each event will have the metadata described earlier encoded with it (timestamps, flags, and so on) for each event. The encoding of the series of events involves a compound data structure within the <code class="command">pmValueSet</code> associated with the event metric PMID, as illustrated in <a class="xref" href="id5199202.html#id5198719">Figure 3.3, “Result Format for Event Performance Metrics from <code class="command">pmFetch</code>”</a>.
 			</div><div class="para">
@@ -59,9 +59,9 @@
       ⁠</a><div class="figure-contents"><div class="mediaobject"><object data="images/pmevents.svg" type="image/svg+xml"><img src="images/pmevents.png" alt="Result Format for Event Performance Metrics from pmFetch" /></object></div></div><p class="title"><strong>Figure 3.3. Result Format for Event Performance Metrics from <code class="command">pmFetch</code></strong></p></div>
 
 			</div><div class="para">
-				At the highest level, the "series of events" is encapsulated within a <code class="command">pmEventArray</code> structure, as in <a class="xref" href="id5199202.html#Z976557818nat">Example 3.8, “ <code class="command">pmEventArray</code> and <code class="command">pmEventRecord</code> Structures”</a>:
+				At the highest level, the "series of events" is encapsulated within a <code class="command">pmEventArray</code> structure, as in <a class="xref" href="id5199202.html#Z976557818nat">Example 3.10, “ <code class="command">pmEventArray</code> and <code class="command">pmEventRecord</code> Structures”</a>:
 			</div><div class="example"><a id="Z976557818nat">
-      ⁠</a><p class="title"><strong>Example 3.8.  <code class="command">pmEventArray</code> and <code class="command">pmEventRecord</code> Structures</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
+      ⁠</a><p class="title"><strong>Example 3.10.  <code class="command">pmEventArray</code> and <code class="command">pmEventRecord</code> Structures</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
     pmTimeval      er_timestamp;  /* 2 x 32-bit timestamp format */
     unsigned int     er_flags;      /* event record characteristics */
     int              er_nparams;    /* number of ea_param[] entries */
@@ -78,7 +78,7 @@ typedef struct {
 			</div><div class="para">
 				The <code class="literal">pmEventParameter</code> structure is as follows:
 			</div><div class="example"><a id="Z1034793415nat">
-      ⁠</a><p class="title"><strong>Example 3.9.  <code class="literal">pmEventParameter</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
+      ⁠</a><p class="title"><strong>Example 3.11.  <code class="literal">pmEventParameter</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
     pmID             ep_pmid;       /* parameter identifier */
     unsigned int     ep_type;       /* value type */
     int              ep_len;        /* bytes for type/len + vbuf */
@@ -89,9 +89,9 @@ typedef struct {
 				</div><div class="para">
 					The control information (flags and optionally dropped events) is included as derived metrics within each result structure. As such, these values can be queried similarly to other metrics, using their names - <code class="literal">event.flags</code> and <code class="literal">event.missed</code>. Note that these metrics will only exist after the first call to <code class="command">pmUnpackEventRecords</code>.
 				</div><div class="para">
-					An example of decoding event metrics in this way is presented in <a class="xref" href="id5199202.html#Z976557819nat">Example 3.10, “Unpacking Event Records from an Event Metric <code class="literal">pmValueSet</code>”</a>:
+					An example of decoding event metrics in this way is presented in <a class="xref" href="id5199202.html#Z976557819nat">Example 3.12, “Unpacking Event Records from an Event Metric <code class="literal">pmValueSet</code>”</a>:
 				</div><div class="example"><a id="Z976557819nat">
-      ⁠</a><p class="title"><strong>Example 3.10. Unpacking Event Records from an Event Metric <code class="literal">pmValueSet</code></strong></p><div class="example-contents"><pre class="programlisting">enum { event_flags = 0, event_missed = 1 };
+      ⁠</a><p class="title"><strong>Example 3.12. Unpacking Event Records from an Event Metric <code class="literal">pmValueSet</code></strong></p><div class="example-contents"><pre class="programlisting">enum { event_flags = 0, event_missed = 1 };
 static char *metadata[] = { "event.flags", "event.missed" };
 static pmID metapmid[2];
 

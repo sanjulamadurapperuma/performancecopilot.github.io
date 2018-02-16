@@ -52,25 +52,25 @@ Performance Co-Pilot configuration on pluto:
  platform: Linux pluto 3.10.0-0.rc7.64.el7.x86_64 #1 SMP
  hardware: 8 cpus, 2 disks, 23960MB RAM
  timezone: EST-10
-     pmcd: Version 3.8.3-1, 8 agents
+     pmcd: Version 4.0.0-1, 8 agents
      pmda: pmcd proc xfs linux mmv infiniband gluster elasticsearch
-     <em class="replaceable">pmlogger: primary logger: pluto/20130815.10.00</em>
+     <em class="replaceable">pmlogger: primary logger: pluto/20170815.10.00</em>
      pmie: pluto: ${PCP_LOG_DIR}/pmie/pluto/pmie.log
            venus: ${PCP_LOG_DIR}/pmie/venus/pmie.log</pre></li><li class="listitem"><div class="para">
 							Verify that the archive files are being created in the expected place:
 						</div><pre class="literallayout"><strong class="userinput"><code>ls ${PCP_LOG_DIR}/pmlogger/pluto</code></strong>
-20130815.10.00.0
-20130815.10.00.index
-20130815.10.00.meta
+20170815.10.00.0
+20170815.10.00.index
+20170815.10.00.meta
 Latest
 pmlogger.log</pre></li><li class="listitem"><div class="para">
 							Verify that no errors are being logged, and the rate of expected growth of the archives:
 						</div><pre class="literallayout"><strong class="userinput"><code>cat ${PCP_LOG_DIR}/pmlogger/pluto/pmlogger.log</code></strong>
-Log for pmlogger on pluto started Thu Aug 15 10:00:11 2013
+Log for pmlogger on pluto started Thu Aug 15 10:00:11 2017
 
 Config parsed
 Starting primary logger for host "pluto"
-Archive basename: 20130815.00.10
+Archive basename: 20170815.00.10
 
 Group [26 metrics] {
 	hinv.map.lvname

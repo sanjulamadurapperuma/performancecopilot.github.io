@@ -41,9 +41,9 @@
 				</div><div class="para">
 					All diagnostic, debugging, and tracing output from a PMDA should be written to the standard error stream.
 				</div><div class="para">
-					<a id="IG31340177234" class="indexterm"></a>Adding this segment of code to the <code class="command">simple_store</code> metric causes a timestamped log message to be sent to the current log file whenever <code class="command">pmstore</code> attempts to change <code class="literal">simple.numfetch</code> and the PCP debugging options have the <code class="literal">appl0</code> option set as shown in <a class="xref" href="id5195016.html#Z976060060sdc">Example 2.32, “ <code class="literal">simple.numfetch</code> in the Simple PMDA”</a>:
+					<a id="IG31340177234" class="indexterm"></a>Adding this segment of code to the <code class="command">simple_store</code> metric causes a timestamped log message to be sent to the current log file whenever <code class="command">pmstore</code> attempts to change <code class="literal">simple.numfetch</code> and the PCP debugging options have the <code class="literal">appl0</code> option set as shown in <a class="xref" href="id5195016.html#Z976060060sdc">Example 2.36, “ <code class="literal">simple.numfetch</code> in the Simple PMDA”</a>:
 				</div><div class="example"><a id="Z976060060sdc">
-      ⁠</a><p class="title"><strong>Example 2.32.  <code class="literal">simple.numfetch</code> in the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">   case 0: /* simple.numfetch */ 
+      ⁠</a><p class="title"><strong>Example 2.36.  <code class="literal">simple.numfetch</code> in the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">   case 0: /* simple.numfetch */ 
        	x
         val = vsp-&gt;vlist[0].value.lval; 
         if (val &lt; 0) { 

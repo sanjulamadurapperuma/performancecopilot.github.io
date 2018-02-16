@@ -415,10 +415,10 @@ metric values take precedence:
    2. Domain labels
   </dt>
   <dd>
-   (for all values from a PMDA) are the next highest precedence.
+   (for all metrics and instances from a PMDA) are the next highest precedence.
   </dd>
   <dt>
-   3. Instance Domain Labels
+   3. Instance Domain labels
   </dt>
   <dd>
    associated with an InDom are the next highest precedence.
@@ -512,7 +512,7 @@ and whether it is an intrinsic or extrinsic label).
    pmLabelSet
   </i>
   provides information about the set of labels associated with an
-entity (context, domain, indom, metric or instance).
+entity (context, domain, indom, metric cluster, item or instance).
 The entity will be from any one level of the label hierarchy.
 If at the lowest hierarchy level (which happens to be highest
 precedence - PM_LABEL_INSTANCES) then the

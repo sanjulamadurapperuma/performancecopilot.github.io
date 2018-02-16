@@ -39,9 +39,9 @@
                       pmParseMetricSpec("metric specification", isarch, source)</pre><div class="para">
 						<a id="IG31340177442" class="indexterm"></a>The <code class="command">pmParseMetricSpec</code> function accepts a <em class="replaceable">string</em> specifying the name of a PCP performance metric, and optionally the source (either a hostname, a set of PCP archive logs, or a local context) and instances for that metric. The syntax is described in the <code class="command">PCPIntro(1)</code> man page.
 					</div><div class="para">
-						If neither host nor archive component of the metric specification is provided, the <code class="literal">isarch</code> and <code class="literal">source</code> arguments are used to fill in the returned <code class="filename">pmMetricSpec</code> structure. In <a class="xref" href="id5211943.html#Z976566126sdc">Example 3.18, “ <code class="filename">pmMetricSpec</code> Structure”</a>, the <code class="filename">pmMetricSpec</code> structure, which is returned via <em class="replaceable">rsltp,</em> represents the parsed string.
+						If neither host nor archive component of the metric specification is provided, the <code class="literal">isarch</code> and <code class="literal">source</code> arguments are used to fill in the returned <code class="filename">pmMetricSpec</code> structure. In <a class="xref" href="id5211943.html#Z976566126sdc">Example 3.20, “ <code class="filename">pmMetricSpec</code> Structure”</a>, the <code class="filename">pmMetricSpec</code> structure, which is returned via <em class="replaceable">rsltp,</em> represents the parsed string.
 					</div><div class="example"><a id="Z976566126sdc">
-      ⁠</a><p class="title"><strong>Example 3.18.  <code class="filename">pmMetricSpec</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
+      ⁠</a><p class="title"><strong>Example 3.20.  <code class="filename">pmMetricSpec</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
     int     isarch;      /* source type: 0 -&gt; host, 1 -&gt; archive, 2 -&gt; local context */
     char    *source;     /* name of source host or archive */
     char    *metric;     /* name of metric */

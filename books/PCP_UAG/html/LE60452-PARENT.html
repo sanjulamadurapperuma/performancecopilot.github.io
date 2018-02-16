@@ -95,6 +95,17 @@ disk.dev.read
 filesys.free
     Data Type: 64-bit unsigned int  InDom: 60.5 0xf000005
     Semantics: instant  Units: Kbyte</pre><div class="para">
+				The <code class="literal">-l</code> option causes <code class="command">pminfo</code> to display labels about metrics (refer to the <code class="command">pmLookupLabels(3)</code> man page for an explanation of this metadata information). If the metric has an instance domain, the labels associated with each instance of the metric is printed. The following command and response show use of the <code class="literal">-l</code> option:
+			</div><pre class="literallayout"><strong class="userinput"><code>pminfo -l -h shard kernel.pernode.cpu.user</code></strong>
+kernel.percpu.cpu.sys
+    inst [0 or "cpu0"] labels {"agent":"linux","cpu":0,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}
+    inst [1 or "cpu1"] labels {"agent":"linux","cpu":1,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}
+    inst [2 or "cpu2"] labels {"agent":"linux","cpu":2,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}
+    inst [3 or "cpu3"] labels {"agent":"linux","cpu":3,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}
+    inst [4 or "cpu4"] labels {"agent":"linux","cpu":4,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}
+    inst [5 or "cpu5"] labels {"agent":"linux","cpu":5,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}
+    inst [6 or "cpu6"] labels {"agent":"linux","cpu":6,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}
+    inst [7 or "cpu7"] labels {"agent":"linux","cpu":7,"device_type":"cpu","domainname":"acme.com","groupid":1000,"hostname":"shard","indom_name":"per cpu","userid":1000}</pre><div class="para">
 				The <code class="literal">-f</code> option to <code class="command">pminfo</code> forces the current value of each named metric to be fetched and printed. In the example below, all metrics in the group <code class="literal">hinv</code> are selected:
 			</div><pre class="literallayout"><strong class="userinput"><code>pminfo -f hinv</code></strong>
 hinv.physmem

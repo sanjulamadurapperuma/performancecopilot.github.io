@@ -37,14 +37,14 @@
 				</div><div class="para">
 					Client processes will not be able to access the PMDA metrics if the PMNS file is not installed as part of the PMDA installation procedure on the collector host. The installed list of metric names and their corresponding PMIDs can be found in <code class="filename">${PCP_VAR_DIR}/pmns/root</code>.
 				</div><div class="para">
-					<a id="IG31340177156" class="indexterm"></a> <a class="xref" href="LE83854-PARENT.html#Z963526380sdc">Example 2.11, “ <code class="filename">pmns</code> File for the Simple PMDA”</a> shows the simple PMDA, which has five metrics:
+					<a id="IG31340177156" class="indexterm"></a> <a class="xref" href="LE83854-PARENT.html#Z963526380sdc">Example 2.15, “ <code class="filename">pmns</code> File for the Simple PMDA”</a> shows the simple PMDA, which has five metrics:
 					<div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
 								Three metrics immediately under the <code class="literal">simple</code> node
 							</div></li><li class="listitem"><div class="para">
 								Two metrics under another non-terminal node called <code class="literal">simple.time</code>
 							</div></li></ul></div>
 				</div><div class="example"><a id="Z963526380sdc">
-      ⁠</a><p class="title"><strong>Example 2.11.  <code class="filename">pmns</code> File for the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">simple {
+      ⁠</a><p class="title"><strong>Example 2.15.  <code class="filename">pmns</code> File for the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">simple {
     numfetch    SIMPLE:0:0
     color       SIMPLE:0:1
     time
@@ -54,9 +54,9 @@ simple.time {
     user        SIMPLE:1:2
     sys         SIMPLE:1:3
 }</pre></div></div><div class="para">
-					Metrics that have different clusters do not have to be specified in different subtrees of the PMNS. <a class="xref" href="LE83854-PARENT.html#Z976046292sdc">Example 2.12, “Alternate <code class="filename">pmns</code> File for the Simple PMDA”</a> shows an alternative PMNS for the simple PMDA:
+					Metrics that have different clusters do not have to be specified in different subtrees of the PMNS. <a class="xref" href="LE83854-PARENT.html#Z976046292sdc">Example 2.16, “Alternate <code class="filename">pmns</code> File for the Simple PMDA”</a> shows an alternative PMNS for the simple PMDA:
 				</div><div class="example"><a id="Z976046292sdc">
-      ⁠</a><p class="title"><strong>Example 2.12. Alternate <code class="filename">pmns</code> File for the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">simple { 
+      ⁠</a><p class="title"><strong>Example 2.16. Alternate <code class="filename">pmns</code> File for the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">simple { 
     numfetch    SIMPLE:0:0 
     color       SIMPLE:0:1 
     usertime    SIMPLE:1:2 
@@ -64,9 +64,9 @@ simple.time {
 }</pre><div class="para">
 						In this example, the <code class="literal">SIMPLE</code> macro is replaced by the domain number listed in <code class="filename">${PCP_VAR_DIR}/pmns/stdpmid</code> for the corresponding PMDA during installation (for the simple PMDA, this would normally be the value 253).
 					</div></div></div><div class="para">
-					If the PMDA implementer so chooses, all or a subset of the metric names and identifiers can be specified programatically. In this situation, a special asterisk syntax is used to denote those subtrees which are to be handles this way. <a class="xref" href="LE83854-PARENT.html#Z976046292nat">Example 2.13, “Dynamic metrics <code class="filename">pmns</code> File for the Simple PMDA”</a> shows this dynamic namespace syntax, for all metrics in the simple PMDA:
+					If the PMDA implementer so chooses, all or a subset of the metric names and identifiers can be specified programatically. In this situation, a special asterisk syntax is used to denote those subtrees which are to be handles this way. <a class="xref" href="LE83854-PARENT.html#Z976046292nat">Example 2.17, “Dynamic metrics <code class="filename">pmns</code> File for the Simple PMDA”</a> shows this dynamic namespace syntax, for all metrics in the simple PMDA:
 				</div><div class="example"><a id="Z976046292nat">
-      ⁠</a><p class="title"><strong>Example 2.13. Dynamic metrics <code class="filename">pmns</code> File for the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">simple         SIMPLE:*:*</pre><div class="para">
+      ⁠</a><p class="title"><strong>Example 2.17. Dynamic metrics <code class="filename">pmns</code> File for the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">simple         SIMPLE:*:*</pre><div class="para">
 						In this example, like the one before, the <code class="literal">SIMPLE</code> macro is replaced by the domain number, and all (simple.*) metric namespace operations must be handled by the PMDA. This is in contrast to the static metric name model earlier, where the host-wide PMNS file is updated and used by PMCD, acting on behalf of the agent.
 					</div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5191305.html"><strong>Prev</strong>2.4.2. Latency and Threads of Control</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE72473-PARENT.html"><strong>Next</strong>2.4.4. PMDA Help Text</a></li></ul></div></div></div></div>
 <footer xmlns="" class="global-footer is-typeset">

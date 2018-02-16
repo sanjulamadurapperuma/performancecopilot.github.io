@@ -47,11 +47,11 @@
 						</div></li></ul></div><div class="para">
 					<a id="IG31340177220" class="indexterm"></a> <a id="IG31340177221" class="indexterm"></a> <a id="IG31340177222" class="indexterm"></a> <a id="IG31340177223" class="indexterm"></a> <a id="IG31340177224" class="indexterm"></a>All these requirements can be handled by default initialization functions in the <code class="filename">pcp_pmda</code> library; see the <code class="command">pmdaDaemon(3)</code>, <code class="command">pmdaGetOptions(3)</code>, <code class="command">pmdaOpenLog(3)</code>, <code class="command">pmdaConnect(3)</code>, and <code class="command">pmdaMain(3)</code> man pages.
 				</div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
-						Optionally, a daemon PMDA may wish to reduce or change its privilege level, as seen in <a class="xref" href="id5194087.html#Z976058585sdc">Example 2.29, “Initialization in the Trivial PMDA”</a> and <a class="xref" href="id5194416.html#Z976058770sdc">Example 2.30, “Initialization in the Simple PMDA”</a>. Some performance domains <code class="literal">require</code> the extraction process to run as a specific user in order to access the instrumentation. Many domains require the default <code class="literal">root</code> level of access for a daemon PMDA.
+						Optionally, a daemon PMDA may wish to reduce or change its privilege level, as seen in <a class="xref" href="id5194087.html#Z976058585sdc">Example 2.33, “Initialization in the Trivial PMDA”</a> and <a class="xref" href="id5194416.html#Z976058770sdc">Example 2.34, “Initialization in the Simple PMDA”</a>. Some performance domains <code class="literal">require</code> the extraction process to run as a specific user in order to access the instrumentation. Many domains require the default <code class="literal">root</code> level of access for a daemon PMDA.
 					</div></div></div><div class="para">
-					<a id="IG31340177225" class="indexterm"></a>The simple PMDA specifies the command-line arguments it accepts using <code class="command">pmdaGetOptions</code>, as shown in <a class="xref" href="id5194563.html#Z964110483sdc">Example 2.31, “ <code class="literal">main</code> in the Simple PMDA”</a>. For additional information, see the <code class="command">pmdaGetOptions(3)</code> man page.
+					<a id="IG31340177225" class="indexterm"></a>The simple PMDA specifies the command-line arguments it accepts using <code class="command">pmdaGetOptions</code>, as shown in <a class="xref" href="id5194563.html#Z964110483sdc">Example 2.35, “ <code class="literal">main</code> in the Simple PMDA”</a>. For additional information, see the <code class="command">pmdaGetOptions(3)</code> man page.
 				</div><div class="example"><a id="Z964110483sdc">
-      ⁠</a><p class="title"><strong>Example 2.31.  <code class="literal">main</code> in the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">static pmLongOptions longopts[] = {
+      ⁠</a><p class="title"><strong>Example 2.35.  <code class="literal">main</code> in the Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">static pmLongOptions longopts[] = {
     PMDA_OPTIONS_HEADER(“Options”),
     PMOPT_DEBUG,
     PMDAOPT_DOMAIN,
@@ -78,7 +78,7 @@ main(int argc, char **argv)
     isDSO = 0;
     pmSetProgname(argv[0]);
     pmGetUsername(&amp;username);
-    pmdaDaemon(&amp;dispatch, PMDA_INTERFACE_2, pmGetProgname(), SIMPLE,
+    pmdaDaemon(&amp;dispatch, PMDA_INTERFACE_7, pmGetProgname(), SIMPLE,
                “simple.log”, “${PCP_PMDAS_DIR}/simple/help”);
 
     pmdaGetOptions(argc, argv, &amp;opts, &amp;dispatch);

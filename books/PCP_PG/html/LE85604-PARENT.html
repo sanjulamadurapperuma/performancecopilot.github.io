@@ -38,9 +38,9 @@
       ⁠</a>3.8.9.1.  <code class="command">pmGetArchiveLabel</code> Function</h4></div></div></div><pre class="programlisting">int pmGetArchiveLabel(pmLogLabel *<em class="replaceable">lp</em>)
 <code class="command">Python:</code>
 pmLogLabel <em class="replaceable">loglabel</em> = pmGetArchiveLabel()</pre><div class="para">
-						<a id="IG31340177399" class="indexterm"></a> <a id="IG31340177400" class="indexterm"></a> <a id="IG31340177401" class="indexterm"></a>Provided the current PMAPI context is associated with a set of PCP archive logs, the <code class="command">pmGetArchiveLabel</code> function may be used to fetch the label record from the first archive in the set of archives. The structure returned through <em class="replaceable">lp</em> is as shown in <a class="xref" href="LE85604-PARENT.html#Z976561683sdc">Example 3.15, “ <code class="filename">pmLogLabel</code> Structure”</a>:
+						<a id="IG31340177399" class="indexterm"></a> <a id="IG31340177400" class="indexterm"></a> <a id="IG31340177401" class="indexterm"></a>Provided the current PMAPI context is associated with a set of PCP archive logs, the <code class="command">pmGetArchiveLabel</code> function may be used to fetch the label record from the first archive in the set of archives. The structure returned through <em class="replaceable">lp</em> is as shown in <a class="xref" href="LE85604-PARENT.html#Z976561683sdc">Example 3.17, “ <code class="filename">pmLogLabel</code> Structure”</a>:
 					</div><div class="example"><a id="Z976561683sdc">
-      ⁠</a><p class="title"><strong>Example 3.15.  <code class="filename">pmLogLabel</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">/*
+      ⁠</a><p class="title"><strong>Example 3.17.  <code class="filename">pmLogLabel</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">/*
  * Label Record at the start of every log file - as exported above the PMAPI ...
  */
 #define PM_TZ_MAXLEN    40

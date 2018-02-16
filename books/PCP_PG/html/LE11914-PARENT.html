@@ -33,7 +33,15 @@
     </header>
 <div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5198049.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="LE82331-PARENT.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="LE11914-PARENT">
       ⁠</a>3.4. Performance Metric Descriptions</h2></div></div></div><div class="para">
-				<a id="IG31340177268" class="indexterm"></a>For each defined performance metric, there is associated metadata encoded in a performance metric description (<code class="command">pmDesc</code> structure) that describes the format and semantics of the performance metric. The <code class="command">pmDesc</code> structure, in <a class="xref" href="LE11914-PARENT.html#Z976548425sdc">Example 3.2, “ <code class="command">pmDesc</code> Structure”</a>, provides all of the information required to interpret and manipulate a performance metric through the PMAPI. It has the following declaration:
+				<a id="IG31340177268" class="indexterm"></a>For each defined performance metric, there exists metadata describing it.
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+						A performance metric description (<code class="command">pmDesc</code> structure) that describes the format and semantics of the performance metric.
+					</div></li><li class="listitem"><div class="para">
+						Help text associated with the metric and any associated instance domain.
+					</div></li><li class="listitem"><div class="para">
+						Performance metric labels (name:value pairs in <code class="command">pmLabelSet</code> structures) associated with the metric and any associated instances.
+					</div></li></ul></div><div class="para">
+				The <code class="command">pmDesc</code> structure, in <a class="xref" href="LE11914-PARENT.html#Z976548425sdc">Example 3.2, “ <code class="command">pmDesc</code> Structure”</a>, provides all of the information required to interpret and manipulate a performance metric through the PMAPI. It has the following declaration:
 			</div><div class="example"><a id="Z976548425sdc">
       ⁠</a><p class="title"><strong>Example 3.2.  <code class="command">pmDesc</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">/* Performance Metric Descriptor */
 typedef struct {
@@ -101,10 +109,14 @@ typedef struct {
 } pmUnits;   /* dimensional units and scale of value */
 /* pmUnits.scaleSpace */
 #define PM_SPACE_BYTE 0  /* bytes */
-#define PM_SPACE_KBYTE 1 /* Kilobytes (1024) */
-#define PM_SPACE_MBYTE 2 /* Megabytes (1024^2) */
-#define PM_SPACE_GBYTE 3 /* Gigabytes (1024^3) */
-#define PM_SPACE_TBYTE 4 /* Terabytes (1024^4) */
+#define PM_SPACE_KBYTE 1 /* kibibytes (1024) */
+#define PM_SPACE_MBYTE 2 /* mebibytes (1024^2) */
+#define PM_SPACE_GBYTE 3 /* gibibytes (1024^3) */
+#define PM_SPACE_TBYTE 4 /* tebibytes (1024^4) */
+#define PM_SPACE_PBYTE 5 /* pebibytes (1024^5) */
+#define PM_SPACE_EBYTE 6 /* exbibytes (1024^6) */
+#define PM_SPACE_ZBYTE 7 /* zebibytes (1024^7) */
+#define PM_SPACE_YBYTE 8 /* yobibytes (1024^8) */
 /* pmUnits.scaleTime */
 #define PM_TIME_NSEC 0   /* nanoseconds */
 #define PM_TIME_USEC 1   /* microseconds */
@@ -118,7 +130,43 @@ typedef struct {
  * and not enumerated here.
  * e.g. 6 for 10^6, or -3 for 10^-3
  */
-#define PM_COUNT_ONE 0 /* 1 */</pre></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5198049.html"><strong>Prev</strong>3.3. Current PMAPI Context</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE82331-PARENT.html"><strong>Next</strong>3.5. Performance Metrics Values</a></li></ul></div></div></div></div>
+#define PM_COUNT_ONE 0 /* 1 */</pre></div></div><div class="para">
+				Metric and instance domain help text are simple ASCII strings. As a result, there are no special data structures associated with them. There are two forms of help text available for each metric and instance domain, however - one-line and long form.
+			</div><div class="example"><a id="Z1034792511nat">
+      ⁠</a><p class="title"><strong>Example 3.4. Help Text Flags</strong></p><div class="example-contents"><pre class="programlisting">#define PM_TEXT_ONELINE 1
+#define PM_TEXT_HELP    2</pre></div></div><div class="para">
+				Labels are stored and communicated within PCP using JSONB formatted strings in the <code class="literal">json</code> field of a <code class="filename">pmLabelSet</code> structure. This format is a restricted form of JSON suitable for indexing and other operations. In JSONB form, insignificant whitespace is discarded, and order of label names is not preserved. Within the PMCS, however, a lexicographically sorted key space is always maintained. Duplicate label names are not permitted. The label with highest precedence in the label hierarchy (context level labels, domain level labels, and so on) is the only one presented.
+			</div><div class="example"><a id="Z975964619nat">
+      ⁠</a><p class="title"><strong>Example 3.5. <code class="filename">pmLabel</code> and <code class="filename">pmLabelSet</code> Structures</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
+    uint     name : 16;      /* label name offset in JSONB string */
+    uint     namelen : 8;    /* length of name excluding the null */
+    uint     flags : 8;      /* information about this label */
+    uint     value : 16;     /* offset of the label value */
+    uint     valuelen : 16;  /* length of value in bytes */
+} pmLabel;
+
+/* flags identifying label hierarchy classes. */
+#define PM_LABEL_CONTEXT        (1&lt;&lt;0)
+#define PM_LABEL_DOMAIN         (1&lt;&lt;1)
+#define PM_LABEL_INDOM          (1&lt;&lt;2)
+#define PM_LABEL_CLUSTER        (1&lt;&lt;3)
+#define PM_LABEL_ITEM           (1&lt;&lt;4)
+#define PM_LABEL_INSTANCES      (1&lt;&lt;5)
+/* flag identifying extrinsic labels. */
+#define PM_LABEL_OPTIONAL       (1&lt;&lt;7)
+
+typedef struct { 
+    uint     inst;          /* PM_IN_NULL or the instance ID */ 
+    int      nlabels;       /* count of labels or error code */
+    char     *json;         /* JSONB formatted labels string */
+    uint     jsonlen : 16;  /* JSON string length byte count */
+    uint     padding : 16;  /* zero, reserved for future use */
+    pmLabel  *labels;       /* indexing into the JSON string */
+} pmLabelSet;</pre><div class="para">
+					The <code class="filename">pmLabel</code> <code class="literal">labels</code> array provides name and value indexes and lengths in the json string.
+				</div><div class="para">
+					The <code class="literal">flags</code> field is a bitfield identifying the hierarchy level and whether this name:value pair is intrinsic (optional) or extrinsic (part of the mandatory, identifying metadata for the metric or instance). All other fields are offsets and lengths in the JSONB string from an associated <code class="filename">pmLabelSet</code> structure.
+				</div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5198049.html"><strong>Prev</strong>3.3. Current PMAPI Context</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE82331-PARENT.html"><strong>Next</strong>3.5. Performance Metrics Values</a></li></ul></div></div></div></div>
 <footer xmlns="" class="global-footer is-typeset">
   <div class="row-parent">
     <div class="row">

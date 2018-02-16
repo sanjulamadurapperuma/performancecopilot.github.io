@@ -74,8 +74,8 @@ Performance Co-Pilot configuration on pluto:
  timezone: EST-10
      pmcd: Version 3.8.3-1, 8 agents
      pmda: pmcd proc linux xfs mmv infiniband gluster elasticsearch
-     <em class="replaceable">pmlogger: primary logger: pluto/20130815.10.00</em>
-           <em class="replaceable">venus.redhat.com: venus/20130815.11.15</em>
+     <em class="replaceable">pmlogger: primary logger: pluto/20170815.10.00</em>
+           <em class="replaceable">venus.redhat.com: venus/20170815.11.15</em>
 <strong class="userinput"><code>pmlc</code></strong>
 pmlc&gt; <strong class="userinput"><code>show loggers</code></strong>
 The following pmloggers are running on pluto:
@@ -83,9 +83,9 @@ The following pmloggers are running on pluto:
 pmlc&gt; <strong class="userinput"><code>connect 5141</code></strong>
 pmlc&gt; <strong class="userinput"><code>status</code></strong>
 <em class="replaceable">pmlogger [5141] on host pluto is logging metrics from host venus</em>
-log started      Thu Aug 15 11:15:39 2013 (times in local time)
-last log entry   Thu Aug 15 11:47:39 2013
-current time     Thu Aug 15 11:48:13 2013
+log started      Thu Aug 15 11:15:39 2017 (times in local time)
+last log entry   Thu Aug 15 11:47:39 2017
+current time     Thu Aug 15 11:48:13 2017
 log volume       0
 log size         146160</pre></li></ol></div><div class="para">
 					To create archive logs on the local host for performance metrics collected from multiple remote hosts, repeat the steps in <a class="xref" href="id5208266.html#id5208288">Procedure 6.1, “Creating Archive Logs”</a> for each remote host (each with a new <code class="filename">control</code> file entry).

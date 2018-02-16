@@ -41,9 +41,9 @@ pmAtomValue <em class="replaceable">atomval</em> = pmExtractValue(int <em class=
 	  int <em class="replaceable">otype</em>)</pre><div class="para">
 						<a id="IG31340177420" class="indexterm"></a>The <code class="command">pmValue</code> structure is embedded within the <code class="filename">pmResult</code> structure, which is used to return one or more performance metrics; see the <code class="command">pmFetch</code> man page.
 					</div><div class="para">
-						All performance metric values may be encoded in a <code class="filename">pmAtomValue</code> union, defined in <a class="xref" href="id5209112.html#Z976562908sdc">Example 3.16, “ <code class="filename">pmAtomValue</code> Structure”</a>:
+						All performance metric values may be encoded in a <code class="filename">pmAtomValue</code> union, defined in <a class="xref" href="id5209112.html#Z976562908sdc">Example 3.18, “ <code class="filename">pmAtomValue</code> Structure”</a>:
 					</div><div class="example"><a id="Z976562908sdc">
-      ⁠</a><p class="title"><strong>Example 3.16.  <code class="filename">pmAtomValue</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">/* Generic Union for Value-Type conversions */
+      ⁠</a><p class="title"><strong>Example 3.18.  <code class="filename">pmAtomValue</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">/* Generic Union for Value-Type conversions */
 typedef union {
     __int32_t  l;     /* 32-bit signed */
     __uint32_t ul;    /* 32-bit unsigned */

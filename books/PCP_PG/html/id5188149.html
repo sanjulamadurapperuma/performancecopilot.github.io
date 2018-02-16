@@ -67,8 +67,10 @@
 									<a id="IG3134017786nat" class="indexterm"></a><a id="IG3134017787nat" class="indexterm"></a>Request for a particular sub-tree of a given namespace node (see the <code class="command">pmTraversePMNS(3)</code> man page).
 								</div></dd><dt><span class="term"><code class="literal">PDU_PMNS_IDS</code></span></dt><dd><div class="para">
 									<a id="IG3134017788nat" class="indexterm"></a><a id="IG3134017789nat" class="indexterm"></a>Perform a reverse name lookup, mapping a metric identifier to a name (see the <code class="command">pmNameID(3)</code> man page).
-								</div></dd><dt><span class="term"><code class="literal">PDU_AUTH</code></span></dt><dd><div class="para">
+								</div></dd><dt><span class="term"><code class="literal">PDU_ATTR</code></span></dt><dd><div class="para">
 									<a id="IG3134017790nat" class="indexterm"></a><a id="IG3134017791nat" class="indexterm"></a>Handle connection attributes (key/value pairs), such as client credentials and other authentication information (see the <code class="command">__pmParseHostAttrsSpec(3)</code> man page).
+								</div></dd><dt><span class="term"><code class="literal">PDU_LABEL_REQ</code></span></dt><dd><div class="para">
+									<a id="IG3134017790lab" class="indexterm"></a><a id="IG3134017791lab" class="indexterm"></a><a id="IG3134017792lab" class="indexterm"></a>Request for metric labels (see the <code class="command">pmLookupLabels(3)</code> man page).
 								</div></dd></dl></div>
 				</div><div class="para">
 					Each PMDA is associated with a unique domain number that is encoded in the domain field of metric and instance identifiers, and PMCD uses the domain number to determine which PMDA can handle the components of any given client request.

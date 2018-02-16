@@ -303,9 +303,24 @@
 									 
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
-									(4)
+									 
 								</div>
 								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmLookupLabels<a id="IG31340177339lab" class="indexterm"></a></code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Yes
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									 
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmLookupName<a id="IG31340177338" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -320,7 +335,7 @@
 								 </td><td align="left" valign="top"> <div class="para">
 									 
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmLookupText<a id="IG31340177339" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -333,9 +348,9 @@
 									 
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
-									(4)
+									 
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmNameAll</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -350,7 +365,7 @@
 								 </td><td align="left" valign="top"> <div class="para">
 									 
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmNameID<a id="IG31340177340" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -365,7 +380,7 @@
 								 </td><td align="left" valign="top"> <div class="para">
 									 
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmNameInDom<a id="IG31340177341" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -380,7 +395,7 @@
 								 </td><td align="left" valign="top"> <div class="para">
 									(2)
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmNameInDomArchive<a id="IG31340177342" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -395,7 +410,7 @@
 								 </td><td align="left" valign="top"> <div class="para">
 									(1,2)
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmSetMode<a id="IG31340177343" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -410,7 +425,7 @@
 								 </td><td align="left" valign="top"> <div class="para">
 									 
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmStore<a id="IG31340177344" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -423,9 +438,9 @@
 									 
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
-									(5)
+									(4)
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="command">pmTraversePMNS<a id="IG31340177345" class="indexterm"></a></code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -448,8 +463,6 @@
 							<a id="IG31340177346" class="indexterm"></a>A specific instance domain is included in the arguments to these functions, and the result is independent of the instance profile for any PMAPI context.
 						</div></li><li class="listitem"><div class="para">
 							The metadata that describes a performance metric is sensitive to the source of the metrics, but independent of any instance profile and of the collection time.
-						</div></li><li class="listitem"><div class="para">
-							<a id="IG31340177347" class="indexterm"></a>Operation is supported only for PMAPI contexts where the source of metrics is a host. The text associated with a metric is assumed to be invariant with time and is definitely insensitive to the current members of the instance domain. In all cases this information is unavailable from an archive context (it is not included in the archive logs), and is directly available from a PMDA via PMCD in the other cases.
 						</div></li><li class="listitem"><div class="para">
 							This operation is supported only for contexts where the source of the metrics is a host. Further, the instance identifiers are included in the argument to the function, and the effects upon the current values of the metrics are immediate (retrospective changes are not allowed). Consequently, from the current PMAPI context, neither the instance profile nor the collection time influence the result of this function.
 						</div></li></ol></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5203779">

@@ -33,9 +33,9 @@
     </header>
 <div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE21831-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="LE19047-PARENT.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5193658">
       ⁠</a>2.5.2. PMDA Structures</h3></div></div></div><div class="para">
-					<a id="IG31340177199" class="indexterm"></a>PMDA structures used with the <code class="filename">pcp_pmda</code> library are defined in <code class="filename">&lt;pcp/pmda.h&gt;</code>. <a class="xref" href="id5193658.html#Z964112160sdc">Example 2.26, “ <code class="literal">pmdaInterface</code> Structure Header”</a> and <a class="xref" href="id5193658.html#Z964117744sdc">Example 2.28, “ <code class="literal">pmdaExt</code> Stucture”</a> describe the <code class="literal">pmdaInterface</code> and <code class="literal">pmdaExt</code> structures.
+					<a id="IG31340177199" class="indexterm"></a>PMDA structures used with the <code class="filename">pcp_pmda</code> library are defined in <code class="filename">&lt;pcp/pmda.h&gt;</code>. <a class="xref" href="id5193658.html#Z964112160sdc">Example 2.30, “ <code class="literal">pmdaInterface</code> Structure Header”</a> and <a class="xref" href="id5193658.html#Z964117744sdc">Example 2.32, “ <code class="literal">pmdaExt</code> Stucture”</a> describe the <code class="literal">pmdaInterface</code> and <code class="literal">pmdaExt</code> structures.
 				</div><div class="example"><a id="Z964112160sdc">
-      ⁠</a><p class="title"><strong>Example 2.26.  <code class="literal">pmdaInterface</code> Structure Header</strong></p><div class="example-contents"><div class="para">
+      ⁠</a><p class="title"><strong>Example 2.30.  <code class="literal">pmdaInterface</code> Structure Header</strong></p><div class="example-contents"><div class="para">
 						<a id="IG31340177200" class="indexterm"></a>The callbacks must be specified in a <code class="filename">pmdaInterface</code> structure:
 					</div><pre class="programlisting">typedef struct {
     int domain;     /* set/return performance metrics domain id here */
@@ -61,12 +61,14 @@
 							Version five added support for per-client contexts, where the PMDA is able to track arrival and disconnection of PMAPI client tools via PMCD (<code class="command">pmdaGetContext</code> helper routine). At the same time, support for <code class="literal">PM_TYPE_EVENT</code> metrics was implemented, which relies on the per-client context concepts (<code class="command">pmdaEvent*</code> helper routines).
 						</div></li><li class="listitem"><div class="para">
 							Version six added support for authenticated client contexts, where the PMDA is informed of user credentials and other PMCD attributes of the connection between individual PMAPI clients and PMCD (<code class="command">pmdaAttribute</code> interface)
+						</div></li><li class="listitem"><div class="para">
+							Version seven added support for metadata labels, where the PMDA is able to associate name:value pairs in a hierarchy such that additional metadata, above and beyond the metric descriptors, is associated with metrics and instances (<code class="command">pmdaLabel</code> interface)
 						</div></li></ul></div><div class="example"><a id="Z964112160nat">
-      ⁠</a><p class="title"><strong>Example 2.27.  <code class="literal">pmdaInterface</code> Structure, Latest Version</strong></p><div class="example-contents"><pre class="programlisting">   ...
+      ⁠</a><p class="title"><strong>Example 2.31.  <code class="literal">pmdaInterface</code> Structure, Latest Version</strong></p><div class="example-contents"><pre class="programlisting">   ...
     union {
         ...
         /*
-         * PMDA_INTERFACE6
+         * PMDA_INTERFACE7
          */ 
         struct {
             pmdaExt *ext;
@@ -80,12 +82,13 @@
             int     (*name)(pmID, char ***, pmdaExt *);
             int     (*children)(const char *, int, char ***, int **, pmdaExt *);
             int     (*attribute)(int, int, const char *, int, pmdaExt *);
-        } six;
+            int     (*label)(int, int, pmLabelSet **, pmdaExt *);
+        } seven;
     } version;
 } pmdaInterface;</pre></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
-						Each new interface version is always defined as a superset of those that preceded it, only adds fields at the end of the new structure in the union, and is always binary backwards-compatible. <code class="literal">And thus it shall remain.</code> For brevity, we have shown only the latest interface version (six) above, but all prior versions still exist, build, and function. In other words, PMDAs built against earlier versions of this header structure (and PMDA library) function correctly with the latest version of the PMDA library.
+						Each new interface version is always defined as a superset of those that preceded it, only adds fields at the end of the new structure in the union, and is always binary backwards-compatible. <code class="literal">And thus it shall remain.</code> For brevity, we have shown only the latest interface version (seven) above, but all prior versions still exist, build, and function. In other words, PMDAs built against earlier versions of this header structure (and PMDA library) function correctly with the latest version of the PMDA library.
 					</div></div></div><div class="example"><a id="Z964117744sdc">
-      ⁠</a><p class="title"><strong>Example 2.28.  <code class="literal">pmdaExt</code> Stucture</strong></p><div class="example-contents"><div class="para">
+      ⁠</a><p class="title"><strong>Example 2.32.  <code class="literal">pmdaExt</code> Stucture</strong></p><div class="example-contents"><div class="para">
 						<a id="IG31340177201" class="indexterm"></a>Additional PMDA information must be specified in a <code class="filename">pmdaExt</code> structure:
 					</div><a id="Z964117899sdc">
       ⁠</a><pre class="programlisting">typedef struct {
@@ -118,6 +121,8 @@
     /* added for PMDA_INTERFACE_5 */
     int         e_context;      /* client context id from pmcd */
     pmdaEndContextCallBack e_endCallBack;  /* callback after client context closed */
+    /* added for PMDA_INTERFACE_7 */
+    pmdaLabelCallBack  e_labelCallBack;  /* callback to lookup metric instance labels */
 } pmdaExt;</pre></div></div><div class="para">
 					<a id="IG31340177202" class="indexterm"></a> <a id="IG31340177203" class="indexterm"></a> <a id="IG31340177204" class="indexterm"></a> <a id="IG31340177205" class="indexterm"></a> <a id="IG31340177206" class="indexterm"></a>The <code class="filename">pmdaExt</code> structure contains filenames, pointers to tables, and some variables shared by several functions in the <code class="filename">pcp_pmda </code>library. All fields of the <code class="filename">pmdaInterface</code> and <code class="filename">pmdaExt</code> structures can be correctly set by PMDA initialization functions; see the <code class="command">pmdaDaemon(3)</code>, <code class="command">pmdaDSO(3)</code>, <code class="command">pmdaGetOptions(3)</code>, <code class="command">pmdaInit(3)</code>, and <code class="command">pmdaConnect(3)</code> man pages for a full description of how various fields in these structures may be set or used by <code class="filename">pcp_pmda</code> library functions.
 				</div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE21831-PARENT.html"><strong>Prev</strong>2.5. PMDA Interface</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE19047-PARENT.html"><strong>Next</strong>2.6. Initializing a PMDA</a></li></ul></div></div></div></div>

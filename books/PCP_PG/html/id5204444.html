@@ -55,9 +55,9 @@ int <em class="replaceable">status</em> = pmSetMode(mode, timeVal <em class="rep
 					</div><div class="para">
 						Using these mode options, an application can implement replay, playback, fast forward, or reverse for performance metric values held in a set of PCP archive logs by alternating calls to <code class="command">pmSetMode</code> and <code class="command">pmFetch</code>.
 					</div><div class="para">
-						In <a class="xref" href="id5204444.html#Z976827209sdc">Example 3.11, “Dumping Values in Temporal Sequence”</a>, the code fragment may be used to dump only those values stored in correct temporal sequence, for the specified performance metric <code class="filename">my.metric.name</code>:
+						In <a class="xref" href="id5204444.html#Z976827209sdc">Example 3.13, “Dumping Values in Temporal Sequence”</a>, the code fragment may be used to dump only those values stored in correct temporal sequence, for the specified performance metric <code class="filename">my.metric.name</code>:
 					</div><div class="example"><a id="Z976827209sdc">
-      ⁠</a><p class="title"><strong>Example 3.11. Dumping Values in Temporal Sequence</strong></p><div class="example-contents"><pre class="programlisting">    int     sts;
+      ⁠</a><p class="title"><strong>Example 3.13. Dumping Values in Temporal Sequence</strong></p><div class="example-contents"><pre class="programlisting">    int     sts;
     pmID    pmid;
     char    *name = “my.metric.name”;
 
@@ -70,9 +70,9 @@ int <em class="replaceable">status</em> = pmSetMode(mode, timeVal <em class="rep
         /* dump value(s) from result-&gt;vset[0]-&gt;vlist[] */
         pmFreeResult(result);
    }</pre></div></div><div class="para">
-						<a id="IG31340177372" class="indexterm"></a>Alternatively, the code fragment in <a class="xref" href="id5204444.html#Z976827219sdc">Example 3.12, “Replaying Interpolated Metrics”</a> may be used to replay interpolated metrics from an archive in reverse chronological order, at ten-second intervals (of recorded time):
+						<a id="IG31340177372" class="indexterm"></a>Alternatively, the code fragment in <a class="xref" href="id5204444.html#Z976827219sdc">Example 3.14, “Replaying Interpolated Metrics”</a> may be used to replay interpolated metrics from an archive in reverse chronological order, at ten-second intervals (of recorded time):
 					</div><div class="example"><a id="Z976827219sdc">
-      ⁠</a><p class="title"><strong>Example 3.12. Replaying Interpolated Metrics</strong></p><div class="example-contents"><pre class="programlisting">    int             sts;
+      ⁠</a><p class="title"><strong>Example 3.14. Replaying Interpolated Metrics</strong></p><div class="example-contents"><pre class="programlisting">    int             sts;
     pmID            pmid;
     char            *name = “my.metric.name”;
     struct timeval  endtime;

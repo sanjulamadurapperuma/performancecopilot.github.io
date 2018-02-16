@@ -52,9 +52,9 @@ pmResult* <em class="replaceable">pmresult</em> = pmFetch(c_uint <em class="repl
 					</div><div class="para">
 						As common error conditions are encoded in the result data structure, only serious events (such as loss of connection to PMCD, <code class="command">malloc</code> failure, and so on) would cause an error value to be returned by <code class="command"><a id="IG31340177387" class="indexterm"></a>pmFetch</code>. Otherwise, the value returned by the <code class="command">pmFetch</code> function is zero.
 					</div><div class="para">
-						In <a class="xref" href="LE25844-PARENT.html#Z976559487sdc">Example 3.13, “PMAPI Metrics Services”</a>, the code fragment dumps the values (assumed to be stored in the <em class="replaceable">lval</em> element of the <code class="filename">pmValue</code> structure) of selected performance metrics once every 10 seconds:
+						In <a class="xref" href="LE25844-PARENT.html#Z976559487sdc">Example 3.15, “PMAPI Metrics Services”</a>, the code fragment dumps the values (assumed to be stored in the <em class="replaceable">lval</em> element of the <code class="filename">pmValue</code> structure) of selected performance metrics once every 10 seconds:
 					</div><div class="example"><a id="Z976559487sdc">
-      ⁠</a><p class="title"><strong>Example 3.13. PMAPI Metrics Services</strong></p><div class="example-contents"><pre class="programlisting">    int       i, j, sts;
+      ⁠</a><p class="title"><strong>Example 3.15. PMAPI Metrics Services</strong></p><div class="example-contents"><pre class="programlisting">    int       i, j, sts;
     pmID      pmidlist[10];
     pmResult  *result;
     time_t    now;

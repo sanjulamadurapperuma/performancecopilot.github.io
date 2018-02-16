@@ -49,13 +49,15 @@
 					</div></li></ul></div><div class="para">
 				Consider <a class="xref" href="id5197718.html#Z976548024sdc">Example 3.1, “Metrics Sharing the Same Instance Domain”</a>:
 			</div><div class="example"><a id="Z976548024sdc">
-      ⁠</a><p class="title"><strong>Example 3.1. Metrics Sharing the Same Instance Domain</strong></p><div class="example-contents"><pre class="programlisting">
-          <strong class="userinput"><code>$ pminfo -f filesys.free</code></strong>
+      ⁠</a><p class="title"><strong>Example 3.1. Metrics Sharing the Same Instance Domain</strong></p><div class="example-contents"><div class="para">
+					
+<pre class="literallayout"> $ <strong class="userinput"><code>pminfo -f filesys.free</code></strong>
 
-filesys.free
+ filesys.free
     inst [1 or “/dev/disk0”] value 1803
     inst [2 or “/dev/disk1”] value 22140
-    inst [3 or “/dev/disk2”] value 157938</pre></div></div><div class="para">
+    inst [3 or “/dev/disk2”] value 157938</pre>
+				</div></div></div><div class="para">
 				The metric <code class="literal">filesys.free</code> has three values, currently 1803, 22140, and 157938. These values are respectively associated with the instances identified by the internal identifiers 1, 2 and 3, and the external identifiers <code class="filename">/dev/disk0</code>, <code class="filename">/dev/disk1</code>, and <code class="filename">/dev/disk2</code>. These instances form an instance domain that is shared by the performance metrics <code class="literal">filesys.capacity</code>, <code class="literal">filesys.used</code>, <code class="literal">filesys.free</code>, <code class="literal">filesys.mountdir</code>, and so on.
 			</div><div class="para">
 				Each performance metric is associated with an instance domain, while each instance domain may be associated with many performance metrics. Each instance domain is identified by a unique value, as defined by the following <code class="literal">typedef</code> declaration:

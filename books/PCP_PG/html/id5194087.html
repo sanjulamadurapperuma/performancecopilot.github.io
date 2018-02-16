@@ -50,9 +50,9 @@
 					Because the initialization function is the only initialization opportunity for a DSO PMDA, the common initialization function should also perform any DSO-specific functions that are required. A default implementation of this functionality is provided by the <code class="command">pmdaDSO</code> function; see the <code class="command">pmdaDSO(3)</code> man page.
 				</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5194313">
       ⁠</a>2.6.2.1. Trivial PMDA</h4></div></div></div><div class="para">
-						<a id="IG31340177213" class="indexterm"></a> <a id="IG31340177214" class="indexterm"></a> <a id="IG31340177215" class="indexterm"></a> <a class="xref" href="id5194087.html#Z976058585sdc">Example 2.29, “Initialization in the Trivial PMDA”</a> shows the trivial PMDA, which has no instances (that is, all metrics have singular values) and a single callback. This callback is for the <code class="command">pmdaFetch</code> function called <code class="command">trivial_fetchCallBack</code>; see the <code class="command">pmdaFetch(3)</code> man page:
+						<a id="IG31340177213" class="indexterm"></a> <a id="IG31340177214" class="indexterm"></a> <a id="IG31340177215" class="indexterm"></a> <a class="xref" href="id5194087.html#Z976058585sdc">Example 2.33, “Initialization in the Trivial PMDA”</a> shows the trivial PMDA, which has no instances (that is, all metrics have singular values) and a single callback. This callback is for the <code class="command">pmdaFetch</code> function called <code class="command">trivial_fetchCallBack</code>; see the <code class="command">pmdaFetch(3)</code> man page:
 					</div><div class="example"><a id="Z976058585sdc">
-      ⁠</a><p class="title"><strong>Example 2.29. Initialization in the Trivial PMDA</strong></p><div class="example-contents"><pre class="programlisting">static char     *username;
+      ⁠</a><p class="title"><strong>Example 2.33. Initialization in the Trivial PMDA</strong></p><div class="example-contents"><pre class="programlisting">static char     *username;
 static int      isDSO = 1;              /* ==0 if I am a daemon */
 
 void trivial_init(pmdaInterface *dp)
