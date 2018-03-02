@@ -127,7 +127,14 @@ network and prints a list of URLs corresponding to the services discovered.
   <b>
    -s
   </b>
-  option. Supported services are
+  (or
+  <b>
+   --service
+  </b>
+  )
+
+option.
+Supported services are
   <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
@@ -157,7 +164,13 @@ and
   <b>
    -m
   </b>
-  option sets the
+  (or
+  <b>
+   --mechanism
+  </b>
+  )
+
+option sets the
   <i>
    mechanism
   </i>
@@ -167,7 +180,8 @@ and
   </b>
   uses when performing service discovery.
 By default, or if the keyword "all" is specified, every available
-mechanism will be used (iteratively). Supported mechanisms are:
+mechanism will be used (iteratively).
+Supported mechanisms are:
  </p>
  <dl compact="">
   <dt>
@@ -181,20 +195,23 @@ mechanism will be used (iteratively). Supported mechanisms are:
     <a href="http://man7.org/linux/man-pages/man8/avahi-daemon.8.html">
      avahi-daemon
     </a>
-    (8).
    </b>
-   An optional suffix
+   (8).
+
+An optional suffix
    <b>
     ",timeout=N"
    </b>
    may be added to limit the amount of
 time waiting for the avahi-daemon. N is a floating point number
-specifying the number of seconds to wait. The default is 0.5 seconds.
+specifying the number of seconds to wait.
+The default is 0.5 seconds.
 This timeout may also be specified by setting the environment variable
    <b>
     AVAHI_DISCOVERY_TIMEOUT
    </b>
-   to the desired number of seconds. If both are specified, then
+   to the desired number of seconds.
+If both are specified, then
 the value specified in the environment variable takes precedence.
   </dd>
   <dt>
@@ -206,22 +223,79 @@ the value specified in the environment variable takes precedence.
    Actively probes the given subnet for the requested PCP service(s).
 &lt;net-address&gt; is an inet or ipv6
 network address and &lt;mask-bits&gt; is the number of bits used to define the
-subnet. For example, 192.168.1.0/24 defines an 8 bit subnet consisting of the
+subnet.
+For example, 192.168.1.0/24 defines an 8 bit subnet consisting of the
 addresses 192.168.1.0 through 192.168.1.255.
 An optional suffix
    <b>
     ",maxThreads=N"
    </b>
    may be added to limit the number of
-threads used while probing. The default is the value of FD_SETSIZE or the
+threads used while probing.
+The default is the value of FD_SETSIZE (which is typically 1024) or the
 number of addresses in the subnet, whichever is less.
 An optional suffix
    <b>
     ",timeout=N"
    </b>
    may be added to limit the amount of
-time waiting for each connection attempt. N is a floating point number
-specifying the number of seconds to wait. The default is 20ms.
+time spent waiting for each connection attempt.
+N is a floating point number specifying the number of seconds to wait.
+The default is 0.02 seconds (20 milliseconds).
+  </dd>
+  <dt>
+   <b>
+    shell
+   </b>
+  </dt>
+  <dd>
+   Probes the list of addresses provided by scripts for requested PCP service(s).
+Several optional, comma-separated parameters can also be provided.
+The
+   <b>
+    "path=DIR"
+   </b>
+   option specifies the directory where commands like
+   <b>
+    <a href="/man/man1/pcp-kube-pods.1.html">
+     pcp-kube-pods
+    </a>
+   </b>
+   (1)
+
+are located (defaults to
+   <i>
+    $PCP_BINADM_DIR/discover/
+   </i>
+   ).
+
+This setting can be further restricted to an individual command
+using the
+   <b>
+    command=CMD
+   </b>
+   option, but the default is to use all
+available commands from the
+   <b>
+    path
+   </b>
+   .
+The
+   <b>
+    "maxThreads=N"
+   </b>
+   option limits the number of threads used while
+probing.
+The default is the value of FD_SETSIZE (which is typically 1024) or the
+number of addresses returned by the scripts, whichever is less.
+The
+   <b>
+    "timeout=N"
+   </b>
+   option may be added to limit the amount of
+time spent waiting for each connection attempt.
+N is a floating point number specifying the number of seconds to wait.
+The default is 0.02 seconds (20 milliseconds).
   </dd>
  </dl>
  <p>
@@ -229,16 +303,28 @@ specifying the number of seconds to wait. The default is 20ms.
   <b>
    -r
   </b>
-  option requests that DNS name resolution be attempted for the addresses of any
-discovered services. The default is to display the network addresses of any
-discovered services.
+  (or
+  <b>
+   --resolve
+  </b>
+  )
+
+option requests that DNS name resolution be attempted for the addresses of
+any discovered services.
+The default is to display the network addresses of any discovered services.
  </p>
  <p>
   The
   <b>
    -t
   </b>
-  option sets the maximum amount of time that
+  (or
+  <b>
+   --timeout
+  </b>
+  )
+
+option sets the maximum amount of time that
   <b>
    pmfind
   </b>
@@ -251,10 +337,31 @@ is to take as much time as is needed to complete the process.
   <b>
    -q
   </b>
-  option suppresses all output on the standard output stream.
+  (or
+  <b>
+   --quiet
+  </b>
+  )
+
+option suppresses all output on the standard output stream.
   <a name="lbAE">
   </a>
  </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_BINADM_DIR/discover
+   </b>
+  </dt>
+  <dd>
+   default path to address discovery scripts
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   PCP ENVIRONMENT
  </h2>
@@ -282,7 +389,7 @@ as described in
   </a>
  </b>
  (5).
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   DIAGNOSTICS
@@ -293,7 +400,7 @@ occurred.
  <p>
   In the event of an error, a message will be generated on standard error
 that is intended to be self-explanatory.
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -308,7 +415,7 @@ signals is received: SIGHUP, SIGPIPE, SIGINT, SIGTERM, SIGXFSZ, SIGXCPU.
   pmfind
  </b>
  will report any results which were discovered up to point of the interruption.
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   SEE ALSO
@@ -334,6 +441,12 @@ signals is received: SIGHUP, SIGPIPE, SIGINT, SIGTERM, SIGXFSZ, SIGXCPU.
  <b>
   <a href="/man/man1/pmwebd.1.html">
    pmwebd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcp-kube-pods.1.html">
+   pcp-kube-pods
   </a>
  </b>
  (1),
@@ -395,27 +508,34 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    DIAGNOSTICS
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    SIGNALS
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    SIGNALS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

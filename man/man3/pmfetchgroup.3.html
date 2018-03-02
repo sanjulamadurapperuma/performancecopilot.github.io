@@ -71,6 +71,10 @@
  </b>
  ,
  <b>
+  pmExtendFetchGroup_desc
+ </b>
+ ,
+ <b>
   pmExtendFetchGroup_event
  </b>
  ,
@@ -157,6 +161,53 @@
   , const char *
   <i>
    metric
+  </i>
+  , const char *
+  <i>
+   scale
+  </i>
+  , int
+  <i>
+   out_inst_codes
+  </i>
+  [], char *
+  <i>
+   out_inst_names
+  </i>
+  [], pmAtomValue
+  <i>
+   out_values
+  </i>
+  [], int
+  <i>
+   out_type
+  </i>
+  , int
+  <i>
+   out_stss
+  </i>
+  [], unsigned int
+  <i>
+   out_maxnum
+  </i>
+  , unsigned int *
+  <i>
+   out_num
+  </i>
+  , int *
+  <i>
+   out_sts
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmExtendFetchGroup_desc(pmFG
+  <i>
+   pmfg
+  </i>
+  , const pmDesc *
+  <i>
+   desc
   </i>
   , const char *
   <i>

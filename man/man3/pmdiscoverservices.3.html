@@ -79,12 +79,13 @@
  <pre>
 int pmDiscoverServices(const char *<i>service</i>, const char *<i>mechanism</i>, char ***<i>urls</i>);
 </pre>
- <br/>
- #include &lt;
- <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/libpcp.h">
-  pcp/libpcp.h
- </a>
- &gt;
+ <p>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/libpcp.h">
+   pcp/libpcp.h
+  </a>
+  &gt;
+ </p>
  <p>
  </p>
  <pre>
@@ -190,7 +191,8 @@ utility provides command line access to both of these interfaces.
   <i>
    service
   </i>
-  specifies the PCP service to be discovered. Currently supported services are
+  specifies the PCP service to be discovered.
+Currently supported services are
   <b>
    PM_SERVER_SERVICE_SPEC,
   </b>
@@ -255,13 +257,15 @@ An optional suffix
    </b>
    may be added
 to specify the discovery timeout in floating-point multiples of one
-second.  The default timeout is 0.5 seconds, which may be overridden
+second.
+The default timeout is 0.5 seconds, which may be overridden
 by the
    <b>
     AVAHI_DISCOVERY_TIMEOUT
    </b>
    environment variable, also
-specified in floating-point multiples of one second. If both are specified, then
+specified in floating-point multiples of one second.
+If both are specified, then
 the value specified in the environment variable takes precedence.
   </dd>
   <dt>
@@ -273,22 +277,79 @@ the value specified in the environment variable takes precedence.
    Actively probes the given subnet for the requested PCP service(s).
 &lt;net-address&gt; is an inet or ipv6
 network address and &lt;mask-bits&gt; is the number of bits used to define the
-subnet. For example, 192.168.1.0/24 defines an 8 bit subnet consisting of the
+subnet.
+For example, 192.168.1.0/24 defines an 8 bit subnet consisting of the
 addresses 192.168.1.0 through 192.168.1.255.
 An optional suffix
    <b>
     ",maxThreads=N"
    </b>
    may be added to limit the number of
-threads used while probing. The default is no fixed limit, which is to say that
-the process' rlimits for the number of threads and open file descriptors
-will be respected. An optional suffix
+threads used while probing.
+The default is the value of FD_SETSIZE (which is typically 1024) or the
+number of addresses in the subnet, whichever is less.
+An optional suffix
    <b>
     ",timeout=N"
    </b>
-   may be added
-to specify the timeout for each connection attempt in floating-point multiples
-of one second.  The default timeout is 20 milliseconds.
+   may be added to specify the timeout
+for each connection attempt in floating-point multiples of one second.
+The default is 0.02 seconds (20 milliseconds).
+  </dd>
+  <dt>
+   <b>
+    shell
+   </b>
+  </dt>
+  <dd>
+   Probes the list of addresses provided by scripts for requested PCP service(s).
+Several optional, comma-separated parameters can also be provided.
+Firstly, the
+   <b>
+    "path=DIR"
+   </b>
+   option specifies the directory where
+commands like
+   <b>
+    <a href="/man/man1/pcp-kube-pods.1.html">
+     pcp-kube-pods
+    </a>
+   </b>
+   (1)
+
+are located (defaults to
+   <i>
+    $PCP_BINADM_DIR/discover/
+   </i>
+   ).
+
+This setting can be further restricted to an individual command
+using the
+   <b>
+    command=CMD
+   </b>
+   option, but the default is to use all
+available commands from the
+   <b>
+    path
+   </b>
+   .
+The
+   <b>
+    "maxThreads=N"
+   </b>
+   option limits the number of threads used while
+probing.
+The default is the value of FD_SETSIZE (which is typically 1024) or the
+number of addresses returned by the scripts, whichever is less.
+The
+   <b>
+    "timeout=N"
+   </b>
+   option may be added to limit the amount of
+time spent waiting for each connection attempt.
+N is a floating point number specifying the number of seconds to wait.
+The default is 0.02 seconds (20 milliseconds).
   </dd>
  </dl>
  <p>
@@ -305,8 +366,8 @@ of one second.  The default timeout is 20 milliseconds.
   <i>
    optionsString
   </i>
-  specifies global options to be applied to the discovery process. Options are
-comma-separated and may be one or more of the following:
+  specifies global options to be applied to the discovery process.
+Options are comma-separated and may be one or more of the following:
  </p>
  <dl compact="">
   <dt>
@@ -325,7 +386,8 @@ discovered services.
   </dt>
   <dd>
    This specifies a timeout period after which the discovery process will be
-interrupted. N is a floating point number representing the number of seconds
+interrupted.
+N is a floating point number representing the number of seconds
 before timing out.
   </dd>
  </dl>
@@ -348,8 +410,8 @@ before timing out.
    unsigned
   </i>
   which is a bit mask of
-options/status flags for the discovery process. The supported
-flags are:
+options/status flags for the discovery process.
+The supported flags are:
  </p>
  <dl compact="">
   <dt>
@@ -409,8 +471,7 @@ The value zero indicates that no services were discovered.
    and
   </b>
   the values
-(the URLs) that the pointers reference will have been
-allocated by
+(the URLs) that the pointers reference will have been allocated by
   <b>
    pmDiscoverServices
   </b>
@@ -510,12 +571,6 @@ function.
   SEE ALSO
  </h2>
  <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
   <a href="/man/man1/pmcd.1.html">
    pmcd
   </a>
@@ -539,6 +594,18 @@ function.
   </a>
  </b>
  (1),
+ <b>
+  <a href="/man/man1/pcp-kube-pods.1.html">
+   pcp-kube-pods
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
  <b>
   <a href="/man/man3/pmgetconfig.3.html">
    pmGetConfig
