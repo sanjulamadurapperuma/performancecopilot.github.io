@@ -555,40 +555,6 @@ five seconds each time).  Consider including
   </dd>
   <dt>
    <i>
-    target-kubectl-pod
-   </i>
-  </dt>
-  <dd>
-   If this file exists,
-   <b>
-    pmmgr
-   </b>
-   is assumed to run within a kubernetes cluster.
-The line of the configuration file is appended to a
-   <b>
-    kubectl get pod
-   </b>
-   command line to discover IP addresses of all matching pods running nearby.
-   <b>
-    pmmgr
-   </b>
-   extracts the
-   <b>
-    .status.podIP
-   </b>
-   field from the kubernetes pod object(s) and tries to connect to each at
-the default pmcd port number.  Use options like
-   <i>
-    -l service=foobar
-   </i>
-   to restrict the search with labels.  The default is to do
-   <b>
-    no kubectl
-   </b>
-   .
-  </dd>
-  <dt>
-   <i>
     subtarget-containers
    </i>
   </dt>

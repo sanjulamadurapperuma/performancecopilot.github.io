@@ -105,7 +105,7 @@
  </b>
  [
  <b>
-  -NorV
+  -KMNorV
  </b>
  ]
 [
@@ -220,14 +220,15 @@ archive log files.
    pmlogger_daily
   </b>
   is intended to be run once per day, preferably in the early morning, as
-soon after midnight as practicable.  Its task is to aggregate and rotate
-one or more sets of PCP archives.
-After some period, old PCP archives are discarded.  This period is
-14 days by default, but may be changed using the
+soon after midnight as practicable.
+Its task is to aggregate and rotate one or more sets of PCP archives.
+After some period, old PCP archives are discarded.
+This period is 14 days by default, but may be changed using the
   <b>
    -k
   </b>
-  option. Two special values are recognized for the period (
+  option.
+Two special values are recognized for the period (
   <i>
    discard
   </i>
@@ -242,10 +243,25 @@ namely
    forever
   </b>
   to prevent any archives being discarded.
+Note that the semantics of
+  <i>
+   discard
+  </i>
+  are that it is measured from the time of last modification of each
+archive, and not from the current day.
+This has subtle implications for compression (see below) - the
+compression process results in the creation of new archive files
+which have new modification times.
+In this case, the
+  <i>
+   discard
+  </i>
+  period (re)starts from the time of compression.
  </p>
  <p>
   Archive data files can optionally be compressed after some period
-to conserve disk space.  This is particularly useful for large numbers of
+to conserve disk space.
+This is particularly useful for large numbers of
   <b>
    pmlogger
   </b>
@@ -255,14 +271,56 @@ to conserve disk space.  This is particularly useful for large numbers of
   </b>
   .
 
-By default no compression is done.
+By default no compression is done by the script, however typical
+  <b>
+   pmlogger_check
+  </b>
+  configuration files will enable compression automatically.
 The
   <b>
    -x
   </b>
   option enables compression and
-specifies the number of days after which to compress archive data
-files, and the
+  <i>
+   compress
+  </i>
+  specifies the number of days after which to compress archive data
+files.
+If
+  <i>
+   compress
+  </i>
+  is
+  <b>
+   0
+  </b>
+  then compression will be applied as soon as possible.
+The environment variable
+  <b>
+   PCP_COMPRESSAFTER
+  </b>
+  may be used as an alternative mechanism to define
+  <i>
+   compress
+  </i>
+  .
+
+If both
+  <b>
+   PCP_COMPRESSAFTER
+  </b>
+  and
+  <b>
+   -x
+  </b>
+  specify different values for
+  <i>
+   compress
+  </i>
+  then the environment variable value is used and a warning is issued.
+ </p>
+ <p>
+  The
   <b>
    -X
   </b>
@@ -274,7 +332,29 @@ files, and the
   </b>
   (1).
 
-Use of the
+The environment variable
+  <b>
+   PCP_COMPRESS
+  </b>
+  may be used as an alternative mechanism to define
+  <i>
+   program
+  </i>
+  .
+
+If both
+  <b>
+   PCP_COMPRESS
+  </b>
+  and
+  <b>
+   -X
+  </b>
+  specify different compression programs
+then the environment variable value is used and a warning is issued.
+ </p>
+ <p>
+  Use of the
   <b>
    -Y
   </b>
@@ -297,6 +377,30 @@ filtered using the
    </a>
   </b>
   (1).
+
+The environment variable
+  <b>
+   PCP_COMPRESSREGEX
+  </b>
+  may be used as an alternative mechanism to define
+  <i>
+   regex
+  </i>
+  .
+
+If both
+  <b>
+   PCP_COMPRESSREGEX
+  </b>
+  and
+  <b>
+   -Y
+  </b>
+  specify different values for
+  <i>
+   regex
+  </i>
+  then the environment variable value is used and a warning is issued.
  </p>
  <p>
   To accommodate the evolution of PMDAs and changes in production
@@ -527,6 +631,90 @@ This daily summary is stored in the file
 
 which will be empty when no new ``notices'' entries were made in the previous
 24 hour period.
+ </p>
+ <p>
+  If the
+  <b>
+   -K
+  </b>
+  option is specified for
+  <b>
+   pmlogger_daily
+  </b>
+  then only the compression tasks are attempted, so no
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+rotation, no culling, no rewriting, etc.
+When
+  <b>
+   -K
+  </b>
+  is used and a
+  <i>
+   compress
+  </i>
+  value of
+  <b>
+   0
+  </b>
+  is in effect
+(from
+  <b>
+   -x
+  </b>
+  on the command line or
+  <b>
+   PCP_COMPRESSAFTER
+  </b>
+  in the environment or via the
+  <i>
+   control
+  </i>
+  file)
+this is intended for environments where compression
+of archives is desired before the scheduled daily processing
+happens.
+To achieve this, once
+  <b>
+   pmlogger_check
+  </b>
+  has completed regular processing, it calls
+  <b>
+   pmlogger_daily
+  </b>
+  with just the
+  <b>
+   -K
+  </b>
+  option.
+Provided
+  <b>
+   PCP_COMPRESSAFTER
+  </b>
+  is set to
+  <b>
+   0
+  </b>
+  along with any other required compression options to match the
+scheduled invocation of
+  <b>
+   pmlogger_daily
+  </b>
+  ,
+
+then this will compress all volumes except the ones being currently
+written by
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1).
  </p>
  <p>
   The script
@@ -1349,6 +1537,12 @@ as described in
      <b>
       <a href="/man/man1/pmlogger.1.html">
        pmlogger
+      </a>
+     </b>
+     (1),
+     <b>
+      <a href="/man/man1/pmlogger_daily_report.1.html">
+       pmlogger_daily_report
       </a>
      </b>
      (1),

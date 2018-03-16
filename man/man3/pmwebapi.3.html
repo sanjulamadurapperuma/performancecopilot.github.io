@@ -153,6 +153,18 @@ operations.
   </a>
  </p>
  <h2>
+  CONTEXT CREATION: configurable permanent contexts
+ </h2>
+ <p>
+  In addition, permanent contexts may be created by pmwebd at
+initialization using its -h, -a, -L command line options, so that a
+set of fixed NNNNN numbers may be made available to web clients.
+ </p>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
   PMAPI OPERATIONS
  </h2>
  <p>
@@ -192,7 +204,7 @@ parameters may be optional.
    </p>
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h3>
   METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
@@ -314,7 +326,7 @@ determine which of the duplicate names this will be.
    </p>
   </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h3>
   METRIC VALUE: pmFetch
@@ -375,7 +387,7 @@ with a Unicode 0xFFFD REPLACEMENT CHARACTER code.  Event type metrics
 are not currently supported.
  </p>
  <p>
-  <a name="lbAH">
+  <a name="lbAI">
   </a>
  </p>
  <h3>
@@ -447,7 +459,7 @@ as an array.  For example:
   </dd>
  </dl>
  <p>
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h3>
@@ -500,7 +512,7 @@ as an array.  For example:
    </p>
   </dd>
  </dl>
- <a name="lbAJ">
+ <a name="lbAK">
  </a>
  <h3>
   METRIC STORE: pmStore
@@ -564,7 +576,7 @@ as an array.  For example:
   </dd>
  </dl>
  <p>
-  <a name="lbAK">
+  <a name="lbAL">
   </a>
  </p>
  <h3>
@@ -584,7 +596,47 @@ as an array.  For example:
    </p>
   </dd>
  </dl>
- <a name="lbAL">
+ <a name="lbAM">
+ </a>
+ <h3>
+  CONTEXT COPY: pmDupContext
+ </h3>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/copy
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAN">
+ </a>
+ <h3>
+  CONTEXT CLOSE: pmDestroyContext
+ </h3>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/destroy
+   </b>
+  </dt>
+  <dd>
+   This is not likely to be supported, as it is destructive and would offer
+a tempting target to brute-force attackers.  Instead, the pmwebd timeout
+is used to automatically free unused contexts.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAO">
  </a>
  <h3>
   PROMETHEUS
@@ -671,7 +723,7 @@ filesys:blocksize_bytes{instance="/dev/mapper/VolGroup00-root17"} 4096
  <p>
  </p>
  <p>
-  <a name="lbAM">
+  <a name="lbAP">
   </a>
  </p>
  <h2>
@@ -836,7 +888,7 @@ rendering-control-related parameters are supported.
    </p>
   </dd>
  </dl>
- <a name="lbAN">
+ <a name="lbAQ">
  </a>
  <h2>
   SEE ALSO
@@ -905,55 +957,76 @@ rendering-control-related parameters are supported.
   </dd>
   <dt>
    <a href="#lbAE">
+    CONTEXT CREATION: configurable permanent contexts
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
     PMAPI OPERATIONS
    </a>
   </dt>
   <dd>
    <dl>
     <dt>
-     <a href="#lbAF">
+     <a href="#lbAG">
       METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAG">
+     <a href="#lbAH">
       METRIC VALUE: pmFetch
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAH">
+     <a href="#lbAI">
       INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAI">
+     <a href="#lbAJ">
       INSTANCE PROFILE: pmAddProfile, pmDelProfile
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAJ">
+     <a href="#lbAK">
       METRIC STORE: pmStore
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAK">
+     <a href="#lbAL">
       DERIVED METRICS: pmRegisterDerived
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAL">
+     <a href="#lbAM">
+      CONTEXT COPY: pmDupContext
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAN">
+      CONTEXT CLOSE: pmDestroyContext
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAO">
       PROMETHEUS
      </a>
     </dt>
@@ -962,14 +1035,14 @@ rendering-control-related parameters are supported.
    </dl>
   </dd>
   <dt>
-   <a href="#lbAM">
+   <a href="#lbAP">
     GRAPHITE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAN">
+   <a href="#lbAQ">
     SEE ALSO
    </a>
   </dt>

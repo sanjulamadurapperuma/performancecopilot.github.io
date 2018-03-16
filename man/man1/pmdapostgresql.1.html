@@ -159,7 +159,7 @@ listed at the start of pmdapostgresql.pl, for example:
   </dt>
   <dd>
    $os_user -
-operating system username (PMDA will run with the corresponding user id) [default: $username]
+operating system username (PMDA will run with the corresponding user id, if invoked as root) [default: $username]
   </dd>
  </dl>
  <p>
@@ -202,9 +202,61 @@ directly. The Install and Remove scripts notify
   </i>
   (1) when the 
 agent is installed or removed.
+ </p>
+ <p>
+  <b>
+   pmdapostgresql
+  </b>
+  will automatically attempt to reconnect to the postgresql server
+if it's connection is lost - e.g. if the postgresql service is restarted.
+In addition,
+  <b>
+   pmdapostgresql
+  </b>
+  will disconnect if it is sent a
+  <b>
+   SIGUSR1
+  </b>
+  signal, and will then attempt to reconnect on the next fetch.
+This is mostly for quality assurance and test purposes, but may be useful in other circumstances.
   <a name="lbAE">
   </a>
  </p>
+ <h2>
+  SUPPORTED VERSIONS
+ </h2>
+ <b>
+  pmdapostgresql
+ </b>
+ has been tested and verified with
+ <b>
+  postgresql
+ </b>
+ server, version
+ <b>
+  9.6.7
+ </b>
+ and earlier.
+The verification was done using the
+ <b>
+  <a href="/man/man1/pgbench.1.html">
+   pgbench
+  </a>
+ </b>
+ (1)
+
+utility.
+It has not (yet) been tested or verified with
+ <b>
+  postgresql
+ </b>
+ version
+ <b>
+  10.x
+ </b>
+ .
+ <a name="lbAF">
+ </a>
  <h2>
   FILES
  </h2>
@@ -268,7 +320,7 @@ agent is installed or removed.
    </b>
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -300,7 +352,7 @@ configuration file, as described in
   </a>
  </i>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -357,20 +409,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    SUPPORTED VERSIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>
