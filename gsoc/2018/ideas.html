@@ -77,7 +77,7 @@ Web Projects
 <a href='#vectorbcc'>Vector BCC PMDA Integration</a>
 </li>
 <li>
-<a href='#bccpmda'>BCC PCP (PMDA) Agent Tool Extension</a>
+<a href='#bccpmda'>BCC PCP Agent (PMDA) Tool Extension</a>
 </li>
 </ul>
 </li>
@@ -267,8 +267,34 @@ widgets that expose
 to users via a web interface.
 </p>
 <p>
-The list of BCC tools and Vector widgets is still under discussion,
-but this page will be updated with the final list once it's available.
+The list of BCC tool widgets to be implemented is open for discussion, but this is the current wishlist:
+</p>
+<p>
+Already exist in pcp/src/pmdas/bcc/modules, but there might be more work to ensure they work well:
+<ul>
+<li>biolatency - as input for a latency heat map</li>
+<li>biotop - as input for a live table or line chart of per-process I/O time</li>
+<li>tcplife - as input for a table of sessions details</li>
+</ul>
+</p>
+<p>
+6 new metrics:
+<ul>
+<li>ext4dist/xfsdist/zfsdist - as input for a latency heat map</li>
+<li>biosnoop - as input (end time, latency, type: R or W) for a scatter plot: completion time vs latency, and coloring reads red and writes blue</li>
+<li>biosnoop - as input (end time, device, offset) for an offset heat map: showing per-device access patterns</li>
+<li>execsnoop - as input for a table of process details</li>
+<li>tcpretrans - as input for a table of retransmit details</li>
+<li>tcptop - as input for a live table or line chart of per-process TCP throughput</li>
+<li>runqlat - as input for a latency heat map</li>
+</ul>
+</p>
+<p>
+Stretch goals:
+<ul>
+<li>profile - as stack trace input for live CPU flame graphs</li>
+<li>cachestat - as input for a line graph showing each statistic</li>
+</ul>
 </p>
 <p>
 <strong>Expected results:</strong>
@@ -298,7 +324,7 @@ Intermediate
 <div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
 <div class='col__module--img'>
 <a name='bccpmda'></a>
-<h3>BCC PCP (PMDA) Agent Tool Extension</h3>
+<h3>BCC PCP Agent (PMDA) Tool Extension</h3>
 <p>
 This project will extend the capabilities of the current
 <a href='https://github.com/myllynen/pcp-bcc-pmda'>BCC PCP Agent (PMDA)</a>
@@ -312,8 +338,34 @@ These new tools will be used by
 in a set of new widgets that will expose these tools via a web interface.
 </p>
 <p>
-The list of BCC tools and Vector widgets is still under discussion,
-but this page will be updated with the final list once it's available.
+The list of BCC tool widgets to be implemented is open for discussion, but below is the current wishlist.
+</p>
+<p>
+Some already exist in pcp/src/pmdas/bcc/modules, but there might be more work to ensure they work well:
+<ul>
+<li>biolatency - as input for a latency heat map</li>
+<li>biotop - as input for a live table or line chart of per-process I/O time</li>
+<li>tcplife - as input for a table of sessions details</li>
+</ul>
+</p>
+<p>
+6 new metrics:
+<ul>
+<li>ext4dist/xfsdist/zfsdist - as input for a latency heat map</li>
+<li>biosnoop - as input (end time, latency, type: R or W) for a scatter plot: completion time vs latency, and coloring reads red and writes blue</li>
+<li>biosnoop - as input (end time, device, offset) for an offset heat map: showing per-device access patterns</li>
+<li>execsnoop - as input for a table of process details</li>
+<li>tcpretrans - as input for a table of retransmit details</li>
+<li>tcptop - as input for a live table or line chart of per-process TCP throughput</li>
+<li>runqlat - as input for a latency heat map</li>
+</ul>
+</p>
+<p>
+Stretch goals:
+<ul>
+<li>profile - as stack trace input for live CPU flame graphs</li>
+<li>cachestat - as input for a line graph showing each statistic</li>
+</ul>
 </p>
 <p>
 <strong>Expected results:</strong>
