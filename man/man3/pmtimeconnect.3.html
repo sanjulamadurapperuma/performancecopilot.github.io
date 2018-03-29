@@ -1,515 +1,511 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMTIME
- </h1>
- Section: C Library Functions (3)
- <br/>
- Updated: Aconex
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmtime
- </b>
- ,
- <b>
-  pmTimeConnect
- </b>
- ,
- <b>
-  pmTimeDisconnect
- </b>
- ,
- <b>
-  pmTimeRecv
- </b>
- ,
- <b>
-  pmTimeSendAck
- </b>
- ,
- <b>
-  pmTimeShowDialog
- </b>
- -
-time control functions for synchronizing the archive position and
-update interval between one or more applications
- <a name="lbAC">
- </a>
- <h2>
-  C SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmtime.h">
-   pcp/pmtime.h
-  </a>
-  &gt;
- </b>
- <p>
-  int pmTimeConnect(int
-  <i>
-   port
-  </i>
-  , pmTime *
-  <i>
-   state
-  </i>
-  );
-  <br/>
-  int pmTimeDisconnect(int
-  <i>
-   fd
-  </i>
-  );
-  <br/>
-  int pmTimeSendAck(int
-  <i>
-   fd
-  </i>
-  , struct timeval *
-  <i>
-   fetchTime
-  </i>
-  );
-  <br/>
-  int pmTimeShowDialog(int
-  <i>
-   fd
-  </i>
-  , int
-  <i>
-   show
-  </i>
-  );
-  <br/>
-  int pmTimeRecv(int
-  <i>
-   fd
-  </i>
-  , pmTime *
-  <i>
-   state
-  </i>
-  );
- </p>
- <p>
-  cc ... -lpcp_gui
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- These functions form part of the Performance Metrics Applications
-Programming Interface (PMAPI) and are intended to provide a uniform
-mechanism for applications to both replay archive data and report
-live data in a time synchronized manner.
- <p>
-  The
-  <i>
-   pmTime
-  </i>
-  structure has the following fields:
- </p>
- <p>
- </p>
- <pre>
-typedef struct {
-    unsigned int        magic;
-    unsigned int        length;
-    pm_tctl_command     command;
-    pm_tctl_source      source;
-    pm_tctl_state       state;
-    pm_tctl_mode        mode;
-    struct timeval      delta;
-    struct timeval      position;
-    struct timeval      start;     /* archive only */
-    struct timeval      end;       /* archive only */
-    char                data[0];   /* arbitrary length info (TZ) */
-} pmTime;
-</pre>
- <p>
-  In the simplest case, the application should call
-  <b>
-   pmTimeConnect
-  </b>
-  to connect to the time control server,
-  <b>
-   <a href="/man/man1/pmtime.1.html">
-    pmtime
-   </a>
-  </b>
-  (1),
-
-and then repeatedly call
-  <b>
-   pmTimeRecv
-  </b>
-  in the main loop of the application.
-On success,
-  <b>
-   pmTimeConnect
-  </b>
-  returns a non-negative file descriptor.
-In applications which have multiple threads of control, rather than
-simply blocking in
-  <b>
-   pmTimeRecv
-  </b>
-  ,
-
-the file descriptor may be used in calls to
-  <b>
-   <a href="http://man7.org/linux/man-pages/man2/select.2.html">
-    select
-   </a>
-  </b>
-  (2).
-
-In graphical applications, the file descriptor may be used to interface
-with the event loop.
- </p>
- <p>
-  The
-  <i>
-   port
-  </i>
-  parameter to
-  <b>
-   pmTimeConnect
-  </b>
-  is the port number of the socket on which the time control server is
-(or will be) listening for new connections.
- </p>
- <p>
-  The state parameter to
-  <b>
-   pmTimeConnect
-  </b>
-  is used to initialize a new time control server or to pass additional
-information to an existing time control server.
-The
-  <i>
-   start
-  </i>
-  and
-  <i>
-   finish
-  </i>
-  fields indicate the chronological bounds interesting to the application.
-The
-  <i>
-   showdialog
-  </i>
-  field indicates whether the time control server should initially show
-or hide the dialog.
-The
-  <i>
-   position
-  </i>
-  ,
-  <i>
-   delta,
-  </i>
-  and
-  <i>
-   data
-  </i>
-  fields indicate the initial archive position, update interval,
-time zone string and time zone label string.
- </p>
- <p>
-  <b>
-   pmTimeRecv
-  </b>
-  blocks until the time control server sends a command message.
-It then updates the state parameter and returns one of the PM_TCTL
-command identifiers.
- </p>
- <p>
-  The PM_TCTL_SET command indicates the application should seek to the
-archive position (see
-  <b>
-   <a href="/man/man3/pmsetmode.3.html">
-    pmSetMode
-   </a>
-  </b>
-  (3))
-
-returned in the position field of the state parameter.
- </p>
- <p>
-  The PM_TCTL_STEP command indicates the application should perform an
-update, i.e. advance (or rewind, if delta is negative) to the time
-indicated by position and then fetch new metric values, update the
-display or whatever.  In order for several application to remain
-synchronized, the time control server will wait until all applications
-have acknowledged that they have completed the step command.
-Applications should call pmTimeSendAck when the step command has been
-processed.  Note that PM_TCTL_STEP is the only command that requires an
-explicit acknowledgement.
- </p>
- <p>
-  The PM_TCTL_VCRMODE command is used by the time control server to
-indicate the current VCR mode.
- </p>
- <p>
-  The value is returned in the vcrmode field of the state parameter passed
-to
-  <b>
-   pmTimeRecv
-  </b>
-  ,
-
-and remains valid until the next PM_TCTL_VCRMODE command is received.
- </p>
- <p>
-  The PM_TCTL_TZ command indicates the application should use a new time-
-zone, as indicated in the
-  <i>
-   tz
-  </i>
-  and
-  <i>
-   tzlabel
-  </i>
-  fields of the state parameter.
- </p>
- <p>
-  The PM_TCTL_BOUNDS command is sent to all applications when the time
-control server changes its chronological bounds.
-This may occur when a new application connects to the time control
-server or the user changes the bounds manually.
-Most applications will ignore this command.
- </p>
- <p>
-  The PM_TCTL_SHOWDIALOG command will be sent to all applications when the
-visibility of the time control server changes.
-This allows applications to alter the text in menus or buttons to
-reflect this change.
-Applications may change the visibility of the time control dialog using
-the
-  <b>
-   pmTimeShowDialog
-  </b>
-  function.
-The initial visibility is determined when
-the time control dialog is first created by an application calling
-  <b>
-   pmTimeConnect
-  </b>
-  with the showdialog field in the state parameter set to the desired value.
- </p>
- <p>
-  The
-  <b>
-   pmTimeDisconnect
-  </b>
-  function may be used to close the command socket to the time control server.
-This is useful when applications need to change the connection mode,
-e.g. to divorce the current time control server and connect to a new one.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pmtime.1.html">
-   pmtime
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmsetmode.3.html">
-   pmSetMode
-  </a>
- </b>
- (3).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMTIME
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               Updated: Aconex
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmtime
+               </b>
+               ,
+               <b>
+                pmTimeConnect
+               </b>
+               ,
+               <b>
+                pmTimeDisconnect
+               </b>
+               ,
+               <b>
+                pmTimeRecv
+               </b>
+               ,
+               <b>
+                pmTimeSendAck
+               </b>
+               ,
+               <b>
+                pmTimeShowDialog
+               </b>
+               -
+              time control functions for synchronizing the archive position and
+              update interval between one or more applications
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmtime.h">
+                 pcp/pmtime.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                int pmTimeConnect(int
+                <i>
+                 port
+                </i>
+                , pmTime *
+                <i>
+                 state
+                </i>
+                );
+                <br/>
+                int pmTimeDisconnect(int
+                <i>
+                 fd
+                </i>
+                );
+                <br/>
+                int pmTimeSendAck(int
+                <i>
+                 fd
+                </i>
+                , struct timeval *
+                <i>
+                 fetchTime
+                </i>
+                );
+                <br/>
+                int pmTimeShowDialog(int
+                <i>
+                 fd
+                </i>
+                , int
+                <i>
+                 show
+                </i>
+                );
+                <br/>
+                int pmTimeRecv(int
+                <i>
+                 fd
+                </i>
+                , pmTime *
+                <i>
+                 state
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp_gui
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               These functions form part of the Performance Metrics Applications
+              Programming Interface (PMAPI) and are intended to provide a uniform
+              mechanism for applications to both replay archive data and report
+              live data in a time synchronized manner.
+               <p>
+                The
+                <i>
+                 pmTime
+                </i>
+                structure has the following fields:
+               </p>
+               <p>
+               </p>
+               <pre>
+              typedef struct {
+                  unsigned int        magic;
+                  unsigned int        length;
+                  pm_tctl_command     command;
+                  pm_tctl_source      source;
+                  pm_tctl_state       state;
+                  pm_tctl_mode        mode;
+                  struct timeval      delta;
+                  struct timeval      position;
+                  struct timeval      start;     /* archive only */
+                  struct timeval      end;       /* archive only */
+                  char                data[0];   /* arbitrary length info (TZ) */
+              } pmTime;
+              </pre>
+               <p>
+                In the simplest case, the application should call
+                <b>
+                 pmTimeConnect
+                </b>
+                to connect to the time control server,
+                <b>
+                 <a href="/man/man1/pmtime.1.html">
+                  pmtime
+                 </a>
+                </b>
+                (1),
+              
+              and then repeatedly call
+                <b>
+                 pmTimeRecv
+                </b>
+                in the main loop of the application.
+              On success,
+                <b>
+                 pmTimeConnect
+                </b>
+                returns a non-negative file descriptor.
+              In applications which have multiple threads of control, rather than
+              simply blocking in
+                <b>
+                 pmTimeRecv
+                </b>
+                ,
+              
+              the file descriptor may be used in calls to
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man2/select.2.html">
+                  select
+                 </a>
+                </b>
+                (2).
+              
+              In graphical applications, the file descriptor may be used to interface
+              with the event loop.
+               </p>
+               <p>
+                The
+                <i>
+                 port
+                </i>
+                parameter to
+                <b>
+                 pmTimeConnect
+                </b>
+                is the port number of the socket on which the time control server is
+              (or will be) listening for new connections.
+               </p>
+               <p>
+                The state parameter to
+                <b>
+                 pmTimeConnect
+                </b>
+                is used to initialize a new time control server or to pass additional
+              information to an existing time control server.
+              The
+                <i>
+                 start
+                </i>
+                and
+                <i>
+                 finish
+                </i>
+                fields indicate the chronological bounds interesting to the application.
+              The
+                <i>
+                 showdialog
+                </i>
+                field indicates whether the time control server should initially show
+              or hide the dialog.
+              The
+                <i>
+                 position
+                </i>
+                ,
+                <i>
+                 delta,
+                </i>
+                and
+                <i>
+                 data
+                </i>
+                fields indicate the initial archive position, update interval,
+              time zone string and time zone label string.
+               </p>
+               <p>
+                <b>
+                 pmTimeRecv
+                </b>
+                blocks until the time control server sends a command message.
+              It then updates the state parameter and returns one of the PM_TCTL
+              command identifiers.
+               </p>
+               <p>
+                The PM_TCTL_SET command indicates the application should seek to the
+              archive position (see
+                <b>
+                 <a href="/man/man3/pmsetmode.3.html">
+                  pmSetMode
+                 </a>
+                </b>
+                (3))
+              
+              returned in the position field of the state parameter.
+               </p>
+               <p>
+                The PM_TCTL_STEP command indicates the application should perform an
+              update, i.e. advance (or rewind, if delta is negative) to the time
+              indicated by position and then fetch new metric values, update the
+              display or whatever.  In order for several application to remain
+              synchronized, the time control server will wait until all applications
+              have acknowledged that they have completed the step command.
+              Applications should call pmTimeSendAck when the step command has been
+              processed.  Note that PM_TCTL_STEP is the only command that requires an
+              explicit acknowledgement.
+               </p>
+               <p>
+                The PM_TCTL_VCRMODE command is used by the time control server to
+              indicate the current VCR mode.
+               </p>
+               <p>
+                The value is returned in the vcrmode field of the state parameter passed
+              to
+                <b>
+                 pmTimeRecv
+                </b>
+                ,
+              
+              and remains valid until the next PM_TCTL_VCRMODE command is received.
+               </p>
+               <p>
+                The PM_TCTL_TZ command indicates the application should use a new time-
+              zone, as indicated in the
+                <i>
+                 tz
+                </i>
+                and
+                <i>
+                 tzlabel
+                </i>
+                fields of the state parameter.
+               </p>
+               <p>
+                The PM_TCTL_BOUNDS command is sent to all applications when the time
+              control server changes its chronological bounds.
+              This may occur when a new application connects to the time control
+              server or the user changes the bounds manually.
+              Most applications will ignore this command.
+               </p>
+               <p>
+                The PM_TCTL_SHOWDIALOG command will be sent to all applications when the
+              visibility of the time control server changes.
+              This allows applications to alter the text in menus or buttons to
+              reflect this change.
+              Applications may change the visibility of the time control dialog using
+              the
+                <b>
+                 pmTimeShowDialog
+                </b>
+                function.
+              The initial visibility is determined when
+              the time control dialog is first created by an application calling
+                <b>
+                 pmTimeConnect
+                </b>
+                with the showdialog field in the state parameter set to the desired value.
+               </p>
+               <p>
+                The
+                <b>
+                 pmTimeDisconnect
+                </b>
+                function may be used to close the command socket to the time control server.
+              This is useful when applications need to change the connection mode,
+              e.g. to divorce the current time control server and connect to a new one.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pmtime.1.html">
+                 pmtime
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmsetmode.3.html">
+                 pmSetMode
+                </a>
+               </b>
+               (3).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

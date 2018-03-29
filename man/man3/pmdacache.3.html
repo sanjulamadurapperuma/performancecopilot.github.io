@@ -1,1796 +1,1792 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMDACACHE
- </h1>
- Section: C Library Functions (3)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmdaCacheStore
- </b>
- ,
- <b>
-  pmdaCacheStoreKey
- </b>
- ,
- <b>
-  pmdaCacheLookup
- </b>
- ,
- <b>
-  pmdaCacheLookupName
- </b>
- ,
- <b>
-  pmdaCacheLookupKey
- </b>
- ,
- <b>
-  pmdaCacheOp
- </b>
- ,
- <b>
-  pmdaCachePurge
- </b>
- ,
- <b>
-  pmdaCacheResize
- </b>
- - manage a cache of instance domain information for a PMDA
- <a name="lbAC">
- </a>
- <h2>
-  C SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-   pcp/pmapi.h
-  </a>
-  &gt;
-  <br/>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmda.h">
-   pcp/pmda.h
-  </a>
-  &gt;
- </b>
- <p>
-  <br/>
-  int pmdaCacheStore(pmInDom
-  <i>
-   indom
-  </i>
-  , int
-  <i>
-   flags
-  </i>
-  , const char *
-  <i>
-   name
-  </i>
-  , void *
-  <i>
-   private
-  </i>
-  );
-  <br/>
-  <br/>
-  int pmdaCacheStoreKey(pmInDom
-  <i>
-   indom
-  </i>
-  , int
-  <i>
-   flags
-  </i>
-  , const char *
-  <i>
-   name
-  </i>
-  , int
-  <i>
-   keylen
-  </i>
-  , const void *
-  <i>
-   key
-  </i>
-  , void *
-  <i>
-   private
-  </i>
-  );
-  <br/>
-  <br/>
-  int pmdaCacheLookup(pmInDom
-  <i>
-   indom
-  </i>
-  , int
-  <i>
-   inst
-  </i>
-  , char **
-  <i>
-   name
-  </i>
-  , void **
-  <i>
-   private
-  </i>
-  );
-  <br/>
-  <br/>
-  int pmdaCacheLookupName(pmInDom
-  <i>
-   indom
-  </i>
-  , const char *
-  <i>
-   name
-  </i>
-  , int *
-  <i>
-   inst
-  </i>
-  , void **
-  <i>
-   private
-  </i>
-  );
-  <br/>
-  <br/>
-  int pmdaCacheLookupKey(pmInDom
-  <i>
-   indom
-  </i>
-  , const char *
-  <i>
-   name
-  </i>
-  , int
-  <i>
-   keylen
-  </i>
-  , const void *
-  <i>
-   key
-  </i>
-  , char **
-  <i>
-   oname
-  </i>
-  , int *
-  <i>
-   inst
-  </i>
-  , void **
-  <i>
-   private
-  </i>
-  );
-  <br/>
-  <br/>
-  int pmdaCacheOp(pmInDom
-  <i>
-   indom
-  </i>
-  , int
-  <i>
-   op
-  </i>
-  );
-  <br/>
-  <br/>
-  int pmdaCachePurge(pmInDom
-  <i>
-   indom
-  </i>
-  , time_t
-  <i>
-   recent
-  </i>
-  );
-  <br/>
-  <br/>
-  int pmdaCacheResize(pmInDom
-  <i>
-   indom
-  </i>
-  , int
-  <i>
-   maximum
-  </i>
-  );
- </p>
- <p>
-  cc ... -lpcp_pmda -lpcp
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- The
- <b>
-  pmdaCache
- </b>
- family of routines provide services to support the maintenance of
-complex instance domains for Performance Co-Pilot PMDAs.
-There is potentially one cache of information for each instance
-domain, and for each instance the cache maintains:
- <dl compact="">
-  <dt>
-   -
-  </dt>
-  <dd>
-   external instance name (supplied by the PMDA)
-  </dd>
-  <dt>
-   -
-  </dt>
-  <dd>
-   internal instance identifier (assigned by
-   <b>
-    pmdaCacheStore
-   </b>
-   or calculated from a ``hint'' by
-   <b>
-    pmdaCacheStoreKey
-   </b>
-   )
-  </dd>
-  <dt>
-   -
-  </dt>
-  <dd>
-   state, where
-   <b>
-    active
-   </b>
-   instances are visible and part of the current
-instance domain, and
-   <b>
-    inactive
-   </b>
-   instances are hidden, but not forgotten;
-   <b>
-    pmdaCacheStore
-   </b>
-   or
-   <b>
-    pmdaCacheStoreKey
-   </b>
-   may be used to change the state of an instance
-  </dd>
-  <dt>
-   -
-  </dt>
-  <dd>
-   an optional opaque pointer to data that is associated with the instance,
-but maintained by the PMDA
-  </dd>
-  <dt>
-   -
-  </dt>
-  <dd>
-   an optional opaque key that is used as a ``hint'' to
-   <b>
-    pmdaCacheStoreKey
-   </b>
-   when guessing the initial internal instance identifier
-  </dd>
-  <dt>
-   -
-  </dt>
-  <dd>
-   the last time the cache was saved and the instance had been marked as
-   <b>
-    active
-   </b>
-   at some point since the previous cache load or save operation
-  </dd>
- </dl>
- <p>
-  The semantics of a PCP instance domain require a number of rules to
-be followed, namely:
- </p>
- <dl compact="">
-  <dt>
-   1.
-  </dt>
-  <dd>
-   Each internal instance identifier must be unique and in the range
-0 to 2^31 - 1.
-This rule is enforced by the
-   <b>
-    pmdaCache
-   </b>
-   family of routines.
-  </dd>
-  <dt>
-   2.
-  </dt>
-  <dd>
-   The external instance name must be unique.  When the instance name
-contains a space, it is further constrained such that the name to
-the left of the first space (the short name) must also be unique.
-Refer to the INSTANCE NAME MATCHING section below.
-The PMDA must honor this rule, the
-   <b>
-    pmdaCache
-   </b>
-   family of routines will detect attempts to violate this rule.
-  </dd>
-  <dt>
-   3.
-  </dt>
-  <dd>
-   Where an external instance name corresponds to some object or entity,
-there is an expectation that the association between the name and
-the object is fixed, e.g. ``/dev/hda'' is always the name of the same disk
-on a particular system.
-This rule is perhaps the responsibility of the PMDA, but is often
-a characteristic of the environment in which the PMDA runs.
-  </dd>
-  <dt>
-   4.
-  </dt>
-  <dd>
-   It is preferable, although not mandatory, for the association between
-an external instance name and an internal instance identifier to
-be persistent.
-This rule is supported by the
-   <b>
-    pmdaCache
-   </b>
-   family of routines.
-  </dd>
-  <dt>
-   5.
-  </dt>
-  <dd>
-   When opaque keys are used, the values of the keys must be unique across all
-instances within an instance domain.
-This rule is enforced by the
-   <b>
-    pmdaCache
-   </b>
-   family of routines.
-  </dd>
- </dl>
- <p>
-  The visible interface to the cache is oriented towards the PMDA
-developer who is most concerned about the names of instances, while
-the details of how the rest of the PCP infrastructure
-expects the internal instance identifiers
-to be managed is not relevant.
- </p>
- <p>
-  Instances are updated in the cache for instance domain
-  <i>
-   indom
-  </i>
-  by calling
-  <b>
-   pmdaCacheStore
-  </b>
-  or
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  with the external name of the instance passed via
-  <i>
-   name.
-  </i>
-  The opaque pointer
-  <i>
-   private
-  </i>
-  may be used to associate additional data with the entry in the cache;
-if no such data is required,
-  <i>
-   private
-  </i>
-  should be NULL.
-Any manipulation of the additional data (including allocation or
-freeing) is the responsibility of the PMDA caller, as the cache simply
-maintains the pointer to the data
-(passed via
-  <i>
-   private
-  </i>
-  ).
- </p>
- <p>
-  The upper bound for identifiers allocated for any given
-  <i>
-   indom
-  </i>
-  cache can be optionally
-reduced from the default (2^31 - 1) to some lesser
-  <i>
-   maximum
-  </i>
-  ,
-
-using
-  <b>
-   pmdaCacheResize
-  </b>
-  .
-
-This
-  <i>
-   maximum
-  </i>
-  will then be persisted and restored in the usual manner, and
-can thus be associated permanently with a cache once set.
-This has applications when using these interfaces as general
-purpose identifier caches, and is less applicable when using
-them for instance domain caching.
- </p>
- <p>
-  For cases where the PMDA developer wishes to influence the allocation
-of internal instance identifiers, e.g. for instance domains with more
-than one natural dimension, or where there is a desire to allocate the same
-instance identifier each time the PMDA is started, even on different
-hosts,
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  may be used.
-In this case, an initial ``hint'' for the instance identifier is provided
-as an opaque key via the first
-  <i>
-   keylen
-  </i>
-  bytes in
-  <i>
-   key
-  </i>
-  (which could be any sort of data, including binary values)
-else if
-  <i>
-   keylen
-  </i>
-  is less than 1 or
-  <i>
-   key
-  </i>
-  is
-  <b>
-   NULL
-  </b>
-  then
-  <i>
-   name
-  </i>
-  is used as the ``hint''.
-The ``hint'' is hashed to produce an initial instance identifier in the range
-0 to 2^31 - 1 (or lesser
-  <i>
-   maximum
-  </i>
-  ,
-
-if set).  If this instance identifier is already allocated, then the
-value is rehashed.  This procedure is repeated until an unallocated
-instance identifier is found, or
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  gives up and returns
-  <b>
-   PM_ERR_GENERIC
-  </b>
-  .
-
-For each instance domain, the ``hint'' must be unique across all
-instances, else
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  returns
-  <b>
-   PM_ERR_INST
-  </b>
-  .
- </p>
- <p>
-  The
-  <i>
-   flags
-  </i>
-  argument controls how the instance should be processed in the cache
-as follows:
- </p>
- <dl compact="">
-  <dt>
-   PMDA_CACHE_ADD
-  </dt>
-  <dd>
-   Insert the entry into the cache if it is not already there and mark
-it
-   <b>
-    active
-   </b>
-   .
-
-If the entry is already in the cache mark it
-   <b>
-    active
-   </b>
-   .
-  </dd>
-  <dt>
-   PMDA_CACHE_HIDE
-  </dt>
-  <dd>
-   Mark the entry in the cache as
-   <b>
-    inactive
-   </b>
-   ,
-
-but remember the
-details of the association between the
-external instance name and the internal instance identifier.
-Entries that are
-   <b>
-    inactive
-   </b>
-   will be hidden from cache traversal via PMDA_CACHE_WALK_NEXT
-operations, but remain visible to
-   <b>
-    pmdaCacheLookup
-   </b>
-   ,
-   <b>
-    pmdaCacheLookupName
-   </b>
-   and
-   <b>
-    pmdaCacheLookupKey
-   </b>
-   requests.
-  </dd>
-  <dt>
-   PMDA_CACHE_CULL
-  </dt>
-  <dd>
-   Remove the entry from the cache.
-  </dd>
- </dl>
- <p>
-  On success
-  <b>
-   pmdaCacheStore
-  </b>
-  or
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  will return the internal instance identifier of the associated cache
-entry.
-Valid instance identifiers are guaranteed to be unique and non-negative.
-Failure will be indicated by a negative value (suitable for decoding
-with
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3))
-
-and most likely PM_ERR_INST to indicate the requested instance is not
-in the cache, or -EINVAL to indicate a potential violation of the
-short name uniqueness property
-(see the INSTANCE NAME MATCHING section below).
- </p>
- <p>
-  <b>
-   pmdaCacheLookup
-  </b>
-  is used to search the
-entries in the cache based on the internal
-instance identifier
-  <i>
-   inst
-  </i>
-  .
- </p>
- <p>
-  On success the return value will be PMDA_CACHE_ACTIVE or PMDA_CACHE_INACTIVE
-(depending on the
-  <b>
-   active
-  </b>
-  or
-  <b>
-   inactive
-  </b>
-  state of the cache entry),
-  <i>
-   name
-  </i>
-  (if not NULL) and
-  <i>
-   private
-  </i>
-  (if not NULL)
-will be set to the external instance name and the associate additional data
-area as provided when the instance was last activated via
-  <b>
-   pmdaCacheStore
-  </b>
-  or
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  .
- </p>
- <p>
-  <b>
-   pmdaCacheLookup
-  </b>
-  failure is indicated by a negative return value
-suitable for decoding with
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3).
- </p>
- <p>
-  The
-  <b>
-   pmdaCacheLookup
-  </b>
-  interface is required by the PMDA's fetch callback
-that is registered via
-  <b>
-   <a href="/man/man3/pmdasetfetchcallback.3.html">
-    pmdaSetFetchCallBack
-   </a>
-  </b>
-  (3).
-
-Here the internal instance identifier is passed to the fetch callback
-to identifier for which instance a value is required.
-Typical usage is shown in the code fragment below.
-  <b>
-  </b>
- </p>
- <p>
- </p>
- <pre>
-static int
-foo_callback(pmdaMetric *mdesc, unsigned int inst, pmAtomValue *atom)
-{
-    mydata   *mdp;
-    char     *name;
-    int      sts;
-
-    sts = pmdaCacheLookup(mdesc-&gt;m_desc.indom, inst, &amp;name, (void **)&amp;mdp);
-    /*
-     * expect sts == PMDA_CACHE_ACTIVE except for cataclysmic events
-     * use mdp as required, name may be useful for diagnostics
-     */
-    ...
-
-</pre>
- <p>
- </p>
- <p>
-  <b>
-   pmdaCacheLookupName
-  </b>
-  is used to search the
-entries in the cache based on the external
-instance name
-  <i>
-   name
-  </i>
-  .
- </p>
- <p>
-  On success the return value will be PMDA_CACHE_ACTIVE or PMDA_CACHE_INACTIVE
-(depending on the
-  <b>
-   active
-  </b>
-  or
-  <b>
-   inactive
-  </b>
-  state of the cache entry),
-  <i>
-   inst
-  </i>
-  (if not NULL) and
-  <i>
-   private
-  </i>
-  (if not NULL)
-will be set to the internal instance identifier and the associate additional data
-area as provided when the instance was last activated via
-  <b>
-   pmdaCacheStore
-  </b>
-  or
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  .
- </p>
- <p>
-  <b>
-   pmdaCacheLookupName
-  </b>
-  failure is indicated by a negative return value
-suitable for decoding with
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3).
- </p>
- <p>
-  The
-  <b>
-   pmdaCacheLookupName
-  </b>
-  interface is useful for PMDAs wishing to update an instance domain based
-on the external instance names.
- </p>
- <p>
-  <b>
-   pmdaCacheLookupKey
-  </b>
-  is used to search the entries in the cache
-based on an opaque key (or ``hint'') previously used in a call to
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  .
-
-The ``hint'' is provided via the first
-  <i>
-   keylen
-  </i>
-  bytes in
-  <i>
-   key
-  </i>
-  .
-
-For symmetry with
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  ,
-
-if
-  <i>
-   keylen
-  </i>
-  is less than 1 or
-  <i>
-   key
-  </i>
-  is
-  <b>
-   NULL
-  </b>
-  then
-  <i>
-   name
-  </i>
-  is used as the ``hint'' (although the results will be the same as
-calling
-  <b>
-   pmdaCacheLookupName
-  </b>
-  in this case).
- </p>
- <p>
-  On success the return value will be PMDA_CACHE_ACTIVE or PMDA_CACHE_INACTIVE
-(depending on the
-  <b>
-   active
-  </b>
-  or
-  <b>
-   inactive
-  </b>
-  state of the cache entry),
-  <i>
-   oname
-  </i>
-  (if not NULL),
-  <i>
-   inst
-  </i>
-  (if not NULL) and
-  <i>
-   private
-  </i>
-  (if not NULL)
-will be set to the external instance name, the internal instance
-identifier and the associate additional data
-area as provided when the instance was last activated via
-  <b>
-   pmdaCacheStore
-  </b>
-  or
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  .
- </p>
- <p>
-  <b>
-   pmdaCacheLookupKey
-  </b>
-  failure is indicated by a negative return value
-suitable for decoding with
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3).
- </p>
- <p>
-  To avoid a persistent cache growing without bound,
-  <b>
-   pmdaCachePurge
-  </b>
-  can be used to cull all entries that have
-  <i>
-   not
-  </i>
-  been
-  <b>
-   active
-  </b>
-  in the last
-  <i>
-   recent
-  </i>
-  seconds.
-For performance reasons, the time accounting is imprecise and the entries
-are timestamped
-at the time of the next cache save operation
-  <i>
-   after
-  </i>
-  the entry has been added or marked
-  <b>
-   active
-  </b>
-  (refer to PMDA_CACHE_SAVE and PMDA_CACHE_SYNC below).
-On success
-  <b>
-   pmdaCachePurge
-  </b>
-  returns the number of culled entries, else in the case of an error
-the return value is negative (and suitable for decoding with
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3)).
- </p>
- <p>
-  <b>
-   pmdaCacheOp
-  </b>
-  may be used to perform additional operations on the cache as follows:
- </p>
- <dl compact="">
-  <dt>
-   PMDA_CACHE_LOAD
-  </dt>
-  <dd>
-   The cache can optionally be maintained as a persistent external file,
-so that the mapping of instance names to instance identifiers is persistent
-across executions of a PMDA.
-This operation loads the cache from the external file, and then
-all new cache entries are marked
-   <b>
-    inactive
-   </b>
-   ,
-
-and the additional
-data pointer is set to NULL.
-Entries loaded from the external file are checked against the current
-cache contents and if the instance name and instance identifiers match
-then the state in the cache (
-   <b>
-    active
-   </b>
-   or
-   <b>
-    inactive
-   </b>
-   )
-
-is not changed. Should a mismatch be found (same instance name and
-different instance identifier, or same instance identifier and different
-instance name, or some but not all of the instance identifier,
-the instance name and the ``hint'' match)
-then the entry from the external file is ignored
-and a warning is issued on
-   <i>
-    stderr
-   </i>
-   .
-
-Typically a PMDA would only
-perform this operation once per execution.
-  </dd>
-  <dt>
-   PMDA_CACHE_SAVE
-  </dt>
-  <dd>
-   If any instance has been added to, or deleted from, the instance
-domain since the last PMDA_CACHE_LOAD, PMDA_CACHE_SAVE or PMDA_CACHE_SYNC
-operation, the
-   <i>
-    entire
-   </i>
-   cache is written to the external file as a bulk operation.
-This operation is provided for PMDAs that are
-   <i>
-    not
-   </i>
-   interested
-in using
-   <b>
-    pmdaCachePurge
-   </b>
-   and simply want the external file to reflect the set of known instances
-without accurate details of when they were last marked
-   <b>
-    active
-   </b>
-   .
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      Returns the number of instances saved to the external file, else 0
-if the external file was already up to date.
-     </p>
-    </dd>
-   </dl>
-  </dd>
-  <dt>
-   PMDA_CACHE_STRINGS
-  </dt>
-  <dd>
-   Annotates this cache as being a special-purpose cache used for string
-de-duplication in PMDAs exporting large numbers of string valued metrics.
-This can be used to reduce the memory footprint of the PMDA (duplicate
-strings hash to the same bucket, and are stored in memory once only).
-Key comparisons are not terminated at the first space but rather the
-entire string is used for matching.
-These are specialised caches not useful for general purpose instance
-domain handling.
-  </dd>
-  <dt>
-   PMDA_CACHE_SYNC
-  </dt>
-  <dd>
-   Within an instance domain,
-if any instance has been added to, or deleted from, or marked
-   <b>
-    active
-   </b>
-   since the last PMDA_CACHE_LOAD, PMDA_CACHE_SAVE or PMDA_CACHE_SYNC
-operation, the
-   <i>
-    entire
-   </i>
-   cache is written to the external file as a bulk operation.
-This operation is similar to PMDA_CACHE_SAVE, but will save the
-instance domain more frequently so the timestamps more
-accurately match the semantics expected by
-   <b>
-    pmdaCachePurge
-   </b>
-   .
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      Returns the number of instances saved to the external file, else 0
-if the external file was already synchronized.
-     </p>
-    </dd>
-   </dl>
-  </dd>
-  <dt>
-   PMDA_CACHE_CHECK
-  </dt>
-  <dd>
-   Returns 1 if a cache exists for the specified instance domain,
-else 0.
-  </dd>
-  <dt>
-   PMDA_CACHE_REUSE
-  </dt>
-  <dd>
-   When a new instance is added to the cache,
-the default strategy is to assign instance identifiers in a monotonic
-increasing
-manner.  Once the maximum possible instance identifier value has been
-assigned, the strategy changes to one where starting from 0,
-the next available unused instance identifier will be used.
-Calling
-   <b>
-    pmdaCacheOp
-   </b>
-   with PMDA_CACHE_REUSE forces an irreversible change to a second
-(reuse) strategy where the next unallocated instance identifier
-will be used.  This may be useful in cases where there is a
-desire to restrict the allocated instance identifiers to smaller
-values.  The prevailing strategy will be saved and restored across
-PMDA_CACHE_SAVE and PMDA_CACHE_LOAD operations.
-If
-   <b>
-    pmdaCacheStoreKey
-   </b>
-   is ever used, the associated instance domain will be changed to
-PMDA_CACHE_REUSE mode.
-  </dd>
-  <dt>
-   PMDA_CACHE_REORG
-  </dt>
-  <dd>
-   Reorganize the cache to allow faster retrieval of
-   <b>
-    active
-   </b>
-   entries, at the cost of slower retrieval for
-   <b>
-    inactive
-   </b>
-   entries, and reclaim any culled entries.  The cache may be internally
-re-organized as entries are added, so this operation is not required
-for most PMDAs.
-  </dd>
-  <dt>
-   PMDA_CACHE_WALK_REWIND
-  </dt>
-  <dd>
-   Prepares for a traversal of the cache in ascending instance identifier
-sequence.
-  </dd>
-  <dt>
-   PMDA_CACHE_WALK_NEXT
-  </dt>
-  <dd>
-   Fetch the next
-   <b>
-    active
-   </b>
-   instance identifier from the cache.  Requires a prior
-call using PMDA_CACHE_WALK_REWIND and will return -1 when all instances
-have been processed.
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      Only one cache walk can be active at any given time, nesting calls
-to PMDA_CACHE_WALK and PMDA_CACHE_REWIND will interfere with each
-other.
-     </p>
-    </dd>
-   </dl>
-  </dd>
-  <dt>
-   PMDA_CACHE_ACTIVE
-  </dt>
-  <dd>
-   Changes
-   <b>
-    every
-   </b>
-   <b>
-    inactive
-   </b>
-   entry in the cache to be marked
-   <b>
-    active
-   </b>
-   .
-  </dd>
-  <dt>
-   PMDA_CACHE_INACTIVE
-  </dt>
-  <dd>
-   Changes
-   <b>
-    every
-   </b>
-   <b>
-    active
-   </b>
-   entry in the cache to be marked
-   <b>
-    inactive
-   </b>
-   .
-  </dd>
-  <dt>
-   PMDA_CACHE_CULL
-  </dt>
-  <dd>
-   Remove
-   <b>
-    every
-   </b>
-   entry from the cache.
-  </dd>
-  <dt>
-   PMDA_CACHE_SIZE
-  </dt>
-  <dd>
-   Return the number of entries in the cache (includes
-   <b>
-    active
-   </b>
-   ,
-   <b>
-    inactive
-   </b>
-   and any culled entries that have not yet been reclaimed).
-  </dd>
-  <dt>
-   PMDA_CACHE_SIZE_ACTIVE
-  </dt>
-  <dd>
-   Return the number of
-   <b>
-    active
-   </b>
-   entries in the cache.
-  </dd>
-  <dt>
-   PMDA_CACHE_SIZE_INACTIVE
-  </dt>
-  <dd>
-   Return the number of
-   <b>
-    inactive
-   </b>
-   entries in the cache.
-  </dd>
-  <dt>
-   PMDA_CACHE_DUMP
-  </dt>
-  <dd>
-   Dump the current state of the cache on
-   <i>
-    stderr
-   </i>
-   .
-  </dd>
-  <dt>
-   PMDA_CACHE_DUMP_ALL
-  </dt>
-  <dd>
-   Like PMDA_CACHE_DUMP, but also dump the internal hashing structures
-used to support lookup by instance name, lookup by instance identifier and
-the collision statistics for ``hint'' hashing from
-   <b>
-    pmdaCacheStoreKey
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  <b>
-   pmdaCacheOp
-  </b>
-  returns a non-negative value on success, and failure is indicated
-by a negative return value (suitable for decoding
-with
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3)).
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  OTHER CONSIDERATIONS
- </h2>
- <p>
-  When the
-  <b>
-   pmdaCache
-  </b>
-  routines are used for particular instance domain,
-  <b>
-   <a href="/man/man3/pmdainstance.3.html">
-    pmdaInstance
-   </a>
-  </b>
-  (3)
-
-and the instance domain enumeration behind
-  <b>
-   <a href="/man/man3/pmdafetch.3.html">
-    pmdaFetch
-   </a>
-  </b>
-  (3)
-
-will attempt to extract instance domain information from the cache, thereby avoiding
-reference to the
-  <b>
-   pmdaIndom
-  </b>
-  data structures that have historically been used to define instance domains
-and service instance requests.
-A PMDA can adopt a hybrid approach and choose to implement some instance
-domains via the traditional
-  <b>
-   pmdaIndom
-  </b>
-  method, and others via the
-  <b>
-   pmdaCache
-  </b>
-  approach, however attempts to manage the
-  <i>
-   same
-  </i>
-  instance domain by both
-methods will result in the
-  <b>
-   pmdaCache
-  </b>
-  method silently prevailing.
- </p>
- <p>
-  If
-  <b>
-   all
-  </b>
-  instances in a PMDA are to be serviced from a
-  <b>
-   pmdaCache
-  </b>
-  then a
-  <b>
-   pmdaIndom
-  </b>
-  is not required, and the
-  <b>
-   <a href="/man/man3/pmdainit.3.html">
-    pmdaInit
-   </a>
-  </b>
-  (3)
-
-call becomes
-  <b>
-  </b>
- </p>
- <p>
- </p>
- <pre>
-    pmdaInit(dp, NULL, 0, metrictab, nmetrics);
-
-</pre>
- <p>
-  However, the PMDA will need to explicitly initialize the
-  <b>
-   indom
-  </b>
-  field of the
-  <b>
-   pmDesc
-  </b>
-  in the
-  <i>
-   metrictab
-  </i>
-  entries, as this cannot be done by
-  <b>
-   <a href="/man/man3/pmdainit.3.html">
-    pmdaInit
-   </a>
-  </b>
-  (3)
-
-if
-  <i>
-   indomtab
-  </i>
-  is missing entries for the instance domains maintained in the cache.
- </p>
- <p>
-  Independent of how the instance domain is being maintained,
-to refresh an instance domain prior to a fetch or an instance domain
-operation, the standard methods of a ``wrapper'' to the
-  <b>
-   <a href="/man/man3/pmdainstance.3.html">
-    pmdaInstance
-   </a>
-  </b>
-  (3)
-
-and
-  <b>
-   <a href="/man/man3/pmdafetch.3.html">
-    pmdaFetch
-   </a>
-  </b>
-  (3)
-
-methods should be used.
- </p>
- <p>
-  Refer to the
-  <b>
-   simple
-  </b>
-  PMDA source code for an example use of the
-  <b>
-   pmdaCache
-  </b>
-  routines.
- </p>
- <p>
-  When using
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  ,
-
-if there is a desire to ensure the given ``hint'' generates the same
-initial instance identifier across all platforms, then the caller
-should ensure the endian and word-size issues are considered, e.g. if
-the natural data structure used for the
-  <i>
-   key
-  </i>
-  is an array of 32-bit integers, then
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/htonl.3.html">
-    htonl
-   </a>
-  </b>
-  (3)
-
-should be used on each element of the array before calling
-  <b>
-   pmdaCacheStoreKey
-  </b>
-  or
-  <b>
-   pmdaCacheLookupKey
-  </b>
-  .
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  INSTANCE NAME MATCHING
- </h2>
- <p>
-  The following table summarizes the ``short name'' matching semantics
-for an instance domain (caches other than PMDA_CACHE_STRINGS style).
- </p>
- <center>
-  <table border="">
-   <tr>
-    <td>
-     <table>
-      <tr valign="top">
-       <td>
-        name in
-       </td>
-       <td>
-        <b>
-         pmdaCacheLookup
-        </b>
-       </td>
-       <td rowspan="2" valign="center">
-        result
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        cache
-       </td>
-       <td>
-        name
-       </td>
-      </tr>
-      <tr valign="top">
-       <td colspan="3">
-        <hr/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        foodle
-       </td>
-       <td>
-        foo
-       </td>
-       <td>
-        no match (PM_ERR_INST)
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        foo
-       </td>
-       <td>
-        foodle
-       </td>
-       <td>
-        no match (PM_ERR_INST)
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        foo
-       </td>
-       <td>
-        foo
-       </td>
-       <td>
-        match
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        foo bar
-       </td>
-       <td>
-        foo
-       </td>
-       <td>
-        match on short name (instance identifier)
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        foo bar
-       </td>
-       <td>
-        foo bar
-       </td>
-       <td>
-        match on full name (instance identifier)
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        foo
-       </td>
-       <td>
-        foo bar
-       </td>
-       <td>
-        bad match (-EDOM)
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
-       <td>
-        foo bar
-       </td>
-       <td>
-        foo blah
-       </td>
-       <td>
-        bad match (-EDOM)
-        <br/>
-       </td>
-      </tr>
-     </table>
-    </td>
-   </tr>
-  </table>
- </center>
- <a name="lbAG">
- </a>
- <h2>
-  FILES
- </h2>
- Cache persistence uses files with names constructed from the
- <i>
-  indom
- </i>
- within the
- <b>
-  $PCP_VAR_DIR/config/pmda
- </b>
- directory.
- <a name="lbAH">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="http://man7.org/linux/man-pages/man3/byteorder.3.html">
-   BYTEORDER
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmda.3.html">
-   PMDA
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmdainit.3.html">
-   pmdaInit
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmdainstance.3.html">
-   pmdaInstance
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmdafetch.3.html">
-   pmdaFetch
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmdalabel.3.html">
-   pmdaLabel
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmerrstr.3.html">
-   pmErrStr
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmgetindom.3.html">
-   pmGetInDom
-  </a>
- </b>
- (3).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    OTHER CONSIDERATIONS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    INSTANCE NAME MATCHING
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMDACACHE
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmdaCacheStore
+               </b>
+               ,
+               <b>
+                pmdaCacheStoreKey
+               </b>
+               ,
+               <b>
+                pmdaCacheLookup
+               </b>
+               ,
+               <b>
+                pmdaCacheLookupName
+               </b>
+               ,
+               <b>
+                pmdaCacheLookupKey
+               </b>
+               ,
+               <b>
+                pmdaCacheOp
+               </b>
+               ,
+               <b>
+                pmdaCachePurge
+               </b>
+               ,
+               <b>
+                pmdaCacheResize
+               </b>
+               - manage a cache of instance domain information for a PMDA
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+                <br/>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmda.h">
+                 pcp/pmda.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                <br/>
+                int pmdaCacheStore(pmInDom
+                <i>
+                 indom
+                </i>
+                , int
+                <i>
+                 flags
+                </i>
+                , const char *
+                <i>
+                 name
+                </i>
+                , void *
+                <i>
+                 private
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaCacheStoreKey(pmInDom
+                <i>
+                 indom
+                </i>
+                , int
+                <i>
+                 flags
+                </i>
+                , const char *
+                <i>
+                 name
+                </i>
+                , int
+                <i>
+                 keylen
+                </i>
+                , const void *
+                <i>
+                 key
+                </i>
+                , void *
+                <i>
+                 private
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaCacheLookup(pmInDom
+                <i>
+                 indom
+                </i>
+                , int
+                <i>
+                 inst
+                </i>
+                , char **
+                <i>
+                 name
+                </i>
+                , void **
+                <i>
+                 private
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaCacheLookupName(pmInDom
+                <i>
+                 indom
+                </i>
+                , const char *
+                <i>
+                 name
+                </i>
+                , int *
+                <i>
+                 inst
+                </i>
+                , void **
+                <i>
+                 private
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaCacheLookupKey(pmInDom
+                <i>
+                 indom
+                </i>
+                , const char *
+                <i>
+                 name
+                </i>
+                , int
+                <i>
+                 keylen
+                </i>
+                , const void *
+                <i>
+                 key
+                </i>
+                , char **
+                <i>
+                 oname
+                </i>
+                , int *
+                <i>
+                 inst
+                </i>
+                , void **
+                <i>
+                 private
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaCacheOp(pmInDom
+                <i>
+                 indom
+                </i>
+                , int
+                <i>
+                 op
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaCachePurge(pmInDom
+                <i>
+                 indom
+                </i>
+                , time_t
+                <i>
+                 recent
+                </i>
+                );
+                <br/>
+                <br/>
+                int pmdaCacheResize(pmInDom
+                <i>
+                 indom
+                </i>
+                , int
+                <i>
+                 maximum
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp_pmda -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               The
+               <b>
+                pmdaCache
+               </b>
+               family of routines provide services to support the maintenance of
+              complex instance domains for Performance Co-Pilot PMDAs.
+              There is potentially one cache of information for each instance
+              domain, and for each instance the cache maintains:
+               <dl compact="">
+                <dt>
+                 -
+                </dt>
+                <dd>
+                 external instance name (supplied by the PMDA)
+                </dd>
+                <dt>
+                 -
+                </dt>
+                <dd>
+                 internal instance identifier (assigned by
+                 <b>
+                  pmdaCacheStore
+                 </b>
+                 or calculated from a ``hint'' by
+                 <b>
+                  pmdaCacheStoreKey
+                 </b>
+                 )
+                </dd>
+                <dt>
+                 -
+                </dt>
+                <dd>
+                 state, where
+                 <b>
+                  active
+                 </b>
+                 instances are visible and part of the current
+              instance domain, and
+                 <b>
+                  inactive
+                 </b>
+                 instances are hidden, but not forgotten;
+                 <b>
+                  pmdaCacheStore
+                 </b>
+                 or
+                 <b>
+                  pmdaCacheStoreKey
+                 </b>
+                 may be used to change the state of an instance
+                </dd>
+                <dt>
+                 -
+                </dt>
+                <dd>
+                 an optional opaque pointer to data that is associated with the instance,
+              but maintained by the PMDA
+                </dd>
+                <dt>
+                 -
+                </dt>
+                <dd>
+                 an optional opaque key that is used as a ``hint'' to
+                 <b>
+                  pmdaCacheStoreKey
+                 </b>
+                 when guessing the initial internal instance identifier
+                </dd>
+                <dt>
+                 -
+                </dt>
+                <dd>
+                 the last time the cache was saved and the instance had been marked as
+                 <b>
+                  active
+                 </b>
+                 at some point since the previous cache load or save operation
+                </dd>
+               </dl>
+               <p>
+                The semantics of a PCP instance domain require a number of rules to
+              be followed, namely:
+               </p>
+               <dl compact="">
+                <dt>
+                 1.
+                </dt>
+                <dd>
+                 Each internal instance identifier must be unique and in the range
+              0 to 2^31 - 1.
+              This rule is enforced by the
+                 <b>
+                  pmdaCache
+                 </b>
+                 family of routines.
+                </dd>
+                <dt>
+                 2.
+                </dt>
+                <dd>
+                 The external instance name must be unique.  When the instance name
+              contains a space, it is further constrained such that the name to
+              the left of the first space (the short name) must also be unique.
+              Refer to the INSTANCE NAME MATCHING section below.
+              The PMDA must honor this rule, the
+                 <b>
+                  pmdaCache
+                 </b>
+                 family of routines will detect attempts to violate this rule.
+                </dd>
+                <dt>
+                 3.
+                </dt>
+                <dd>
+                 Where an external instance name corresponds to some object or entity,
+              there is an expectation that the association between the name and
+              the object is fixed, e.g. ``/dev/hda'' is always the name of the same disk
+              on a particular system.
+              This rule is perhaps the responsibility of the PMDA, but is often
+              a characteristic of the environment in which the PMDA runs.
+                </dd>
+                <dt>
+                 4.
+                </dt>
+                <dd>
+                 It is preferable, although not mandatory, for the association between
+              an external instance name and an internal instance identifier to
+              be persistent.
+              This rule is supported by the
+                 <b>
+                  pmdaCache
+                 </b>
+                 family of routines.
+                </dd>
+                <dt>
+                 5.
+                </dt>
+                <dd>
+                 When opaque keys are used, the values of the keys must be unique across all
+              instances within an instance domain.
+              This rule is enforced by the
+                 <b>
+                  pmdaCache
+                 </b>
+                 family of routines.
+                </dd>
+               </dl>
+               <p>
+                The visible interface to the cache is oriented towards the PMDA
+              developer who is most concerned about the names of instances, while
+              the details of how the rest of the PCP infrastructure
+              expects the internal instance identifiers
+              to be managed is not relevant.
+               </p>
+               <p>
+                Instances are updated in the cache for instance domain
+                <i>
+                 indom
+                </i>
+                by calling
+                <b>
+                 pmdaCacheStore
+                </b>
+                or
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                with the external name of the instance passed via
+                <i>
+                 name.
+                </i>
+                The opaque pointer
+                <i>
+                 private
+                </i>
+                may be used to associate additional data with the entry in the cache;
+              if no such data is required,
+                <i>
+                 private
+                </i>
+                should be NULL.
+              Any manipulation of the additional data (including allocation or
+              freeing) is the responsibility of the PMDA caller, as the cache simply
+              maintains the pointer to the data
+              (passed via
+                <i>
+                 private
+                </i>
+                ).
+               </p>
+               <p>
+                The upper bound for identifiers allocated for any given
+                <i>
+                 indom
+                </i>
+                cache can be optionally
+              reduced from the default (2^31 - 1) to some lesser
+                <i>
+                 maximum
+                </i>
+                ,
+              
+              using
+                <b>
+                 pmdaCacheResize
+                </b>
+                .
+              
+              This
+                <i>
+                 maximum
+                </i>
+                will then be persisted and restored in the usual manner, and
+              can thus be associated permanently with a cache once set.
+              This has applications when using these interfaces as general
+              purpose identifier caches, and is less applicable when using
+              them for instance domain caching.
+               </p>
+               <p>
+                For cases where the PMDA developer wishes to influence the allocation
+              of internal instance identifiers, e.g. for instance domains with more
+              than one natural dimension, or where there is a desire to allocate the same
+              instance identifier each time the PMDA is started, even on different
+              hosts,
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                may be used.
+              In this case, an initial ``hint'' for the instance identifier is provided
+              as an opaque key via the first
+                <i>
+                 keylen
+                </i>
+                bytes in
+                <i>
+                 key
+                </i>
+                (which could be any sort of data, including binary values)
+              else if
+                <i>
+                 keylen
+                </i>
+                is less than 1 or
+                <i>
+                 key
+                </i>
+                is
+                <b>
+                 NULL
+                </b>
+                then
+                <i>
+                 name
+                </i>
+                is used as the ``hint''.
+              The ``hint'' is hashed to produce an initial instance identifier in the range
+              0 to 2^31 - 1 (or lesser
+                <i>
+                 maximum
+                </i>
+                ,
+              
+              if set).  If this instance identifier is already allocated, then the
+              value is rehashed.  This procedure is repeated until an unallocated
+              instance identifier is found, or
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                gives up and returns
+                <b>
+                 PM_ERR_GENERIC
+                </b>
+                .
+              
+              For each instance domain, the ``hint'' must be unique across all
+              instances, else
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                returns
+                <b>
+                 PM_ERR_INST
+                </b>
+                .
+               </p>
+               <p>
+                The
+                <i>
+                 flags
+                </i>
+                argument controls how the instance should be processed in the cache
+              as follows:
+               </p>
+               <dl compact="">
+                <dt>
+                 PMDA_CACHE_ADD
+                </dt>
+                <dd>
+                 Insert the entry into the cache if it is not already there and mark
+              it
+                 <b>
+                  active
+                 </b>
+                 .
+              
+              If the entry is already in the cache mark it
+                 <b>
+                  active
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 PMDA_CACHE_HIDE
+                </dt>
+                <dd>
+                 Mark the entry in the cache as
+                 <b>
+                  inactive
+                 </b>
+                 ,
+              
+              but remember the
+              details of the association between the
+              external instance name and the internal instance identifier.
+              Entries that are
+                 <b>
+                  inactive
+                 </b>
+                 will be hidden from cache traversal via PMDA_CACHE_WALK_NEXT
+              operations, but remain visible to
+                 <b>
+                  pmdaCacheLookup
+                 </b>
+                 ,
+                 <b>
+                  pmdaCacheLookupName
+                 </b>
+                 and
+                 <b>
+                  pmdaCacheLookupKey
+                 </b>
+                 requests.
+                </dd>
+                <dt>
+                 PMDA_CACHE_CULL
+                </dt>
+                <dd>
+                 Remove the entry from the cache.
+                </dd>
+               </dl>
+               <p>
+                On success
+                <b>
+                 pmdaCacheStore
+                </b>
+                or
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                will return the internal instance identifier of the associated cache
+              entry.
+              Valid instance identifiers are guaranteed to be unique and non-negative.
+              Failure will be indicated by a negative value (suitable for decoding
+              with
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3))
+              
+              and most likely PM_ERR_INST to indicate the requested instance is not
+              in the cache, or -EINVAL to indicate a potential violation of the
+              short name uniqueness property
+              (see the INSTANCE NAME MATCHING section below).
+               </p>
+               <p>
+                <b>
+                 pmdaCacheLookup
+                </b>
+                is used to search the
+              entries in the cache based on the internal
+              instance identifier
+                <i>
+                 inst
+                </i>
+                .
+               </p>
+               <p>
+                On success the return value will be PMDA_CACHE_ACTIVE or PMDA_CACHE_INACTIVE
+              (depending on the
+                <b>
+                 active
+                </b>
+                or
+                <b>
+                 inactive
+                </b>
+                state of the cache entry),
+                <i>
+                 name
+                </i>
+                (if not NULL) and
+                <i>
+                 private
+                </i>
+                (if not NULL)
+              will be set to the external instance name and the associate additional data
+              area as provided when the instance was last activated via
+                <b>
+                 pmdaCacheStore
+                </b>
+                or
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                .
+               </p>
+               <p>
+                <b>
+                 pmdaCacheLookup
+                </b>
+                failure is indicated by a negative return value
+              suitable for decoding with
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                The
+                <b>
+                 pmdaCacheLookup
+                </b>
+                interface is required by the PMDA's fetch callback
+              that is registered via
+                <b>
+                 <a href="/man/man3/pmdasetfetchcallback.3.html">
+                  pmdaSetFetchCallBack
+                 </a>
+                </b>
+                (3).
+              
+              Here the internal instance identifier is passed to the fetch callback
+              to identifier for which instance a value is required.
+              Typical usage is shown in the code fragment below.
+                <b>
+                </b>
+               </p>
+               <p>
+               </p>
+               <pre>
+              static int
+              foo_callback(pmdaMetric *mdesc, unsigned int inst, pmAtomValue *atom)
+              {
+                  mydata   *mdp;
+                  char     *name;
+                  int      sts;
+              
+                  sts = pmdaCacheLookup(mdesc-&gt;m_desc.indom, inst, &amp;name, (void **)&amp;mdp);
+                  /*
+                   * expect sts == PMDA_CACHE_ACTIVE except for cataclysmic events
+                   * use mdp as required, name may be useful for diagnostics
+                   */
+                  ...
+              
+              </pre>
+               <p>
+               </p>
+               <p>
+                <b>
+                 pmdaCacheLookupName
+                </b>
+                is used to search the
+              entries in the cache based on the external
+              instance name
+                <i>
+                 name
+                </i>
+                .
+               </p>
+               <p>
+                On success the return value will be PMDA_CACHE_ACTIVE or PMDA_CACHE_INACTIVE
+              (depending on the
+                <b>
+                 active
+                </b>
+                or
+                <b>
+                 inactive
+                </b>
+                state of the cache entry),
+                <i>
+                 inst
+                </i>
+                (if not NULL) and
+                <i>
+                 private
+                </i>
+                (if not NULL)
+              will be set to the internal instance identifier and the associate additional data
+              area as provided when the instance was last activated via
+                <b>
+                 pmdaCacheStore
+                </b>
+                or
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                .
+               </p>
+               <p>
+                <b>
+                 pmdaCacheLookupName
+                </b>
+                failure is indicated by a negative return value
+              suitable for decoding with
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                The
+                <b>
+                 pmdaCacheLookupName
+                </b>
+                interface is useful for PMDAs wishing to update an instance domain based
+              on the external instance names.
+               </p>
+               <p>
+                <b>
+                 pmdaCacheLookupKey
+                </b>
+                is used to search the entries in the cache
+              based on an opaque key (or ``hint'') previously used in a call to
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                .
+              
+              The ``hint'' is provided via the first
+                <i>
+                 keylen
+                </i>
+                bytes in
+                <i>
+                 key
+                </i>
+                .
+              
+              For symmetry with
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                ,
+              
+              if
+                <i>
+                 keylen
+                </i>
+                is less than 1 or
+                <i>
+                 key
+                </i>
+                is
+                <b>
+                 NULL
+                </b>
+                then
+                <i>
+                 name
+                </i>
+                is used as the ``hint'' (although the results will be the same as
+              calling
+                <b>
+                 pmdaCacheLookupName
+                </b>
+                in this case).
+               </p>
+               <p>
+                On success the return value will be PMDA_CACHE_ACTIVE or PMDA_CACHE_INACTIVE
+              (depending on the
+                <b>
+                 active
+                </b>
+                or
+                <b>
+                 inactive
+                </b>
+                state of the cache entry),
+                <i>
+                 oname
+                </i>
+                (if not NULL),
+                <i>
+                 inst
+                </i>
+                (if not NULL) and
+                <i>
+                 private
+                </i>
+                (if not NULL)
+              will be set to the external instance name, the internal instance
+              identifier and the associate additional data
+              area as provided when the instance was last activated via
+                <b>
+                 pmdaCacheStore
+                </b>
+                or
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                .
+               </p>
+               <p>
+                <b>
+                 pmdaCacheLookupKey
+                </b>
+                failure is indicated by a negative return value
+              suitable for decoding with
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                To avoid a persistent cache growing without bound,
+                <b>
+                 pmdaCachePurge
+                </b>
+                can be used to cull all entries that have
+                <i>
+                 not
+                </i>
+                been
+                <b>
+                 active
+                </b>
+                in the last
+                <i>
+                 recent
+                </i>
+                seconds.
+              For performance reasons, the time accounting is imprecise and the entries
+              are timestamped
+              at the time of the next cache save operation
+                <i>
+                 after
+                </i>
+                the entry has been added or marked
+                <b>
+                 active
+                </b>
+                (refer to PMDA_CACHE_SAVE and PMDA_CACHE_SYNC below).
+              On success
+                <b>
+                 pmdaCachePurge
+                </b>
+                returns the number of culled entries, else in the case of an error
+              the return value is negative (and suitable for decoding with
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3)).
+               </p>
+               <p>
+                <b>
+                 pmdaCacheOp
+                </b>
+                may be used to perform additional operations on the cache as follows:
+               </p>
+               <dl compact="">
+                <dt>
+                 PMDA_CACHE_LOAD
+                </dt>
+                <dd>
+                 The cache can optionally be maintained as a persistent external file,
+              so that the mapping of instance names to instance identifiers is persistent
+              across executions of a PMDA.
+              This operation loads the cache from the external file, and then
+              all new cache entries are marked
+                 <b>
+                  inactive
+                 </b>
+                 ,
+              
+              and the additional
+              data pointer is set to NULL.
+              Entries loaded from the external file are checked against the current
+              cache contents and if the instance name and instance identifiers match
+              then the state in the cache (
+                 <b>
+                  active
+                 </b>
+                 or
+                 <b>
+                  inactive
+                 </b>
+                 )
+              
+              is not changed. Should a mismatch be found (same instance name and
+              different instance identifier, or same instance identifier and different
+              instance name, or some but not all of the instance identifier,
+              the instance name and the ``hint'' match)
+              then the entry from the external file is ignored
+              and a warning is issued on
+                 <i>
+                  stderr
+                 </i>
+                 .
+              
+              Typically a PMDA would only
+              perform this operation once per execution.
+                </dd>
+                <dt>
+                 PMDA_CACHE_SAVE
+                </dt>
+                <dd>
+                 If any instance has been added to, or deleted from, the instance
+              domain since the last PMDA_CACHE_LOAD, PMDA_CACHE_SAVE or PMDA_CACHE_SYNC
+              operation, the
+                 <i>
+                  entire
+                 </i>
+                 cache is written to the external file as a bulk operation.
+              This operation is provided for PMDAs that are
+                 <i>
+                  not
+                 </i>
+                 interested
+              in using
+                 <b>
+                  pmdaCachePurge
+                 </b>
+                 and simply want the external file to reflect the set of known instances
+              without accurate details of when they were last marked
+                 <b>
+                  active
+                 </b>
+                 .
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    Returns the number of instances saved to the external file, else 0
+              if the external file was already up to date.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 PMDA_CACHE_STRINGS
+                </dt>
+                <dd>
+                 Annotates this cache as being a special-purpose cache used for string
+              de-duplication in PMDAs exporting large numbers of string valued metrics.
+              This can be used to reduce the memory footprint of the PMDA (duplicate
+              strings hash to the same bucket, and are stored in memory once only).
+              Key comparisons are not terminated at the first space but rather the
+              entire string is used for matching.
+              These are specialised caches not useful for general purpose instance
+              domain handling.
+                </dd>
+                <dt>
+                 PMDA_CACHE_SYNC
+                </dt>
+                <dd>
+                 Within an instance domain,
+              if any instance has been added to, or deleted from, or marked
+                 <b>
+                  active
+                 </b>
+                 since the last PMDA_CACHE_LOAD, PMDA_CACHE_SAVE or PMDA_CACHE_SYNC
+              operation, the
+                 <i>
+                  entire
+                 </i>
+                 cache is written to the external file as a bulk operation.
+              This operation is similar to PMDA_CACHE_SAVE, but will save the
+              instance domain more frequently so the timestamps more
+              accurately match the semantics expected by
+                 <b>
+                  pmdaCachePurge
+                 </b>
+                 .
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    Returns the number of instances saved to the external file, else 0
+              if the external file was already synchronized.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 PMDA_CACHE_CHECK
+                </dt>
+                <dd>
+                 Returns 1 if a cache exists for the specified instance domain,
+              else 0.
+                </dd>
+                <dt>
+                 PMDA_CACHE_REUSE
+                </dt>
+                <dd>
+                 When a new instance is added to the cache,
+              the default strategy is to assign instance identifiers in a monotonic
+              increasing
+              manner.  Once the maximum possible instance identifier value has been
+              assigned, the strategy changes to one where starting from 0,
+              the next available unused instance identifier will be used.
+              Calling
+                 <b>
+                  pmdaCacheOp
+                 </b>
+                 with PMDA_CACHE_REUSE forces an irreversible change to a second
+              (reuse) strategy where the next unallocated instance identifier
+              will be used.  This may be useful in cases where there is a
+              desire to restrict the allocated instance identifiers to smaller
+              values.  The prevailing strategy will be saved and restored across
+              PMDA_CACHE_SAVE and PMDA_CACHE_LOAD operations.
+              If
+                 <b>
+                  pmdaCacheStoreKey
+                 </b>
+                 is ever used, the associated instance domain will be changed to
+              PMDA_CACHE_REUSE mode.
+                </dd>
+                <dt>
+                 PMDA_CACHE_REORG
+                </dt>
+                <dd>
+                 Reorganize the cache to allow faster retrieval of
+                 <b>
+                  active
+                 </b>
+                 entries, at the cost of slower retrieval for
+                 <b>
+                  inactive
+                 </b>
+                 entries, and reclaim any culled entries.  The cache may be internally
+              re-organized as entries are added, so this operation is not required
+              for most PMDAs.
+                </dd>
+                <dt>
+                 PMDA_CACHE_WALK_REWIND
+                </dt>
+                <dd>
+                 Prepares for a traversal of the cache in ascending instance identifier
+              sequence.
+                </dd>
+                <dt>
+                 PMDA_CACHE_WALK_NEXT
+                </dt>
+                <dd>
+                 Fetch the next
+                 <b>
+                  active
+                 </b>
+                 instance identifier from the cache.  Requires a prior
+              call using PMDA_CACHE_WALK_REWIND and will return -1 when all instances
+              have been processed.
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    Only one cache walk can be active at any given time, nesting calls
+              to PMDA_CACHE_WALK and PMDA_CACHE_REWIND will interfere with each
+              other.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 PMDA_CACHE_ACTIVE
+                </dt>
+                <dd>
+                 Changes
+                 <b>
+                  every
+                 </b>
+                 <b>
+                  inactive
+                 </b>
+                 entry in the cache to be marked
+                 <b>
+                  active
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 PMDA_CACHE_INACTIVE
+                </dt>
+                <dd>
+                 Changes
+                 <b>
+                  every
+                 </b>
+                 <b>
+                  active
+                 </b>
+                 entry in the cache to be marked
+                 <b>
+                  inactive
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 PMDA_CACHE_CULL
+                </dt>
+                <dd>
+                 Remove
+                 <b>
+                  every
+                 </b>
+                 entry from the cache.
+                </dd>
+                <dt>
+                 PMDA_CACHE_SIZE
+                </dt>
+                <dd>
+                 Return the number of entries in the cache (includes
+                 <b>
+                  active
+                 </b>
+                 ,
+                 <b>
+                  inactive
+                 </b>
+                 and any culled entries that have not yet been reclaimed).
+                </dd>
+                <dt>
+                 PMDA_CACHE_SIZE_ACTIVE
+                </dt>
+                <dd>
+                 Return the number of
+                 <b>
+                  active
+                 </b>
+                 entries in the cache.
+                </dd>
+                <dt>
+                 PMDA_CACHE_SIZE_INACTIVE
+                </dt>
+                <dd>
+                 Return the number of
+                 <b>
+                  inactive
+                 </b>
+                 entries in the cache.
+                </dd>
+                <dt>
+                 PMDA_CACHE_DUMP
+                </dt>
+                <dd>
+                 Dump the current state of the cache on
+                 <i>
+                  stderr
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 PMDA_CACHE_DUMP_ALL
+                </dt>
+                <dd>
+                 Like PMDA_CACHE_DUMP, but also dump the internal hashing structures
+              used to support lookup by instance name, lookup by instance identifier and
+              the collision statistics for ``hint'' hashing from
+                 <b>
+                  pmdaCacheStoreKey
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 pmdaCacheOp
+                </b>
+                returns a non-negative value on success, and failure is indicated
+              by a negative return value (suitable for decoding
+              with
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3)).
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                OTHER CONSIDERATIONS
+               </h2>
+               <p>
+                When the
+                <b>
+                 pmdaCache
+                </b>
+                routines are used for particular instance domain,
+                <b>
+                 <a href="/man/man3/pmdainstance.3.html">
+                  pmdaInstance
+                 </a>
+                </b>
+                (3)
+              
+              and the instance domain enumeration behind
+                <b>
+                 <a href="/man/man3/pmdafetch.3.html">
+                  pmdaFetch
+                 </a>
+                </b>
+                (3)
+              
+              will attempt to extract instance domain information from the cache, thereby avoiding
+              reference to the
+                <b>
+                 pmdaIndom
+                </b>
+                data structures that have historically been used to define instance domains
+              and service instance requests.
+              A PMDA can adopt a hybrid approach and choose to implement some instance
+              domains via the traditional
+                <b>
+                 pmdaIndom
+                </b>
+                method, and others via the
+                <b>
+                 pmdaCache
+                </b>
+                approach, however attempts to manage the
+                <i>
+                 same
+                </i>
+                instance domain by both
+              methods will result in the
+                <b>
+                 pmdaCache
+                </b>
+                method silently prevailing.
+               </p>
+               <p>
+                If
+                <b>
+                 all
+                </b>
+                instances in a PMDA are to be serviced from a
+                <b>
+                 pmdaCache
+                </b>
+                then a
+                <b>
+                 pmdaIndom
+                </b>
+                is not required, and the
+                <b>
+                 <a href="/man/man3/pmdainit.3.html">
+                  pmdaInit
+                 </a>
+                </b>
+                (3)
+              
+              call becomes
+                <b>
+                </b>
+               </p>
+               <p>
+               </p>
+               <pre>
+                  pmdaInit(dp, NULL, 0, metrictab, nmetrics);
+              
+              </pre>
+               <p>
+                However, the PMDA will need to explicitly initialize the
+                <b>
+                 indom
+                </b>
+                field of the
+                <b>
+                 pmDesc
+                </b>
+                in the
+                <i>
+                 metrictab
+                </i>
+                entries, as this cannot be done by
+                <b>
+                 <a href="/man/man3/pmdainit.3.html">
+                  pmdaInit
+                 </a>
+                </b>
+                (3)
+              
+              if
+                <i>
+                 indomtab
+                </i>
+                is missing entries for the instance domains maintained in the cache.
+               </p>
+               <p>
+                Independent of how the instance domain is being maintained,
+              to refresh an instance domain prior to a fetch or an instance domain
+              operation, the standard methods of a ``wrapper'' to the
+                <b>
+                 <a href="/man/man3/pmdainstance.3.html">
+                  pmdaInstance
+                 </a>
+                </b>
+                (3)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmdafetch.3.html">
+                  pmdaFetch
+                 </a>
+                </b>
+                (3)
+              
+              methods should be used.
+               </p>
+               <p>
+                Refer to the
+                <b>
+                 simple
+                </b>
+                PMDA source code for an example use of the
+                <b>
+                 pmdaCache
+                </b>
+                routines.
+               </p>
+               <p>
+                When using
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                ,
+              
+              if there is a desire to ensure the given ``hint'' generates the same
+              initial instance identifier across all platforms, then the caller
+              should ensure the endian and word-size issues are considered, e.g. if
+              the natural data structure used for the
+                <i>
+                 key
+                </i>
+                is an array of 32-bit integers, then
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/htonl.3.html">
+                  htonl
+                 </a>
+                </b>
+                (3)
+              
+              should be used on each element of the array before calling
+                <b>
+                 pmdaCacheStoreKey
+                </b>
+                or
+                <b>
+                 pmdaCacheLookupKey
+                </b>
+                .
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                INSTANCE NAME MATCHING
+               </h2>
+               <p>
+                The following table summarizes the ``short name'' matching semantics
+              for an instance domain (caches other than PMDA_CACHE_STRINGS style).
+               </p>
+               <center>
+                <table border="">
+                 <tr>
+                  <td>
+                   <table>
+                    <tr valign="top">
+                     <td>
+                      name in
+                     </td>
+                     <td>
+                      <b>
+                       pmdaCacheLookup
+                      </b>
+                     </td>
+                     <td rowspan="2" valign="center">
+                      result
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      cache
+                     </td>
+                     <td>
+                      name
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td colspan="3">
+                      <hr/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      foodle
+                     </td>
+                     <td>
+                      foo
+                     </td>
+                     <td>
+                      no match (PM_ERR_INST)
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      foo
+                     </td>
+                     <td>
+                      foodle
+                     </td>
+                     <td>
+                      no match (PM_ERR_INST)
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      foo
+                     </td>
+                     <td>
+                      foo
+                     </td>
+                     <td>
+                      match
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      foo bar
+                     </td>
+                     <td>
+                      foo
+                     </td>
+                     <td>
+                      match on short name (instance identifier)
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      foo bar
+                     </td>
+                     <td>
+                      foo bar
+                     </td>
+                     <td>
+                      match on full name (instance identifier)
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      foo
+                     </td>
+                     <td>
+                      foo bar
+                     </td>
+                     <td>
+                      bad match (-EDOM)
+                      <br/>
+                     </td>
+                    </tr>
+                    <tr valign="top">
+                     <td>
+                      foo bar
+                     </td>
+                     <td>
+                      foo blah
+                     </td>
+                     <td>
+                      bad match (-EDOM)
+                      <br/>
+                     </td>
+                    </tr>
+                   </table>
+                  </td>
+                 </tr>
+                </table>
+               </center>
+               <a name="lbAG">
+               </a>
+               <h2>
+                FILES
+               </h2>
+               Cache persistence uses files with names constructed from the
+               <i>
+                indom
+               </i>
+               within the
+               <b>
+                $PCP_VAR_DIR/config/pmda
+               </b>
+               directory.
+               <a name="lbAH">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="http://man7.org/linux/man-pages/man3/byteorder.3.html">
+                 BYTEORDER
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmda.3.html">
+                 PMDA
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdainit.3.html">
+                 pmdaInit
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdainstance.3.html">
+                 pmdaInstance
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdafetch.3.html">
+                 pmdaFetch
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdalabel.3.html">
+                 pmdaLabel
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmerrstr.3.html">
+                 pmErrStr
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmgetindom.3.html">
+                 pmGetInDom
+                </a>
+               </b>
+               (3).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  OTHER CONSIDERATIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  INSTANCE NAME MATCHING
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

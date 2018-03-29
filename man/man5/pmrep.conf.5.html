@@ -1,1905 +1,1901 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMREP.CONF
- </h1>
- Section: File Formats (5)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmrep.conf
- </b>
- - pmrep configuration file
- <a name="lbAC">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmrep
- </b>
- is a customizable performance metrics reporting tool.
-Any available performance metric, live or archived, system and/or
-application, can be selected for reporting using one of the available
-output alternatives together with applicable formatting options.
- <p>
-  The metrics of interest are named in the
-  <i>
-   metricspec
-  </i>
-  argument(s) on the
-  <b>
-   pmrep
-  </b>
-  command line.
-These metricspecs define individual metrics or pre-defined performance
-metricsets to be read from the configuration file described below.
-For command line argument details see
-  <b>
-   <a href="/man/man1/pmrep.1.html">
-    pmrep
-   </a>
-  </b>
-  (1).
- </p>
- <p>
-  The
-  <b>
-   pmrep.conf
-  </b>
-  configuration file allows setting default runtime values and defining
-any number of custom
-  <i>
-   metricsets
-  </i>
-  for
-  <b>
-   pmrep
-  </b>
-  .
-
-A metricset is a user-defined set of arbitrary performance metrics.
-This allows the user to create specifically crafted metricsets
-particularly relevant for their application or environment.
-Instead of being dependent on what existing tools provide or collecting
-the needed data with several disjoint utilities the user can create and
-modify custom metricsets by editing
-  <b>
-   pmrep.conf
-  </b>
-  .
-
-See below for the
-  <i>
-   metricset
-  </i>
-  specification.
- </p>
- <p>
-  Options via environment values (see
-  <b>
-   <a href="/man/man3/pmgetoptions.3.html">
-    pmGetOptions
-   </a>
-  </b>
-  (3))
-
-override the corresponding built-in default values (if any).
-Configuration file options override the corresponding
-environment variables (if any).
-Command line options override the corresponding configuration
-file options (if any).
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  FILE FORMAT
- </h2>
- The file has an ini-style syntax and consists of sections and options.
-A section begins with the name of the section in square brackets and
-continues until the next section begins.
-An example section with two options follows:
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-[<i>section</i>]
-<i>key</i> = <i>value</i>
-<i>key2</i> = <i>value2</i>
-</pre>
-  </dd>
- </dl>
- <p>
-  The supported value data types are string, integer, and boolean.
-String values need not to be quoted expect when whitespace needs to
-be included in the value (for instance, for the column separator);
-double quotes from quoted strings will be removed.
- </p>
- <p>
-  A line comment starts with a hash sign (``#'') or a semicolon (``;'').
-Inline comments are not supported.
- </p>
- <p>
-  <b>
-   pmrep.conf
-  </b>
-  must be readable by the user invoking
-  <b>
-   pmrep
-  </b>
-  .
- </p>
- <p>
-  Any option described below with a corresponding command line
-option contains additional description in
-  <b>
-   <a href="/man/man1/pmrep.1.html">
-    pmrep
-   </a>
-  </b>
-  (1).
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  SPECIAL SECTIONS
- </h2>
- <a name="lbAF">
- </a>
- <h3>
-  The [options] section
- </h3>
- The
- <b>
-  [options]
- </b>
- section is read every time
- <b>
-  pmrep
- </b>
- is run and it defines the default runtime values (which may be
-overridden by the corresponding command line options).
-Metric specifications are not allowed in this section.
- <p>
-  <b>
-   Section options
-  </b>
- </p>
- <p>
-  version (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the configuration file version.
-Defaults to
-   <b>
-    1
-   </b>
-   .
-The only currently supported value is
-   <b>
-    1
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  source (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the source for metrics.
-Interpreted as a PCP archive if the string contains a slash (``/'').
-If set to the special character ``@'', local DSO PMDA context is used.
-Otherwise interpreted as a hostname.
-Corresponding command line paraters are
-   <b>
-    -a
-   </b>
-   ,
-   <b>
-    -h
-   </b>
-   ,
-and
-   <b>
-    -L
-   </b>
-   .
-Defaults to
-   <b>
-    local:
-   </b>
-   (see
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1)).
-  </dd>
- </dl>
- <p>
-  output (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the output target.
-Corresponding command line option is
-   <b>
-    -o
-   </b>
-   .
-For supported output targets, see
-   <b>
-    <a href="/man/man1/pmrep.1.html">
-     pmrep
-    </a>
-   </b>
-   (1).
-
-Defaults to
-   <b>
-    stdout
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  speclocal (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the local DSO PMDAs to be made available when using the local
-DSO PMDA context.
-Corresponding command line option is
-   <b>
-    -K
-   </b>
-   .
-For syntax description, see
-   <b>
-    <a href="/man/man3/pmspeclocalpmda.3.html">
-     pmSpecLocalPMDA
-    </a>
-   </b>
-   (3).
-
-Use a semicolon (``;'') to separate more than one
-   <i>
-    spec
-   </i>
-   .
-Undefined by default.
-  </dd>
- </dl>
- <p>
-  derived (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Derived metric specifications.
-Corresponding command line option is
-   <b>
-    -e
-   </b>
-   .
-For syntax description, see
-   <b>
-    <a href="/man/man1/pmrep.1.html">
-     pmrep
-    </a>
-   </b>
-   (1).
-
-Undefined by default.
-  </dd>
- </dl>
- <p>
-  daemonize (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to daemonize on startup.
-Corresponding command line option is
-   <b>
-    --daemonize
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  header (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to print headers.
-Corresponding command line option is
-   <b>
-    -H
-   </b>
-   .
-Defaults to
-   <b>
-    yes
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  unitinfo (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to include unit information as part of headers.
-Corresponding command line option is
-   <b>
-    -U
-   </b>
-   .
-Defaults to
-   <b>
-    yes
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  globals (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to include metrics from the
-   <b>
-    [global]
-   </b>
-   section
-(see below) for reporting.
-Corresponding command line option is
-   <b>
-    -G
-   </b>
-   .
-Defaults to
-   <b>
-    yes
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  timestamp (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to print the timestamp.
-Corresponding command line option is
-   <b>
-    -p
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  samples (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the number of samples to print.
-Corresponding command line option is
-   <b>
-    -s
-   </b>
-   .
-Undefined by default (meaning unlimited number of samples if not
-limited by other options).
-  </dd>
- </dl>
- <p>
-  interval (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the interval between samples.
-Corresponding command line option is
-   <b>
-    -o
-   </b>
-   .
-Follows the time syntax described in
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1).
-
-Defaults to
-   <b>
-    1s
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  delay (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to pause between samples when replaying from an
-archive rather than replaying at full speed.
-Corresponding command line option is
-   <b>
-    -d
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  type (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to output raw metric values by disabling all rate
-conversions or convert cumulative counters to rates (default).
-Corresponding command line option is
-   <b>
-    -r
-   </b>
-   .
-Allowed values are
-   <b>
-    default
-   </b>
-   or
-   <b>
-    raw
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  type_prefer (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   As
-   <b>
-    type
-   </b>
-   but does not override possible per-metric type
-specifications.
-Corresponding command line option is
-   <b>
-    -R
-   </b>
-   .
-Allowed values are
-   <b>
-    default
-   </b>
-   or
-   <b>
-    raw
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  ignore_incompat (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates that incompatible metrics are to be ignored.
-Corresponding command line option is
-   <b>
-    -I
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  instances (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the instances to be reported.
-Corresponding command line option is
-   <b>
-    -i
-   </b>
-   .
-Undefined (all instances are reported) by default.
-  </dd>
- </dl>
- <p>
-  live_filter (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates that live filtering should be enabled.
-Corresponding command line option is
-   <b>
-    -j
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  rank (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the value to be used for ranking instances.
-Corresponding command line option is
-   <b>
-    -J
-   </b>
-   .
-Undefined (all instances are reported) by default.
-  </dd>
- </dl>
- <p>
-  overall_rank (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates that overall ranking should be performed.
-Corresponding command line option is
-   <b>
-    -2
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  overall_rank_alt (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates that overall ranking with alternative output format
-should be performed.
-Corresponding command line option is
-   <b>
-    -3
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  limit_filter (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the value to be used with limit filtering.
-Corresponding command line option is
-   <b>
-    -8
-   </b>
-   .
-Undefined (all instances are reported) by default.
-  </dd>
- </dl>
- <p>
-  limit_filter_force (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   As
-   <b>
-    limit_filter
-   </b>
-   but overrides possible possible per-metric
-specifications.
-Corresponding command line option is
-   <b>
-    -9
-   </b>
-   .
-Undefined (all instances are reported) by default.
-  </dd>
- </dl>
- <p>
-  invert_filter (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates that invert filtering should be performed.
-Corresponding command line option is
-   <b>
-    -n
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  predicate (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the metrics to be used as predicate metrics.
-Corresponding command line option is
-   <b>
-    -N
-   </b>
-   .
-Undefined by default.
-  </dd>
- </dl>
- <p>
-  omit_flat (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates that single-valued ``flat'' metrics are to be omitted
-from reporting.
-Corresponding command line option is
-   <b>
-    -v
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  colxrow (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates to swap columns and rows in
-   <i>
-    stdout
-   </i>
-   output using
-the given text label.
-Corresponding command line option is
-   <b>
-    -X
-   </b>
-   .
-Undefined (no swapping) by default.
-  </dd>
- </dl>
- <p>
-  width (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the width of stdout output columns.
-Corresponding command line option is
-   <b>
-    -w
-   </b>
-   .
-Forced minimum is
-   <b>
-    3
-   </b>
-   .
-Defaults to the shortest width that can fit the metric text label.
-  </dd>
- </dl>
- <p>
-  width_force (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   As
-   <b>
-    width
-   </b>
-   but overrides possible possible per-metric specifications.
-Corresponding command line option is
-   <b>
-    -W
-   </b>
-   .
-Forced minimum is
-   <b>
-    3
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  precision (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates how many decimals to use for numeric non-integer output
-values.
-Corresponding command line option is
-   <b>
-    -P
-   </b>
-   .
-Defaults to
-   <b>
-    3
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  precision_force (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   As
-   <b>
-    precision
-   </b>
-   but overrides possible per-metric specifications.
-Corresponding command line option is
-   <b>
-    -0
-   </b>
-   .
-Undefined by default.
-  </dd>
- </dl>
- <p>
-  delimiter (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the column separator.
-Corresponding command line option is
-   <b>
-    -l
-   </b>
-   .
-Default depends on the output target, see
-   <b>
-    <a href="/man/man1/pmrep.1.html">
-     pmrep
-    </a>
-   </b>
-   (1).
-  </dd>
- </dl>
- <p>
-  extcsv (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to write extended CSV output similar to
-   <b>
-    <a href="http://man7.org/linux/man-pages/man1/sadf.1.html">
-     sadf
-    </a>
-   </b>
-   (1).
-
-Corresponding command line option is
-   <b>
-    -k
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  extheader (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to print extended header.
-Corresponding command line option is
-   <b>
-    -x
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  repeat_header (integer)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates how often to repeat the header.
-Corresponding command line option is
-   <b>
-    -E
-   </b>
-   .
-Defaults to
-   <b>
-    0
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  dynamic_header (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates that a dynamic header should be used.
-Corresponding command line option is
-   <b>
-    -1
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  separate_header (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to print a separate header.
-Corresponding command line option is
-   <b>
-    -g
-   </b>
-   .
-Defaults to
-   <b>
-    no
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  timefmt (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the format string for formatting the timestamp.
-Corresponding command line option is
-   <b>
-    -f
-   </b>
-   .
-Defaults to
-   <b>
-    %H:%M:%S
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  interpol (boolean)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates whether to interpolate reported archive values.
-Corresponding command line option is
-   <b>
-    -u
-   </b>
-   .
-See
-   <b>
-    <a href="/man/man1/pmrep.1.html">
-     pmrep
-    </a>
-   </b>
-   (1)
-
-for complete description.
-Defaults to
-   <b>
-    yes
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  count_scale (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the unit/scale for counter metrics.
-Corresponding command line option is
-   <b>
-    -q
-   </b>
-   .
-For supported syntax, see
-   <b>
-    <a href="/man/man1/pmrep.1.html">
-     pmrep
-    </a>
-   </b>
-   (1).
-
-Undefined (no scaling) by default.
-  </dd>
- </dl>
- <p>
-  count_scale_force (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Like
-   <b>
-    count_scale
-   </b>
-   but overrides possible per-metric specifications.
-Corresponding command line option is
-   <b>
-    -Q
-   </b>
-   .
-Undefined by default.
-  </dd>
- </dl>
- <p>
-  space_scale (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the unit/scale for space metrics.
-Corresponding command line option is
-   <b>
-    -b
-   </b>
-   .
-For supported syntax, see
-   <b>
-    <a href="/man/man1/pmrep.1.html">
-     pmrep
-    </a>
-   </b>
-   (1).
-
-Undefined (no scaling) by default.
-  </dd>
- </dl>
- <p>
-  space_scale_force (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Like
-   <b>
-    space_scale
-   </b>
-   but overrides possible per-metric specifications.
-Corresponding command line option is
-   <b>
-    -B
-   </b>
-   .
-Undefined by default.
-  </dd>
- </dl>
- <p>
-  time_scale (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Indicates the unit/scale for time metrics.
-Corresponding command line option is
-   <b>
-    -y
-   </b>
-   .
-For supported syntax, see
-   <b>
-    <a href="/man/man1/pmrep.1.html">
-     pmrep
-    </a>
-   </b>
-   (1).
-
-Undefined (no scaling) by default.
-  </dd>
- </dl>
- <p>
-  time_scale_force (string)
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Like
-   <b>
-    time_scale
-   </b>
-   but overrides possible per-metric specifications.
-Corresponding command line option is
-   <b>
-    -Y
-   </b>
-   .
-Undefined by default.
-  </dd>
- </dl>
- <a name="lbAG">
- </a>
- <h3>
-  The [global] section
- </h3>
- The
- <b>
-  [global]
- </b>
- section is used to define metrics that will be reported in addition to
-any other separately defined metrics or metricsets.
-Configuration options are not allowed in this section.
-Global metrics are reported by default, the command line option
- <b>
-  -G
- </b>
- or the configuration file option
- <b>
-  globals
- </b>
- can be used to disable
-global metrics.
- <p>
-  <b>
-   Section options
-  </b>
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   No predefined options, only
-   <i>
-    metricspecs
-   </i>
-   allowed in this
-section.
-See below for the metricspec specification.
-  </dd>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  CUSTOM SECTIONS
- </h2>
- Any other section than
- <b>
-  [options]
- </b>
- or
- <b>
-  [global]
- </b>
- will be
-interpreted as a new
- <i>
-  metricset
- </i>
- specification.
-The section name is arbitrary, typically a reference to its
-coverage or purpose.
-A custom section can contain options, metricspecs, or both.
- <p>
-  All the metrics specified in a custom section will be reported when
-  <b>
-   pmrep
-  </b>
-  is instructed to use the particular custom section.
-  <b>
-   pmrep
-  </b>
-  can be executed with more than one custom section (i.e.,
-metricset) defined in which case the combination of all the metrics
-specified in them will be reported.
- </p>
- <p>
-  <b>
-   Section options
-  </b>
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Any option valid in the
-   <b>
-    [options]
-   </b>
-   section is also valid in a
-custom section.
-Any option or metric defined in the custom section will override
-the same option or metric possibly defined in an earlier section.
-See below for the metricspec specification.
-  </dd>
- </dl>
- <a name="lbAI">
- </a>
- <h2>
-  METRICSET SPECIFICATION
- </h2>
- There are three forms of the
- <i>
-  metricspec
- </i>
- .
-
-First, on the command line a metricspec can start with a colon
-(``:'') to indicate a reference to a
- <i>
-  metricset
- </i>
- to be read from the
- <b>
-  pmrep
- </b>
- configuration file.
-Second, the
- <i>
-  compact form
- </i>
- of a metricspec is a one-line metric
-specification which can be used both on the command line and in the
- <b>
-  [global]
- </b>
- and custom sections of the configuration file.
-The only difference of its usage in the configuration file is that the
-metric name is used as the key and the optional specifiers as values.
-The compact form of the metricspec is specified in detail in
- <b>
-  <a href="/man/man1/pmrep.1.html">
-   pmrep
-  </a>
- </b>
- (1).
-
-The third,
- <i>
-  verbose form
- </i>
- of a metricspec, is valid only in the
-configuration file (see below).
- <p>
-  A key containing a dot (``.'') is interpreted as a metric name (see
-above), a non-option key not containing a dot is interpreted as an
-identifier (see below).
- </p>
- <p>
-  The verbose form of a metricspec starts with a declaration consisting
-of a mandatory
-  <i>
-   identifier
-  </i>
-  as the key and the actual performance
-metric name (a PMNS leaf node) as its value.
-This equals to the compact form of the metricspec defining the same
-performance metric without any of optional specifiers defined.
-The identifier is arbitrary and is not used otherwise except for
-binding the below specifiers and the metric together.
- </p>
- <p>
-  The following specifiers are optional in the verbose form and can be
-used as keys in any order with an earlier declared identifier followed
-by a dot and the specifier (as in
-  <i>
-   identifier
-  </i>
-  .
-  <i>
-   specifier
-  </i>
-  ):
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <dl compact="">
-    <dt>
-     <i>
-      label
-     </i>
-    </dt>
-    <dd>
-     Defines text label for the metric used by supporting output targets.
-    </dd>
-    <dt>
-     <i>
-      formula
-     </i>
-    </dt>
-    <dd>
-     Defines the needed arithmetic expression for the metric.
-For details, see
-     <b>
-      <a href="/man/man3/pmregisterderived.3.html">
-       pmRegisterDerived
-      </a>
-     </b>
-     (3).
-    </dd>
-    <dt>
-     <i>
-      instances
-     </i>
-    </dt>
-    <dd>
-     Defines the instances to be reported for the metric.
-For details, see
-     <b>
-      <a href="/man/man1/pmrep.1.html">
-       pmrep
-      </a>
-     </b>
-     (1).
-    </dd>
-    <dt>
-     <i>
-      unit
-     </i>
-    </dt>
-    <dd>
-     Defines the unit/scale conversion for the metric.
-Needs to be dimension-compatible and is used with non-string metrics.
-For allowed values, see
-     <b>
-      <a href="/man/man1/pmrep.1.html">
-       pmrep
-      </a>
-     </b>
-     (1).
-    </dd>
-    <dt>
-     <i>
-      type
-     </i>
-    </dt>
-    <dd>
-     If set to
-     <b>
-      raw
-     </b>
-     rate conversion for the metric will be disabled.
-    </dd>
-    <dt>
-     <i>
-      width
-     </i>
-    </dt>
-    <dd>
-     Defines the width of the output column for the metric.
-    </dd>
-    <dt>
-     <i>
-      precision
-     </i>
-    </dt>
-    <dd>
-     Defines precision for numeric non-integer output values.
-    </dd>
-    <dt>
-     <i>
-      limit
-     </i>
-    </dt>
-    <dd>
-     Defines value limit filter for numeric metric values.
-    </dd>
-   </dl>
-  </dd>
- </dl>
- <a name="lbAJ">
- </a>
- <h2>
-  EXAMPLE
- </h2>
- The following example contains a short
- <b>
-  [options]
- </b>
- section setting
-some locally wanted default values.
-It then goes on to define the global metrics
- <b>
-  kernel.all.sysfork
- </b>
- using the
- <i>
-  compact form
- </i>
- and
- <b>
-  mem.util.allcache
- </b>
- using the
- <i>
-  verbose form
- </i>
- of a metricspec.
-The latter is a derived metric using the later specified formula.
-Both of these metrics will be included in reporting unless disabled
-with
- <b>
-  -G
- </b>
- or
- <b>
-  globals = no
- </b>
- .
- <p>
-  Three different
-  <i>
-   metricsets
-  </i>
-  are also specified:
-  <b>
-   db1
-  </b>
-  ,
-  <b>
-   db2
-  </b>
-  , and
-  <b>
-   sar-w
-  </b>
-  .
- </p>
- <p>
-  The DB sets define a host to be used as the source for the metrics.
-Both use the
-  <i>
-   verbose form
-  </i>
-  of a metricspec (as the non-option key
-  <b>
-   set
-  </b>
-  does not contain the dot) to include all
-  <b>
-   postgresql
-  </b>
-  related metrics.
- </p>
- <p>
-  The
-  <b>
-   sar-w
-  </b>
-  set is an example how to mimic an existing tool with
-  <b>
-   pmrep
-  </b>
-  .
- </p>
- <p>
-  The system default
-  <b>
-   pmrep.conf
-  </b>
-  file contains many more examples.
-Using tab after the colon can be used to complete available metricsets
-(with bash and zsh).
- </p>
- <p>
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-[options]
-timestamp = yes
-interval = 2s
-extheader = yes
-repeat_header = 20
-space_scale = MB
-
-[global]
-kernel.all.sysfork = forks,,,,8
-allcache = mem.util.allcache
-allcache.formula = mem.util.bufmem + mem.util.cached + mem.util.slab
-allcache.width = 10
-
-[db1]
-source = db-host1.example.com
-set = postgresql
-
-[db2]
-source = db-host2.example.com
-set = postgresql
-
-[sar-w]
-header = yes
-unitinfo = no
-globals = no
-timestamp = yes
-precision = 2
-delimiter = " "
-kernel.all.sysfork = proc/s,,,,12
-kernel.all.pswitch = cswch/s,,,,9
-</pre>
-  </dd>
- </dl>
- <p>
-  <a name="lbAK">
-  </a>
- </p>
- <h2>
-  FILES
- </h2>
- <dl compact="">
-  <dt>
-   <i>
-   </i>
-   <tt>
-    $PCP_SYSCONF_DIR
-   </tt>
-   /pmrep/pmrep.conf
-  </dt>
-  <dd>
-   system provided
-   <b>
-    pmrep
-   </b>
-   configuration file
-  </dd>
- </dl>
- <a name="lbAL">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize
-the file and directory names used by PCP.
-On each installation, the
-file
- <b>
-  /etc/pcp.conf
- </b>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file, as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <p>
-  For environment variables affecting PCP tools, see
-  <b>
-   <a href="/man/man3/pmgetoptions.3.html">
-    pmGetOptions
-   </a>
-  </b>
-  (3).
-  <a name="lbAM">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmrep.1.html">
-   pmrep
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man3/pmgetoptions.3.html">
-   pmGetOptions
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmspeclocalpmda.3.html">
-   pmSpecLocalPMDA
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmregisterderived.3.html">
-   pmRegisterDerived
-  </a>
- </b>
- (3).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    FILE FORMAT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    SPECIAL SECTIONS
-   </a>
-  </dt>
-  <dd>
-   <dl>
-    <dt>
-     <a href="#lbAF">
-      The [options] section
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAG">
-      The [global] section
-     </a>
-    </dt>
-    <dd>
-    </dd>
-   </dl>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    CUSTOM SECTIONS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    METRICSET SPECIFICATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAJ">
-    EXAMPLE
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAK">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAL">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAM">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMREP.CONF
+               </h1>
+               Section: File Formats (5)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmrep.conf
+               </b>
+               - pmrep configuration file
+               <a name="lbAC">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmrep
+               </b>
+               is a customizable performance metrics reporting tool.
+              Any available performance metric, live or archived, system and/or
+              application, can be selected for reporting using one of the available
+              output alternatives together with applicable formatting options.
+               <p>
+                The metrics of interest are named in the
+                <i>
+                 metricspec
+                </i>
+                argument(s) on the
+                <b>
+                 pmrep
+                </b>
+                command line.
+              These metricspecs define individual metrics or pre-defined performance
+              metricsets to be read from the configuration file described below.
+              For command line argument details see
+                <b>
+                 <a href="/man/man1/pmrep.1.html">
+                  pmrep
+                 </a>
+                </b>
+                (1).
+               </p>
+               <p>
+                The
+                <b>
+                 pmrep.conf
+                </b>
+                configuration file allows setting default runtime values and defining
+              any number of custom
+                <i>
+                 metricsets
+                </i>
+                for
+                <b>
+                 pmrep
+                </b>
+                .
+              
+              A metricset is a user-defined set of arbitrary performance metrics.
+              This allows the user to create specifically crafted metricsets
+              particularly relevant for their application or environment.
+              Instead of being dependent on what existing tools provide or collecting
+              the needed data with several disjoint utilities the user can create and
+              modify custom metricsets by editing
+                <b>
+                 pmrep.conf
+                </b>
+                .
+              
+              See below for the
+                <i>
+                 metricset
+                </i>
+                specification.
+               </p>
+               <p>
+                Options via environment values (see
+                <b>
+                 <a href="/man/man3/pmgetoptions.3.html">
+                  pmGetOptions
+                 </a>
+                </b>
+                (3))
+              
+              override the corresponding built-in default values (if any).
+              Configuration file options override the corresponding
+              environment variables (if any).
+              Command line options override the corresponding configuration
+              file options (if any).
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                FILE FORMAT
+               </h2>
+               The file has an ini-style syntax and consists of sections and options.
+              A section begins with the name of the section in square brackets and
+              continues until the next section begins.
+              An example section with two options follows:
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              [<i>section</i>]
+              <i>key</i> = <i>value</i>
+              <i>key2</i> = <i>value2</i>
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                The supported value data types are string, integer, and boolean.
+              String values need not to be quoted expect when whitespace needs to
+              be included in the value (for instance, for the column separator);
+              double quotes from quoted strings will be removed.
+               </p>
+               <p>
+                A line comment starts with a hash sign (``#'') or a semicolon (``;'').
+              Inline comments are not supported.
+               </p>
+               <p>
+                <b>
+                 pmrep.conf
+                </b>
+                must be readable by the user invoking
+                <b>
+                 pmrep
+                </b>
+                .
+               </p>
+               <p>
+                Any option described below with a corresponding command line
+              option contains additional description in
+                <b>
+                 <a href="/man/man1/pmrep.1.html">
+                  pmrep
+                 </a>
+                </b>
+                (1).
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                SPECIAL SECTIONS
+               </h2>
+               <a name="lbAF">
+               </a>
+               <h3>
+                The [options] section
+               </h3>
+               The
+               <b>
+                [options]
+               </b>
+               section is read every time
+               <b>
+                pmrep
+               </b>
+               is run and it defines the default runtime values (which may be
+              overridden by the corresponding command line options).
+              Metric specifications are not allowed in this section.
+               <p>
+                <b>
+                 Section options
+                </b>
+               </p>
+               <p>
+                version (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the configuration file version.
+              Defaults to
+                 <b>
+                  1
+                 </b>
+                 .
+              The only currently supported value is
+                 <b>
+                  1
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                source (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the source for metrics.
+              Interpreted as a PCP archive if the string contains a slash (``/'').
+              If set to the special character ``@'', local DSO PMDA context is used.
+              Otherwise interpreted as a hostname.
+              Corresponding command line paraters are
+                 <b>
+                  -a
+                 </b>
+                 ,
+                 <b>
+                  -h
+                 </b>
+                 ,
+              and
+                 <b>
+                  -L
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  local:
+                 </b>
+                 (see
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1)).
+                </dd>
+               </dl>
+               <p>
+                output (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the output target.
+              Corresponding command line option is
+                 <b>
+                  -o
+                 </b>
+                 .
+              For supported output targets, see
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1).
+              
+              Defaults to
+                 <b>
+                  stdout
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                speclocal (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the local DSO PMDAs to be made available when using the local
+              DSO PMDA context.
+              Corresponding command line option is
+                 <b>
+                  -K
+                 </b>
+                 .
+              For syntax description, see
+                 <b>
+                  <a href="/man/man3/pmspeclocalpmda.3.html">
+                   pmSpecLocalPMDA
+                  </a>
+                 </b>
+                 (3).
+              
+              Use a semicolon (``;'') to separate more than one
+                 <i>
+                  spec
+                 </i>
+                 .
+              Undefined by default.
+                </dd>
+               </dl>
+               <p>
+                derived (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Derived metric specifications.
+              Corresponding command line option is
+                 <b>
+                  -e
+                 </b>
+                 .
+              For syntax description, see
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1).
+              
+              Undefined by default.
+                </dd>
+               </dl>
+               <p>
+                daemonize (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to daemonize on startup.
+              Corresponding command line option is
+                 <b>
+                  --daemonize
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                header (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to print headers.
+              Corresponding command line option is
+                 <b>
+                  -H
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  yes
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                unitinfo (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to include unit information as part of headers.
+              Corresponding command line option is
+                 <b>
+                  -U
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  yes
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                globals (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to include metrics from the
+                 <b>
+                  [global]
+                 </b>
+                 section
+              (see below) for reporting.
+              Corresponding command line option is
+                 <b>
+                  -G
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  yes
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                timestamp (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to print the timestamp.
+              Corresponding command line option is
+                 <b>
+                  -p
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                samples (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the number of samples to print.
+              Corresponding command line option is
+                 <b>
+                  -s
+                 </b>
+                 .
+              Undefined by default (meaning unlimited number of samples if not
+              limited by other options).
+                </dd>
+               </dl>
+               <p>
+                interval (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the interval between samples.
+              Corresponding command line option is
+                 <b>
+                  -o
+                 </b>
+                 .
+              Follows the time syntax described in
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1).
+              
+              Defaults to
+                 <b>
+                  1s
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                delay (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to pause between samples when replaying from an
+              archive rather than replaying at full speed.
+              Corresponding command line option is
+                 <b>
+                  -d
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                type (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to output raw metric values by disabling all rate
+              conversions or convert cumulative counters to rates (default).
+              Corresponding command line option is
+                 <b>
+                  -r
+                 </b>
+                 .
+              Allowed values are
+                 <b>
+                  default
+                 </b>
+                 or
+                 <b>
+                  raw
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                type_prefer (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 As
+                 <b>
+                  type
+                 </b>
+                 but does not override possible per-metric type
+              specifications.
+              Corresponding command line option is
+                 <b>
+                  -R
+                 </b>
+                 .
+              Allowed values are
+                 <b>
+                  default
+                 </b>
+                 or
+                 <b>
+                  raw
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                ignore_incompat (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates that incompatible metrics are to be ignored.
+              Corresponding command line option is
+                 <b>
+                  -I
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                instances (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the instances to be reported.
+              Corresponding command line option is
+                 <b>
+                  -i
+                 </b>
+                 .
+              Undefined (all instances are reported) by default.
+                </dd>
+               </dl>
+               <p>
+                live_filter (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates that live filtering should be enabled.
+              Corresponding command line option is
+                 <b>
+                  -j
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                rank (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the value to be used for ranking instances.
+              Corresponding command line option is
+                 <b>
+                  -J
+                 </b>
+                 .
+              Undefined (all instances are reported) by default.
+                </dd>
+               </dl>
+               <p>
+                overall_rank (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates that overall ranking should be performed.
+              Corresponding command line option is
+                 <b>
+                  -2
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                overall_rank_alt (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates that overall ranking with alternative output format
+              should be performed.
+              Corresponding command line option is
+                 <b>
+                  -3
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                limit_filter (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the value to be used with limit filtering.
+              Corresponding command line option is
+                 <b>
+                  -8
+                 </b>
+                 .
+              Undefined (all instances are reported) by default.
+                </dd>
+               </dl>
+               <p>
+                limit_filter_force (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 As
+                 <b>
+                  limit_filter
+                 </b>
+                 but overrides possible possible per-metric
+              specifications.
+              Corresponding command line option is
+                 <b>
+                  -9
+                 </b>
+                 .
+              Undefined (all instances are reported) by default.
+                </dd>
+               </dl>
+               <p>
+                invert_filter (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates that invert filtering should be performed.
+              Corresponding command line option is
+                 <b>
+                  -n
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                predicate (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the metrics to be used as predicate metrics.
+              Corresponding command line option is
+                 <b>
+                  -N
+                 </b>
+                 .
+              Undefined by default.
+                </dd>
+               </dl>
+               <p>
+                omit_flat (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates that single-valued ``flat'' metrics are to be omitted
+              from reporting.
+              Corresponding command line option is
+                 <b>
+                  -v
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                colxrow (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates to swap columns and rows in
+                 <i>
+                  stdout
+                 </i>
+                 output using
+              the given text label.
+              Corresponding command line option is
+                 <b>
+                  -X
+                 </b>
+                 .
+              Undefined (no swapping) by default.
+                </dd>
+               </dl>
+               <p>
+                width (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the width of stdout output columns.
+              Corresponding command line option is
+                 <b>
+                  -w
+                 </b>
+                 .
+              Forced minimum is
+                 <b>
+                  3
+                 </b>
+                 .
+              Defaults to the shortest width that can fit the metric text label.
+                </dd>
+               </dl>
+               <p>
+                width_force (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 As
+                 <b>
+                  width
+                 </b>
+                 but overrides possible possible per-metric specifications.
+              Corresponding command line option is
+                 <b>
+                  -W
+                 </b>
+                 .
+              Forced minimum is
+                 <b>
+                  3
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                precision (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates how many decimals to use for numeric non-integer output
+              values.
+              Corresponding command line option is
+                 <b>
+                  -P
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  3
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                precision_force (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 As
+                 <b>
+                  precision
+                 </b>
+                 but overrides possible per-metric specifications.
+              Corresponding command line option is
+                 <b>
+                  -0
+                 </b>
+                 .
+              Undefined by default.
+                </dd>
+               </dl>
+               <p>
+                delimiter (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the column separator.
+              Corresponding command line option is
+                 <b>
+                  -l
+                 </b>
+                 .
+              Default depends on the output target, see
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1).
+                </dd>
+               </dl>
+               <p>
+                extcsv (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to write extended CSV output similar to
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man1/sadf.1.html">
+                   sadf
+                  </a>
+                 </b>
+                 (1).
+              
+              Corresponding command line option is
+                 <b>
+                  -k
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                extheader (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to print extended header.
+              Corresponding command line option is
+                 <b>
+                  -x
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                repeat_header (integer)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates how often to repeat the header.
+              Corresponding command line option is
+                 <b>
+                  -E
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  0
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                dynamic_header (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates that a dynamic header should be used.
+              Corresponding command line option is
+                 <b>
+                  -1
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                separate_header (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to print a separate header.
+              Corresponding command line option is
+                 <b>
+                  -g
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  no
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                timefmt (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the format string for formatting the timestamp.
+              Corresponding command line option is
+                 <b>
+                  -f
+                 </b>
+                 .
+              Defaults to
+                 <b>
+                  %H:%M:%S
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                interpol (boolean)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates whether to interpolate reported archive values.
+              Corresponding command line option is
+                 <b>
+                  -u
+                 </b>
+                 .
+              See
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1)
+              
+              for complete description.
+              Defaults to
+                 <b>
+                  yes
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                count_scale (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the unit/scale for counter metrics.
+              Corresponding command line option is
+                 <b>
+                  -q
+                 </b>
+                 .
+              For supported syntax, see
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1).
+              
+              Undefined (no scaling) by default.
+                </dd>
+               </dl>
+               <p>
+                count_scale_force (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Like
+                 <b>
+                  count_scale
+                 </b>
+                 but overrides possible per-metric specifications.
+              Corresponding command line option is
+                 <b>
+                  -Q
+                 </b>
+                 .
+              Undefined by default.
+                </dd>
+               </dl>
+               <p>
+                space_scale (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the unit/scale for space metrics.
+              Corresponding command line option is
+                 <b>
+                  -b
+                 </b>
+                 .
+              For supported syntax, see
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1).
+              
+              Undefined (no scaling) by default.
+                </dd>
+               </dl>
+               <p>
+                space_scale_force (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Like
+                 <b>
+                  space_scale
+                 </b>
+                 but overrides possible per-metric specifications.
+              Corresponding command line option is
+                 <b>
+                  -B
+                 </b>
+                 .
+              Undefined by default.
+                </dd>
+               </dl>
+               <p>
+                time_scale (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Indicates the unit/scale for time metrics.
+              Corresponding command line option is
+                 <b>
+                  -y
+                 </b>
+                 .
+              For supported syntax, see
+                 <b>
+                  <a href="/man/man1/pmrep.1.html">
+                   pmrep
+                  </a>
+                 </b>
+                 (1).
+              
+              Undefined (no scaling) by default.
+                </dd>
+               </dl>
+               <p>
+                time_scale_force (string)
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Like
+                 <b>
+                  time_scale
+                 </b>
+                 but overrides possible per-metric specifications.
+              Corresponding command line option is
+                 <b>
+                  -Y
+                 </b>
+                 .
+              Undefined by default.
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h3>
+                The [global] section
+               </h3>
+               The
+               <b>
+                [global]
+               </b>
+               section is used to define metrics that will be reported in addition to
+              any other separately defined metrics or metricsets.
+              Configuration options are not allowed in this section.
+              Global metrics are reported by default, the command line option
+               <b>
+                -G
+               </b>
+               or the configuration file option
+               <b>
+                globals
+               </b>
+               can be used to disable
+              global metrics.
+               <p>
+                <b>
+                 Section options
+                </b>
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 No predefined options, only
+                 <i>
+                  metricspecs
+                 </i>
+                 allowed in this
+              section.
+              See below for the metricspec specification.
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                CUSTOM SECTIONS
+               </h2>
+               Any other section than
+               <b>
+                [options]
+               </b>
+               or
+               <b>
+                [global]
+               </b>
+               will be
+              interpreted as a new
+               <i>
+                metricset
+               </i>
+               specification.
+              The section name is arbitrary, typically a reference to its
+              coverage or purpose.
+              A custom section can contain options, metricspecs, or both.
+               <p>
+                All the metrics specified in a custom section will be reported when
+                <b>
+                 pmrep
+                </b>
+                is instructed to use the particular custom section.
+                <b>
+                 pmrep
+                </b>
+                can be executed with more than one custom section (i.e.,
+              metricset) defined in which case the combination of all the metrics
+              specified in them will be reported.
+               </p>
+               <p>
+                <b>
+                 Section options
+                </b>
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Any option valid in the
+                 <b>
+                  [options]
+                 </b>
+                 section is also valid in a
+              custom section.
+              Any option or metric defined in the custom section will override
+              the same option or metric possibly defined in an earlier section.
+              See below for the metricspec specification.
+                </dd>
+               </dl>
+               <a name="lbAI">
+               </a>
+               <h2>
+                METRICSET SPECIFICATION
+               </h2>
+               There are three forms of the
+               <i>
+                metricspec
+               </i>
+               .
+              
+              First, on the command line a metricspec can start with a colon
+              (``:'') to indicate a reference to a
+               <i>
+                metricset
+               </i>
+               to be read from the
+               <b>
+                pmrep
+               </b>
+               configuration file.
+              Second, the
+               <i>
+                compact form
+               </i>
+               of a metricspec is a one-line metric
+              specification which can be used both on the command line and in the
+               <b>
+                [global]
+               </b>
+               and custom sections of the configuration file.
+              The only difference of its usage in the configuration file is that the
+              metric name is used as the key and the optional specifiers as values.
+              The compact form of the metricspec is specified in detail in
+               <b>
+                <a href="/man/man1/pmrep.1.html">
+                 pmrep
+                </a>
+               </b>
+               (1).
+              
+              The third,
+               <i>
+                verbose form
+               </i>
+               of a metricspec, is valid only in the
+              configuration file (see below).
+               <p>
+                A key containing a dot (``.'') is interpreted as a metric name (see
+              above), a non-option key not containing a dot is interpreted as an
+              identifier (see below).
+               </p>
+               <p>
+                The verbose form of a metricspec starts with a declaration consisting
+              of a mandatory
+                <i>
+                 identifier
+                </i>
+                as the key and the actual performance
+              metric name (a PMNS leaf node) as its value.
+              This equals to the compact form of the metricspec defining the same
+              performance metric without any of optional specifiers defined.
+              The identifier is arbitrary and is not used otherwise except for
+              binding the below specifiers and the metric together.
+               </p>
+               <p>
+                The following specifiers are optional in the verbose form and can be
+              used as keys in any order with an earlier declared identifier followed
+              by a dot and the specifier (as in
+                <i>
+                 identifier
+                </i>
+                .
+                <i>
+                 specifier
+                </i>
+                ):
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <dl compact="">
+                  <dt>
+                   <i>
+                    label
+                   </i>
+                  </dt>
+                  <dd>
+                   Defines text label for the metric used by supporting output targets.
+                  </dd>
+                  <dt>
+                   <i>
+                    formula
+                   </i>
+                  </dt>
+                  <dd>
+                   Defines the needed arithmetic expression for the metric.
+              For details, see
+                   <b>
+                    <a href="/man/man3/pmregisterderived.3.html">
+                     pmRegisterDerived
+                    </a>
+                   </b>
+                   (3).
+                  </dd>
+                  <dt>
+                   <i>
+                    instances
+                   </i>
+                  </dt>
+                  <dd>
+                   Defines the instances to be reported for the metric.
+              For details, see
+                   <b>
+                    <a href="/man/man1/pmrep.1.html">
+                     pmrep
+                    </a>
+                   </b>
+                   (1).
+                  </dd>
+                  <dt>
+                   <i>
+                    unit
+                   </i>
+                  </dt>
+                  <dd>
+                   Defines the unit/scale conversion for the metric.
+              Needs to be dimension-compatible and is used with non-string metrics.
+              For allowed values, see
+                   <b>
+                    <a href="/man/man1/pmrep.1.html">
+                     pmrep
+                    </a>
+                   </b>
+                   (1).
+                  </dd>
+                  <dt>
+                   <i>
+                    type
+                   </i>
+                  </dt>
+                  <dd>
+                   If set to
+                   <b>
+                    raw
+                   </b>
+                   rate conversion for the metric will be disabled.
+                  </dd>
+                  <dt>
+                   <i>
+                    width
+                   </i>
+                  </dt>
+                  <dd>
+                   Defines the width of the output column for the metric.
+                  </dd>
+                  <dt>
+                   <i>
+                    precision
+                   </i>
+                  </dt>
+                  <dd>
+                   Defines precision for numeric non-integer output values.
+                  </dd>
+                  <dt>
+                   <i>
+                    limit
+                   </i>
+                  </dt>
+                  <dd>
+                   Defines value limit filter for numeric metric values.
+                  </dd>
+                 </dl>
+                </dd>
+               </dl>
+               <a name="lbAJ">
+               </a>
+               <h2>
+                EXAMPLE
+               </h2>
+               The following example contains a short
+               <b>
+                [options]
+               </b>
+               section setting
+              some locally wanted default values.
+              It then goes on to define the global metrics
+               <b>
+                kernel.all.sysfork
+               </b>
+               using the
+               <i>
+                compact form
+               </i>
+               and
+               <b>
+                mem.util.allcache
+               </b>
+               using the
+               <i>
+                verbose form
+               </i>
+               of a metricspec.
+              The latter is a derived metric using the later specified formula.
+              Both of these metrics will be included in reporting unless disabled
+              with
+               <b>
+                -G
+               </b>
+               or
+               <b>
+                globals = no
+               </b>
+               .
+               <p>
+                Three different
+                <i>
+                 metricsets
+                </i>
+                are also specified:
+                <b>
+                 db1
+                </b>
+                ,
+                <b>
+                 db2
+                </b>
+                , and
+                <b>
+                 sar-w
+                </b>
+                .
+               </p>
+               <p>
+                The DB sets define a host to be used as the source for the metrics.
+              Both use the
+                <i>
+                 verbose form
+                </i>
+                of a metricspec (as the non-option key
+                <b>
+                 set
+                </b>
+                does not contain the dot) to include all
+                <b>
+                 postgresql
+                </b>
+                related metrics.
+               </p>
+               <p>
+                The
+                <b>
+                 sar-w
+                </b>
+                set is an example how to mimic an existing tool with
+                <b>
+                 pmrep
+                </b>
+                .
+               </p>
+               <p>
+                The system default
+                <b>
+                 pmrep.conf
+                </b>
+                file contains many more examples.
+              Using tab after the colon can be used to complete available metricsets
+              (with bash and zsh).
+               </p>
+               <p>
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <pre>
+              [options]
+              timestamp = yes
+              interval = 2s
+              extheader = yes
+              repeat_header = 20
+              space_scale = MB
+              
+              [global]
+              kernel.all.sysfork = forks,,,,8
+              allcache = mem.util.allcache
+              allcache.formula = mem.util.bufmem + mem.util.cached + mem.util.slab
+              allcache.width = 10
+              
+              [db1]
+              source = db-host1.example.com
+              set = postgresql
+              
+              [db2]
+              source = db-host2.example.com
+              set = postgresql
+              
+              [sar-w]
+              header = yes
+              unitinfo = no
+              globals = no
+              timestamp = yes
+              precision = 2
+              delimiter = " "
+              kernel.all.sysfork = proc/s,,,,12
+              kernel.all.pswitch = cswch/s,,,,9
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                <a name="lbAK">
+                </a>
+               </p>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <i>
+                 </i>
+                 <tt>
+                  $PCP_SYSCONF_DIR
+                 </tt>
+                 /pmrep/pmrep.conf
+                </dt>
+                <dd>
+                 system provided
+                 <b>
+                  pmrep
+                 </b>
+                 configuration file
+                </dd>
+               </dl>
+               <a name="lbAL">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize
+              the file and directory names used by PCP.
+              On each installation, the
+              file
+               <b>
+                /etc/pcp.conf
+               </b>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file, as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <p>
+                For environment variables affecting PCP tools, see
+                <b>
+                 <a href="/man/man3/pmgetoptions.3.html">
+                  pmGetOptions
+                 </a>
+                </b>
+                (3).
+                <a name="lbAM">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmrep.1.html">
+                 pmrep
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmgetoptions.3.html">
+                 pmGetOptions
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmspeclocalpmda.3.html">
+                 pmSpecLocalPMDA
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmregisterderived.3.html">
+                 pmRegisterDerived
+                </a>
+               </b>
+               (3).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  FILE FORMAT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SPECIAL SECTIONS
+                 </a>
+                </dt>
+                <dd>
+                 <dl>
+                  <dt>
+                   <a href="#lbAF">
+                    The [options] section
+                   </a>
+                  </dt>
+                  <dd>
+                  </dd>
+                  <dt>
+                   <a href="#lbAG">
+                    The [global] section
+                   </a>
+                  </dt>
+                  <dd>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  CUSTOM SECTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  METRICSET SPECIFICATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAJ">
+                  EXAMPLE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAK">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAL">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAM">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

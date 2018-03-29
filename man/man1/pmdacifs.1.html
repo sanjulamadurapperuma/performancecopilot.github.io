@@ -1,372 +1,368 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMDACIFS
- </h1>
- Section: User Commands  (1)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmdacifs
- </b>
- - Common Internet Filesystem (CIFS) PMDA
- <a name="lbAC">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmdacifs
- </b>
- is a Performance Metrics Domain Agent (PMDA) which exports 
-metric values about mounted CIFS shares from the /proc/fs/cifs
-directory. This PMDA requires at least the CIFS kernel module
-to be loaded to return some metric values and at least one
-mounted CIFS share in order to provide data for all metrics.
- <p>
-  Further details on CIFS can be found at
-  <a href="http://redhat.com">
-   http://redhat.com
-  </a>
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  INSTALLATION
- </h2>
- Install the CIFS PMDA by using the Install script as root:
- <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/cifs
-  <br/>
-  <br/>
-  # ./Install
- </p>
- <p>
-  To uninstall, do the following as root:
- </p>
- <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/cifs
-  <br/>
-  <br/>
-  # ./Remove
- </p>
- <p>
-  <b>
-   pmdacifs
-  </b>
-  is launched by
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-and should never be executed directly.
-The Install and Remove scripts notify
-  <b>
-   pmcd
-  </b>
-  when the agent is installed or removed.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  FILES
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/cifs/help
-   </b>
-  </dt>
-  <dd>
-   default help text file for the CIFS metrics
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/cifs/Install
-   </b>
-  </dt>
-  <dd>
-   installation script for the
-   <b>
-    pmdacifs
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/cifs/Remove
-   </b>
-  </dt>
-  <dd>
-   undo installation script for the
-   <b>
-    pmdacifs
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/cifs.log
-   </b>
-  </dt>
-  <dd>
-   default log file for error messages from
-   <b>
-    pmdacifs
-   </b>
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize
-the file and directory names used by
- <b>
-  PCP
- </b>
- . On each installation, the
-file
- <b>
-  /etc/pcp.conf
- </b>
- contains the local values for these variables. 
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative 
-configuration file, as described in
- <i>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </i>
- (5).
- <a name="lbAG">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmstore.1.html">
-   pmstore
-  </a>
- </b>
- (1),
-
-and
- <b>
-  <a href="/man/man8/mount.cifs.8.html">
-   mount.cifs
-  </a>
- </b>
- (8).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    INSTALLATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMDACIFS
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmdacifs
+               </b>
+               - Common Internet Filesystem (CIFS) PMDA
+               <a name="lbAC">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmdacifs
+               </b>
+               is a Performance Metrics Domain Agent (PMDA) which exports 
+              metric values about mounted CIFS shares from the /proc/fs/cifs
+              directory. This PMDA requires at least the CIFS kernel module
+              to be loaded to return some metric values and at least one
+              mounted CIFS share in order to provide data for all metrics.
+               <p>
+                Further details on CIFS can be found at
+                <a href="http://redhat.com">
+                 http://redhat.com
+                </a>
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                INSTALLATION
+               </h2>
+               Install the CIFS PMDA by using the Install script as root:
+               <p>
+                <br/>
+                # cd $PCP_PMDAS_DIR/cifs
+                <br/>
+                <br/>
+                # ./Install
+               </p>
+               <p>
+                To uninstall, do the following as root:
+               </p>
+               <p>
+                <br/>
+                # cd $PCP_PMDAS_DIR/cifs
+                <br/>
+                <br/>
+                # ./Remove
+               </p>
+               <p>
+                <b>
+                 pmdacifs
+                </b>
+                is launched by
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              and should never be executed directly.
+              The Install and Remove scripts notify
+                <b>
+                 pmcd
+                </b>
+                when the agent is installed or removed.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/cifs/help
+                 </b>
+                </dt>
+                <dd>
+                 default help text file for the CIFS metrics
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/cifs/Install
+                 </b>
+                </dt>
+                <dd>
+                 installation script for the
+                 <b>
+                  pmdacifs
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/cifs/Remove
+                 </b>
+                </dt>
+                <dd>
+                 undo installation script for the
+                 <b>
+                  pmdacifs
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_LOG_DIR/pmcd/cifs.log
+                 </b>
+                </dt>
+                <dd>
+                 default log file for error messages from
+                 <b>
+                  pmdacifs
+                 </b>
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize
+              the file and directory names used by
+               <b>
+                PCP
+               </b>
+               . On each installation, the
+              file
+               <b>
+                /etc/pcp.conf
+               </b>
+               contains the local values for these variables. 
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative 
+              configuration file, as described in
+               <i>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </i>
+               (5).
+               <a name="lbAG">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmstore.1.html">
+                 pmstore
+                </a>
+               </b>
+               (1),
+              
+              and
+               <b>
+                <a href="/man/man8/mount.cifs.8.html">
+                 mount.cifs
+                </a>
+               </b>
+               (8).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  INSTALLATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

@@ -1,834 +1,830 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='docpage'>
-﻿
- <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
-  <font size="7">
-   Authenticated Connections
-  </font>
- </h1>
- <p>
-  <br/>
- </p>
- <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
-  <tr>
-   <td>
-    <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
-pmcd
-pminfo
-pmchart
-pmconfig
-pmdaproc
-pluginviewer
-saslauthd
-saslpasswd2
-sasldblistusers2
-kadmin.local
-kinit
-klist</pre>
-   </td>
-  </tr>
- </table>
- <p>
-  This chapter of the Performance Co-Pilot tutorial covers setting up authenticated
-connections between PCP collector and monitor components.
-An authenticated connection is one where the PCP collector (
-  <b>
-   pmcd
-  </b>
-  and PMDAs)
-is made aware of the credentials of the user running the monitor tools.
-This allows the PCP collector software to perform two important functions:
- </p>
- <ol>
-  <li>
-   Grant additional access, allowing potentially sensitive information to be
-	 accessed by the authenticated user;
-  </li>
-  <li>
-   Make access control decisions for users and groups in order to prevent
-	 inappropriate access to metrics or over-subscription of server resources.
-  </li>
- </ol>
- <p>
-  For an explanation of Performance Co-Pilot terms and acronyms, consult 
-the
-  <a href="glossary.html">
-   PCP glossary
-  </a>
-  .
- </p>
- <ul>
-  <li>
-   <a href="#overview">
-    Overview
-   </a>
-  </li>
-  <li>
-   <a href="#unix">
-    Local Credentials
-   </a>
-  </li>
-  <li>
-   <a href="#sasl">
-    Remote Access
-   </a>
-   <ul>
-    <li>
-     <a href="#sasldb">
-      Using sasldb
-     </a>
-    </li>
-    <li>
-     <a href="#saslauthd">
-      Using saslauthd
-     </a>
-    </li>
-    <li>
-     <a href="#gssapi">
-      Kerberos (GSSAPI)
-     </a>
-    </li>
-   </ul>
-  </li>
- </ul>
- <p>
-  Note: remote host authentication will often warrant the configuration of secure
-connections between PCP monitors and collectors - this is covered by a separate
-tutorial:
-  <a href="lab.secure.html">
-   Secure Connections
-  </a>
-  .
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Check local PCP collector installation (requires the
-    <i>
-     pcp-verify
-    </i>
-    utility):
-    <br/>
-    <pre><b>$ pcp verify --secure</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="overview">
-        Overview
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  All connections made to the PCP metrics collector daemon (
-  <b>
-   pmcd
-  </b>
-  )
-are made using the PCP protocol, which is TCP/IP based.  Traditionally, no
-functionality was available to identify the user making a connection between
-a PCP monitor and collector.  However, as PCP evolved to be able to export
-sensitive information (event trace parameters and detailed per-process
-statistics, for example), it became necessary to provide such mechanisms.
- </p>
- <p>
-  The Performance Co-Pilot has two facilities for transfering credentials
-between the monitoring and collecting components - a local-host-only facility
-using Unix domain sockets, and SASL-based authentication which can be over
-either IPv4 or IPv6 sockets (local or remote).
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="unix">
-        Local Credentials
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  For local connections, there is a fast local transport mechanism
-using Unix domain sockets.  These sockets provide a facility whereby the
-userid and groupid of the monitor process is automatically made available
-to the collector process, with no user intervention being required.
- </p>
- <p>
-  This will become the default localhost transport mechanism over time.
-However, its use can be requested via the
-  <i>
-   unix:
-  </i>
-  host specification
-(
-  <b>
-   -h
-  </b>
-  option) with all monitor tools.
- </p>
- <p>
-  In the following exercise, we make use of per-process metrics from the
-  <b>
-   pmdaproc
-  </b>
-  PCP Collector agent.
-This PMDA is enabled by default, and makes use of authenticated credentials
-from the monitor tools to gate access to sensitive information - process
-identifiers, names, arguments, and so forth.
-In modern versions of PCP, this information is unavailable (PM_ERR_PERMISSION
-is returned) unless the PMDA has been given user credentials.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Check for support, then establish a Unix domain socket connection with automatic credentials transfer:
-    <br/>
-    <pre><b>$ <span>$PCP_BINADM_DIR</span>/pmconfig -L unix_domain_sockets
-unix_domain_sockets=true
-
-$ pmprobe -f -h localhost proc.fd.count
-proc.fd.count -12387 No permission to perform requested operation
-
-$ pmprobe -f -h unix: proc.fd.count
-proc.fd.count 118
-
-$ pminfo -dmt -h unix: proc.fd.count
-
-proc.fd.count PMID: 3.51.0 [open file descriptors]
-    Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
-    Semantics: instant  Units: count
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  A
-  <i>
-   local:
-  </i>
-  specification is also available, which indicates that
-the monitor tool should first attempt to establish a Unix domain socket
-connection (with automatic credentials transfer), but failing that fall back
-to the traditional socket connection style (with no credentials transfer,
-unless mandated by collector or explicitly requested by the monitor user -
-described later in this tutorial).
- </p>
- <p>
-  <b>
-   Note:
-  </b>
-  this facility is completely independent and separate
-to the remote access facility (described later).
-Therefore, it can still be used even when support for the remote
-authentication facilities is unavailable or not configured.
-This local facility is always enabled on platforms that support it - these
-include Linux, Mac OS X and Solaris.
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="sasl">
-        Remote Access
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  The alternative authentication facility is the "Simple Authentication and
-Security Layer" (SASL) which provides for remote authentication.
-Usually this would be used with a
-  <a href="lab.secure.html">
-   secure connection
-  </a>
-  to ensure sensitive information is not transmitted in the clear.
- </p>
- <p>
-  SASL can be configured with many different authentication mechanisms, and this
-configuration is done transparently (outside of PCP, as described shortly).
-This list of mechanisms can be changed via the
-  <i>
-   mech_list
-  </i>
-  entry in the
-  <i>
-   /etc/sasl2/pmcd.conf
-  </i>
-  file, along with other critical security parameters
-defining how
-  <b>
-   pmcd
-  </b>
-  should handle authentication requests.
-
-The
-  <i>
-   mech_list
-  </i>
-  can be set to any one of the installed SASL mechanisms,
-or a space-separated list of mechanisms from which the monitor tools can select.
-There are also situations where it makes sense to not set
-  <i>
-   mech_list
-  </i>
-  at
-all, which we will explore shortly.
- </p>
- <p>
-  To make use of SASL-based authentication, both monitor and collector systems
-need to be capable of running the SASL code (PCP support, in particular, must
-be present on each end of the connection).
-As demonstrated in the following examples, we can use both the
-  <b>
-   pmconfig
-  </b>
-  PCP command and the
-  <b>
-   pluginviewer
-  </b>
-  SASL command to interogate aspects of
-the installations on each end of a connection.
-The
-  <b>
-   pluginviewer
-  </b>
-  command has separate options for reporting on client
-(
-  <b>
-   -c
-  </b>
-  ) and server (
-  <b>
-   -s
-  </b>
-  ) components of an installation.
- </p>
- <i>
-  <b>
-   <a name="sasldb">
-    Using sasldb
-   </a>
-  </b>
- </i>
- <p>
-  The SASL library provides a custom authentication technique, independent
-to the set of users and groups on a system, called
-  <i>
-   sasldb
-  </i>
-  .
-This involves the creation of a new authentication database separate to the
-native login mechanisms that a host provides.  One advantage of using it is
-that it does not require any special privileges on the part of the daemon
-performing authentication (
-  <b>
-   pmcd
-  </b>
-  in our case - which does not run as
-a privileged process and thus typically cannot be used with the common
-authentication databases, such as the
-  <i>
-   /etc/shadow
-  </i>
-  mechanism).
- </p>
- <p>
-  The
-  <i>
-   sasldb
-  </i>
-  approach can be used with several SASL mechanisms, and
-it is commonly used to verify a SASL setup.  Here, we will configure PCP to
-use
-  <i>
-   sasldb
-  </i>
-  by allowing the "plain" SASL mechanism to
-authenticate against it.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Check for support:
-    <br/>
-    <pre><b>$ <span>$PCP_BINADM_DIR</span>/pmconfig -L unix_domain_sockets authentication
-secure_sockets=true
-authentication=true
-
-$ pluginviewer -s -m PLAIN
-[...]
-Plugin "plain" [loaded], 	API version: 4
-	SASL mechanism: PLAIN, best SSF: 0, supports setpass: no
-	security flags: NO_ANONYMOUS|PASS_CREDENTIALS
-	features: WANT_CLIENT_FIRST|PROXY_AUTHENTICATION
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  Modify the
-  <i>
-   /etc/sasl2/pmcd.conf
-  </i>
-  configuration file, so that it makes
-"plain" authentication available to PCP monitor tools, and also
-to specify the location of the SASL credentials database file.
- </p>
- <p>
-  By default, this has been specified as
-  <i>
-   /etc/pcp/passwd.db
-  </i>
-  .
-SASL commands allow this database to be manipulated - adding, listing and
-deleting users, setting their passwords, and so on.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Configure the SASL library:
-    <br/>
-    <pre><b># grep PCP_SASLCONF_DIR /etc/pcp.conf
-PCP_SASLCONF_DIR=/etc/sasl2
-
-# cat <span>$PCP_SASLCONF_DIR</span>/sasl2/pmcd.conf
-mech_list: plain digest-md5 gssapi
-sasldb_path: /etc/pcp/passwd.db
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  Next we create the database and add some users to it.
-Note that requires the previous step to have been performed,
-as that informs the tools about the location of the database.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Administer the SASL database (add, list and disable users):
-    <br/>
-    <pre><b># saslpasswd2 -a pmcd jack
-Password: xxxxxx
-Again (for verification): xxxxxx
-
-# saslpasswd2 -a pmcd jill
-Password: xxxxxx
-Again (for verification): xxxxxx
-
-# sasldblistusers2 -f /etc/pcp/passwd.db
-jack@server.demo.net: userPassword
-jill@server.demo.net: userPassword
-
-# saslpasswd2 -a pmcd -d jill
-
-# $PCP_RC_DIR/pmcd restart
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  Finally, we're ready to try it out.  As we have just restarted
-  <b>
-   pmcd
-  </b>
-  (above), its worth checking its log file -
-  <i>
-   $PCP_LOG_DIR/pmcd/pmcd.log
-  </i>
-  -
-and if that is free of errors, we can attempt to authenticate.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Establish an authenticated connection:
-    <br/>
-    <pre><b>$ pminfo -fmdt -h pcps://server.demo.net?method=plain proc.fd.count
-Username: jack
-Password: xxxxxx
-
-proc.fd.count PMID: 3.51.0 [open file descriptors]
-    Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
-    Semantics: instant  Units: count
-    inst [1281 or "001281 bash"] value 4
-    inst [1287 or "001287 make -j 8 default_pcp"] value 5
-    inst [1802 or "001802 bash"] value 4
-    [...]
-</b></pre>
-   </td>
-  </tr>
- </table>
- <i>
-  <b>
-   <a name="saslauthd">
-    Using saslauthd
-   </a>
-  </b>
- </i>
- <p>
-  The SASL mechanism configured by default on a PCP collector system is
-  <i>
-   sasldb
-  </i>
-  which provides a basic username and password style authentication mechanism with no
-reliance on external daemons, package dependencies, and so on.
-Without customisation for individual users, as described above, it allows no access
-and can thus be considered secure-by-default.
- </p>
- <p>
-  However, it is often more convenient to use the same authentication mechanism
-that is used when logging in to a host (e.g. PAM on Linux and Solaris).
-Because the PCP daemons run without superuser privileges, they cannot perform this
-authentication themselves, and so it must be achieved using a separate, privileged
-process.
-SASL provides
-  <i>
-   saslauthd
-  </i>
-  for this purpose.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Check for support:
-    <br/>
-    <pre><b>$ pmconfig -L secure_sockets authentication
-secure_sockets=true
-authentication=true
-
-$ pluginviewer -s -m PLAIN
-[...]
-Plugin "plain" [loaded], 	API version: 4
-	SASL mechanism: PLAIN, best SSF: 0, supports setpass: no
-	security flags: NO_ANONYMOUS|PASS_CREDENTIALS
-	features: WANT_CLIENT_FIRST|PROXY_AUTHENTICATION
-
-$ ps ax | grep saslauthd
- 2857 ?        Ss     0:00 /usr/sbin/saslauthd -m /var/run/saslauthd -a pam
- 2858 ?        S      0:00 /usr/sbin/saslauthd -m /var/run/saslauthd -a pam
-[...]
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  In this case, the SASL mechanism configuration is entirely handled by
-  <i>
-   saslauthd
-  </i>
-  so we simply need to ensure we pass authentication
-through to the daemon - no configuration beyond that should be needed.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Setup use of
-    <i>
-     saslauthd
-    </i>
-    on the PCP Collector:
-    <br/>
-    <pre><b># grep PCP_SASLCONF_DIR /etc/pcp.conf
-PCP_SASLCONF_DIR=/etc/sasl2
-
-# cat <span>$PCP_SASLCONF_DIR</span>/sasl2/pmcd.conf
-pwcheck_method: saslauthd
-
-# <span>$PCP_RC_DIR</span>/pmcd restart
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  We are now ready to establish an authenticated connection.
-  <i>
-   saslauthd
-  </i>
-  will log into the system log, so any authorisation
-failures can be further diagnosed using information captured there.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Setup use of
-    <i>
-     saslauthd
-    </i>
-    on the PCP Collector:
-    <br/>
-    <pre><b>$ pminfo -h pcps://server.demo.net?method=plain -dfmt proc.fd.count
-Username: jack
-Password: xxxxxx
-
-proc.fd.count PMID: 3.51.0 [open file descriptors]
-    Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
-    Semantics: instant  Units: count
-    inst [1281 or "001281 bash"] value 4
-    inst [1287 or "001287 make -j 8 default_pcp"] value 5
-    inst [1802 or "001802 bash"] value 4
-    [...]
-</b></pre>
-   </td>
-  </tr>
- </table>
- <i>
-  <b>
-   <a name="gssapi">
-    Kerberos Authentication
-   </a>
-  </b>
- </i>
- <p>
-  The PCP collector system can be configured to authenticate using Kerberos
-single-sign-on using the GSSAPI authentication mechanism.
-This mechanism is enabled via the
-  <i>
-   mech_list
-  </i>
-  option in
-  <i>
-   /etc/sasl2/pmcd.conf
-  </i>
-  ,
-and the keytab should be set to
-  <i>
-   /etc/pcp/pmcd/krb5.tab
-  </i>
-  .
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Check for support:
-    <br/>
-    <pre><b>$ pmconfig -L secure_sockets authentication
-secure_sockets=true
-authentication=true
-
-$ pluginviewer -s -m GSSAPI
-[...]
-Plugin "gssapiv2" [loaded], 	API version: 4
-	SASL mechanism: GSSAPI, best SSF: 56, supports setpass: no
-	security flags: NO_ANONYMOUS|NO_PLAINTEXT|NO_ACTIVE|PASS_CREDENTIALS|MUTUAL_AUTH
-	features: WANT_CLIENT_FIRST|PROXY_AUTHENTICATION|DONTUSE_USERPASSWD
-</b></pre>
-   </td>
-  </tr>
- </table>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Setup Kerberos authentication on the PCP Collector:
-    <br/>
-    <pre><b># kadmin.local
-kadmin.local: add_principal pmcd/server.demo.net
-Enter password for principal "pmcd/server.demo.net@DEMO.NET":
-Re-enter password for principal "pmcd/server.demo.net@DEMO.NET":
-Principal "pmcd/server.demo.net@DEMO.NET" created.
-
-kadmin.local:  ktadd -k /root/pmcd-server-demo.tab pmcd/server.demo.net@DEMO.NET
-Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type Triple DES cbc mode with HMAC/sha1 added to keytab WRFILE:/root/pmcd-server-demo.tab.
-Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type ArcFour with HMAC/md5 added to keytab WRFILE:/root/pmcd-server-demo.tab.
-Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type DES with HMAC/sha1 added to keytab WRFILE:/root/pmcd-server-demo.tab.
-Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type DES cbc mode with RSA-MD5 added to keytab WRFILE:/root/pmcd-server-demo.tab.
-
-kadmin.local: quit
-
-# scp /root/pmcd-server-demo.tab root@server.demo.net:/etc/pcp/pmcd/krb5.tab
-# rm /root/pmcd-server-demo.tab
-
-$ kinit jack@DEMO.NET
-Password for jack@DEMO.NET: xxxxxx
-
-$ klist
-Ticket cache: FILE:/tmp/krb5cc_500
-Default principal: jack@DEMO.NET
-
-Valid starting     Expires            Service principal
-02/07/13 20:46:40  02/08/13 06:46:40  krbtgt/DEMO.NET@DEMO.NET
-	renew until 02/07/13 20:46:40
-
-$ pminfo -h 'pcps://server.demo.net?method=gssapi' -dfmt proc.fd.count
-
-proc.fd.count PMID: 3.51.0 [open file descriptors]
-    Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
-    Semantics: instant  Units: count
-    inst [1281 or "001281 bash"] value 4
-    inst [1287 or "001287 make -j 8 default_pcp"] value 5
-    inst [1802 or "001802 bash"] value 4
-    [...]
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  <br/>
- </p>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='docpage'>
+              ﻿
+               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+                <font size="7">
+                 Authenticated Connections
+                </font>
+               </h1>
+               <p>
+                <br/>
+               </p>
+               <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
+                <tr>
+                 <td>
+                  <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
+              pmcd
+              pminfo
+              pmchart
+              pmconfig
+              pmdaproc
+              pluginviewer
+              saslauthd
+              saslpasswd2
+              sasldblistusers2
+              kadmin.local
+              kinit
+              klist</pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                This chapter of the Performance Co-Pilot tutorial covers setting up authenticated
+              connections between PCP collector and monitor components.
+              An authenticated connection is one where the PCP collector (
+                <b>
+                 pmcd
+                </b>
+                and PMDAs)
+              is made aware of the credentials of the user running the monitor tools.
+              This allows the PCP collector software to perform two important functions:
+               </p>
+               <ol>
+                <li>
+                 Grant additional access, allowing potentially sensitive information to be
+              	 accessed by the authenticated user;
+                </li>
+                <li>
+                 Make access control decisions for users and groups in order to prevent
+              	 inappropriate access to metrics or over-subscription of server resources.
+                </li>
+               </ol>
+               <p>
+                For an explanation of Performance Co-Pilot terms and acronyms, consult 
+              the
+                <a href="glossary.html">
+                 PCP glossary
+                </a>
+                .
+               </p>
+               <ul>
+                <li>
+                 <a href="#overview">
+                  Overview
+                 </a>
+                </li>
+                <li>
+                 <a href="#unix">
+                  Local Credentials
+                 </a>
+                </li>
+                <li>
+                 <a href="#sasl">
+                  Remote Access
+                 </a>
+                 <ul>
+                  <li>
+                   <a href="#sasldb">
+                    Using sasldb
+                   </a>
+                  </li>
+                  <li>
+                   <a href="#saslauthd">
+                    Using saslauthd
+                   </a>
+                  </li>
+                  <li>
+                   <a href="#gssapi">
+                    Kerberos (GSSAPI)
+                   </a>
+                  </li>
+                 </ul>
+                </li>
+               </ul>
+               <p>
+                Note: remote host authentication will often warrant the configuration of secure
+              connections between PCP monitors and collectors - this is covered by a separate
+              tutorial:
+                <a href="lab.secure.html">
+                 Secure Connections
+                </a>
+                .
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Check local PCP collector installation (requires the
+                  <i>
+                   pcp-verify
+                  </i>
+                  utility):
+                  <br/>
+                  <pre><b>$ pcp verify --secure</b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="overview">
+                      Overview
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                All connections made to the PCP metrics collector daemon (
+                <b>
+                 pmcd
+                </b>
+                )
+              are made using the PCP protocol, which is TCP/IP based.  Traditionally, no
+              functionality was available to identify the user making a connection between
+              a PCP monitor and collector.  However, as PCP evolved to be able to export
+              sensitive information (event trace parameters and detailed per-process
+              statistics, for example), it became necessary to provide such mechanisms.
+               </p>
+               <p>
+                The Performance Co-Pilot has two facilities for transfering credentials
+              between the monitoring and collecting components - a local-host-only facility
+              using Unix domain sockets, and SASL-based authentication which can be over
+              either IPv4 or IPv6 sockets (local or remote).
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="unix">
+                      Local Credentials
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                For local connections, there is a fast local transport mechanism
+              using Unix domain sockets.  These sockets provide a facility whereby the
+              userid and groupid of the monitor process is automatically made available
+              to the collector process, with no user intervention being required.
+               </p>
+               <p>
+                This will become the default localhost transport mechanism over time.
+              However, its use can be requested via the
+                <i>
+                 unix:
+                </i>
+                host specification
+              (
+                <b>
+                 -h
+                </b>
+                option) with all monitor tools.
+               </p>
+               <p>
+                In the following exercise, we make use of per-process metrics from the
+                <b>
+                 pmdaproc
+                </b>
+                PCP Collector agent.
+              This PMDA is enabled by default, and makes use of authenticated credentials
+              from the monitor tools to gate access to sensitive information - process
+              identifiers, names, arguments, and so forth.
+              In modern versions of PCP, this information is unavailable (PM_ERR_PERMISSION
+              is returned) unless the PMDA has been given user credentials.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Check for support, then establish a Unix domain socket connection with automatic credentials transfer:
+                  <br/>
+                  <pre><b>$ <span>$PCP_BINADM_DIR</span>/pmconfig -L unix_domain_sockets
+              unix_domain_sockets=true
+              
+              $ pmprobe -f -h localhost proc.fd.count
+              proc.fd.count -12387 No permission to perform requested operation
+              
+              $ pmprobe -f -h unix: proc.fd.count
+              proc.fd.count 118
+              
+              $ pminfo -dmt -h unix: proc.fd.count
+              
+              proc.fd.count PMID: 3.51.0 [open file descriptors]
+                  Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
+                  Semantics: instant  Units: count
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                A
+                <i>
+                 local:
+                </i>
+                specification is also available, which indicates that
+              the monitor tool should first attempt to establish a Unix domain socket
+              connection (with automatic credentials transfer), but failing that fall back
+              to the traditional socket connection style (with no credentials transfer,
+              unless mandated by collector or explicitly requested by the monitor user -
+              described later in this tutorial).
+               </p>
+               <p>
+                <b>
+                 Note:
+                </b>
+                this facility is completely independent and separate
+              to the remote access facility (described later).
+              Therefore, it can still be used even when support for the remote
+              authentication facilities is unavailable or not configured.
+              This local facility is always enabled on platforms that support it - these
+              include Linux, Mac OS X and Solaris.
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="sasl">
+                      Remote Access
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                The alternative authentication facility is the "Simple Authentication and
+              Security Layer" (SASL) which provides for remote authentication.
+              Usually this would be used with a
+                <a href="lab.secure.html">
+                 secure connection
+                </a>
+                to ensure sensitive information is not transmitted in the clear.
+               </p>
+               <p>
+                SASL can be configured with many different authentication mechanisms, and this
+              configuration is done transparently (outside of PCP, as described shortly).
+              This list of mechanisms can be changed via the
+                <i>
+                 mech_list
+                </i>
+                entry in the
+                <i>
+                 /etc/sasl2/pmcd.conf
+                </i>
+                file, along with other critical security parameters
+              defining how
+                <b>
+                 pmcd
+                </b>
+                should handle authentication requests.
+              
+              The
+                <i>
+                 mech_list
+                </i>
+                can be set to any one of the installed SASL mechanisms,
+              or a space-separated list of mechanisms from which the monitor tools can select.
+              There are also situations where it makes sense to not set
+                <i>
+                 mech_list
+                </i>
+                at
+              all, which we will explore shortly.
+               </p>
+               <p>
+                To make use of SASL-based authentication, both monitor and collector systems
+              need to be capable of running the SASL code (PCP support, in particular, must
+              be present on each end of the connection).
+              As demonstrated in the following examples, we can use both the
+                <b>
+                 pmconfig
+                </b>
+                PCP command and the
+                <b>
+                 pluginviewer
+                </b>
+                SASL command to interogate aspects of
+              the installations on each end of a connection.
+              The
+                <b>
+                 pluginviewer
+                </b>
+                command has separate options for reporting on client
+              (
+                <b>
+                 -c
+                </b>
+                ) and server (
+                <b>
+                 -s
+                </b>
+                ) components of an installation.
+               </p>
+               <i>
+                <b>
+                 <a name="sasldb">
+                  Using sasldb
+                 </a>
+                </b>
+               </i>
+               <p>
+                The SASL library provides a custom authentication technique, independent
+              to the set of users and groups on a system, called
+                <i>
+                 sasldb
+                </i>
+                .
+              This involves the creation of a new authentication database separate to the
+              native login mechanisms that a host provides.  One advantage of using it is
+              that it does not require any special privileges on the part of the daemon
+              performing authentication (
+                <b>
+                 pmcd
+                </b>
+                in our case - which does not run as
+              a privileged process and thus typically cannot be used with the common
+              authentication databases, such as the
+                <i>
+                 /etc/shadow
+                </i>
+                mechanism).
+               </p>
+               <p>
+                The
+                <i>
+                 sasldb
+                </i>
+                approach can be used with several SASL mechanisms, and
+              it is commonly used to verify a SASL setup.  Here, we will configure PCP to
+              use
+                <i>
+                 sasldb
+                </i>
+                by allowing the "plain" SASL mechanism to
+              authenticate against it.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Check for support:
+                  <br/>
+                  <pre><b>$ <span>$PCP_BINADM_DIR</span>/pmconfig -L unix_domain_sockets authentication
+              secure_sockets=true
+              authentication=true
+              
+              $ pluginviewer -s -m PLAIN
+              [...]
+              Plugin "plain" [loaded], 	API version: 4
+              	SASL mechanism: PLAIN, best SSF: 0, supports setpass: no
+              	security flags: NO_ANONYMOUS|PASS_CREDENTIALS
+              	features: WANT_CLIENT_FIRST|PROXY_AUTHENTICATION
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                Modify the
+                <i>
+                 /etc/sasl2/pmcd.conf
+                </i>
+                configuration file, so that it makes
+              "plain" authentication available to PCP monitor tools, and also
+              to specify the location of the SASL credentials database file.
+               </p>
+               <p>
+                By default, this has been specified as
+                <i>
+                 /etc/pcp/passwd.db
+                </i>
+                .
+              SASL commands allow this database to be manipulated - adding, listing and
+              deleting users, setting their passwords, and so on.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Configure the SASL library:
+                  <br/>
+                  <pre><b># grep PCP_SASLCONF_DIR /etc/pcp.conf
+              PCP_SASLCONF_DIR=/etc/sasl2
+              
+              # cat <span>$PCP_SASLCONF_DIR</span>/sasl2/pmcd.conf
+              mech_list: plain digest-md5 gssapi
+              sasldb_path: /etc/pcp/passwd.db
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                Next we create the database and add some users to it.
+              Note that requires the previous step to have been performed,
+              as that informs the tools about the location of the database.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Administer the SASL database (add, list and disable users):
+                  <br/>
+                  <pre><b># saslpasswd2 -a pmcd jack
+              Password: xxxxxx
+              Again (for verification): xxxxxx
+              
+              # saslpasswd2 -a pmcd jill
+              Password: xxxxxx
+              Again (for verification): xxxxxx
+              
+              # sasldblistusers2 -f /etc/pcp/passwd.db
+              jack@server.demo.net: userPassword
+              jill@server.demo.net: userPassword
+              
+              # saslpasswd2 -a pmcd -d jill
+              
+              # $PCP_RC_DIR/pmcd restart
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                Finally, we're ready to try it out.  As we have just restarted
+                <b>
+                 pmcd
+                </b>
+                (above), its worth checking its log file -
+                <i>
+                 $PCP_LOG_DIR/pmcd/pmcd.log
+                </i>
+                -
+              and if that is free of errors, we can attempt to authenticate.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Establish an authenticated connection:
+                  <br/>
+                  <pre><b>$ pminfo -fmdt -h pcps://server.demo.net?method=plain proc.fd.count
+              Username: jack
+              Password: xxxxxx
+              
+              proc.fd.count PMID: 3.51.0 [open file descriptors]
+                  Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
+                  Semantics: instant  Units: count
+                  inst [1281 or "001281 bash"] value 4
+                  inst [1287 or "001287 make -j 8 default_pcp"] value 5
+                  inst [1802 or "001802 bash"] value 4
+                  [...]
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <i>
+                <b>
+                 <a name="saslauthd">
+                  Using saslauthd
+                 </a>
+                </b>
+               </i>
+               <p>
+                The SASL mechanism configured by default on a PCP collector system is
+                <i>
+                 sasldb
+                </i>
+                which provides a basic username and password style authentication mechanism with no
+              reliance on external daemons, package dependencies, and so on.
+              Without customisation for individual users, as described above, it allows no access
+              and can thus be considered secure-by-default.
+               </p>
+               <p>
+                However, it is often more convenient to use the same authentication mechanism
+              that is used when logging in to a host (e.g. PAM on Linux and Solaris).
+              Because the PCP daemons run without superuser privileges, they cannot perform this
+              authentication themselves, and so it must be achieved using a separate, privileged
+              process.
+              SASL provides
+                <i>
+                 saslauthd
+                </i>
+                for this purpose.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Check for support:
+                  <br/>
+                  <pre><b>$ pmconfig -L secure_sockets authentication
+              secure_sockets=true
+              authentication=true
+              
+              $ pluginviewer -s -m PLAIN
+              [...]
+              Plugin "plain" [loaded], 	API version: 4
+              	SASL mechanism: PLAIN, best SSF: 0, supports setpass: no
+              	security flags: NO_ANONYMOUS|PASS_CREDENTIALS
+              	features: WANT_CLIENT_FIRST|PROXY_AUTHENTICATION
+              
+              $ ps ax | grep saslauthd
+               2857 ?        Ss     0:00 /usr/sbin/saslauthd -m /var/run/saslauthd -a pam
+               2858 ?        S      0:00 /usr/sbin/saslauthd -m /var/run/saslauthd -a pam
+              [...]
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                In this case, the SASL mechanism configuration is entirely handled by
+                <i>
+                 saslauthd
+                </i>
+                so we simply need to ensure we pass authentication
+              through to the daemon - no configuration beyond that should be needed.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Setup use of
+                  <i>
+                   saslauthd
+                  </i>
+                  on the PCP Collector:
+                  <br/>
+                  <pre><b># grep PCP_SASLCONF_DIR /etc/pcp.conf
+              PCP_SASLCONF_DIR=/etc/sasl2
+              
+              # cat <span>$PCP_SASLCONF_DIR</span>/sasl2/pmcd.conf
+              pwcheck_method: saslauthd
+              
+              # <span>$PCP_RC_DIR</span>/pmcd restart
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                We are now ready to establish an authenticated connection.
+                <i>
+                 saslauthd
+                </i>
+                will log into the system log, so any authorisation
+              failures can be further diagnosed using information captured there.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Setup use of
+                  <i>
+                   saslauthd
+                  </i>
+                  on the PCP Collector:
+                  <br/>
+                  <pre><b>$ pminfo -h pcps://server.demo.net?method=plain -dfmt proc.fd.count
+              Username: jack
+              Password: xxxxxx
+              
+              proc.fd.count PMID: 3.51.0 [open file descriptors]
+                  Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
+                  Semantics: instant  Units: count
+                  inst [1281 or "001281 bash"] value 4
+                  inst [1287 or "001287 make -j 8 default_pcp"] value 5
+                  inst [1802 or "001802 bash"] value 4
+                  [...]
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <i>
+                <b>
+                 <a name="gssapi">
+                  Kerberos Authentication
+                 </a>
+                </b>
+               </i>
+               <p>
+                The PCP collector system can be configured to authenticate using Kerberos
+              single-sign-on using the GSSAPI authentication mechanism.
+              This mechanism is enabled via the
+                <i>
+                 mech_list
+                </i>
+                option in
+                <i>
+                 /etc/sasl2/pmcd.conf
+                </i>
+                ,
+              and the keytab should be set to
+                <i>
+                 /etc/pcp/pmcd/krb5.tab
+                </i>
+                .
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Check for support:
+                  <br/>
+                  <pre><b>$ pmconfig -L secure_sockets authentication
+              secure_sockets=true
+              authentication=true
+              
+              $ pluginviewer -s -m GSSAPI
+              [...]
+              Plugin "gssapiv2" [loaded], 	API version: 4
+              	SASL mechanism: GSSAPI, best SSF: 56, supports setpass: no
+              	security flags: NO_ANONYMOUS|NO_PLAINTEXT|NO_ACTIVE|PASS_CREDENTIALS|MUTUAL_AUTH
+              	features: WANT_CLIENT_FIRST|PROXY_AUTHENTICATION|DONTUSE_USERPASSWD
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Setup Kerberos authentication on the PCP Collector:
+                  <br/>
+                  <pre><b># kadmin.local
+              kadmin.local: add_principal pmcd/server.demo.net
+              Enter password for principal "pmcd/server.demo.net@DEMO.NET":
+              Re-enter password for principal "pmcd/server.demo.net@DEMO.NET":
+              Principal "pmcd/server.demo.net@DEMO.NET" created.
+              
+              kadmin.local:  ktadd -k /root/pmcd-server-demo.tab pmcd/server.demo.net@DEMO.NET
+              Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type Triple DES cbc mode with HMAC/sha1 added to keytab WRFILE:/root/pmcd-server-demo.tab.
+              Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type ArcFour with HMAC/md5 added to keytab WRFILE:/root/pmcd-server-demo.tab.
+              Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type DES with HMAC/sha1 added to keytab WRFILE:/root/pmcd-server-demo.tab.
+              Entry for principal pmcd/server.demo.net@DEMO.NET with kvno 4, encryption type DES cbc mode with RSA-MD5 added to keytab WRFILE:/root/pmcd-server-demo.tab.
+              
+              kadmin.local: quit
+              
+              # scp /root/pmcd-server-demo.tab root@server.demo.net:/etc/pcp/pmcd/krb5.tab
+              # rm /root/pmcd-server-demo.tab
+              
+              $ kinit jack@DEMO.NET
+              Password for jack@DEMO.NET: xxxxxx
+              
+              $ klist
+              Ticket cache: FILE:/tmp/krb5cc_500
+              Default principal: jack@DEMO.NET
+              
+              Valid starting     Expires            Service principal
+              02/07/13 20:46:40  02/08/13 06:46:40  krbtgt/DEMO.NET@DEMO.NET
+              	renew until 02/07/13 20:46:40
+              
+              $ pminfo -h 'pcps://server.demo.net?method=gssapi' -dfmt proc.fd.count
+              
+              proc.fd.count PMID: 3.51.0 [open file descriptors]
+                  Data Type: 32-bit unsigned int  InDom: 3.9 0xc00009
+                  Semantics: instant  Units: count
+                  inst [1281 or "001281 bash"] value 4
+                  inst [1287 or "001287 make -j 8 default_pcp"] value 5
+                  inst [1802 or "001802 bash"] value 4
+                  [...]
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                <br/>
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

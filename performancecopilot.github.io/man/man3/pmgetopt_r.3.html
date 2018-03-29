@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMGETOPTIONS
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmgetopt_r
+ </b>
+ ,
+ <b>
+  pmGetOptions
+ </b>
+ ,
+ <b>
+  pmGetContextOptions
+ </b>
+ ,
+ <b>
+  pmFreeOptions
+ </b>
+ ,
+ <b>
+  pmUsageMessage
+ </b>
+ - command line handling for PMAPI tools
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  int pmgetopt_r(int
+  <i>
+   argc
+  </i>
+  , char *const *
+  <i>
+   argv
+  </i>
+  , pmOptions *
+  <i>
+   opts
+  </i>
+  );
+  <br/>
+  int pmGetOptions(int
+  <i>
+   argc
+  </i>
+  , char *const *
+  <i>
+   argv
+  </i>
+  , pmOptions *
+  <i>
+   opts
+  </i>
+  );
+  <br/>
+  int pmGetContextOptions(int
+  <i>
+   ctx
+  </i>
+  , pmOptions *
+  <i>
+   opts
+  </i>
+  );
+  <br/>
+  void pmUsageMessage(pmOptions *
+  <i>
+   opts
+  </i>
+  );
+  <br/>
+  void pmFreeOptions(pmOptions *
+  <i>
+   opts
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ The
+ <b>
+  pmGetOptions
+ </b>
+ function provides command line option processing services for both
+monitor and collector
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3)
+
+tools.
+It is modelled on the thread-safe variants of the GNU
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/getopt_long.3.html">
+   getopt_long
+  </a>
+ </b>
+ (3)
+
+API, and primarily differs in its focus on providing generalised
+processing for the (de-facto) standard PCP command line options
+described in
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1).
+
+These common options include the host and archive specification,
+time windows, timezones, sample counts, time intervals, and so on.
+ <p>
+  The primary interface is
+  <b>
+   pmGetOptions
+  </b>
+  ,
+
+which should be passed the
+  <i>
+   argc
+  </i>
+  argument count and
+  <i>
+   argv
+  </i>
+  array, as passed to the
+  <i>
+   main()
+  </i>
+  function on program invocation.
+The final
+  <i>
+   opts
+  </i>
+  argument describes the set of long and short options the tools is
+prepared to process, and other metadata regarding how those options
+should be processed.
+ </p>
+ <p>
+  The
+  <b>
+   pmgetopt_r
+  </b>
+  interface, used internally by
+  <b>
+   pmGetOptions
+  </b>
+  ,
+
+behaves in a similar fashion, but it does not perform any common
+option processing.
+It is more suited to PCP collector processes, whereas PCP monitor
+tools tend to use
+  <b>
+   pmGetOptions
+  </b>
+  .
+ </p>
+ <p>
+  The
+  <i>
+   opts
+  </i>
+  argument consists of an array of
+  <i>
+   pmLongOpts
+  </i>
+  entries describing the arguments, as well as the enclosing
+  <i>
+   pmOptions
+  </i>
+  struct, which are defined as follows (internal fields are not
+presented, for brevity):
+ </p>
+ <p>
+ </p>
+ <p>
+ </p>
+ <pre>
+typedef struct {
+    const char *        long_opt;
+    int                 has_arg;
+    int                 short_opt;
+    const char *        argname;
+    const char *        message;
+} pmLongOptions;
+
+typedef struct {
+    int                 version;
+    int                 flags;
+    const char *        short_options;
+    pmLongOptions *     long_options;
+    const char *        short_usage;
+    pmOptionOverride    override;
+
+    int                 index;
+    int                 optind;
+    int                 opterr;
+    int                 optopt;
+    char                *optarg;
+    /* [internal fields, undocumented] */
+
+    int                 errors;
+    int                 context; /* PM_CONTEXT_{HOST,ARCHIVE,LOCAL} */
+    int                 nhosts;
+    int                 narchives;
+    char **             hosts;
+    char **             archives;
+    struct timeval      start;
+    struct timeval      finish;
+    struct timeval      origin;
+    struct timeval      interval;
+    char *              align_optarg;
+    char *              start_optarg;
+    char *              finish_optarg;
+    char *              origin_optarg;
+    char *              guiport_optarg;
+    char *              timezone;
+    int                 samples;
+    int                 guiport;
+    int                 padding;
+    unsigned int        guiflag : 1;
+    unsigned int        tzflag  : 1;
+    unsigned int        nsflag  : 1;
+    unsigned int        Lflag   : 1;
+    unsigned int        zeroes  : 28;
+} pmOptions;
+</pre>
+ <p>
+  The initial
+  <i>
+   flags
+  </i>
+  and
+  <i>
+   version
+  </i>
+  fields describe how the rest of the pmOptions structure is to be
+interpreted.
+These fields can be zeroed, specifying a default interpretation.
+Alternatively, the PMAPI_VERSION macro can be used to specify the
+API level to use (currently, values of 2 or less are allowed).
+The
+  <i>
+   flags
+  </i>
+  field can be used to modify option processing behaviour as
+described in the ``FLAGS VALUES'' section below.
+ </p>
+ <p>
+  The array of
+  <i>
+   long_options
+  </i>
+  pmLongOpts structures must be terminated by a sentinel and the
+PMAPI_OPTIONS_END macro can be used to effect this termination.
+Individual records within the
+  <i>
+   long_options
+  </i>
+  array can be of two types - options headers, or actual options.
+An options header is constructed using the PMAPI_OPTIONS_HEADER
+macro, and is used for usage message option grouping.
+Free form text can be inserted into the usage message at any
+point using the PMAPI_OPTIONS_TEXT macro - this is intended
+for additional explanatory text covering detailed usage that
+is beyond the scope of the individual headers or options.
+Otherwise, the array entry specifies an option.
+These should be named (
+  <i>
+   long_opt
+  </i>
+  )
+
+if a long-option form is allowed,
+specify whether or not they take an argument (
+  <i>
+   has_arg
+  </i>
+  ),
+
+specify the single character variant argument (
+  <i>
+   short_opt
+  </i>
+  )
+
+if a short-option form is allowed,
+and finally specify how to present the option in the usage message.
+This latter component consists of a short, one-word description of
+the optional argument (
+  <i>
+   argname
+  </i>
+  )
+
+and a one-line description of what the command-line option does (
+  <i>
+   message
+  </i>
+  ).
+ </p>
+ <p>
+  The
+  <i>
+   short_usage
+  </i>
+  string is also used only when constructing the usage message.
+It forms the component of the usage message that follows the
+program name (i.e.
+  <i>
+   argv[0]
+  </i>
+  ).
+ </p>
+ <p>
+  The optional
+  <i>
+   short_options
+  </i>
+  string is the normal
+  <i>
+   getopt
+  </i>
+  command-line option specification string, using individual
+characters (those with arguments are designated as such
+using the ':' character) - as used by all
+  <i>
+   getopt
+  </i>
+  implementations.
+ </p>
+ <p>
+  A facility is provided to extend the existing set of common options
+with additional options, as well as to re-task the standard options
+into non-standard roles for individual tools.
+The latter is achieved using the
+  <i>
+   override
+  </i>
+  method, which allows a callback function to be provided which will
+be called on receipt of every argument, prior to common processing.
+If this callback returns a non-zero value the common processing will
+be short-circuited for that option, otherwise processing continues.
+Thus, aach client tool is free to choose exactly which of the standard
+options they wish to support - this can be all, some, or none, and
+no matter what they choose, each tool always has access to the long
+option parsing capability and the usage message generation facility.
+ </p>
+ <p>
+  The remaining pmOptions structure fields are filled in as a result
+of processing the arguments, and are largely self-explanatory.
+Further discussion of these is deferred to the ``FLAGS VALUES''
+section below.
+The
+  <i>
+   error
+  </i>
+  field contains a count of errors detected during option processing.
+These can be either usage or runtime errors, as indicated by the
+  <i>
+   flags
+  </i>
+  field (set, and passed out to the caller).
+Typically, a command line tool will fail to start successfully and
+will produce an error message (e.g. via
+  <b>
+   pmUsageMessage
+  </b>
+  )
+
+if the
+  <i>
+   error
+  </i>
+  field is non-zero at the end of either
+  <b>
+   pmGetOptions
+  </b>
+  or
+  <b>
+   pmGetContextOptions
+  </b>
+  .
+ </p>
+ <p>
+  Some command line option post-processing can only be performed once
+the tool has established a PMAPI context via
+  <b>
+   <a href="/man/man3/pmnewcontext.3.html">
+    pmNewContext
+   </a>
+  </b>
+  (3).
+
+This processing includes use of context-aware timezones (
+  <b>
+   -z
+  </b>
+  ),
+and time window processing (
+  <b>
+   -A
+  </b>
+  ,
+  <b>
+   -O
+  </b>
+  ,
+  <b>
+   -S
+  </b>
+  ,
+  <b>
+   -T
+  </b>
+  )
+that may be affected by the timezone, for example.
+The
+  <b>
+   pmGetContextOptions
+  </b>
+  function is available for such situations, and it completes any
+remaining processing of
+  <i>
+   opts
+  </i>
+  with respect to the
+  <i>
+   ctx
+  </i>
+  context identifier given.
+ </p>
+ <p>
+  The
+  <b>
+   pmUsageMessage
+  </b>
+  function generates a usage message for the tool, and included both
+standard PCP options and custom options for each tool, as specified
+by the pmLongOptions array.
+It supports grouping of options (via PMAPI_OPTIONS_HEADER) as well
+as neat formatting of all options - short and long - their
+arguments, and individual explanatory messages.
+It will build this usage message using
+  <b>
+   <a href="/man/man3/pmprintf.3.html">
+    pmprintf
+   </a>
+  </b>
+  (3)
+
+upon which it will issue a single
+  <b>
+   <a href="/man/man3/pmflush.3.html">
+    pmflush
+   </a>
+  </b>
+  (3)
+
+before returning to the caller, provided the PM_OPTFLAG_USAGE_ERR
+flag is set in
+  <i>
+   flags
+  </i>
+  ,
+
+which will happen automatically during option parsing, when usage
+errors are detected.
+ </p>
+ <p>
+  In certain situations, such as recording lists of host specifications
+or PCP archive paths, the
+  <b>
+   pmGetOptions
+  </b>
+  routine may allocate memory, and store pointers to it within
+  <i>
+   opts
+  </i>
+  .
+
+Should a program wish to free this memory before exiting, it can
+use the
+  <b>
+   pmFreeOptions
+  </b>
+  routine to do so.
+This is safe to call irrespective of whether memory was allocated
+dynamically, provided that
+  <i>
+   opts
+  </i>
+  was zeroed initially.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  FLAGS VALUES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    PM_OPTFLAG_INIT
+   </b>
+  </dt>
+  <dd>
+   Used internally within the library to indicate initialisation has been
+done, so that on subsequent calls it will not be done again.
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_DONE
+   </b>
+  </dt>
+  <dd>
+   Used primarily internally within the library to indicate that the final
+option processing has been completed.
+This processing involves cross-referencing a number of the options, to
+check for mutual exclusion, for example.
+There may be other post-processing at this stage also, provided it does
+not require a PMAPI context.
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_MULTI
+   </b>
+  </dt>
+  <dd>
+   Allow more than one host or set of archives to be specified.
+The default is to allow one source of metrics only, however some of the
+more sophisticated tools permit multiple metric sources, each of which is
+handled within a separate context.
+See also
+   <b>
+    PM_OPTFLAG_MIXED
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_USAGE_ERR
+   </b>
+  </dt>
+  <dd>
+   Indicates that the library has detected a command-line usage error.
+This is an error such as when an option requires an argument but none
+is supplied, or conflicting options are specified (such as
+   <b>
+    -s
+   </b>
+   and
+   <b>
+    -T
+   </b>
+   ).
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_RUNTIME_ERR
+   </b>
+  </dt>
+  <dd>
+   Indicates that the library has detected an error at run time.
+This is an error such as failing to retrieve timezone information
+from
+   <b>
+    pmcd (1)
+   </b>
+   or
+failing to load an alternate metric namespace from a local file
+(via the
+   <b>
+    -n
+   </b>
+   option).
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_EXIT
+   </b>
+  </dt>
+  <dd>
+   Indicates a suggestion from the library that the tool exit cleanly.
+This is used when the version number is requested, for example (the
+   <b>
+    -V
+   </b>
+   option and PMOPT_VERSION macro).
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_POSIX
+   </b>
+  </dt>
+  <dd>
+   Use strict POSIX command line argument handling.
+This means options and following arguments will not be reordered,
+so additional options cannot follow command line arguments.
+This may be important for tools where the arguments can be negative
+numbers, for example, as these should not be treated as command line
+options in this case.
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_MIXED
+   </b>
+  </dt>
+  <dd>
+   Allow both live and archive metric sources to be specified.
+The default is to allow one type of metric context only, however some
+of the more sophisticated tools permit multiple context types.
+See also
+   <b>
+    PM_OPTFLAG_MULTI
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_ENV_ONLY
+   </b>
+  </dt>
+  <dd>
+   Many options can be specified through the either the command line
+or from similarly-named environment variables.
+This flag disables all argument parsing, and only changes
+   <i>
+    opts
+   </i>
+   based on the environment variables.
+This may be useful for tools wishing to ensure no command line option
+conflicts occur between their own set and the standard PCP option set
+(such as an existing tool, reimplemented using PMAPI services).
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_LONG_ONLY
+   </b>
+  </dt>
+  <dd>
+   Only process long options, not short options.
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_BOUNDARIES
+   </b>
+  </dt>
+  <dd>
+   The default
+   <b>
+    pmGetOptions
+   </b>
+   behaviour is to parse the time window options (namely,
+   <b>
+    -A
+   </b>
+   ,
+   <b>
+    -O
+   </b>
+   ,
+   <b>
+    -S
+   </b>
+   and
+   <b>
+    -T
+   </b>
+   ), only if one of those options
+has been specified on the command line.
+However, this flag can be used (particularly with archive contexts)
+to find the
+   <i>
+    start
+   </i>
+   and
+   <i>
+    finish
+   </i>
+   times associated with the context(s) even if no time window options
+were specified.
+In the case of multiple archives, the time window is defined as the
+time window spanning all of the archives.
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_STDOUT_TZ
+   </b>
+  </dt>
+  <dd>
+   The timezone being used will be reported on the standard output
+stream during option parsing.
+The default behaviour is to not report, but simply return timezone
+information via the
+   <i>
+    timezone
+   </i>
+   (
+   <b>
+    -Z
+   </b>
+   )
+and
+   <i>
+    tzflag
+   </i>
+   (
+   <b>
+    -z
+   </b>
+   )
+fields in the
+   <i>
+    opts
+   </i>
+   structure.
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_NOFLUSH
+   </b>
+  </dt>
+  <dd>
+   The final
+   <b>
+    pmflush
+   </b>
+   call issued by
+   <b>
+    pmUsageMessage
+   </b>
+   will be skipped if this flag is set.
+This is useful in situations where the caller wishes to append
+additional test to the generated usage message before flushing.
+  </dd>
+  <dt>
+   <b>
+    PM_OPTFLAG_QUIET
+   </b>
+  </dt>
+  <dd>
+   Suppress messages from
+   <b>
+    pmgetopt_r
+   </b>
+   about unrecognised command line options.
+This is the equivalent to setting the
+   <i>
+    opterr
+   </i>
+   field in the
+   <i>
+    opt
+   </i>
+   parameter (which mimics the
+   <b>
+    getopt
+   </b>
+   variable of the same name).
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  OPTIONS VIA ENVIRONMENT VARIABLES
+ </h2>
+ <p>
+  Some environment variables may be used as an alternative to the
+command line options.
+The use of these mechanisms is primarily
+for internal use by PCP tools. 
+General users should choose the command line options as this provides
+a clearer indication of intent, makes debugging issues easier and
+avoids confusion over possible conflicts between the command line
+options and the environment variables (where the command line options
+usually ``win'').
+ </p>
+ <p>
+  The following table describes the environment variables that
+may be used to set values as an alternative to command line options.
+ </p>
+ <p>
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table width="100%">
+      <tr valign="top">
+       <td align="center" rowspan="2" valign="center">
+        Environment
+       </td>
+       <td align="center">
+        Short
+       </td>
+       <td align="center">
+        Long
+       </td>
+       <td align="center" rowspan="2" valign="center">
+        Meaning
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        Option
+       </td>
+       <td align="center">
+        Option
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_ALIGN_TIME
+       </td>
+       <td>
+        -A
+       </td>
+       <td>
+        --align
+       </td>
+       <td>
+        align sample times on natural boundaries
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_ARCHIVE
+       </td>
+       <td>
+        -a
+       </td>
+       <td>
+        --archive
+       </td>
+       <td>
+        metrics source is a PCP archive
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_ARCHIVE_LIST
+       </td>
+       <td>
+       </td>
+       <td>
+        --archive-list
+       </td>
+       <td>
+        comma-separated list of metric source archives
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_FOLIO
+       </td>
+       <td>
+       </td>
+       <td>
+        --archive-folio
+       </td>
+       <td>
+        metric source is a
+        <b>
+         <a href="/man/man1/mkaf.1.html">
+          mkaf
+         </a>
+        </b>
+        (1)
+
+archives folio
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_DEBUG
+       </td>
+       <td>
+        -D
+       </td>
+       <td>
+        --debug
+       </td>
+       <td>
+        a comma-separated list of
+        <b>
+         <a href="/man/man3/pmsetdebug.3.html">
+          pmSetDebug
+         </a>
+        </b>
+        (3)
+
+debugging options
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_GUIMODE
+       </td>
+       <td>
+        -g
+       </td>
+       <td>
+        --guimode
+       </td>
+       <td>
+        start in GUI mode with new
+        <b>
+         <a href="/man/man1/pmtime.1.html">
+          pmtime
+         </a>
+        </b>
+        (1)
+
+time control
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_HOST
+       </td>
+       <td>
+        -h
+       </td>
+       <td>
+        --host
+       </td>
+       <td>
+        metrics source is
+        <b>
+         <a href="/man/man1/pmcd.1.html">
+          pmcd
+         </a>
+        </b>
+        (1)
+
+on a host
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_HOST_LIST
+       </td>
+       <td>
+       </td>
+       <td>
+        --host-list
+       </td>
+       <td>
+        comma-separated list of metric source hosts
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_SPECLOCAL
+       </td>
+       <td>
+        -K
+       </td>
+       <td>
+        --spec-local
+       </td>
+       <td>
+        optional additional DSO PMDA specification for local connection,
+see
+        <b>
+         <a href="/man/man3/pmspeclocalpmda.3.html">
+          pmSpecLocalPMDA
+         </a>
+        </b>
+        (3)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_LOCALPMDA
+or
+$PCP_LOCALMODE
+       </td>
+       <td>
+        -L
+       </td>
+       <td>
+        --local-PMDA
+       </td>
+       <td>
+        metrics source is local connection to a DSO PMDA
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_NAMESPACE
+       </td>
+       <td>
+        -n
+       </td>
+       <td>
+        --namespace
+       </td>
+       <td>
+        use an alternative Performance Metrics Name Space (PMNS)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_UNIQNAMES
+       </td>
+       <td>
+        -N
+       </td>
+       <td>
+        --uniqnames
+       </td>
+       <td>
+        like
+        <b>
+         -n
+        </b>
+        but only one name allowed for each metric in the PMNS
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_ORIGIN
+or
+$ORIGIN_TIME
+       </td>
+       <td>
+        -O
+       </td>
+       <td>
+        --origin
+       </td>
+       <td>
+        initial sample time within the time window
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_GUIPORT
+       </td>
+       <td>
+        -p
+       </td>
+       <td>
+        --guiport
+       </td>
+       <td>
+        port for connection to an existing
+        <b>
+         <a href="/man/man1/pmtime.1.html">
+          pmtime
+         </a>
+        </b>
+        (1)
+
+time control
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_START_TIME
+       </td>
+       <td>
+        -S
+       </td>
+       <td>
+        --start
+       </td>
+       <td>
+        start of the time window
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_SAMPLES
+       </td>
+       <td>
+        -s
+       </td>
+       <td>
+        --samples
+       </td>
+       <td>
+        terminate after this many samples
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_FINISH_TIME
+       </td>
+       <td>
+        -T
+       </td>
+       <td>
+        --finish
+       </td>
+       <td>
+        end of the time window
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_INTERVAL
+       </td>
+       <td>
+        -t
+       </td>
+       <td>
+        --interval
+       </td>
+       <td>
+        sampling interval
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_TIMEZONE
+       </td>
+       <td>
+        -Z
+       </td>
+       <td>
+        --timezone
+       </td>
+       <td>
+        set reporting timezone
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="4">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        $PCP_HOSTZONE
+       </td>
+       <td>
+        -z
+       </td>
+       <td>
+        --hostzone
+       </td>
+       <td>
+        set reporting timezone to local time of metrics source
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <a name="lbAG">
+ </a>
+ <h2>
+  RETURN VALUE
+ </h2>
+ The
+ <b>
+  pmGetOptions
+ </b>
+ function returns either when it detects a command-line option that
+is not one of the standard PCP set, or when the end of the command
+line options has been reached (at which point -1 is returned).
+Both the
+ <b>
+  pmgetopt_r
+ </b>
+ and
+ <b>
+  pmGetOptions
+ </b>
+ routines return control to the caller in the same way that a regular
+ <b>
+  getopt
+ </b>
+ call would, with the return value indicating either the end of all
+processing (-1), or the single character form of the option currently
+being processed, or zero for the special long-option-only case.
+For all option-processing cases, the
+ <i>
+  opts
+ </i>
+ structure is returned containing filled out
+ <i>
+  optarg
+ </i>
+ ,
+ <i>
+  opterr
+ </i>
+ ,
+ <i>
+  optopt
+ </i>
+ ,
+ <i>
+  optind
+ </i>
+ ,
+
+and
+ <i>
+  index
+ </i>
+ fields as normal (do
+ <b>
+  NOT
+ </b>
+ use the global optarg or optind from your platform C library,
+these will
+ <b>
+  NOT
+ </b>
+ be modified).
+ <p>
+  <b>
+   pmGetOptions
+  </b>
+  does not return to the caller when any of the standard PCP options are
+being processed (although the
+  <i>
+   override
+  </i>
+  mechanism can be used to still detect such options if needed).
+ </p>
+ <p>
+  The
+  <b>
+   pmGetContextOptions
+  </b>
+  function returns zero on success, or a negative PCP error code
+on failure.
+The
+  <i>
+   error
+  </i>
+  field within the
+  <i>
+   opts
+  </i>
+  parameter will also be non-zero in the latter case.
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+
+Values for these variables may be obtained programmatically
+using the
+ <b>
+  <a href="/man/man3/pmgetoptions.3.html">
+   pmGetOptions
+  </a>
+ </b>
+ (3)
+
+function.
+ <a name="lbAI">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmstat.1.html">
+   pmstat
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/getopt.3.html">
+   getopt
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/getopt_long.3.html">
+   getopt_long
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetconfig.3.html">
+   pmGetConfig
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmprintf.3.html">
+   pmprintf
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmflush.3.html">
+   pmflush
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FLAGS VALUES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    OPTIONS VIA ENVIRONMENT VARIABLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    RETURN VALUE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

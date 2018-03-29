@@ -1,479 +1,475 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  QMC_DESC
- </h1>
- Section: C Library Functions (3)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  QmcDesc
- </b>
- - container for a metric description
- <a name="lbAC">
- </a>
- <h2>
-  C++ SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="file:///usr/include/QmcDesc.h">
-   QmcDesc.h
-  </a>
-  &gt;
- </b>
- <p>
-  CC ... -lqmc -lpcp
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- A
- <b>
-  QmcDesc
- </b>
- object is a container for a metric descriptor 
-(
- <b>
-  pmDesc
- </b>
- , see
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3))
-
-and units.
- <a name="lbAE">
- </a>
- <h2>
-  CONSTRUCTORS &amp; DESTRUCTOR
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    ~QmcDesc();
-   </b>
-  </dt>
-  <dd>
-   Destructor.
-  </dd>
-  <dt>
-   <b>
-    QmcDesc(pmID pmid);
-   </b>
-  </dt>
-  <dd>
-   Construct a container for the descriptor for
-   <i>
-    pmid
-   </i>
-   .
-
-The descriptor is obtained from the current
-   <b>
-    <a href="/man/man3/pmapi.3.html">
-     PMAPI
-    </a>
-   </b>
-   (3)
-
-context using
-   <b>
-    <a href="/man/man3/pmlookupdesc.3.html">
-     pmLookupDesc
-    </a>
-   </b>
-   (3).
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    int status() const;
-   </b>
-  </dt>
-  <dd>
-   A status less than zero indicates that the descriptor could not be obtained,
-the
-   <b>
-    <a href="/man/man3/pmapi.3.html">
-     PMAPI
-    </a>
-   </b>
-   (3)
-
-error is encoded in the result.
-  </dd>
-  <dt>
-   <b>
-    pmID id() const;
-   </b>
-  </dt>
-  <dd>
-   Return the
-   <b>
-    pmID
-   </b>
-   for this descriptor.
-  </dd>
-  <dt>
-   <b>
-    pmDesc desc() const;
-   </b>
-  </dt>
-  <dd>
-   Return a copy of the actual metric descriptor.
-  </dd>
-  <dt>
-   <b>
-    const pmDesc *descPtr() const;
-   </b>
-  </dt>
-  <dd>
-   Return a pointer to the actual descriptor to avoid using a pointer to a
-temporary.
-  </dd>
- </dl>
- <a name="lbAG">
- </a>
- <h2>
-  UNITS
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    const QString &amp;units() const;
-   </b>
-  </dt>
-  <dd>
-   The complete unit string for this descriptor.
-  </dd>
-  <dt>
-   <b>
-    const QString &amp;abvUnits() const;
-   </b>
-  </dt>
-  <dd>
-   The unit string using abbreviations.
-  </dd>
-  <dt>
-   <b>
-    bool useScaleUnits() const;
-   </b>
-  </dt>
-  <dd>
-   Returns
-   <b>
-    true
-   </b>
-   if the units have been set by a call to
-   <b>
-    QmcDesc::setScaleUnits
-   </b>
-   .
-  </dd>
-  <dt>
-   <b>
-    const pmUnits &amp;scaleUnits() const;
-   </b>
-  </dt>
-  <dd>
-   Return the scaling units for this descriptor.
-  </dd>
-  <dt>
-   <b>
-    void setScaleUnits(const pmUnits &amp;units);
-   </b>
-  </dt>
-  <dd>
-   Set the scaling units for this descriptor.
-  </dd>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/qmc.3.html">
-   QMC
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmflush.3.html">
-   pmflush
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmlookupdesc.3.html">
-   pmLookupDesc
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmprintf.3.html">
-   pmprintf
-  </a>
- </b>
- (3).
- <a name="lbAI">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- Error messages are generated using
- <b>
-  <a href="/man/man3/pmprintf.3.html">
-   pmprintf
-  </a>
- </b>
- (3)
-
-but are not flushed. It is the responsibility of the user to call
- <b>
-  <a href="/man/man3/pmflush.3.html">
-   pmflush
-  </a>
- </b>
- (3)
-
-to output any messages.
- <p>
-  Additional diagnostics may be activated by adding the option
-  <b>
-   pmc
-  </b>
-  to the global debugging specification, as described in
-  <b>
-   <a href="/man/man3/pmsetdebug.3.html">
-    pmSetDebug
-   </a>
-  </b>
-  (3).
- </p>
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C++ SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    CONSTRUCTORS &amp; DESTRUCTOR
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    UNITS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                QMC_DESC
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                QmcDesc
+               </b>
+               - container for a metric description
+               <a name="lbAC">
+               </a>
+               <h2>
+                C++ SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="file:///usr/include/QmcDesc.h">
+                 QmcDesc.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                CC ... -lqmc -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               A
+               <b>
+                QmcDesc
+               </b>
+               object is a container for a metric descriptor 
+              (
+               <b>
+                pmDesc
+               </b>
+               , see
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3))
+              
+              and units.
+               <a name="lbAE">
+               </a>
+               <h2>
+                CONSTRUCTORS &amp; DESTRUCTOR
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ~QmcDesc();
+                 </b>
+                </dt>
+                <dd>
+                 Destructor.
+                </dd>
+                <dt>
+                 <b>
+                  QmcDesc(pmID pmid);
+                 </b>
+                </dt>
+                <dd>
+                 Construct a container for the descriptor for
+                 <i>
+                  pmid
+                 </i>
+                 .
+              
+              The descriptor is obtained from the current
+                 <b>
+                  <a href="/man/man3/pmapi.3.html">
+                   PMAPI
+                  </a>
+                 </b>
+                 (3)
+              
+              context using
+                 <b>
+                  <a href="/man/man3/pmlookupdesc.3.html">
+                   pmLookupDesc
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  int status() const;
+                 </b>
+                </dt>
+                <dd>
+                 A status less than zero indicates that the descriptor could not be obtained,
+              the
+                 <b>
+                  <a href="/man/man3/pmapi.3.html">
+                   PMAPI
+                  </a>
+                 </b>
+                 (3)
+              
+              error is encoded in the result.
+                </dd>
+                <dt>
+                 <b>
+                  pmID id() const;
+                 </b>
+                </dt>
+                <dd>
+                 Return the
+                 <b>
+                  pmID
+                 </b>
+                 for this descriptor.
+                </dd>
+                <dt>
+                 <b>
+                  pmDesc desc() const;
+                 </b>
+                </dt>
+                <dd>
+                 Return a copy of the actual metric descriptor.
+                </dd>
+                <dt>
+                 <b>
+                  const pmDesc *descPtr() const;
+                 </b>
+                </dt>
+                <dd>
+                 Return a pointer to the actual descriptor to avoid using a pointer to a
+              temporary.
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                UNITS
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  const QString &amp;units() const;
+                 </b>
+                </dt>
+                <dd>
+                 The complete unit string for this descriptor.
+                </dd>
+                <dt>
+                 <b>
+                  const QString &amp;abvUnits() const;
+                 </b>
+                </dt>
+                <dd>
+                 The unit string using abbreviations.
+                </dd>
+                <dt>
+                 <b>
+                  bool useScaleUnits() const;
+                 </b>
+                </dt>
+                <dd>
+                 Returns
+                 <b>
+                  true
+                 </b>
+                 if the units have been set by a call to
+                 <b>
+                  QmcDesc::setScaleUnits
+                 </b>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  const pmUnits &amp;scaleUnits() const;
+                 </b>
+                </dt>
+                <dd>
+                 Return the scaling units for this descriptor.
+                </dd>
+                <dt>
+                 <b>
+                  void setScaleUnits(const pmUnits &amp;units);
+                 </b>
+                </dt>
+                <dd>
+                 Set the scaling units for this descriptor.
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/qmc.3.html">
+                 QMC
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmflush.3.html">
+                 pmflush
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmlookupdesc.3.html">
+                 pmLookupDesc
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmprintf.3.html">
+                 pmprintf
+                </a>
+               </b>
+               (3).
+               <a name="lbAI">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               Error messages are generated using
+               <b>
+                <a href="/man/man3/pmprintf.3.html">
+                 pmprintf
+                </a>
+               </b>
+               (3)
+              
+              but are not flushed. It is the responsibility of the user to call
+               <b>
+                <a href="/man/man3/pmflush.3.html">
+                 pmflush
+                </a>
+               </b>
+               (3)
+              
+              to output any messages.
+               <p>
+                Additional diagnostics may be activated by adding the option
+                <b>
+                 pmc
+                </b>
+                to the global debugging specification, as described in
+                <b>
+                 <a href="/man/man3/pmsetdebug.3.html">
+                  pmSetDebug
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C++ SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  CONSTRUCTORS &amp; DESTRUCTOR
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  UNITS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

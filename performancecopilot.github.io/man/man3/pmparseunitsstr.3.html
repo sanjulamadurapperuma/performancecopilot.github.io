@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMPARSEUNITSSTR
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmParseUnitsStr
+ </b>
+ - parse units specification
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  int pmParseUnitsStr(const char *
+  <i>
+   string
+  </i>
+  , struct pmUnits *
+  <i>
+   out
+  </i>
+  , double *
+  <i>
+   outMult
+  </i>
+  , char **
+  <i>
+   errMsg
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmParseUnitsStr
+ </b>
+ is designed to encapsulate the interpretation of a units
+(dimension and scale) specification in
+command line switches for use by the PCP client tools.
+ <p>
+  This function expects to be called with the unit/scale specification as
+  <i>
+   string
+  </i>
+  .
+
+This specification takes the general form produced by
+  <b>
+   <a href="/man/man3/pmunitsstr.3.html">
+    pmUnitsStr
+   </a>
+  </b>
+  (3).
+
+Briefly, the format allows
+  <b>
+   /
+  </b>
+  -separated divisor and dividend, each
+listing space-separated dimensions/scales along the space, time, and count
+axes.
+There are also a few extra possibilities:
+ </p>
+ <p>
+  First, multiple equivalent sets of keywords are accepted for the time
+and space dimensions, insensitive to case.
+For example, "microseconds",
+"microsecond", "microsec", "us" are considered synonymous, as are
+"kilobytes", "KB", "KiB", "kiloByte", and so on.
+ </p>
+ <p>
+  Second, units may be offered in any order, e.g.,
+  <b>
+   ms kb count x 10^3
+  </b>
+  or
+  <b>
+   count x 10^3 kb ms
+  </b>
+  .
+They may not be repeated within the denominator or within the numerator.
+Each scale/unit keyword may be immediately followed
+by positive or negative exponents, e.g.,
+  <b>
+   ^-4
+  </b>
+  .
+ </p>
+ <p>
+  Third, numerical scaling factors may be supplied.
+These are factored
+together with implicit scale conversions into the final
+  <i>
+   outMult
+  </i>
+  result.
+ </p>
+ <p>
+  The
+  <i>
+   out
+  </i>
+  and
+  <i>
+   outMult
+  </i>
+  values must both be allocated before calling
+  <b>
+   <a href="/man/man3/pmparseunitsstr.3.html">
+    pmParseUnitsStr
+   </a>
+  </b>
+  (3).
+
+If the conversion is successful,
+  <b>
+   pmParseUnitsStr
+  </b>
+  returns 0, and fills in
+  <b>
+   out
+  </b>
+  and
+  <b>
+   outMult
+  </b>
+  with the unit/scales defined by the input
+parameter.
+If the argument strings could not be parsed, it returns a negative status code.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  EXAMPLES
+ </h2>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        string
+       </td>
+       <td align="center">
+        out
+       </td>
+       <td align="center">
+        outMult
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        2 count
+       </td>
+       <td>
+        {0,1,0,0,0,0}
+       </td>
+       <td>
+        0.5
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        count / 7.5 nanosecond
+       </td>
+       <td>
+        {0,1,-1,0,0,0}
+       </td>
+       <td>
+        7.5
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        10 kilobytes / 2.5e2 count x 10^3
+       </td>
+       <td>
+        {1,-1,0,1,3,0}
+       </td>
+       <td>
+        25
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        millisecond / second^2
+       </td>
+       <td>
+        {0,0,-1,0,0,3}
+       </td>
+       <td>
+        1000
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        mib/s
+       </td>
+       <td>
+        {1,0,-1,2,0,3}
+       </td>
+       <td>
+        1
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <a name="lbAF">
+ </a>
+ <h2>
+  BUGS
+ </h2>
+ For backward compatibility, this interface interprets several
+traditional computer science interpretations of space units
+incorrectly by the International System of Units (SI) standard.
+ <p>
+  The accepted unit string - in either singular or plural form -
+and the
+  <b>
+   pmParseUnitsStr
+  </b>
+  interpretation for each are:
+  <b>
+   megabyte
+  </b>
+  (
+  <b>
+   mebibyte
+  </b>
+  ),
+  <b>
+   gigabyte
+  </b>
+  (
+  <b>
+   gibibyte
+  </b>
+  ),
+  <b>
+   terabyte
+  </b>
+  (
+  <b>
+   tebibyte
+  </b>
+  ),
+  <b>
+   petabyte
+  </b>
+  (
+  <b>
+   pebibyte
+  </b>
+  ),
+  <b>
+   exabyte
+  </b>
+  (
+  <b>
+   exbibyte
+  </b>
+  ),
+  <b>
+   zettabyte
+  </b>
+  (
+  <b>
+   zebibyte
+  </b>
+  )
+
+and
+  <b>
+   yottabyte
+  </b>
+  (
+  <b>
+   yobibyte
+  </b>
+  ).
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  RETURN VALUE
+ </h2>
+ A zero status indicates success.
+A negative status indicates an error, in which case the
+ <i>
+  errMsg
+ </i>
+ pointer will contain a textual error message,
+which the caller should later
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+   free
+  </a>
+ </b>
+ (3).
+ <a name="lbAH">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmunitsstr.3.html">
+   pmUnitsStr
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmconvscale.3.html">
+   pmConvScale
+  </a>
+ </b>
+ (3),
+
+and
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    BUGS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    RETURN VALUE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

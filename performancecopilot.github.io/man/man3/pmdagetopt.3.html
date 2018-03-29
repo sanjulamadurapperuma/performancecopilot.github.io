@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMDAGETOPTIONS
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmdaGetOpt
+ </b>
+ ,
+ <b>
+  pmdaGetOptions
+ </b>
+ - get options from arguments, parsing generic PMDA options
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+  <br/>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmda.h">
+   pcp/pmda.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  int pmdaGetOptions(int
+  <i>
+   argc
+  </i>
+  , char *const *
+  <i>
+   argv
+  </i>
+  , pmdaOptions *
+  <i>
+   opts
+  </i>
+  , pmdaInterface *
+  <i>
+   dispatch
+  </i>
+  );
+ </p>
+ <p>
+  <br/>
+  int pmdaGetOpt(int
+  <i>
+   argc
+  </i>
+  , char *const *
+  <i>
+   argv
+  </i>
+  , const char *
+  <i>
+   optstring
+  </i>
+  , pmdaInterface *
+  <i>
+   dispatch
+  </i>
+  , int *
+  <i>
+   err
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp_pmda -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ These functions are wrappers for
+ <b>
+  <a href="/man/man3/pmgetopt_r.3.html">
+   pmgetopt_r
+  </a>
+ </b>
+ (3).
+
+The behavior of each function is that certain options are
+assumed to have a predefined behavior which initializes
+several fields in the
+ <b>
+  pmdaInterface
+ </b>
+ structure.
+The
+ <b>
+  pmdaGetOptions
+ </b>
+ interface allows both short and long options to be given,
+whereas
+ <b>
+  pmdaGetOpt
+ </b>
+ allows for short form options only.
+ <p>
+  The options that both
+  <b>
+   pmdaGetOptions
+  </b>
+  and
+  <b>
+   pmdaGetOpt
+  </b>
+  will trap are:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -D
+   </b>
+   <i>
+    debugspec
+   </i>
+  </dt>
+  <dd>
+   Set the
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+debugging options to
+   <i>
+    debugspec
+   </i>
+   ,
+
+as described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1).
+
+Used for controlling levels of trace output while debugging.
+  </dd>
+  <dt>
+   <b>
+    -d
+   </b>
+   <i>
+    domain
+   </i>
+  </dt>
+  <dd>
+   Set the
+   <i>
+    domain
+   </i>
+   number of this agent.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    helpfile
+   </i>
+  </dt>
+  <dd>
+   Obtain the help text (see
+   <b>
+    <a href="/man/man3/pmdatext.3.html">
+     pmdaText
+    </a>
+   </b>
+   (3))
+
+for the metrics from this file rather than from the path specified with
+   <b>
+    <a href="/man/man3/pmdadso.3.html">
+     pmdaDSO
+    </a>
+   </b>
+   (3)
+
+or
+   <b>
+    <a href="/man/man3/pmdadaemon.3.html">
+     pmdaDaemon
+    </a>
+   </b>
+   (3).
+  </dd>
+  <dt>
+   <b>
+    -i
+   </b>
+   <i>
+    port
+   </i>
+  </dt>
+  <dd>
+   Expect PMCD to connect on inet
+   <i>
+    port
+   </i>
+   (number or name).
+  </dd>
+  <dt>
+   <b>
+    -6
+   </b>
+   <i>
+    port
+   </i>
+  </dt>
+  <dd>
+   Expect PMCD to connect on ipv6
+   <i>
+    port
+   </i>
+   (number or name).
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   <i>
+    logfile
+   </i>
+  </dt>
+  <dd>
+   Redirect diagnostics and trace output to
+   <i>
+    logfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+  </dt>
+  <dd>
+   Expect PMCD to supply stdin/stdout pipe.
+  </dd>
+  <dt>
+   <b>
+    -u
+   </b>
+   <i>
+    socket
+   </i>
+  </dt>
+  <dd>
+   Expect PMCD to connect on unix domain
+   <i>
+    socket
+   </i>
+   .
+  </dd>
+ </dl>
+ <p>
+  The
+  <b>
+   pmdaGetOptions
+  </b>
+  interface will also capture the following options, and store them
+within the
+  <i>
+   opts
+  </i>
+  parameter:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -U
+   </b>
+   <i>
+    username
+   </i>
+  </dt>
+  <dd>
+   Set the user account name under which the PMDA should execute.
+  </dd>
+ </dl>
+ <p>
+  Only one of
+  <b>
+   -i
+  </b>
+  ,
+  <b>
+   -6
+  </b>
+  ,
+  <b>
+   -p
+  </b>
+  and
+  <b>
+   -u
+  </b>
+  may be specified.  If none of these three options is given, a pipe 
+(
+  <b>
+   -p
+  </b>
+  )
+
+is assumed.  When these options are encountered by
+  <b>
+   pmdaGetOpt
+  </b>
+  ,
+
+the option is processed and the next option is examined.  Therefore,
+  <b>
+   pmdaGetOpt
+  </b>
+  will only return when an option other than those listed above is found, or the
+end of the list is reached.  The returned value will be the argument or
+EOF, respectively.
+ </p>
+ <p>
+  A PMDA can control which of these options the program will accept with
+either the
+  <i>
+   opts
+  </i>
+  or
+  <i>
+   optstring
+  </i>
+  argument.  To accept all the options, the PMDA should call
+  <b>
+   pmdaGetOptions
+  </b>
+  with the short_options field of the
+  <i>
+   opts
+  </i>
+  structure set to the PMDA_OPTIONS macro,
+or
+  <b>
+   pmdaGetOpt
+  </b>
+  with the option string "D:d:h:i:l:pu:".
+Any PMDA specific options should be added to these strings in the style of
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/getopt.3.html">
+    getopt
+   </a>
+  </b>
+  (3),
+
+and will be returned by both
+  <b>
+   pmdaGetOptions
+  </b>
+  and
+  <b>
+   pmdaGetOpt
+  </b>
+  if encountered.
+ </p>
+ <p>
+  When a command line option usage error is detected in the
+  <b>
+   pmdaGetOptions
+  </b>
+  interface, the error field of the
+  <i>
+   opts
+  </i>
+  structure will contain a non-zero error count.
+ </p>
+ <p>
+  <b>
+   pmdaGetOpt
+  </b>
+  takes a pointer to an int,
+  <i>
+   err
+  </i>
+  ,
+
+which is used as an error count.  This variable should be initialized to zero
+before
+  <b>
+   pmdaGetOpt
+  </b>
+  is first called, and tested when
+  <b>
+   pmdaGetOpt
+  </b>
+  returns EOF.
+ </p>
+ <p>
+  Neither
+  <b>
+   pmdaGetOptions
+  </b>
+  nor
+  <b>
+   pmdaGetOpt
+  </b>
+  modify their
+  <i>
+   argc
+  </i>
+  or
+  <i>
+   argv
+  </i>
+  parameters.
+ </p>
+ <p>
+  The global variables used by the system
+  <b>
+   getopt (3)
+  </b>
+  interface may also be used by the caller of
+  <b>
+   pmdaGetOpt
+  </b>
+  within the argument parsing loop.
+ </p>
+ <p>
+  On the other hand, the
+  <b>
+   pmdaGetOptions
+  </b>
+  interface does not utilize global variables at all (neither reading
+nor modifying them).
+Instead, these variables can be access via the
+  <i>
+   opts
+  </i>
+  fields of the same name.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Both
+ <b>
+  pmdaGetOptions
+ </b>
+ and
+ <b>
+  pmdaGetOpt
+ </b>
+ will display the same error messages as
+ <b>
+  getopt
+ </b>
+ .
+ <a name="lbAF">
+ </a>
+ <h2>
+  CAVEAT
+ </h2>
+ The options
+ <b>
+  -D
+ </b>
+ ,
+ <b>
+  -d
+ </b>
+ ,
+ <b>
+  -i
+ </b>
+ ,
+ <b>
+  -l
+ </b>
+ ,
+ <b>
+  -p
+ </b>
+ and
+ <b>
+  -u
+ </b>
+ cannot be reused for other purposes by the PMDA, unless using the
+ <i>
+  override
+ </i>
+ method provided by the
+ <b>
+  pmdaGetOptions
+ </b>
+ interface, which operates in the same way as described for the
+ <b>
+  <a href="/man/man3/pmgetoptions.3.html">
+   pmGetOptions
+  </a>
+ </b>
+ (3)
+
+interface used by PMAPI client tools.
+ <p>
+  The PMDA must be using
+  <b>
+   PMDA_INTERFACE_2
+  </b>
+  or later, as specified in the call to
+  <b>
+   <a href="/man/man3/pmdadso.3.html">
+    pmdaDSO
+   </a>
+  </b>
+  (3)
+
+or
+  <b>
+   <a href="/man/man3/pmdadaemon.3.html">
+    pmdaDaemon
+   </a>
+  </b>
+  (3).
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmdbg.1.html">
+   pmdbg
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/getopt.3.html">
+   getopt
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetopt_r.3.html">
+   pmgetopt_r
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetoptions.3.html">
+   pmGetOptions
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdadaemon.3.html">
+   pmdaDaemon
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdadso.3.html">
+   pmdaDSO
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmdatext.3.html">
+   pmdaText
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

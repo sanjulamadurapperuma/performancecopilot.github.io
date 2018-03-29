@@ -1,573 +1,569 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMRECONNECTCONTEXT
- </h1>
- Section: C Library Functions (3)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmReconnectContext
- </b>
- - reconnect to a PMAPI context
- <a name="lbAC">
- </a>
- <h2>
-  C SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-   pcp/pmapi.h
-  </a>
-  &gt;
- </b>
- <p>
-  int pmReconnectContext(int
-  <i>
-   handle
-  </i>
-  );
- </p>
- <p>
-  cc ... -lpcp
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- As a consequence of network, host or
-Performance Metrics Collector Daemon (PMCD) failures, an application's
-connection to a PMCD may be established and then subsequently lost.
- <p>
-  The routine
-  <b>
-   pmReconnectContext
-  </b>
-  allows an application to request that the context identified by
-  <i>
-   handle
-  </i>
-  should be re-established, provided the associated metrics source is accessible.
- </p>
- <p>
-  When the source of metrics associated with the context
-  <i>
-   handle
-  </i>
-  is
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1),
-
-then
-to avoid flooding the system with reconnect requests,
-  <b>
-   pmReconnectContext
-  </b>
-  will only attempt a reconnection after a suitable delay from the previous
-unsuccessful attempt to reconnect this context. This imposed restriction on
-the reconnect re-try time interval uses an exponential back-off so that the 
-initial delay is 5 seconds after the first unsuccessful attempt, then 10
-seconds, then 20 seconds, then 40 seconds and then 80 seconds thereafter.
- </p>
- <p>
-  The environment variable
-  <b>
-   PMCD_RECONNECT_TIMEOUT
-  </b>
-  may be used to redefine the back-off intervals, see
-  <b>
-   <a href="/man/man3/pmapi.3.html">
-    PMAPI
-   </a>
-  </b>
-  (3).
- </p>
- <p>
-  Calling
-  <b>
-   pmReconnectContext
-  </b>
-  with a handle identifying a currently connected
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-context will cause the
-connection to be broken before any reconnection is attempted.
- </p>
- <p>
-  If
-  <i>
-   handle
-  </i>
-  identifies a context associated with an archive source of metrics,
-  <b>
-   pmReconnectContext
-  </b>
-  returns without delay.
- </p>
- <p>
-  If the reconnection succeeds,
-  <b>
-   pmReconnectContext
-  </b>
-  returns
-  <i>
-   handle
-  </i>
-  .
- </p>
- <p>
-  As a side-effect of reconnecting, any derived metrics that have
-previously been defined using
-  <b>
-   <a href="/man/man3/pmregisterderived.3.html">
-    pmRegisterDerived
-   </a>
-  </b>
-  (3),
-  <b>
-   <a href="/man/man3/pmregisterderivedmetric.3.html">
-    pmRegisterDerivedMetric
-   </a>
-  </b>
-  (3)
-
-or
-  <b>
-   <a href="/man/man3/pmloadderivedconfig.3.html">
-    pmLoadDerivedConfig
-   </a>
-  </b>
-  (3)
-
-will be re-processed and re-bound to the available metrics from the reconnected source.
-The support of dynamic definition for derived metrics provides
-one use case where
-  <b>
-   pmReconnectContext
-  </b>
-  may be called even if the connection to the metrics source has not been lost.
- </p>
- <p>
-  Note that even in the case of a successful reconnection,
-  <b>
-   pmReconnectContext
-  </b>
-  does not change the current
-Performance Metrics Application Programming Interface (PMAPI)
-context, so
-  <i>
-   handle
-  </i>
-  remains valid.
- </p>
- <p>
-  When attempting to connect to a remote
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-on a machine that is booting,
-  <b>
-   pmReconnectContext
-  </b>
-  could potentially block for a long time until the remote machine
-finishes its initialization.
-  <b>
-   pmReconnectContext
-  </b>
-  will abort and return an error if the connection has not been established after
-some specified interval has elapsed.  The default interval is 5
-seconds.  This may be modified by setting
-  <b>
-   PMCD_CONNECT_TIMEOUT
-  </b>
-  in the environment to a real number of seconds for the
-desired timeout.
-This is most useful in cases where the remote host is at
-the end of a slow network, requiring longer latencies to
-establish the connection correctly.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  ENVIRONMENT
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    PMCD_CONNECT_TIMEOUT
-   </b>
-  </dt>
-  <dd>
-   Timeout period (in seconds) for
-   <b>
-    <a href="/man/man1/pmcd.1.html">
-     pmcd
-    </a>
-   </b>
-   (1)
-
-connection attempts.
-  </dd>
-  <dt>
-   <b>
-    PMCD_RECONNECT_TIMEOUT
-   </b>
-  </dt>
-  <dd>
-   Redefines the back-off intervals - refer to
-   <b>
-    <a href="/man/man3/pmapi.3.html">
-     PMAPI
-    </a>
-   </b>
-   (3).
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmloadderivedconfig.3.html">
-   pmLoadDerivedConfig
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmnewcontext.3.html">
-   pmNewContext
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmregisterderived.3.html">
-   pmRegisterDerived
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmregisterderivedmetric.3.html">
-   pmRegisterDerivedMetric
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmusecontext.3.html">
-   pmUseContext
-  </a>
- </b>
- (3).
- <a name="lbAG">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- <p>
-  <b>
-   PM_ERR_NOCONTEXT
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <i>
-    handle
-   </i>
-   does not identify a valid PMAPI context
-  </dd>
- </dl>
- <p>
-  <b>
-   -ETIMEDOUT
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   The re-try time has not elapsed, or the reconnection is attempted and fails.
-  </dd>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  CAVEAT
- </h2>
- <p>
-  Applications that use
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
-
-should exercise caution because the static fields in
-  <i>
-   struct hostent
-  </i>
-  may not be preserved across some
-  <b>
-   <a href="/man/man3/pmapi.3.html">
-    PMAPI
-   </a>
-  </b>
-  (3)
-
-calls.
-In particular,
-  <b>
-   <a href="/man/man3/pmnewcontext.3.html">
-    pmNewContext
-   </a>
-  </b>
-  (3)
-
-and
-  <b>
-   <a href="/man/man3/pmreconnectcontext.3.html">
-    pmReconnectContext
-   </a>
-  </b>
-  (3)
-
-both may call
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
-
-internally.
- </p>
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    CAVEAT
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMRECONNECTCONTEXT
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmReconnectContext
+               </b>
+               - reconnect to a PMAPI context
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                int pmReconnectContext(int
+                <i>
+                 handle
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               As a consequence of network, host or
+              Performance Metrics Collector Daemon (PMCD) failures, an application's
+              connection to a PMCD may be established and then subsequently lost.
+               <p>
+                The routine
+                <b>
+                 pmReconnectContext
+                </b>
+                allows an application to request that the context identified by
+                <i>
+                 handle
+                </i>
+                should be re-established, provided the associated metrics source is accessible.
+               </p>
+               <p>
+                When the source of metrics associated with the context
+                <i>
+                 handle
+                </i>
+                is
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1),
+              
+              then
+              to avoid flooding the system with reconnect requests,
+                <b>
+                 pmReconnectContext
+                </b>
+                will only attempt a reconnection after a suitable delay from the previous
+              unsuccessful attempt to reconnect this context. This imposed restriction on
+              the reconnect re-try time interval uses an exponential back-off so that the 
+              initial delay is 5 seconds after the first unsuccessful attempt, then 10
+              seconds, then 20 seconds, then 40 seconds and then 80 seconds thereafter.
+               </p>
+               <p>
+                The environment variable
+                <b>
+                 PMCD_RECONNECT_TIMEOUT
+                </b>
+                may be used to redefine the back-off intervals, see
+                <b>
+                 <a href="/man/man3/pmapi.3.html">
+                  PMAPI
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                Calling
+                <b>
+                 pmReconnectContext
+                </b>
+                with a handle identifying a currently connected
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              context will cause the
+              connection to be broken before any reconnection is attempted.
+               </p>
+               <p>
+                If
+                <i>
+                 handle
+                </i>
+                identifies a context associated with an archive source of metrics,
+                <b>
+                 pmReconnectContext
+                </b>
+                returns without delay.
+               </p>
+               <p>
+                If the reconnection succeeds,
+                <b>
+                 pmReconnectContext
+                </b>
+                returns
+                <i>
+                 handle
+                </i>
+                .
+               </p>
+               <p>
+                As a side-effect of reconnecting, any derived metrics that have
+              previously been defined using
+                <b>
+                 <a href="/man/man3/pmregisterderived.3.html">
+                  pmRegisterDerived
+                 </a>
+                </b>
+                (3),
+                <b>
+                 <a href="/man/man3/pmregisterderivedmetric.3.html">
+                  pmRegisterDerivedMetric
+                 </a>
+                </b>
+                (3)
+              
+              or
+                <b>
+                 <a href="/man/man3/pmloadderivedconfig.3.html">
+                  pmLoadDerivedConfig
+                 </a>
+                </b>
+                (3)
+              
+              will be re-processed and re-bound to the available metrics from the reconnected source.
+              The support of dynamic definition for derived metrics provides
+              one use case where
+                <b>
+                 pmReconnectContext
+                </b>
+                may be called even if the connection to the metrics source has not been lost.
+               </p>
+               <p>
+                Note that even in the case of a successful reconnection,
+                <b>
+                 pmReconnectContext
+                </b>
+                does not change the current
+              Performance Metrics Application Programming Interface (PMAPI)
+              context, so
+                <i>
+                 handle
+                </i>
+                remains valid.
+               </p>
+               <p>
+                When attempting to connect to a remote
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              on a machine that is booting,
+                <b>
+                 pmReconnectContext
+                </b>
+                could potentially block for a long time until the remote machine
+              finishes its initialization.
+                <b>
+                 pmReconnectContext
+                </b>
+                will abort and return an error if the connection has not been established after
+              some specified interval has elapsed.  The default interval is 5
+              seconds.  This may be modified by setting
+                <b>
+                 PMCD_CONNECT_TIMEOUT
+                </b>
+                in the environment to a real number of seconds for the
+              desired timeout.
+              This is most useful in cases where the remote host is at
+              the end of a slow network, requiring longer latencies to
+              establish the connection correctly.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                ENVIRONMENT
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  PMCD_CONNECT_TIMEOUT
+                 </b>
+                </dt>
+                <dd>
+                 Timeout period (in seconds) for
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              connection attempts.
+                </dd>
+                <dt>
+                 <b>
+                  PMCD_RECONNECT_TIMEOUT
+                 </b>
+                </dt>
+                <dd>
+                 Redefines the back-off intervals - refer to
+                 <b>
+                  <a href="/man/man3/pmapi.3.html">
+                   PMAPI
+                  </a>
+                 </b>
+                 (3).
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmloadderivedconfig.3.html">
+                 pmLoadDerivedConfig
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmnewcontext.3.html">
+                 pmNewContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmregisterderived.3.html">
+                 pmRegisterDerived
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmregisterderivedmetric.3.html">
+                 pmRegisterDerivedMetric
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmusecontext.3.html">
+                 pmUseContext
+                </a>
+               </b>
+               (3).
+               <a name="lbAG">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               <p>
+                <b>
+                 PM_ERR_NOCONTEXT
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <i>
+                  handle
+                 </i>
+                 does not identify a valid PMAPI context
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 -ETIMEDOUT
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 The re-try time has not elapsed, or the reconnection is attempted and fails.
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                CAVEAT
+               </h2>
+               <p>
+                Applications that use
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+                  gethostbyname
+                 </a>
+                </b>
+                (3)
+              
+              should exercise caution because the static fields in
+                <i>
+                 struct hostent
+                </i>
+                may not be preserved across some
+                <b>
+                 <a href="/man/man3/pmapi.3.html">
+                  PMAPI
+                 </a>
+                </b>
+                (3)
+              
+              calls.
+              In particular,
+                <b>
+                 <a href="/man/man3/pmnewcontext.3.html">
+                  pmNewContext
+                 </a>
+                </b>
+                (3)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmreconnectcontext.3.html">
+                  pmReconnectContext
+                 </a>
+                </b>
+                (3)
+              
+              both may call
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+                  gethostbyname
+                 </a>
+                </b>
+                (3)
+              
+              internally.
+               </p>
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  CAVEAT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

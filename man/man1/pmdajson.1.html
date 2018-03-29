@@ -1,616 +1,612 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMDAJSON
- </h1>
- Section: User Commands  (1)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmdajson
- </b>
- - JSON PMDA
- <a name="lbAC">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmdajson
- </b>
- is a Performance Metrics Domain Agent (PMDA) which exports
-metrics from arbitrary sources generating JavaScript Object Notation
-(JSON) syntax.
- <p>
-  At least one pair of JSON inputs are required for
-  <b>
-   pmdajson
-  </b>
-  to
-provide metrics for PCP clients;
-one describing metric metadata and one containing metric values data.
-Metadata is read once from a file at PMDA startup while the data is read
-every time a request for metric values is made by a PCP client.
-The data is read either from a JSON file or an external command
-generating JSON output.
-More than one pair of JSON inputs can be used to support arbitrary number
-of metric sources in different configured directories.
- </p>
- <p>
-  The overall JSON format description is at
-  <a href="http://www.json.org/.">
-   http://www.json.org/.
-  </a>
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  JSON DATA SOURCES
- </h2>
- <b>
-  pmdajson
- </b>
- reads a mandatory JSON configuration file
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <dl compact="">
-      <dt>
-       •
-      </dt>
-      <dd>
-       <i>
-       </i>
-       <tt>
-        $PCP_PMDAS_DIR
-       </tt>
-       /json/config.json
-      </dd>
-     </dl>
-    </dd>
-   </dl>
-  </dd>
- </dl>
- <p>
-  This file can contain the following PMDA options using the JSON syntax:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <dl compact="">
-      <dt>
-       •
-      </dt>
-      <dd>
-       directory_list
-      </dd>
-      <dt>
-       •
-      </dt>
-      <dd>
-       trusted_directory_list
-      </dd>
-     </dl>
-    </dd>
-   </dl>
-  </dd>
- </dl>
- <p>
-  <b>
-   pmdajson
-  </b>
-  searches the directories listed for these options
-looking for files named
-  <i>
-   metadata.json
-  </i>
-  and (by default)
-  <i>
-   data.json
-  </i>
-  .
-The JSON metadata files describe the metric names, types, and
-other details of the associated JSON metric data.
-The JSON data file name is configurable, and can also be an external
-command instead of a periodically updated (by external tools) data file.
- </p>
- <p>
-  Each of these found JSON file/command pairs form a
-  <i>
-   JSON data source
-  </i>
-  .
- </p>
- <p>
-  For example, let us assume the following simple JSON data file that
-contains values for two metrics, one of type string and one numeric:
- </p>
- <p>
- </p>
- <pre>
-  {
-    "string_value": "testing, 1, 2, 3",
-    "read_count": 0
-  }
-</pre>
- <p>
-  For these metrics the metadata file needed by
-  <b>
-   pmdajson
-  </b>
-  would be:
- </p>
- <p>
- </p>
- <pre>
-  {
-    "metrics": [
-      {
-        "name": "string_value",
-        "pointer": "/string_value",
-        "type": "string"
-      },
-      {
-        "name": "read_count",
-        "pointer": "/read_count",
-        "type": "integer",
-        "description": "Times values read"
-      }
-    ]
-  }
-</pre>
- <p>
-  For further details on the JSON metadata format and options,
-see the README file included as part of
-  <b>
-   pmdajson
-  </b>
-  installation.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  SECURITY MODEL
- </h2>
- JSON data sources listed for the
- <i>
-  directory_list
- </i>
- option are not
-trusted, meaning that if external commands to generate the needed
-JSON data are used, these commands are run as user
- <b>
-  nobody
- </b>
- .
- <p>
-  JSON data sources listed for the
-  <i>
-   trusted_directory_list
-  </i>
-  option
-are trusted, meaning that if external commands to generate the needed
-JSON data are used, these commands are run as user
-  <b>
-   root
-  </b>
-  .
- </p>
- <p>
-  For further details on security and description on running external
-commands, see the README file included as part of
-  <b>
-   pmdajson
-  </b>
-  installation.
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  INSTALLATION
- </h2>
- Install the JSON PMDA by using the Install script as root:
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-# cd $PCP_PMDAS_DIR/json
-# ./Install
-</pre>
-  </dd>
- </dl>
- <p>
-  To uninstall, do the following as root:
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-# cd $PCP_PMDAS_DIR/json
-# ./Remove
-</pre>
-  </dd>
- </dl>
- <p>
-  <b>
-   pmdajson
-  </b>
-  is launched by
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1) and should never be
-executed directly.
-The Install and Remove scripts notify
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1) when the
-agent is installed or removed.
-  <a name="lbAG">
-  </a>
- </p>
- <h2>
-  FILES
- </h2>
- <dl compact="">
-  <dt>
-   <i>
-   </i>
-   <tt>
-    $PCP_PMDAS_DIR
-   </tt>
-   /json/README
-  </dt>
-  <dd>
-   additional documentation for
-   <b>
-    pmdajson
-   </b>
-   used JSON files
-  </dd>
-  <dt>
-   <i>
-   </i>
-   <tt>
-    $PCP_PMDAS_DIR
-   </tt>
-   /json/config.json
-  </dt>
-  <dd>
-   configuration file for the
-   <b>
-    pmdajson
-   </b>
-   agent
-  </dd>
-  <dt>
-   <i>
-   </i>
-   <tt>
-    $PCP_PMDAS_DIR
-   </tt>
-   /json/Install
-  </dt>
-  <dd>
-   installation script for the
-   <b>
-    pmdajson
-   </b>
-   agent
-  </dd>
-  <dt>
-   <i>
-   </i>
-   <tt>
-    $PCP_PMDAS_DIR
-   </tt>
-   /json/Remove
-  </dt>
-  <dd>
-   undo installation script for the
-   <b>
-    pmdajson
-   </b>
-   agent
-  </dd>
-  <dt>
-   <i>
-   </i>
-   <tt>
-    $PCP_LOG_DIR
-   </tt>
-   /pmcd/json.log
-  </dt>
-  <dd>
-   default log file for messages from the
-   <b>
-    pmdajson
-   </b>
-   agent
-  </dd>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize
-the file and directory names used by PCP.
-On each installation, the
-file
- <i>
-  /etc/pcp.conf
- </i>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file, as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <a name="lbAI">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1)
-
-and
- <b>
-  <a href="/man/man1/pminfo.1.html">
-   pminfo
-  </a>
- </b>
- (1).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    JSON DATA SOURCES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    SECURITY MODEL
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    INSTALLATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMDAJSON
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmdajson
+               </b>
+               - JSON PMDA
+               <a name="lbAC">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmdajson
+               </b>
+               is a Performance Metrics Domain Agent (PMDA) which exports
+              metrics from arbitrary sources generating JavaScript Object Notation
+              (JSON) syntax.
+               <p>
+                At least one pair of JSON inputs are required for
+                <b>
+                 pmdajson
+                </b>
+                to
+              provide metrics for PCP clients;
+              one describing metric metadata and one containing metric values data.
+              Metadata is read once from a file at PMDA startup while the data is read
+              every time a request for metric values is made by a PCP client.
+              The data is read either from a JSON file or an external command
+              generating JSON output.
+              More than one pair of JSON inputs can be used to support arbitrary number
+              of metric sources in different configured directories.
+               </p>
+               <p>
+                The overall JSON format description is at
+                <a href="http://www.json.org/.">
+                 http://www.json.org/.
+                </a>
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                JSON DATA SOURCES
+               </h2>
+               <b>
+                pmdajson
+               </b>
+               reads a mandatory JSON configuration file
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     •
+                    </dt>
+                    <dd>
+                     <i>
+                     </i>
+                     <tt>
+                      $PCP_PMDAS_DIR
+                     </tt>
+                     /json/config.json
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                </dd>
+               </dl>
+               <p>
+                This file can contain the following PMDA options using the JSON syntax:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     •
+                    </dt>
+                    <dd>
+                     directory_list
+                    </dd>
+                    <dt>
+                     •
+                    </dt>
+                    <dd>
+                     trusted_directory_list
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 pmdajson
+                </b>
+                searches the directories listed for these options
+              looking for files named
+                <i>
+                 metadata.json
+                </i>
+                and (by default)
+                <i>
+                 data.json
+                </i>
+                .
+              The JSON metadata files describe the metric names, types, and
+              other details of the associated JSON metric data.
+              The JSON data file name is configurable, and can also be an external
+              command instead of a periodically updated (by external tools) data file.
+               </p>
+               <p>
+                Each of these found JSON file/command pairs form a
+                <i>
+                 JSON data source
+                </i>
+                .
+               </p>
+               <p>
+                For example, let us assume the following simple JSON data file that
+              contains values for two metrics, one of type string and one numeric:
+               </p>
+               <p>
+               </p>
+               <pre>
+                {
+                  "string_value": "testing, 1, 2, 3",
+                  "read_count": 0
+                }
+              </pre>
+               <p>
+                For these metrics the metadata file needed by
+                <b>
+                 pmdajson
+                </b>
+                would be:
+               </p>
+               <p>
+               </p>
+               <pre>
+                {
+                  "metrics": [
+                    {
+                      "name": "string_value",
+                      "pointer": "/string_value",
+                      "type": "string"
+                    },
+                    {
+                      "name": "read_count",
+                      "pointer": "/read_count",
+                      "type": "integer",
+                      "description": "Times values read"
+                    }
+                  ]
+                }
+              </pre>
+               <p>
+                For further details on the JSON metadata format and options,
+              see the README file included as part of
+                <b>
+                 pmdajson
+                </b>
+                installation.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                SECURITY MODEL
+               </h2>
+               JSON data sources listed for the
+               <i>
+                directory_list
+               </i>
+               option are not
+              trusted, meaning that if external commands to generate the needed
+              JSON data are used, these commands are run as user
+               <b>
+                nobody
+               </b>
+               .
+               <p>
+                JSON data sources listed for the
+                <i>
+                 trusted_directory_list
+                </i>
+                option
+              are trusted, meaning that if external commands to generate the needed
+              JSON data are used, these commands are run as user
+                <b>
+                 root
+                </b>
+                .
+               </p>
+               <p>
+                For further details on security and description on running external
+              commands, see the README file included as part of
+                <b>
+                 pmdajson
+                </b>
+                installation.
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                INSTALLATION
+               </h2>
+               Install the JSON PMDA by using the Install script as root:
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <b>
+                 </b>
+                 <pre>
+              # cd $PCP_PMDAS_DIR/json
+              # ./Install
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                To uninstall, do the following as root:
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <b>
+                 </b>
+                 <pre>
+              # cd $PCP_PMDAS_DIR/json
+              # ./Remove
+              </pre>
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 pmdajson
+                </b>
+                is launched by
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1) and should never be
+              executed directly.
+              The Install and Remove scripts notify
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1) when the
+              agent is installed or removed.
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <i>
+                 </i>
+                 <tt>
+                  $PCP_PMDAS_DIR
+                 </tt>
+                 /json/README
+                </dt>
+                <dd>
+                 additional documentation for
+                 <b>
+                  pmdajson
+                 </b>
+                 used JSON files
+                </dd>
+                <dt>
+                 <i>
+                 </i>
+                 <tt>
+                  $PCP_PMDAS_DIR
+                 </tt>
+                 /json/config.json
+                </dt>
+                <dd>
+                 configuration file for the
+                 <b>
+                  pmdajson
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <i>
+                 </i>
+                 <tt>
+                  $PCP_PMDAS_DIR
+                 </tt>
+                 /json/Install
+                </dt>
+                <dd>
+                 installation script for the
+                 <b>
+                  pmdajson
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <i>
+                 </i>
+                 <tt>
+                  $PCP_PMDAS_DIR
+                 </tt>
+                 /json/Remove
+                </dt>
+                <dd>
+                 undo installation script for the
+                 <b>
+                  pmdajson
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <i>
+                 </i>
+                 <tt>
+                  $PCP_LOG_DIR
+                 </tt>
+                 /pmcd/json.log
+                </dt>
+                <dd>
+                 default log file for messages from the
+                 <b>
+                  pmdajson
+                 </b>
+                 agent
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize
+              the file and directory names used by PCP.
+              On each installation, the
+              file
+               <i>
+                /etc/pcp.conf
+               </i>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file, as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAI">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1)
+              
+              and
+               <b>
+                <a href="/man/man1/pminfo.1.html">
+                 pminfo
+                </a>
+               </b>
+               (1).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  JSON DATA SOURCES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SECURITY MODEL
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  INSTALLATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

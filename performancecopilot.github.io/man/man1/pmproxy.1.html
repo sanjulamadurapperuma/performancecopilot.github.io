@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMPROXY
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmproxy
+ </b>
+ - proxy for performance metrics collector daemon
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmproxy
+ </b>
+ [
+ <b>
+  -Af
+ </b>
+ ]
+[
+ <b>
+  -C
+ </b>
+ <i>
+  dirname
+ </i>
+ ]
+[
+ <b>
+  -i
+ </b>
+ <i>
+  ipaddress
+ </i>
+ ]
+[
+ <b>
+  -l
+ </b>
+ <i>
+  logfile
+ </i>
+ ]
+[
+ <b>
+  -L
+ </b>
+ <i>
+  bytes
+ </i>
+ ]
+[
+ <b>
+  -M
+ </b>
+ <i>
+  certname
+ </i>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  port
+ </i>
+ [,
+ <i>
+  port
+ </i>
+ ...]
+[
+ <b>
+  -P
+ </b>
+ <i>
+  passfile
+ </i>
+ ]
+[
+ <b>
+  -U
+ </b>
+ <i>
+  username
+ </i>
+ ]
+[
+ <b>
+  -x
+ </b>
+ <i>
+  file
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmproxy
+ </b>
+ acts as a protocol proxy for
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+
+allowing Performance Co-Pilot (PCP) monitoring clients to connect to
+one or more
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1)
+
+instances via
+ <b>
+  pmproxy
+ </b>
+ .
+ <p>
+  Normally
+  <b>
+   pmproxy
+  </b>
+  is deployed in a firewall domain, or on a ``head'' node of a cluster
+where the IP (Internet Protocol) address of the hosts where
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+is running may be unknown to the PCP monitoring clients, although the
+IP address of the host where
+  <b>
+   pmproxy
+  </b>
+  is running is known to these clients.
+Similarly, the clients may have network connectivity only to the
+host where
+  <b>
+   pmproxy
+  </b>
+  is running, while there is network connectivity from that host to the
+hosts of interest where
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+is running.
+ </p>
+ <p>
+  The behaviour of the PCP monitoring clients is controlled by either the
+  <b>
+   PMPROXY_HOST
+  </b>
+  environment variable or through the extended hostname specification
+(see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for details).
+If neither of these mechanisms is used, clients will make their
+connections directly to
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1).
+
+If the proxy hostname syntax is used or
+  <b>
+   PMPROXY_HOST
+  </b>
+  is set, then this should be the hostname or IP address of the system
+where
+  <b>
+   pmproxy
+  </b>
+  is running, and the clients will connect to
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+indirectly through the protocol proxy services of
+  <b>
+   pmproxy.
+  </b>
+ </p>
+ <p>
+  The options to
+  <b>
+   pmproxy
+  </b>
+  are as follows.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -A
+   </b>
+  </dt>
+  <dd>
+   Disable service advertisement.
+By default,
+   <b>
+    pmproxy
+   </b>
+   will advertise its presence on the network using any available mechanisms
+(such as Avahi/DNS-SD), assisting remote monitoring tools with finding it.
+These mechanisms are disabled with this option.
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+   <i>
+    dirname
+   </i>
+  </dt>
+  <dd>
+   Specify the path to the Network Security Services certificate database,
+for (optional) secure connections.
+The default is
+   <b>
+    /etc/pki/nssdb
+   </b>
+   .
+
+Refer also to the
+   <b>
+    -P
+   </b>
+   option.
+If it does not already exist, this database can be created using the
+   <b>
+    certutil
+   </b>
+   utility.
+This process and other certificate database maintenance information
+is provided in the
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+manual page and the online PCP tutorials.
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+  </dt>
+  <dd>
+   By default
+   <b>
+    pmproxy
+   </b>
+   is started as a daemon.
+The
+   <b>
+    -f
+   </b>
+   option indicates that it should run in the foreground.
+This is most useful when trying to diagnose problems with establishing
+connections.
+  </dd>
+  <dt>
+   <b>
+    -i
+   </b>
+   <i>
+    ipaddress
+   </i>
+  </dt>
+  <dd>
+   This option is usually only used on hosts with more than one network
+interface (very common for firewall and ``head'' node hosts where
+   <b>
+    pmproxy
+   </b>
+   is most likely to be deployed).  If no
+   <b>
+    -i
+   </b>
+   options are specified
+   <b>
+    pmproxy
+   </b>
+   accepts PCP client connections on  any of its host's IP addresses.
+The
+   <b>
+    -i
+   </b>
+   option is used to specify explicitly an IP address that PCP client connections should be
+accepted on.
+   <i>
+    ipaddress
+   </i>
+   should be in the standard dotted form (e.g. 100.23.45.6).  The
+   <b>
+    -i
+   </b>
+   option may be used multiple times to define a list of IP addresses.
+When one or more
+   <b>
+    -i
+   </b>
+   options is specified, attempted connections made on any other IP addresses will be refused.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   <i>
+    logfile
+   </i>
+  </dt>
+  <dd>
+   By default a log file named
+   <i>
+    pmproxy.log
+   </i>
+   is written in the current directory.
+The
+   <b>
+    -l
+   </b>
+   option causes the log file to be written to
+   <i>
+    logfile
+   </i>
+   instead of the default.
+If the log file cannot be created or is not writable, output is
+written to the standard error instead.
+  </dd>
+  <dt>
+   <b>
+    -L
+   </b>
+   <i>
+    bytes
+   </i>
+  </dt>
+  <dd>
+   <i>
+    PDU
+   </i>
+   s
+
+received by
+   <b>
+    pmproxy
+   </b>
+   from PCP monitoring clients are restricted to a
+maximum size of 65536 bytes by default to defend against Denial of
+Service attacks.  The
+   <b>
+    -L
+   </b>
+   option may be used to change the maximum incoming
+   <i>
+    PDU
+   </i>
+   size.
+  </dd>
+  <dt>
+   <b>
+    -M
+   </b>
+   <i>
+    certname
+   </i>
+  </dt>
+  <dd>
+   By default, pmproxy will try to use a certificate called
+   <b>
+    PCP Collector certificate
+   </b>
+   in its server role. The
+   <b>
+    -M
+   </b>
+   option allows this to be changed.
+  </dd>
+  <dt>
+   <b>
+    -P
+   </b>
+   <i>
+    passfile
+   </i>
+  </dt>
+  <dd>
+   Specify the path to a file containing the Network Security Services certificate
+database password for (optional) secure connections, and for databases that are
+password protected.
+Refer also to the
+   <b>
+    -C
+   </b>
+   option.
+When using this option, great care should be exercised to ensure appropriate
+ownership ("pcp" user, typically) and permissions on this file (0400, so as to
+be unreadable by any user other than the user running the
+   <b>
+    pmproxy
+   </b>
+   process).
+  </dd>
+  <dt>
+   <b>
+    -U
+   </b>
+   <i>
+    username
+   </i>
+  </dt>
+  <dd>
+   Assume the identity of
+   <i>
+    username
+   </i>
+   before starting to accept incoming packets from PCP monitoring clients.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   Before the
+   <b>
+    pmproxy
+   </b>
+   <i>
+    logfile
+   </i>
+   can be opened,
+   <b>
+    pmproxy
+   </b>
+   may encounter a fatal error which prevents it from starting.  By default, the
+output describing this error is sent to
+   <b>
+    /dev/tty
+   </b>
+   but it may redirected to
+   <i>
+    file
+   </i>
+   .
+  </dd>
+ </dl>
+ <a name="lbAE">
+ </a>
+ <h2>
+  STARTING AND STOPPING PMPROXY
+ </h2>
+ Normally,
+ <b>
+  pmproxy
+ </b>
+ is started automatically at boot time and stopped when the
+system is being brought down.
+Under certain circumstances it is necessary to start or stop
+ <b>
+  pmproxy
+ </b>
+ manually.
+To do this one must become superuser and type
+ <p>
+  # $PCP_RC_DIR/pmproxy start
+ </p>
+ <p>
+  to start
+  <b>
+   pmproxy
+  </b>
+  ,
+
+or
+ </p>
+ <p>
+  # $PCP_RC_DIR/pmproxy stop
+ </p>
+ <p>
+  to stop
+  <b>
+   pmproxy
+  </b>
+  .
+
+Starting
+  <b>
+   pmproxy
+  </b>
+  when it is already running is the same as stopping
+it and then starting it again.
+ </p>
+ <p>
+  Normally
+  <b>
+   pmproxy
+  </b>
+  listens for PCP client connections on TCP/IP port number 44322
+(registered at
+  <i>
+   <a href="http://www.iana.org/">
+    http://www.iana.org/
+   </a>
+  </i>
+  ).
+
+Either the environment
+variable
+  <b>
+   PMPROXY_PORT
+  </b>
+  <b>
+   -p
+  </b>
+  command line option
+may be used to specify alternative port number(s) when
+  <b>
+   PMPROXY_PORT
+  </b>
+  or the
+  <b>
+   -p
+  </b>
+  command line option
+may be used to specify alternative port number(s) when
+  <b>
+   pmproxy
+  </b>
+  is started; in each case, the specification is a comma-separated list
+of one or more numerical port numbers.  Should both methods be used
+or multiple
+  <b>
+   -p
+  </b>
+  options appear on the command line,
+  <b>
+   pmproxy
+  </b>
+  will listen on the union of the set of ports specified via all
+  <b>
+   -p
+  </b>
+  options and the
+  <b>
+   PMPROXY_PORT
+  </b>
+  environment variable.
+If non-default ports are used with
+  <b>
+   pmproxy
+  </b>
+  care should be taken to ensure that
+  <b>
+   PMPROXY_PORT
+  </b>
+  is also set in the environment of any client application that
+will connect to
+  <b>
+   pmproxy
+  </b>
+  ,
+
+or that the extended host specification syntax is used
+(see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for details).
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    PCP_PMPROXYOPTIONS_PATH
+   </b>
+  </dt>
+  <dd>
+   command line options for
+   <b>
+    pmproxy
+   </b>
+   when launched from
+   <b>
+    $PCP_RC_DIR/pmproxy
+   </b>
+   All the command line option lines should start with a hyphen as
+the first character.
+  </dd>
+  <dt>
+   <b>
+    $PCP_SYSCONFIG_DIR/pmproxy
+   </b>
+  </dt>
+  <dd>
+   additional environment variables that will be set when
+   <b>
+    pmproxy
+   </b>
+   executes.
+Only settings of the form "PMPROXY_VARIABLE=value" will be honoured.
+  </dd>
+  <dt>
+   <b>
+    ./pmproxy.log
+   </b>
+  </dt>
+  <dd>
+   (or
+   <b>
+    $PCP_LOG_DIR/pmproxy/pmproxy.log
+   </b>
+   when started automatically)
+   <br/>
+   All messages and diagnostics are directed here
+  </dd>
+  <dt>
+   <b>
+    /etc/pki/nssdb
+   </b>
+  </dt>
+  <dd>
+   default Network Security Services (NSS) certificate database
+directory, used for optional Secure Socket Layer connections.
+This database can be created and queried using the NSS
+   <b>
+    certutil
+   </b>
+   tool, amongst others.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  ENVIRONMENT
+ </h2>
+ In addition to the PCP environment variables described in the
+ <b>
+  PCP ENVIRONMENT
+ </b>
+ section below, there are several environment variables that
+influence the interactions between a PCP monitoring client,
+ <b>
+  pmcd
+ </b>
+ and
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1).
+ <dl compact="">
+  <dt>
+   <b>
+    PMCD_PORT
+   </b>
+  </dt>
+  <dd>
+   For the PCP monitoring client this (or the default port number) is passed to
+   <b>
+    pmproxy
+   </b>
+   and used to connect to
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1).
+
+In the environment of
+   <b>
+    pmproxy
+   </b>
+   <b>
+    PMCD_PORT is not used.
+   </b>
+  </dd>
+  <dt>
+   <b>
+    PMPROXY_HOST
+   </b>
+  </dt>
+  <dd>
+   For the PCP monitoring client this is the hostname or IP address of the
+host where
+   <b>
+    pmproxy
+   </b>
+   is running.
+In recent versions of PCP (since version 3) this has been superseded by
+the extended hostname syntax
+(see
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for details).
+  </dd>
+  <dt>
+   <b>
+    PMPROXY_PORT
+   </b>
+  </dt>
+  <dd>
+   For the PCP monitoring client this is the port on which
+   <b>
+    pmproxy
+   </b>
+   will accept connections.  The default is 44322.
+  </dd>
+  <dt>
+   <b>
+    PMCD_CONNECT_TIMEOUT
+   </b>
+   ,
+   <b>
+    PMCD_RECONNECT_TIMEOUT
+   </b>
+   and
+   <b>
+    PMCD_REQUEST_TIMEOUT
+   </b>
+  </dt>
+  <dd>
+   (see
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1))
+
+For the PCP monitoring client, setting these environment variables
+will modify the timeouts used for interactions between the client
+and
+   <b>
+    pmproxy
+   </b>
+   (independent of which
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+is being used).
+For
+   <b>
+    pmproxy
+   </b>
+   these same environment variables control the timeouts between
+   <b>
+    pmproxy
+   </b>
+   and all
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+instances (independent of which monitoring client is involved).
+  </dd>
+ </dl>
+ <p>
+  If set to the value 1, the
+  <b>
+   PMPROXY_LOCAL
+  </b>
+  environment variable will cause
+  <b>
+   pmproxy
+  </b>
+  to run in a localhost-only mode of operation, where it binds only
+to the loopback interface.
+ </p>
+ <p>
+  The
+  <b>
+   PMPROXY_MAXPENDING
+  </b>
+  variable can be set to indicate the maximum length to which the queue
+of pending client connections may grow.
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <b>
+  /etc/pcp.conf
+ </b>
+ contains the local values for these variables.
+The
+ <b>
+  PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAI">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdbg.1.html">
+   pmdbg
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <a name="lbAJ">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ If
+ <b>
+  pmproxy
+ </b>
+ is already running the message "Error: OpenRequestSocket bind: Address already
+in use" will appear.
+This may also appear if
+ <b>
+  pmproxy
+ </b>
+ was shutdown with an outstanding request from a client.
+In this case, a
+request socket has been left in the TIME_WAIT state and until the system closes
+it down (after some timeout period) it will not be possible to run
+ <b>
+  pmproxy
+ </b>
+ .
+ <p>
+  In addition to the standard
+  <b>
+   PCP
+  </b>
+  debugging options, see
+  <b>
+   <a href="/man/man1/pmdbg.1.html">
+    pmdbg
+   </a>
+  </b>
+  (1),
+  <b>
+   pmproxy
+  </b>
+  currently supports the debugging option
+  <b>
+   context
+  </b>
+  for tracing client connections and disconnections.
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    STARTING AND STOPPING PMPROXY
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

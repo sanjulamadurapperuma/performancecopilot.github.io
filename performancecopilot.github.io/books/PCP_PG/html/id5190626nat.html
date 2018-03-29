@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.3.5.2. Data Structures</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5190482.html" title="2.3.5. Labels" /><link rel="prev" href="id5190482.html" title="2.3.5. Labels" /><link rel="next" href="id5191164.html" title="2.4. Other Issues" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5190482.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5191164.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5190626nat">
+      ⁠</a>2.3.5.2. Data Structures</h4></div></div></div><div class="para">
+						<a id="IG31340177137nat" class="indexterm"></a> <a id="IG31340177138nat" class="indexterm"></a>In any PMDA that supports labels at any level of the hierarchy, each individual label (one name:value pair) requires a <code class="filename">pmLabel</code> structure as shown in <a class="xref" href="id5190626nat.html#Z975964618nat">Example 2.12, “ <code class="filename">pmLabel</code> Structure”</a>:
+					</div><div class="example"><a id="Z975964618nat">
+      ⁠</a><p class="title"><strong>Example 2.12.  <code class="filename">pmLabel</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct { 
+    uint     name : 16;      /* label name offset in JSONB string */
+    uint     namelen : 8;    /* length of name excluding the null */
+    uint     flags : 8;      /* information about this label */
+    uint     value : 16;     /* offset of the label value */
+    uint     valuelen : 16;  /* length of value in bytes */
+} pmLabel;</pre><div class="para">
+							The <code class="literal">flags</code> field is a bitfield identifying the hierarchy level and whether this name:value pair is intrinsic (optional) or extrinsic (part of the mandatory, identifying metadata for the metric or instance). All other fields are offsets and lengths in the JSONB string from an associated <code class="filename">pmLabelSet</code> structure.
+						</div></div></div><div class="para">
+						<a id="IG31340177139nat" class="indexterm"></a>Zero or more labels are specified via a label set, in a <code class="filename">pmLabelSet</code> structure as shown in <a class="xref" href="id5190626nat.html#Z975964773nat">Example 2.13, “ <code class="filename">pmLabelSet</code> Structure”</a>:
+					</div><div class="example"><a id="Z975964773nat">
+      ⁠</a><p class="title"><strong>Example 2.13.  <code class="filename">pmLabelSet</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct { 
+    uint     inst;          /* PM_IN_NULL or the instance ID */ 
+    int      nlabels;       /* count of labels or error code */
+    char     *json;         /* JSONB formatted labels string */
+    uint     jsonlen : 16;  /* JSON string length byte count */
+    uint     padding : 16;  /* zero, reserved for future use */
+    pmLabel  *labels;       /* indexing into the JSON string */
+} pmLabelSet;</pre><div class="para">
+							This provides information about the set of labels associated with an entity (context, domain, indom, metric cluster, item or instance). The entity will be from any one level of the label hierarchy. If at the lowest hierarchy level (which happens to be highest precedence - instances) then the <code class="literal">inst</code> field will contain an actual instance identifier instead of PM_IN_NULL.
+						</div></div></div><div class="para">
+						<a id="IG31340177142nat" class="indexterm"></a>For information about how a label can be associated with each level of the hierarchy, see the <code class="command">pmdaLabel(3)</code> man page.
+					</div><div class="para">
+						The simple PMDA, shown in <a class="xref" href="id5190626nat.html#Z963524114nat">Example 2.14, “Simple PMDA”</a>, associates labels at the domain, indom and instance levels of the hierarhy.
+					</div><div class="example"><a id="Z963524114nat">
+      ⁠</a><p class="title"><strong>Example 2.14. Simple PMDA</strong></p><div class="example-contents"><pre class="programlisting">static int
+simple_label(int ident, int type, pmLabelSet **lpp, pmdaExt *pmda)
+{
+    int         serial;
+
+    switch (type) {
+    case PM_LABEL_DOMAIN:
+        pmdaAddLabels(lpp, "{"role":"testing"}");
+        break;
+    case PM_LABEL_INDOM:
+        serial = pmInDom_serial((pmInDom)ident);
+        if (serial == COLOR_INDOM) {
+            pmdaAddLabels(lpp, "{"indom_name":"color"}");
+            pmdaAddLabels(lpp, "{"model":"RGB"}");
+        }
+        if (serial == NOW_INDOM) {
+            pmdaAddLabels(lpp, "{"indom_name":"time"}");
+            pmdaAddLabels(lpp, "{"unitsystem":"SI"}");
+        }
+        break;
+    case PM_LABEL_CLUSTER:
+    case PM_LABEL_ITEM:
+        /* no labels to add for these types, fall through */
+    default:
+        break;
+    }
+    return pmdaLabel(ident, type, lpp, pmda);
+}
+
+static int
+simple_labelCallBack(pmInDom indom, unsigned int inst, pmLabelSet **lp)
+{
+    struct timeslice *tsp;
+
+    if (pmInDom_serial(indom) != NOW_INDOM)
+        return 0;
+    if (pmdaCacheLookup(indom, inst, NULL, (void *)&amp;tsp) != PMDA_CACHE_ACTIVE)
+        return 0;
+    /* SI units label, value: sec (seconds), min (minutes), hour (hours) */
+    return pmdaAddLabels(lp, "{"units":"%s"}", tsp-&lt;tm_name);
+}</pre></div></div><div class="para">
+						The <code class="command">simple_labelCallBack</code> function is called indirectly via <code class="command">pmdaLabel</code> for each instance of the <code class="literal">NOW_INDOM</code><a id="IG31340177144" class="indexterm"></a>. PMDA initialization ensures these functions are registered with the global PMDA interface structure for use when handling label requests, by the following assignments in the <code class="command">simple_init</code> function:
+					</div><pre class="programlisting">dp-&gt;version.seven.label = simple_label;
+pmdaSetLabelCallBack(dp, simple_labelCallBack);</pre></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5190482.html"><strong>Prev</strong>2.3.5. Labels</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5191164.html"><strong>Next</strong>2.4. Other Issues</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

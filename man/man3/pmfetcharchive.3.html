@@ -1,423 +1,419 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMFETCHARCHIVE
- </h1>
- Section: C Library Functions (3)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmFetchArchive
- </b>
- - get performance metrics directly from a set if archive logs
- <a name="lbAC">
- </a>
- <h2>
-  C SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-   pcp/pmapi.h
-  </a>
-  &gt;
- </b>
- <p>
-  int pmFetchArchive(pmResult **
-  <i>
-   result
-  </i>
-  );
- </p>
- <p>
-  cc ... -lpcp
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmFetchArchive
- </b>
- is a variant of
- <b>
-  <a href="/man/man3/pmfetch.3.html">
-   pmFetch
-  </a>
- </b>
- (3)
-
-that may only be used when the current
-Performance Metrics Application Programming Interface (PMAPI)
-context
-is associated with a set of archive logs.
- <p>
-  The
-  <i>
-   result
-  </i>
-  is instantiated with all of the metrics (and instances)
-from the next archive record,
-consequently there is no notion of a list of desired metrics,
-and the instance profile of the PMAPI context is ignored.
- </p>
- <p>
-  <b>
-   pmFetchArchive
-  </b>
-  may return a
-  <i>
-   result
-  </i>
-  in which
-  <i>
-   numpmid
-  </i>
-  is zero.  This is a
-  <i>
-   &lt;mark&gt;
-  </i>
-  record that indicates a temporal discontinuity in the time series
-of performance metrics.  This can happen at the boundary between archive logs
-in a set
-or if the archive log associated
-with the current PMAPI context was created using
-  <b>
-   <a href="/man/man1/pmlogextract.1.html">
-    pmlogextract
-   </a>
-  </b>
-  (1)
-
-to concatenate two or more PCP archive logs, and the
-  <i>
-   &lt;mark&gt;
-  </i>
-  record marks a point in time between the end of one input archive and
-the start of the next input archive.
- </p>
- <p>
-  It is expected that
-  <b>
-   pmFetchArchive
-  </b>
-  would be used to create utilities that scan sets of archive logs,
-while the more common access to the archives would be via the
-  <b>
-   <a href="/man/man3/pmfetch.3.html">
-    pmFetch
-   </a>
-  </b>
-  (3)
-
-interface.
- </p>
- <p>
-  To skip records within the set of archive logs, use
-  <b>
-   <a href="/man/man3/pmsetmode.3.html">
-    pmSetMode
-   </a>
-  </b>
-  (3)
-
-to change the collection time within the current
-PMAPI context, then call
-  <b>
-   pmFetchArchive.
-  </b>
- </p>
- <p>
-  Note that the
-  <i>
-   result
-  </i>
-  returned by
-  <b>
-   pmFetchArchive
-  </b>
-  is dynamically allocated, and
-must be released using
-  <b>
-   <a href="/man/man3/pmfreeresult.3.html">
-    pmFreeResult
-   </a>
-  </b>
-  (3),
-
-not
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/free.3.html">
-    free
-   </a>
-  </b>
-  (3).
-
-See
-  <b>
-   <a href="/man/man3/pmfetch.3.html">
-    pmFetch
-   </a>
-  </b>
-  (3)
-
-and
-  <b>
-   <a href="/man/man3/pmfreeresult.3.html">
-    pmFreeResult
-   </a>
-  </b>
-  (3)
-
-for further details.
- </p>
- <p>
-  <b>
-   pmFetchArchive
-  </b>
-  returns zero on success.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmfetch.3.html">
-   pmFetch
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmfreeresult.3.html">
-   pmFreeResult
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmnewcontext.3.html">
-   pmNewContext
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmsetmode.3.html">
-   pmSetMode
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmtrimnamespace.3.html">
-   pmTrimNameSpace
-  </a>
- </b>
- (3).
- <a name="lbAF">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    PM_ERR_NOTARCHIVE
-   </b>
-  </dt>
-  <dd>
-   the current PMAPI context is not associated with a set of archive logs
-   <p>
-   </p>
-  </dd>
- </dl>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMFETCHARCHIVE
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmFetchArchive
+               </b>
+               - get performance metrics directly from a set if archive logs
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                int pmFetchArchive(pmResult **
+                <i>
+                 result
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmFetchArchive
+               </b>
+               is a variant of
+               <b>
+                <a href="/man/man3/pmfetch.3.html">
+                 pmFetch
+                </a>
+               </b>
+               (3)
+              
+              that may only be used when the current
+              Performance Metrics Application Programming Interface (PMAPI)
+              context
+              is associated with a set of archive logs.
+               <p>
+                The
+                <i>
+                 result
+                </i>
+                is instantiated with all of the metrics (and instances)
+              from the next archive record,
+              consequently there is no notion of a list of desired metrics,
+              and the instance profile of the PMAPI context is ignored.
+               </p>
+               <p>
+                <b>
+                 pmFetchArchive
+                </b>
+                may return a
+                <i>
+                 result
+                </i>
+                in which
+                <i>
+                 numpmid
+                </i>
+                is zero.  This is a
+                <i>
+                 &lt;mark&gt;
+                </i>
+                record that indicates a temporal discontinuity in the time series
+              of performance metrics.  This can happen at the boundary between archive logs
+              in a set
+              or if the archive log associated
+              with the current PMAPI context was created using
+                <b>
+                 <a href="/man/man1/pmlogextract.1.html">
+                  pmlogextract
+                 </a>
+                </b>
+                (1)
+              
+              to concatenate two or more PCP archive logs, and the
+                <i>
+                 &lt;mark&gt;
+                </i>
+                record marks a point in time between the end of one input archive and
+              the start of the next input archive.
+               </p>
+               <p>
+                It is expected that
+                <b>
+                 pmFetchArchive
+                </b>
+                would be used to create utilities that scan sets of archive logs,
+              while the more common access to the archives would be via the
+                <b>
+                 <a href="/man/man3/pmfetch.3.html">
+                  pmFetch
+                 </a>
+                </b>
+                (3)
+              
+              interface.
+               </p>
+               <p>
+                To skip records within the set of archive logs, use
+                <b>
+                 <a href="/man/man3/pmsetmode.3.html">
+                  pmSetMode
+                 </a>
+                </b>
+                (3)
+              
+              to change the collection time within the current
+              PMAPI context, then call
+                <b>
+                 pmFetchArchive.
+                </b>
+               </p>
+               <p>
+                Note that the
+                <i>
+                 result
+                </i>
+                returned by
+                <b>
+                 pmFetchArchive
+                </b>
+                is dynamically allocated, and
+              must be released using
+                <b>
+                 <a href="/man/man3/pmfreeresult.3.html">
+                  pmFreeResult
+                 </a>
+                </b>
+                (3),
+              
+              not
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+                  free
+                 </a>
+                </b>
+                (3).
+              
+              See
+                <b>
+                 <a href="/man/man3/pmfetch.3.html">
+                  pmFetch
+                 </a>
+                </b>
+                (3)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmfreeresult.3.html">
+                  pmFreeResult
+                 </a>
+                </b>
+                (3)
+              
+              for further details.
+               </p>
+               <p>
+                <b>
+                 pmFetchArchive
+                </b>
+                returns zero on success.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmfetch.3.html">
+                 pmFetch
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmfreeresult.3.html">
+                 pmFreeResult
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmnewcontext.3.html">
+                 pmNewContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmsetmode.3.html">
+                 pmSetMode
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmtrimnamespace.3.html">
+                 pmTrimNameSpace
+                </a>
+               </b>
+               (3).
+               <a name="lbAF">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  PM_ERR_NOTARCHIVE
+                 </b>
+                </dt>
+                <dd>
+                 the current PMAPI context is not associated with a set of archive logs
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

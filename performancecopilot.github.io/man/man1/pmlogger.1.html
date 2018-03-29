@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLOGGER
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmlogger
+ </b>
+ - create archive log for performance metrics
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmlogger
+ </b>
+ [
+ <b>
+  -c
+ </b>
+ <i>
+  configfile
+ </i>
+ ]
+[
+ <b>
+  -h
+ </b>
+ <i>
+  host
+ </i>
+ ]
+[
+ <b>
+  -H
+ </b>
+ <i>
+  hostname
+ </i>
+ ]
+[
+ <b>
+  -K
+ </b>
+ <i>
+  spec
+ </i>
+ ]
+[
+ <b>
+  -l
+ </b>
+ <i>
+  logfile
+ </i>
+ ]
+[
+ <b>
+  -L
+ </b>
+ ]
+[
+ <b>
+  -m
+ </b>
+ <i>
+  note
+ </i>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -o
+ </b>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  pid
+ </i>
+ ]
+[
+ <b>
+  -P
+ </b>
+ ]
+[
+ <b>
+  -r
+ </b>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  endsize
+ </i>
+ ]
+[
+ <b>
+  -t
+ </b>
+ <i>
+  interval
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
+ </i>
+ ]
+[
+ <b>
+  -u
+ </b>
+ ]
+[
+ <b>
+  -U
+ </b>
+ <i>
+  username
+ </i>
+ ]
+[
+ <b>
+  -v
+ </b>
+ <i>
+  volsize
+ </i>
+ ]
+[
+ <b>
+  -V
+ </b>
+ <i>
+  version
+ </i>
+ ]
+[
+ <b>
+  -x
+ </b>
+ <i>
+  fd
+ </i>
+ ]
+[
+ <b>
+  -y
+ </b>
+ ]
+ <i>
+  archive
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmlogger
+ </b>
+ creates the archive logs of performance metric values
+that may be ``played back'' by other Performance Co-Pilot (see
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1))
+
+tools.  These logs form the basis of the VCR paradigm and retrospective
+performance analysis services common to the PCP toolkit.
+ <p>
+  The mandatory argument
+  <i>
+   archive
+  </i>
+  is the base name for the physical files that constitute
+an archive log.
+ </p>
+ <p>
+  The
+  <b>
+   -V
+  </b>
+  option specifies the version for the archive that is generated.
+By default a version 2 archive is generated, and the only value
+currently supported for
+  <i>
+   version
+  </i>
+  is 2.
+ </p>
+ <p>
+  Unless directed to another host by the
+  <b>
+   -h
+  </b>
+  option or when directly using PMDAs via the
+  <b>
+   -o
+  </b>
+  option,
+  <b>
+   pmlogger
+  </b>
+  will contact the Performance Metrics Collector Daemon
+(PMCD) on the local host and use that as the source of the metric
+values to be logged.
+ </p>
+ <p>
+  To support the required flexibility and control over what is logged and 
+when,
+  <b>
+   pmlogger
+  </b>
+  maintains an independent two level logging state for each instance 
+of each performance metric.
+At the first (mandatory) level, logging is 
+allowed to be
+  <b>
+   on
+  </b>
+  (with an associated interval between samples), or
+  <b>
+   off
+  </b>
+  or
+  <b>
+   maybe
+  </b>
+  .
+
+In the latter case, the second (advisory) level logging is allowed 
+to be
+  <b>
+   on
+  </b>
+  (with an associated interval between samples), or
+  <b>
+   off
+  </b>
+  .
+ </p>
+ <p>
+  The 
+mandatory level allows universal specification that some metrics must be 
+logged, or must
+  <b>
+   not
+  </b>
+  be logged.  The default state for all instances of all metrics when
+  <b>
+   pmlogger
+  </b>
+  starts is mandatory maybe and advisory off.
+ </p>
+ <p>
+  Use
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1)
+
+to interrogate and change the logging state once
+  <b>
+   pmlogger
+  </b>
+  is running.
+ </p>
+ <p>
+  If a metric's state is mandatory (on or off) and a request is made to change it
+to mandatory maybe, the new state is mandatory maybe and advisory off.  If a
+metric's state is already advisory (on or off) and a request is made to change
+it to mandatory maybe, the current state is retained.
+ </p>
+ <p>
+  It is not possible for
+  <b>
+   pmlogger
+  </b>
+  to log specific instances of a metric and all instances of the same metric
+concurrently.  If specific instances are being logged and a request to log all
+instances is made, then all instances of the metric will be logged according to
+the new request, superseding any prior logging request for the metric.  A
+request to log all instances of a metric will supersede any previous request to
+log all instances.  A request to log specific instances of a metric when all
+instances are already being logged is refused.  To do this one must turn off
+logging for all instances of the metric first.  In each case, the validity of
+the request is checked first; for example a request to change a metric's
+logging state to advisory on when it is currently mandatory off is never
+permitted (it is necessary to change the state to mandatory maybe first).
+ </p>
+ <p>
+  Optionally, each system running
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+may also be configured to run a ``primary''
+  <b>
+   pmlogger
+  </b>
+  instance.
+This
+  <b>
+   pmlogger
+  </b>
+  instance is launched by
+  <b>
+   $PCP_RC_DIR/pmlogger
+  </b>
+  ,
+
+and is affected by the files
+  <i>
+   $PCP_SYSCONF_DIR/pmlogger/control
+  </i>
+  ,
+  <i>
+   $PCP_SYSCONF_DIR/pmlogger/control
+  </i>
+  .d
+
+(use
+  <b>
+   <a href="http://man7.org/linux/man-pages/man8/chkconfig.8.html">
+    chkconfig
+   </a>
+  </b>
+  (8),
+  <b>
+   <a href="/man/man1/systemctl.1.html">
+    systemctl
+   </a>
+  </b>
+  (1)
+
+or similar platform-specific commands to activate or disable the primary
+  <b>
+   pmlogger
+  </b>
+  instance),
+  <i>
+   $PCP_SYSCONFIG_DIR/pmlogger
+  </i>
+  (environment variable settings for the primary
+  <b>
+   pmlogger
+  </b>
+  )
+  <i>
+   $PCP_SYSCONF_DIR/pmlogger/pmlogger.options
+  </i>
+  (command line options passed to the primary
+  <b>
+   pmlogger
+  </b>
+  )
+
+and
+  <i>
+   $PCP_VAR_DIR/config/pmlogger/config.default
+  </i>
+  (the default initial configuration file for the primary
+  <b>
+   pmlogger
+  </b>
+  ).
+ </p>
+ <p>
+  The primary
+  <b>
+   pmlogger
+  </b>
+  instance is identified by the
+  <b>
+   -P
+  </b>
+  option.  There may be at most one ``primary''
+  <b>
+   pmlogger
+  </b>
+  instance on each system.
+The primary
+  <b>
+   pmlogger
+  </b>
+  instance (if any)
+must be running on the same host as the
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+to which it connects (if any), so the
+  <b>
+   -h
+  </b>
+  and
+  <b>
+   -P
+  </b>
+  options are mutually exclusive.
+ </p>
+ <p>
+  Logging of some metrics is possible even in the absence of a local
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1),
+
+using the "local context" mode of operation.
+This is activated using the
+  <b>
+   -o
+  </b>
+  option, and causes
+  <b>
+   pmlogger
+  </b>
+  to make use of local DSO PMDAs instead of communicating with
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1).
+
+When operating using a local context, the
+  <b>
+   -K
+  </b>
+  option may be used to control the DSO PMDAs that should be
+made accessible.  The
+  <i>
+   spec
+  </i>
+  argument conforms to the syntax described in
+  <b>
+   <a href="/man/man3/pmspeclocalpmda.3.html">
+    pmSpecLocalPMDA
+   </a>
+  </b>
+  (3).
+
+More than one
+  <b>
+   -K
+  </b>
+  option may be used.
+ </p>
+ <p>
+  When launched as a non-primary instance,
+  <b>
+   pmlogger
+  </b>
+  will exit immediately if the configuration
+file causes no metric logging to be scheduled.  The
+  <b>
+   -L
+  </b>
+  option overrides this behavior, and causes a non-primary
+  <b>
+   pmlogger
+  </b>
+  instance to ``linger'', presumably pending some future
+dynamic re-configuration and state change via
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1).
+  <b>
+   pmlogger
+  </b>
+  will also linger without the
+  <b>
+   -L
+  </b>
+  option being used if all the metrics to be logged are logged
+as once only metrics. When the once only metrics have been
+logged, a warning message will be generated stating
+that the event queue is empty and no more events will be scheduled.
+ </p>
+ <p>
+  By default all diagnostics and errors from
+  <b>
+   pmlogger
+  </b>
+  are written to the file
+  <i>
+   pmlogger.log
+  </i>
+  in the directory where
+  <b>
+   pmlogger
+  </b>
+  is launched.
+The
+  <b>
+   -l
+  </b>
+  option may be used to override the default behavior.
+If the log file cannot be created or is not writable, output is
+written to standard error instead.
+ </p>
+ <p>
+  If specified, the
+  <b>
+   -s
+  </b>
+  option instructs
+  <b>
+   pmlogger
+  </b>
+  to terminate after a certain size in records, bytes or time units
+has been accumulated. 
+If
+  <i>
+   endsize
+  </i>
+  is an integer then
+  <i>
+   endsize
+  </i>
+  records will be written to the log.
+If
+  <i>
+   endsize
+  </i>
+  is an integer suffixed by
+  <b>
+   b
+  </b>
+  or
+  <b>
+   bytes
+  </b>
+  then
+  <i>
+   endsize
+  </i>
+  bytes of the archive data will be written out
+(note, however, that archive log record boundaries will not be broken and
+so this limit may be slightly surpassed).
+Other viable file size units include:
+  <b>
+   K
+  </b>
+  ,
+  <b>
+   Kb
+  </b>
+  ,
+  <b>
+   KiB
+  </b>
+  ,
+  <b>
+   Kbyte
+  </b>
+  ,
+  <b>
+   Kilobyte
+  </b>
+  for kilobytes and
+  <b>
+   M
+  </b>
+  ,
+  <b>
+   Mb
+  </b>
+  ,
+  <b>
+   MiB
+  </b>
+  ,
+  <b>
+   Mbyte
+  </b>
+  ,
+  <b>
+   Megabyte
+  </b>
+  for megabytes and
+  <b>
+   G
+  </b>
+  ,
+  <b>
+   Gb
+  </b>
+  ,
+  <b>
+   GiB
+  </b>
+  ,
+  <b>
+   Gbyte
+  </b>
+  ,
+  <b>
+   Gigabyte
+  </b>
+  for gigabytes.
+These units may be optionally suffixed by an
+  <b>
+   s
+  </b>
+  and may be of mixed case.
+Alternatively
+  <i>
+   endsize
+  </i>
+  may be an integer or a floating point number suffixed using a time unit
+as described in
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for the
+  <i>
+   interval
+  </i>
+  argument (to the standard PCP
+  <b>
+   -t
+  </b>
+  command line option).
+ </p>
+ <pre>
+Some examples of different formats:
+<b>-s 100 </b>
+<b>-s 100bytes</b>
+<b>-s 100K </b>
+<b>-s 100Mb</b>
+<b>-s 10Gbyte</b>
+<b>-s 10mins</b>
+<b>-s 1.5hours</b>
+</pre>
+ The default is for
+ <b>
+  pmlogger
+ </b>
+ to run forever.
+ <p>
+  The
+  <b>
+   -r
+  </b>
+  option causes the size of the physical record(s) for each
+group of metrics and the expected contribution of
+the group to the size of the PCP archive for one full day
+of collection to be reported in the log file.
+This information is reported the first time each group is
+successfully written to the archive.
+ </p>
+ <p>
+  The
+  <b>
+   -U
+  </b>
+  option specifies the user account under which to run
+  <b>
+   pmlogger
+  </b>
+  .
+
+The default is the current user account for interactive use.
+When run as a daemon, the unprivileged "pcp" account is used
+in current versions of PCP, but in older versions the superuser
+account ("root") was used by default.
+ </p>
+ <p>
+  The log file is potentially a multi-volume data set, and the
+  <b>
+   -v
+  </b>
+  option causes
+  <b>
+   pmlogger
+  </b>
+  to start a new volume after a certain size in records, bytes,
+or time units has been accumulated for the current volume.
+The format of this size specification is identical to that
+of the
+  <b>
+   -s
+  </b>
+  option (see above).
+The default is for
+  <b>
+   pmlogger
+  </b>
+  to create a single volume log.
+Additional volume switches can also be forced asynchronously by
+either using
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1)
+
+or sending
+  <b>
+   pmlogger
+  </b>
+  a SIGHUP signal (see below). Note, if a scheduled volume
+switch is in operation due to the
+  <b>
+   -v
+  </b>
+  option, then its counters will be reset after an 
+asynchronous switch.
+ </p>
+ <p>
+  Independent of any
+  <b>
+   -v
+  </b>
+  option, each volume of an archive is limited to no more than
+2^31 bytes, so
+  <i>
+   pmlogger
+  </i>
+  will automatically create a new volume for the archive before
+this limit is reached.
+ </p>
+ <p>
+  Normally
+  <b>
+   pmlogger
+  </b>
+  operates on the distributed Performance Metrics Name Space (PMNS),
+however if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative local PMNS is loaded
+from the file
+  <i>
+   pmnsfile.
+  </i>
+ </p>
+ <p>
+  Under normal circumstances,
+  <b>
+   pmlogger
+  </b>
+  will run forever (except for a
+  <b>
+   -s
+  </b>
+  option or a termination signal).
+The
+  <b>
+   -T
+  </b>
+  option may be used to limit the execution time using the format
+of time as prescribed by
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1).
+
+The time is interpreted within the time zone of the PMCD server,
+unless the
+  <b>
+   -y
+  </b>
+  option is given, within which case the time zone at this logger
+host is used.
+ </p>
+ <pre>
+Some examples of different formats:
+<b>-T 10mins </b>
+<b>-T '@ 11:30' </b>
+</pre>
+ From this it can be seen that
+ <b>
+  -T 10mins
+ </b>
+ and
+ <b>
+  -s 10mins
+ </b>
+ perform identical actions.
+ <p>
+  Alternatively,
+  <b>
+   pmlogger
+  </b>
+  runtime may be limited to the lifetime of another process by using the
+  <b>
+   -p
+  </b>
+  or
+  <b>
+   --PID
+  </b>
+  option to nominate the PID of the process of interest.
+In this case the
+  <b>
+   pmlogger
+  </b>
+  will exit when the other process no longer exists.
+ </p>
+ <p>
+  When
+  <b>
+   pmlogger
+  </b>
+  receives a SIGHUP signal, the current volume of the log is closed, and
+a new volume is opened.  This mechanism (or the alternative mechanism
+via
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1))
+
+may be used to manage the growth of the log files - once a log volume
+is closed, that file may be archived without ill-effect on the
+continued operation of
+  <b>
+   pmlogger
+  </b>
+  .
+
+See also the
+  <b>
+   -v
+  </b>
+  option above.
+ </p>
+ <p>
+  Historically the buffers for the current log may be flushed to disk using the
+  <b>
+   flush
+  </b>
+  command of
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1),
+
+or by sending
+  <b>
+   pmlogger
+  </b>
+  a SIGUSR1 signal
+or by using the
+  <b>
+   -u
+  </b>
+  option.
+The current version of
+  <i>
+   pmlogger
+  </i>
+  and the
+  <i>
+   libpcp
+  </i>
+  routines that underpin
+  <i>
+   pmlogger
+  </i>
+  unconditionally use unbuffered writes and a single
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/fwrite.3.html">
+    fwrite
+   </a>
+  </b>
+  (3)
+
+for each logical record written, and so ``flushing'' does not
+force any additional data to be written to the file system.
+The
+  <b>
+   -u
+  </b>
+  option, the SIGUSR1 handling and the
+  <b>
+   <a href="/man/man1/pmlc.1.html">
+    pmlc
+   </a>
+  </b>
+  (1)
+  <b>
+   flush
+  </b>
+  command are retained for backwards compatibility.
+ </p>
+ <p>
+  When launched with the
+  <b>
+   -x
+  </b>
+  option, pmlogger will accept asynchronous
+control requests on the file descriptor
+  <i>
+   fd
+  </i>
+  .  This option is only
+expected to be used internally by PCP applications that support ``live
+record mode''.
+ </p>
+ <p>
+  The
+  <b>
+   -m
+  </b>
+  option allows the string
+  <i>
+   note
+  </i>
+  to be appended to the map file for this instance of
+  <b>
+   pmlogger
+  </b>
+  in the
+  <b>
+   $PCP_TMP_DIR/pmlogger
+  </b>
+  directory.
+This is currently used internally to document the file descriptor (
+  <i>
+   fd
+  </i>
+  )
+
+when the
+  <b>
+   -x
+  </b>
+  option is used, or to indicate that this
+  <b>
+   pmlogger
+  </b>
+  instance was started under the control of
+  <b>
+   <a href="/man/man1/pmlogger_check.1.html">
+    pmlogger_check
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The
+  <b>
+   -H
+  </b>
+  option allows the hostname written into the archive label to be overridden.
+This mirrors the
+  <b>
+   -H
+  </b>
+  option of
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+, but allows it to be specified on the
+  <b>
+   pmlogger
+  </b>
+  process. Without this option, the value returned from the logged
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+is used.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  CONFIGURATION FILE SYNTAX
+ </h2>
+ The configuration file may be specified with the
+ <b>
+  -c
+ </b>
+ option.  If it is not, configuration specifications are read from standard
+input.
+ <p>
+  If
+  <i>
+   configfile
+  </i>
+  does not exist, then a search is made in the directory
+  <i>
+   $PCP_VAR_DIR/config/pmlogger
+  </i>
+  for a file of the same name, and if found that file is used,
+e.g. if
+  <i>
+   config.mumble
+  </i>
+  does not exist in the current directory and
+the file
+  <i>
+   $PCP_VAR_DIR/config/pmlogger/config.mumble
+  </i>
+  does exist, then
+  <b>
+   -c config.mumble
+  </b>
+  and
+  <b>
+   -c $PCP_VAR_DIR/config/pmlogger/config.mumble
+  </b>
+  are equivalent.
+ </p>
+ <p>
+  The syntax for the configuration file is as follows.
+ </p>
+ <dl compact="">
+  <dt>
+   1.
+  </dt>
+  <dd>
+   Words are separated by white space (space, tab or newline).
+  </dd>
+  <dt>
+   2.
+  </dt>
+  <dd>
+   The symbol ``#'' (hash) introduces a comment, and all text up
+to the next newline
+is ignored.
+  </dd>
+  <dt>
+   3.
+  </dt>
+  <dd>
+   Keywords (shown in
+   <b>
+    bold
+   </b>
+   below) must appear literally (i.e. in lower case).
+  </dd>
+  <dt>
+   4.
+  </dt>
+  <dd>
+   Each specification begins with the optional keyword
+   <b>
+    log
+   </b>
+   ,
+
+followed by one of the states
+   <b>
+    mandatory on
+   </b>
+   ,
+   <b>
+    mandatory off
+   </b>
+   ,
+   <b>
+    mandatory maybe
+   </b>
+   ,
+   <b>
+    advisory on
+   </b>
+   or
+   <b>
+    advisory off
+   </b>
+   .
+  </dd>
+  <dt>
+   5.
+  </dt>
+  <dd>
+   For the
+   <b>
+    on
+   </b>
+   states, a logging interval must follow using the syntax ``
+   <b>
+    once
+   </b>
+   '',
+
+or ``
+   <b>
+    default
+   </b>
+   '',
+
+or ``
+   <b>
+    every
+   </b>
+   <i>
+    N timeunits
+   </i>
+   '',
+
+or simply ``
+   <i>
+    N timeunits
+   </i>
+   ''
+
+-
+   <i>
+    N
+   </i>
+   is an unsigned integer, and
+   <i>
+    timeunits
+   </i>
+   is one of the keywords
+   <b>
+    msec
+   </b>
+   ,
+   <b>
+    millisecond
+   </b>
+   ,
+   <b>
+    sec
+   </b>
+   ,
+   <b>
+    second
+   </b>
+   ,
+   <b>
+    min
+   </b>
+   ,
+   <b>
+    minute
+   </b>
+   ,
+   <b>
+    hour
+   </b>
+   or the plural form of one of the above.
+   <p>
+    Internal limitations require the
+interval
+to be smaller than (approximately)
+74 hours.  An
+interval
+value of zero is a synonym for
+    <b>
+     once
+    </b>
+    .
+
+An interval of
+    <b>
+     default
+    </b>
+    means to use the default logging interval of
+60 seconds; this default value may be changed to
+    <i>
+     interval
+    </i>
+    with the
+    <b>
+     -t
+    </b>
+    command line option.
+   </p>
+  </dd>
+  <dt>
+  </dt>
+  <dd>
+   The
+   <i>
+    interval
+   </i>
+   argument follows the syntax described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1),
+
+and in the simplest form may be an unsigned integer (the implied
+units in this case are seconds).
+  </dd>
+  <dt>
+   6.
+  </dt>
+  <dd>
+   Following the state and possible interval specifications comes
+a ``{'', followed by a list of one or more metric specifications
+and a closing ``}''.
+The list is white space (or comma) separated.
+If there is only one metric specification in the list, the braces are optional.
+  </dd>
+  <dt>
+   7.
+  </dt>
+  <dd>
+   A metric specification consists of a metric name optionally
+followed by a set of instance names.
+The metric name follows the standard PCP naming conventions, see
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     pmns
+    </a>
+   </b>
+   (5),
+
+and if the metric name
+is a non-leaf node in the PMNS (see
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     pmns
+    </a>
+   </b>
+   (5)),
+
+then
+   <b>
+    pmlogger
+   </b>
+   will recursively descend the PMNS and apply the logging specification
+to all descendent metric names that are leaf nodes in the PMNS.
+The set of instance names
+is a ``['', followed by a list
+of one or more space (or comma) separated
+names, numbers or strings, and a closing ``]''.
+Elements in the list that are numbers are assumed to be
+internal instance identifiers, other elements are assumed to
+be external instance identifiers - see
+   <b>
+    <a href="/man/man3/pmgetindom.3.html">
+     pmGetInDom
+    </a>
+   </b>
+   (3)
+
+for more information.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      If no instances are given, then the logging specification
+is applied to all instances of the associated metric.
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   8.
+  </dt>
+  <dd>
+   There may be an arbitrary number of logging specifications.
+  </dd>
+  <dt>
+   9.
+  </dt>
+  <dd>
+   As of PCP version 4.0 and later, any metric name specification
+that does not resolve to a leaf node in the PMNS is added to an
+internal list of possible
+   <i>
+    dynamic subtree roots
+   </i>
+   .
+
+PMDAs can dynamically create new metrics below a dynamic root node
+in their PMNS, and send a notification to clients that the PMNS
+has changed, see
+   <b>
+    <a href="/man/man3/pmdaextsetflags.3.html">
+     pmdaExtSetFlags
+    </a>
+   </b>
+   (3)
+
+and in particular the
+   <b>
+    METRIC CHANGES
+   </b>
+   section for API details.
+This mechanism is currently supported by
+   <b>
+    <a href="/man/man1/pmdaprometheus.1.html">
+     pmdaprometheus
+    </a>
+   </b>
+   (1)
+
+and
+   <b>
+    <a href="/man/man1/pmdammv.1.html">
+     pmdammv
+    </a>
+   </b>
+   (1)
+   <b>
+    .
+   </b>
+   When a fetch issued by
+   <b>
+    pmlogger
+   </b>
+   returns with the
+   <b>
+    PMDA_EXT_NAMES_CHANGE
+   </b>
+   flag set,
+   <b>
+    pmlogger
+   </b>
+   will traverse the internal list of possible dynamic subtree nodes
+and dynamically discover any new metrics.
+In effect,
+as of PCP version 4.0 and later,
+   <b>
+    pmlogger
+   </b>
+   can be configured to dynamically log new metrics that appear in the future,
+after the configuration file is initially parsed.
+  </dd>
+  <dt>
+   10.
+  </dt>
+  <dd>
+   Following all of the logging specifications, there may be an optional
+access control section, introduced by the literal token
+   <b>
+    [access]
+   </b>
+   .
+
+Thereafter come access control rules that allow or disallow operations
+from particular hosts or groups of hosts.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The operations may be used to interrogate or control a running
+      <b>
+       pmlogger
+      </b>
+      using
+      <b>
+       <a href="/man/man1/pmlc.1.html">
+        pmlc
+       </a>
+      </b>
+      (1)
+
+and fall into the following classes:
+     </p>
+     <dl compact="">
+      <dt>
+       <b>
+        enquire
+       </b>
+      </dt>
+      <dd>
+       interrogate the status of
+       <b>
+        pmlogger
+       </b>
+       and the metrics it is logging
+      </dd>
+      <dt>
+       <b>
+        advisory
+       </b>
+      </dt>
+      <dd>
+       Change advisory logging.
+      </dd>
+      <dt>
+       <b>
+        mandatory
+       </b>
+      </dt>
+      <dd>
+       Change mandatory logging.
+      </dd>
+      <dt>
+       <b>
+        all
+       </b>
+      </dt>
+      <dd>
+       All of the above.
+      </dd>
+     </dl>
+     <p>
+      Access control rules are of the form ``
+      <b>
+       allow
+      </b>
+      <i>
+       hostlist
+      </i>
+      <b>
+       :
+      </b>
+      <i>
+       operationlist
+      </i>
+      <b>
+       ;
+      </b>
+      ''
+
+and ``
+      <b>
+       disallow
+      </b>
+      <i>
+       hostlist
+      </i>
+      <b>
+       :
+      </b>
+      <i>
+       operationlist
+      </i>
+      <b>
+       ;
+      </b>
+      ''.
+     </p>
+     <p>
+      The
+      <i>
+       hostlist
+      </i>
+      follows the syntax and semantics for the access control mechanisms
+used by PMCD and are fully documented in
+      <b>
+       <a href="/man/man1/pmcd.1.html">
+        pmcd
+       </a>
+      </b>
+      (1).
+
+An
+      <i>
+       operationslist
+      </i>
+      is a comma separated list of the operations
+      <b>
+       advisory
+      </b>
+      ,
+      <b>
+       mandatory
+      </b>
+      ,
+      <b>
+       enquire
+      </b>
+      and
+      <b>
+       all
+      </b>
+      .
+     </p>
+     <p>
+      A missing
+      <b>
+       [access]
+      </b>
+      section allows all access and is equivalent to
+      <b>
+       allow * : all;
+      </b>
+      .
+     </p>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  The configuration (either from standard input or
+  <i>
+   configfile
+  </i>
+  )
+
+is initially scanned by
+  <b>
+   <a href="/man/man1/pmcpp.1.html">
+    pmcpp
+   </a>
+  </b>
+  (1)
+
+with the options
+  <b>
+   -rs
+  </b>
+  and
+  <b>
+   -I
+  </b>
+  <i>
+   $PCP_VAR_DIR/config/pmlogger
+  </i>
+  .
+This extends the configuration file syntax with include file
+processing (
+  <b>
+   %include
+  </b>
+  ),
+
+a common location to search for include files 
+(
+  <i>
+   $PCP_VAR_DIR/config/pmlogger
+  </i>
+  ),
+macro definitions (
+  <b>
+   %define
+  </b>
+  ),
+
+macro expansion (
+  <b>
+   %
+  </b>
+  <i>
+   name
+  </i>
+  and
+  <b>
+   %{
+  </b>
+  <i>
+   name
+  </i>
+  <b>
+   }
+  </b>
+  )
+
+and conditional inclusion of lines
+(
+  <b>
+   %ifdef
+  </b>
+  <i>
+   name
+  </i>
+  ...
+  <b>
+   %else
+  </b>
+  ...
+  <b>
+   %endif
+  </b>
+  and
+  <b>
+   %ifndef
+  </b>
+  <i>
+   name
+  </i>
+  ...
+  <b>
+   %else
+  </b>
+  ...
+  <b>
+   %endif
+  </b>
+  ).
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  EXAMPLES
+ </h2>
+ For each PCP utility, there is a sample
+ <b>
+  pmlogger
+ </b>
+ configuration file that could be used to create an archive log suitable
+for replaying with that tool (i.e. includes all of the performance
+metrics used by the tool).
+For a tool named
+ <i>
+  foo
+ </i>
+ this configuration file is located in
+ <i>
+  $PCP_VAR_DIR/config/pmlogger/config.foo
+ </i>
+ .
+ <p>
+  The following is a simple default configuration file for a primary
+  <b>
+   pmlogger
+  </b>
+  instance, and demonstrates most of the capabilities of the
+configuration specification language.
+ </p>
+ <p>
+ </p>
+ <pre>
+log mandatory on once { hinv.ncpu hinv.ndisk }
+log mandatory on every 10 minutes {
+    disk.all.write
+    disk.all.read
+    network.interface.in.packets [ "et0" ]
+    network.interface.out.packets [ "et0" ]
+    nfs.server.reqs [ "lookup" "getattr" "read" "write" ]
+}
+
+log advisory on every 30 minutes {
+    environ.temp
+    pmcd.pdu_in.total
+    pmcd.pdu_out.total
+}
+
+%include "macros.default"
+
+%ifdef %disk_detail
+log mandatory on %disk_detail_freq {
+    disk.dev
+}
+%endif
+
+[access]
+disallow * : all except enquire;
+allow localhost : mandatory, advisory;
+</pre>
+ <a name="lbAG">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <i>
+    archive
+   </i>
+   <b>
+    .meta
+    <dd>
+     metadata (metric descriptions, instance domains, etc.) for the archive log
+    </dd>
+    <dt>
+    </dt>
+   </b>
+   <i>
+    archive
+   </i>
+   <b>
+    .0
+    <dd>
+     initial volume of metrics values (subsequent volumes have suffixes
+1
+    </dd>
+   </b>
+   ,
+   <b>
+    2
+   </b>
+   ,
+
+...)
+   <dt>
+    <i>
+     archive
+    </i>
+    <b>
+     .index
+     <dd>
+      temporal index to support rapid random access to the other files in the
+archive log
+     </dd>
+     <dt>
+      $PCP_TMP_DIR/pmlogger
+     </dt>
+    </b>
+   </dt>
+  </dt>
+  <dd>
+   <b>
+    pmlogger
+   </b>
+   maintains the files in this directory as the map between the
+process id of the
+   <b>
+    pmlogger
+   </b>
+   instance and the IPC port that may be used to control each
+   <b>
+    pmlogger
+   </b>
+   instance (as used by
+   <b>
+    <a href="/man/man1/pmlc.1.html">
+     pmlc
+    </a>
+   </b>
+   (1))
+  </dd>
+  <dt>
+   <b>
+    $PCP_VAR_DIR/config/pmlogger/config.default
+   </b>
+  </dt>
+  <dd>
+   default configuration file for the primary logger instance
+launched from
+   <b>
+    $PCP_RC_DIR/pmlogger
+   </b>
+  </dd>
+  <dt>
+   <b>
+    $PCP_VAR_DIR/config/pmlogger/config.
+   </b>
+   *
+  </dt>
+  <dd>
+   assorted configuration files suitable for creating logs that may
+be subsequently replayed with the PCP visualization and monitoring
+tools
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmlogger/
+   </b>
+   <i>
+    hostname
+   </i>
+  </dt>
+  <dd>
+   Default directory for PCP archive files for performance
+metric values collected from the host
+   <i>
+    hostname
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    $PCP_SYSCONFIG_DIR/pmlogger
+   </b>
+  </dt>
+  <dd>
+   additional environment variables that will be set when the primary
+   <b>
+    pmlogger
+   </b>
+   instance executes.
+Only settings of the form "PMLOGGER_VARIABLE=value" will be honoured.
+  </dd>
+  <dt>
+   <i>
+    ./pmlogger.log
+   </i>
+  </dt>
+  <dd>
+   (or
+   <b>
+    $PCP_LOG_DIR/pmlogger/
+   </b>
+   <i>
+    hostname
+   </i>
+   <b>
+    /pmlogger.log
+   </b>
+   when started automatically by either
+   <b>
+    $PCP_RC_DIR/pmlogger
+   </b>
+   or one of the
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+monitoring scripts such as
+   <b>
+    <a href="/man/man1/pmlogger_check.1.html">
+     pmlogger_check
+    </a>
+   </b>
+   (1))
+   <br/>
+   all messages and diagnostics are directed here
+  </dd>
+ </dl>
+ <a name="lbAH">
+ </a>
+ <h2>
+  ENVIRONMENT
+ </h2>
+ Normally
+ <b>
+  pmlogger
+ </b>
+ creates a socket to receive control messages from
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1)
+
+on the first available TCP/IP port numbered 4330 or higher.
+The environment variable
+ <b>
+  PMLOGGER_PORT
+ </b>
+ may be used to specify an alternative starting port number.
+ <p>
+  If set to the value 1, the
+  <b>
+   PMLOGGER_LOCAL
+  </b>
+  environment variable will cause
+  <b>
+   pmlogger
+  </b>
+  to run in a localhost-only mode of operation, where it binds only
+to the loopback interface.
+ </p>
+ <p>
+  The
+  <b>
+   PMLOGGER_MAXPENDING
+  </b>
+  variable can be set to indicate the maximum length to which the queue
+of pending
+  <b>
+   pmlc
+  </b>
+  connections may grow.
+ </p>
+ <p>
+  The default sampling interval used by
+  <b>
+   pmlogger
+  </b>
+  can be set using the
+  <b>
+   PMLOGGER_INTERVAL
+  </b>
+  variable (if not set, 60 seconds will be used).
+Both the command line and directives in the configuration file will
+override this value.
+It is an integer in units of seconds.
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAJ">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger_check.1.html">
+   pmlogger_check
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/systemctl.1.html">
+   systemctl
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmspeclocalpmda.3.html">
+   pmSpecLocalPMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pmlogger.5.html">
+   pmlogger
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   pmns
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="http://man7.org/linux/man-pages/man8/chkconfig.8.html">
+   chkconfig
+  </a>
+ </b>
+ (8).
+ <a name="lbAK">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ The archive logs are sufficiently precious that
+ <b>
+  pmlogger
+ </b>
+ will not truncate an existing physical file.  A message of the form
+ <br/>
+ ...: "foo.index" already exists, not over-written
+ <br/>
+ ...: File exists
+
+indicates this situation has arisen.  You must explicitly remove
+the files and launch
+ <b>
+  pmlogger
+ </b>
+ again.
+ <p>
+  There may be at most one primary
+  <b>
+   pmlogger
+  </b>
+  instance per monitored host; attempting to bend this rule produces the error:
+  <br/>
+  pmlogger: there is already a primary pmlogger running
+ </p>
+ <p>
+  Various other messages relating to the creation and/or deletion of
+files in
+  <i>
+   $PCP_TMP_DIR/pmlogger
+  </i>
+  suggest a permission problem on this directory, or some feral
+files have appeared therein.
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    CONFIGURATION FILE SYNTAX
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

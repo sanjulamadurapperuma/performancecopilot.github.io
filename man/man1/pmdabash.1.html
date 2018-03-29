@@ -1,669 +1,665 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMDABASH
- </h1>
- Section: User Commands  (1)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmdabash
- </b>
- - Bourne-Again SHell trace performance metrics domain agent
- <a name="lbAC">
- </a>
- <h2>
-  SYNOPSIS
- </h2>
- <b>
-  $PCP_PMDAS_DIR/bash/pmdabash
- </b>
- [
- <b>
-  -C
- </b>
- ]
-[
- <b>
-  -d
- </b>
- <i>
-  domain
- </i>
- ]
-[
- <b>
-  -l
- </b>
- <i>
-  logfile
- </i>
- ]
-[
- <b>
-  -I
- </b>
- <i>
-  interval
- </i>
- ]
-[
- <b>
-  -t
- </b>
- <i>
-  timeout
- </i>
- ]
-[
- <b>
-  -U
- </b>
- <i>
-  username
- </i>
- ]
- <i>
-  configfile
- </i>
- <br/>
- <a name="lbAD">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmdabash
- </b>
- is an experimental Performance Metrics Domain Agent (PMDA) which
-exports "xtrace" events from a traced
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/bash.1.html">
-   bash
-  </a>
- </b>
- (1)
-
-process.
-This includes the command execution information that would
-usually be sent to standard error with the
- <b>
-  set -x
- </b>
- option to the shell.
- <p>
-  Event metrics are exported showing each command executed, the
-function name and line number in the script, and a timestamp.
-Additionally, the process identifier for the shell and its parent
-process are exported.
- </p>
- <p>
-  This requires
-  <b>
-   bash
-  </b>
-  version 4 or later.
- </p>
- <p>
-  A brief description of the
-  <b>
-   pmdabash
-  </b>
-  command line options follows:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -d
-   </b>
-  </dt>
-  <dd>
-   It is absolutely crucial that the performance metrics
-   <i>
-    domain
-   </i>
-   number specified here is unique and consistent.
-That is,
-   <i>
-    domain
-   </i>
-   should be different for every PMDA on the one host, and the same
-   <i>
-    domain
-   </i>
-   number should be used for the same PMDA on all hosts.
-  </dd>
-  <dt>
-   <b>
-    -l
-   </b>
-  </dt>
-  <dd>
-   Location of the log file.  By default, a log file named
-   <i>
-    bash.log
-   </i>
-   is written in the current directory of
-   <b>
-    <a href="/man/man1/pmcd.1.html">
-     pmcd
-    </a>
-   </b>
-   (1)
-
-when
-   <b>
-    pmdabash
-   </b>
-   is started, i.e.
-   <b>
-    $PCP_LOG_DIR/pmcd
-   </b>
-   .
-
-If the log file cannot
-be created or is not writable, output is written to the standard error instead.
-  </dd>
-  <dt>
-   <b>
-    -s
-   </b>
-  </dt>
-  <dd>
-   Amount of time (in seconds) between subsequent evaluations of the shell
-trace file descriptor(s).
-The default is 2 seconds.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -m
-   </b>
-  </dt>
-  <dd>
-   Maximum amount of memory to be allowed for each event queue (one per traced process).
-The default is 2 megabytes.
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-  </dt>
-  <dd>
-   User account under which to run the agent.
-The default is the unprivileged "pcp" account in current versions of PCP,
-but in older versions the superuser account ("root") was used by default.
-  </dd>
- </dl>
- <p>
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  INSTALLATION
- </h2>
- In order for a host to export the names, help text and values for the bash
-performance metrics, do the following as root:
- <p>
- </p>
- <pre>
-# cd $PCP_PMDAS_DIR/bash
-# ./Install
-</pre>
- <p>
-  As soon as an instrumented shell script (see INSTRUMENTATION selection below) is
-run, with tracing enabled, new metric values will appear - no further setup of the
-agent is required.
- </p>
- <p>
-  If you want to undo the installation, do the following as root:
- </p>
- <p>
- </p>
- <pre>
-# cd $PCP_PMDAS_DIR/bash
-# ./Remove
-</pre>
- <p>
-  <b>
-   pmdabash
-  </b>
-  is launched by
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-and should never be executed directly.
-The Install and Remove scripts notify
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-when the agent is installed or removed.
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  INSTRUMENTATION
- </h2>
- In order to allow the flow of event data between a
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/bash.1.html">
-   bash
-  </a>
- </b>
- (1)
-
-script and
- <b>
-  pmdabash
- </b>
- ,
-
-the script should take the following actions:
- <p>
- </p>
- <pre>
-#!/bin/sh
-source $PCP_DIR/etc/pcp.env
-source $PCP_SHARE_DIR/lib/bashproc.sh
-
-pcp_trace on $@       # enable tracing
-echo "awoke, $count"
-
-pcp_trace off         # disable tracing
-</pre>
- <p>
-  The tracing can be enabled and disabled any number of times by the script.
-On successful installation of the agent, several metrics will be available:
- </p>
- <p>
- </p>
- <pre>
-$ pminfo bash
-bash.xtrace.numclients
-bash.xtrace.maxmem
-bash.xtrace.queuemem
-bash.xtrace.count
-bash.xtrace.records
-bash.xtrace.parameters.pid
-bash.xtrace.parameters.parent
-bash.xtrace.parameters.lineno
-bash.xtrace.parameters.function
-bash.xtrace.parameters.command
-</pre>
- <p>
-  When an instrumented script is running, the generation of event records
-can be verified using the
-  <b>
-   <a href="/man/man1/pmevent.1.html">
-    pmevent
-   </a>
-  </b>
-  (1)
-
-command, as follows:
- </p>
- <p>
- </p>
- <pre>
-$ pmevent -t 1 -x '' bash.xtrace.records
-host:      localhost
-samples:   all
-bash.xtrace.records["4538 ./test-trace.sh 1 2 3"]: 5 event records
-  10:00:05.000 --- event record [0] flags 0x19 (point,id,parent) ---
-    bash.xtrace.parameters.pid 4538
-    bash.xtrace.parameters.parent 4432
-    bash.xtrace.parameters.lineno 43
-    bash.xtrace.parameters.command "true"
-  10:00:05.000 --- event record [1] flags 0x19 (point,id,parent) ---
-    bash.xtrace.parameters.pid 4538
-    bash.xtrace.parameters.parent 4432
-    bash.xtrace.parameters.lineno 45
-    bash.xtrace.parameters.command "((  count++  ))"
-  10:00:05.000 --- event record [2] flags 0x19 (point,id,parent) ---
-    bash.xtrace.parameters.pid 4538
-    bash.xtrace.parameters.parent 4432
-    bash.xtrace.parameters.lineno 46
-    bash.xtrace.parameters.command "echo 'awoke, 3'"
-  10:00:05.000 --- event record [3] flags 0x19 (point,id,parent) ---
-    bash.xtrace.parameters.pid 4538
-    bash.xtrace.parameters.parent 4432
-    bash.xtrace.parameters.lineno 47
-    bash.xtrace.parameters.command "tired 2"
-  10:00:05.000 --- event record [4] flags 0x19 (point,id,parent) ---
-    bash.xtrace.parameters.pid 4538
-    bash.xtrace.parameters.parent 4432
-    bash.xtrace.parameters.lineno 38
-    bash.xtrace.parameters.function "tired"
-    bash.xtrace.parameters.command "sleep 2"
-</pre>
- <a name="lbAG">
- </a>
- <h2>
-  FILES
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    $PCP_PMCDCONF_PATH
-   </b>
-  </dt>
-  <dd>
-   command line options used to launch
-   <b>
-    pmdabash
-   </b>
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/bash/help
-   </b>
-  </dt>
-  <dd>
-   default help text file for the bash metrics
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/bash/Install
-   </b>
-  </dt>
-  <dd>
-   installation script for the
-   <b>
-    pmdabash
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/bash/Remove
-   </b>
-  </dt>
-  <dd>
-   undo installation script for
-   <b>
-    pmdabash
-   </b>
-  </dd>
-  <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/bash.log
-   </b>
-  </dt>
-  <dd>
-   default log file for error messages and other information from
-   <b>
-    pmdabash
-   </b>
-  </dd>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
- <b>
-  /etc/pcp.conf
- </b>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file,
-as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <a name="lbAI">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/bash.1.html">
-   bash
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmevent.1.html">
-   pmevent
-  </a>
- </b>
- (1)
-
-and
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    INSTALLATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    INSTRUMENTATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMDABASH
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmdabash
+               </b>
+               - Bourne-Again SHell trace performance metrics domain agent
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                $PCP_PMDAS_DIR/bash/pmdabash
+               </b>
+               [
+               <b>
+                -C
+               </b>
+               ]
+              [
+               <b>
+                -d
+               </b>
+               <i>
+                domain
+               </i>
+               ]
+              [
+               <b>
+                -l
+               </b>
+               <i>
+                logfile
+               </i>
+               ]
+              [
+               <b>
+                -I
+               </b>
+               <i>
+                interval
+               </i>
+               ]
+              [
+               <b>
+                -t
+               </b>
+               <i>
+                timeout
+               </i>
+               ]
+              [
+               <b>
+                -U
+               </b>
+               <i>
+                username
+               </i>
+               ]
+               <i>
+                configfile
+               </i>
+               <br/>
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmdabash
+               </b>
+               is an experimental Performance Metrics Domain Agent (PMDA) which
+              exports "xtrace" events from a traced
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/bash.1.html">
+                 bash
+                </a>
+               </b>
+               (1)
+              
+              process.
+              This includes the command execution information that would
+              usually be sent to standard error with the
+               <b>
+                set -x
+               </b>
+               option to the shell.
+               <p>
+                Event metrics are exported showing each command executed, the
+              function name and line number in the script, and a timestamp.
+              Additionally, the process identifier for the shell and its parent
+              process are exported.
+               </p>
+               <p>
+                This requires
+                <b>
+                 bash
+                </b>
+                version 4 or later.
+               </p>
+               <p>
+                A brief description of the
+                <b>
+                 pmdabash
+                </b>
+                command line options follows:
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -d
+                 </b>
+                </dt>
+                <dd>
+                 It is absolutely crucial that the performance metrics
+                 <i>
+                  domain
+                 </i>
+                 number specified here is unique and consistent.
+              That is,
+                 <i>
+                  domain
+                 </i>
+                 should be different for every PMDA on the one host, and the same
+                 <i>
+                  domain
+                 </i>
+                 number should be used for the same PMDA on all hosts.
+                </dd>
+                <dt>
+                 <b>
+                  -l
+                 </b>
+                </dt>
+                <dd>
+                 Location of the log file.  By default, a log file named
+                 <i>
+                  bash.log
+                 </i>
+                 is written in the current directory of
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              when
+                 <b>
+                  pmdabash
+                 </b>
+                 is started, i.e.
+                 <b>
+                  $PCP_LOG_DIR/pmcd
+                 </b>
+                 .
+              
+              If the log file cannot
+              be created or is not writable, output is written to the standard error instead.
+                </dd>
+                <dt>
+                 <b>
+                  -s
+                 </b>
+                </dt>
+                <dd>
+                 Amount of time (in seconds) between subsequent evaluations of the shell
+              trace file descriptor(s).
+              The default is 2 seconds.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -m
+                 </b>
+                </dt>
+                <dd>
+                 Maximum amount of memory to be allowed for each event queue (one per traced process).
+              The default is 2 megabytes.
+                </dd>
+                <dt>
+                 <b>
+                  -U
+                 </b>
+                </dt>
+                <dd>
+                 User account under which to run the agent.
+              The default is the unprivileged "pcp" account in current versions of PCP,
+              but in older versions the superuser account ("root") was used by default.
+                </dd>
+               </dl>
+               <p>
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                INSTALLATION
+               </h2>
+               In order for a host to export the names, help text and values for the bash
+              performance metrics, do the following as root:
+               <p>
+               </p>
+               <pre>
+              # cd $PCP_PMDAS_DIR/bash
+              # ./Install
+              </pre>
+               <p>
+                As soon as an instrumented shell script (see INSTRUMENTATION selection below) is
+              run, with tracing enabled, new metric values will appear - no further setup of the
+              agent is required.
+               </p>
+               <p>
+                If you want to undo the installation, do the following as root:
+               </p>
+               <p>
+               </p>
+               <pre>
+              # cd $PCP_PMDAS_DIR/bash
+              # ./Remove
+              </pre>
+               <p>
+                <b>
+                 pmdabash
+                </b>
+                is launched by
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              and should never be executed directly.
+              The Install and Remove scripts notify
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              when the agent is installed or removed.
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                INSTRUMENTATION
+               </h2>
+               In order to allow the flow of event data between a
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/bash.1.html">
+                 bash
+                </a>
+               </b>
+               (1)
+              
+              script and
+               <b>
+                pmdabash
+               </b>
+               ,
+              
+              the script should take the following actions:
+               <p>
+               </p>
+               <pre>
+              #!/bin/sh
+              source $PCP_DIR/etc/pcp.env
+              source $PCP_SHARE_DIR/lib/bashproc.sh
+              
+              pcp_trace on $@       # enable tracing
+              echo "awoke, $count"
+              
+              pcp_trace off         # disable tracing
+              </pre>
+               <p>
+                The tracing can be enabled and disabled any number of times by the script.
+              On successful installation of the agent, several metrics will be available:
+               </p>
+               <p>
+               </p>
+               <pre>
+              $ pminfo bash
+              bash.xtrace.numclients
+              bash.xtrace.maxmem
+              bash.xtrace.queuemem
+              bash.xtrace.count
+              bash.xtrace.records
+              bash.xtrace.parameters.pid
+              bash.xtrace.parameters.parent
+              bash.xtrace.parameters.lineno
+              bash.xtrace.parameters.function
+              bash.xtrace.parameters.command
+              </pre>
+               <p>
+                When an instrumented script is running, the generation of event records
+              can be verified using the
+                <b>
+                 <a href="/man/man1/pmevent.1.html">
+                  pmevent
+                 </a>
+                </b>
+                (1)
+              
+              command, as follows:
+               </p>
+               <p>
+               </p>
+               <pre>
+              $ pmevent -t 1 -x '' bash.xtrace.records
+              host:      localhost
+              samples:   all
+              bash.xtrace.records["4538 ./test-trace.sh 1 2 3"]: 5 event records
+                10:00:05.000 --- event record [0] flags 0x19 (point,id,parent) ---
+                  bash.xtrace.parameters.pid 4538
+                  bash.xtrace.parameters.parent 4432
+                  bash.xtrace.parameters.lineno 43
+                  bash.xtrace.parameters.command "true"
+                10:00:05.000 --- event record [1] flags 0x19 (point,id,parent) ---
+                  bash.xtrace.parameters.pid 4538
+                  bash.xtrace.parameters.parent 4432
+                  bash.xtrace.parameters.lineno 45
+                  bash.xtrace.parameters.command "((  count++  ))"
+                10:00:05.000 --- event record [2] flags 0x19 (point,id,parent) ---
+                  bash.xtrace.parameters.pid 4538
+                  bash.xtrace.parameters.parent 4432
+                  bash.xtrace.parameters.lineno 46
+                  bash.xtrace.parameters.command "echo 'awoke, 3'"
+                10:00:05.000 --- event record [3] flags 0x19 (point,id,parent) ---
+                  bash.xtrace.parameters.pid 4538
+                  bash.xtrace.parameters.parent 4432
+                  bash.xtrace.parameters.lineno 47
+                  bash.xtrace.parameters.command "tired 2"
+                10:00:05.000 --- event record [4] flags 0x19 (point,id,parent) ---
+                  bash.xtrace.parameters.pid 4538
+                  bash.xtrace.parameters.parent 4432
+                  bash.xtrace.parameters.lineno 38
+                  bash.xtrace.parameters.function "tired"
+                  bash.xtrace.parameters.command "sleep 2"
+              </pre>
+               <a name="lbAG">
+               </a>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  $PCP_PMCDCONF_PATH
+                 </b>
+                </dt>
+                <dd>
+                 command line options used to launch
+                 <b>
+                  pmdabash
+                 </b>
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/bash/help
+                 </b>
+                </dt>
+                <dd>
+                 default help text file for the bash metrics
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/bash/Install
+                 </b>
+                </dt>
+                <dd>
+                 installation script for the
+                 <b>
+                  pmdabash
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/bash/Remove
+                 </b>
+                </dt>
+                <dd>
+                 undo installation script for
+                 <b>
+                  pmdabash
+                 </b>
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_LOG_DIR/pmcd/bash.log
+                 </b>
+                </dt>
+                <dd>
+                 default log file for error messages and other information from
+                 <b>
+                  pmdabash
+                 </b>
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <b>
+                /etc/pcp.conf
+               </b>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAI">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="http://man7.org/linux/man-pages/man1/bash.1.html">
+                 bash
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmevent.1.html">
+                 pmevent
+                </a>
+               </b>
+               (1)
+              
+              and
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  INSTALLATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  INSTRUMENTATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

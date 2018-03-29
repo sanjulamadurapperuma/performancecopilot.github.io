@@ -1,665 +1,661 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='docpage'>
-﻿
- <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
-  <font size="7">
-   Performance Visualisation with
-   <i>
-    pmview
-   </i>
-  </font>
- </h1>
- <p>
-  <br/>
- </p>
- <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
-  <tr>
-   <td>
-    <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
-pmview
-mpvis
-osvis
-dkvis
-pmafm
-pmtime
-pmchart</pre>
-   </td>
-  </tr>
- </table>
- <p>
-  <b>
-   Note:
-  </b>
-  The open source version of
-  <i>
-   pmview
-  </i>
-  is currently under development, and is
-  <b>
-   not
-  </b>
-  yet shipped as part of PCP GUI, but is available for experimental use in the development source tree.
- </p>
- <p>
-  Visual tools take advantage of common cognitive skills, especially for visual pattern matching and scene change discrimination.
-The motivation for visualization of performance data is very similar to that used for engineering visualization, visual simulation, and database mining through visualization - visually rich representations of complex data sets are powerful aids to understanding and detection of unexpected relationships.
- </p>
- <ul>
-  <li>
-   <a href="#realtime">
-    Live monitoring and user interface concepts
-   </a>
-  </li>
-  <li>
-   <a href="#archive">
-    Retrospective monitoring and tool drill-down
-   </a>
-  </li>
-  <li>
-   <a href="#vis">
-    The "vis" tools
-   </a>
-  </li>
-  <li>
-   <a href="#simple">
-    Simple scene construction
-   </a>
-  </li>
- </ul>
- <table border="0" cellpadding="10" cellspacing="20" width="50%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Extract the PCP archives and configuration files we will use in this tutorial into the current working directory:
-    <pre><b>
-$ . /etc/pcp.env
-$ tar xzf $PCP_DEMOS_DIR/tutorials/pmview.tar.gz
-</b></pre>
-   </td>
-  </tr>
- </table>
- <p>
-  For an explanation of Performance Co-Pilot terms and acronyms, consult 
-the
-  <a href="glossary.html">
-   PCP glossary
-  </a>
-  .
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="realtime">
-        Live monitoring and user interface concepts
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="568">
-    <p align="RIGHT">
-    </p>
-    <center>
-     <br/>
-     <img align="RIGHT" alt="" border="0" src="images/mpvis.png"/>
-    </center>
-   </td>
-   <td width="10">
-   </td>
-   <td>
-    <table border="0" cellpadding="10" cellspacing="20" width="100%">
-     <tr>
-      <td width="70%">
-       <br/>
-       The
-       <i>
-        mpvis
-       </i>
-       command monitors the CPU utilization for each CPU:
-       <br/>
-       <pre><b>
-$ mpvis
-</b></pre>
-       <ul>
-        <li>
-         Move the cursor over each block in the scene. Take time to read the 
-    (changed) text box above the 3D scene and understand what it is telling 
-    you. In particular, identify the source of the metric, the name of the 
-    metric, the instance of the metric, the current value ... can you 
-    explain what "millisec / second" really means?
-        </li>
-        <li>
-         Click the left mouse over one block in the scene. How is this 
-    different?
-        </li>
-        <li>
-         Click on the "Live" button or Ctrl-T or
-         <b>
-          <i>
-           Options -&gt;
-    Show Time Control
-          </i>
-         </b>
-         from the menu bar. In the
-         <b>
-          PCP Live Time 
-    Control
-         </b>
-         dialog, experiment with changing the update
-         <b>
-          <i>
-           Interval
-          </i>
-         </b>
-         (this is the interval at which new metric values are fetched from
-         <i>
-          pmcd
-         </i>
-         ).
-        </li>
-        <li>
-         Quit with
-         <b>
-          <i>
-           File -&gt; Quit
-          </i>
-         </b>
-         or Ctrl-Q.
-        </li>
-       </ul>
-      </td>
-     </tr>
-    </table>
-   </td>
-  </tr>
- </table>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="archive">
-        Retrospective monitoring and tool drill-down
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td>
-    <table border="0" cellpadding="10" cellspacing="20" width="100%">
-     <tr>
-      <td width="70%">
-       <br/>
-       The
-       <i>
-        dkvis
-       </i>
-       command monitors the per-disk I/O activity:
-       <br/>
-       <pre><b>
-$ dkvis -a pmie/babylon.perdisk
-</b></pre>
-       <ul>
-        <li>
-         In the
-         <i>
-          dkvis
-         </i>
-         window (above the top left-hand corner of the 
-    scene) change the
-         <b>
-          <i>
-           Scale
-          </i>
-         </b>
-         to be 5 using either the 
-    thumbwheel or the text box to the right of the thumbwheel.
-        </li>
-        <li>
-         In the associated
-         <b>
-          PCP Archive Time Control
-         </b>
-         dialog, changing 
-    the update
-         <b>
-          <i>
-           Interval
-          </i>
-         </b>
-         to 2 minutes (remember to Enter 
-    after you have changed the
-         <b>
-          <i>
-           Interval
-          </i>
-         </b>
-         text box).
-        </li>
-        <li>
-         Double click the
-         <b>
-          <i>
-           Play
-          </i>
-         </b>
-         button. When the replay 
-    finished, drag the slider in the
-         <b>
-          PCP Archive Time Control
-         </b>
-         dialog back to near the middle of the range and release the 
-    slider.
-        </li>
-        <li>
-         Back in the
-         <i>
-          dkvis
-         </i>
-         window, move the cursor over each block in 
-    the scene. Take time to read the (changed) text box above the 3D scene 
-    and understand what it's telling you. In particular, identify the 
-    source of the metric, the name of the metric, the instance of the 
-    metric, the current value ... can you explain what "count / 
-    second" really means?
-        </li>
-        <li>
-         Select all of the blocks for controller
-         <b>
-          dks1
-         </b>
-         (use 
-    "Shift-select" to do multiple selections), and then
-         <b>
-          <i>
-           Launch -&gt; pmchart
-          </i>
-         </b>
-         from the main menu. In the pmchart window use
-         <b>
-          <i>
-           File -&gt; Open View
-          </i>
-         </b>
-         from the menu bar to add the
-         <b>
-          LoadAvg
-         </b>
-         view. 
-    This is a "drill-down" example.
-        </li>
-        <li>
-         Use the
-         <b>
-          PCP Archive Time Control
-         </b>
-         dialog again - this time 
-    notice that you're controlling movement through both
-         <i>
-          dkvis
-         </i>
-         and
-         <i>
-          pmchart
-         </i>
-         using the same time control window (that's 
-    because
-         <i>
-          pmchart
-         </i>
-         was launched from
-         <i>
-          dkvis
-         </i>
-         ).
-        </li>
-        <li>
-         Quit from
-         <i>
-          dkvis
-         </i>
-         . Notice that
-         <i>
-          pmchart
-         </i>
-         and the
-         <i>
-          pmtime
-         </i>
-         dialog remain. Quit from
-         <i>
-          pmchart
-         </i>
-         .
-        </li>
-       </ul>
-      </td>
-     </tr>
-    </table>
-   </td>
-   <td width="10">
-   </td>
-   <td width="486">
-    <p align="RIGHT" valign="MIDDLE">
-    </p>
-    <center>
-     <br/>
-     <img align="RIGHT" alt="" border="0" src="images/dkvis.png"/>
-    </center>
-   </td>
-  </tr>
- </table>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="vis">
-        The "vis" tools
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  Try some of the other "vis" tools. All of these are 
-    "front-ends" to
-  <i>
-   pmview
-  </i>
-  as shown in this diagram:
- </p>
- <center>
-  <img align="MIDDLE" alt="" height="227" src="images/pmview.flow.png" width="444"/>
- </center>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    In a command shell enter:
-    <br/>
-    <pre><b>
-$ osvis
-</b></pre>
-    Move the cursor over each baseplane for more information.  Now enter:
-    <pre><b>
-$ pmafm pmie/godzillaweb.folio replay
-</b></pre>
-    <i>
-     pmafm
-    </i>
-    is a folio manager which allows you to work with a folio of archives for
-many visualisation tools; in this case, with the folio
-    <tt>
-     godzillaweb
-    </tt>
-    .
-   </td>
-  </tr>
- </table>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="simple">
-        Simple scene construction
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  The text file
-  <a href="pmview/example.view">
-   pmview/example.view
-  </a>
-  specifies a
-  <i>
-   pmview
-  </i>
-  configuration having one baseplane with 
-one bar containing three metrics (5, 10, and 15 minute load averages), 
-and separate bars for each of the disk read and write metrics.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    To display this scene, run:
-    <br/>
-    <pre><b>
-$ pmview &lt; pmie/example.view
-</b></pre>
-    An a learning exercise, copy
-    <i>
-     example.view
-    </i>
-    and modify the configuration so
-that instead of having the disk metrics as two separate blocks (bars), they 
-appear as a single stacked bar showing both metrics, one on top of the other.
-   </td>
-  </tr>
- </table>
- <h4>
-  Hints
- </h4>
- <ul>
-  <li>
-   The
-   <i>
-    osvis
-   </i>
-   tool we saw earlier uses stacked bars for memory 
-    and CPU utilization.
-  </li>
-  <li>
-   The configuration generated by
-   <b>
-    any
-   </b>
-   <i>
-    pmview
-   </i>
-   front-end 
-    script can be viewed using a
-   <b>
-    -V
-   </b>
-   option to the front-end 
-    tool, and a
-   <b>
-    -C
-   </b>
-   option means quit after generating the 
-    configuration (do not launch
-   <i>
-    pmview
-   </i>
-   ). So the following may 
-    be helpful:
-   <pre>
- <i> </i><b>$</b><i> </i>osvis -V -C<i> </i>
-    
-</pre>
-  </li>
-  <li>
-   The
-   <i>
-    pmview(1)
-   </i>
-   man page describes the
-   <i>
-    pmview
-   </i>
-   configuration 
-    format in detail. Look for the
-   <b>
-    <tt>
-     _stack
-    </tt>
-   </b>
-   object.
-  </li>
- </ul>
- <p>
-  <br/>
- </p>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='docpage'>
+              ﻿
+               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+                <font size="7">
+                 Performance Visualisation with
+                 <i>
+                  pmview
+                 </i>
+                </font>
+               </h1>
+               <p>
+                <br/>
+               </p>
+               <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
+                <tr>
+                 <td>
+                  <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
+              pmview
+              mpvis
+              osvis
+              dkvis
+              pmafm
+              pmtime
+              pmchart</pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                <b>
+                 Note:
+                </b>
+                The open source version of
+                <i>
+                 pmview
+                </i>
+                is currently under development, and is
+                <b>
+                 not
+                </b>
+                yet shipped as part of PCP GUI, but is available for experimental use in the development source tree.
+               </p>
+               <p>
+                Visual tools take advantage of common cognitive skills, especially for visual pattern matching and scene change discrimination.
+              The motivation for visualization of performance data is very similar to that used for engineering visualization, visual simulation, and database mining through visualization - visually rich representations of complex data sets are powerful aids to understanding and detection of unexpected relationships.
+               </p>
+               <ul>
+                <li>
+                 <a href="#realtime">
+                  Live monitoring and user interface concepts
+                 </a>
+                </li>
+                <li>
+                 <a href="#archive">
+                  Retrospective monitoring and tool drill-down
+                 </a>
+                </li>
+                <li>
+                 <a href="#vis">
+                  The "vis" tools
+                 </a>
+                </li>
+                <li>
+                 <a href="#simple">
+                  Simple scene construction
+                 </a>
+                </li>
+               </ul>
+               <table border="0" cellpadding="10" cellspacing="20" width="50%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  Extract the PCP archives and configuration files we will use in this tutorial into the current working directory:
+                  <pre><b>
+              $ . /etc/pcp.env
+              $ tar xzf $PCP_DEMOS_DIR/tutorials/pmview.tar.gz
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                For an explanation of Performance Co-Pilot terms and acronyms, consult 
+              the
+                <a href="glossary.html">
+                 PCP glossary
+                </a>
+                .
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="realtime">
+                      Live monitoring and user interface concepts
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="568">
+                  <p align="RIGHT">
+                  </p>
+                  <center>
+                   <br/>
+                   <img align="RIGHT" alt="" border="0" src="images/mpvis.png"/>
+                  </center>
+                 </td>
+                 <td width="10">
+                 </td>
+                 <td>
+                  <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                   <tr>
+                    <td width="70%">
+                     <br/>
+                     The
+                     <i>
+                      mpvis
+                     </i>
+                     command monitors the CPU utilization for each CPU:
+                     <br/>
+                     <pre><b>
+              $ mpvis
+              </b></pre>
+                     <ul>
+                      <li>
+                       Move the cursor over each block in the scene. Take time to read the 
+                  (changed) text box above the 3D scene and understand what it is telling 
+                  you. In particular, identify the source of the metric, the name of the 
+                  metric, the instance of the metric, the current value ... can you 
+                  explain what "millisec / second" really means?
+                      </li>
+                      <li>
+                       Click the left mouse over one block in the scene. How is this 
+                  different?
+                      </li>
+                      <li>
+                       Click on the "Live" button or Ctrl-T or
+                       <b>
+                        <i>
+                         Options -&gt;
+                  Show Time Control
+                        </i>
+                       </b>
+                       from the menu bar. In the
+                       <b>
+                        PCP Live Time 
+                  Control
+                       </b>
+                       dialog, experiment with changing the update
+                       <b>
+                        <i>
+                         Interval
+                        </i>
+                       </b>
+                       (this is the interval at which new metric values are fetched from
+                       <i>
+                        pmcd
+                       </i>
+                       ).
+                      </li>
+                      <li>
+                       Quit with
+                       <b>
+                        <i>
+                         File -&gt; Quit
+                        </i>
+                       </b>
+                       or Ctrl-Q.
+                      </li>
+                     </ul>
+                    </td>
+                   </tr>
+                  </table>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="archive">
+                      Retrospective monitoring and tool drill-down
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td>
+                  <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                   <tr>
+                    <td width="70%">
+                     <br/>
+                     The
+                     <i>
+                      dkvis
+                     </i>
+                     command monitors the per-disk I/O activity:
+                     <br/>
+                     <pre><b>
+              $ dkvis -a pmie/babylon.perdisk
+              </b></pre>
+                     <ul>
+                      <li>
+                       In the
+                       <i>
+                        dkvis
+                       </i>
+                       window (above the top left-hand corner of the 
+                  scene) change the
+                       <b>
+                        <i>
+                         Scale
+                        </i>
+                       </b>
+                       to be 5 using either the 
+                  thumbwheel or the text box to the right of the thumbwheel.
+                      </li>
+                      <li>
+                       In the associated
+                       <b>
+                        PCP Archive Time Control
+                       </b>
+                       dialog, changing 
+                  the update
+                       <b>
+                        <i>
+                         Interval
+                        </i>
+                       </b>
+                       to 2 minutes (remember to Enter 
+                  after you have changed the
+                       <b>
+                        <i>
+                         Interval
+                        </i>
+                       </b>
+                       text box).
+                      </li>
+                      <li>
+                       Double click the
+                       <b>
+                        <i>
+                         Play
+                        </i>
+                       </b>
+                       button. When the replay 
+                  finished, drag the slider in the
+                       <b>
+                        PCP Archive Time Control
+                       </b>
+                       dialog back to near the middle of the range and release the 
+                  slider.
+                      </li>
+                      <li>
+                       Back in the
+                       <i>
+                        dkvis
+                       </i>
+                       window, move the cursor over each block in 
+                  the scene. Take time to read the (changed) text box above the 3D scene 
+                  and understand what it's telling you. In particular, identify the 
+                  source of the metric, the name of the metric, the instance of the 
+                  metric, the current value ... can you explain what "count / 
+                  second" really means?
+                      </li>
+                      <li>
+                       Select all of the blocks for controller
+                       <b>
+                        dks1
+                       </b>
+                       (use 
+                  "Shift-select" to do multiple selections), and then
+                       <b>
+                        <i>
+                         Launch -&gt; pmchart
+                        </i>
+                       </b>
+                       from the main menu. In the pmchart window use
+                       <b>
+                        <i>
+                         File -&gt; Open View
+                        </i>
+                       </b>
+                       from the menu bar to add the
+                       <b>
+                        LoadAvg
+                       </b>
+                       view. 
+                  This is a "drill-down" example.
+                      </li>
+                      <li>
+                       Use the
+                       <b>
+                        PCP Archive Time Control
+                       </b>
+                       dialog again - this time 
+                  notice that you're controlling movement through both
+                       <i>
+                        dkvis
+                       </i>
+                       and
+                       <i>
+                        pmchart
+                       </i>
+                       using the same time control window (that's 
+                  because
+                       <i>
+                        pmchart
+                       </i>
+                       was launched from
+                       <i>
+                        dkvis
+                       </i>
+                       ).
+                      </li>
+                      <li>
+                       Quit from
+                       <i>
+                        dkvis
+                       </i>
+                       . Notice that
+                       <i>
+                        pmchart
+                       </i>
+                       and the
+                       <i>
+                        pmtime
+                       </i>
+                       dialog remain. Quit from
+                       <i>
+                        pmchart
+                       </i>
+                       .
+                      </li>
+                     </ul>
+                    </td>
+                   </tr>
+                  </table>
+                 </td>
+                 <td width="10">
+                 </td>
+                 <td width="486">
+                  <p align="RIGHT" valign="MIDDLE">
+                  </p>
+                  <center>
+                   <br/>
+                   <img align="RIGHT" alt="" border="0" src="images/dkvis.png"/>
+                  </center>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="vis">
+                      The "vis" tools
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                Try some of the other "vis" tools. All of these are 
+                  "front-ends" to
+                <i>
+                 pmview
+                </i>
+                as shown in this diagram:
+               </p>
+               <center>
+                <img align="MIDDLE" alt="" height="227" src="images/pmview.flow.png" width="444"/>
+               </center>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  In a command shell enter:
+                  <br/>
+                  <pre><b>
+              $ osvis
+              </b></pre>
+                  Move the cursor over each baseplane for more information.  Now enter:
+                  <pre><b>
+              $ pmafm pmie/godzillaweb.folio replay
+              </b></pre>
+                  <i>
+                   pmafm
+                  </i>
+                  is a folio manager which allows you to work with a folio of archives for
+              many visualisation tools; in this case, with the folio
+                  <tt>
+                   godzillaweb
+                  </tt>
+                  .
+                 </td>
+                </tr>
+               </table>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="simple">
+                      Simple scene construction
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                The text file
+                <a href="pmview/example.view">
+                 pmview/example.view
+                </a>
+                specifies a
+                <i>
+                 pmview
+                </i>
+                configuration having one baseplane with 
+              one bar containing three metrics (5, 10, and 15 minute load averages), 
+              and separate bars for each of the disk read and write metrics.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  To display this scene, run:
+                  <br/>
+                  <pre><b>
+              $ pmview &lt; pmie/example.view
+              </b></pre>
+                  An a learning exercise, copy
+                  <i>
+                   example.view
+                  </i>
+                  and modify the configuration so
+              that instead of having the disk metrics as two separate blocks (bars), they 
+              appear as a single stacked bar showing both metrics, one on top of the other.
+                 </td>
+                </tr>
+               </table>
+               <h4>
+                Hints
+               </h4>
+               <ul>
+                <li>
+                 The
+                 <i>
+                  osvis
+                 </i>
+                 tool we saw earlier uses stacked bars for memory 
+                  and CPU utilization.
+                </li>
+                <li>
+                 The configuration generated by
+                 <b>
+                  any
+                 </b>
+                 <i>
+                  pmview
+                 </i>
+                 front-end 
+                  script can be viewed using a
+                 <b>
+                  -V
+                 </b>
+                 option to the front-end 
+                  tool, and a
+                 <b>
+                  -C
+                 </b>
+                 option means quit after generating the 
+                  configuration (do not launch
+                 <i>
+                  pmview
+                 </i>
+                 ). So the following may 
+                  be helpful:
+                 <pre>
+               <i> </i><b>$</b><i> </i>osvis -V -C<i> </i>
+                  
+              </pre>
+                </li>
+                <li>
+                 The
+                 <i>
+                  pmview(1)
+                 </i>
+                 man page describes the
+                 <i>
+                  pmview
+                 </i>
+                 configuration 
+                  format in detail. Look for the
+                 <b>
+                  <tt>
+                   _stack
+                  </tt>
+                 </b>
+                 object.
+                </li>
+               </ul>
+               <p>
+                <br/>
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

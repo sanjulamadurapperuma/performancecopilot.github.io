@@ -1,763 +1,759 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='docpage'>
-﻿
- <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
-  <font size="7">
-   Archive log management
-  </font>
- </h1>
- <p>
-  <br/>
- </p>
- <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
-  <tr>
-   <td>
-    <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
-pmlc
-pmafm
-pmlogger
-pmdumplog
-mpvis
-mkaf</pre>
-   </td>
-  </tr>
- </table>
- <p>
-  This chapter of the Performance Co-Pilot tutorial covers PCP tools for
-creating and managing PCP archive logs.
- </p>
- <p>
-  For an explanation of Performance Co-Pilot terms and acronyms, consult 
-the
-  <a href="glossary.html">
-   PCP glossary
-  </a>
-  .
- </p>
- <ul>
-  <li>
-   <a href="#overview">
-    Overview
-   </a>
-  </li>
-  <li>
-   <a href="#primary">
-    Primary Logger
-   </a>
-  </li>
-  <li>
-   <a href="#other">
-    Other Logger Instances
-   </a>
-  </li>
-  <li>
-   <a href="#create">
-    Creating and Replaying PCP Archive Logs
-   </a>
-  </li>
-  <li>
-   <a href="#folios">
-    PCP Archive Folios
-   </a>
-  </li>
-  <li>
-   <a href="#control">
-    Controlling
-    <i>
-     pmlogger
-    </i>
-   </a>
-  </li>
-  <li>
-   <a href="#manage">
-    Management of PCP Archives
-   </a>
-  </li>
- </ul>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="overview">
-        Overview
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  The Performance Co-Pilot includes many facilities for creating and 
-replaying archive logs that capture performance information.
- </p>
- <p>
-  For all PCP monitoring tools, metrics values may come from a real-time 
-feed (i.e. from
-  <i>
-   pmcd
-  </i>
-  on some host), or from an archive log.
- </p>
- <p>
-  Users have complete control of what metrics are collected, how often 
-and in which logs.  These decisions can be changed dynamically.
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="primary">
-        Primary Logger
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  The primary instance of the PCP archive logger (
-  <i>
-   pmlogger
-  </i>
-  ) may be 
-started on a collector system each time
-  <i>
-   pmcd
-  </i>
-  is started.
- </p>
- <p>
-  This action is controlled by the chkconfig option `pmlogger'.
-To turn it on, as
-  <b>
-   root
-  </b>
-  do the following:
- </p>
- <p>
-  <tt>
-   # chkconfig pmlogger on
-  </tt>
-  <br/>
-  <tt>
-   # $PCP_RC_DIR/pcp start
-  </tt>
- </p>
- <p>
-  The specification for hosts to log, and
-  <i>
-   pmlogger
-  </i>
-  options is
-given in the $PCP_PMLOGGERCONTROL_PATH file, and (optionally) files
-in the $PCP_PMLOGGERCONTROL_PATH.d directory.
- </p>
- <p>
-  This has a default entry for the local host, which specifies the metrics
-to be logged, and the frequency of logging - by default, using the file
-$PCP_CONFIG_DIR/pmlogger/config.default.
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="other">
-        Other Logger Instances
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  Additional instances of
-  <i>
-   pmlogger
-  </i>
-  may be started at any time,
-running on either a collector system or a monitor system.
- </p>
- <p>
-  In all cases, each
-  <i>
-   pmlogger
-  </i>
-  instance will create an archive log
-for metrics from a single collector system.
- </p>
- <p>
-  The initial specification of what to log is given in a configuration file;
-the syntax is fully described in the
-  <i>
-   pmlogger
-  </i>
-  (1) man page.
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="create">
-        Creating and Replaying PCP Archive Logs
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  Some configuration files are supplied, e.g. to create archive logs 
-suitable for the PCP visualization tools.
-These may be found in the directory $PCP_CONFIG_DIR/pmlogger.
- </p>
- <p>
-  A simple example has been provided to illustrate the creation of an 
-archive log, and subsequent playback using
-  <i>
-   mpvis
-  </i>
-  .
-(All of the PCP monitoring tools accept the command line arguments
-  <b>
-   -a
-  </b>
-  <tt>
-   archivename
-  </tt>
-  to replay from an archive).
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    In a command shell enter:
-    <br/>
-    <pre><b>
-$ source /etc/pcp.conf
-$ cd /tmp
-$ rm -f myarchive.*
-$ $PCP_BINADM_DIR/pmlogger -T 30sec -t 1sec \
-        -c $PCP_CONFIG_DIR/pmlogger/config.mpvis myarchive
-$ ls myarchive.*
-$ mpvis -a myarchive
-</b></pre>
-   </td>
-  </tr>
- </table>
- <ul>
-  <li>
-   This starts
-   <i>
-    pmlogger
-   </i>
-   with
-   <b>
-    <i>
-     localhost
-    </i>
-   </b>
-   as the default
-    host from which metrics will be fetched, a logging duration of
-   <b>
-    30 seconds
-   </b>
-   , a logging interval of
-   <b>
-    1 second
-   </b>
-   , a configuration
-    from the $PCP_CONFIG_DIR/pmlogger/config.mpvis file, and
-   <i>
-    myarchive
-   </i>
-   as the base name of the output archive.
-  </li>
-  <li>
-   Once the archive has been created, the directory listing of
-   <i>
-    myarchive.*
-   </i>
-   shows that the archive log created by
-   <i>
-    pmlogger
-   </i>
-   is composed of 3 files.
-  </li>
-  <li>
-   When
-   <i>
-    mpvis
-   </i>
-   starts up, click the left mouse button on the
-   <b>
-    <i>
-     Play
-    </i>
-   </b>
-   button in the
-   <b>
-    PCP Archive Time Control
-   </b>
-   dialog.
-   <i>
-    mpvis
-   </i>
-   will start replaying values from the archive
-    at the same speed at which they were recorded.
-  </li>
-  <li>
-   Double click the left mouse button on the
-   <b>
-    <i>
-     Play
-    </i>
-   </b>
-   button
-    in the
-   <b>
-    PCP Archive Time Control
-   </b>
-   dialog.
-   <i>
-    mpvis
-   </i>
-   should
-    now replay the values in a
-   <i>
-    Fast Forward
-   </i>
-   mode until it reaches
-    the end of the archive.
-  </li>
-  <li>
-   Select the
-   <b>
-    Options-&gt;Show Bounds
-   </b>
-   option from the
-   <b>
-    PCP Archive
-    Time Control
-   </b>
-   dialog menu bar.  The exposed
-   <b>
-    Archive Time Bounds
-   </b>
-   dialog displays the bounds of the archive.  Another way to look at
-    the bounds of the archive is by using
-   <i>
-    pmdumplog
-   </i>
-   :
-   <pre>
-    $ pmdumplog -L myarchive
-</pre>
-   For more information on
-   <i>
-    pmdumplog
-   </i>
-   refer to the
-   <i>
-    pmdumplog
-   </i>
-   (1)
-    man page.
-  </li>
- </ul>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="folios">
-        Archive Folios
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  An archive folio is a named collection of PCP archives.
-These are typically used to provide a convenient way of processing multiple, 
-correlated PCP archives.
- </p>
- <p>
-  Archive folios are created with
-  <i>
-   mkaf
-  </i>
-  .
- </p>
- <p>
-  The contents of an archive folio can be processed using the
-  <i>
-   pmafm
-  </i>
-  utility.
- </p>
- <p>
-  A simple example has been provided to illustrate the creation and
-subsequent processing of a folio.
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    In a command shell enter:
-    <br/>
-    <pre><b>
-$ source /etc/pcp.conf
-$ cd /tmp
-$ tar xzf $PCP_DEMOS_DIR/tutorials/pmie.tar.gz
-$ tar xzf $PCP_DEMOS_DIR/tutorials/cpuperf.tar.gz
-$ $PCP_BINADM_DIR/mkaf pmie/babylon.perdisk.0 \
-	cpuperf/babylon.percpu.0 &gt; myfolio
-$ pmafm myfolio list
-$ pmafm myfolio pmdumplog -l
-</b></pre>
-   </td>
-  </tr>
- </table>
- <ul>
-  <li>
-   The
-   <i>
-    mkaf
-   </i>
-   creates a folio called
-   <b>
-    <i>
-     myfolio
-    </i>
-   </b>
-   which
-    includes the archives
-   <i>
-    babylon.percpu
-   </i>
-   and
-   <i>
-    babylon.perdisk
-   </i>
-   .
-    Note that the archives are not changed in any way, and a new archive
-    is not created.
-  </li>
-  <li>
-   The
-   <i>
-    pmafm
-   </i>
-   tool may now be used to perform different operations
-    on the folio
-   <b>
-    <i>
-     myfolio
-    </i>
-   </b>
-   , such as listing the folio contents,
-    or using other tools to open the archive logs contained in the folio.
-    If
-   <i>
-    pmafm
-   </i>
-   is given a folio name but no arguments, it will run
-    in interactive mode.
-  </li>
- </ul>
- <p>
-  For more information on folios refer to the
-  <i>
-   mkaf
-  </i>
-  (1) and
-  <i>
-   pmafm
-  </i>
-  (1) man pages.
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="control">
-        Controlling
-        <i>
-         pmlogger
-        </i>
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  The
-  <i>
-   pmlc
-  </i>
-  utility may be used to interrogate any
-  <i>
-   pmlogger
-  </i>
-  instance running either locally or remotely.  Use
-  <i>
-   pmlc
-  </i>
-  to
- </p>
- <ul>
-  <li>
-   add or delete metrics or metric instances to be logged
-  </li>
-  <li>
-   change the logging frequency for selected metrics
-  </li>
- </ul>
- <p>
-  The line-oriented command interface to
-  <i>
-   pmlc
-  </i>
-  (1) is fully described
-in the man page.
- </p>
- <p>
-  <br/>
- </p>
- <table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-   <td width="100%">
-    <p align="LEFT">
-     <font size="5">
-      <b>
-       <a name="manage">
-        Management of PCP Archives
-       </a>
-      </b>
-     </font>
-    </p>
-   </td>
-  </tr>
- </table>
- <p>
-  PCP includes a suite of scripts and tools to automate the collection 
-and management of archives.
- </p>
- <p>
-  Briefly, these facilities include:
- </p>
- <ul>
-  <li>
-   daily log rotation (
-   <i>
-    pmlogger_daily
-   </i>
-   (1))
-  </li>
-  <li>
-   archive log merging (
-   <i>
-    pmlogextract
-   </i>
-   (1))
-  </li>
-  <li>
-   automatic restarting of failed
-   <i>
-    pmlogger
-   </i>
-   instances
-    (
-   <i>
-    pmlogger_check
-   </i>
-   (1))
-  </li>
-  <li>
-   creation of snapshots from archives (
-   <i>
-    pmsnap
-   </i>
-   (1))
-  </li>
-  <li>
-   maintenance of archive folios for active archives
-    (
-   <i>
-    mkaf
-   </i>
-   (1) and
-   <i>
-    pmafm
-   </i>
-   (1))
-  </li>
- </ul>
- <p>
-  <br/>
- </p>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='docpage'>
+              ﻿
+               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+                <font size="7">
+                 Archive log management
+                </font>
+               </h1>
+               <p>
+                <br/>
+               </p>
+               <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
+                <tr>
+                 <td>
+                  <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
+              pmlc
+              pmafm
+              pmlogger
+              pmdumplog
+              mpvis
+              mkaf</pre>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                This chapter of the Performance Co-Pilot tutorial covers PCP tools for
+              creating and managing PCP archive logs.
+               </p>
+               <p>
+                For an explanation of Performance Co-Pilot terms and acronyms, consult 
+              the
+                <a href="glossary.html">
+                 PCP glossary
+                </a>
+                .
+               </p>
+               <ul>
+                <li>
+                 <a href="#overview">
+                  Overview
+                 </a>
+                </li>
+                <li>
+                 <a href="#primary">
+                  Primary Logger
+                 </a>
+                </li>
+                <li>
+                 <a href="#other">
+                  Other Logger Instances
+                 </a>
+                </li>
+                <li>
+                 <a href="#create">
+                  Creating and Replaying PCP Archive Logs
+                 </a>
+                </li>
+                <li>
+                 <a href="#folios">
+                  PCP Archive Folios
+                 </a>
+                </li>
+                <li>
+                 <a href="#control">
+                  Controlling
+                  <i>
+                   pmlogger
+                  </i>
+                 </a>
+                </li>
+                <li>
+                 <a href="#manage">
+                  Management of PCP Archives
+                 </a>
+                </li>
+               </ul>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="overview">
+                      Overview
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                The Performance Co-Pilot includes many facilities for creating and 
+              replaying archive logs that capture performance information.
+               </p>
+               <p>
+                For all PCP monitoring tools, metrics values may come from a real-time 
+              feed (i.e. from
+                <i>
+                 pmcd
+                </i>
+                on some host), or from an archive log.
+               </p>
+               <p>
+                Users have complete control of what metrics are collected, how often 
+              and in which logs.  These decisions can be changed dynamically.
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="primary">
+                      Primary Logger
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                The primary instance of the PCP archive logger (
+                <i>
+                 pmlogger
+                </i>
+                ) may be 
+              started on a collector system each time
+                <i>
+                 pmcd
+                </i>
+                is started.
+               </p>
+               <p>
+                This action is controlled by the chkconfig option `pmlogger'.
+              To turn it on, as
+                <b>
+                 root
+                </b>
+                do the following:
+               </p>
+               <p>
+                <tt>
+                 # chkconfig pmlogger on
+                </tt>
+                <br/>
+                <tt>
+                 # $PCP_RC_DIR/pcp start
+                </tt>
+               </p>
+               <p>
+                The specification for hosts to log, and
+                <i>
+                 pmlogger
+                </i>
+                options is
+              given in the $PCP_PMLOGGERCONTROL_PATH file, and (optionally) files
+              in the $PCP_PMLOGGERCONTROL_PATH.d directory.
+               </p>
+               <p>
+                This has a default entry for the local host, which specifies the metrics
+              to be logged, and the frequency of logging - by default, using the file
+              $PCP_CONFIG_DIR/pmlogger/config.default.
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="other">
+                      Other Logger Instances
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                Additional instances of
+                <i>
+                 pmlogger
+                </i>
+                may be started at any time,
+              running on either a collector system or a monitor system.
+               </p>
+               <p>
+                In all cases, each
+                <i>
+                 pmlogger
+                </i>
+                instance will create an archive log
+              for metrics from a single collector system.
+               </p>
+               <p>
+                The initial specification of what to log is given in a configuration file;
+              the syntax is fully described in the
+                <i>
+                 pmlogger
+                </i>
+                (1) man page.
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="create">
+                      Creating and Replaying PCP Archive Logs
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                Some configuration files are supplied, e.g. to create archive logs 
+              suitable for the PCP visualization tools.
+              These may be found in the directory $PCP_CONFIG_DIR/pmlogger.
+               </p>
+               <p>
+                A simple example has been provided to illustrate the creation of an 
+              archive log, and subsequent playback using
+                <i>
+                 mpvis
+                </i>
+                .
+              (All of the PCP monitoring tools accept the command line arguments
+                <b>
+                 -a
+                </b>
+                <tt>
+                 archivename
+                </tt>
+                to replay from an archive).
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  In a command shell enter:
+                  <br/>
+                  <pre><b>
+              $ source /etc/pcp.conf
+              $ cd /tmp
+              $ rm -f myarchive.*
+              $ $PCP_BINADM_DIR/pmlogger -T 30sec -t 1sec \
+                      -c $PCP_CONFIG_DIR/pmlogger/config.mpvis myarchive
+              $ ls myarchive.*
+              $ mpvis -a myarchive
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <ul>
+                <li>
+                 This starts
+                 <i>
+                  pmlogger
+                 </i>
+                 with
+                 <b>
+                  <i>
+                   localhost
+                  </i>
+                 </b>
+                 as the default
+                  host from which metrics will be fetched, a logging duration of
+                 <b>
+                  30 seconds
+                 </b>
+                 , a logging interval of
+                 <b>
+                  1 second
+                 </b>
+                 , a configuration
+                  from the $PCP_CONFIG_DIR/pmlogger/config.mpvis file, and
+                 <i>
+                  myarchive
+                 </i>
+                 as the base name of the output archive.
+                </li>
+                <li>
+                 Once the archive has been created, the directory listing of
+                 <i>
+                  myarchive.*
+                 </i>
+                 shows that the archive log created by
+                 <i>
+                  pmlogger
+                 </i>
+                 is composed of 3 files.
+                </li>
+                <li>
+                 When
+                 <i>
+                  mpvis
+                 </i>
+                 starts up, click the left mouse button on the
+                 <b>
+                  <i>
+                   Play
+                  </i>
+                 </b>
+                 button in the
+                 <b>
+                  PCP Archive Time Control
+                 </b>
+                 dialog.
+                 <i>
+                  mpvis
+                 </i>
+                 will start replaying values from the archive
+                  at the same speed at which they were recorded.
+                </li>
+                <li>
+                 Double click the left mouse button on the
+                 <b>
+                  <i>
+                   Play
+                  </i>
+                 </b>
+                 button
+                  in the
+                 <b>
+                  PCP Archive Time Control
+                 </b>
+                 dialog.
+                 <i>
+                  mpvis
+                 </i>
+                 should
+                  now replay the values in a
+                 <i>
+                  Fast Forward
+                 </i>
+                 mode until it reaches
+                  the end of the archive.
+                </li>
+                <li>
+                 Select the
+                 <b>
+                  Options-&gt;Show Bounds
+                 </b>
+                 option from the
+                 <b>
+                  PCP Archive
+                  Time Control
+                 </b>
+                 dialog menu bar.  The exposed
+                 <b>
+                  Archive Time Bounds
+                 </b>
+                 dialog displays the bounds of the archive.  Another way to look at
+                  the bounds of the archive is by using
+                 <i>
+                  pmdumplog
+                 </i>
+                 :
+                 <pre>
+                  $ pmdumplog -L myarchive
+              </pre>
+                 For more information on
+                 <i>
+                  pmdumplog
+                 </i>
+                 refer to the
+                 <i>
+                  pmdumplog
+                 </i>
+                 (1)
+                  man page.
+                </li>
+               </ul>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="folios">
+                      Archive Folios
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                An archive folio is a named collection of PCP archives.
+              These are typically used to provide a convenient way of processing multiple, 
+              correlated PCP archives.
+               </p>
+               <p>
+                Archive folios are created with
+                <i>
+                 mkaf
+                </i>
+                .
+               </p>
+               <p>
+                The contents of an archive folio can be processed using the
+                <i>
+                 pmafm
+                </i>
+                utility.
+               </p>
+               <p>
+                A simple example has been provided to illustrate the creation and
+              subsequent processing of a folio.
+               </p>
+               <table border="0" cellpadding="10" cellspacing="20" width="100%">
+                <tr>
+                 <td width="70%">
+                  <br/>
+                  In a command shell enter:
+                  <br/>
+                  <pre><b>
+              $ source /etc/pcp.conf
+              $ cd /tmp
+              $ tar xzf $PCP_DEMOS_DIR/tutorials/pmie.tar.gz
+              $ tar xzf $PCP_DEMOS_DIR/tutorials/cpuperf.tar.gz
+              $ $PCP_BINADM_DIR/mkaf pmie/babylon.perdisk.0 \
+              	cpuperf/babylon.percpu.0 &gt; myfolio
+              $ pmafm myfolio list
+              $ pmafm myfolio pmdumplog -l
+              </b></pre>
+                 </td>
+                </tr>
+               </table>
+               <ul>
+                <li>
+                 The
+                 <i>
+                  mkaf
+                 </i>
+                 creates a folio called
+                 <b>
+                  <i>
+                   myfolio
+                  </i>
+                 </b>
+                 which
+                  includes the archives
+                 <i>
+                  babylon.percpu
+                 </i>
+                 and
+                 <i>
+                  babylon.perdisk
+                 </i>
+                 .
+                  Note that the archives are not changed in any way, and a new archive
+                  is not created.
+                </li>
+                <li>
+                 The
+                 <i>
+                  pmafm
+                 </i>
+                 tool may now be used to perform different operations
+                  on the folio
+                 <b>
+                  <i>
+                   myfolio
+                  </i>
+                 </b>
+                 , such as listing the folio contents,
+                  or using other tools to open the archive logs contained in the folio.
+                  If
+                 <i>
+                  pmafm
+                 </i>
+                 is given a folio name but no arguments, it will run
+                  in interactive mode.
+                </li>
+               </ul>
+               <p>
+                For more information on folios refer to the
+                <i>
+                 mkaf
+                </i>
+                (1) and
+                <i>
+                 pmafm
+                </i>
+                (1) man pages.
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="control">
+                      Controlling
+                      <i>
+                       pmlogger
+                      </i>
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                The
+                <i>
+                 pmlc
+                </i>
+                utility may be used to interrogate any
+                <i>
+                 pmlogger
+                </i>
+                instance running either locally or remotely.  Use
+                <i>
+                 pmlc
+                </i>
+                to
+               </p>
+               <ul>
+                <li>
+                 add or delete metrics or metric instances to be logged
+                </li>
+                <li>
+                 change the logging frequency for selected metrics
+                </li>
+               </ul>
+               <p>
+                The line-oriented command interface to
+                <i>
+                 pmlc
+                </i>
+                (1) is fully described
+              in the man page.
+               </p>
+               <p>
+                <br/>
+               </p>
+               <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                 <td width="100%">
+                  <p align="LEFT">
+                   <font size="5">
+                    <b>
+                     <a name="manage">
+                      Management of PCP Archives
+                     </a>
+                    </b>
+                   </font>
+                  </p>
+                 </td>
+                </tr>
+               </table>
+               <p>
+                PCP includes a suite of scripts and tools to automate the collection 
+              and management of archives.
+               </p>
+               <p>
+                Briefly, these facilities include:
+               </p>
+               <ul>
+                <li>
+                 daily log rotation (
+                 <i>
+                  pmlogger_daily
+                 </i>
+                 (1))
+                </li>
+                <li>
+                 archive log merging (
+                 <i>
+                  pmlogextract
+                 </i>
+                 (1))
+                </li>
+                <li>
+                 automatic restarting of failed
+                 <i>
+                  pmlogger
+                 </i>
+                 instances
+                  (
+                 <i>
+                  pmlogger_check
+                 </i>
+                 (1))
+                </li>
+                <li>
+                 creation of snapshots from archives (
+                 <i>
+                  pmsnap
+                 </i>
+                 (1))
+                </li>
+                <li>
+                 maintenance of archive folios for active archives
+                  (
+                 <i>
+                  mkaf
+                 </i>
+                 (1) and
+                 <i>
+                  pmafm
+                 </i>
+                 (1))
+                </li>
+               </ul>
+               <p>
+                <br/>
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

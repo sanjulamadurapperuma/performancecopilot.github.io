@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='docpage'>
+﻿
+ <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+  <font size="7">
+   Installation
+  </font>
+ </h1>
+ <p>
+  Binary packages for Linux (
+  <i>
+   deb
+  </i>
+  and
+  <i>
+   rpm
+  </i>
+  formats), Mac OS X, Solaris and Windows are made available by the PCP development team.  The latest version can always be found in the download section of the
+  <a href="http://pcp.io/">
+   PCP project
+  </a>
+  web pages.  Its also worth noting that many Linux distributions now ship PCP - these include Debian, Fedora, Slackware, SuSE and Ubuntu.
+ </p>
+ <p>
+  PCP GUI runs natively on Mac OS X, X11 (Linux/Unix) and Windows, and binary packages for these platforms are available in the same location.  The installation instructions for each differ significantly - below we discuss each in turn, and finally cover building the tools from source.
+ </p>
+ <ul>
+  <li>
+   <a href="#rpm">
+    Linux (rpm format)
+   </a>
+  </li>
+  <li>
+   <a href="#deb">
+    Linux (deb format)
+   </a>
+  </li>
+  <li>
+   <a href="#mac">
+    Mac OS X
+   </a>
+  </li>
+  <li>
+   <a href="#sun">
+    Solaris
+   </a>
+  </li>
+  <li>
+   <a href="#win">
+    Windows
+   </a>
+  </li>
+  <li>
+   <a href="#src">
+    Building from source
+   </a>
+  </li>
+ </ul>
+ <p>
+  The typical PCP installation is conceptually divided into two major components -
+  <a href="glossary.html#collector">
+   collectors
+  </a>
+  and
+  <a href="glossary.html#monitor">
+   monitors
+  </a>
+  .  There are usually multiple systems of each type in any given deployment.
+ </p>
+ <p>
+  For server-focussed systems (Linux in particular) PCP is literally divided into multiple packages along these lines, with separate PCP and PCP GUI packages (primarily due to dependencies on graphical libraries which are unlikely to be installed on a Linux server).  On the other platforms, like Mac OS X and Windows, this is less of an issue and so a single PCP package is shipped which covers both needs.
+ </p>
+ <p>
+  PCP GUI has a runtime dependency on the Qt4 shared libraries.  These are usually available from a package named
+  <b>
+   qt4
+  </b>
+  .  Versions before Qt4.4 of the Qt libraries
+  <i>
+   <b>
+    will not work
+   </b>
+  </i>
+  .
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       Linux using
+       <a name="rpm">
+        <i>
+         rpm
+        </i>
+       </a>
+       format (Fedora, RHEL, SuSE)
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    If using packages
+    <b>
+     from your distribution
+    </b>
+    , in a command shell enter:
+    <br/>
+    <pre><b>
+# yum install pcp pcp-gui
+</b></pre>
+    <br/>
+    If using packages
+    <b>
+     downloaded from ftp.pcp.io
+    </b>
+    , in a command shell enter:
+    <br/>
+    <pre><b>
+# rpm -Uvh *pcp*.rpm
+</b></pre>
+    <br/>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       Linux using
+       <a name="deb">
+        <i>
+         deb
+        </i>
+       </a>
+       format (Debian, Ubuntu)
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    If using packages
+    <b>
+     from your distribution
+    </b>
+    , in a command shell enter:
+    <br/>
+    <pre><b>
+# apt-get install pcp pcp-gui
+</b></pre>
+    <br/>
+    If using packages
+    <b>
+     downloaded from ftp.pcp.io
+    </b>
+    , in a command shell enter:
+    <br/>
+    <pre><b>
+# apt-get install ./*pcp*.deb
+</b></pre>
+    <br/>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="mac">
+        Mac
+       </a>
+       OS X Installation
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    After downloading the
+    <i>
+     dmg
+    </i>
+    file for your platform, double-click on the PCP
+    <i>
+     dmg
+    </i>
+    icon, and follow the installation instructions presented by the Installer.
+    <br/>
+    <br/>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="sun">
+        Solaris
+       </a>
+       Installation
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    After downloading (and gunzip'ing) the binary package, to perform a fresh install:
+    <br/>
+    <pre><b>
+# pkgadd -d pcp-X.Y.Z
+<i>  Say 'y' to all the questions</i>
+# svcadm enable pmcd
+</b></pre>
+    <br/>
+    Or to update to a newer version:
+    <pre><b>
+# pkgrm pcp-X.Y.OLD
+# pkgadd -d pcp X.Y.Z
+# svcadm enable pmcd
+</b></pre>
+    <br/>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="win">
+        Windows
+       </a>
+       Installation
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    After downloading the PCP Glider
+    <i>
+     msi
+    </i>
+    file, right-click on the command prompt icon, select
+    <i>
+     <b>
+      Run As Administrator
+     </b>
+    </i>
+    , and enter:
+    <br/>
+    <pre><b>
+# msiexec /i pcp-glider-*.msi
+# cd C:\Glider\scripts
+# postinst.bat
+</b></pre>
+    <br/>
+    Before upgrading or removing PCP Glider, run:
+    <pre><b>
+# cd C:\Glider\scripts
+# prerm.bat
+</b></pre>
+    <br/>
+    The command line utilities can now be accessed from a Windows shell or the provided (POSIX) shell.  The graphical tools can be accessed via the Windows
+    <i>
+     Start
+    </i>
+    menu.
+    <br/>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       Building from
+       <a name="src">
+        source
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  The best way to build PCP is to use the
+  <b>
+   git
+  </b>
+  source code management (SCM) tools.  This SCM is freely available and runs natively on many different platforms.
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    First, get the current version of the source code:
+    <br/>
+    <pre><b>
+$ git clone git://git.pcp.io/pcp
+</b></pre>
+    <br/>
+    Then build and install:
+    <pre><b>
+$ cd pcp
+$ ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+$ make
+# make install
+</b></pre>
+    <br/>
+   </td>
+  </tr>
+ </table>
+ <p>
+  When building from source, you'll need to ensure you have the following tools and libraries installed: a C compiler (for core PCP), a C++ compiler (for PCP GUI),
+  <i>
+   autoconf
+  </i>
+  ,
+  <i>
+   lex
+  </i>
+  ,
+  <i>
+   yacc
+  </i>
+  , and the Qt4 development tools (including
+  <i>
+   qmake
+  </i>
+  ), libraries and headers.  On Mac OS X, the Apple
+  <i>
+   Xcode
+  </i>
+  development environment is also required, as it is used by the Qt application build process.
+  <i>
+   Inkscape
+  </i>
+  - a Scalable Vector Graphics (SVG) editor - can be used to modify the icons, but is not required during the build process.
+ </p>
+ <p>
+  If you encounter difficulties building PCP, consult the
+  <a href="contacts.html">
+   contacts page
+  </a>
+  which contains contact information for people who can provide additional assistance.
+ </p>
+ <p>
+  <br/>
+ </p>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

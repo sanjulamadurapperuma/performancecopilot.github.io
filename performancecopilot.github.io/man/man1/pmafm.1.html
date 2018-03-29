@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMAFM
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmafm
+ </b>
+ - Performance Co-Pilot archive folio manager
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmafm
+ </b>
+ <i>
+  folioname
+ </i>
+ [
+ <i>
+  command
+ </i>
+ [
+ <i>
+  arg
+ </i>
+ ...]]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ A collection of one or more Performance Co-Pilot (PCP) archive
+logs may be combined with a control file to produce a PCP archive folio.
+Archive folios are created using either
+ <b>
+  <a href="/man/man1/mkaf.1.html">
+   mkaf
+  </a>
+ </b>
+ (1)
+
+or the interactive ``record mode'' services of PCP clients like
+ <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1).
+ <p>
+  <b>
+   pmafm
+  </b>
+  provides a number of services that may be used to process folios.
+In particular, it provides support for execution of PCP tools using one
+or more of the component
+archive logs within an archive folio.
+ </p>
+ <p>
+  The target folio is identified by the folio control file
+  <i>
+   folioname
+  </i>
+  .
+
+The syntax for a folio control file is described in
+  <b>
+   <a href="/man/man1/mkaf.1.html">
+    mkaf
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  If present, the command and arguments following
+  <i>
+   folioname
+  </i>
+  are interpreted and executed as a single command,
+otherwise commands are read from standard input.
+ </p>
+ <p>
+  The following commands are supported.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    archives
+   </b>
+  </dt>
+  <dd>
+   Subsequent commands apply to all archives in the folio.
+  </dd>
+  <dt>
+   <b>
+    archives
+   </b>
+   <i>
+    N
+   </i>
+   [,...]
+  </dt>
+  <dd>
+   Archives within a folio are numbered 1, 2, etc.
+Subsequent commands are restricted to apply only to
+the designated archives.
+  </dd>
+  <dt>
+   <b>
+    archives
+   </b>
+   <i>
+    name
+   </i>
+   [,...]
+  </dt>
+  <dd>
+   Archives within a folio have unique names.
+Subsequent commands are restricted to apply only to
+the designated archives.
+  </dd>
+  <dt>
+   <b>
+    check
+   </b>
+  </dt>
+  <dd>
+   Validate the presence and format of each file in the
+folio and the component archives.
+  </dd>
+  <dt>
+   <b>
+    help
+   </b>
+  </dt>
+  <dd>
+   <br/>
+   A brief reminder of the command syntax.
+   <b>
+    ?
+   </b>
+   is a synonym for
+   <b>
+    help
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    hosts
+   </b>
+  </dt>
+  <dd>
+   <br/>
+   Subsequent commands apply to all archives in the folio.
+  </dd>
+  <dt>
+   <b>
+    hosts
+   </b>
+   <i>
+    hostname
+   </i>
+   [,...]
+  </dt>
+  <dd>
+   Subsequent commands are restricted to apply only to
+those archives that match the designated hostnames.
+  </dd>
+  <dt>
+   <b>
+    list
+   </b>
+   [
+   <b>
+    verbose
+   </b>
+   ]
+  </dt>
+  <dd>
+   Display the contents of the folio.  By default the control header
+and the ordinal number, hostname and archive base name for each archive
+in the folio.
+The
+   <b>
+    verbose
+   </b>
+   option causes
+   <b>
+    pmafm
+   </b>
+   to dump the label record from each archive using
+   <b>
+    pmdumplog -l
+   </b>
+   .
+  </dd>
+  <dt>
+  </dt>
+  <dd>
+   The first named archive in the folio is assumed to be
+associated with the default host for any tool that tries to
+replay multiple archives from the folio.
+  </dd>
+  <dt>
+   <b>
+    quit
+   </b>
+  </dt>
+  <dd>
+   <br/>
+   Exit
+   <b>
+    pmafm
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    remove
+   </b>
+  </dt>
+  <dd>
+   <br/>
+   Echo on standard output the
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/sh.1.html">
+     sh
+    </a>
+   </b>
+   (1)
+
+commands required to remove all of the physical files associated with
+this archive folio.
+  </dd>
+  <dt>
+   <b>
+    repeat
+   </b>
+   <i>
+    tool
+   </i>
+   [
+   <i>
+    arg
+   </i>
+   ...]
+  </dt>
+  <dd>
+   Execute the known PCP
+   <i>
+    tool
+   </i>
+   once per selected archive.  For example, the command
+   <br/>
+   <br/>
+   repeat pmval -t60 kernel.all.load
+   <br/>
+   would run
+   <b>
+    <a href="/man/man1/pmval.1.html">
+     pmval
+    </a>
+   </b>
+   (1)
+
+once per archive, with an appropriate
+   <b>
+    -a
+   </b>
+   argument.
+  </dd>
+  <dt>
+   <b>
+    replay
+   </b>
+  </dt>
+  <dd>
+   <br/>
+   Some archive folios are created by tools
+(e.g.
+   <b>
+    <a href="/man/man1/pmchart.1.html">
+     pmchart
+    </a>
+   </b>
+   (1))
+
+that provide
+sufficient information to allow all of the information
+in all of the archives of a folio to be replayed.
+  </dd>
+  <dt>
+   [
+   <b>
+    run
+   </b>
+   ]
+   <i>
+    tool
+   </i>
+   [
+   <i>
+    arg
+   </i>
+   ...]
+  </dt>
+  <dd>
+   Execute the known PCP
+   <i>
+    tool
+   </i>
+   on the selected archives.
+Some PCP tools are able to process multiple concurrent
+archives, and in this case the tool is run once with
+the list of all selected archives passed via a
+   <b>
+    -a
+   </b>
+   argument.
+Otherwise, this command is synonymous with
+   <b>
+    repeat
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    selections
+   </b>
+  </dt>
+  <dd>
+   Display those archives that would be selected for 
+processing with a
+   <b>
+    repeat
+   </b>
+   ,
+   <b>
+    replay
+   </b>
+   or
+   <b>
+    run
+   </b>
+   command.
+  </dd>
+ </dl>
+ <p>
+  The restrictions via any
+  <b>
+   hosts
+  </b>
+  and
+  <b>
+   archives
+  </b>
+  commands are conjuncted.
+These restrictions serve to limit the specific archives
+processed in the subsequent
+  <b>
+   repeat
+  </b>
+  ,
+  <b>
+   replay
+  </b>
+  ,
+  <b>
+   run
+  </b>
+  and
+  <b>
+   selections
+  </b>
+  commands.
+By default, all archives are selected.
+ </p>
+ <p>
+  Keywords in commands may be abbreviated provided no ambiguity
+is introduced, e.g.
+  <b>
+   help
+  </b>
+  ,
+  <b>
+   hel
+  </b>
+  and
+  <b>
+   he
+  </b>
+  are synonymous,
+but
+  <b>
+   h
+  </b>
+  is ambiguous.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_VAR_DIR/config/pmafm/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   control files that define the behavior of each PCP tool
+known to
+   <b>
+    pmafm
+   </b>
+   .
+
+This information may be customized or extended, see
+   <i>
+    $PCP_VAR_DIR/config/pmafm/pcp
+   </i>
+   for documentation of the syntax and semantics of these files.
+  </dd>
+  <dt>
+   <b>
+    $HOME/.pcp/pmafm/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   User customization of the control files.  All files in this
+directory are treated in the same manner as control files in
+the
+   <i>
+    $PCP_VAR_DIR/config/pmafm
+   </i>
+   directory.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <p>
+  <b>
+   <a href="/man/man1/mkaf.1.html">
+    mkaf
+   </a>
+  </b>
+  (1),
+  <b>
+   <a href="/man/man1/pmchart.1.html">
+    pmchart
+   </a>
+  </b>
+  (1),
+  <b>
+   <a href="/man/man1/pmview.1.html">
+    pmview
+   </a>
+  </b>
+  (1),
+  <b>
+   <a href="/man/man3/pmapi.3.html">
+    PMAPI
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmrecordsetup.3.html">
+    pmRecordSetup
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man5/pcp.conf.5.html">
+    pcp.conf
+   </a>
+  </b>
+  (5)
+
+and
+  <b>
+   <a href="/man/man5/pcp.env.5.html">
+    pcp.env
+   </a>
+  </b>
+  (5).
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Many, but all are intended to be easily understood.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

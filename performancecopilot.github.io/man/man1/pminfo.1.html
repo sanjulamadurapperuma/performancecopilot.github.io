@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMINFO
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pminfo
+ </b>
+ - display information about performance metrics
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pminfo
+ </b>
+ [
+ <b>
+  -dfFlLmMtTvxz
+ </b>
+ ]
+[
+ <b>
+  -a
+ </b>
+ <i>
+  archive
+ </i>
+ ]
+[
+ <b>
+  -b
+ </b>
+ <i>
+  batchsize
+ </i>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  dmfile
+ </i>
+ ]
+[
+ <b>
+  -h
+ </b>
+ <i>
+  hostname
+ </i>
+ ]
+[
+ <b>
+  -K
+ </b>
+ <i>
+  spec
+ </i>
+ ]
+[
+ <b>
+  -
+ </b>
+ [
+ <b>
+  n
+ </b>
+ |
+ <b>
+  N
+ </b>
+ ]
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -O
+ </b>
+ <i>
+  time
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+[
+ <i>
+  metricname
+ </i>
+ |
+ <i>
+  pmid
+ </i>
+ |
+ <i>
+  indom
+ </i>
+ ]...
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pminfo
+ </b>
+ displays various types of information about performance metrics
+available through the facilities of the Performance Co-Pilot (PCP).
+ <p>
+  Normally
+  <b>
+   pminfo
+  </b>
+  operates on the distributed Performance Metrics Name Space (PMNS),
+however if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative local PMNS is loaded from the file
+  <i>
+   pmnsfile.
+  </i>
+  The
+  <b>
+   -N
+  </b>
+  option supports the same function as
+  <b>
+   -n
+  </b>
+  ,
+
+except for the handling of
+duplicate names for the same Performance Metric Identifier (PMID) in
+  <i>
+   pmnsfile
+  </i>
+  - duplicate names are allowed with
+  <b>
+   -n
+  </b>
+  but they are not allowed with
+  <b>
+   -N
+  </b>
+  .
+ </p>
+ <p>
+  The metrics of interest are named in the
+  <i>
+   metricname
+  </i>
+  arguments.
+If
+  <i>
+   metricname
+  </i>
+  is a non-leaf node in the PMNS, then
+  <b>
+   pminfo
+  </b>
+  will recursively descend the PMNS and report on all leaf nodes.
+If no
+  <i>
+   metricname
+  </i>
+  argument is given, the root of the PMNS is used.
+ </p>
+ <p>
+  If the
+  <i>
+   metricname
+  </i>
+  argument is in numeric dotted notation,
+it is interpreted as either a 3-dotted
+  <i>
+   pmid
+  </i>
+  (metric identifier - domain, cluster, item numbers) or
+a 2-dotted
+  <i>
+   indom
+  </i>
+  (instance domain identifier - domain, serial number).
+In the
+  <i>
+   pmid
+  </i>
+  case, a reverse PMID-to-name lookup is performed, and in the
+  <i>
+   indom
+  </i>
+  case, the instance domain is reported directly.
+This latter mode can be used to report the instance domain
+``one line'' and long form help text summaries.
+ </p>
+ <p>
+  Unless directed to another host by the
+  <b>
+   -h
+  </b>
+  option, by default
+  <b>
+   pminfo
+  </b>
+  will contact the Performance Metrics Collector Daemon
+(PMCD) on the local host.
+The connection to a PMCD is only required if
+  <b>
+   pminfo
+  </b>
+  requires distributed PMNS information, and/or meta-data
+describing metrics, and/or metric values, and/or help text.
+ </p>
+ <p>
+  The
+  <b>
+   -a
+  </b>
+  option causes
+  <b>
+   pminfo
+  </b>
+  to use the specified set of archives rather than connecting to a PMCD.
+The argument to
+  <b>
+   -a
+  </b>
+  is a comma-separated list of names,
+each of which may be the base name of an archive or
+the name of a directory containing one or more archives.
+The
+  <b>
+   -a , -h
+  </b>
+  and
+  <b>
+   -L
+  </b>
+  options are mutually exclusive.
+ </p>
+ <p>
+  The
+  <b>
+   -L
+  </b>
+  option causes
+  <b>
+   pminfo
+  </b>
+  to use a local context to collect metrics from PMDAs on the local host
+without PMCD.
+Only some metrics are available in this mode.
+The
+  <b>
+   -a
+  </b>
+  ,
+  <b>
+   -h
+  </b>
+  and
+  <b>
+   -L
+  </b>
+  options are mutually exclusive.
+ </p>
+ <p>
+  The
+  <b>
+   -b
+  </b>
+  option may be used to define the maximum size of the group of metrics to
+be fetched in a single request for the
+  <b>
+   -f
+  </b>
+  and
+  <b>
+   -v
+  </b>
+  options.
+The default value for
+  <i>
+   batchsize
+  </i>
+  is 128.
+ </p>
+ <p>
+  Other options control the specific information to be reported.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+  </dt>
+  <dd>
+   The
+   <i>
+    dmfile
+   </i>
+   argument specifies a file that contains derived metric definitions
+in the format described for
+   <b>
+    <a href="/man/man3/pmloadderivedconfig.3.html">
+     pmLoadDerivedConfig
+    </a>
+   </b>
+   (3).
+
+The
+   <b>
+    -c
+   </b>
+   option provides a way to load derived metric definitions
+that is an alternative to the more generic use of the
+   <b>
+    PCP_DERIVED_CONFIG
+   </b>
+   environment variable as described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1).
+
+Using the
+   <b>
+    -c
+   </b>
+   option and the
+   <b>
+    PCP_DERIVED_CONFIG
+   </b>
+   environment variable to specify the
+   <b>
+    same
+   </b>
+   configuration is a bad idea, so choose one or the other method.
+  </dd>
+  <dt>
+   <b>
+    -d
+   </b>
+  </dt>
+  <dd>
+   Metric descriptions detailing the PMID, data type, data semantics, units,
+scale and associated instance domain.
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+  </dt>
+  <dd>
+   Fetch and print values for all instances.
+When fetching from a set of archives, only
+those instances present in the first archive record for a metric will be
+displayed; see also the
+   <b>
+    -O
+   </b>
+   option, else use
+   <b>
+    <a href="/man/man1/pmdumplog.1.html">
+     pmdumplog
+    </a>
+   </b>
+   (1)
+
+which may be a better tool for examining archives.
+  </dd>
+  <dt>
+   <b>
+    -F
+   </b>
+  </dt>
+  <dd>
+   Same as
+   <b>
+    -f
+   </b>
+   but try harder to fetch instances for metrics which have non-enumerable
+instance domains (e.g. metrics in the ``proc'' subtree of the default
+PMNS).
+  </dd>
+  <dt>
+   <b>
+    -K
+   </b>
+  </dt>
+  <dd>
+   When using the
+   <b>
+    -L
+   </b>
+   option to fetch metrics from a local context, the
+   <b>
+    -K
+   </b>
+   option may be used to control the DSO PMDAs that should be
+made accessible.
+The
+   <i>
+    spec
+   </i>
+   argument conforms to the syntax described in
+   <b>
+    <a href="/man/man3/pmspeclocalpmda.3.html">
+     pmSpecLocalPMDA
+    </a>
+   </b>
+   (3).
+
+More than one
+   <b>
+    -K
+   </b>
+   option may be used.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+  </dt>
+  <dd>
+   Print label sets associated with metrics, instance domains and values.
+Labels are optional metric metadata described in detail in
+   <b>
+    <a href="/man/man3/pmlookuplabels.3.html">
+     pmLookupLabels
+    </a>
+   </b>
+   (3).
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+  </dt>
+  <dd>
+   Print the PMID in terse mode.
+  </dd>
+  <dt>
+   <b>
+    -M
+   </b>
+  </dt>
+  <dd>
+   Print the PMID in verbose mode.
+  </dd>
+  <dt>
+   <b>
+    -O
+   </b>
+  </dt>
+  <dd>
+   When used in conjunction with an archive source of metrics and
+the options
+   <b>
+    -f
+   </b>
+   or
+   <b>
+    -F
+   </b>
+   ,
+
+the
+   <i>
+    time
+   </i>
+   argument defines a time origin at which the metrics should be
+fetched from the set of archives.
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of this option, and the syntax for the
+   <i>
+    time
+   </i>
+   argument.
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+  </dt>
+  <dd>
+   Print the ``one line'' help summary, if available.
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+  </dt>
+  <dd>
+   Print the help text, if available.
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   Verify mode in which descriptions and values are retrieved, but only
+error conditions are reported.
+This option silently disables any output from the options
+   <b>
+    -f
+   </b>
+   ,
+   <b>
+    -M
+   </b>
+   ,
+   <b>
+    -m
+   </b>
+   ,
+   <b>
+    -t
+   </b>
+   and
+   <b>
+    -T
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+  </dt>
+  <dd>
+   Like the
+   <b>
+    -f
+   </b>
+   option, but with the additional functionality that if a value is
+processed that is of type PM_TYPE_EVENT, then the event records
+will be unpacked and the details of each event record reported.
+  </dd>
+ </dl>
+ <a name="lbAE">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_VAR_DIR/pmns/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   default local PMNS specification files
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumptext.1.html">
+   pmdumptext
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmprobe.1.html">
+   pmprobe
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmval.1.html">
+   pmval
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookuplabels.3.html">
+   pmLookupLabels
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmloadderivedconfig.3.html">
+   pmLoadDerivedConfig
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmspeclocalpmda.3.html">
+   pmSpecLocalPMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   pmns
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

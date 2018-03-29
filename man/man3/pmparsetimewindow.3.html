@@ -1,588 +1,584 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMPARSETIMEWINDOW
- </h1>
- Section: C Library Functions (3)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmParseTimeWindow
- </b>
- - parse time window command line arguments
- <a name="lbAC">
- </a>
- <h2>
-  C SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-   pcp/pmapi.h
-  </a>
-  &gt;
- </b>
- <p>
-  <br/>
-  int pmParseTimeWindow(const char *
-  <i>
-   swStart
-  </i>
-  , const char *
-  <i>
-   swEnd
-  </i>
-  , const char *
-  <i>
-   swAlign
-  </i>
-  , const char *
-  <i>
-   swOffset
-  </i>
-  , const struct timeval *
-  <i>
-   logStart
-  </i>
-  , const struct timeval *
-  <i>
-   logEnd
-  </i>
-  , struct timeval *
-  <i>
-   rsltStart
-  </i>
-  , struct timeval *
-  <i>
-   rsltEnd
-  </i>
-  , struct timeval *
-  <i>
-   rsltOffset
-  </i>
-  , char **
-  <i>
-   errMsg
-  </i>
-  );
- </p>
- <p>
-  cc ... -lpcp
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmParseTimeWindow
- </b>
- is designed to encapsulate the interpretation of the
- <b>
-  -S
- </b>
- ,
- <b>
-  -T
- </b>
- ,
- <b>
-  -A
- </b>
- and
- <b>
-  -O
- </b>
- command line options used by Performance Co-Pilot (PCP) applications
-to define a time window of interest.
-The time window is defined by a start time and an end time that constrains
-the time interval during which the PCP application will retrieve and
-display performance metrics.  In the absence of the
- <b>
-  -O
- </b>
- and
- <b>
-  -A
- </b>
- options to specify an initial sample time origin
-and time alignment (see below), the PCP application
-will retrieve the first sample at the start of the time window.
- <p>
-  The syntax and meaning of the various argument formats for these options
-is described in
-  <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
-   </a>
-  </b>
-  (1).
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  USAGE
- </h2>
- <b>
-  pmParseTimeWindow
- </b>
- expects to be called with the argument of the
- <b>
-  -S
- </b>
- option as
- <b>
-  swStart
- </b>
- ,
-
-the argument of the
- <b>
-  -T
- </b>
- option as
- <b>
-  swEnd
- </b>
- ,
-
-the argument of the
- <b>
-  -A
- </b>
- option as
- <b>
-  swAlign
- </b>
- ,
-
-and the argument of the
- <b>
-  -O
- </b>
- option as
- <b>
-  swOffset
- </b>
- .
-
-Any or all of these parameters may be NULL
-to indicate that the corresponding command line option was not
-present.
- <p>
-  If the application is using a set of PCP archive logs as the source
-of performance metrics, you also
-need to supply the time of the first archive log entry as
-  <b>
-   logStart
-  </b>
-  ,
-
-and the time of the last archive log entry as
-  <b>
-   logEnd
-  </b>
-  .
-
-See
-  <b>
-   <a href="/man/man3/pmgetarchivelabel.3.html">
-    pmGetArchiveLabel
-   </a>
-  </b>
-  (3)
-
-and
-  <b>
-   <a href="/man/man3/pmgetarchiveend.3.html">
-    pmGetArchiveEnd
-   </a>
-  </b>
-  (3)
-
-for how to obtain values for these times.
- </p>
- <p>
-  If the application is manipulating multiple concurrent archive
-logs, then the caller must resolve how the default time window
-is to be defined (the union of the time intervals in all archive
-logs is a likely interpretation).
- </p>
- <p>
-  If the application is using a live feed of performance data,
-  <b>
-   logStart
-  </b>
-  should be the current time (but could be aligned on the next second
-for example), while
-  <b>
-   logEnd
-  </b>
-  should have its
-  <i>
-   tv_sec
-  </i>
-  component set to
-  <b>
-   INT_MAX
-  </b>
-  .
- </p>
- <p>
-  The
-  <b>
-   rsltStart
-  </b>
-  ,
-  <b>
-   rsltEnd
-  </b>
-  and
-  <b>
-   rsltOffset
-  </b>
-  structures must be allocated before calling
-  <b>
-   pmParseTimeWindow
-  </b>
-  .
- </p>
- <p>
-  You also need to set the current PCP reporting time zone to correctly
-reflect the
-  <b>
-   -z
-  </b>
-  and
-  <b>
-   -Z
-  </b>
-  command line parameters before calling
-  <b>
-   pmParseTimeWindow
-  </b>
-  .
-
-See
-  <b>
-   <a href="/man/man3/pmusezone.3.html">
-    pmUseZone
-   </a>
-  </b>
-  (3)
-
-and friends for information on how this is done.
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmgetarchiveend.3.html">
-   pmGetArchiveEnd
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmgetarchivelabel.3.html">
-   pmGetArchiveLabel
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmnewcontextzone.3.html">
-   pmNewContextZone
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmnewzone.3.html">
-   pmNewZone
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmparseinterval.3.html">
-   pmParseInterval
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmusezone.3.html">
-   pmUseZone
-  </a>
- </b>
- (3).
- <a name="lbAG">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- If the conversion is successful,
- <b>
-  pmParseTimeWindow
- </b>
- returns 1 and fills in
- <b>
-  rsltStart
- </b>
- ,
- <b>
-  rsltEnd
- </b>
- and
- <b>
-  rsltOffset
- </b>
- with the start, end, and offset times for the time window defined by the input
-parameters.  
-The
- <b>
-  errMsg
- </b>
- parameter is not changed when
- <b>
-  pmParseTimeWindow
- </b>
- returns 1.
- <p>
-  If the conversion is successful, but the requested alignment could not be
-performed (e.g. the set of PCP archive logs is too short) the alignment is
-ignored,
-  <b>
-   rsltStart
-  </b>
-  ,
-  <b>
-   rsltEnd
-  </b>
-  and
-  <b>
-   rsltOffset
-  </b>
-  are filled in and
-  <b>
-   pmParseTimeWindow
-  </b>
-  returns 0.
-In this case,
-  <b>
-   errMsg
-  </b>
-  will point to a warning message in an internal static buffer.
-This buffer should not be freed.
- </p>
- <p>
-  If the argument strings could not be parsed,
-  <b>
-   pmParseTimeWindow
-  </b>
-  returns -1.
-In this case,
-  <b>
-   errMsg
-  </b>
-  will point to an error message
-in a static internal buffer.
- </p>
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    USAGE
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMPARSETIMEWINDOW
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmParseTimeWindow
+               </b>
+               - parse time window command line arguments
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                <br/>
+                int pmParseTimeWindow(const char *
+                <i>
+                 swStart
+                </i>
+                , const char *
+                <i>
+                 swEnd
+                </i>
+                , const char *
+                <i>
+                 swAlign
+                </i>
+                , const char *
+                <i>
+                 swOffset
+                </i>
+                , const struct timeval *
+                <i>
+                 logStart
+                </i>
+                , const struct timeval *
+                <i>
+                 logEnd
+                </i>
+                , struct timeval *
+                <i>
+                 rsltStart
+                </i>
+                , struct timeval *
+                <i>
+                 rsltEnd
+                </i>
+                , struct timeval *
+                <i>
+                 rsltOffset
+                </i>
+                , char **
+                <i>
+                 errMsg
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmParseTimeWindow
+               </b>
+               is designed to encapsulate the interpretation of the
+               <b>
+                -S
+               </b>
+               ,
+               <b>
+                -T
+               </b>
+               ,
+               <b>
+                -A
+               </b>
+               and
+               <b>
+                -O
+               </b>
+               command line options used by Performance Co-Pilot (PCP) applications
+              to define a time window of interest.
+              The time window is defined by a start time and an end time that constrains
+              the time interval during which the PCP application will retrieve and
+              display performance metrics.  In the absence of the
+               <b>
+                -O
+               </b>
+               and
+               <b>
+                -A
+               </b>
+               options to specify an initial sample time origin
+              and time alignment (see below), the PCP application
+              will retrieve the first sample at the start of the time window.
+               <p>
+                The syntax and meaning of the various argument formats for these options
+              is described in
+                <b>
+                 <a href="/man/man1/pcpintro.1.html">
+                  PCPIntro
+                 </a>
+                </b>
+                (1).
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                USAGE
+               </h2>
+               <b>
+                pmParseTimeWindow
+               </b>
+               expects to be called with the argument of the
+               <b>
+                -S
+               </b>
+               option as
+               <b>
+                swStart
+               </b>
+               ,
+              
+              the argument of the
+               <b>
+                -T
+               </b>
+               option as
+               <b>
+                swEnd
+               </b>
+               ,
+              
+              the argument of the
+               <b>
+                -A
+               </b>
+               option as
+               <b>
+                swAlign
+               </b>
+               ,
+              
+              and the argument of the
+               <b>
+                -O
+               </b>
+               option as
+               <b>
+                swOffset
+               </b>
+               .
+              
+              Any or all of these parameters may be NULL
+              to indicate that the corresponding command line option was not
+              present.
+               <p>
+                If the application is using a set of PCP archive logs as the source
+              of performance metrics, you also
+              need to supply the time of the first archive log entry as
+                <b>
+                 logStart
+                </b>
+                ,
+              
+              and the time of the last archive log entry as
+                <b>
+                 logEnd
+                </b>
+                .
+              
+              See
+                <b>
+                 <a href="/man/man3/pmgetarchivelabel.3.html">
+                  pmGetArchiveLabel
+                 </a>
+                </b>
+                (3)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmgetarchiveend.3.html">
+                  pmGetArchiveEnd
+                 </a>
+                </b>
+                (3)
+              
+              for how to obtain values for these times.
+               </p>
+               <p>
+                If the application is manipulating multiple concurrent archive
+              logs, then the caller must resolve how the default time window
+              is to be defined (the union of the time intervals in all archive
+              logs is a likely interpretation).
+               </p>
+               <p>
+                If the application is using a live feed of performance data,
+                <b>
+                 logStart
+                </b>
+                should be the current time (but could be aligned on the next second
+              for example), while
+                <b>
+                 logEnd
+                </b>
+                should have its
+                <i>
+                 tv_sec
+                </i>
+                component set to
+                <b>
+                 INT_MAX
+                </b>
+                .
+               </p>
+               <p>
+                The
+                <b>
+                 rsltStart
+                </b>
+                ,
+                <b>
+                 rsltEnd
+                </b>
+                and
+                <b>
+                 rsltOffset
+                </b>
+                structures must be allocated before calling
+                <b>
+                 pmParseTimeWindow
+                </b>
+                .
+               </p>
+               <p>
+                You also need to set the current PCP reporting time zone to correctly
+              reflect the
+                <b>
+                 -z
+                </b>
+                and
+                <b>
+                 -Z
+                </b>
+                command line parameters before calling
+                <b>
+                 pmParseTimeWindow
+                </b>
+                .
+              
+              See
+                <b>
+                 <a href="/man/man3/pmusezone.3.html">
+                  pmUseZone
+                 </a>
+                </b>
+                (3)
+              
+              and friends for information on how this is done.
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmgetarchiveend.3.html">
+                 pmGetArchiveEnd
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmgetarchivelabel.3.html">
+                 pmGetArchiveLabel
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmnewcontextzone.3.html">
+                 pmNewContextZone
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmnewzone.3.html">
+                 pmNewZone
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmparseinterval.3.html">
+                 pmParseInterval
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmusezone.3.html">
+                 pmUseZone
+                </a>
+               </b>
+               (3).
+               <a name="lbAG">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               If the conversion is successful,
+               <b>
+                pmParseTimeWindow
+               </b>
+               returns 1 and fills in
+               <b>
+                rsltStart
+               </b>
+               ,
+               <b>
+                rsltEnd
+               </b>
+               and
+               <b>
+                rsltOffset
+               </b>
+               with the start, end, and offset times for the time window defined by the input
+              parameters.  
+              The
+               <b>
+                errMsg
+               </b>
+               parameter is not changed when
+               <b>
+                pmParseTimeWindow
+               </b>
+               returns 1.
+               <p>
+                If the conversion is successful, but the requested alignment could not be
+              performed (e.g. the set of PCP archive logs is too short) the alignment is
+              ignored,
+                <b>
+                 rsltStart
+                </b>
+                ,
+                <b>
+                 rsltEnd
+                </b>
+                and
+                <b>
+                 rsltOffset
+                </b>
+                are filled in and
+                <b>
+                 pmParseTimeWindow
+                </b>
+                returns 0.
+              In this case,
+                <b>
+                 errMsg
+                </b>
+                will point to a warning message in an internal static buffer.
+              This buffer should not be freed.
+               </p>
+               <p>
+                If the argument strings could not be parsed,
+                <b>
+                 pmParseTimeWindow
+                </b>
+                returns -1.
+              In this case,
+                <b>
+                 errMsg
+                </b>
+                will point to an error message
+              in a static internal buffer.
+               </p>
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  USAGE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

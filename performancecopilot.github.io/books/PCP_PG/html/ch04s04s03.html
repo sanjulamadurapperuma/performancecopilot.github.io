@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">4.4.3. Updating Mapped Values</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5213288nat.html" title="4.4. Memory Mapped Values API" /><link rel="prev" href="ch04s04s02.html" title="4.4.2. Getting a Handle on Mapped Values" /><link rel="next" href="id5214734.html" title="4.4.4. Elapsed Time Measures" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="ch04s04s02.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5214734.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="idm46183271541744">
+      ⁠</a>4.4.3. Updating Mapped Values</h3></div></div></div><div class="para">
+					<a id="Z1033577634nat" class="indexterm"></a>At this stage we have individual handles (pointers) to each instrumentation point, we can now start modifying these values and observing changes through the PCP infrastructure. Notice that each handle is simply the canonical <code class="command">pmAtomValue</code> pointer, as defined in <a class="xref" href="id5209112.html#Z976562908sdc">Example 3.18, “ <code class="filename">pmAtomValue</code> Structure”</a>, which is a union providing sufficient space to hold any single value.
+				</div><div class="para">
+					This pointer can be either manipulated directly, or using helper functions provided by the <code class="command">pcp_mmv</code> API, such as the <code class="command">mmv_stats_inc</code> and <code class="command">mmv_stats_set</code> functions.
+				</div><div class="para">
+					<div class="example"><a id="Z1033577636">
+      ⁠</a><p class="title"><strong>Example 4.4. Memory Mapped Value Updates</strong></p><div class="example-contents"><pre class="programlisting">    while (1) {
+        /* choose a random number between 0-N -&gt; product */
+        product = rand() % ACME_PRODUCTS_COUNT;
+
+        /* assign a time spent "working" on this product */
+        working = rand() % 50000;
+
+        /* pretend to "work" so process doesn't burn CPU */
+        usleep(working);
+
+        /* update the memory mapped values for this one: */
+        /* one more product produced and work time spent */
+        mmv_inc_value(base, machine[product], working); /* API */
+        count[product]-&gt;ull += 1;     /* or direct mmap update */
+
+        /* all other products are "queued" for this time */
+        for (i = 0; i &lt; ACME_PRODUCTS_COUNT; i++)
+            if (i != product)
+                mmv_inc_value(base, inqueue[i], working);
+    }</pre></div></div>
+
+				</div><div class="para">
+					At this stage, it will be informative to compile and run the complete example program, which can be found in <code class="filename">${PCP_DEMOS_DIR}/mmv/acme.c</code>. There is an associated <code class="filename">Makefile</code> to build it, in the same directory. Running the <code class="filename">acme</code> binary creates the instrumentation shown in <a class="xref" href="ch04s04s03.html#Z1033577637">Example 4.5, “Memory Mapped Value Reports”</a>, with live values letting us explore simple queueing effects in products being created on the ACME factory floor.
+				</div><div class="para">
+					<div class="example"><a id="Z1033577637">
+      ⁠</a><p class="title"><strong>Example 4.5. Memory Mapped Value Reports</strong></p><div class="example-contents"><pre class="programlisting">
+              <strong class="userinput"><code>pminfo -m mmv.acme</code></strong>
+mmv.acme.products.queuetime PMID: 70.321.10
+mmv.acme.products.time PMID: 70.321.8
+mmv.acme.products.count PMID: 70.321.7
+
+<strong class="userinput"><code>pmval -f2 -s3 mmv.acme.products.time</code></strong>
+metric:    mmv.acme.products.time
+host:      localhost
+semantics: cumulative counter (converting to rate)
+units:     microsec (converting to time utilization)
+samples:   3
+interval:  1.00 sec
+
+               Anvils               Rockets    Giant_Rubber_Bands 
+                 0.37                  0.12                  0.50 
+                 0.35                  0.25                  0.38 
+                 0.57                  0.20                  0.23</pre></div></div>
+
+				</div><div class="para">
+					Experimentation with the algorithm from <a class="xref" href="ch04s04s03.html#Z1033577636">Example 4.4, “Memory Mapped Value Updates”</a> is encouraged. In particular, observe the effects of rate conversion (counter metric type) of a metric with units of "time" (PM_TIME_*). The reported values are calculated over a sampling interval, which also has units of "time", forming a utilization. This is extremely valuable performance analysis currency - comparable metrics would include processor utilization, disk spindle utilization, and so forth.
+				</div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="ch04s04s02.html"><strong>Prev</strong>4.4.2. Getting a Handle on Mapped Values</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5214734.html"><strong>Next</strong>4.4.4. Elapsed Time Measures</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

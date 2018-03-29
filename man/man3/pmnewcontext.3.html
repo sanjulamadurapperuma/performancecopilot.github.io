@@ -1,1171 +1,1167 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMNEWCONTEXT
- </h1>
- Section: C Library Functions (3)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmNewContext
- </b>
- - establish a new PMAPI context
- <a name="lbAC">
- </a>
- <h2>
-  C SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-   pcp/pmapi.h
-  </a>
-  &gt;
- </b>
- <p>
-  int pmNewContext(int
-  <i>
-   type
-  </i>
-  , const char *
-  <i>
-   name
-  </i>
-  );
- </p>
- <p>
-  cc ... -lpcp
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- An application using the
-Performance Metrics Application Programming Interface (PMAPI)
-may manipulate several concurrent contexts,
-each associated with a source of performance metrics, e.g.
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1)
-
-on some host, or a set of archive logs of performance metrics as created by
- <b>
-  <a href="/man/man1/pmlogger.1.html">
-   pmlogger
-  </a>
- </b>
- (1),
-
-or a standalone connection on the local host that does not involve
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1).
- <p>
-  <b>
-   pmNewContext
-  </b>
-  may be used to establish a new context.
-The source of the metrics is identified by
-  <i>
-   name
-  </i>
-  ,
-
-and may be either a host name (
-  <i>
-   type
-  </i>
-  is
-  <b>
-   PM_CONTEXT_HOST
-  </b>
-  ),
-
-or a comma-separated list of names referring to a set of archive logs (
-  <i>
-   type
-  </i>
-  is
-  <b>
-   PM_CONTEXT_ARCHIVE
-  </b>
-  ).
-
-Each element of the list may either be the base name common to all of the
-physical files of an archive log or the name of a directory containing
-archive logs.
- </p>
- <p>
-  For a
-  <i>
-   type
-  </i>
-  of
-  <b>
-   PM_CONTEXT_HOST
-  </b>
-  ,
-
-in addition to identifying a host
-the
-  <i>
-   name
-  </i>
-  may also be used to encode additional optional information in the form of
-a
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-port number, a
-  <b>
-   <a href="/man/man1/pmproxy.1.html">
-    pmproxy
-   </a>
-  </b>
-  (1)
-
-hostname and a proxy port number. For example the
-  <i>
-   name
-  </i>
-  "app23:14321,
-  <a href="mailto:4321@firewall.example.com">
-   4321@firewall.example.com
-  </a>
-  :11111"
-specifies
-a connection on port
-  <i>
-   14321
-  </i>
-  (or port
-  <i>
-   4321
-  </i>
-  if
-  <i>
-   14321
-  </i>
-  is unavailable)
-to
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-on the host
-  <i>
-   app23
-  </i>
-  via port
-  <i>
-   11111
-  </i>
-  to
-  <b>
-   <a href="/man/man1/pmproxy.1.html">
-    pmproxy
-   </a>
-  </b>
-  (1)
-
-on the host
-  <i>
-   firewall.example.com
-  </i>
-  .
- </p>
- <p>
-  For a
-  <i>
-   type
-  </i>
-  of
-  <b>
-   PM_CONTEXT_ARCHIVE
-  </b>
-  ,
-
-each element of the list of names in
-  <i>
-   name
-  </i>
-  may also be the name of any of the physical files of an
-archive, e.g.
-  <i>
-   myarchive
-  </i>
-  <b>
-   .meta
-  </b>
-  (the metadata file) or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .index
-  </b>
-  (the temporal index) or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .0
-  </b>
-  (the first data volume of the archive)
-or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .0.bz2
-  </b>
-  or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .0.bz
-  </b>
-  (the first data volume compressed with
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/bzip2.1.html">
-    bzip2
-   </a>
-  </b>
-  (1))
-
-or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .0.gz
-  </b>
-  or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .0.Z
-  </b>
-  or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .0.z
-  </b>
-  (the first data volume compressed with
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/gzip.1.html">
-    gzip
-   </a>
-  </b>
-  (1)),
-  <i>
-   myarchive
-  </i>
-  <b>
-   .1
-  </b>
-  or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .3.bz2
-  </b>
-  or
-  <i>
-   myarchive
-  </i>
-  <b>
-   .42.gz
-  </b>
-  etc.
- </p>
- <p>
-  If more than one archive is specified for a
-  <i>
-   type
-  </i>
-  of
-  <b>
-   PM_CONTEXT_ARCHIVE
-  </b>
-  ,
-
-there are some restrictions on the archives within the set:
- </p>
- <dl compact="">
-  <dt>
-   •
-  </dt>
-  <dd>
-   The archives must all have been generated on the same host.
-  </dd>
-  <dt>
-   •
-  </dt>
-  <dd>
-   The archives must not overlap in time.
-  </dd>
-  <dt>
-   •
-  </dt>
-  <dd>
-   The archives must all have been created using the same time zone.
-  </dd>
-  <dt>
-   •
-  </dt>
-  <dd>
-   The
-   <i>
-    PMID
-   </i>
-   of each metric should be the same in all of the archives.
-Multiple
-   <i>
-    PMID
-   </i>
-   s are currently tolerated by using the first
-   <i>
-    PMID
-   </i>
-   defined for each metric and ignoring subsequent
-   <i>
-    PMID
-   </i>
-   s.
-  </dd>
-  <dt>
-   •
-  </dt>
-  <dd>
-   The type of each metric must be the same in all of the archives.
-  </dd>
-  <dt>
-   •
-  </dt>
-  <dd>
-   The semantics of each metric must be the same in all of the archives.
-  </dd>
-  <dt>
-   •
-  </dt>
-  <dd>
-   The units of each metric must be the same in all of the archives.
-  </dd>
-  <dt>
-   •
-  </dt>
-  <dd>
-   The instance domain of each metric must be the same in all of the archives.
-  </dd>
- </dl>
- <p>
-  In the case where
-  <i>
-   type
-  </i>
-  is
-  <b>
-   PM_CONTEXT_LOCAL
-  </b>
-  ,
-  <i>
-   name
-  </i>
-  is ignored, and the context uses a standalone connection to the
-PMDA methods used by
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1).
-
-When this type of context is used, the range of accessible performance
-metrics is constrained to those from the operating system, and optionally
-the ``proc'', ``sample'' and ``ib'' PMDAs.
- </p>
- <p>
-  In the case where
-  <i>
-   type
-  </i>
-  is
-  <b>
-   PM_CONTEXT_HOST
-  </b>
-  , additional flags can
-be added to the
-  <i>
-   type
-  </i>
-  to indicate if the connection to
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-should be encrypted (
-  <b>
-   PM_CTXFLAG_SECURE
-  </b>
-  ), deferred (
-  <b>
-   PM_CTXFLAG_SHALLOW
-  </b>
-  )
-and if the file descriptor used to communicate with
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1), should not be
-shared across contexts (
-  <b>
-   PM_CTXFLAG_EXCLUSIVE
-  </b>
-  ).
-Both the
-  <b>
-   PM_CTXFLAG_SHALLOW
-  </b>
-  and
-  <b>
-   PM_CTXFLAG_EXCLUSIVE
-  </b>
-  flags are
-now deprecated and ignored.
- </p>
- <p>
-  The initial instance
-profile is set up to select all instances in all instance domains. 
-In the case of a set of archives,
-the initial collection time is also set to zero,
-so that an initial
-  <b>
-   <a href="/man/man3/pmfetch.3.html">
-    pmFetch
-   </a>
-  </b>
-  (3)
-
-will result in the earliest set of metrics 
-being returned from the set of archives.
- </p>
- <p>
-  Once established, the association between a context and a source of metrics
-is fixed for the life of the context, however routines are provided to
-independently manipulate both the instance profile (see
-  <b>
-   <a href="/man/man3/pmaddprofile.3.html">
-    pmAddProfile
-   </a>
-  </b>
-  (3)
-
-and
-  <b>
-   <a href="/man/man3/pmdelprofile.3.html">
-    pmDelProfile
-   </a>
-  </b>
-  (3))
-
-and the collection time for archives (see
-  <b>
-   <a href="/man/man3/pmsetmode.3.html">
-    pmSetMode
-   </a>
-  </b>
-  (3)).
- </p>
- <p>
-  <b>
-   pmNewContext
-  </b>
-  returns a handle that may be used with subsequent calls to
-  <b>
-   <a href="/man/man3/pmusecontext.3.html">
-    pmUseContext
-   </a>
-  </b>
-  (3).
- </p>
- <p>
-  The new context remains the current PMAPI context for all
-subsequent calls across the PMAPI,
-until another call to
-  <b>
-   <a href="/man/man3/pmnewcontext.3.html">
-    pmNewContext
-   </a>
-  </b>
-  (3)
-
-is made, or the context is explicitly changed with a call to
-  <b>
-   <a href="/man/man3/pmdupcontext.3.html">
-    pmDupContext
-   </a>
-  </b>
-  (3)
-
-or
-  <b>
-   <a href="/man/man3/pmusecontext.3.html">
-    pmUseContext
-   </a>
-  </b>
-  (3),
-
-or destroyed using
-  <b>
-   <a href="/man/man3/pmdestroycontext.3.html">
-    pmDestroyContext
-   </a>
-  </b>
-  (3).
- </p>
- <p>
-  When attempting to connect to a remote
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-on a machine that is booting,
-  <b>
-   pmNewContext
-  </b>
-  could potentially block for a long time until the remote machine
-finishes its initialization.
-  <b>
-   pmNewContext
-  </b>
-  will abort and return an error if the connection has not been established after
-some specified interval has elapsed.  The default interval is 5
-seconds.  This may be modified by setting
-  <b>
-   PMCD_CONNECT_TIMEOUT
-  </b>
-  in the environment to a real number of seconds for the
-desired timeout.
-This is most useful in cases where the remote host is at
-the end of a slow network, requiring longer latencies to
-establish the connection correctly.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  ENVIRONMENT
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    PMCD_CONNECT_TIMEOUT
-   </b>
-  </dt>
-  <dd>
-   Timeout period (in seconds) for
-   <b>
-    <a href="/man/man1/pmcd.1.html">
-     pmcd
-    </a>
-   </b>
-   (1)
-
-connection attempts.
-  </dd>
-  <dt>
-   <b>
-    PMCD_PORT
-   </b>
-  </dt>
-  <dd>
-   TCP/IP port(s) for connecting to
-   <b>
-    <a href="/man/man1/pmcd.1.html">
-     pmcd
-    </a>
-   </b>
-   (1),
-
-historically was 4321 and more recently the officially registered port
-44321; in the current release,
-   <b>
-    pmcd
-   </b>
-   listens on both these ports as a transitional arrangement.  If used,
-should be set to a comma-separated list of numerical port numbers.
-  </dd>
-  <dt>
-   <b>
-    PMDA_PATH
-   </b>
-  </dt>
-  <dd>
-   When searching for PMDAs to be loaded when
-   <i>
-    type
-   </i>
-   is
-   <b>
-    PM_CONTEXT_LOCAL
-   </b>
-   ,
-
-the
-   <b>
-    PMDA_PATH
-   </b>
-   environment variable may be used to define a search path of
-directories to be used to locate the PMDA executables.
-The default search path is
-   <b>
-    $PCP_SHARE_DIR/lib:/usr/pcp/lib
-   </b>
-   .
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  CAVEATS
- </h2>
- When using a
- <i>
-  type
- </i>
- of
- <b>
-  PM_CONTEXT_LOCAL
- </b>
- ,
-
-the operating system PMDA may export data structures directly
-from the kernel, which means that the
- <b>
-  pmNewContext
- </b>
- caller should be an
-executable program compiled for the same object code format
-as the booted kernel.
- <p>
-  In addition, applications using a
-  <b>
-   PM_CONTEXT_LOCAL
-  </b>
-  context
-must be single-threaded because the various DSO PMDAs may not be
-thread-safe.  This restriction is enforced at the
-  <b>
-   <a href="/man/man3/pmapi.3.html">
-    PMAPI
-   </a>
-  </b>
-  (3),
-
-where routines may return the error code
-  <b>
-   PM_ERR_THREAD
-  </b>
-  if the library detects calls from more than one thread.
- </p>
- <p>
-  Applications that use
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
-
-should exercise caution because the static fields in
-  <i>
-   struct hostent
-  </i>
-  may not be preserved across some
-  <b>
-   <a href="/man/man3/pmapi.3.html">
-    PMAPI
-   </a>
-  </b>
-  (3)
-
-calls.
-In particular,
-  <b>
-   <a href="/man/man3/pmnewcontext.3.html">
-    pmNewContext
-   </a>
-  </b>
-  (3)
-
-and
-  <b>
-   <a href="/man/man3/pmreconnectcontext.3.html">
-    pmReconnectContext
-   </a>
-  </b>
-  (3)
-
-both may call
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
-
-internally.
-  <a name="lbAG">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmproxy.1.html">
-   pmproxy
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man3/pmaddprofile.3.html">
-   pmAddProfile
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmdelprofile.3.html">
-   pmDelProfile
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmdestroycontext.3.html">
-   pmDestroyContext
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmdupcontext.3.html">
-   pmDupContext
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmgetconfig.3.html">
-   pmGetConfig
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmreconnectcontext.3.html">
-   pmReconnectContext
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmsetmode.3.html">
-   pmSetMode
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmusecontext.3.html">
-   pmUseContext
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmwhichcontext.3.html">
-   pmWhichContext
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5)
-
-and
- <b>
-  <a href="/man/man5/pcp.env.5.html">
-   pcp.env
-  </a>
- </b>
- (5).
- <a name="lbAH">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- <p>
-  <b>
-   PM_ERR_PERMISSION
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   No permission to perform requested operation
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_CONNLIMIT
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   PMCD connection limit for this host exceeded
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_NOCONTEXT
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Requested context type was not
-   <b>
-    PM_CONTEXT_LOCAL
-   </b>
-   ,
-   <b>
-    PM_CONTEXT_HOST
-   </b>
-   or
-   <b>
-    PM_CONTEXT_ARCHIVE
-   </b>
-   .
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_LOGOVERLAP
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Archives overlap in time
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_LOGHOST
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Archives differ by host
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_LOGTIMEZONE
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   Archives differ by time zone.
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_LOGCHANGETYPE
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   The type of a metric differs among archives
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_LOGCHANGESEM
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   The semantics of a metric differs among archives
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_LOGCHANGEINDOM
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   The instance domain of a metric differs among archives
-  </dd>
- </dl>
- <p>
-  <b>
-   PM_ERR_LOGCHANGEUNITS
-  </b>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   The units of a metric differs among archives
-   <p>
-   </p>
-  </dd>
- </dl>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    CAVEATS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMNEWCONTEXT
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmNewContext
+               </b>
+               - establish a new PMAPI context
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+               </b>
+               <p>
+                int pmNewContext(int
+                <i>
+                 type
+                </i>
+                , const char *
+                <i>
+                 name
+                </i>
+                );
+               </p>
+               <p>
+                cc ... -lpcp
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               An application using the
+              Performance Metrics Application Programming Interface (PMAPI)
+              may manipulate several concurrent contexts,
+              each associated with a source of performance metrics, e.g.
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1)
+              
+              on some host, or a set of archive logs of performance metrics as created by
+               <b>
+                <a href="/man/man1/pmlogger.1.html">
+                 pmlogger
+                </a>
+               </b>
+               (1),
+              
+              or a standalone connection on the local host that does not involve
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1).
+               <p>
+                <b>
+                 pmNewContext
+                </b>
+                may be used to establish a new context.
+              The source of the metrics is identified by
+                <i>
+                 name
+                </i>
+                ,
+              
+              and may be either a host name (
+                <i>
+                 type
+                </i>
+                is
+                <b>
+                 PM_CONTEXT_HOST
+                </b>
+                ),
+              
+              or a comma-separated list of names referring to a set of archive logs (
+                <i>
+                 type
+                </i>
+                is
+                <b>
+                 PM_CONTEXT_ARCHIVE
+                </b>
+                ).
+              
+              Each element of the list may either be the base name common to all of the
+              physical files of an archive log or the name of a directory containing
+              archive logs.
+               </p>
+               <p>
+                For a
+                <i>
+                 type
+                </i>
+                of
+                <b>
+                 PM_CONTEXT_HOST
+                </b>
+                ,
+              
+              in addition to identifying a host
+              the
+                <i>
+                 name
+                </i>
+                may also be used to encode additional optional information in the form of
+              a
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              port number, a
+                <b>
+                 <a href="/man/man1/pmproxy.1.html">
+                  pmproxy
+                 </a>
+                </b>
+                (1)
+              
+              hostname and a proxy port number. For example the
+                <i>
+                 name
+                </i>
+                "app23:14321,
+                <a href="mailto:4321@firewall.example.com">
+                 4321@firewall.example.com
+                </a>
+                :11111"
+              specifies
+              a connection on port
+                <i>
+                 14321
+                </i>
+                (or port
+                <i>
+                 4321
+                </i>
+                if
+                <i>
+                 14321
+                </i>
+                is unavailable)
+              to
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              on the host
+                <i>
+                 app23
+                </i>
+                via port
+                <i>
+                 11111
+                </i>
+                to
+                <b>
+                 <a href="/man/man1/pmproxy.1.html">
+                  pmproxy
+                 </a>
+                </b>
+                (1)
+              
+              on the host
+                <i>
+                 firewall.example.com
+                </i>
+                .
+               </p>
+               <p>
+                For a
+                <i>
+                 type
+                </i>
+                of
+                <b>
+                 PM_CONTEXT_ARCHIVE
+                </b>
+                ,
+              
+              each element of the list of names in
+                <i>
+                 name
+                </i>
+                may also be the name of any of the physical files of an
+              archive, e.g.
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .meta
+                </b>
+                (the metadata file) or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .index
+                </b>
+                (the temporal index) or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .0
+                </b>
+                (the first data volume of the archive)
+              or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .0.bz2
+                </b>
+                or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .0.bz
+                </b>
+                (the first data volume compressed with
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/bzip2.1.html">
+                  bzip2
+                 </a>
+                </b>
+                (1))
+              
+              or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .0.gz
+                </b>
+                or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .0.Z
+                </b>
+                or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .0.z
+                </b>
+                (the first data volume compressed with
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/gzip.1.html">
+                  gzip
+                 </a>
+                </b>
+                (1)),
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .1
+                </b>
+                or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .3.bz2
+                </b>
+                or
+                <i>
+                 myarchive
+                </i>
+                <b>
+                 .42.gz
+                </b>
+                etc.
+               </p>
+               <p>
+                If more than one archive is specified for a
+                <i>
+                 type
+                </i>
+                of
+                <b>
+                 PM_CONTEXT_ARCHIVE
+                </b>
+                ,
+              
+              there are some restrictions on the archives within the set:
+               </p>
+               <dl compact="">
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The archives must all have been generated on the same host.
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The archives must not overlap in time.
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The archives must all have been created using the same time zone.
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The
+                 <i>
+                  PMID
+                 </i>
+                 of each metric should be the same in all of the archives.
+              Multiple
+                 <i>
+                  PMID
+                 </i>
+                 s are currently tolerated by using the first
+                 <i>
+                  PMID
+                 </i>
+                 defined for each metric and ignoring subsequent
+                 <i>
+                  PMID
+                 </i>
+                 s.
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The type of each metric must be the same in all of the archives.
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The semantics of each metric must be the same in all of the archives.
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The units of each metric must be the same in all of the archives.
+                </dd>
+                <dt>
+                 •
+                </dt>
+                <dd>
+                 The instance domain of each metric must be the same in all of the archives.
+                </dd>
+               </dl>
+               <p>
+                In the case where
+                <i>
+                 type
+                </i>
+                is
+                <b>
+                 PM_CONTEXT_LOCAL
+                </b>
+                ,
+                <i>
+                 name
+                </i>
+                is ignored, and the context uses a standalone connection to the
+              PMDA methods used by
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1).
+              
+              When this type of context is used, the range of accessible performance
+              metrics is constrained to those from the operating system, and optionally
+              the ``proc'', ``sample'' and ``ib'' PMDAs.
+               </p>
+               <p>
+                In the case where
+                <i>
+                 type
+                </i>
+                is
+                <b>
+                 PM_CONTEXT_HOST
+                </b>
+                , additional flags can
+              be added to the
+                <i>
+                 type
+                </i>
+                to indicate if the connection to
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              should be encrypted (
+                <b>
+                 PM_CTXFLAG_SECURE
+                </b>
+                ), deferred (
+                <b>
+                 PM_CTXFLAG_SHALLOW
+                </b>
+                )
+              and if the file descriptor used to communicate with
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1), should not be
+              shared across contexts (
+                <b>
+                 PM_CTXFLAG_EXCLUSIVE
+                </b>
+                ).
+              Both the
+                <b>
+                 PM_CTXFLAG_SHALLOW
+                </b>
+                and
+                <b>
+                 PM_CTXFLAG_EXCLUSIVE
+                </b>
+                flags are
+              now deprecated and ignored.
+               </p>
+               <p>
+                The initial instance
+              profile is set up to select all instances in all instance domains. 
+              In the case of a set of archives,
+              the initial collection time is also set to zero,
+              so that an initial
+                <b>
+                 <a href="/man/man3/pmfetch.3.html">
+                  pmFetch
+                 </a>
+                </b>
+                (3)
+              
+              will result in the earliest set of metrics 
+              being returned from the set of archives.
+               </p>
+               <p>
+                Once established, the association between a context and a source of metrics
+              is fixed for the life of the context, however routines are provided to
+              independently manipulate both the instance profile (see
+                <b>
+                 <a href="/man/man3/pmaddprofile.3.html">
+                  pmAddProfile
+                 </a>
+                </b>
+                (3)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmdelprofile.3.html">
+                  pmDelProfile
+                 </a>
+                </b>
+                (3))
+              
+              and the collection time for archives (see
+                <b>
+                 <a href="/man/man3/pmsetmode.3.html">
+                  pmSetMode
+                 </a>
+                </b>
+                (3)).
+               </p>
+               <p>
+                <b>
+                 pmNewContext
+                </b>
+                returns a handle that may be used with subsequent calls to
+                <b>
+                 <a href="/man/man3/pmusecontext.3.html">
+                  pmUseContext
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                The new context remains the current PMAPI context for all
+              subsequent calls across the PMAPI,
+              until another call to
+                <b>
+                 <a href="/man/man3/pmnewcontext.3.html">
+                  pmNewContext
+                 </a>
+                </b>
+                (3)
+              
+              is made, or the context is explicitly changed with a call to
+                <b>
+                 <a href="/man/man3/pmdupcontext.3.html">
+                  pmDupContext
+                 </a>
+                </b>
+                (3)
+              
+              or
+                <b>
+                 <a href="/man/man3/pmusecontext.3.html">
+                  pmUseContext
+                 </a>
+                </b>
+                (3),
+              
+              or destroyed using
+                <b>
+                 <a href="/man/man3/pmdestroycontext.3.html">
+                  pmDestroyContext
+                 </a>
+                </b>
+                (3).
+               </p>
+               <p>
+                When attempting to connect to a remote
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              on a machine that is booting,
+                <b>
+                 pmNewContext
+                </b>
+                could potentially block for a long time until the remote machine
+              finishes its initialization.
+                <b>
+                 pmNewContext
+                </b>
+                will abort and return an error if the connection has not been established after
+              some specified interval has elapsed.  The default interval is 5
+              seconds.  This may be modified by setting
+                <b>
+                 PMCD_CONNECT_TIMEOUT
+                </b>
+                in the environment to a real number of seconds for the
+              desired timeout.
+              This is most useful in cases where the remote host is at
+              the end of a slow network, requiring longer latencies to
+              establish the connection correctly.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                ENVIRONMENT
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  PMCD_CONNECT_TIMEOUT
+                 </b>
+                </dt>
+                <dd>
+                 Timeout period (in seconds) for
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              connection attempts.
+                </dd>
+                <dt>
+                 <b>
+                  PMCD_PORT
+                 </b>
+                </dt>
+                <dd>
+                 TCP/IP port(s) for connecting to
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1),
+              
+              historically was 4321 and more recently the officially registered port
+              44321; in the current release,
+                 <b>
+                  pmcd
+                 </b>
+                 listens on both these ports as a transitional arrangement.  If used,
+              should be set to a comma-separated list of numerical port numbers.
+                </dd>
+                <dt>
+                 <b>
+                  PMDA_PATH
+                 </b>
+                </dt>
+                <dd>
+                 When searching for PMDAs to be loaded when
+                 <i>
+                  type
+                 </i>
+                 is
+                 <b>
+                  PM_CONTEXT_LOCAL
+                 </b>
+                 ,
+              
+              the
+                 <b>
+                  PMDA_PATH
+                 </b>
+                 environment variable may be used to define a search path of
+              directories to be used to locate the PMDA executables.
+              The default search path is
+                 <b>
+                  $PCP_SHARE_DIR/lib:/usr/pcp/lib
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                CAVEATS
+               </h2>
+               When using a
+               <i>
+                type
+               </i>
+               of
+               <b>
+                PM_CONTEXT_LOCAL
+               </b>
+               ,
+              
+              the operating system PMDA may export data structures directly
+              from the kernel, which means that the
+               <b>
+                pmNewContext
+               </b>
+               caller should be an
+              executable program compiled for the same object code format
+              as the booted kernel.
+               <p>
+                In addition, applications using a
+                <b>
+                 PM_CONTEXT_LOCAL
+                </b>
+                context
+              must be single-threaded because the various DSO PMDAs may not be
+              thread-safe.  This restriction is enforced at the
+                <b>
+                 <a href="/man/man3/pmapi.3.html">
+                  PMAPI
+                 </a>
+                </b>
+                (3),
+              
+              where routines may return the error code
+                <b>
+                 PM_ERR_THREAD
+                </b>
+                if the library detects calls from more than one thread.
+               </p>
+               <p>
+                Applications that use
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+                  gethostbyname
+                 </a>
+                </b>
+                (3)
+              
+              should exercise caution because the static fields in
+                <i>
+                 struct hostent
+                </i>
+                may not be preserved across some
+                <b>
+                 <a href="/man/man3/pmapi.3.html">
+                  PMAPI
+                 </a>
+                </b>
+                (3)
+              
+              calls.
+              In particular,
+                <b>
+                 <a href="/man/man3/pmnewcontext.3.html">
+                  pmNewContext
+                 </a>
+                </b>
+                (3)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmreconnectcontext.3.html">
+                  pmReconnectContext
+                 </a>
+                </b>
+                (3)
+              
+              both may call
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+                  gethostbyname
+                 </a>
+                </b>
+                (3)
+              
+              internally.
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmproxy.1.html">
+                 pmproxy
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmaddprofile.3.html">
+                 pmAddProfile
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdelprofile.3.html">
+                 pmDelProfile
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdestroycontext.3.html">
+                 pmDestroyContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmdupcontext.3.html">
+                 pmDupContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmgetconfig.3.html">
+                 pmGetConfig
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmreconnectcontext.3.html">
+                 pmReconnectContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmsetmode.3.html">
+                 pmSetMode
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmusecontext.3.html">
+                 pmUseContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmwhichcontext.3.html">
+                 pmWhichContext
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5)
+              
+              and
+               <b>
+                <a href="/man/man5/pcp.env.5.html">
+                 pcp.env
+                </a>
+               </b>
+               (5).
+               <a name="lbAH">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               <p>
+                <b>
+                 PM_ERR_PERMISSION
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 No permission to perform requested operation
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_CONNLIMIT
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 PMCD connection limit for this host exceeded
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_NOCONTEXT
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Requested context type was not
+                 <b>
+                  PM_CONTEXT_LOCAL
+                 </b>
+                 ,
+                 <b>
+                  PM_CONTEXT_HOST
+                 </b>
+                 or
+                 <b>
+                  PM_CONTEXT_ARCHIVE
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_LOGOVERLAP
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Archives overlap in time
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_LOGHOST
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Archives differ by host
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_LOGTIMEZONE
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 Archives differ by time zone.
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_LOGCHANGETYPE
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 The type of a metric differs among archives
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_LOGCHANGESEM
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 The semantics of a metric differs among archives
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_LOGCHANGEINDOM
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 The instance domain of a metric differs among archives
+                </dd>
+               </dl>
+               <p>
+                <b>
+                 PM_ERR_LOGCHANGEUNITS
+                </b>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 The units of a metric differs among archives
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  CAVEATS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

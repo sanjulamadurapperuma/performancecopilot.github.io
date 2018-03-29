@@ -1,2 +1,2 @@
-PCPGIT=/source/git/pcp
-PCPWEB=/source/git/performancecopilot.github.io
+PCPGIT=/home/mgoodwin/src/pcp
+PCPWEB=/home/mgoodwin/src/performancecopilot.github.io

@@ -1,1015 +1,1011 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PCP-ATOPRC
- </h1>
- Section: File Formats (5)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  atoprc
- </b>
- - pcp-atop/pcp-atopsar related resource file
- <a name="lbAC">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- This manual page documents the resource file of the
- <i>
-  pcp-atop
- </i>
- and
- <i>
-  pcp-atopsar
- </i>
- commands.
-These commands can be used to monitor the system and process load on a
-system.
- <p>
-  The pcp-atoprc file contains the default settings. These settings are read
-during startup, first from the system-wide rcfile
-  <i>
-   /etc/atoprc
-  </i>
-  and after that from the user-specific rcfile
-  <i>
-   ~/.atoprc
-  </i>
-  (so system-wide settings can be overruled by an individual user).
-The options in both rcfiles are identical.
- </p>
- <p>
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  OPTIONS
- </h2>
- <p>
-  The rcfile contains keyword-value pairs, one on every line (blank lines
-and lines starting with a #-sign are ignored).
-  <br/>
-  The following keywords can be specified:
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    flags
-   </b>
-  </dt>
-  <dd>
-   A list of default flags for
-   <b>
-    pcp-atop
-   </b>
-   can be defined here. The flags which are allowed
-are 'g', 'm', 'd', 'n', 'u', 'p', 's', 'c', 'v', 'C', 'M', 'D', 'N', 'A',
-'a', 'y', 'f', 'F', 'G', 'R', '1' and 'x'.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    interval
-   </b>
-  </dt>
-  <dd>
-   The default interval value in seconds.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    linelen
-   </b>
-  </dt>
-  <dd>
-   The length of a screen line when sending output to a file or pipe (default 80).
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    username
-   </b>
-  </dt>
-  <dd>
-   The default regular expression for the users for which active
-processes will be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    procname
-   </b>
-  </dt>
-  <dd>
-   The default regular expression for the process names to be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    maxlinecpu
-   </b>
-  </dt>
-  <dd>
-   The maximum number of active CPU's that will be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    maxlinelvm
-   </b>
-  </dt>
-  <dd>
-   The maximum number of active logical volumes that will be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    maxlinemdd
-   </b>
-  </dt>
-  <dd>
-   The maximum number of active multiple devices that will be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    maxlinedisk
-   </b>
-  </dt>
-  <dd>
-   The maximum number of active disks that will be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    maxlinenfsm
-   </b>
-  </dt>
-  <dd>
-   The maximum number of NFS mounts that will be shown on an NFS client.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    maxlineintf
-   </b>
-  </dt>
-  <dd>
-   The maximum number of active network interfaces that will be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    maxlinecont
-   </b>
-  </dt>
-  <dd>
-   The maximum number of active containers that will be shown.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    cpucritperc
-   </b>
-  </dt>
-  <dd>
-   The busy percentage considered critical for a processor
-(see section COLORS in the man-page of the
-   <i>
-    pcp-atop
-   </i>
-   command).
-This percentage is used to determine 
-a weighted percentage for line coloring and sorting of active processes.
-When this value is zero, no line coloring or automatic sorting is performed
-for this resource.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    dskcritperc
-   </b>
-  </dt>
-  <dd>
-   The busy percentage considered critical for a disk
-(see section COLORS in the man-page of the
-   <i>
-    pcp-atop
-   </i>
-   command).
-This percentage is used to determine 
-a weighted percentage for line coloring and sorting of active processes.
-When this value is zero, no line coloring or automatic sorting is performed
-for this resource.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    netcritperc
-   </b>
-  </dt>
-  <dd>
-   The busy percentage considered critical for a network interface
-(see section COLORS in the man-page of the
-   <i>
-    pcp-atop
-   </i>
-   command).
-This percentage is used to determine 
-a weighted percentage for line coloring and sorting of active processes.
-When this value is zero, no line coloring or automatic sorting is performed
-for this resource.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    memcritperc
-   </b>
-  </dt>
-  <dd>
-   The percentage considered critical for memory utilization
-(see section COLORS in the man-page of the
-   <i>
-    pcp-atop
-   </i>
-   command).
-This percentage is used to determine 
-a weighted percentage for line coloring and sorting of active processes.
-When this value is zero, no line coloring or automatic sorting is performed
-for this resource.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    swpcritperc
-   </b>
-  </dt>
-  <dd>
-   The occupation percentage considered critical for swap space
-(see section COLORS in the man-page of the
-   <i>
-    pcp-atop
-   </i>
-   command).
-This percentage is used to determine 
-a weighted percentage for line coloring and sorting of active processes.
-When this value is zero, no line coloring or automatic sorting is performed
-for this resource.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    swoutcritsec
-   </b>
-  </dt>
-  <dd>
-   The number of pages swapped out per second considered critical for 
-for memory utilization
-(see section COLORS in the man-page of the
-   <i>
-    pcp-atop
-   </i>
-   command).
-This threshold is used in combination with 'memcritperc' to determine a
-weighted percentage for line coloring and sorting of active processes.
-When this value is zero, no line coloring or automatic sorting is performed
-for this resource.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    almostcrit
-   </b>
-  </dt>
-  <dd>
-   A percentage of the critical percentage to determine if the resource
-is almost critical
-(see section COLORS in the man-page of the
-   <i>
-    pcp-atop
-   </i>
-   command).
-When this value is zero, no line coloring for `almost critical' is
-performed.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    colorinfo
-   </b>
-  </dt>
-  <dd>
-   Definition of color name for information messages (default: green).
-   <br/>
-   Allowed colors are: red green yellow blue magenta cyan black white.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    colorthread
-   </b>
-  </dt>
-  <dd>
-   Definition of color name for thread-specific lines when using
-the 'y' option (default: yellow).
-   <br/>
-   Allowed colors are: red green yellow blue magenta cyan black white.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    coloralmost
-   </b>
-  </dt>
-  <dd>
-   Definition of color name for almost critical resources (default: cyan).
-   <br/>
-   Allowed colors are: red green yellow blue magenta cyan black white.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    colorcritical
-   </b>
-  </dt>
-  <dd>
-   Definition of color name for critical resources (default: red).
-   <br/>
-   Allowed colors are: red green yellow blue magenta cyan black white.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    pcp-atopsarflags
-   </b>
-  </dt>
-  <dd>
-   A list of default flags for
-   <b>
-    pcp-atopsar
-   </b>
-   can be defined here. The flags that are allowed
-are 'S', 'x', 'C', 'M', 'H', 'a', 'A' and the flags to select
-one or more specific reports.
-  </dd>
- </dl>
- <p>
-  An example of the
-  <b>
-   /etc/atoprc
-  </b>
-  or
-  <b>
-   ~/.atoprc
-  </b>
-  file:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <br/>
-   flags         Aaf
-   <br/>
-   interval      5
-   <br/>
-   username
-   <br/>
-   procname
-   <br/>
-   maxlinecpu    4
-   <br/>
-   maxlinedisk   10
-   <br/>
-   maxlineintf   5
-   <br/>
-   cpucritperc   80
-   <br/>
-   almostcrit    90
-   <br/>
-   pcp-atopsarflags  CMH
-   <br/>
-   ownprocline   PID:50 VGROW:40 RGROW:45 COMMAND-LINE:50
-   <br/>
-   ownpagline    PAGSCAN:3 BLANKBOX:0 PAGSWIN:3 PAGSWOUT:7
-  </dd>
- </dl>
- <p>
-  The keywords 'ownprocline' and 'ownpagline' are explained in the
-subsequent section.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  OWN DEFINITION OF OUTPUT LINE
- </h2>
- Via the rcfile it is possible to define the layout of the output lines
-yourself, i.e. you can define the layout of one line with process information
-with the keyword 'ownprocline' (to be selected with the key 'o'
-or the flag -o) and you can redefine all lines with system information.
- <p>
-  The layout of an output-line can be defined as follows
-(notice that this should be specified as one line in the rcfile):
- </p>
- <p>
-  keyword   &lt;columnid&gt;:&lt;prio&gt; [&lt;columnid&gt;:&lt;prio&gt; ...]
- </p>
- <p>
-  The
-  <b>
-   columnid
-  </b>
-  is the symbolic name of a column that should shown at this position
-in the output line.
-  <br/>
-  The
-  <b>
-   prio
-  </b>
-  is a positive integer value that determines which columns have precedence
-whenever not all specified columns fit into the current screen-width.
-The higher value, the higher priority.
-  <br/>
-  The column-specifications should be separated by a space. The order
-in which columns have been specified is the order in which they will be
-shown, with respect to their priority (columns that do not fit, will be
-dropped dynamically).
- </p>
- <p>
-  A special columnid for system lines is 'BLANKBOX'. This indicates
-that an empty column is required at this position. Also this
-special columnid is followed by a priority (usually low).
- </p>
- <p>
-  The following definition can be specified for process information:
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownprocline
-   </b>
-  </dt>
-  <dd>
-   The columnid's are the names of the columns that are shown in the
-normal output of the process-related lines that are shown by
-   <i>
-    pcp-atop
-   </i>
-   such as 'PID', 'CMD', 'S', ....
-The only exception is the special columnid 'SORTITEM' that is used to
-show one of the columns CPU%/DSK%/MEM%/NET%, depending on the chosen
-sort-criterium.
-   <br/>
-   An example of a user-defined process line:
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownprocline   PID:20 PPID:10 SYSCPU:15 USRCPU:15
-VGROW:14 VSIZE:12 RGROW:14 RSIZE:12 ST:8 EXC:7 S:11 SORTITEM:18 CMD:20
-  </dd>
- </dl>
- <p>
-  The following definitions are used internally by
-  <i>
-   pcp-atop
-  </i>
-  as the default system lines (you can redefine each of them in the
-rcfile as one line):
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownsysprcline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'PRC':
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownsysprcline   PRCSYS:8 PRCUSER:8 BLANKBOX:0 PRCNPROC:7 PRCNZOMBIE:5 PRCCLONES:4 BLANKBOX:0 PRCNNEXIT:6
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownallcpuline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'CPU' for total CPU-utilization:
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownallcpuline   CPUSYS:8 CPUUSER:7 CPUIRQ:4 BLANKBOX:0 CPUIDLE:5 CPUWAIT:6 BLANKBOX:0 CPUSTEAL:1 CPUGUEST:3
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownonecpuline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'CPU' for utilization of one CPU:
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownonecpuline   CPUISYS:8 CPUIUSER:7 CPUIIRQ:4 BLANKBOX:0 CPUIIDLE:5 CPUIWAIT:6 BLANKBOX:0 CPUISTEAL:1 CPUIGUEST:3
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    owncplline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'CPL':
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   owncplline   CPLAVG1:4 CPLAVG5:3 CPLAVG15:2 BLANKBOX:0 CPLCSW:6 CPLINTR:5 BLANKBOX:0 CPLNUMCPU:1
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownmemline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'MEM':
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownmemline   MEMTOT:2 MEMFREE:5 MEMCACHE:3 MEMDIRTY:1 MEMBUFFER:3 MEMSLAB:3 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownswpline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'SWP':
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownswpline   SWPTOT:3 SWPFREE:4 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 SWPCOMMITTED:5 SWPCOMMITLIM:6
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownpagline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'PAG':
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownpagline   PAGSCAN:3 PAGSTALL:1 BLANKBOX:0 PAGSWIN:4 PAGSWOUT:3
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    owndskline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of lines labeled with 'LVM', 'MDD' and 'DSK':
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   owndskline   DSKNAME:8 DSKBUSY:7 DSKNREAD:6 DSKNWRITE:6 DSKKBPERRD:4 DSKKBPERWR:4 DSKMBPERSECRD:5 DSKMBPERSECWR:5 DSKAVQUEUE:1 DSKAVIO:5
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownnettrline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'NET' for transport:
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownnettrline   NETTRANSPORT:9 NETTCPI:8 NETTCPO:8 NETUDPI:8 NETUDPO:8 NETTCPACTOPEN:6 NETTCPPASVOPEN:5 NETTCPRETRANS:4 NETTCPINERR:3 NETTCPORESET:20 NETUDPNOPORT:1 NETUDPINERR:3
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownnetnetline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'NET' for network:
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownnetnetline   NETNETWORK:5 NETIPI:4 NETIPO:4 NETIPFRW:4 NETIPDELIV:4 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 NETICMPIN:1 NETICMPOUT:1
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ownnetifline
-   </b>
-  </dt>
-  <dd>
-   Redefinition of line labeled with 'NET' for interfaces:
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   ownnetifline   NETNAME:8 NETPCKI:7 NETPCKO:7 NETSPEEDIN:6 NETSPEEDOUT:6 NETCOLLIS:3 NETMULTICASTIN:2 NETRCVERR:5 NETSNDERR:5 NETRCVDROP:4 NETSNDDROP:4
-  </dd>
- </dl>
- <p>
-  The lines above are shown in the order as shown by
-  <i>
-   pcp-atop
-  </i>
-  in combination with the
-  <b>
-   -f
-  </b>
-  flag (in a very wide window you should be able to see all of the columns).
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcp.1.html">
-   pcp
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-atop.1.html">
-   pcp-atop
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-atopsar.1.html">
-   pcp-atopsar
-  </a>
- </b>
- (1)
-
-and
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    OPTIONS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    OWN DEFINITION OF OUTPUT LINE
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP-ATOPRC
+               </h1>
+               Section: File Formats (5)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                atoprc
+               </b>
+               - pcp-atop/pcp-atopsar related resource file
+               <a name="lbAC">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               This manual page documents the resource file of the
+               <i>
+                pcp-atop
+               </i>
+               and
+               <i>
+                pcp-atopsar
+               </i>
+               commands.
+              These commands can be used to monitor the system and process load on a
+              system.
+               <p>
+                The pcp-atoprc file contains the default settings. These settings are read
+              during startup, first from the system-wide rcfile
+                <i>
+                 /etc/atoprc
+                </i>
+                and after that from the user-specific rcfile
+                <i>
+                 ~/.atoprc
+                </i>
+                (so system-wide settings can be overruled by an individual user).
+              The options in both rcfiles are identical.
+               </p>
+               <p>
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                OPTIONS
+               </h2>
+               <p>
+                The rcfile contains keyword-value pairs, one on every line (blank lines
+              and lines starting with a #-sign are ignored).
+                <br/>
+                The following keywords can be specified:
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  flags
+                 </b>
+                </dt>
+                <dd>
+                 A list of default flags for
+                 <b>
+                  pcp-atop
+                 </b>
+                 can be defined here. The flags which are allowed
+              are 'g', 'm', 'd', 'n', 'u', 'p', 's', 'c', 'v', 'C', 'M', 'D', 'N', 'A',
+              'a', 'y', 'f', 'F', 'G', 'R', '1' and 'x'.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  interval
+                 </b>
+                </dt>
+                <dd>
+                 The default interval value in seconds.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  linelen
+                 </b>
+                </dt>
+                <dd>
+                 The length of a screen line when sending output to a file or pipe (default 80).
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  username
+                 </b>
+                </dt>
+                <dd>
+                 The default regular expression for the users for which active
+              processes will be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  procname
+                 </b>
+                </dt>
+                <dd>
+                 The default regular expression for the process names to be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  maxlinecpu
+                 </b>
+                </dt>
+                <dd>
+                 The maximum number of active CPU's that will be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  maxlinelvm
+                 </b>
+                </dt>
+                <dd>
+                 The maximum number of active logical volumes that will be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  maxlinemdd
+                 </b>
+                </dt>
+                <dd>
+                 The maximum number of active multiple devices that will be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  maxlinedisk
+                 </b>
+                </dt>
+                <dd>
+                 The maximum number of active disks that will be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  maxlinenfsm
+                 </b>
+                </dt>
+                <dd>
+                 The maximum number of NFS mounts that will be shown on an NFS client.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  maxlineintf
+                 </b>
+                </dt>
+                <dd>
+                 The maximum number of active network interfaces that will be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  maxlinecont
+                 </b>
+                </dt>
+                <dd>
+                 The maximum number of active containers that will be shown.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  cpucritperc
+                 </b>
+                </dt>
+                <dd>
+                 The busy percentage considered critical for a processor
+              (see section COLORS in the man-page of the
+                 <i>
+                  pcp-atop
+                 </i>
+                 command).
+              This percentage is used to determine 
+              a weighted percentage for line coloring and sorting of active processes.
+              When this value is zero, no line coloring or automatic sorting is performed
+              for this resource.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  dskcritperc
+                 </b>
+                </dt>
+                <dd>
+                 The busy percentage considered critical for a disk
+              (see section COLORS in the man-page of the
+                 <i>
+                  pcp-atop
+                 </i>
+                 command).
+              This percentage is used to determine 
+              a weighted percentage for line coloring and sorting of active processes.
+              When this value is zero, no line coloring or automatic sorting is performed
+              for this resource.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  netcritperc
+                 </b>
+                </dt>
+                <dd>
+                 The busy percentage considered critical for a network interface
+              (see section COLORS in the man-page of the
+                 <i>
+                  pcp-atop
+                 </i>
+                 command).
+              This percentage is used to determine 
+              a weighted percentage for line coloring and sorting of active processes.
+              When this value is zero, no line coloring or automatic sorting is performed
+              for this resource.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  memcritperc
+                 </b>
+                </dt>
+                <dd>
+                 The percentage considered critical for memory utilization
+              (see section COLORS in the man-page of the
+                 <i>
+                  pcp-atop
+                 </i>
+                 command).
+              This percentage is used to determine 
+              a weighted percentage for line coloring and sorting of active processes.
+              When this value is zero, no line coloring or automatic sorting is performed
+              for this resource.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  swpcritperc
+                 </b>
+                </dt>
+                <dd>
+                 The occupation percentage considered critical for swap space
+              (see section COLORS in the man-page of the
+                 <i>
+                  pcp-atop
+                 </i>
+                 command).
+              This percentage is used to determine 
+              a weighted percentage for line coloring and sorting of active processes.
+              When this value is zero, no line coloring or automatic sorting is performed
+              for this resource.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  swoutcritsec
+                 </b>
+                </dt>
+                <dd>
+                 The number of pages swapped out per second considered critical for 
+              for memory utilization
+              (see section COLORS in the man-page of the
+                 <i>
+                  pcp-atop
+                 </i>
+                 command).
+              This threshold is used in combination with 'memcritperc' to determine a
+              weighted percentage for line coloring and sorting of active processes.
+              When this value is zero, no line coloring or automatic sorting is performed
+              for this resource.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  almostcrit
+                 </b>
+                </dt>
+                <dd>
+                 A percentage of the critical percentage to determine if the resource
+              is almost critical
+              (see section COLORS in the man-page of the
+                 <i>
+                  pcp-atop
+                 </i>
+                 command).
+              When this value is zero, no line coloring for `almost critical' is
+              performed.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  colorinfo
+                 </b>
+                </dt>
+                <dd>
+                 Definition of color name for information messages (default: green).
+                 <br/>
+                 Allowed colors are: red green yellow blue magenta cyan black white.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  colorthread
+                 </b>
+                </dt>
+                <dd>
+                 Definition of color name for thread-specific lines when using
+              the 'y' option (default: yellow).
+                 <br/>
+                 Allowed colors are: red green yellow blue magenta cyan black white.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  coloralmost
+                 </b>
+                </dt>
+                <dd>
+                 Definition of color name for almost critical resources (default: cyan).
+                 <br/>
+                 Allowed colors are: red green yellow blue magenta cyan black white.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  colorcritical
+                 </b>
+                </dt>
+                <dd>
+                 Definition of color name for critical resources (default: red).
+                 <br/>
+                 Allowed colors are: red green yellow blue magenta cyan black white.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  pcp-atopsarflags
+                 </b>
+                </dt>
+                <dd>
+                 A list of default flags for
+                 <b>
+                  pcp-atopsar
+                 </b>
+                 can be defined here. The flags that are allowed
+              are 'S', 'x', 'C', 'M', 'H', 'a', 'A' and the flags to select
+              one or more specific reports.
+                </dd>
+               </dl>
+               <p>
+                An example of the
+                <b>
+                 /etc/atoprc
+                </b>
+                or
+                <b>
+                 ~/.atoprc
+                </b>
+                file:
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 <br/>
+                 flags         Aaf
+                 <br/>
+                 interval      5
+                 <br/>
+                 username
+                 <br/>
+                 procname
+                 <br/>
+                 maxlinecpu    4
+                 <br/>
+                 maxlinedisk   10
+                 <br/>
+                 maxlineintf   5
+                 <br/>
+                 cpucritperc   80
+                 <br/>
+                 almostcrit    90
+                 <br/>
+                 pcp-atopsarflags  CMH
+                 <br/>
+                 ownprocline   PID:50 VGROW:40 RGROW:45 COMMAND-LINE:50
+                 <br/>
+                 ownpagline    PAGSCAN:3 BLANKBOX:0 PAGSWIN:3 PAGSWOUT:7
+                </dd>
+               </dl>
+               <p>
+                The keywords 'ownprocline' and 'ownpagline' are explained in the
+              subsequent section.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                OWN DEFINITION OF OUTPUT LINE
+               </h2>
+               Via the rcfile it is possible to define the layout of the output lines
+              yourself, i.e. you can define the layout of one line with process information
+              with the keyword 'ownprocline' (to be selected with the key 'o'
+              or the flag -o) and you can redefine all lines with system information.
+               <p>
+                The layout of an output-line can be defined as follows
+              (notice that this should be specified as one line in the rcfile):
+               </p>
+               <p>
+                keyword   &lt;columnid&gt;:&lt;prio&gt; [&lt;columnid&gt;:&lt;prio&gt; ...]
+               </p>
+               <p>
+                The
+                <b>
+                 columnid
+                </b>
+                is the symbolic name of a column that should shown at this position
+              in the output line.
+                <br/>
+                The
+                <b>
+                 prio
+                </b>
+                is a positive integer value that determines which columns have precedence
+              whenever not all specified columns fit into the current screen-width.
+              The higher value, the higher priority.
+                <br/>
+                The column-specifications should be separated by a space. The order
+              in which columns have been specified is the order in which they will be
+              shown, with respect to their priority (columns that do not fit, will be
+              dropped dynamically).
+               </p>
+               <p>
+                A special columnid for system lines is 'BLANKBOX'. This indicates
+              that an empty column is required at this position. Also this
+              special columnid is followed by a priority (usually low).
+               </p>
+               <p>
+                The following definition can be specified for process information:
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownprocline
+                 </b>
+                </dt>
+                <dd>
+                 The columnid's are the names of the columns that are shown in the
+              normal output of the process-related lines that are shown by
+                 <i>
+                  pcp-atop
+                 </i>
+                 such as 'PID', 'CMD', 'S', ....
+              The only exception is the special columnid 'SORTITEM' that is used to
+              show one of the columns CPU%/DSK%/MEM%/NET%, depending on the chosen
+              sort-criterium.
+                 <br/>
+                 An example of a user-defined process line:
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownprocline   PID:20 PPID:10 SYSCPU:15 USRCPU:15
+              VGROW:14 VSIZE:12 RGROW:14 RSIZE:12 ST:8 EXC:7 S:11 SORTITEM:18 CMD:20
+                </dd>
+               </dl>
+               <p>
+                The following definitions are used internally by
+                <i>
+                 pcp-atop
+                </i>
+                as the default system lines (you can redefine each of them in the
+              rcfile as one line):
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownsysprcline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'PRC':
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownsysprcline   PRCSYS:8 PRCUSER:8 BLANKBOX:0 PRCNPROC:7 PRCNZOMBIE:5 PRCCLONES:4 BLANKBOX:0 PRCNNEXIT:6
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownallcpuline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'CPU' for total CPU-utilization:
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownallcpuline   CPUSYS:8 CPUUSER:7 CPUIRQ:4 BLANKBOX:0 CPUIDLE:5 CPUWAIT:6 BLANKBOX:0 CPUSTEAL:1 CPUGUEST:3
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownonecpuline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'CPU' for utilization of one CPU:
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownonecpuline   CPUISYS:8 CPUIUSER:7 CPUIIRQ:4 BLANKBOX:0 CPUIIDLE:5 CPUIWAIT:6 BLANKBOX:0 CPUISTEAL:1 CPUIGUEST:3
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  owncplline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'CPL':
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 owncplline   CPLAVG1:4 CPLAVG5:3 CPLAVG15:2 BLANKBOX:0 CPLCSW:6 CPLINTR:5 BLANKBOX:0 CPLNUMCPU:1
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownmemline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'MEM':
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownmemline   MEMTOT:2 MEMFREE:5 MEMCACHE:3 MEMDIRTY:1 MEMBUFFER:3 MEMSLAB:3 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownswpline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'SWP':
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownswpline   SWPTOT:3 SWPFREE:4 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 SWPCOMMITTED:5 SWPCOMMITLIM:6
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownpagline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'PAG':
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownpagline   PAGSCAN:3 PAGSTALL:1 BLANKBOX:0 PAGSWIN:4 PAGSWOUT:3
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  owndskline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of lines labeled with 'LVM', 'MDD' and 'DSK':
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 owndskline   DSKNAME:8 DSKBUSY:7 DSKNREAD:6 DSKNWRITE:6 DSKKBPERRD:4 DSKKBPERWR:4 DSKMBPERSECRD:5 DSKMBPERSECWR:5 DSKAVQUEUE:1 DSKAVIO:5
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownnettrline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'NET' for transport:
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownnettrline   NETTRANSPORT:9 NETTCPI:8 NETTCPO:8 NETUDPI:8 NETUDPO:8 NETTCPACTOPEN:6 NETTCPPASVOPEN:5 NETTCPRETRANS:4 NETTCPINERR:3 NETTCPORESET:20 NETUDPNOPORT:1 NETUDPINERR:3
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownnetnetline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'NET' for network:
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownnetnetline   NETNETWORK:5 NETIPI:4 NETIPO:4 NETIPFRW:4 NETIPDELIV:4 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 NETICMPIN:1 NETICMPOUT:1
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  ownnetifline
+                 </b>
+                </dt>
+                <dd>
+                 Redefinition of line labeled with 'NET' for interfaces:
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                </dt>
+                <dd>
+                 ownnetifline   NETNAME:8 NETPCKI:7 NETPCKO:7 NETSPEEDIN:6 NETSPEEDOUT:6 NETCOLLIS:3 NETMULTICASTIN:2 NETRCVERR:5 NETSNDERR:5 NETRCVDROP:4 NETSNDDROP:4
+                </dd>
+               </dl>
+               <p>
+                The lines above are shown in the order as shown by
+                <i>
+                 pcp-atop
+                </i>
+                in combination with the
+                <b>
+                 -f
+                </b>
+                flag (in a very wide window you should be able to see all of the columns).
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcp.1.html">
+                 pcp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-atop.1.html">
+                 pcp-atop
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-atopsar.1.html">
+                 pcp-atopsar
+                </a>
+               </b>
+               (1)
+              
+              and
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  OWN DEFINITION OF OUTPUT LINE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

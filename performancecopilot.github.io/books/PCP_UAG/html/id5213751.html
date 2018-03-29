@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">8.3.2. PMNS Syntax</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE50224-PARENT.html" title="8.3. PMNS Management" /><link rel="prev" href="LE50224-PARENT.html" title="8.3. PMNS Management" /><link rel="next" href="LE10270-PARENT.html" title="8.4. PMDA Development" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE50224-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="LE10270-PARENT.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5213751">
+      ⁠</a>8.3.2. PMNS Syntax</h3></div></div></div><div class="para">
+					<a id="ITch09-4" class="indexterm"></a><a id="IG31371888323" class="indexterm"></a>Every PMNS is tree structured. The paths to the leaf nodes are the performance metric names. The general syntax for a non-leaf node in PMNS is as follows:
+				</div><pre class="literallayout">pathname {
+        name    [pmid]
+        ...
+}</pre><div class="para">
+					Here <code class="literal">pathname</code> is the full pathname from the root of the PMNS to this non-leaf node, with each component in the path separated by a period. The root node for the PMNS has the special name <code class="literal">root</code>, but the prefix string <code class="literal">root.</code> must be omitted from all other <code class="literal">pathnames</code>.
+				</div><div class="para">
+					For example, refer to the PMNS shown in <a class="xref" href="id5213751.html#id5213846">Figure 8.1, “Small Performance Metrics Name Space (PMNS)”</a>. The correct pathname for the rightmost non-leaf node is <code class="literal">cpu.utilization</code>, not <code class="literal">root.cpu.utilization</code>.
+				</div><div class="figure"><a id="id5213846">
+      ⁠</a><div class="figure-contents"><div class="mediaobject"><object data="images/pmns-small2.svg" type="image/svg+xml"><img src="images/pmns-small2.png" alt="Small Performance Metrics Name Space (PMNS)" /></object></div></div><p class="title"><strong>Figure 8.1. Small Performance Metrics Name Space (PMNS)</strong></p></div><div class="para">
+					Each component in the pathname must begin with an alphabetic character and be followed by zero or more alphanumeric characters or the underscore (_) character. For alphabetic characters in a component, uppercase and lowercase are significant.
+				</div><div class="para">
+					Non-leaf nodes in the PMNS may be defined in any order desired. The descendent nodes are defined by the set of <code class="literal">names</code>, relative to the pathname of their parent non-leaf node. For descendent nodes, leaf nodes have a <code class="literal">pmid</code> specification, but non-leaf nodes do not.
+				</div><div class="para">
+					The syntax for the <code class="literal">pmid</code> specification was chosen to help manage the allocation of Performance Metric IDs (PMIDs) across disjoint and autonomous domains of administration and implementation. Each <code class="literal">pmid</code> consists of three integers separated by colons, for example, <code class="literal">14:27:11</code>. This is intended to mirror the implementation hierarchy of performance metrics. The first integer identifies the domain in which the performance metric lies. Within a domain, related metrics are often grouped into clusters. The second integer identifies the cluster, and the third integer, the metric within the cluster.
+				</div><div class="para">
+					The PMNS specification for <a class="xref" href="id5213751.html#id5213846">Figure 8.1, “Small Performance Metrics Name Space (PMNS)”</a> is shown in <a class="xref" href="id5213751.html#Z928447759sdc">Example 8.1, “PMNS Specification”</a>:
+				</div><div class="example"><a id="Z928447759sdc">
+      ⁠</a><p class="title"><strong>Example 8.1. PMNS Specification</strong></p><div class="example-contents"><pre class="literallayout">/*
+* PMNS Specification
+*/
+#define KERNEL 1
+root {
+       network
+       cpu
+}
+#define NETWORK 26
+network {
+       interrupts    KERNEL:NETWORK:1
+       packets
+}
+network.packets {
+       in     KERNEL:NETWORK:35
+       out    KERNEL:NETWORK:36
+}
+#define CPU 10
+cpu {
+       syscalls    KERNEL:CPU:10
+       utilization
+}
+#define USER 20
+#define SYSTEM 21
+#define IDLE 22
+cpu.utilization {
+       user    KERNEL:CPU:USER
+       sys     KERNEL:CPU:SYSTEM
+       idle    KERNEL:CPU:IDLE
+}</pre></div></div><div class="para">
+					For complete documentation of the PMNS and associated utilities, see the <code class="command">pmns(5)</code>, <code class="command">pmnsadd(1)</code>, <code class="command">pmnsdel(1)</code> and <code class="command">pmnsmerge(1)</code> man pages.
+				</div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE50224-PARENT.html"><strong>Prev</strong>8.3. PMNS Management</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE10270-PARENT.html"><strong>Next</strong>8.4. PMDA Development</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>
