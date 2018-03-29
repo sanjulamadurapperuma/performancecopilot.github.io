@@ -1,1052 +1,1056 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMLOGSUMMARY
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmlogsummary
-               </b>
-               - calculate averages of metrics stored in a set of PCP archives
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmlogsummary
-               </b>
-               [
-               <b>
-                -abfFHiIlmMNsvxyz
-               </b>
-               ]
-              [
-               <b>
-                -B
-               </b>
-               <i>
-                nbins
-               </i>
-               ]
-              [
-               <b>
-                -n
-               </b>
-               <i>
-                pmnsfile
-               </i>
-               ]
-              [
-               <b>
-                -p
-               </b>
-               <i>
-                precision
-               </i>
-               ]
-              [
-               <b>
-                -S
-               </b>
-               <i>
-                starttime
-               </i>
-               ]
-              [
-               <b>
-                -T
-               </b>
-               <i>
-                endtime
-               </i>
-               ]
-              [
-               <b>
-                -Z
-               </b>
-               <i>
-                timezone
-               </i>
-               ]
-               <i>
-                archive
-               </i>
-               [
-               <i>
-                metricname
-               </i>
-               ...]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmlogsummary
-               </b>
-               prints statistical information about metrics of numeric type contained within
-              the files of a set of Performance Co-Pilot (PCP) archive logs.  The default output prints
-              time averages for both counter and non-counter metrics.
-              The set of archive logs is identified by
-               <i>
-                archive
-               </i>
-               ,
-              
-              which is a comma-separated list of names, each
-              of which may be the base name of an archive or the name of a directory containing
-              one or more archives.
-              The archive logs are typically created using
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1).
-               <p>
-                The metrics of interest are named in the
-                <i>
-                 metricname
-                </i>
-                arguments.
-              If
-                <i>
-                 metricname
-                </i>
-                is a non-leaf node in the Performance Metrics Name Space (
-                <b>
-                 <a href="/man/man5/pmns.5.html">
-                  pmns
-                 </a>
-                </b>
-                (5)),
-              
-              then
-                <b>
-                 pmlogsummary
-                </b>
-                will recursively descend the PMNS and report on all leaf nodes.
-              If no
-                <i>
-                 metricname
-                </i>
-                argument is given, the root of the namespace is used.
-               </p>
-               <p>
-                Normally
-                <b>
-                 pmlogsummary
-                </b>
-                operates on the default
-                <b>
-                 <a href="/man/man5/pmns.5.html">
-                  pmns
-                 </a>
-                </b>
-                (5),
-              
-              however if the
-                <b>
-                 -n
-                </b>
-                option is specified an alternative namespace is loaded
-              from the file
-                <i>
-                 pmnsfile
-                </i>
-                .
-               </p>
-               <p>
-                The command line options
-                <b>
-                 -S
-                </b>
-                and
-                <b>
-                 -T
-                </b>
-                can be used to specify a time window over which metrics should be summarized.
-              These options are common to most Performance Co-Pilot tools and are fully
-              described in
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1).
-               </p>
-               <p>
-                The remaining options control the specific information to be reported.
-              Metrics with counter semantics are converted to rates before being
-              evaluated.
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -a
-                 </b>
-                </dt>
-                <dd>
-                 Print all information.  This is equivalent to
-                 <b>
-                  -blmMy
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  -b
-                 </b>
-                </dt>
-                <dd>
-                 Print both forms of averaging, that is both stochastic and time averaging.
-                </dd>
-                <dt>
-                 <b>
-                  -B
-                 </b>
-                </dt>
-                <dd>
-                 Print the approximate distribution of values, using histogram bins such
-              that the value range (minimum - maximum) for each metric is divided
-              equally into
-                 <i>
-                  nbins
-                 </i>
-                 bins, and each bin accumulates the frequency of observed values in the
-              corresponding range.
-              Refer to the ``OUTPUT FORMAT'' section below for a description of how the
-              distribution of values is reported).
-                </dd>
-                <dt>
-                 <b>
-                  -f
-                 </b>
-                </dt>
-                <dd>
-                 Spreadsheet format - the tab character is used to delimit each field
-              printed.  This option is intended to allow
-                 <b>
-                  pmlogsummary
-                 </b>
-                 output to be imported directly into common spreadsheet applications.
-                </dd>
-                <dt>
-                 <b>
-                  -F
-                 </b>
-                </dt>
-                <dd>
-                 Spreadsheet format - the comma character is used to delimit each field
-              printed.  This option is intended to allow
-                 <b>
-                  pmlogsummary
-                 </b>
-                 output to be imported directly into common spreadsheet applications which
-              support the Comma Separated Value (.csv) format.
-                </dd>
-                <dt>
-                 <b>
-                  -H
-                 </b>
-                </dt>
-                <dd>
-                 Print a one-line header at the start showing what each field represents.
-                </dd>
-                <dt>
-                 <b>
-                  -l
-                 </b>
-                </dt>
-                <dd>
-                 Also print the archive label, showing the log format version,
-              the time and date for the start and end of the archive time window,
-              and the host from which the performance metrics values were collected.
-                </dd>
-                <dt>
-                 <b>
-                  -i
-                 </b>
-                </dt>
-                <dd>
-                 Also print the time at which the minimum value was logged.  The format of this
-              timestamp is described in the ``OUTPUT FORMAT'' section below.
-                </dd>
-                <dt>
-                 <b>
-                  -I
-                 </b>
-                </dt>
-                <dd>
-                 Also print the time at which the maximum value was logged.  The format of this
-              timestamp is described in the ``OUTPUT FORMAT'' section below.
-                </dd>
-                <dt>
-                 <b>
-                  -m
-                 </b>
-                </dt>
-                <dd>
-                 Also print the minimum logged value for each metric.
-                </dd>
-                <dt>
-                 <b>
-                  -M
-                 </b>
-                </dt>
-                <dd>
-                 Also print the maximum logged value for each metric.
-                </dd>
-                <dt>
-                 <b>
-                  -s
-                 </b>
-                </dt>
-                <dd>
-                 Print (only) the sum of all logged values for each metric.
-                </dd>
-                <dt>
-                 <b>
-                  -N
-                 </b>
-                </dt>
-                <dd>
-                 Suppress any warnings resulting from individual archive fetches (default).
-                </dd>
-                <dt>
-                 <b>
-                  -p
-                 </b>
-                </dt>
-                <dd>
-                 Print all floating point numbers with
-                 <i>
-                  precision
-                 </i>
-                 digits after the decimal place.
-                </dd>
-                <dt>
-                 <b>
-                  -v
-                 </b>
-                </dt>
-                <dd>
-                 Report (verbosely) on warnings resulting from individual archive fetches.
-                </dd>
-                <dt>
-                 <b>
-                  -x
-                 </b>
-                </dt>
-                <dd>
-                 Print stochastic averages instead of the default (time averages).
-                </dd>
-                <dt>
-                 <b>
-                  -y
-                 </b>
-                </dt>
-                <dd>
-                 Also print the number of samples encountered in the set of archives for each metric.
-                </dd>
-               </dl>
-               <p>
-                By default,
-                <b>
-                 pmlogsummary
-                </b>
-                reports the time of day according to the local timezone on the
-              system where
-                <b>
-                 pmlogsummary
-                </b>
-                is run.
-              The
-                <b>
-                 -Z
-                </b>
-                option changes the timezone to
-                <i>
-                 timezone
-                </i>
-                in the format of the environment variable
-                <b>
-                 TZ
-                </b>
-                as described in
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-                  environ
-                 </a>
-                </b>
-                (7).
-              
-              The
-                <b>
-                 -z
-                </b>
-                option changes the timezone to the local timezone at the
-              host that is the source of the performance metrics, as specified in
-              the label record of the archive log.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                OUTPUT FORMAT
-               </h2>
-               The
-               <b>
-                pmlogsummary
-               </b>
-               output format is spartan as it is intended to be post-processed with
-              standard tools.  This means that there is no annotation associated with each
-              output field which would make processing harder.  The intention is that
-               <b>
-                pmlogsummary
-               </b>
-               output be massaged into a format which can be used by a spreadsheet program,
-              is suitable for inclusion in a web page, or whatever.
-               <p>
-                For each metric,
-                <b>
-                 pmlogsummary
-                </b>
-                produces a single output line as follows:
-               </p>
-               <p>
-               </p>
-               <pre>
-              <i>metricname</i>  <i>value(s)</i> <i>units</i>
-              </pre>
-               <p>
-                For metrics with multiple instances,
-                <b>
-                 pmlogsummary
-                </b>
-                produces multiple lines of output as follows:
-               </p>
-               <p>
-               </p>
-               <pre>
-              <i>metricname</i> ["<i>instance 1</i>"] <i>value(s)</i> <i>units</i>
-              <i>metricname</i> ["<i>instance 2</i>"] <i>value(s)</i> <i>units</i>
-              <i>metricname</i> ["<i>instance N</i>"] <i>value(s)</i> <i>units</i>
-              </pre>
-               <p>
-                The printed
-                <i>
-                 value(s)
-                </i>
-                for each metric always follow this order:
-              stochastic average, time average, minimum, minimum timestamp, maximum,
-              maximum timestamp, count, [bin 1 range], bin 1 count, ... [bin
-                <i>
-                 nbins
-                </i>
-                range], bin
-                <i>
-                 nbins
-                </i>
-                count.
-              The individual values for each metric are space-separated (unless the
-                <b>
-                 -f
-                </b>
-                option is used).
-               </p>
-               <p>
-                All counter metrics which are measured in units of time will be converted
-              to seconds before being rate converted and used in the
-                <b>
-                 pmlogsummary
-                </b>
-                calculations.  The values calculated for these metrics are also printed
-              in seconds.
-               </p>
-               <p>
-                The units will be displayed in the format described by
-                <b>
-                 <a href="/man/man3/pmunitsstr.3.html">
-                  pmUnitsStr
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                Given either of the
-                <b>
-                 -i
-                </b>
-                or
-                <b>
-                 -I
-                </b>
-                options,
-                <b>
-                 pmlogsummary
-                </b>
-                produces two different timestamp formats, depending on the
-              interval over which it is run.
-              For an interval greater than 24 hours, the date is displayed in addition
-              to the time at which the maxima and/or minima occurred.
-              If the extent of the data being checked is less than 24 hours,
-              a more precise format is used (time is displayed with millisecond
-              precision, but without the date).
-               </p>
-               <p>
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                NOTES
-               </h2>
-               The average for an individual metric is calculated as follows:
-               <p>
-                Non-counter metrics are averaged using stochastic averaging -
-              each observation has an equal weighting towards
-              the calculation of the average (the sum of all values divided
-              by the total number of values, for each metric).
-               </p>
-               <p>
-                Counter metrics are averaged using time averaging (by default),
-              but the
-                <b>
-                 -x
-                </b>
-                option can be used to specify that counters be averaged using 
-              the stochastic method instead.  When calculating a time average,
-              the sum of the product of each sample value multiplied by the time difference
-              between each sample, is divided by the total time over which
-              that metric was logged.
-               </p>
-               <p>
-                Counter metrics whose measurements do not span 90% of the set of archives will be
-              printed with the metric name prefixed by an asterisk (*).
-               </p>
-               <p>
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                EXAMPLE
-               </h2>
-               <p>
-               </p>
-               <pre>
-              $ pmlogsummary -aN -p 1 -B 3 surf network.interface.out.bytes
-              Log Label (Log Format Version 1)
-              Performance metrics from host <a href="http://www.sgi.com">www.sgi.com</a>
-                commencing Tue Jan 14 20:50:50.317 1997
-                ending     Wed Jan 29 10:13:07.387 1997
-              network.interface.out.bytes ["xpi0"] 202831.3 202062.5 20618.7 \
-                      1235067.7 971 [&lt;=425435.0] 912 [&lt;=830251.4] 42 [&lt;=1235067.7] \
-                      17 byte / sec
-              network.interface.out.bytes ["xpi1"] 0.0 0.0 0.0 0.0 1033 [&lt;=0.0] \
-                      1033 [] 0 [] 0 byte / sec
-              network.interface.out.bytes ["et0"] 0.0 0.0 0.0 0.0 1033 [&lt;=0.0] \
-                      1033 [] 0 [] 0 byte / sec
-              network.interface.out.bytes ["lo0"] 899.0 895.2 142.6 9583.1 1031 \
-                      [&lt;=3289.4] 1027 [&lt;=6436.2] 3 [&lt;=9583.1] 1 byte / sec
-              </pre>
-               <p>
-                A description of each field in the first line of statistical output, which
-              describes one instance of the network.interface.out.bytes metric,
-              follows:
-               </p>
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Field
-                     </td>
-                     <td align="center">
-                      Meaning
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="2">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      ["xpi0"]
-                     </td>
-                     <td>
-                      instance name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      202831.3
-                     </td>
-                     <td>
-                      stochastic average
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      202062.5
-                     </td>
-                     <td>
-                      time average
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      20618.7
-                     </td>
-                     <td>
-                      minimum value
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      1235067.7
-                     </td>
-                     <td>
-                      maximum value
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      971
-                     </td>
-                     <td>
-                      total number of values for this instance
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      [&lt;=425435.0]
-                     </td>
-                     <td>
-                      range for first bin  (20618.7-425435.0)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      912
-                     </td>
-                     <td>
-                      number of values in first bin
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      [&lt;=830251.4]
-                     </td>
-                     <td>
-                      range for second bin  (425435.0-830251.4)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      42
-                     </td>
-                     <td>
-                      number of values in second bin
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      [&lt;=1235067.7]
-                     </td>
-                     <td>
-                      range for third bin  (830251.4-1235067.7)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      17
-                     </td>
-                     <td>
-                      number of values in third bin
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td>
-                      byte / sec
-                     </td>
-                     <td>
-                      base units for this metric
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <a name="lbAH">
-               </a>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_VAR_DIR/pmns/
-                 </b>
-                 <i>
-                  *
-                 </i>
-                </dt>
-                <dd>
-                 default PMNS specification files
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_LOG_DIR/pmlogger/
-                 </b>
-                 <i>
-                  hostname
-                 </i>
-                </dt>
-                <dd>
-                 Default directory for PCP archives containing performance
-              metric values collected from the host
-                 <i>
-                  hostname
-                 </i>
-                 .
-                </dd>
-               </dl>
-               <a name="lbAI">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAJ">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmchart.1.html">
-                 pmchart
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumptext.1.html">
-                 pmdumptext
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogextract.1.html">
-                 pmlogextract
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmrep.1.html">
-                 pmrep
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmval.1.html">
-                 pmval
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmunitsstr.3.html">
-                 pmUnitsStr
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man5/pmns.5.html">
-                 pmns
-                </a>
-               </b>
-               (5).
-               <a name="lbAK">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               All are generated on standard error and are intended to be self-
-              explanatory.
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  OUTPUT FORMAT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  NOTES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  EXAMPLE
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAJ">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAK">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLOGSUMMARY
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmlogsummary
+ </b>
+ - calculate averages of metrics stored in a set of PCP archives
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmlogsummary
+ </b>
+ [
+ <b>
+  -abfFHiIlmMNsvxyz
+ </b>
+ ]
+[
+ <b>
+  -B
+ </b>
+ <i>
+  nbins
+ </i>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  precision
+ </i>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  starttime
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+ <i>
+  archive
+ </i>
+ [
+ <i>
+  metricname
+ </i>
+ ...]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmlogsummary
+ </b>
+ prints statistical information about metrics of numeric type contained within
+the files of a set of Performance Co-Pilot (PCP) archive logs.  The default output prints
+time averages for both counter and non-counter metrics.
+The set of archive logs is identified by
+ <i>
+  archive
+ </i>
+ ,
+
+which is a comma-separated list of names, each
+of which may be the base name of an archive or the name of a directory containing
+one or more archives.
+The archive logs are typically created using
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1).
+ <p>
+  The metrics of interest are named in the
+  <i>
+   metricname
+  </i>
+  arguments.
+If
+  <i>
+   metricname
+  </i>
+  is a non-leaf node in the Performance Metrics Name Space (
+  <b>
+   <a href="/man/man5/pmns.5.html">
+    pmns
+   </a>
+  </b>
+  (5)),
+
+then
+  <b>
+   pmlogsummary
+  </b>
+  will recursively descend the PMNS and report on all leaf nodes.
+If no
+  <i>
+   metricname
+  </i>
+  argument is given, the root of the namespace is used.
+ </p>
+ <p>
+  Normally
+  <b>
+   pmlogsummary
+  </b>
+  operates on the default
+  <b>
+   <a href="/man/man5/pmns.5.html">
+    pmns
+   </a>
+  </b>
+  (5),
+
+however if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative namespace is loaded
+from the file
+  <i>
+   pmnsfile
+  </i>
+  .
+ </p>
+ <p>
+  The command line options
+  <b>
+   -S
+  </b>
+  and
+  <b>
+   -T
+  </b>
+  can be used to specify a time window over which metrics should be summarized.
+These options are common to most Performance Co-Pilot tools and are fully
+described in
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The remaining options control the specific information to be reported.
+Metrics with counter semantics are converted to rates before being
+evaluated.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+  </dt>
+  <dd>
+   Print all information.  This is equivalent to
+   <b>
+    -blmMy
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -b
+   </b>
+  </dt>
+  <dd>
+   Print both forms of averaging, that is both stochastic and time averaging.
+  </dd>
+  <dt>
+   <b>
+    -B
+   </b>
+  </dt>
+  <dd>
+   Print the approximate distribution of values, using histogram bins such
+that the value range (minimum - maximum) for each metric is divided
+equally into
+   <i>
+    nbins
+   </i>
+   bins, and each bin accumulates the frequency of observed values in the
+corresponding range.
+Refer to the ``OUTPUT FORMAT'' section below for a description of how the
+distribution of values is reported).
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+  </dt>
+  <dd>
+   Spreadsheet format - the tab character is used to delimit each field
+printed.  This option is intended to allow
+   <b>
+    pmlogsummary
+   </b>
+   output to be imported directly into common spreadsheet applications.
+  </dd>
+  <dt>
+   <b>
+    -F
+   </b>
+  </dt>
+  <dd>
+   Spreadsheet format - the comma character is used to delimit each field
+printed.  This option is intended to allow
+   <b>
+    pmlogsummary
+   </b>
+   output to be imported directly into common spreadsheet applications which
+support the Comma Separated Value (.csv) format.
+  </dd>
+  <dt>
+   <b>
+    -H
+   </b>
+  </dt>
+  <dd>
+   Print a one-line header at the start showing what each field represents.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+  </dt>
+  <dd>
+   Also print the archive label, showing the log format version,
+the time and date for the start and end of the archive time window,
+and the host from which the performance metrics values were collected.
+  </dd>
+  <dt>
+   <b>
+    -i
+   </b>
+  </dt>
+  <dd>
+   Also print the time at which the minimum value was logged.  The format of this
+timestamp is described in the ``OUTPUT FORMAT'' section below.
+  </dd>
+  <dt>
+   <b>
+    -I
+   </b>
+  </dt>
+  <dd>
+   Also print the time at which the maximum value was logged.  The format of this
+timestamp is described in the ``OUTPUT FORMAT'' section below.
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+  </dt>
+  <dd>
+   Also print the minimum logged value for each metric.
+  </dd>
+  <dt>
+   <b>
+    -M
+   </b>
+  </dt>
+  <dd>
+   Also print the maximum logged value for each metric.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+  </dt>
+  <dd>
+   Print (only) the sum of all logged values for each metric.
+  </dd>
+  <dt>
+   <b>
+    -N
+   </b>
+  </dt>
+  <dd>
+   Suppress any warnings resulting from individual archive fetches (default).
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+  </dt>
+  <dd>
+   Print all floating point numbers with
+   <i>
+    precision
+   </i>
+   digits after the decimal place.
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   Report (verbosely) on warnings resulting from individual archive fetches.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+  </dt>
+  <dd>
+   Print stochastic averages instead of the default (time averages).
+  </dd>
+  <dt>
+   <b>
+    -y
+   </b>
+  </dt>
+  <dd>
+   Also print the number of samples encountered in the set of archives for each metric.
+  </dd>
+ </dl>
+ <p>
+  By default,
+  <b>
+   pmlogsummary
+  </b>
+  reports the time of day according to the local timezone on the
+system where
+  <b>
+   pmlogsummary
+  </b>
+  is run.
+The
+  <b>
+   -Z
+  </b>
+  option changes the timezone to
+  <i>
+   timezone
+  </i>
+  in the format of the environment variable
+  <b>
+   TZ
+  </b>
+  as described in
+  <b>
+   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+    environ
+   </a>
+  </b>
+  (7).
+
+The
+  <b>
+   -z
+  </b>
+  option changes the timezone to the local timezone at the
+host that is the source of the performance metrics, as specified in
+the label record of the archive log.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  OUTPUT FORMAT
+ </h2>
+ The
+ <b>
+  pmlogsummary
+ </b>
+ output format is spartan as it is intended to be post-processed with
+standard tools.  This means that there is no annotation associated with each
+output field which would make processing harder.  The intention is that
+ <b>
+  pmlogsummary
+ </b>
+ output be massaged into a format which can be used by a spreadsheet program,
+is suitable for inclusion in a web page, or whatever.
+ <p>
+  For each metric,
+  <b>
+   pmlogsummary
+  </b>
+  produces a single output line as follows:
+ </p>
+ <p>
+ </p>
+ <pre>
+<i>metricname</i>  <i>value(s)</i> <i>units</i>
+</pre>
+ <p>
+  For metrics with multiple instances,
+  <b>
+   pmlogsummary
+  </b>
+  produces multiple lines of output as follows:
+ </p>
+ <p>
+ </p>
+ <pre>
+<i>metricname</i> ["<i>instance 1</i>"] <i>value(s)</i> <i>units</i>
+<i>metricname</i> ["<i>instance 2</i>"] <i>value(s)</i> <i>units</i>
+<i>metricname</i> ["<i>instance N</i>"] <i>value(s)</i> <i>units</i>
+</pre>
+ <p>
+  The printed
+  <i>
+   value(s)
+  </i>
+  for each metric always follow this order:
+stochastic average, time average, minimum, minimum timestamp, maximum,
+maximum timestamp, count, [bin 1 range], bin 1 count, ... [bin
+  <i>
+   nbins
+  </i>
+  range], bin
+  <i>
+   nbins
+  </i>
+  count.
+The individual values for each metric are space-separated (unless the
+  <b>
+   -f
+  </b>
+  option is used).
+ </p>
+ <p>
+  All counter metrics which are measured in units of time will be converted
+to seconds before being rate converted and used in the
+  <b>
+   pmlogsummary
+  </b>
+  calculations.  The values calculated for these metrics are also printed
+in seconds.
+ </p>
+ <p>
+  The units will be displayed in the format described by
+  <b>
+   <a href="/man/man3/pmunitsstr.3.html">
+    pmUnitsStr
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  Given either of the
+  <b>
+   -i
+  </b>
+  or
+  <b>
+   -I
+  </b>
+  options,
+  <b>
+   pmlogsummary
+  </b>
+  produces two different timestamp formats, depending on the
+interval over which it is run.
+For an interval greater than 24 hours, the date is displayed in addition
+to the time at which the maxima and/or minima occurred.
+If the extent of the data being checked is less than 24 hours,
+a more precise format is used (time is displayed with millisecond
+precision, but without the date).
+ </p>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  NOTES
+ </h2>
+ The average for an individual metric is calculated as follows:
+ <p>
+  Non-counter metrics are averaged using stochastic averaging -
+each observation has an equal weighting towards
+the calculation of the average (the sum of all values divided
+by the total number of values, for each metric).
+ </p>
+ <p>
+  Counter metrics are averaged using time averaging (by default),
+but the
+  <b>
+   -x
+  </b>
+  option can be used to specify that counters be averaged using 
+the stochastic method instead.  When calculating a time average,
+the sum of the product of each sample value multiplied by the time difference
+between each sample, is divided by the total time over which
+that metric was logged.
+ </p>
+ <p>
+  Counter metrics whose measurements do not span 90% of the set of archives will be
+printed with the metric name prefixed by an asterisk (*).
+ </p>
+ <p>
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  EXAMPLE
+ </h2>
+ <p>
+ </p>
+ <pre>
+$ pmlogsummary -aN -p 1 -B 3 surf network.interface.out.bytes
+Log Label (Log Format Version 1)
+Performance metrics from host <a href="http://www.sgi.com">www.sgi.com</a>
+  commencing Tue Jan 14 20:50:50.317 1997
+  ending     Wed Jan 29 10:13:07.387 1997
+network.interface.out.bytes ["xpi0"] 202831.3 202062.5 20618.7 \
+        1235067.7 971 [&lt;=425435.0] 912 [&lt;=830251.4] 42 [&lt;=1235067.7] \
+        17 byte / sec
+network.interface.out.bytes ["xpi1"] 0.0 0.0 0.0 0.0 1033 [&lt;=0.0] \
+        1033 [] 0 [] 0 byte / sec
+network.interface.out.bytes ["et0"] 0.0 0.0 0.0 0.0 1033 [&lt;=0.0] \
+        1033 [] 0 [] 0 byte / sec
+network.interface.out.bytes ["lo0"] 899.0 895.2 142.6 9583.1 1031 \
+        [&lt;=3289.4] 1027 [&lt;=6436.2] 3 [&lt;=9583.1] 1 byte / sec
+</pre>
+ <p>
+  A description of each field in the first line of statistical output, which
+describes one instance of the network.interface.out.bytes metric,
+follows:
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Field
+       </td>
+       <td align="center">
+        Meaning
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="2">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        ["xpi0"]
+       </td>
+       <td>
+        instance name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        202831.3
+       </td>
+       <td>
+        stochastic average
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        202062.5
+       </td>
+       <td>
+        time average
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        20618.7
+       </td>
+       <td>
+        minimum value
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        1235067.7
+       </td>
+       <td>
+        maximum value
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        971
+       </td>
+       <td>
+        total number of values for this instance
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        [&lt;=425435.0]
+       </td>
+       <td>
+        range for first bin  (20618.7-425435.0)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        912
+       </td>
+       <td>
+        number of values in first bin
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        [&lt;=830251.4]
+       </td>
+       <td>
+        range for second bin  (425435.0-830251.4)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        42
+       </td>
+       <td>
+        number of values in second bin
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        [&lt;=1235067.7]
+       </td>
+       <td>
+        range for third bin  (830251.4-1235067.7)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        17
+       </td>
+       <td>
+        number of values in third bin
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        byte / sec
+       </td>
+       <td>
+        base units for this metric
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <a name="lbAH">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_VAR_DIR/pmns/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   default PMNS specification files
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmlogger/
+   </b>
+   <i>
+    hostname
+   </i>
+  </dt>
+  <dd>
+   Default directory for PCP archives containing performance
+metric values collected from the host
+   <i>
+    hostname
+   </i>
+   .
+  </dd>
+ </dl>
+ <a name="lbAI">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAJ">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumptext.1.html">
+   pmdumptext
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogextract.1.html">
+   pmlogextract
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmval.1.html">
+   pmval
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmunitsstr.3.html">
+   pmUnitsStr
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   pmns
+  </a>
+ </b>
+ (5).
+ <a name="lbAK">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-
+explanatory.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    OUTPUT FORMAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    NOTES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    EXAMPLE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

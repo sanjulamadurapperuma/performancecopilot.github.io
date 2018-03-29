@@ -1,619 +1,623 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='docpage'>
-              ﻿
-               <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
-                <font size="7">
-                 Site rules with
-                 <i>
-                  pmieconf
-                 </i>
-                </font>
-               </h1>
-               <p>
-                <br/>
-               </p>
-               <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
-                <tr>
-                 <td>
-                  <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
-              pmie
-              pmval
-              pmchart
-              pmieconf
-              pmdashping</pre>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                This tutorial covers customization of
-                <i>
-                 pmie
-                </i>
-                rules using
-                <i>
-                 pmieconf
-                </i>
-                .  For an explanation of Performance Co-Pilot
-              terms and acronyms, consult the
-                <a href="glossary.html">
-                 PCP glossary
-                </a>
-                .
-               </p>
-               <ul>
-                <li>
-                 <a href="#start">
-                  Initial setup
-                 </a>
-                </li>
-                <li>
-                 <a href="#pmieconf">
-                  Using
-                  <i>
-                   pmieconf
-                  </i>
-                  and
-                  <i>
-                   pmie
-                  </i>
-                 </a>
-                </li>
-                <li>
-                 <a href="#shping">
-                  Monitoring state with the
-                  <i>
-                   shping
-                  </i>
-                  PMDA
-                 </a>
-                </li>
-                <li>
-                 <a href="#custom">
-                  Custom site rules with
-                  <i>
-                   pmieconf
-                  </i>
-                 </a>
-                </li>
-               </ul>
-               <p>
-                It is advisable to first read the comprehensive introductory
-                <a href="lab.pmie.html">
-                 pmie
-                </a>
-                tutorial before tackling this one.
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="start">
-                      Initial Setup
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                In this exercise we create a scenario which exhibits the sort of behaviour
-              that might be of concern in a production environment.  We'll then use 
-              several PCP tools to detect, identify and understand the problem.
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td>
-                  <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                   <tr>
-                    <td width="50%">
-                     <br/>
-                     Simulate an "interesting" problem scenario:
-                     <br/>
-                     <pre><b>
-              $ while true; do sleep 0; done &amp;
-              </b></pre>
-                     <br/>
-                     Have a look at some of the effects it's having on the system:
-                     <br/>
-                     <pre><b>
-              $ pmchart -t 0.5sec -c CPU &amp;
-              </b></pre>
-                     <br/>
-                     Create a new chart showing the process context switch rate (
-                     <i>
-                      kernel.all.pswitch
-                     </i>
-                     ),
-              adding it to your existing display.
-                     <br/>
-                     <br/>
-                     <b>
-                      Important:
-                     </b>
-                     the above test case can be quite intrusive on low processor
-              count machines, so remember to terminate it when you've finished this tutorial:
-                     <pre><b>
-              $ jobs
-              [1]- Running     while true; do sleep 0; done &amp;
-              [2]+ Running     pmchart -t 0.5sec -c CPU &amp;
-              $ fg %1
-              </b></pre>
-                     <br/>
-                     However, you should leave it running throughout all of the tests below.
-                    </td>
-                   </tr>
-                  </table>
-                 </td>
-                 <td>
-                  <img align="RIGHT" alt="" border="0" src="images/cpu_pswitch.png"/>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="pmieconf">
-                      Using
-                      <i>
-                       pmieconf
-                      </i>
-                      and
-                      <i>
-                       pmie
-                      </i>
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="70%">
-                  <br/>
-                  Create your own
-                  <i>
-                   pmie
-                  </i>
-                  rules using
-                  <i>
-                   pmieconf
-                  </i>
-                  :
-                  <br/>
-                  <pre><b>$ pmieconf -f myrules
-              <i>pmieconf&gt;</i> disable all
-              <i>pmieconf&gt;</i> enable cpu.context_switch
-              <i>pmieconf&gt;</i> modify global delta "5 sec"
-              <i>pmieconf&gt;</i> modify global holdoff ""
-              <i>pmieconf&gt;</i> modify global syslog_action no
-              <i>pmieconf&gt;</i> modify global user_action yes
-              <i>pmieconf&gt;</i> quit
-              </b></pre>
-                  Determine what this command sequence has done by:
-                  <br/>
-                  <ul>
-                   <li>
-                    Inspecting the created file
-                    <i>
-                     myrules
-                    </i>
-                   </li>
-                   <li>
-                    Making reference to the
-                    <i>
-                     pmieconf
-                    </i>
-                    man page
-                   </li>
-                   <li>
-                    Exploring other
-                    <i>
-                     pmieconf
-                    </i>
-                    commands ("help"
-              	and "list" are useful in this context)
-                   </li>
-                  </ul>
-                  Run
-                  <i>
-                   pmie
-                  </i>
-                  rules using
-                  <i>
-                   pmieconf
-                  </i>
-                  , and see if the alarm messages appear on standard output:
-                  <br/>
-                  <pre><b>$ pmie -c myrules
-              </b></pre>
-                  Terminate
-                  <i>
-                   pmie
-                  </i>
-                  and use the reported values from
-                  <i>
-                   pmchart
-                  </i>
-                  to determine what the average rate of system calls is.  Then
-              re-run
-                  <i>
-                   pmieconf
-                  </i>
-                  to adjust the threshold level up or down to alter
-              the behaviour of
-                  <i>
-                   pmie
-                  </i>
-                  .
-              Re-run
-                  <i>
-                   pmie
-                  </i>
-                  .
-                  <pre><b>
-              $ pmieconf -f myrules
-              <i>pmieconf&gt;</i> modify cpu.context_switch threshold 5000    <i># 
-              <i>pmieconf&gt;</i> quit
-              $ pmie -c myrules
-              </i></b></pre>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="shping">
-                      Monitoring state with the
-                      <i>
-                       shping
-                      </i>
-                      PMDA
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <h3>
-                Installing
-                <i>
-                 pmdashping
-                </i>
-                to record system state
-               </h3>
-               <p>
-                The default
-                <i>
-                 shping
-                </i>
-                configuration is
-                <i>
-                 $PCP_PMDAS_DIR/shping/sample.conf
-                </i>
-                .  The comments explain the syntax.
-               </p>
-               <p>
-                Create a new configuration file, say
-                <i>
-                 $PCP_PMDAS_DIR/shping/my.conf
-                </i>
-                , with shell tag and command of the form:
-               </p>
-               <pre><b>
-                  no-pmie    test ! -f /tmp/no-pmie
-              </b></pre>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="70%">
-                  <br/>
-                  Install
-                  <i>
-                   pmdashping
-                  </i>
-                  :
-                  <pre><b># cd $PCP_PMDAS_DIR/shping
-              # ./Install
-              </b></pre>
-                  Mostly take the defaults, other than specifying your own
-              configuration file (
-                  <i>
-                   my.conf
-                  </i>
-                  ) and setting the cycle
-              time to 5 (seconds); don't worry about the timeout period, as
-              timeouts are not going to happen in this configuration of the
-              agent.
-                 </td>
-                </tr>
-               </table>
-               <h3>
-                Monitoring
-                <i>
-                 pmdashping
-                </i>
-                to observe system state
-               </h3>
-               <p>
-                In one window, use
-                <i>
-                 pmval
-                </i>
-                to monitor shping.status.
-               </p>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="70%">
-                  <br/>
-                  In a command shell:
-                  <br/>
-                  <pre><b>$ pmval -t 5 shping.status</b></pre>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                In another window, first create the file
-                <i>
-                 /tmp/no-pmie
-                </i>
-                ,
-              wait ten seconds, and then remove the file.
-              Observe what
-                <i>
-                 pmval
-                </i>
-                reports in the other window.
-              Terminate
-                <i>
-                 pmval
-                </i>
-                .
-               </p>
-               <p>
-                <br/>
-               </p>
-               <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                 <td width="100%">
-                  <p align="LEFT">
-                   <font size="5">
-                    <b>
-                     <a name="custom">
-                      Custom site rules with
-                      <i>
-                       pmieconf
-                      </i>
-                     </a>
-                    </b>
-                   </font>
-                  </p>
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Using your editor of choice, edit the
-                <i>
-                 pmieconf
-                </i>
-                output
-              file created earlier, i.e.
-                <i>
-                 myrules
-                </i>
-                .
-              Append a new rule at the end (after the
-                <b>
-                 END GENERATED SECTION
-                </b>
-                line),
-              that is a
-                <i>
-                 copy
-                </i>
-                of the
-                <b>
-                 cpu.context_switch
-                </b>
-                rule.
-               </p>
-               <p>
-                To this new rule, add the following conjunct before the action line (containing -&gt;), modify the message in the new rule's action to be different to the standard rule, make sure the threshold is low enough for the predicate to be true, and then save the file.
-               </p>
-               <pre><b>    &amp;&amp; shping.status #'no-pmie' == 0</b></pre>
-               <table border="0" cellpadding="10" cellspacing="20" width="100%">
-                <tr>
-                 <td width="70%">
-                  <br/>
-                  Re-run
-                  <i>
-                   pmieconf
-                  </i>
-                  to disable the standard rule:
-                  <br/>
-                  <pre><b>$ pmieconf -f myrules
-              <i>pmieconf&gt;</i> disable cpu.context_switch
-              <i>pmieconf&gt;</i> quit
-              </b></pre>
-                  Inspect the re-created file
-                  <i>
-                   myrules
-                  </i>
-                  .
-              Check your new rule is still there and the standard rule has been removed.
-                 </td>
-                </tr>
-               </table>
-               <p>
-                Run
-                <i>
-                 pmie
-                </i>
-                using
-                <i>
-                 myrules
-                </i>
-                , and verify that your new alarm messages appear on standard output.
-              In another window, create the file
-                <i>
-                 /tmp/no-pmie
-                </i>
-                , wait a while, then remove the file.
-               </p>
-               <p>
-                Notice there may be some delay between the creation or removal of
-                <i>
-                 /tmp/no-pmie
-                </i>
-                and the change in
-                <i>
-                 pmie
-                </i>
-                behaviour.  Can you explain this?
-               </p>
-               <p>
-                <br/>
-               </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='docpage'>
+﻿
+ <h1 align="CENTER" style="margin-top: 0.48cm; margin-bottom: 0.32cm">
+  <font size="7">
+   Site rules with
+   <i>
+    pmieconf
+   </i>
+  </font>
+ </h1>
+ <p>
+  <br/>
+ </p>
+ <table align="RIGHT" border="0" cellpadding="5" cellspacing="10" width="15%">
+  <tr>
+   <td>
+    <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
+pmie
+pmval
+pmchart
+pmieconf
+pmdashping</pre>
+   </td>
+  </tr>
+ </table>
+ <p>
+  This tutorial covers customization of
+  <i>
+   pmie
+  </i>
+  rules using
+  <i>
+   pmieconf
+  </i>
+  .  For an explanation of Performance Co-Pilot
+terms and acronyms, consult the
+  <a href="glossary.html">
+   PCP glossary
+  </a>
+  .
+ </p>
+ <ul>
+  <li>
+   <a href="#start">
+    Initial setup
+   </a>
+  </li>
+  <li>
+   <a href="#pmieconf">
+    Using
+    <i>
+     pmieconf
+    </i>
+    and
+    <i>
+     pmie
+    </i>
+   </a>
+  </li>
+  <li>
+   <a href="#shping">
+    Monitoring state with the
+    <i>
+     shping
+    </i>
+    PMDA
+   </a>
+  </li>
+  <li>
+   <a href="#custom">
+    Custom site rules with
+    <i>
+     pmieconf
+    </i>
+   </a>
+  </li>
+ </ul>
+ <p>
+  It is advisable to first read the comprehensive introductory
+  <a href="lab.pmie.html">
+   pmie
+  </a>
+  tutorial before tackling this one.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="start">
+        Initial Setup
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  In this exercise we create a scenario which exhibits the sort of behaviour
+that might be of concern in a production environment.  We'll then use 
+several PCP tools to detect, identify and understand the problem.
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td>
+    <table border="0" cellpadding="10" cellspacing="20" width="100%">
+     <tr>
+      <td width="50%">
+       <br/>
+       Simulate an "interesting" problem scenario:
+       <br/>
+       <pre><b>
+$ while true; do sleep 0; done &amp;
+</b></pre>
+       <br/>
+       Have a look at some of the effects it's having on the system:
+       <br/>
+       <pre><b>
+$ pmchart -t 0.5sec -c CPU &amp;
+</b></pre>
+       <br/>
+       Create a new chart showing the process context switch rate (
+       <i>
+        kernel.all.pswitch
+       </i>
+       ),
+adding it to your existing display.
+       <br/>
+       <br/>
+       <b>
+        Important:
+       </b>
+       the above test case can be quite intrusive on low processor
+count machines, so remember to terminate it when you've finished this tutorial:
+       <pre><b>
+$ jobs
+[1]- Running     while true; do sleep 0; done &amp;
+[2]+ Running     pmchart -t 0.5sec -c CPU &amp;
+$ fg %1
+</b></pre>
+       <br/>
+       However, you should leave it running throughout all of the tests below.
+      </td>
+     </tr>
+    </table>
+   </td>
+   <td>
+    <img align="RIGHT" alt="" border="0" src="images/cpu_pswitch.png"/>
+   </td>
+  </tr>
+ </table>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="pmieconf">
+        Using
+        <i>
+         pmieconf
+        </i>
+        and
+        <i>
+         pmie
+        </i>
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    Create your own
+    <i>
+     pmie
+    </i>
+    rules using
+    <i>
+     pmieconf
+    </i>
+    :
+    <br/>
+    <pre><b>$ pmieconf -f myrules
+<i>pmieconf&gt;</i> disable all
+<i>pmieconf&gt;</i> enable cpu.context_switch
+<i>pmieconf&gt;</i> modify global delta "5 sec"
+<i>pmieconf&gt;</i> modify global holdoff ""
+<i>pmieconf&gt;</i> modify global syslog_action no
+<i>pmieconf&gt;</i> modify global user_action yes
+<i>pmieconf&gt;</i> quit
+</b></pre>
+    Determine what this command sequence has done by:
+    <br/>
+    <ul>
+     <li>
+      Inspecting the created file
+      <i>
+       myrules
+      </i>
+     </li>
+     <li>
+      Making reference to the
+      <i>
+       pmieconf
+      </i>
+      man page
+     </li>
+     <li>
+      Exploring other
+      <i>
+       pmieconf
+      </i>
+      commands ("help"
+	and "list" are useful in this context)
+     </li>
+    </ul>
+    Run
+    <i>
+     pmie
+    </i>
+    rules using
+    <i>
+     pmieconf
+    </i>
+    , and see if the alarm messages appear on standard output:
+    <br/>
+    <pre><b>$ pmie -c myrules
+</b></pre>
+    Terminate
+    <i>
+     pmie
+    </i>
+    and use the reported values from
+    <i>
+     pmchart
+    </i>
+    to determine what the average rate of system calls is.  Then
+re-run
+    <i>
+     pmieconf
+    </i>
+    to adjust the threshold level up or down to alter
+the behaviour of
+    <i>
+     pmie
+    </i>
+    .
+Re-run
+    <i>
+     pmie
+    </i>
+    .
+    <pre><b>
+$ pmieconf -f myrules
+<i>pmieconf&gt;</i> modify cpu.context_switch threshold 5000    <i># 
+<i>pmieconf&gt;</i> quit
+$ pmie -c myrules
+</i></b></pre>
+   </td>
+  </tr>
+ </table>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="shping">
+        Monitoring state with the
+        <i>
+         shping
+        </i>
+        PMDA
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <h3>
+  Installing
+  <i>
+   pmdashping
+  </i>
+  to record system state
+ </h3>
+ <p>
+  The default
+  <i>
+   shping
+  </i>
+  configuration is
+  <i>
+   $PCP_PMDAS_DIR/shping/sample.conf
+  </i>
+  .  The comments explain the syntax.
+ </p>
+ <p>
+  Create a new configuration file, say
+  <i>
+   $PCP_PMDAS_DIR/shping/my.conf
+  </i>
+  , with shell tag and command of the form:
+ </p>
+ <pre><b>
+    no-pmie    test ! -f /tmp/no-pmie
+</b></pre>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    Install
+    <i>
+     pmdashping
+    </i>
+    :
+    <pre><b># cd $PCP_PMDAS_DIR/shping
+# ./Install
+</b></pre>
+    Mostly take the defaults, other than specifying your own
+configuration file (
+    <i>
+     my.conf
+    </i>
+    ) and setting the cycle
+time to 5 (seconds); don't worry about the timeout period, as
+timeouts are not going to happen in this configuration of the
+agent.
+   </td>
+  </tr>
+ </table>
+ <h3>
+  Monitoring
+  <i>
+   pmdashping
+  </i>
+  to observe system state
+ </h3>
+ <p>
+  In one window, use
+  <i>
+   pmval
+  </i>
+  to monitor shping.status.
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    In a command shell:
+    <br/>
+    <pre><b>$ pmval -t 5 shping.status</b></pre>
+   </td>
+  </tr>
+ </table>
+ <p>
+  In another window, first create the file
+  <i>
+   /tmp/no-pmie
+  </i>
+  ,
+wait ten seconds, and then remove the file.
+Observe what
+  <i>
+   pmval
+  </i>
+  reports in the other window.
+Terminate
+  <i>
+   pmval
+  </i>
+  .
+ </p>
+ <p>
+  <br/>
+ </p>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td width="100%">
+    <p align="LEFT">
+     <font size="5">
+      <b>
+       <a name="custom">
+        Custom site rules with
+        <i>
+         pmieconf
+        </i>
+       </a>
+      </b>
+     </font>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Using your editor of choice, edit the
+  <i>
+   pmieconf
+  </i>
+  output
+file created earlier, i.e.
+  <i>
+   myrules
+  </i>
+  .
+Append a new rule at the end (after the
+  <b>
+   END GENERATED SECTION
+  </b>
+  line),
+that is a
+  <i>
+   copy
+  </i>
+  of the
+  <b>
+   cpu.context_switch
+  </b>
+  rule.
+ </p>
+ <p>
+  To this new rule, add the following conjunct before the action line (containing -&gt;), modify the message in the new rule's action to be different to the standard rule, make sure the threshold is low enough for the predicate to be true, and then save the file.
+ </p>
+ <pre><b>    &amp;&amp; shping.status #'no-pmie' == 0</b></pre>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    Re-run
+    <i>
+     pmieconf
+    </i>
+    to disable the standard rule:
+    <br/>
+    <pre><b>$ pmieconf -f myrules
+<i>pmieconf&gt;</i> disable cpu.context_switch
+<i>pmieconf&gt;</i> quit
+</b></pre>
+    Inspect the re-created file
+    <i>
+     myrules
+    </i>
+    .
+Check your new rule is still there and the standard rule has been removed.
+   </td>
+  </tr>
+ </table>
+ <p>
+  Run
+  <i>
+   pmie
+  </i>
+  using
+  <i>
+   myrules
+  </i>
+  , and verify that your new alarm messages appear on standard output.
+In another window, create the file
+  <i>
+   /tmp/no-pmie
+  </i>
+  , wait a while, then remove the file.
+ </p>
+ <p>
+  Notice there may be some delay between the creation or removal of
+  <i>
+   /tmp/no-pmie
+  </i>
+  and the change in
+  <i>
+   pmie
+  </i>
+  behaviour.  Can you explain this?
+ </p>
+ <p>
+  <br/>
+ </p>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

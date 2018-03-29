@@ -1,741 +1,745 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMPROBE
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmprobe
-               </b>
-               - lightweight probe for performance metrics
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmprobe
-               </b>
-               [
-               <b>
-                -fFIiLVvz
-               </b>
-               ]
-              [
-               <b>
-                -a
-               </b>
-               <i>
-                archive
-               </i>
-               ]
-              [
-               <b>
-                -h
-               </b>
-               <i>
-                hostname
-               </i>
-               ]
-              [
-               <b>
-                -K
-               </b>
-               <i>
-                spec
-               </i>
-               ]
-              [
-               <b>
-                -n
-               </b>
-               <i>
-                pmnsfile
-               </i>
-               ]
-              [
-               <b>
-                -O
-               </b>
-               <i>
-                time
-               </i>
-               ]
-              [
-               <b>
-                -Z
-               </b>
-               <i>
-                timezone
-               </i>
-               ]
-              [
-               <i>
-                metricname
-               </i>
-               ...]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmprobe
-               </b>
-               determines the availability of performance metrics
-              exported through the facilities of the Performance Co-Pilot (PCP).
-               <p>
-                The metrics of interest are named in the
-                <i>
-                 metricname
-                </i>
-                arguments.
-              If
-                <i>
-                 metricname
-                </i>
-                is a non-leaf node in the Performance Metrics Name Space (
-                <b>
-                 <a href="/man/man5/pmns.5.html">
-                  pmns
-                 </a>
-                </b>
-                (5)),
-              
-              then
-                <b>
-                 pmprobe
-                </b>
-                will recursively descend the PMNS and report on all leaf nodes.
-              If no
-                <i>
-                 metricname
-                </i>
-                argument is given, the root of the namespace is used.
-               </p>
-               <p>
-                This recursive expansion of the PMNS can be inhibited by the
-                <b>
-                 -F
-                </b>
-                (go faster) option, which reduces the number of roundtrips to
-                <b>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </b>
-                (1)
-              
-              when the
-                <i>
-                 metricname
-                </i>
-                arguments are known to be leaf nodes ahead of time.
-               </p>
-               <p>
-                The output format is spartan and intended for use in wrapper
-              scripts creating configuration files for other PCP tools.
-              By default, there is one line of output per metric, with the
-              metric name followed by a count of the number of available values.
-              Error conditions are encoded as a negative value count (as
-              per the
-                <b>
-                 <a href="/man/man3/pmapi.3.html">
-                  PMAPI
-                 </a>
-                </b>
-                (3)
-              
-              protocols, but may be decoded using
-                <b>
-                 <a href="/man/man1/pmerr.1.html">
-                  pmerr
-                 </a>
-                </b>
-                (1))
-              
-              and followed by a textual description of the error.
-               </p>
-               <p>
-                Unless directed to another host by the
-                <b>
-                 -h
-                </b>
-                option,
-                <b>
-                 pmprobe
-                </b>
-                will contact the Performance Metrics Collector Daemon
-              (PMCD) on the local host.
-               </p>
-               <p>
-                The
-                <b>
-                 -a
-                </b>
-                option causes
-                <b>
-                 pmprobe
-                </b>
-                to use the specified set of archives rather than connecting to a PMCD.
-              The argument is a comma-separated list of names, each
-              of which may be the base name of an archive or the name of a directory containing
-              one or more archives.
-              The
-                <b>
-                 -a
-                </b>
-                and
-                <b>
-                 -h
-                </b>
-                options are mutually exclusive.
-               </p>
-               <p>
-                The
-                <b>
-                 -L
-                </b>
-                option causes
-                <b>
-                 pmprobe
-                </b>
-                to use a local context to collect metrics from PMDAs on the local host
-              without PMCD.  Only some metrics are available in this mode.
-              The
-                <b>
-                 -a
-                </b>
-                ,
-                <b>
-                 -h
-                </b>
-                and
-                <b>
-                 -L
-                </b>
-                options are mutually exclusive.
-               </p>
-               <p>
-                Normally
-                <b>
-                 pmprobe
-                </b>
-                operates on the distributed Performance Metrics Name Space (PMNS),
-              however, if the
-                <b>
-                 -n
-                </b>
-                option is specified an alternative local PMNS file is loaded
-              from the file
-                <i>
-                 pmnsfile
-                </i>
-                .
-               </p>
-               <p>
-                Other options control the output of additional information when
-              one or more values is available.
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -f
-                 </b>
-                </dt>
-                <dd>
-                 When used with
-                 <b>
-                  -i
-                 </b>
-                 or
-                 <b>
-                  -I
-                 </b>
-                 the set of instances reported will be all of those known at the
-              source of the performance data.  By default the set of reported
-              instances are those for which values are currently available, which
-              may be smaller than the set reported with
-                 <b>
-                  -f
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  -I
-                 </b>
-                </dt>
-                <dd>
-                 Report the external identifiers for each instance.  The literal string
-                 <b>
-                  PM_IN_NULL
-                 </b>
-                 is reported for singular metrics.
-                </dd>
-                <dt>
-                 <b>
-                  -i
-                 </b>
-                </dt>
-                <dd>
-                 Report the internal identifiers for each instance.  The values are
-              in decimal and prefixed by ``?''.  As a special case, the literal
-              string
-                 <b>
-                  PM_IN_NULL
-                 </b>
-                 is reported for singular metrics.
-                </dd>
-                <dt>
-                 <b>
-                  -K
-                 </b>
-                </dt>
-                <dd>
-                 When using the
-                 <b>
-                  -L
-                 </b>
-                 option to fetch metrics from a local context, the
-                 <b>
-                  -K
-                 </b>
-                 option may be used to control the DSO PMDAs that should be
-              made accessible.  The
-                 <i>
-                  spec
-                 </i>
-                 argument conforms to the syntax described in
-                 <b>
-                  <a href="/man/man3/pmspeclocalpmda.3.html">
-                   pmSpecLocalPMDA
-                  </a>
-                 </b>
-                 (3).
-              
-              More than one
-                 <b>
-                  -K
-                 </b>
-                 option may be used.
-                </dd>
-                <dt>
-                 <b>
-                  -O
-                 </b>
-                </dt>
-                <dd>
-                 When used in conjunction with an archive source of metrics and
-              the
-                 <b>
-                  -v
-                 </b>
-                 option the
-                 <i>
-                  time
-                 </i>
-                 argument defines a time origin at which the metrics should be
-              fetched from the archive(s).
-              Refer to
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPIntro
-                  </a>
-                 </b>
-                 (1)
-              
-              for a complete description of this option, and the syntax for the
-                 <i>
-                  time
-                 </i>
-                 argument.
-                </dd>
-                <dt>
-                 <b>
-                  -v
-                 </b>
-                </dt>
-                <dd>
-                 Report the value for each instance, as per the formatting
-              rules of
-                 <b>
-                  <a href="/man/man3/pmprintvalue.3.html">
-                   pmPrintValue
-                  </a>
-                 </b>
-                 (3).
-              
-              When fetching from a set of archives, only
-              those instances present in the first archive record for a metric will be
-              displayed; see also the
-                 <b>
-                  -O
-                 </b>
-                 option.
-                </dd>
-               </dl>
-               <p>
-                The
-                <b>
-                 -v
-                </b>
-                option is mutually exclusive with either the
-                <b>
-                 -I
-                </b>
-                or
-                <b>
-                 -i
-                </b>
-                options.
-               </p>
-               <p>
-                The
-                <b>
-                 -V
-                </b>
-                option provides a cryptic summary of the number of messages sent
-              and received across the PMAPI interface.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                EXAMPLES
-               </h2>
-               <pre>
-              $ pmprobe disk.dev
-              disk.dev.read 2
-              disk.dev.write 2
-              disk.dev.total 2
-              disk.dev.blkread 2
-              disk.dev.blkwrite 2
-              disk.dev.blktotal 2
-              disk.dev.active 2
-              disk.dev.response 2
-              
-              $ pmprobe -I disk.dev.read disk.dev.write disk.all.total
-              disk.dev.read 2 "dks0d1" "dks0d2"
-              disk.dev.write 2 "dks0d1" "dks0d2"
-              disk.all.total 1 PM_IN_NULL
-              
-              $ pmprobe -v pmcd.numagents pmcd.version pmcd.control.timeout
-              pmcd.numagents 1 9
-              pmcd.version 1 "2.0 beta-1"
-              pmcd.control.timeout 1 5
-              
-              $ pmprobe -v disk.dev.total disk.all.total
-              disk.dev.total -1012 Unknown metric name
-              disk.all.total 1 4992466
-              </pre>
-               <a name="lbAF">
-               </a>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_VAR_DIR/pmns/
-                 </b>
-                 <i>
-                  *
-                 </i>
-                </dt>
-                <dd>
-                 default PMNS specification files
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAH">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumplog.1.html">
-                 pmdumplog
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pminfo.1.html">
-                 pminfo
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmerrstr.3.html">
-                 pmErrStr
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmspeclocalpmda.3.html">
-                 pmSpecLocalPMDA
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5),
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pmns.5.html">
-                 pmns
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  EXAMPLES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMPROBE
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmprobe
+ </b>
+ - lightweight probe for performance metrics
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmprobe
+ </b>
+ [
+ <b>
+  -fFIiLVvz
+ </b>
+ ]
+[
+ <b>
+  -a
+ </b>
+ <i>
+  archive
+ </i>
+ ]
+[
+ <b>
+  -h
+ </b>
+ <i>
+  hostname
+ </i>
+ ]
+[
+ <b>
+  -K
+ </b>
+ <i>
+  spec
+ </i>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -O
+ </b>
+ <i>
+  time
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+[
+ <i>
+  metricname
+ </i>
+ ...]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmprobe
+ </b>
+ determines the availability of performance metrics
+exported through the facilities of the Performance Co-Pilot (PCP).
+ <p>
+  The metrics of interest are named in the
+  <i>
+   metricname
+  </i>
+  arguments.
+If
+  <i>
+   metricname
+  </i>
+  is a non-leaf node in the Performance Metrics Name Space (
+  <b>
+   <a href="/man/man5/pmns.5.html">
+    pmns
+   </a>
+  </b>
+  (5)),
+
+then
+  <b>
+   pmprobe
+  </b>
+  will recursively descend the PMNS and report on all leaf nodes.
+If no
+  <i>
+   metricname
+  </i>
+  argument is given, the root of the namespace is used.
+ </p>
+ <p>
+  This recursive expansion of the PMNS can be inhibited by the
+  <b>
+   -F
+  </b>
+  (go faster) option, which reduces the number of roundtrips to
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+when the
+  <i>
+   metricname
+  </i>
+  arguments are known to be leaf nodes ahead of time.
+ </p>
+ <p>
+  The output format is spartan and intended for use in wrapper
+scripts creating configuration files for other PCP tools.
+By default, there is one line of output per metric, with the
+metric name followed by a count of the number of available values.
+Error conditions are encoded as a negative value count (as
+per the
+  <b>
+   <a href="/man/man3/pmapi.3.html">
+    PMAPI
+   </a>
+  </b>
+  (3)
+
+protocols, but may be decoded using
+  <b>
+   <a href="/man/man1/pmerr.1.html">
+    pmerr
+   </a>
+  </b>
+  (1))
+
+and followed by a textual description of the error.
+ </p>
+ <p>
+  Unless directed to another host by the
+  <b>
+   -h
+  </b>
+  option,
+  <b>
+   pmprobe
+  </b>
+  will contact the Performance Metrics Collector Daemon
+(PMCD) on the local host.
+ </p>
+ <p>
+  The
+  <b>
+   -a
+  </b>
+  option causes
+  <b>
+   pmprobe
+  </b>
+  to use the specified set of archives rather than connecting to a PMCD.
+The argument is a comma-separated list of names, each
+of which may be the base name of an archive or the name of a directory containing
+one or more archives.
+The
+  <b>
+   -a
+  </b>
+  and
+  <b>
+   -h
+  </b>
+  options are mutually exclusive.
+ </p>
+ <p>
+  The
+  <b>
+   -L
+  </b>
+  option causes
+  <b>
+   pmprobe
+  </b>
+  to use a local context to collect metrics from PMDAs on the local host
+without PMCD.  Only some metrics are available in this mode.
+The
+  <b>
+   -a
+  </b>
+  ,
+  <b>
+   -h
+  </b>
+  and
+  <b>
+   -L
+  </b>
+  options are mutually exclusive.
+ </p>
+ <p>
+  Normally
+  <b>
+   pmprobe
+  </b>
+  operates on the distributed Performance Metrics Name Space (PMNS),
+however, if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative local PMNS file is loaded
+from the file
+  <i>
+   pmnsfile
+  </i>
+  .
+ </p>
+ <p>
+  Other options control the output of additional information when
+one or more values is available.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -f
+   </b>
+  </dt>
+  <dd>
+   When used with
+   <b>
+    -i
+   </b>
+   or
+   <b>
+    -I
+   </b>
+   the set of instances reported will be all of those known at the
+source of the performance data.  By default the set of reported
+instances are those for which values are currently available, which
+may be smaller than the set reported with
+   <b>
+    -f
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -I
+   </b>
+  </dt>
+  <dd>
+   Report the external identifiers for each instance.  The literal string
+   <b>
+    PM_IN_NULL
+   </b>
+   is reported for singular metrics.
+  </dd>
+  <dt>
+   <b>
+    -i
+   </b>
+  </dt>
+  <dd>
+   Report the internal identifiers for each instance.  The values are
+in decimal and prefixed by ``?''.  As a special case, the literal
+string
+   <b>
+    PM_IN_NULL
+   </b>
+   is reported for singular metrics.
+  </dd>
+  <dt>
+   <b>
+    -K
+   </b>
+  </dt>
+  <dd>
+   When using the
+   <b>
+    -L
+   </b>
+   option to fetch metrics from a local context, the
+   <b>
+    -K
+   </b>
+   option may be used to control the DSO PMDAs that should be
+made accessible.  The
+   <i>
+    spec
+   </i>
+   argument conforms to the syntax described in
+   <b>
+    <a href="/man/man3/pmspeclocalpmda.3.html">
+     pmSpecLocalPMDA
+    </a>
+   </b>
+   (3).
+
+More than one
+   <b>
+    -K
+   </b>
+   option may be used.
+  </dd>
+  <dt>
+   <b>
+    -O
+   </b>
+  </dt>
+  <dd>
+   When used in conjunction with an archive source of metrics and
+the
+   <b>
+    -v
+   </b>
+   option the
+   <i>
+    time
+   </i>
+   argument defines a time origin at which the metrics should be
+fetched from the archive(s).
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of this option, and the syntax for the
+   <i>
+    time
+   </i>
+   argument.
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   Report the value for each instance, as per the formatting
+rules of
+   <b>
+    <a href="/man/man3/pmprintvalue.3.html">
+     pmPrintValue
+    </a>
+   </b>
+   (3).
+
+When fetching from a set of archives, only
+those instances present in the first archive record for a metric will be
+displayed; see also the
+   <b>
+    -O
+   </b>
+   option.
+  </dd>
+ </dl>
+ <p>
+  The
+  <b>
+   -v
+  </b>
+  option is mutually exclusive with either the
+  <b>
+   -I
+  </b>
+  or
+  <b>
+   -i
+  </b>
+  options.
+ </p>
+ <p>
+  The
+  <b>
+   -V
+  </b>
+  option provides a cryptic summary of the number of messages sent
+and received across the PMAPI interface.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  EXAMPLES
+ </h2>
+ <pre>
+$ pmprobe disk.dev
+disk.dev.read 2
+disk.dev.write 2
+disk.dev.total 2
+disk.dev.blkread 2
+disk.dev.blkwrite 2
+disk.dev.blktotal 2
+disk.dev.active 2
+disk.dev.response 2
+
+$ pmprobe -I disk.dev.read disk.dev.write disk.all.total
+disk.dev.read 2 "dks0d1" "dks0d2"
+disk.dev.write 2 "dks0d1" "dks0d2"
+disk.all.total 1 PM_IN_NULL
+
+$ pmprobe -v pmcd.numagents pmcd.version pmcd.control.timeout
+pmcd.numagents 1 9
+pmcd.version 1 "2.0 beta-1"
+pmcd.control.timeout 1 5
+
+$ pmprobe -v disk.dev.total disk.all.total
+disk.dev.total -1012 Unknown metric name
+disk.all.total 1 4992466
+</pre>
+ <a name="lbAF">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_VAR_DIR/pmns/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   default PMNS specification files
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAH">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmerrstr.3.html">
+   pmErrStr
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmspeclocalpmda.3.html">
+   pmSpecLocalPMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   pmns
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

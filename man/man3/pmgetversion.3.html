@@ -1,332 +1,336 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMGETVERSION
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmGetVersion
-               </b>
-               - fetch installed PCP version number
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                int pmGetVersion(void);
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmGetVersion
-               </b>
-               returns a binary encoding of the locally installed PCP version number.
-               <p>
-                This may be used in conjunction with the related macros
-                <b>
-                 PM_VERSION
-                </b>
-                (a,b,c)
-              
-              and
-                <b>
-                 PM_VERSION_CURRENT
-                </b>
-                that generate PCP version numbers in the same format.  Refer to the
-              example below.
-               </p>
-               <p>
-                The encoding uses one byte for each of the parts of the version number of the
-              installed PCP package, namely the major number, the minor number
-              and the revision number.  So PCP version 3.10.5 is encoded as 0x30a05.
-               </p>
-               <p>
-                The string format of the installed PCP package version number
-              as also available from
-                <b>
-                 pmGetConfig
-                </b>
-                with the argument
-                <b>
-                 PCP_VERSION
-                </b>
-                .
-               </p>
-               <p>
-                <b>
-                 pmGetVersion
-                </b>
-                was introduced in PCP 3.10.5.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                EXAMPLE
-               </h2>
-               The following C fragment demonstrates the use of both the compile-time
-              macros and the run-time
-               <b>
-                pmGetVersion
-               </b>
-               function for an application that should not be built for PCP versions
-              older than 3.10.5, but after that there are two alternative implementations
-              with a newer (faster, sweeter, smaller) variant 
-              of the XYZ service that only becoming available
-              in PCP 4.0.0.
-               <p>
-               </p>
-               <pre>
-              #include &lt;<a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">pcp/pmapi.h</a>&gt;
-              
-              #ifdef PM_VERSION_CURRENT
-              #if PM_VERSION_CURRENT &lt; PM_VERSION(3,10,5)
-                  /* no pmGetVersion() before PCP 3.10.5 */
-                  printf("PCP version 0x%x too old\n", PM_VERSION_CURRENT);
-              #endif
-                  version = pmGetVersion();
-                  if (version &gt;= PM_VERSION(4,0,0) {
-                      /* V2 of the XYZ service introduced in PCP 4.0.0 */
-                      printf("Using V2 of service XYZ\n")
-                      ...
-                  }
-                  else {
-                      printf("Using V1 of service XYZ\n")
-                      ...
-                  }
-              #else
-                  {
-                      char *ver = pmGetConfig("PCP_VERSION");
-                      /* only option is to extract version number from returned string */
-                      ...
-                  }
-              #endif
-              </pre>
-               <a name="lbAF">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-              
-              and
-               <b>
-                <a href="/man/man3/pmgetconfig.3.html">
-                 pmGetConfig
-                </a>
-               </b>
-               (3).
-               <a name="lbAG">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               None.
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  EXAMPLE
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMGETVERSION
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmGetVersion
+ </b>
+ - fetch installed PCP version number
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  int pmGetVersion(void);
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmGetVersion
+ </b>
+ returns a binary encoding of the locally installed PCP version number.
+ <p>
+  This may be used in conjunction with the related macros
+  <b>
+   PM_VERSION
+  </b>
+  (a,b,c)
+
+and
+  <b>
+   PM_VERSION_CURRENT
+  </b>
+  that generate PCP version numbers in the same format.  Refer to the
+example below.
+ </p>
+ <p>
+  The encoding uses one byte for each of the parts of the version number of the
+installed PCP package, namely the major number, the minor number
+and the revision number.  So PCP version 3.10.5 is encoded as 0x30a05.
+ </p>
+ <p>
+  The string format of the installed PCP package version number
+as also available from
+  <b>
+   pmGetConfig
+  </b>
+  with the argument
+  <b>
+   PCP_VERSION
+  </b>
+  .
+ </p>
+ <p>
+  <b>
+   pmGetVersion
+  </b>
+  was introduced in PCP 3.10.5.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  EXAMPLE
+ </h2>
+ The following C fragment demonstrates the use of both the compile-time
+macros and the run-time
+ <b>
+  pmGetVersion
+ </b>
+ function for an application that should not be built for PCP versions
+older than 3.10.5, but after that there are two alternative implementations
+with a newer (faster, sweeter, smaller) variant 
+of the XYZ service that only becoming available
+in PCP 4.0.0.
+ <p>
+ </p>
+ <pre>
+#include &lt;<a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">pcp/pmapi.h</a>&gt;
+
+#ifdef PM_VERSION_CURRENT
+#if PM_VERSION_CURRENT &lt; PM_VERSION(3,10,5)
+    /* no pmGetVersion() before PCP 3.10.5 */
+    printf("PCP version 0x%x too old\n", PM_VERSION_CURRENT);
+#endif
+    version = pmGetVersion();
+    if (version &gt;= PM_VERSION(4,0,0) {
+        /* V2 of the XYZ service introduced in PCP 4.0.0 */
+        printf("Using V2 of service XYZ\n")
+        ...
+    }
+    else {
+        printf("Using V1 of service XYZ\n")
+        ...
+    }
+#else
+    {
+        char *ver = pmGetConfig("PCP_VERSION");
+        /* only option is to extract version number from returned string */
+        ...
+    }
+#endif
+</pre>
+ <a name="lbAF">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+
+and
+ <b>
+  <a href="/man/man3/pmgetconfig.3.html">
+   pmGetConfig
+  </a>
+ </b>
+ (3).
+ <a name="lbAG">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ None.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

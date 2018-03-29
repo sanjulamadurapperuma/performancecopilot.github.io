@@ -1,504 +1,508 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                QMC_SOURCE
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                QmcSource
-               </b>
-               - manages contexts created by all groups
-               <a name="lbAC">
-               </a>
-               <h2>
-                C++ SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="file:///usr/include/QmcSource.h">
-                 QmcSource.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                CC ... -lqmc -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               The
-               <b>
-                QmcSource
-               </b>
-               class maintains a unique list of all metric sources in use to minimize
-              the creation of new contexts (see
-               <b>
-                <a href="/man/man3/pmnewcontext.3.html">
-                 pmNewContext
-                </a>
-               </b>
-               (3))
-              
-              when the context could have been duplicated (see
-               <b>
-                <a href="/man/man3/pmdupcontext.3.html">
-                 pmDupContext
-                </a>
-               </b>
-               (3)).
-              
-              This also reduces the duplication of descriptions of each source.
-               <p>
-                In general,
-                <b>
-                 QMC
-                </b>
-                users should only need to access
-                <b>
-                 QmcSource
-                </b>
-                methods to obtain source descriptions for a
-                <b>
-                 <a href="/man/man3/qmccontext.3.html">
-                  QmcContext
-                 </a>
-                </b>
-                (3)
-              
-              object.  All context creation by the user should be handled through
-                <b>
-                 <a href="/man/man3/qmcgroup.3.html">
-                  QmcGroup
-                 </a>
-                </b>
-                (3).
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                DESTRUCTOR
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  ~QmcSource();
-                 </b>
-                </dt>
-                <dd>
-                 Destructor.
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                CONSTRUCTORS
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  static QmcSource* getSource(int type, const char* source,
-                 </b>
-                </dt>
-                <dd>
-                 <b>
-                  bool matchHosts)
-                 </b>
-                 <p>
-                  This method will return a
-                  <b>
-                   QmcSource
-                  </b>
-                  object that represents a context of
-                  <i>
-                   type
-                  </i>
-                  to
-                  <i>
-                   source
-                  </i>
-                  .
-              
-              The
-                  <b>
-                   QmcSource
-                  </b>
-                  object may be a new object if the
-                  <i>
-                   source
-                  </i>
-                  has not been previously requested. Memory management of the
-                  <b>
-                   QmcSource
-                  </b>
-                  objects is handled by
-                  <b>
-                   QmcSource
-                  </b>
-                  .
-              
-              If all
-                  <b>
-                   <a href="/man/man3/qmccontext.3.html">
-                    QmcContext
-                   </a>
-                  </b>
-                  (3)s
-              
-              to the
-                  <b>
-                   QmcSource
-                  </b>
-                  have been deleted, the
-                  <b>
-                   QmcSource
-                  </b>
-                  object will also be deleted.
-                 </p>
-                 <p>
-                  The
-                  <i>
-                   matchHosts
-                  </i>
-                  flag controls the algorithm that is used to match hosts to archives.
-              If
-                  <i>
-                   matchHosts
-                  </i>
-                  is equal to
-                  <b>
-                   false
-                  </b>
-                  then no attempt will be made by this method to match a host context to an
-              existing source context. A
-                  <b>
-                   QmcSource
-                  </b>
-                  object will always be returned in this case, although the
-                  <b>
-                   QmcSource::status
-                  </b>
-                  method may indicate that a context to
-                  <i>
-                   source
-                  </i>
-                  failed.
-                 </p>
-                 <p>
-                  If
-                  <i>
-                   matchHosts
-                  </i>
-                  is equal to
-                  <b>
-                   true
-                  </b>
-                  ,
-              
-              host contexts will be matched to a pre-defined archive source collected from
-              that
-                  <i>
-                   source
-                  </i>
-                  .
-              
-              If no archive sources for the
-                  <i>
-                   source
-                  </i>
-                  have been previous specified,
-                  <b>
-                   getSource
-                  </b>
-                  will return a NULL pointer.
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmc.3.html">
-                 QMC
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmccontext.3.html">
-                 QmcContext
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmcgroup.3.html">
-                 QmcGroup
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmdupcontext.3.html">
-                 pmDupContext
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmflush.3.html">
-                 pmflush
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmnewcontext.3.html">
-                 pmNewContext
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmprintf.3.html">
-                 pmprintf
-                </a>
-               </b>
-               (3).
-               <a name="lbAH">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               Error messages are generated using
-               <b>
-                <a href="/man/man3/pmprintf.3.html">
-                 pmprintf
-                </a>
-               </b>
-               (3)
-              
-              but are not flushed. It is the responsibility of the user to call
-               <b>
-                <a href="/man/man3/pmflush.3.html">
-                 pmflush
-                </a>
-               </b>
-               (3)
-              
-              to output any messages.
-               <p>
-                Additional diagnostics may be activated by adding the option
-                <b>
-                 pmc
-                </b>
-                to the global debugging specification, as described in
-                <b>
-                 <a href="/man/man3/pmsetdebug.3.html">
-                  pmSetDebug
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C++ SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  DESTRUCTOR
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  CONSTRUCTORS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  QMC_SOURCE
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  QmcSource
+ </b>
+ - manages contexts created by all groups
+ <a name="lbAC">
+ </a>
+ <h2>
+  C++ SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="file:///usr/include/QmcSource.h">
+   QmcSource.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  CC ... -lqmc -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ The
+ <b>
+  QmcSource
+ </b>
+ class maintains a unique list of all metric sources in use to minimize
+the creation of new contexts (see
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3))
+
+when the context could have been duplicated (see
+ <b>
+  <a href="/man/man3/pmdupcontext.3.html">
+   pmDupContext
+  </a>
+ </b>
+ (3)).
+
+This also reduces the duplication of descriptions of each source.
+ <p>
+  In general,
+  <b>
+   QMC
+  </b>
+  users should only need to access
+  <b>
+   QmcSource
+  </b>
+  methods to obtain source descriptions for a
+  <b>
+   <a href="/man/man3/qmccontext.3.html">
+    QmcContext
+   </a>
+  </b>
+  (3)
+
+object.  All context creation by the user should be handled through
+  <b>
+   <a href="/man/man3/qmcgroup.3.html">
+    QmcGroup
+   </a>
+  </b>
+  (3).
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DESTRUCTOR
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    ~QmcSource();
+   </b>
+  </dt>
+  <dd>
+   Destructor.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CONSTRUCTORS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    static QmcSource* getSource(int type, const char* source,
+   </b>
+  </dt>
+  <dd>
+   <b>
+    bool matchHosts)
+   </b>
+   <p>
+    This method will return a
+    <b>
+     QmcSource
+    </b>
+    object that represents a context of
+    <i>
+     type
+    </i>
+    to
+    <i>
+     source
+    </i>
+    .
+
+The
+    <b>
+     QmcSource
+    </b>
+    object may be a new object if the
+    <i>
+     source
+    </i>
+    has not been previously requested. Memory management of the
+    <b>
+     QmcSource
+    </b>
+    objects is handled by
+    <b>
+     QmcSource
+    </b>
+    .
+
+If all
+    <b>
+     <a href="/man/man3/qmccontext.3.html">
+      QmcContext
+     </a>
+    </b>
+    (3)s
+
+to the
+    <b>
+     QmcSource
+    </b>
+    have been deleted, the
+    <b>
+     QmcSource
+    </b>
+    object will also be deleted.
+   </p>
+   <p>
+    The
+    <i>
+     matchHosts
+    </i>
+    flag controls the algorithm that is used to match hosts to archives.
+If
+    <i>
+     matchHosts
+    </i>
+    is equal to
+    <b>
+     false
+    </b>
+    then no attempt will be made by this method to match a host context to an
+existing source context. A
+    <b>
+     QmcSource
+    </b>
+    object will always be returned in this case, although the
+    <b>
+     QmcSource::status
+    </b>
+    method may indicate that a context to
+    <i>
+     source
+    </i>
+    failed.
+   </p>
+   <p>
+    If
+    <i>
+     matchHosts
+    </i>
+    is equal to
+    <b>
+     true
+    </b>
+    ,
+
+host contexts will be matched to a pre-defined archive source collected from
+that
+    <i>
+     source
+    </i>
+    .
+
+If no archive sources for the
+    <i>
+     source
+    </i>
+    have been previous specified,
+    <b>
+     getSource
+    </b>
+    will return a NULL pointer.
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmc.3.html">
+   QMC
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmccontext.3.html">
+   QmcContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmcgroup.3.html">
+   QmcGroup
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdupcontext.3.html">
+   pmDupContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmflush.3.html">
+   pmflush
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmprintf.3.html">
+   pmprintf
+  </a>
+ </b>
+ (3).
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Error messages are generated using
+ <b>
+  <a href="/man/man3/pmprintf.3.html">
+   pmprintf
+  </a>
+ </b>
+ (3)
+
+but are not flushed. It is the responsibility of the user to call
+ <b>
+  <a href="/man/man3/pmflush.3.html">
+   pmflush
+  </a>
+ </b>
+ (3)
+
+to output any messages.
+ <p>
+  Additional diagnostics may be activated by adding the option
+  <b>
+   pmc
+  </b>
+  to the global debugging specification, as described in
+  <b>
+   <a href="/man/man3/pmsetdebug.3.html">
+    pmSetDebug
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C++ SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DESTRUCTOR
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    CONSTRUCTORS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

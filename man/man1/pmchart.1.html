@@ -1,1696 +1,1700 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMCHART
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               Updated:
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmchart
-               </b>
-               - strip chart tool for Performance Co-Pilot
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmchart
-               </b>
-               [
-               <b>
-                -CVWz
-               </b>
-               ]
-              [
-               <b>
-                -A
-               </b>
-               <i>
-                align
-               </i>
-               ]
-              [
-               <b>
-                -a
-               </b>
-               <i>
-                archive
-               </i>
-               ]
-              [
-               <b>
-                -c
-               </b>
-               <i>
-                configfile
-               </i>
-               ]
-              [
-               <b>
-                -f
-               </b>
-               <i>
-                fontfamily
-               </i>
-               ]
-              [
-               <b>
-                -F
-               </b>
-               <i>
-                fontsize
-               </i>
-               ]
-              [
-               <b>
-                -g
-               </b>
-               <i>
-                geometry
-               </i>
-               ]
-              [
-               <b>
-                -h
-               </b>
-               <i>
-                host
-               </i>
-               ]
-              [
-               <b>
-                -o
-               </b>
-               <i>
-                outfile
-               </i>
-               ]
-              [
-               <b>
-                -O
-               </b>
-               <i>
-                offset
-               </i>
-               ]
-              [
-               <b>
-                -p
-               </b>
-               <i>
-                port
-               </i>
-               ]
-              [
-               <b>
-                -s
-               </b>
-               <i>
-                samples
-               </i>
-               ]
-              [
-               <b>
-                -S
-               </b>
-               <i>
-                starttime
-               </i>
-               ]
-              [
-               <b>
-                -T
-               </b>
-               <i>
-                endtime
-               </i>
-               ]
-              [
-               <b>
-                -t
-               </b>
-               <i>
-                interval
-               </i>
-               ]
-              [
-               <b>
-                -v
-               </b>
-               <i>
-                visible
-               </i>
-               ]
-              [
-               <b>
-                -Z
-               </b>
-               <i>
-                timezone
-               </i>
-               ]
-              [
-               <b>
-                -geometry
-               </b>
-               <i>
-                geometry
-               </i>
-               ]
-              [
-               <i>
-                sources
-               </i>
-               ...]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmchart
-               </b>
-               is a graphical utility that plots performance metrics values
-              available through the facilities of the Performance Co-Pilot (PCP).
-              Multiple charts can be displayed simultaneously, either aligned
-              on the unified time axis (X-axis), and through the use of multiple
-              interface Tabs.
-               <p>
-                Metric values can be sourced from one or more live hosts
-              (simultaneously).  Alternatively, one or more sets of PCP archives
-              can be used as a source of historical data.
-              See
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1)
-              
-              for an in-depth discussion of the capabilities of the PCP
-              framework, many of which are used by
-                <b>
-                 pmchart.
-                </b>
-               </p>
-               <p>
-                Many aspects of the behaviour of
-                <b>
-                 pmchart
-                </b>
-                can be customised through the interface.
-              In particular, the use of "views" (refer to the section describing
-              VIEWS later in this document)
-              allows predefined sets of metrics and charting parameters
-              like colors, scaling, titles, legends, and so on to be stored for
-              later use, or use with different hosts and sets of archives.
-              In addition, the Preferences dialog allows customisations to the
-              rest of the
-                <b>
-                 pmchart
-                </b>
-                user interface to be saved and restored between different invocations
-              of the tool.
-              This allows the default background color, highlight color, contents
-              and location of the toolbar, and many other aspects to be configured.
-               </p>
-               <p>
-                <b>
-                 pmchart
-                </b>
-                makes extensive use of the
-                <b>
-                 <a href="/man/man1/pmtime.1.html">
-                  pmtime
-                 </a>
-                </b>
-                (1)
-              
-              utility for time control, refer to the
-                <b>
-                 pmtime
-                </b>
-                manual page for further details of its operation.
-               </p>
-               <p>
-                Options which control the default source, timing and layout of the
-                <b>
-                 pmchart
-                </b>
-                window are as follows:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -a
-                 </b>
-                </dt>
-                <dd>
-                 Performance metric values are retrieved from the set of Performance Co-Pilot
-              (PCP) archive logs identified by this option, by default. The argument is
-              a comma-separated list of names, each of which may be the base name of an
-              archive or the name of a directory containing one or more archives. The
-              resulting set of archives will be the source of the performance metrics.
-              The initial Tab created will be an archive mode Tab.
-              Multiple
-                 <b>
-                  -a
-                 </b>
-                 options can be presented, and the resulting list of sets of archives is used
-              for sourcing metric values.
-              Any
-                 <i>
-                  sources
-                 </i>
-                 listed on the command line are assumed to be sets of archives
-              if this option is used.
-                </dd>
-                <dt>
-                 <b>
-                  -c
-                 </b>
-                </dt>
-                <dd>
-                 <i>
-                  configfile
-                 </i>
-                 specifies an initial view to load, using the default source of metrics.
-              Multiple
-                 <b>
-                  -c
-                 </b>
-                 views can be specified, and they will all be opened in the
-              default Tab with the default source of metrics.
-                </dd>
-                <dt>
-                 <b>
-                  -C
-                 </b>
-                </dt>
-                <dd>
-                 Used with
-                 <b>
-                  -c
-                 </b>
-                 ,
-              
-              the view(s) are parsed, any errors are reported, and the tool exits.
-              This is primarily intended for testing purposes.
-              If a second
-                 <b>
-                  -C
-                 </b>
-                 option is presented,
-                 <b>
-                  pmchart
-                 </b>
-                 also connects to
-                 <b>
-                  <a href="/man/man1/pmcd.1.html">
-                   pmcd
-                  </a>
-                 </b>
-                 (1)
-              
-              to check the semantics of metrics.
-                </dd>
-                <dt>
-                 <b>
-                  -f
-                 </b>
-                </dt>
-                <dd>
-                 Specify the default font
-                 <i>
-                  family
-                 </i>
-                 to be used in several chart components,
-              such as the chart title, legend, and Y-axis label.
-              The default value is "Sans Serif".
-              This setting does not affect the rest of the user interface, where
-              the value is inherited from the environment in which
-                 <b>
-                  pmchart
-                 </b>
-                 operates, and differs according to the look-and-feel of each
-              platform.
-                </dd>
-                <dt>
-                 <b>
-                  -F
-                 </b>
-                </dt>
-                <dd>
-                 Specify the default font
-                 <i>
-                  point
-                 </i>
-                 size to be used in several chart components,
-              such as the chart title, legend, and Y-axis label.
-              The default is platform dependent, but is either 7, 8 or 9.
-              This setting does not affect the rest of the user interface.
-                </dd>
-                <dt>
-                 <b>
-                  -g
-                 </b>
-                </dt>
-                <dd>
-                 Generate image with the specified
-                 <i>
-                  geometry
-                 </i>
-                 (width and height).
-              This option is only useful when used in conjunction with the
-                 <b>
-                  -o
-                 </b>
-                 option for generating an output image.
-              The
-                 <i>
-                  geometry
-                 </i>
-                 argument takes the form "WxH" (e.g. 240x120).
-              When NOT using the
-                 <b>
-                  -o
-                 </b>
-                 flag, to specify the display window geometry, use
-                 <b>
-                  -geometry
-                 </b>
-                 <i>
-                  geometry
-                 </i>
-                 where
-                 <i>
-                  geometry
-                 </i>
-                 specifies the desired window width, height and optional placement.
-                </dd>
-                <dt>
-                 <b>
-                  -h
-                 </b>
-                </dt>
-                <dd>
-                 Current performance metric values are retrieved from the nominated
-                 <i>
-                  host
-                 </i>
-                 machine by default.
-              Multiple
-                 <b>
-                  -h
-                 </b>
-                 options can be presented, and the list of hosts is used for sourcing
-              metric values.
-              Any
-                 <i>
-                  sources
-                 </i>
-                 listed on the command line are assumed to be hosts
-              if this option is used.
-                </dd>
-                <dt>
-                 <b>
-                  -o
-                 </b>
-                </dt>
-                <dd>
-                 Generate an image file named
-                 <i>
-                  outfile
-                 </i>
-                 ,
-              
-              and then exit.
-              This is most useful when run with a set of archives and one or more views.
-              The generated image will be in the format specified as the file
-              extension (automatically determined from
-                 <i>
-                  outfile
-                 </i>
-                 ).
-              
-              If no extension can be determined, then the GIF format is used and
-              the generated file is named with this extension.
-              The supported image file formats include: bmp, jpeg, jpg, png, ppm,
-              tif, tiff, xbm, and xpm.
-                </dd>
-                <dt>
-                 <b>
-                  -p
-                 </b>
-                </dt>
-                <dd>
-                 <i>
-                  port
-                 </i>
-                 number for connection to an existing
-                 <b>
-                  pmtime
-                 </b>
-                 time control process.
-                </dd>
-                <dt>
-                 <b>
-                  -s
-                 </b>
-                </dt>
-                <dd>
-                 Specifies the number of
-                 <i>
-                  samples
-                 </i>
-                 that will be retained before discarding old data (replaced by
-              new values at the current time position).
-              This value can subsequently be modified through the Edit Tab
-              dialog.
-                </dd>
-                <dt>
-                 <b>
-                  -t
-                 </b>
-                </dt>
-                <dd>
-                 Sets the inital update
-                 <i>
-                  interval
-                 </i>
-                 to something other than the default 1 second.
-              The
-                 <i>
-                  interval
-                 </i>
-                 argument follows the syntax described in
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPIntro
-                  </a>
-                 </b>
-                 (1),
-              
-              and in the simplest form may be an unsigned integer (the implied
-              units in this case are seconds).
-                </dd>
-                <dt>
-                 <b>
-                  -v
-                 </b>
-                </dt>
-                <dd>
-                 Sets the inital visible
-                 <i>
-                  samples
-                 </i>
-                 that will be displayed in all charts in the default Tab.
-              This value must be less than or equal to the total number
-              of samples retained (the
-                 <b>
-                  -s
-                 </b>
-                 value).
-                </dd>
-                <dt>
-                 <b>
-                  -V
-                 </b>
-                </dt>
-                <dd>
-                 Display pmchart version number and exit
-                </dd>
-                <dt>
-                 <b>
-                  -W
-                 </b>
-                </dt>
-                <dd>
-                 Export images using an opaque(white) background
-                </dd>
-                <dt>
-                 <b>
-                  -Z
-                 </b>
-                </dt>
-                <dd>
-                 By default,
-                 <b>
-                  pmtime
-                 </b>
-                 reports the time of day according to the local timezone on the system
-              where
-                 <b>
-                  pmchart is run.
-                 </b>
-                 The
-                 <b>
-                  -Z
-                 </b>
-                 option changes the timezone to
-                 <i>
-                  timezone
-                 </i>
-                 in the format of the environment variable TZ as described in
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-                   environ
-                  </a>
-                 </b>
-                 (7).
-                </dd>
-                <dt>
-                 <b>
-                  -z
-                 </b>
-                </dt>
-                <dd>
-                 Change the reporting timezone to the local timezone at the host
-              that is the source of the performance metrics, as identified via
-              either the
-                 <b>
-                  -h
-                 </b>
-                 or
-                 <b>
-                  -a
-                 </b>
-                 options.
-                </dd>
-               </dl>
-               <p>
-                The
-                <b>
-                 -S
-                </b>
-                ,
-                <b>
-                 -T
-                </b>
-                ,
-                <b>
-                 -O
-                </b>
-                and
-                <b>
-                 -A
-                </b>
-                options may be used to define a time window to
-              restrict the samples retrieved, set an initial origin within the time
-              window, or specify a "natural" alignment of the sample  times;  refer
-              to
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1)
-              
-              for a complete description of these options.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                VIEWS
-               </h2>
-               The primary
-               <b>
-                pmchart
-               </b>
-               configuration file is the "view", which allows the metadata
-              associated with one or more charts to be saved in the filesystem.
-              This metadata describes all aspects of the charts, including
-              which PCP metrics and instances are to be used, which hosts, which
-              colors, the chart titles, use of chart legends, and much more.
-               <p>
-                From a conceptual point of view, there are two classes of view.
-              These views share the same configuration file format - refer
-              to a later section for a complete description of this format.
-              The differences lie in where they are installed and how they
-              are manipulated.
-               </p>
-               <p>
-                The first class, the "system" view, is simply any view that is
-              installed as part of the
-                <b>
-                 pmchart
-                </b>
-                package.
-              These are stored in
-                <i>
-                 $PCP_VAR_DIR/config/pmchart.
-                </i>
-                When the
-                <i>
-                 File→Open View
-                </i>
-                dialog is displayed, it is these views that are initially listed.
-              The system views cannot be modified by a normal user, and should
-              not be modified even by a user with suitable privileges, as they
-              will be overwritten during an upgrade.
-               </p>
-               <p>
-                The second class of view is the "user" view.
-              These views are created on-the-fly using the
-                <i>
-                 File→Save View
-                </i>
-                dialog.
-              This is a mechanism for individual users to save their commonly
-              used views.
-              Access to these views is achieved through the
-                <i>
-                 File→Open View
-                </i>
-                dialog, as with the system views.
-              Once the dialog is opened, the list of views can be toggled between
-              user and system views by clicking on the two toggle buttons in the
-              top right corner.
-              User views are stored in
-                <i>
-                 $HOME/.pcp/pmchart.
-                </i>
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                TABS
-               </h2>
-               <b>
-                pmchart
-               </b>
-               provides the common user interface concept of the Tab, which
-              is most prevalent in modern web browsers.
-              Tabs allow
-               <b>
-                pmchart
-               </b>
-               to update many more charts than the available screen real estate
-              allows, by providing a user interface mechanism to stack (and
-              switch between) different vertical sets of charts.
-              Switching between Tabs is achieved by clicking on the Tab labels,
-              which are located along the top of the display beneath the Menu
-              and Tool bars).
-               <p>
-                Each Tab has a mode of operation (either live or archive -
-                <b>
-                 pmchart
-                </b>
-                can support both modes simultaneously), the total number of
-              samples and currently visible points, and a label describing
-              the Tab which is displayed at the top of the
-                <b>
-                 pmchart
-                </b>
-                window.
-              New Tabs can be created using the
-                <i>
-                 File→Add Tab
-                </i>
-                dialog.
-               </p>
-               <p>
-                In order to save on vertical screen real estate, note that the user
-              interface element for changing between different Tabs (and its label)
-              are only displayed when more than one Tab exists.
-              A Tab can be dismissed using the
-                <i>
-                 File→Close Tab
-                </i>
-                menu, which removes the current Tab and any charts it contained.
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                IMAGES and PRINTING
-               </h2>
-               A static copy of the currently displayed vertical series of charts
-              can be captured in two ways.
-               <p>
-                When the intended display device is the screen, the
-                <i>
-                 File→Export
-                </i>
-                menu option should be used.
-              This allows exporting the charts in a variety of image formats,
-              including PNG, JPEG, GIF, and BMP.
-              The image size can be scaled up or down in any dimension.
-               </p>
-               <p>
-                Alternatively, when the intended display device is paper, the
-                <i>
-                 File→Print
-                </i>
-                menu option can be used.
-              This supports the usual set of printing options (choice of printer,
-              grayscale/color, landscape/portrait, scaling to different paper sizes,
-              etc),
-              and in addition allows printing to the intermediate printer formats
-              of PostScript and Portable Document Format (PDF).
-                <a name="lbAH">
-                </a>
-               </p>
-               <h2>
-                RECORDING
-               </h2>
-               It is possible to make a recording of a set of displayed charts,
-              for later playback through
-               <b>
-                pmchart
-               </b>
-               or any of the other Performance Co-Pilot tools.
-              The
-               <i>
-                Record→Start
-               </i>
-               functionality is simple to configure through the user interface,
-              and allows fine-tuning of the recording process (including record
-              frequencies that differ to the
-               <b>
-                pmchart
-               </b>
-               update interval, alternate file locations, etc).
-               <p>
-                <b>
-                 pmchart
-                </b>
-                produces recordings that are compatible with the PCP
-                <b>
-                 <a href="/man/man1/pmafm.1.html">
-                  pmafm
-                 </a>
-                </b>
-                (1)
-              
-              replay mechanism, for later playback via a new instance of
-                <b>
-                 pmchart
-                </b>
-                .
-              
-              In addition, when recording through
-                <b>
-                 pmchart
-                </b>
-                one can also replay the recording immediately, as on termination
-              of the recording (through the
-                <i>
-                 Record→Stop
-                </i>
-                menu item), an archive mode Tab will be created with the captured view.
-               </p>
-               <p>
-                Once recording is active in a Live Tab, the Time Control status
-              button in the bottom left corner of the
-                <b>
-                 pmchart
-                </b>
-                window is displayed with a distinctive red dot.
-              At any time during a
-                <b>
-                 pmchart
-                </b>
-                recording session, the amount of space used in the filesystem by
-              that recording can be displayed using the
-                <i>
-                 Record→Query
-                </i>
-                menu item.
-               </p>
-               <p>
-                Finally, the
-                <i>
-                 Record→Detach
-                </i>
-                menu option provides a mechanism whereby the recording process can
-              be completely divorced from the running
-                <b>
-                 pmchart
-                </b>
-                process, and allowed to continue on when
-                <b>
-                 pmchart
-                </b>
-                exits.
-              A dialog displaying the current size and estimated rate of growth for
-              the recording is presented.
-              On the other hand, if
-                <b>
-                 pmchart
-                </b>
-                is terminated while recording is in process, then the recording process
-              will prompt the user to choose immediate cessation of recording or for
-              it to continue on independently.
-               </p>
-               <p>
-                All of the record mode services available from
-                <b>
-                 pmchart
-                </b>
-                are implemented with the assistance of the base Performance Co-Pilot
-              logging services - refer to
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              and
-                <b>
-                 <a href="/man/man1/pmafm.1.html">
-                  pmafm
-                 </a>
-                </b>
-                (1)
-              
-              for an extensive description of the capabilities of these tools.
-                <a name="lbAI">
-                </a>
-               </p>
-               <h2>
-                CONFIGURATION FILE SYNTAX
-               </h2>
-               <p>
-                <b>
-                 pmchart
-                </b>
-                loads predefined chart configurations (or "views") from external
-              files that conform to the following rules.  In the descriptions below
-              keywords (shown in bold) may appear in upper, lower or
-              mixed case, elements shown in
-                <tt>
-                 [stuff]
-                </tt>
-                are optional, and
-              user-supplied elements are shown as
-                <tt>
-                 &lt;other stuff&gt;
-                </tt>
-                .
-              A vertical bar (|) is used where syntactic elements are alternatives.
-              Quotes (")
-              may be used to enclose lexical elements that may contain white space,
-              such as titles, labels and instance names.
-               </p>
-               <dl compact="">
-                <dt>
-                 1.
-                </dt>
-                <dd>
-                 The first line defines the configuration file type and should be
-                 <pre>
-              #kmchart
-              
-              <br/>
-              </pre>
-                 although
-                 <b>
-                  pmchart
-                 </b>
-                 provides backwards compatibility for the older
-                 <b>
-                  pmchart
-                 </b>
-                 view formats with an initial line of
-                 <pre>
-              #pmchart
-              
-              <br/>
-              </pre>
-                </dd>
-                <dt>
-                 2.
-                </dt>
-                <dd>
-                 After the first line, lines beginning with "#" as the first
-              non-white space character are treated as comments and skipped.
-              Similarly blank lines are skipped.
-                </dd>
-                <dt>
-                 3.
-                </dt>
-                <dd>
-                 The next line should be
-                 <pre>
-              version &lt;n&gt; &lt;host-clause&gt;
-              
-              <br/>
-              </pre>
-                 where
-                 <tt>
-                  &lt;n&gt;
-                 </tt>
-                 depends on the configuration file type, and
-              is 1 for pmchart else 1.1, 1.2 or
-              2.0 for pmchart.
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   The
-                   <tt>
-                    &lt;host-clause&gt;
-                   </tt>
-                   part is optional (and ignored)
-              for
-                   <b>
-                    pmchart
-                   </b>
-                   configuration
-              files, but required for the
-                   <b>
-                    pmchart
-                   </b>
-                   configuration files, and
-              is of the form
-                   <pre>
-              host literal
-              
-              <br/>
-              </pre>
-                   or
-                   <pre>
-              host dynamic
-              
-              <br/>
-              </pre>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 4.
-                </dt>
-                <dd>
-                 A configuration contains one or more charts defined as follows:
-                 <pre>
-              chart [title &lt;title&gt;] style &lt;style&gt; &lt;options&gt;
-              
-              <br/>
-              </pre>
-                 If specified, the title will appear centred and above the graph area
-              of the chart.
-              The
-                 <tt>
-                  &lt;title&gt;
-                 </tt>
-                 is usually enclosed in quotes (") and if it
-              contains the sequence "%h" this will be replaced by the short form
-              of the hostname for the default source of metrics at the time
-              this chart was loaded.  Alternatively, "%H" can be used to insert
-              the full host name.  If the hostname appears to be an inet or IPv6
-              address, no shortening will be attempted; it will be used as-is in
-              both replacement cases.
-              After the view is loaded, the title visibility and setting
-              can be manipulated using the
-                 <i>
-                  Chart Title
-                 </i>
-                 text box in the
-                 <i>
-                  Edit→Chart
-                 </i>
-                 dialog.
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <p>
-                    The
-                    <tt>
-                     &lt;style&gt;
-                    </tt>
-                    controls the initial plotting style of the chart, and
-              should be one of the keywords plot (line graph), bar,
-              stacking (stacked bar),
-              area or utilization.
-              After the view is loaded, the plotting style can be changed using the
-                    <i>
-                     Edit→Chart
-                    </i>
-                    Style dropdown list.
-                   </p>
-                   <p>
-                    The
-                    <tt>
-                     &lt;options&gt;
-                    </tt>
-                    are zero or more of the optional elements:
-                   </p>
-                   <pre>
-              [scale [from] &lt;ymin&gt; [to] &lt;ymax&gt;] [legend &lt;onoff&gt;]
-              
-              <br/>
-              </pre>
-                   If scale is specified, the vertical scaling is set for all plots
-              in the chart to a y-range defined by
-                   <tt>
-                    &lt;ymin&gt;
-                   </tt>
-                   and
-                   <tt>
-                    &lt;ymax&gt;
-                   </tt>
-                   .
-              Otherwise the
-              vertical axis will be autoscaled based on the values currently being
-              plotted.
-                   <p>
-                    <tt>
-                     &lt;onoff&gt;
-                    </tt>
-                    is one of the keywords on or off and the
-              legend clause controls the presence or absence of the plot
-              legend below the graph area.  The default is for the legend to be shown.
-              After the view is loaded, the legend visibility
-              can be toggled using the
-                    <i>
-                     Show Legend
-                    </i>
-                    button in the
-                    <i>
-                     Edit→Chart
-                    </i>
-                    dialog.
-                   </p>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 5.
-                </dt>
-                <dd>
-                 <b>
-                  pmchart
-                 </b>
-                 supports a global clause to specify the dimensions of the
-              top-level window (using the width and height keywords),
-              the number of visible points (points keyword) and the starting
-              X and Y axis positions on the screen (xpos and ypos
-              keywords).
-              Each of these global attributes takes an integer value as the
-              sole qualifier.
-                </dd>
-                <dt>
-                 6.
-                </dt>
-                <dd>
-                 Each chart has one or more plots associated with it, as
-              defined by one of the following specifications:
-                 <pre>
-              plot
-                  [legend &lt;title&gt;] [color &lt;colorspec&gt;] [host &lt;hostspec&gt;]
-                  metric &lt;metricname&gt;
-                  [ instance &lt;inst&gt; | matching &lt;pat&gt; | not-matching &lt;pat&gt; ]
-              
-              <br/>
-              </pre>
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <p>
-                    The keyword plot may be replaced with the keyword
-              optional-plot, in which case if the source of performance data
-              does not include the specified performance metric and/or instance,
-              then this plot is silently dropped from the chart.
-                   </p>
-                   <p>
-                    If specified, the title will appear in the chart legend.
-              The
-                    <tt>
-                     &lt;title&gt;
-                    </tt>
-                    is usually enclosed in quotes (") and it may
-              contain one or more wildcard characters which will be expanded
-              using metric name, instance name, and host name for the plot.
-              The wildcards are "%i" (short unique instance name, up to the first
-              whitespace), "%I" (full instance name), "%h" (short host name, up
-              to the first dot), %H (full host name), "%m" (metric name shortened
-              to the final two PMNS components), and "%M" (full metric name).
-                   </p>
-                   <p>
-                    For older
-                    <b>
-                     pmchart
-                    </b>
-                    configuration files, the keyword title must be used instead of
-              legend.
-              Nowadays
-                    <b>
-                     pmchart
-                    </b>
-                    supports either keyword.
-                   </p>
-                   <p>
-                    The color clause is optional for newer
-                    <b>
-                     pmchart
-                    </b>
-                    configuration files, but it was mandatory in the original
-                    <b>
-                     pmchart
-                    </b>
-                    configuration file format.
-                    <tt>
-                     &lt;colorspec&gt;
-                    </tt>
-                    may be one of the following:
-                   </p>
-                   <pre>
-              #-cycle
-              rgbi:rr:gg:bb
-              #rgb
-              #rrggbb
-              #rrrgggbbb
-              #rrrrggggbbbb
-              &lt;Xcolor&gt;
-              
-              <br/>
-              </pre>
-                   where each of
-                   <tt>
-                    r
-                   </tt>
-                   ,
-                   <tt>
-                    g
-                   </tt>
-                   and
-                   <tt>
-                    b
-                   </tt>
-                   are hexadecimal
-              digits (0-9 and A-F) representing respectively the red, green and
-              blue color components.
-                   <tt>
-                    &lt;Xcolor&gt;
-                   </tt>
-                   is one of the color names from the X color database,
-              e.g. red or steelblue, see also the output from
-                   <b>
-                    <a href="http://man7.org/linux/man-pages/man1/showrgb.1.html">
-                     showrgb
-                    </a>
-                   </b>
-                   (1).
-                   <p>
-                    The "color" #-cycle specifies that
-                    <b>
-                     pmchart
-                    </b>
-                    should use the next in a pallet of colors that it uses cyclically
-              for each chart.  This is the default if the color clause
-              is omitted.
-                   </p>
-                   <p>
-                    The
-                    <tt>
-                     &lt;hostspec&gt;
-                    </tt>
-                    in the host clause may be a hostname,
-              an IP address or an asterisk (*); the latter is used to mean the
-              default source of performance metrics.
-              For older
-                    <b>
-                     pmchart
-                    </b>
-                    configuration files, the host clause must be present, for new
-                    <b>
-                     pmchart
-                    </b>
-                    configuration files it is optional, and if missing the default source
-              of performance metrics will be used.
-                   </p>
-                   <p>
-                    The optional instance specification,
-                   </p>
-                   <dl compact="">
-                    <dt>
-                     (a)
-                    </dt>
-                    <dd>
-                     is omitted in which case one plot will be created for every instance of
-              the
-                     <tt>
-                      &lt;metricname&gt;
-                     </tt>
-                     metric
-                    </dd>
-                    <dt>
-                     (b)
-                    </dt>
-                    <dd>
-                     starts with instance, in which case only the instance
-              named
-                     <tt>
-                      &lt;inst&gt;
-                     </tt>
-                     will be plotted
-                    </dd>
-                    <dt>
-                     (c)
-                    </dt>
-                    <dd>
-                     starts with matching, in which case all instances whose
-              names match the pattern
-                     <tt>
-                      &lt;pat&gt;
-                     </tt>
-                     will be plotted; the pattern
-              uses extended regular expression notation in the style of
-                     <b>
-                      <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
-                       egrep
-                      </a>
-                     </b>
-                     (1)
-              
-              (refer to the PMCD view for an example)
-                    </dd>
-                    <dt>
-                     (d)
-                    </dt>
-                    <dd>
-                     starts with not-matching, in which case all instances whose
-              names
-                     <b>
-                      do   not
-                     </b>
-                     match the pattern
-                     <tt>
-                      &lt;pat&gt;
-                     </tt>
-                     will be plotted; the pattern
-              uses extended regular expression notation in the style of
-                     <b>
-                      <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
-                       egrep
-                      </a>
-                     </b>
-                     (1)
-              
-              (refer to the Netbytes view for an example)
-                    </dd>
-                   </dl>
-                   <p>
-                    <b>
-                     pmchart
-                    </b>
-                    uses a bizarre syntactic notation where
-                    <tt>
-                     &lt;inst&gt;
-                    </tt>
-                    and
-                    <tt>
-                     &lt;pat&gt;
-                    </tt>
-                    extend from the first non-white space character to the
-              end of the input line.  For
-                    <b>
-                     pmchart
-                    </b>
-                    configuration files these elements are either delimited by white
-              space, or enclosed in quotes (").
-                   </p>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 7.
-                </dt>
-                <dd>
-                 The optional tab directive can be used to create views with
-              multiple charts which span multiple Tabs.  The syntax is as follows:
-                 <pre>
-              tab &lt;label&gt; [host &lt;host&gt;] [points &lt;points&gt; [samples &lt;samples&gt;]]
-              
-              <br/>
-              </pre>
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <pre>
-              
-              All chart specifications following this keyword will be created
-              on the new Tab, until the end of the configuration file or until
-              another tab keyword is encountered.
-              </pre>
-                  </dd>
-                 </dl>
-                </dd>
-               </dl>
-               <a name="lbAJ">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <p>
-                Of particular note, the
-                <b>
-                 $PCP_XCONFIRM_PROG
-                </b>
-                setting is explicitly and unconditionally overridden by
-                <b>
-                 pmchart.
-                </b>
-                This is set to the
-                <b>
-                 <a href="/man/man1/pmconfirm.1.html">
-                  pmconfirm
-                 </a>
-                </b>
-                (1),
-              
-              utility, in order that some popup dialogs (particularly in the
-              area of Recording) maintain a consistent look-and-feel with the
-              rest of the
-                <b>
-                 pmchart
-                </b>
-                application.
-                <a name="lbAK">
-                </a>
-               </p>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pmtime.1.html">
-                 pmtime
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmconfirm.1.html">
-                 pmconfirm
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumptext.1.html">
-                 pmdumptext
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmafm.1.html">
-                 pmafm
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmrep.1.html">
-                 pmrep
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmval.1.html">
-                 pmval
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pminfo.1.html">
-                 pminfo
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5),
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pmns.5.html">
-                 pmns
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  VIEWS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  TABS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  IMAGES and PRINTING
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  RECORDING
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  CONFIGURATION FILE SYNTAX
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAJ">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAK">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMCHART
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ Updated:
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmchart
+ </b>
+ - strip chart tool for Performance Co-Pilot
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmchart
+ </b>
+ [
+ <b>
+  -CVWz
+ </b>
+ ]
+[
+ <b>
+  -A
+ </b>
+ <i>
+  align
+ </i>
+ ]
+[
+ <b>
+  -a
+ </b>
+ <i>
+  archive
+ </i>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  configfile
+ </i>
+ ]
+[
+ <b>
+  -f
+ </b>
+ <i>
+  fontfamily
+ </i>
+ ]
+[
+ <b>
+  -F
+ </b>
+ <i>
+  fontsize
+ </i>
+ ]
+[
+ <b>
+  -g
+ </b>
+ <i>
+  geometry
+ </i>
+ ]
+[
+ <b>
+  -h
+ </b>
+ <i>
+  host
+ </i>
+ ]
+[
+ <b>
+  -o
+ </b>
+ <i>
+  outfile
+ </i>
+ ]
+[
+ <b>
+  -O
+ </b>
+ <i>
+  offset
+ </i>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  port
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  samples
+ </i>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  starttime
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
+ </i>
+ ]
+[
+ <b>
+  -t
+ </b>
+ <i>
+  interval
+ </i>
+ ]
+[
+ <b>
+  -v
+ </b>
+ <i>
+  visible
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+[
+ <b>
+  -geometry
+ </b>
+ <i>
+  geometry
+ </i>
+ ]
+[
+ <i>
+  sources
+ </i>
+ ...]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmchart
+ </b>
+ is a graphical utility that plots performance metrics values
+available through the facilities of the Performance Co-Pilot (PCP).
+Multiple charts can be displayed simultaneously, either aligned
+on the unified time axis (X-axis), and through the use of multiple
+interface Tabs.
+ <p>
+  Metric values can be sourced from one or more live hosts
+(simultaneously).  Alternatively, one or more sets of PCP archives
+can be used as a source of historical data.
+See
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for an in-depth discussion of the capabilities of the PCP
+framework, many of which are used by
+  <b>
+   pmchart.
+  </b>
+ </p>
+ <p>
+  Many aspects of the behaviour of
+  <b>
+   pmchart
+  </b>
+  can be customised through the interface.
+In particular, the use of "views" (refer to the section describing
+VIEWS later in this document)
+allows predefined sets of metrics and charting parameters
+like colors, scaling, titles, legends, and so on to be stored for
+later use, or use with different hosts and sets of archives.
+In addition, the Preferences dialog allows customisations to the
+rest of the
+  <b>
+   pmchart
+  </b>
+  user interface to be saved and restored between different invocations
+of the tool.
+This allows the default background color, highlight color, contents
+and location of the toolbar, and many other aspects to be configured.
+ </p>
+ <p>
+  <b>
+   pmchart
+  </b>
+  makes extensive use of the
+  <b>
+   <a href="/man/man1/pmtime.1.html">
+    pmtime
+   </a>
+  </b>
+  (1)
+
+utility for time control, refer to the
+  <b>
+   pmtime
+  </b>
+  manual page for further details of its operation.
+ </p>
+ <p>
+  Options which control the default source, timing and layout of the
+  <b>
+   pmchart
+  </b>
+  window are as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+  </dt>
+  <dd>
+   Performance metric values are retrieved from the set of Performance Co-Pilot
+(PCP) archive logs identified by this option, by default. The argument is
+a comma-separated list of names, each of which may be the base name of an
+archive or the name of a directory containing one or more archives. The
+resulting set of archives will be the source of the performance metrics.
+The initial Tab created will be an archive mode Tab.
+Multiple
+   <b>
+    -a
+   </b>
+   options can be presented, and the resulting list of sets of archives is used
+for sourcing metric values.
+Any
+   <i>
+    sources
+   </i>
+   listed on the command line are assumed to be sets of archives
+if this option is used.
+  </dd>
+  <dt>
+   <b>
+    -c
+   </b>
+  </dt>
+  <dd>
+   <i>
+    configfile
+   </i>
+   specifies an initial view to load, using the default source of metrics.
+Multiple
+   <b>
+    -c
+   </b>
+   views can be specified, and they will all be opened in the
+default Tab with the default source of metrics.
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+  </dt>
+  <dd>
+   Used with
+   <b>
+    -c
+   </b>
+   ,
+
+the view(s) are parsed, any errors are reported, and the tool exits.
+This is primarily intended for testing purposes.
+If a second
+   <b>
+    -C
+   </b>
+   option is presented,
+   <b>
+    pmchart
+   </b>
+   also connects to
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+to check the semantics of metrics.
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+  </dt>
+  <dd>
+   Specify the default font
+   <i>
+    family
+   </i>
+   to be used in several chart components,
+such as the chart title, legend, and Y-axis label.
+The default value is "Sans Serif".
+This setting does not affect the rest of the user interface, where
+the value is inherited from the environment in which
+   <b>
+    pmchart
+   </b>
+   operates, and differs according to the look-and-feel of each
+platform.
+  </dd>
+  <dt>
+   <b>
+    -F
+   </b>
+  </dt>
+  <dd>
+   Specify the default font
+   <i>
+    point
+   </i>
+   size to be used in several chart components,
+such as the chart title, legend, and Y-axis label.
+The default is platform dependent, but is either 7, 8 or 9.
+This setting does not affect the rest of the user interface.
+  </dd>
+  <dt>
+   <b>
+    -g
+   </b>
+  </dt>
+  <dd>
+   Generate image with the specified
+   <i>
+    geometry
+   </i>
+   (width and height).
+This option is only useful when used in conjunction with the
+   <b>
+    -o
+   </b>
+   option for generating an output image.
+The
+   <i>
+    geometry
+   </i>
+   argument takes the form "WxH" (e.g. 240x120).
+When NOT using the
+   <b>
+    -o
+   </b>
+   flag, to specify the display window geometry, use
+   <b>
+    -geometry
+   </b>
+   <i>
+    geometry
+   </i>
+   where
+   <i>
+    geometry
+   </i>
+   specifies the desired window width, height and optional placement.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+  </dt>
+  <dd>
+   Current performance metric values are retrieved from the nominated
+   <i>
+    host
+   </i>
+   machine by default.
+Multiple
+   <b>
+    -h
+   </b>
+   options can be presented, and the list of hosts is used for sourcing
+metric values.
+Any
+   <i>
+    sources
+   </i>
+   listed on the command line are assumed to be hosts
+if this option is used.
+  </dd>
+  <dt>
+   <b>
+    -o
+   </b>
+  </dt>
+  <dd>
+   Generate an image file named
+   <i>
+    outfile
+   </i>
+   ,
+
+and then exit.
+This is most useful when run with a set of archives and one or more views.
+The generated image will be in the format specified as the file
+extension (automatically determined from
+   <i>
+    outfile
+   </i>
+   ).
+
+If no extension can be determined, then the GIF format is used and
+the generated file is named with this extension.
+The supported image file formats include: bmp, jpeg, jpg, png, ppm,
+tif, tiff, xbm, and xpm.
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+  </dt>
+  <dd>
+   <i>
+    port
+   </i>
+   number for connection to an existing
+   <b>
+    pmtime
+   </b>
+   time control process.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+  </dt>
+  <dd>
+   Specifies the number of
+   <i>
+    samples
+   </i>
+   that will be retained before discarding old data (replaced by
+new values at the current time position).
+This value can subsequently be modified through the Edit Tab
+dialog.
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+  </dt>
+  <dd>
+   Sets the inital update
+   <i>
+    interval
+   </i>
+   to something other than the default 1 second.
+The
+   <i>
+    interval
+   </i>
+   argument follows the syntax described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1),
+
+and in the simplest form may be an unsigned integer (the implied
+units in this case are seconds).
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   Sets the inital visible
+   <i>
+    samples
+   </i>
+   that will be displayed in all charts in the default Tab.
+This value must be less than or equal to the total number
+of samples retained (the
+   <b>
+    -s
+   </b>
+   value).
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+  </dt>
+  <dd>
+   Display pmchart version number and exit
+  </dd>
+  <dt>
+   <b>
+    -W
+   </b>
+  </dt>
+  <dd>
+   Export images using an opaque(white) background
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+  </dt>
+  <dd>
+   By default,
+   <b>
+    pmtime
+   </b>
+   reports the time of day according to the local timezone on the system
+where
+   <b>
+    pmchart is run.
+   </b>
+   The
+   <b>
+    -Z
+   </b>
+   option changes the timezone to
+   <i>
+    timezone
+   </i>
+   in the format of the environment variable TZ as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+  <dt>
+   <b>
+    -z
+   </b>
+  </dt>
+  <dd>
+   Change the reporting timezone to the local timezone at the host
+that is the source of the performance metrics, as identified via
+either the
+   <b>
+    -h
+   </b>
+   or
+   <b>
+    -a
+   </b>
+   options.
+  </dd>
+ </dl>
+ <p>
+  The
+  <b>
+   -S
+  </b>
+  ,
+  <b>
+   -T
+  </b>
+  ,
+  <b>
+   -O
+  </b>
+  and
+  <b>
+   -A
+  </b>
+  options may be used to define a time window to
+restrict the samples retrieved, set an initial origin within the time
+window, or specify a "natural" alignment of the sample  times;  refer
+to
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for a complete description of these options.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  VIEWS
+ </h2>
+ The primary
+ <b>
+  pmchart
+ </b>
+ configuration file is the "view", which allows the metadata
+associated with one or more charts to be saved in the filesystem.
+This metadata describes all aspects of the charts, including
+which PCP metrics and instances are to be used, which hosts, which
+colors, the chart titles, use of chart legends, and much more.
+ <p>
+  From a conceptual point of view, there are two classes of view.
+These views share the same configuration file format - refer
+to a later section for a complete description of this format.
+The differences lie in where they are installed and how they
+are manipulated.
+ </p>
+ <p>
+  The first class, the "system" view, is simply any view that is
+installed as part of the
+  <b>
+   pmchart
+  </b>
+  package.
+These are stored in
+  <i>
+   $PCP_VAR_DIR/config/pmchart.
+  </i>
+  When the
+  <i>
+   File→Open View
+  </i>
+  dialog is displayed, it is these views that are initially listed.
+The system views cannot be modified by a normal user, and should
+not be modified even by a user with suitable privileges, as they
+will be overwritten during an upgrade.
+ </p>
+ <p>
+  The second class of view is the "user" view.
+These views are created on-the-fly using the
+  <i>
+   File→Save View
+  </i>
+  dialog.
+This is a mechanism for individual users to save their commonly
+used views.
+Access to these views is achieved through the
+  <i>
+   File→Open View
+  </i>
+  dialog, as with the system views.
+Once the dialog is opened, the list of views can be toggled between
+user and system views by clicking on the two toggle buttons in the
+top right corner.
+User views are stored in
+  <i>
+   $HOME/.pcp/pmchart.
+  </i>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  TABS
+ </h2>
+ <b>
+  pmchart
+ </b>
+ provides the common user interface concept of the Tab, which
+is most prevalent in modern web browsers.
+Tabs allow
+ <b>
+  pmchart
+ </b>
+ to update many more charts than the available screen real estate
+allows, by providing a user interface mechanism to stack (and
+switch between) different vertical sets of charts.
+Switching between Tabs is achieved by clicking on the Tab labels,
+which are located along the top of the display beneath the Menu
+and Tool bars).
+ <p>
+  Each Tab has a mode of operation (either live or archive -
+  <b>
+   pmchart
+  </b>
+  can support both modes simultaneously), the total number of
+samples and currently visible points, and a label describing
+the Tab which is displayed at the top of the
+  <b>
+   pmchart
+  </b>
+  window.
+New Tabs can be created using the
+  <i>
+   File→Add Tab
+  </i>
+  dialog.
+ </p>
+ <p>
+  In order to save on vertical screen real estate, note that the user
+interface element for changing between different Tabs (and its label)
+are only displayed when more than one Tab exists.
+A Tab can be dismissed using the
+  <i>
+   File→Close Tab
+  </i>
+  menu, which removes the current Tab and any charts it contained.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  IMAGES and PRINTING
+ </h2>
+ A static copy of the currently displayed vertical series of charts
+can be captured in two ways.
+ <p>
+  When the intended display device is the screen, the
+  <i>
+   File→Export
+  </i>
+  menu option should be used.
+This allows exporting the charts in a variety of image formats,
+including PNG, JPEG, GIF, and BMP.
+The image size can be scaled up or down in any dimension.
+ </p>
+ <p>
+  Alternatively, when the intended display device is paper, the
+  <i>
+   File→Print
+  </i>
+  menu option can be used.
+This supports the usual set of printing options (choice of printer,
+grayscale/color, landscape/portrait, scaling to different paper sizes,
+etc),
+and in addition allows printing to the intermediate printer formats
+of PostScript and Portable Document Format (PDF).
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  RECORDING
+ </h2>
+ It is possible to make a recording of a set of displayed charts,
+for later playback through
+ <b>
+  pmchart
+ </b>
+ or any of the other Performance Co-Pilot tools.
+The
+ <i>
+  Record→Start
+ </i>
+ functionality is simple to configure through the user interface,
+and allows fine-tuning of the recording process (including record
+frequencies that differ to the
+ <b>
+  pmchart
+ </b>
+ update interval, alternate file locations, etc).
+ <p>
+  <b>
+   pmchart
+  </b>
+  produces recordings that are compatible with the PCP
+  <b>
+   <a href="/man/man1/pmafm.1.html">
+    pmafm
+   </a>
+  </b>
+  (1)
+
+replay mechanism, for later playback via a new instance of
+  <b>
+   pmchart
+  </b>
+  .
+
+In addition, when recording through
+  <b>
+   pmchart
+  </b>
+  one can also replay the recording immediately, as on termination
+of the recording (through the
+  <i>
+   Record→Stop
+  </i>
+  menu item), an archive mode Tab will be created with the captured view.
+ </p>
+ <p>
+  Once recording is active in a Live Tab, the Time Control status
+button in the bottom left corner of the
+  <b>
+   pmchart
+  </b>
+  window is displayed with a distinctive red dot.
+At any time during a
+  <b>
+   pmchart
+  </b>
+  recording session, the amount of space used in the filesystem by
+that recording can be displayed using the
+  <i>
+   Record→Query
+  </i>
+  menu item.
+ </p>
+ <p>
+  Finally, the
+  <i>
+   Record→Detach
+  </i>
+  menu option provides a mechanism whereby the recording process can
+be completely divorced from the running
+  <b>
+   pmchart
+  </b>
+  process, and allowed to continue on when
+  <b>
+   pmchart
+  </b>
+  exits.
+A dialog displaying the current size and estimated rate of growth for
+the recording is presented.
+On the other hand, if
+  <b>
+   pmchart
+  </b>
+  is terminated while recording is in process, then the recording process
+will prompt the user to choose immediate cessation of recording or for
+it to continue on independently.
+ </p>
+ <p>
+  All of the record mode services available from
+  <b>
+   pmchart
+  </b>
+  are implemented with the assistance of the base Performance Co-Pilot
+logging services - refer to
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+and
+  <b>
+   <a href="/man/man1/pmafm.1.html">
+    pmafm
+   </a>
+  </b>
+  (1)
+
+for an extensive description of the capabilities of these tools.
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  CONFIGURATION FILE SYNTAX
+ </h2>
+ <p>
+  <b>
+   pmchart
+  </b>
+  loads predefined chart configurations (or "views") from external
+files that conform to the following rules.  In the descriptions below
+keywords (shown in bold) may appear in upper, lower or
+mixed case, elements shown in
+  <tt>
+   [stuff]
+  </tt>
+  are optional, and
+user-supplied elements are shown as
+  <tt>
+   &lt;other stuff&gt;
+  </tt>
+  .
+A vertical bar (|) is used where syntactic elements are alternatives.
+Quotes (")
+may be used to enclose lexical elements that may contain white space,
+such as titles, labels and instance names.
+ </p>
+ <dl compact="">
+  <dt>
+   1.
+  </dt>
+  <dd>
+   The first line defines the configuration file type and should be
+   <pre>
+#kmchart
+
+<br/>
+</pre>
+   although
+   <b>
+    pmchart
+   </b>
+   provides backwards compatibility for the older
+   <b>
+    pmchart
+   </b>
+   view formats with an initial line of
+   <pre>
+#pmchart
+
+<br/>
+</pre>
+  </dd>
+  <dt>
+   2.
+  </dt>
+  <dd>
+   After the first line, lines beginning with "#" as the first
+non-white space character are treated as comments and skipped.
+Similarly blank lines are skipped.
+  </dd>
+  <dt>
+   3.
+  </dt>
+  <dd>
+   The next line should be
+   <pre>
+version &lt;n&gt; &lt;host-clause&gt;
+
+<br/>
+</pre>
+   where
+   <tt>
+    &lt;n&gt;
+   </tt>
+   depends on the configuration file type, and
+is 1 for pmchart else 1.1, 1.2 or
+2.0 for pmchart.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     The
+     <tt>
+      &lt;host-clause&gt;
+     </tt>
+     part is optional (and ignored)
+for
+     <b>
+      pmchart
+     </b>
+     configuration
+files, but required for the
+     <b>
+      pmchart
+     </b>
+     configuration files, and
+is of the form
+     <pre>
+host literal
+
+<br/>
+</pre>
+     or
+     <pre>
+host dynamic
+
+<br/>
+</pre>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   4.
+  </dt>
+  <dd>
+   A configuration contains one or more charts defined as follows:
+   <pre>
+chart [title &lt;title&gt;] style &lt;style&gt; &lt;options&gt;
+
+<br/>
+</pre>
+   If specified, the title will appear centred and above the graph area
+of the chart.
+The
+   <tt>
+    &lt;title&gt;
+   </tt>
+   is usually enclosed in quotes (") and if it
+contains the sequence "%h" this will be replaced by the short form
+of the hostname for the default source of metrics at the time
+this chart was loaded.  Alternatively, "%H" can be used to insert
+the full host name.  If the hostname appears to be an inet or IPv6
+address, no shortening will be attempted; it will be used as-is in
+both replacement cases.
+After the view is loaded, the title visibility and setting
+can be manipulated using the
+   <i>
+    Chart Title
+   </i>
+   text box in the
+   <i>
+    Edit→Chart
+   </i>
+   dialog.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The
+      <tt>
+       &lt;style&gt;
+      </tt>
+      controls the initial plotting style of the chart, and
+should be one of the keywords plot (line graph), bar,
+stacking (stacked bar),
+area or utilization.
+After the view is loaded, the plotting style can be changed using the
+      <i>
+       Edit→Chart
+      </i>
+      Style dropdown list.
+     </p>
+     <p>
+      The
+      <tt>
+       &lt;options&gt;
+      </tt>
+      are zero or more of the optional elements:
+     </p>
+     <pre>
+[scale [from] &lt;ymin&gt; [to] &lt;ymax&gt;] [legend &lt;onoff&gt;]
+
+<br/>
+</pre>
+     If scale is specified, the vertical scaling is set for all plots
+in the chart to a y-range defined by
+     <tt>
+      &lt;ymin&gt;
+     </tt>
+     and
+     <tt>
+      &lt;ymax&gt;
+     </tt>
+     .
+Otherwise the
+vertical axis will be autoscaled based on the values currently being
+plotted.
+     <p>
+      <tt>
+       &lt;onoff&gt;
+      </tt>
+      is one of the keywords on or off and the
+legend clause controls the presence or absence of the plot
+legend below the graph area.  The default is for the legend to be shown.
+After the view is loaded, the legend visibility
+can be toggled using the
+      <i>
+       Show Legend
+      </i>
+      button in the
+      <i>
+       Edit→Chart
+      </i>
+      dialog.
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   5.
+  </dt>
+  <dd>
+   <b>
+    pmchart
+   </b>
+   supports a global clause to specify the dimensions of the
+top-level window (using the width and height keywords),
+the number of visible points (points keyword) and the starting
+X and Y axis positions on the screen (xpos and ypos
+keywords).
+Each of these global attributes takes an integer value as the
+sole qualifier.
+  </dd>
+  <dt>
+   6.
+  </dt>
+  <dd>
+   Each chart has one or more plots associated with it, as
+defined by one of the following specifications:
+   <pre>
+plot
+    [legend &lt;title&gt;] [color &lt;colorspec&gt;] [host &lt;hostspec&gt;]
+    metric &lt;metricname&gt;
+    [ instance &lt;inst&gt; | matching &lt;pat&gt; | not-matching &lt;pat&gt; ]
+
+<br/>
+</pre>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The keyword plot may be replaced with the keyword
+optional-plot, in which case if the source of performance data
+does not include the specified performance metric and/or instance,
+then this plot is silently dropped from the chart.
+     </p>
+     <p>
+      If specified, the title will appear in the chart legend.
+The
+      <tt>
+       &lt;title&gt;
+      </tt>
+      is usually enclosed in quotes (") and it may
+contain one or more wildcard characters which will be expanded
+using metric name, instance name, and host name for the plot.
+The wildcards are "%i" (short unique instance name, up to the first
+whitespace), "%I" (full instance name), "%h" (short host name, up
+to the first dot), %H (full host name), "%m" (metric name shortened
+to the final two PMNS components), and "%M" (full metric name).
+     </p>
+     <p>
+      For older
+      <b>
+       pmchart
+      </b>
+      configuration files, the keyword title must be used instead of
+legend.
+Nowadays
+      <b>
+       pmchart
+      </b>
+      supports either keyword.
+     </p>
+     <p>
+      The color clause is optional for newer
+      <b>
+       pmchart
+      </b>
+      configuration files, but it was mandatory in the original
+      <b>
+       pmchart
+      </b>
+      configuration file format.
+      <tt>
+       &lt;colorspec&gt;
+      </tt>
+      may be one of the following:
+     </p>
+     <pre>
+#-cycle
+rgbi:rr:gg:bb
+#rgb
+#rrggbb
+#rrrgggbbb
+#rrrrggggbbbb
+&lt;Xcolor&gt;
+
+<br/>
+</pre>
+     where each of
+     <tt>
+      r
+     </tt>
+     ,
+     <tt>
+      g
+     </tt>
+     and
+     <tt>
+      b
+     </tt>
+     are hexadecimal
+digits (0-9 and A-F) representing respectively the red, green and
+blue color components.
+     <tt>
+      &lt;Xcolor&gt;
+     </tt>
+     is one of the color names from the X color database,
+e.g. red or steelblue, see also the output from
+     <b>
+      <a href="http://man7.org/linux/man-pages/man1/showrgb.1.html">
+       showrgb
+      </a>
+     </b>
+     (1).
+     <p>
+      The "color" #-cycle specifies that
+      <b>
+       pmchart
+      </b>
+      should use the next in a pallet of colors that it uses cyclically
+for each chart.  This is the default if the color clause
+is omitted.
+     </p>
+     <p>
+      The
+      <tt>
+       &lt;hostspec&gt;
+      </tt>
+      in the host clause may be a hostname,
+an IP address or an asterisk (*); the latter is used to mean the
+default source of performance metrics.
+For older
+      <b>
+       pmchart
+      </b>
+      configuration files, the host clause must be present, for new
+      <b>
+       pmchart
+      </b>
+      configuration files it is optional, and if missing the default source
+of performance metrics will be used.
+     </p>
+     <p>
+      The optional instance specification,
+     </p>
+     <dl compact="">
+      <dt>
+       (a)
+      </dt>
+      <dd>
+       is omitted in which case one plot will be created for every instance of
+the
+       <tt>
+        &lt;metricname&gt;
+       </tt>
+       metric
+      </dd>
+      <dt>
+       (b)
+      </dt>
+      <dd>
+       starts with instance, in which case only the instance
+named
+       <tt>
+        &lt;inst&gt;
+       </tt>
+       will be plotted
+      </dd>
+      <dt>
+       (c)
+      </dt>
+      <dd>
+       starts with matching, in which case all instances whose
+names match the pattern
+       <tt>
+        &lt;pat&gt;
+       </tt>
+       will be plotted; the pattern
+uses extended regular expression notation in the style of
+       <b>
+        <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
+         egrep
+        </a>
+       </b>
+       (1)
+
+(refer to the PMCD view for an example)
+      </dd>
+      <dt>
+       (d)
+      </dt>
+      <dd>
+       starts with not-matching, in which case all instances whose
+names
+       <b>
+        do   not
+       </b>
+       match the pattern
+       <tt>
+        &lt;pat&gt;
+       </tt>
+       will be plotted; the pattern
+uses extended regular expression notation in the style of
+       <b>
+        <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
+         egrep
+        </a>
+       </b>
+       (1)
+
+(refer to the Netbytes view for an example)
+      </dd>
+     </dl>
+     <p>
+      <b>
+       pmchart
+      </b>
+      uses a bizarre syntactic notation where
+      <tt>
+       &lt;inst&gt;
+      </tt>
+      and
+      <tt>
+       &lt;pat&gt;
+      </tt>
+      extend from the first non-white space character to the
+end of the input line.  For
+      <b>
+       pmchart
+      </b>
+      configuration files these elements are either delimited by white
+space, or enclosed in quotes (").
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   7.
+  </dt>
+  <dd>
+   The optional tab directive can be used to create views with
+multiple charts which span multiple Tabs.  The syntax is as follows:
+   <pre>
+tab &lt;label&gt; [host &lt;host&gt;] [points &lt;points&gt; [samples &lt;samples&gt;]]
+
+<br/>
+</pre>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <pre>
+
+All chart specifications following this keyword will be created
+on the new Tab, until the end of the configuration file or until
+another tab keyword is encountered.
+</pre>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  Of particular note, the
+  <b>
+   $PCP_XCONFIRM_PROG
+  </b>
+  setting is explicitly and unconditionally overridden by
+  <b>
+   pmchart.
+  </b>
+  This is set to the
+  <b>
+   <a href="/man/man1/pmconfirm.1.html">
+    pmconfirm
+   </a>
+  </b>
+  (1),
+
+utility, in order that some popup dialogs (particularly in the
+area of Recording) maintain a consistent look-and-feel with the
+rest of the
+  <b>
+   pmchart
+  </b>
+  application.
+  <a name="lbAK">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmtime.1.html">
+   pmtime
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmconfirm.1.html">
+   pmconfirm
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumptext.1.html">
+   pmdumptext
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmafm.1.html">
+   pmafm
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmval.1.html">
+   pmval
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   pmns
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    VIEWS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    TABS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    IMAGES and PRINTING
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    RECORDING
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    CONFIGURATION FILE SYNTAX
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

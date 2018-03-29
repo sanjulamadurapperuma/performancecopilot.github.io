@@ -1,425 +1,429 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                AUTOFSD-PROBE
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                autofsd-probe
-               </b>
-               - probe AutoFS mount/unmount daemon
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                $PCP_BINADM_DIR/autofsd-probe
-               </b>
-               [
-               <b>
-                -h
-               </b>
-               <i>
-                host
-               </i>
-               ]
-              [
-               <b>
-                -t
-               </b>
-               <i>
-                timeout
-               </i>
-               ]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                autofsd-probe
-               </b>
-               will check the status of the
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/autofsd.1.html">
-                 autofsd
-                </a>
-               </b>
-               (1)
-              
-              daemon on the specified
-               <i>
-                host
-               </i>
-               .
-               <p>
-                Unless directed to another
-                <i>
-                 host
-                </i>
-                by the
-                <b>
-                 -h
-                </b>
-                option,
-                <b>
-                 autofsd-probe
-                </b>
-                will contact the
-                <b>
-                 AutoFS
-                </b>
-                daemon on the local host.
-               </p>
-               <p>
-                The
-                <b>
-                 AutoFS
-                </b>
-                file system is built on the Remote Procedure Call (
-                <b>
-                 <a href="http://man7.org/linux/man-pages/man3/rpc.3.html">
-                  RPC
-                 </a>
-                </b>
-                (3))
-              
-              library routines.  The
-                <b>
-                 -t
-                </b>
-                option allows the total timeout and retry timeout intervals to be set for all
-              remote procedure call operations used with
-                <b>
-                 autofsd-probe
-                </b>
-                .
-              
-              This option accepts an interval argument in the form described in the
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPintro
-                 </a>
-                </b>
-                (1)
-              
-              manual page.
-               </p>
-               <p>
-                <b>
-                 autofsd-probe
-                </b>
-                is typically used in an automated fashion from within
-                <b>
-                 <a href="/man/man1/pmdashping.1.html">
-                  pmdashping
-                 </a>
-                </b>
-                (1)
-              
-              and in conjunction with
-                <b>
-                 <a href="/man/man1/pmie.1.html">
-                  pmie
-                 </a>
-                </b>
-                (1),
-              
-              for monitoring response time and service failure.
-               </p>
-               <p>
-                By default
-                <b>
-                 autofsd-probe
-                </b>
-                will not produce any output, unless there is an error in which case
-              a diagnostic message will be displayed and the exit status will indicate
-              the reason for failure.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               If
-               <b>
-                autofsd-probe
-               </b>
-               succeeds, then 0 will be returned.
-              If the attempt to establish a connection with
-               <b>
-                autofsd
-               </b>
-               fails, then 2 is returned.
-              If the subsequent attempt to invoke an
-               <b>
-                autofsd
-               </b>
-               response fails, then 1 will be returned.
-               <p>
-                In the case of a syntactical command line error, 4 is returned and the
-              usage message is displayed.
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/autofs.1.html">
-                 autofs
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/autofsd.1.html">
-                 autofsd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPintro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdashping.1.html">
-                 pmdashping
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmie.1.html">
-                 pmie
-                </a>
-               </b>
-               (1)
-              
-              and
-               <b>
-                <a href="http://man7.org/linux/man-pages/man3/rpc.3.html">
-                 RPC
-                </a>
-               </b>
-               (3).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  AUTOFSD-PROBE
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  autofsd-probe
+ </b>
+ - probe AutoFS mount/unmount daemon
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_BINADM_DIR/autofsd-probe
+ </b>
+ [
+ <b>
+  -h
+ </b>
+ <i>
+  host
+ </i>
+ ]
+[
+ <b>
+  -t
+ </b>
+ <i>
+  timeout
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  autofsd-probe
+ </b>
+ will check the status of the
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/autofsd.1.html">
+   autofsd
+  </a>
+ </b>
+ (1)
+
+daemon on the specified
+ <i>
+  host
+ </i>
+ .
+ <p>
+  Unless directed to another
+  <i>
+   host
+  </i>
+  by the
+  <b>
+   -h
+  </b>
+  option,
+  <b>
+   autofsd-probe
+  </b>
+  will contact the
+  <b>
+   AutoFS
+  </b>
+  daemon on the local host.
+ </p>
+ <p>
+  The
+  <b>
+   AutoFS
+  </b>
+  file system is built on the Remote Procedure Call (
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/rpc.3.html">
+    RPC
+   </a>
+  </b>
+  (3))
+
+library routines.  The
+  <b>
+   -t
+  </b>
+  option allows the total timeout and retry timeout intervals to be set for all
+remote procedure call operations used with
+  <b>
+   autofsd-probe
+  </b>
+  .
+
+This option accepts an interval argument in the form described in the
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPintro
+   </a>
+  </b>
+  (1)
+
+manual page.
+ </p>
+ <p>
+  <b>
+   autofsd-probe
+  </b>
+  is typically used in an automated fashion from within
+  <b>
+   <a href="/man/man1/pmdashping.1.html">
+    pmdashping
+   </a>
+  </b>
+  (1)
+
+and in conjunction with
+  <b>
+   <a href="/man/man1/pmie.1.html">
+    pmie
+   </a>
+  </b>
+  (1),
+
+for monitoring response time and service failure.
+ </p>
+ <p>
+  By default
+  <b>
+   autofsd-probe
+  </b>
+  will not produce any output, unless there is an error in which case
+a diagnostic message will be displayed and the exit status will indicate
+the reason for failure.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ If
+ <b>
+  autofsd-probe
+ </b>
+ succeeds, then 0 will be returned.
+If the attempt to establish a connection with
+ <b>
+  autofsd
+ </b>
+ fails, then 2 is returned.
+If the subsequent attempt to invoke an
+ <b>
+  autofsd
+ </b>
+ response fails, then 1 will be returned.
+ <p>
+  In the case of a syntactical command line error, 4 is returned and the
+usage message is displayed.
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/autofs.1.html">
+   autofs
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/autofsd.1.html">
+   autofsd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPintro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdashping.1.html">
+   pmdashping
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmie.1.html">
+   pmie
+  </a>
+ </b>
+ (1)
+
+and
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/rpc.3.html">
+   RPC
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

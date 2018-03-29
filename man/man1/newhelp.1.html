@@ -1,498 +1,502 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                NEWHELP
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                newhelp
-               </b>
-               - generate a performance metrics help database
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                $PCP_BINADM_DIR/newhelp
-               </b>
-               [
-               <b>
-                -V
-               </b>
-               ]
-              [
-               <b>
-                -n
-               </b>
-               <i>
-                pmnsfile
-               </i>
-               ]
-              [
-               <b>
-                -o
-               </b>
-               <i>
-                outputfile
-               </i>
-               ]
-              [
-               <b>
-                -v
-               </b>
-               <i>
-                version
-               </i>
-               ]
-              [
-               <i>
-                file
-               </i>
-               ...]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                newhelp
-               </b>
-               generates the
-              Performance Co-Pilot
-              help text files used by
-              Performance Metric Domain Agents (PMDAs).
-               <p>
-                Normally
-                <b>
-                 newhelp
-                </b>
-                operates on the default Performance Metrics Name Space (PMNS), however
-              if the
-                <b>
-                 -n
-                </b>
-                option is specified an alternative namespace is loaded
-              from the file
-                <i>
-                 pmnsfile
-                </i>
-                .
-               </p>
-               <p>
-                When there is only one input file,
-              the base name of the new database is derived from the name of the input
-                <i>
-                 file
-                </i>
-                ,
-              
-              otherwise the
-                <b>
-                 -o
-                </b>
-                flag must be given to explicitly name the database.
-              If no input files are supplied,
-                <b>
-                 newhelp
-                </b>
-                reads from the standard input stream,
-              in which case the
-                <b>
-                 -o
-                </b>
-                flag must be given.
-               </p>
-               <p>
-                If the output file name is determined to be
-                <b>
-                 foo
-                </b>
-                ,
-                <b>
-                 newhelp
-                </b>
-                will create
-                <b>
-                 foo.dir
-                </b>
-                and
-                <b>
-                 foo.pag
-                </b>
-                .
-               </p>
-               <p>
-                Although historically there have been multiple help text file formats, the only
-              format currently supported
-              using the
-                <b>
-                 -v
-                </b>
-                option is
-                <i>
-                 version
-                </i>
-                2, and
-              this is the default if no
-                <b>
-                 -v
-                </b>
-                flag is provided.
-               </p>
-               <p>
-                The
-                <b>
-                 -V
-                </b>
-                flag causes verbose messages to be printed while
-                <b>
-                 newhelp
-                </b>
-                is parsing its input.
-               </p>
-               <p>
-                The first line of each entry in a help source file consists of an
-              ``@''
-              character beginning the line
-              followed by a space and then
-              the performance metric name and a one line description of the metric.
-              Following lines (up to the next line beginning with ``@''
-              or end of file) may contain a verbose help description.
-              E.g.
-               </p>
-               <p>
-               </p>
-               <pre>
-              #
-              # This is an example of newhelp's input syntax
-              #
-              @ kernel.all.cpu.idle CPU idle time
-              A cumulative count of the number of milliseconds
-              of CPU idle time, summed over all processors.
-              </pre>
-               <p>
-                Three-part numeric metric identifiers (PMIDs) may be used in place of metric names,
-              e.g. 
-              60.0.23
-              
-              rather than
-              
-              kernel.all.cpu.idle
-              
-              in the example above.  Other than for dynamic metrics
-              (where the existence of a metric is known to
-              a PMDA, but not visible in the PMNS and hence has no name that
-              could be known to
-                <i>
-                 newhelp
-                </i>
-                )
-              
-              use of this syntactic variant is not encouraged.
-               </p>
-               <p>
-                Lines beginning with ``#''
-              are ignored, as are blank lines in the file before the first ``@''.
-              The verbose help text is optional.
-               </p>
-               <p>
-                As a special case,
-              a ``metric'' name of the form
-                <i>
-                 NNN.MM
-                </i>
-                (for numeric
-                <i>
-                 NNN
-                </i>
-                and
-                <i>
-                 MM
-                </i>
-                )
-              
-              is interpreted as an
-              instance domain identification,
-              and the text describes the instance domain.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_VAR_DIR/pmns/
-                 </b>
-                 <i>
-                  *
-                 </i>
-                </dt>
-                <dd>
-                 default PMNS specification files
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/chkhelp.1.html">
-                 chkhelp
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupindomtext.3.html">
-                 pmLookupInDomText
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookuptext.3.html">
-                 pmLookupText
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  NEWHELP
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  newhelp
+ </b>
+ - generate a performance metrics help database
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_BINADM_DIR/newhelp
+ </b>
+ [
+ <b>
+  -V
+ </b>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -o
+ </b>
+ <i>
+  outputfile
+ </i>
+ ]
+[
+ <b>
+  -v
+ </b>
+ <i>
+  version
+ </i>
+ ]
+[
+ <i>
+  file
+ </i>
+ ...]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  newhelp
+ </b>
+ generates the
+Performance Co-Pilot
+help text files used by
+Performance Metric Domain Agents (PMDAs).
+ <p>
+  Normally
+  <b>
+   newhelp
+  </b>
+  operates on the default Performance Metrics Name Space (PMNS), however
+if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative namespace is loaded
+from the file
+  <i>
+   pmnsfile
+  </i>
+  .
+ </p>
+ <p>
+  When there is only one input file,
+the base name of the new database is derived from the name of the input
+  <i>
+   file
+  </i>
+  ,
+
+otherwise the
+  <b>
+   -o
+  </b>
+  flag must be given to explicitly name the database.
+If no input files are supplied,
+  <b>
+   newhelp
+  </b>
+  reads from the standard input stream,
+in which case the
+  <b>
+   -o
+  </b>
+  flag must be given.
+ </p>
+ <p>
+  If the output file name is determined to be
+  <b>
+   foo
+  </b>
+  ,
+  <b>
+   newhelp
+  </b>
+  will create
+  <b>
+   foo.dir
+  </b>
+  and
+  <b>
+   foo.pag
+  </b>
+  .
+ </p>
+ <p>
+  Although historically there have been multiple help text file formats, the only
+format currently supported
+using the
+  <b>
+   -v
+  </b>
+  option is
+  <i>
+   version
+  </i>
+  2, and
+this is the default if no
+  <b>
+   -v
+  </b>
+  flag is provided.
+ </p>
+ <p>
+  The
+  <b>
+   -V
+  </b>
+  flag causes verbose messages to be printed while
+  <b>
+   newhelp
+  </b>
+  is parsing its input.
+ </p>
+ <p>
+  The first line of each entry in a help source file consists of an
+``@''
+character beginning the line
+followed by a space and then
+the performance metric name and a one line description of the metric.
+Following lines (up to the next line beginning with ``@''
+or end of file) may contain a verbose help description.
+E.g.
+ </p>
+ <p>
+ </p>
+ <pre>
+#
+# This is an example of newhelp's input syntax
+#
+@ kernel.all.cpu.idle CPU idle time
+A cumulative count of the number of milliseconds
+of CPU idle time, summed over all processors.
+</pre>
+ <p>
+  Three-part numeric metric identifiers (PMIDs) may be used in place of metric names,
+e.g. 
+60.0.23
+
+rather than
+
+kernel.all.cpu.idle
+
+in the example above.  Other than for dynamic metrics
+(where the existence of a metric is known to
+a PMDA, but not visible in the PMNS and hence has no name that
+could be known to
+  <i>
+   newhelp
+  </i>
+  )
+
+use of this syntactic variant is not encouraged.
+ </p>
+ <p>
+  Lines beginning with ``#''
+are ignored, as are blank lines in the file before the first ``@''.
+The verbose help text is optional.
+ </p>
+ <p>
+  As a special case,
+a ``metric'' name of the form
+  <i>
+   NNN.MM
+  </i>
+  (for numeric
+  <i>
+   NNN
+  </i>
+  and
+  <i>
+   MM
+  </i>
+  )
+
+is interpreted as an
+instance domain identification,
+and the text describes the instance domain.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_VAR_DIR/pmns/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   default PMNS specification files
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/chkhelp.1.html">
+   chkhelp
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupindomtext.3.html">
+   pmLookupInDomText
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookuptext.3.html">
+   pmLookupText
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>
