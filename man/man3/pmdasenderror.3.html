@@ -42,7 +42,7 @@
 <div class='manpage'>
 ﻿
  <h1>
-  PMSEMSTR
+  PMDASENDERROR
  </h1>
  Section: C Library Functions (3)
  <br/>
@@ -59,13 +59,8 @@
   NAME
  </h2>
  <b>
-  pmSemStr
+  pmdaSendError
  </b>
- ,
- <b>
-  pmSemStr_r
- </b>
- - convert a performance metric semantic into a string
  <a name="lbAC">
  </a>
  <h2>
@@ -77,129 +72,104 @@
    pcp/pmapi.h
   </a>
   &gt;
+  <br/>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmda.h">
+   pcp/pmda.h
+  </a>
+  &gt;
  </b>
  <p>
-  const char *pmSemStr(int
+  void pmdaSendError(pmdaInterface *
   <i>
-   sem
-  </i>
-  );
-  <br/>
-  char *pmSemStr_r(int
-  <i>
-   sem
-  </i>
-  , char *
-  <i>
-   buf
+   dispatch
   </i>
   , int
   <i>
-   buflen
+   err
   </i>
   );
  </p>
  <p>
-  cc ... -lpcp
+  cc ... -lpcp_pmda -lpcp
   <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  PYTHON SYNOPSIS
+ </h2>
+ <b>
+  from pcp.pmda import PMDA
+  <br/>
+  PMDA.pmda_notready()
+  <br/>
+  PMDA.pmda_ready()
+ </b>
+ <p>
+  <a name="lbAE">
   </a>
  </p>
  <h2>
   DESCRIPTION
  </h2>
- Given a performance metric
- <i>
-  semantic
- </i>
- ,
+ As part of the Performance Metrics Domain Agent (PMDA) API (see
  <b>
-  pmSemStr
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
  </b>
- produces a terse ASCII equivalent, appropriate for use in error and diagnostic
-messages.
-The
- <b>
-  pmSemStr_r
- </b>
- function does the same, but stores the result in a user-supplied buffer
- <i>
-  buf
- </i>
- of length
- <i>
-  buflen
- </i>
- ,
+ (3)),
 
-which should have room for at least 20 bytes.
+this routine allows a PMDA to send an error PDU to PMCD.
+There is presently only one use for this - so the PMDA can inform PMCD
+that it is ready (or not ready) to process requests.
  <p>
-  The value for
-  <i>
-   sem
-  </i>
-  is typically extracted from a
-  <i>
-   pmDesc
-  </i>
-  structure, following a call to
+  The protocol details are described in
   <b>
-   <a href="/man/man3/pmlookupdesc.3.html">
-    pmLookupDesc
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
    </a>
   </b>
-  (3)
+  (1)
 
-for a particular performance metric.
+and
+  <b>
+   <a href="/man/man3/pmda.3.html">
+    PMDA
+   </a>
+  </b>
+  (3),
+
+but basically if a PMDA starts in the
+  <i>
+   notready
+  </i>
+  state (as may be specified in
+  <b>
+   pmcd.conf
+  </b>
+  ,
+
+see
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1))
+
+then PMCD will not send it any requests until the PMDA sends an
+  <b>
+   PM_ERR_PMDAREADY
+  </b>
+  error PDU using this function.
+This is used by a PMDA that may have a long startup time, e.g. to process a
+large configuration file or similar.
  </p>
  <p>
-  Examples are
-  <b>
-   counter
-  </b>
-  (for
-  <i>
-   sem
-  </i>
-  equals
-  <b>
-   PM_SEM_COUNTER
-  </b>
-  ),
-  <b>
-   discrete
-  </b>
-  (for
-  <i>
-   sem
-  </i>
-  equals
-  <b>
-   PM_SEM_DISCRETE
-  </b>
-  ),
-  <b>
-   instant
-  </b>
-  (for
-  <i>
-   sem
-  </i>
-  equals
-  <b>
-   PM_SEM_INSTANT
-  </b>
-  ),
-
-etc.
-  <a name="lbAE">
+  <a name="lbAF">
   </a>
  </p>
- <h2>
-  NOTES
- </h2>
- Both of these routines are safe to call from threaded applications.
- <a name="lbAF">
- </a>
  <h2>
   SEE ALSO
  </h2>
@@ -210,61 +180,25 @@ etc.
  </b>
  (3),
  <b>
-  <a href="/man/man3/pmatomstr.3.html">
-   pmAtomStr
+  <a href="/man/man3/pmda.3.html">
+   PMDA
   </a>
  </b>
  (3),
  <b>
-  <a href="/man/man3/pmconvscale.3.html">
-   pmConvScale
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
   </a>
  </b>
- (3),
- <b>
-  <a href="/man/man3/pmextractvalue.3.html">
-   pmExtractValue
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmlookupdesc.3.html">
-   pmLookupDesc
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmprintvalue.3.html">
-   pmPrintValue
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmidstr.3.html">
-   pmIDStr
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmindomstr.3.html">
-   pmInDomStr
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmtypestr.3.html">
-   pmTypeStr
-  </a>
- </b>
- (3)
+ (1),
 
 and
  <b>
-  <a href="/man/man3/pmunitsstr.3.html">
-   pmUnitsStr
+  <a href="/man/man1/pmdaprometheus.1.html">
+   pmdaprometheus
   </a>
  </b>
- (3).
+ (1).
  <p>
  </p>
  <hr/>
@@ -290,14 +224,14 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    DESCRIPTION
+    PYTHON SYNOPSIS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    NOTES
+    DESCRIPTION
    </a>
   </dt>
   <dd>

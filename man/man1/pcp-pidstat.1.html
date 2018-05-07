@@ -142,7 +142,8 @@
  <b>
   pcp-pidstat
  </b>
- command is used for monitoring individual tasks currently being managed by the Linux kernel. Using various options it helps user to see useful information related with the processes. This information can include percentage CPU, memory and stack usages, scheduling and priority information.
+ command is used for monitoring individual tasks currently being managed by the Linux kernel. Using various options it helps user to see useful information related with the processes. This information can include percentage CPU, memory and stack usages, scheduling and priority information. By default pcp-pidstat reports live
+data for the local host but can also report for a remote host (--host) or from a previously captured PCP archive (-a).
  <b>
   pcp-pidstat
  </b>
@@ -239,6 +240,101 @@ list of names, each of which may be the base name of an archive or the name of a
     </a>
    </b>
    (1).
+   <p>
+   </p>
+  </dd>
+  <dt>
+   <b>
+    --host
+   </b>
+  </dt>
+  <dd>
+   Current performance metric values are retrieved from the nominated
+   <i>
+    host
+   </i>
+   machine.
+   <p>
+   </p>
+  </dd>
+  <dt>
+   <b>
+    -B
+   </b>
+  </dt>
+  <dd>
+   Report process states. The argument to -B is one of the following:
+   <p>
+    <b>
+     detail
+    </b>
+    <br/>
+    Show total time processes have spent in each of the 5 different states
+   </p>
+   <p>
+    <b>
+     all
+    </b>
+    <br/>
+    Show total time processes spent in their current state
+   </p>
+   <p>
+    [
+    <b>
+     R
+    </b>
+    ,
+    <b>
+     S
+    </b>
+    ,
+    <b>
+     T
+    </b>
+    ,
+    <b>
+     D
+    </b>
+    ,
+    <b>
+     Z
+    </b>
+    ]
+    <br/>
+    A comma separated list of states which can be any or all of [
+    <b>
+     R
+    </b>
+    ,
+    <b>
+     S
+    </b>
+    ,
+    <b>
+     T
+    </b>
+    ,
+    <b>
+     Z
+    </b>
+    ,
+    <b>
+     D
+    </b>
+    ]. For example,
+    <b>
+     -B R,S
+    </b>
+    will report processes currently in either
+    <b>
+     R
+    </b>
+    or
+    <b>
+     S
+    </b>
+    states and not report processes currently in any other states.
+   </p>
    <p>
    </p>
   </dd>

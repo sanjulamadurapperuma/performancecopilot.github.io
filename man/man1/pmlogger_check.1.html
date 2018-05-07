@@ -105,7 +105,7 @@
  </b>
  [
  <b>
-  -KMNorV
+  -KMNoprV
  </b>
  ]
 [
@@ -228,7 +228,7 @@ This period is 14 days by default, but may be changed using the
    -k
   </b>
   option.
-Two special values are recognized for the period (
+Some special values are recognized for the period (
   <i>
    discard
   </i>
@@ -241,6 +241,10 @@ namely
   to keep no archives beyond the current one, and
   <b>
    forever
+  </b>
+  or
+  <b>
+   never
   </b>
   to prevent any archives being discarded.
 Note that the semantics of
@@ -271,16 +275,38 @@ This is particularly useful for large numbers of
   </b>
   .
 
-By default no compression is done by the script, however typical
+If
   <b>
-   pmlogger_check
+   transparent_decompress
   </b>
-  configuration files will enable compression automatically.
-The
+  is enabled when
+  <i>
+   libpcp
+  </i>
+  was built
+(can be checked with
+  <b>
+   pmconfig
+  </b>
+  <b>
+   -L
+  </b>
+  ),
+
+then the default behaviour is compression ``as soon as possible''
+otherwise the default behaviour is to
+  <b>
+   not
+  </b>
+  compress files (which matches the historical default behaviour
+in earlier PCP releases).
+ </p>
+ <p>
+  The
   <b>
    -x
   </b>
-  option enables compression and
+  option controls compression and
   <i>
    compress
   </i>
@@ -295,6 +321,19 @@ If
    0
   </b>
   then compression will be applied as soon as possible.
+If
+  <i>
+   compress
+  </i>
+  is
+  <b>
+   never
+  </b>
+  or
+  <b>
+   forever
+  </b>
+  then no compression will be done.
 The environment variable
   <b>
    PCP_COMPRESSAFTER
@@ -715,6 +754,74 @@ written by
    </a>
   </b>
   (1).
+ </p>
+ <p>
+  If the
+  <b>
+   -p
+  </b>
+  option is specified for
+  <b>
+   pmlogger_daily
+  </b>
+  then the status of the daily processing is polled and if the
+daily
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+rotation, culling, rewriting, compressing, etc.
+has not been done in the last 24 hours then it is done now.
+The intent is to have
+  <b>
+   pmlogger_daily
+  </b>
+  called regularly with the
+  <b>
+   -p
+  </b>
+  option (at 30 mins past the hour, every hour in the default
+  <b>
+   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
+    cron
+   </a>
+  </b>
+  (8)
+
+set up) to ensure daily processing happens as soon as possible if
+it was missed at the regularly scheduled time (which is 00:10
+by default), e.g. if the system was down or suspended at that
+time.
+ </p>
+ <p>
+  With the
+  <b>
+   -p
+  </b>
+  option,
+  <b>
+   pmlogger_daily
+  </b>
+  simply exits if the previous day's processing has already been
+done.
+ </p>
+ <p>
+  The
+  <b>
+   -K
+  </b>
+  and
+  <b>
+   -p
+  </b>
+  options to
+  <b>
+   pmlogger_daily
+  </b>
+  are mutually exclusive.
  </p>
  <p>
   The script
@@ -1475,6 +1582,32 @@ the host
 
 and friends
       </dd>
+      <dt>
+       <b>
+        $PCP_LOG_DIR/pmlogger/pmlogger_check.log
+       </b>
+      </dt>
+      <dd>
+       if the previous execution of
+       <b>
+        pmlogger_check
+       </b>
+       produced any output it is saved here.
+The normal case is no output in which case the file does not exist.
+      </dd>
+      <dt>
+       <b>
+        $PCP_LOG_DIR/pmlogger/pmlogger_daily.log
+       </b>
+      </dt>
+      <dd>
+       if the previous execution of
+       <b>
+        pmlogger_daily
+       </b>
+       produced any output it is saved here.
+The normal case is no output in which case the file does not exist.
+      </dd>
      </dl>
      <a name="lbAF">
      </a>
@@ -1523,6 +1656,12 @@ as described in
      </b>
      (1),
      <b>
+      <a href="/man/man1/pmconfig.1.html">
+       pmconfig
+      </a>
+     </b>
+     (1),
+     <b>
       <a href="/man/man1/pmlc.1.html">
        pmlc
       </a>
@@ -1535,6 +1674,12 @@ as described in
      </b>
      (1),
      <b>
+      <a href="/man/man1/pmlogextract.1.html">
+       pmlogextract
+      </a>
+     </b>
+     (1),
+     <b>
       <a href="/man/man1/pmlogger.1.html">
        pmlogger
       </a>
@@ -1543,12 +1688,6 @@ as described in
      <b>
       <a href="/man/man1/pmlogger_daily_report.1.html">
        pmlogger_daily_report
-      </a>
-     </b>
-     (1),
-     <b>
-      <a href="/man/man1/pmlogextract.1.html">
-       pmlogextract
       </a>
      </b>
      (1),

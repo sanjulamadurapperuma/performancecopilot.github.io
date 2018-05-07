@@ -87,6 +87,10 @@
  </b>
  ,
  <b>
+  pmClearFetchGroup
+ </b>
+ ,
+ <b>
   pmDestroyFetchGroup
  </b>
  - simplified performance metrics value fetch and conversion
@@ -273,6 +277,13 @@
   );
   <br/>
   <br/>
+  int pmClearFetchGroup(pmFG
+  <i>
+   pmfg
+  </i>
+  );
+  <br/>
+  <br/>
   int pmDestroyFetchGroup(pmFG
   <i>
    pmfg
@@ -340,7 +351,8 @@ Rate conversions between consecutive samples may be requested.
  <p>
   Each fetchgroup is associated with a private PMAPI context, so it can
 manipulate instance profiles and other such state without disrupting
-other contexts.
+other contexts.  The instance profile is manipulated to optimize
+fetches of individual items, even if some are derived metrics.
 This private PMAPI context belongs to the fetchgroup,
 is used for all of its internal operations, and will be destroyed.
  </p>
@@ -1279,9 +1291,26 @@ pmValueSet.numval==0), then the last seen valid value (if any) is
 retained.
 This is intended to ease the processing of sets of archives with a
 mixture of once- and repeatedly-sampled metrics.
- </p>
- <p>
   <a name="lbAL">
+  </a>
+ </p>
+ <h3>
+  Clearing a fetchgroup
+ </h3>
+ <b>
+ </b>
+ <pre>
+int pmClearFetchGroup(pmFG <i>pmfg</i>);
+</pre>
+ <p>
+  When the current fetch state of a fetchgroup is no longer needed,
+it may be explicitly reset with this function.
+It releases any dynamically stored state but keeps the private PMAPI
+context intact for subsequent use (i.e. no change to the context is
+made at all and the context remains at the current fetch offset).
+It frees any pointers such as indom instance names or strings that
+may have been stored in output variables.
+  <a name="lbAM">
   </a>
  </p>
  <h3>
@@ -1300,7 +1329,7 @@ as the private PMAPI context.
 It clears frees any pointers such as
 indom instance names or strings that may have been stored in output
 variables.
-  <a name="lbAM">
+  <a name="lbAN">
   </a>
  </p>
  <h2>
@@ -1371,7 +1400,7 @@ int main()
     return 0;
 }
 </pre>
- <a name="lbAN">
+ <a name="lbAO">
  </a>
  <h2>
   UNUSUAL SITUATIONS
@@ -1449,7 +1478,7 @@ future
    pmFetchGroup
   </b>
   calls may write into them.
-  <a name="lbAO">
+  <a name="lbAP">
   </a>
  </p>
  <h2>
@@ -1492,7 +1521,7 @@ registration until the
    pmDestroyFetchGroup
   </b>
   call.
-  <a name="lbAP">
+  <a name="lbAQ">
   </a>
  </p>
  <h2>
@@ -1623,6 +1652,13 @@ and
     </dd>
     <dt>
      <a href="#lbAL">
+      Clearing a fetchgroup
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAM">
       Destroying a fetchgroup
      </a>
     </dt>
@@ -1631,28 +1667,28 @@ and
    </dl>
   </dd>
   <dt>
-   <a href="#lbAM">
+   <a href="#lbAN">
     EXAMPLE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAN">
+   <a href="#lbAO">
     UNUSUAL SITUATIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAO">
+   <a href="#lbAP">
     DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAP">
+   <a href="#lbAQ">
     SEE ALSO
    </a>
   </dt>

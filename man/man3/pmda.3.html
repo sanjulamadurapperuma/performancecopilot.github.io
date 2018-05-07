@@ -1617,6 +1617,107 @@ and in this context all values of
   </dd>
   <dt>
    <i>
+    ipc_prot
+   </i>
+  </dt>
+  <dd>
+   For a daemon PMDA, this can be set to either
+   <b>
+    binary
+   </b>
+   or
+   <b>
+    text
+   </b>
+   .
+
+The default is
+   <b>
+    binary
+   </b>
+   and
+   <b>
+    text
+   </b>
+   is rarely used.
+In addition, an optional IPC parameter
+   <b>
+    notready
+   </b>
+   can be used to signify that the PMDA will start up in the
+   <b>
+    notready
+   </b>
+   state, e.g.
+   <b>
+    ipc_prot="binary notready"
+   </b>
+   .
+Note that the quotes are required.
+The IPC parameters for a PMDA appear in
+   <b>
+    pmcd.conf
+   </b>
+   in the
+   <b>
+    IPC Params
+   </b>
+   column.
+For further details, see
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+but basically
+   <b>
+    pmcd
+   </b>
+   will not issue any requests to a PMDA that has started in the
+   <b>
+    notready
+   </b>
+   state until the PMDA sends a
+   <b>
+    PM_ERR_PMDAREADY
+   </b>
+   PDU.
+This allows PMDAs with long startup times to initialize correctly
+without timing out.
+For details, see
+   <b>
+    <a href="/man/man3/pmdasenderror.3.html">
+     pmdaSendError
+    </a>
+   </b>
+   (3)
+
+and
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1).
+
+When a PMDA is in the
+   <b>
+    notready
+   </b>
+   state, any client requests sent to
+   <b>
+    pmcd
+   </b>
+   for the PMDA domain will return with the
+   <b>
+    PM_ERR_PMDANOTREADY
+   </b>
+   error.
+  </dd>
+  <dt>
+   <i>
     socket_inet_def
    </i>
   </dt>

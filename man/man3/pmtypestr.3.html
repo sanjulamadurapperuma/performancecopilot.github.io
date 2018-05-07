@@ -178,7 +178,7 @@ for a particular performance metric.
   </b>
   ),
   <b>
-   AGGREGATE
+   STRING
   </b>
   (for
   <i>
@@ -186,38 +186,18 @@ for a particular performance metric.
   </i>
   equals
   <b>
-   PM_TYPE_AGGREGATE
+   PM_TYPE_STRING
   </b>
   ),
 
 etc.
- </p>
- <p>
-  The string value result for
-  <b>
-   pmTypeStr
-  </b>
-  is held in a single static buffer, so the returned value is
-only valid until the next call to
-  <b>
-   pmTypeStr
-  </b>
-  .
   <a name="lbAE">
   </a>
  </p>
  <h2>
   NOTES
  </h2>
- <b>
-  pmTypeStr
- </b>
- returns a pointer to a static buffer and hence is not thread-safe.
-Multi-threaded applications should use
- <b>
-  pmTypeStr_r
- </b>
- instead.
+ Both of these functions are safe to call from threaded contexts.
  <a name="lbAF">
  </a>
  <h2>

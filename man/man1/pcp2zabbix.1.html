@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -CGHIjLnrRvV?
+  -CGHIjlLnrRvV?
  </b>
  ]
 [
@@ -679,6 +679,26 @@ Default is
    .
   </dd>
  </dl>
+ <p>
+  zabbix_lld (boolean)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Specify whether to enable Zabbix low-level discovery.
+Corresponding command line option is
+   <b>
+    -l
+   </b>
+   .
+Default is
+   <b>
+    no
+   </b>
+   .
+  </dd>
+ </dl>
  <a name="lbAG">
  </a>
  <h2>
@@ -1258,6 +1278,41 @@ With this option all incompatible metrics are silently omitted
 from reporting.
 This may be especially useful when requesting
 non-leaf nodes of the PMNS tree for reporting.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   ,
+   <b>
+    --zabbix-lld
+   </b>
+  </dt>
+  <dd>
+   Add low-level discovery (LLD) metrics.
+This allows PCP metric instance domains to be sent to Zabbix,
+so that prototype items/triggers/graphs may be automatically
+constructed by Zabbix.
+For each PCP metric with an instance domain, the key
+   <b>
+    pcp.discovery[pcp.met.ric]
+   </b>
+   is sent periodically.
+This symbol should be added to a discovery rule, and will define the
+   <b>
+    {#PCP.MET.RIC}
+   </b>
+   LLD macro.
+This macro can inturn be used to define prototype items/triggers/graphs.
+The names are adjusted if
+   <b>
+    -x
+   </b>
+   was given to override the
+   <b>
+    pcp.
+   </b>
+   prefix.
   </dd>
   <dt>
    <b>

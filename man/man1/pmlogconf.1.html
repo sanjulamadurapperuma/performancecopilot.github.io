@@ -938,18 +938,34 @@ as described in
   </a>
  </b>
  (5).
-
-Note that
- <b>
-  pmlogconf
- </b>
- specifically overrides its own
- <b>
-  $PCP_DERIVED_CONFIG
- </b>
- environment variable to an empty string, for performance reasons.
- <a name="lbAI">
- </a>
+ <p>
+  <b>
+   pmlogconf
+  </b>
+  overrides any
+  <b>
+   $PCP_DERIVED_CONFIG
+  </b>
+  environment variable to an empty string, for performance reasons.
+ </p>
+ <p>
+  <b>
+   pmlogconf
+  </b>
+  honours the
+  <b>
+   $PMCD_WAIT_TIMEOUT
+  </b>
+  environment variable when probing and creating new
+  <b>
+   pmlogger
+  </b>
+  configuration files.
+It uses a default timeout value of 10 seconds for this, in the
+absence of an environment setting.
+  <a name="lbAI">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
