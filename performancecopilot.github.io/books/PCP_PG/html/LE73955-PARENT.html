@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8.10. PMAPI Time Control Services</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5199561.html" title="3.8. PMAPI Procedural Interface" /><link rel="prev" href="id5208144.html" title="3.8.9.6.  pmFetchArchive Function" /><link rel="next" href="LE44064-PARENT.html" title="3.8.11. PMAPI Ancillary Support Services" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5208144.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="LE44064-PARENT.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE73955-PARENT">
+      ⁠</a>3.8.10. PMAPI Time Control Services</h3></div></div></div><div class="para">
+					<a id="IG31340177413" class="indexterm"></a> <a id="IG31340177414" class="indexterm"></a>The PMAPI provides a common framework for client applications to control time and to synchronize time with other applications. The user interface component of this service is fully described in the companion <em class="citetitle">Performance Co-Pilot User's and Administrator's Guide</em>. See also the <code class="command">pmtime(1)</code> man page.
+				</div><div class="para">
+					<a id="IG31340177415" class="indexterm"></a>This service is most useful when processing sets of PCP archive logs, to control parameters such as the current archive position, update interval, replay rate, and timezone, but it can also be used in live mode to control a subset of these parameters. Applications such as <code class="command">pmchart</code>, <code class="command">pmgadgets</code>, <code class="command">pmstat</code>, and <code class="command">pmval</code> use the time control services to connect to an instance of the time control server process, <code class="command">pmtime</code>, which provides a uniform graphical user interface to the time control services.
+				</div><div class="para">
+					<a id="IG31340177416" class="indexterm"></a>A full description of the PMAPI time control functions along with code examples can be found in man pages as listed in <a class="xref" href="LE73955-PARENT.html#id5208351">Table 3.2, “Time Control Functions in PMAPI”</a>:
+				</div><div class="table"><a id="id5208351">
+      ⁠</a><p class="title"><strong>Table 3.2. Time Control Functions in PMAPI</strong></p><div class="table-contents"><table xmlns:d="http://docbook.org/ns/docbook" class="lt-4-cols gt-7-rows" summary="Time Control Functions in PMAPI"><colgroup><col width="35%" /><col width="65%" /></colgroup><thead><tr valign="top"><th align="left" valign="bottom"> <div class="para">
+									Man Page
+								</div>
+								 </th><th align="left" valign="bottom"> <div class="para">
+									Synopsis of Time Control Function
+								</div>
+								 </th></tr></thead><tbody><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmCtime(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Formats the date and time for a reporting timezone.
+								</div>
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmLocaltime(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Converts the date and time for a reporting timezone.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmParseTimeWindow(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Parses time window command line arguments.
+								</div>
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeConnect(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Connects to a time control server via a command socket.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeDisconnect(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Closes the command socket to the time control server.
+								</div>
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeGetPort(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Obtains the port name of the current time control server.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeRecv(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Blocks until the time control server sends a command message.
+								</div>
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeSendAck(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Acknowledges completion of the step command.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeSendBounds(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Specifies beginning and end of archive time period.
+								</div>
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeSendMode(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Requests time control server to change to a new VCR mode.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeSendPosition(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Requests time control server to change position or update intervals.
+								</div>
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeSendTimezone(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Requests time control server to change timezones.
+								</div>
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeShowDialog(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Changes the visibility of the time control dialogue.
+								</div>
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+									<code class="command">pmTimeGetStatePixmap(3)</code>
+								</div>
+								 </td><td align="left" valign="top"> <div class="para">
+									Returns array of pixmaps representing supplied time control state.
+								</div>
+								 </td></tr></tbody></table></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5208144.html"><strong>Prev</strong>3.8.9.6.  pmFetchArchive Function</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="LE44064-PARENT.html"><strong>Next</strong>3.8.11. PMAPI Ancillary Support Services</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

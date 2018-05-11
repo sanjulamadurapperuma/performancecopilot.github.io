@@ -1,1034 +1,1030 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMLOGREDUCE
- </h1>
- Section: User Commands  (1)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmlogreduce
- </b>
- - temporal reduction of Performance Co-Pilot archives
- <a name="lbAC">
- </a>
- <h2>
-  SYNOPSIS
- </h2>
- <b>
-  $PCP_BINADM_DIR/pmlogreduce
- </b>
- [
- <b>
-  -z
- </b>
- ]
-[
- <b>
-  -A
- </b>
- <i>
-  align
- </i>
- ]
-[
- <b>
-  -S
- </b>
- <i>
-  starttime
- </i>
- ]
-[
- <b>
-  -s
- </b>
- <i>
-  samples
- </i>
- ]
-[
- <b>
-  -T
- </b>
- <i>
-  endtime
- </i>
- ]
-[
- <b>
-  -t
- </b>
- <i>
-  interval
- </i>
- ]
-[
- <b>
-  -v
- </b>
- <i>
-  volsamples
- </i>
- ]
-[
- <b>
-  -Z
- </b>
- <i>
-  timezone
- </i>
- ]
- <i>
-  input
- </i>
- <i>
-  output
- </i>
- <a name="lbAD">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmlogreduce
- </b>
- reads one set of Performance Co-Pilot (PCP) archives
-identified by
- <i>
-  input
- </i>
- and creates a temporally reduced PCP archive in
- <i>
-  output
- </i>
- .
- <i>
-  input
- </i>
- is a comma-separated list of names, each
-of which may be the base name of an archive or the name of a directory containing
-one or more archives.
-The 
-data reduction involves statistical and temporal reduction of samples with
-an output sampling
-interval defined by the
- <b>
-  -t
- </b>
- option in the
- <i>
-  output
- </i>
- archive (independent of the sampling intervals in the
- <i>
-  input
- </i>
- archives), and is further controlled by
-other command line arguments.
- <p>
-  For some metrics, temporal data reduction is not going to be helpful,
-so for metrics with types
-  <b>
-   PM_TYPE_AGGREGATE
-  </b>
-  or
-  <b>
-   PM_TYPE_EVENT
-  </b>
-  ,
-
-a warning is issued if these metrics are found in
-  <i>
-   input
-  </i>
-  and they will be skipped and not appear in the
-  <i>
-   output
-  </i>
-  archive.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  OPTIONS
- </h2>
- The command line options for
- <b>
-  pmlogreduce
- </b>
- are as follows:
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -A
-   </b>
-   <i>
-    align
-   </i>
-  </dt>
-  <dd>
-   Specify a ``natural'' alignment of the output sample times; refer
-to
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1).
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -S
-   </b>
-   <i>
-    starttime
-   </i>
-  </dt>
-  <dd>
-   Define the start of a time window to restrict the samples retrieved
-from the
-   <i>
-    input
-   </i>
-   archives; refer to
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1).
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -s
-   </b>
-   <i>
-    samples
-   </i>
-  </dt>
-  <dd>
-   The argument
-   <i>
-    samples
-   </i>
-   defines the number of samples to be written to
-   <i>
-    output
-   </i>
-   .
-
-If
-   <i>
-    samples
-   </i>
-   is 0 or
-   <b>
-    -s
-   </b>
-   is not specified,
-   <b>
-    pmlogreduce
-   </b>
-   will sample until the end of the set of PCP archives,
-or the end of the time window as specified by
-   <b>
-    -T
-   </b>
-   ,
-
-whichever comes first.  The
-   <b>
-    -s
-   </b>
-   option will override the
-   <b>
-    -T
-   </b>
-   option if it occurs sooner.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -T
-   </b>
-   <i>
-    endtime
-   </i>
-  </dt>
-  <dd>
-   Define the termination of a time window to restrict the samples
-retrieved from the
-   <i>
-    input
-   </i>
-   archives; refer to
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1).
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -v
-   </b>
-   <i>
-    volsamples
-   </i>
-  </dt>
-  <dd>
-   The
-   <i>
-    output
-   </i>
-   archive is potentially a multi-volume data set, and the
-   <b>
-    -v
-   </b>
-   option causes
-   <b>
-    pmlogreduce
-   </b>
-   to start a new volume after
-   <i>
-    volsamples
-   </i>
-   log records have been written to the
-   <i>
-    output
-   </i>
-   archive.
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      Independent of any
-      <b>
-       -v
-      </b>
-      option, each volume of an archive is limited to no more than
-2^31 bytes, so
-      <i>
-       pmlogreduce
-      </i>
-      will automatically create a new volume for the archive before
-this limit is reached.
-     </p>
-    </dd>
-   </dl>
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -t
-   </b>
-   <i>
-    interval
-   </i>
-  </dt>
-  <dd>
-   Consecutive samples in the
-   <i>
-    output
-   </i>
-   archive will appear with a time delta defined by
-   <i>
-    interval
-   </i>
-   ;
-
-refer to
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1).
-
-Note the default value is 600 (seconds, i.e. 10 minutes).
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -Z
-   </b>
-   <i>
-    timezone
-   </i>
-  </dt>
-  <dd>
-   Use
-   <i>
-    timezone
-   </i>
-   when displaying the date and time, or interpreting the
-   <b>
-    -S
-   </b>
-   and
-   <b>
-    -T
-   </b>
-   options.
-   <i>
-    Timezone
-   </i>
-   is in the format of the environment variable
-   <b>
-    TZ
-   </b>
-   as described in
-   <b>
-    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-     environ
-    </a>
-   </b>
-   (7).
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -z
-   </b>
-  </dt>
-  <dd>
-   Use the local timezone of the host from the
-   <i>
-    input
-   </i>
-   archives when displaying the date and time, or interpreting the
-   <b>
-    -S
-   </b>
-   and
-   <b>
-    -T
-   </b>
-   options.
-The default is to initially use the timezone of the local host.
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  DATA REDUCTION
- </h2>
- <p>
-  The statistical and temporal reduction follows the following rules:
- </p>
- <dl compact="">
-  <dt>
-   1.
-  </dt>
-  <dd>
-   Consecutive records from
-   <i>
-    input
-   </i>
-   are read without interpolation, and at most one output record
-is written for each
-   <i>
-    interval
-   </i>
-   ,
-
-summarizing the performance data over that period.
-  </dd>
-  <dt>
-   2.
-  </dt>
-  <dd>
-   If the semantics of a metric indicates it is
-   <b>
-    instantaneous
-   </b>
-   or
-   <b>
-    discrete
-   </b>
-   then
-   <i>
-    output
-   </i>
-   value is computed as the arithmetic mean of the observations (if any)
-over each
-   <i>
-    interval
-   </i>
-   .
-  </dd>
-  <dt>
-   3.
-  </dt>
-  <dd>
-   If the semantics of a metric indicates it is a
-   <b>
-    counter
-   </b>
-   then the following transformations are applied:
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <dl compact="">
-      <dt>
-       a)
-      </dt>
-      <dd>
-       Metrics with 32-bit precision are promoted to 64-bit precision.
-      </dd>
-      <dt>
-       b)
-      </dt>
-      <dd>
-       Any counter wrap (overflow) is noted, and appropriate adjustment made
-in the value of the metric over each
-       <i>
-        interval
-       </i>
-       .
-
-This will be correct in the case of a single counter wrap, but will
-silently
-       <b>
-        underestimate
-       </b>
-       in the case where more than one counter wrap occurs between consecutive
-observations in the
-       <i>
-        input
-       </i>
-       archives, and silently
-       <b>
-        overestimate
-       </b>
-       in the case where a counter reset occurs between consecutive
-observations in the
-       <i>
-        input
-       </i>
-       archives; unfortunately these situations cannot be detected, but
-are believed to be rare events for the sort of production monitoring
-environments where
-       <b>
-        pmlogreduce
-       </b>
-       is most likely to be deployed.
-      </dd>
-     </dl>
-    </dd>
-   </dl>
-  </dd>
-  <dt>
-   4.
-  </dt>
-  <dd>
-   Any changes in instance domains, and indeed all metadata, is preserved.
-  </dd>
-  <dt>
-   5.
-  </dt>
-  <dd>
-   Any ``mark'' records in the
-   <i>
-    input
-   </i>
-   archives (as created by
-   <b>
-    <a href="/man/man1/pmlogextract.1.html">
-     pmlogextract
-    </a>
-   </b>
-   (1))
-
-will be preserved in the
-   <i>
-    output
-   </i>
-   archive, so periods where no data is available are maintained, and data
-interpolation will
-   <b>
-    not
-   </b>
-   occur across these periods when the
-   <i>
-    output
-   </i>
-   archive is subsequently processed with PCP applications.
-  </dd>
- </dl>
- <a name="lbAG">
- </a>
- <h2>
-  FILES
- </h2>
- For each of the
- <i>
-  input
- </i>
- and
- <i>
-  output
- </i>
- archives, several physical files are used.
- <dl compact="">
-  <dt>
-   <i>
-    archive
-   </i>
-   <b>
-    .meta
-    <dd>
-     metadata (metric descriptions, instance domains, etc.) for the archive log
-    </dd>
-    <dt>
-    </dt>
-   </b>
-   <i>
-    archive
-   </i>
-   <b>
-    .0
-    <dd>
-     initial volume of metrics values (subsequent volumes have suffixes
-1
-    </dd>
-   </b>
-   ,
-   <b>
-    2
-   </b>
-   ,
-
-...) - for
-   <i>
-    input
-   </i>
-   these files may have been previously compressed with
-   <b>
-    <a href="http://man7.org/linux/man-pages/man1/bzip2.1.html">
-     bzip2
-    </a>
-   </b>
-   (1)
-
-or
-   <b>
-    <a href="http://man7.org/linux/man-pages/man1/gzip.1.html">
-     gzip
-    </a>
-   </b>
-   (1)
-
-and thus may have an additional
-   <b>
-    .bz2
-   </b>
-   or
-   <b>
-    .gz
-   </b>
-   suffix.
-   <dt>
-    <i>
-     archive
-    </i>
-    <b>
-     .index
-     <dd>
-      temporal index to support rapid random access to the other files in the
-archive log.
-     </dd>
-    </b>
-   </dt>
-  </dt>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
- <i>
-  /etc/pcp.conf
- </i>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file,
-as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <a name="lbAI">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmdumplog.1.html">
-   pmdumplog
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlc.1.html">
-   pmlc
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogextract.1.html">
-   pmlogextract
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogger.1.html">
-   pmlogger
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5)
-
-and
- <b>
-  <a href="/man/man5/pcp.env.5.html">
-   pcp.env
-  </a>
- </b>
- (5).
- <a name="lbAJ">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All error conditions detected by
- <b>
-  pmlogreduce
- </b>
- are reported on
- <i>
-  stderr
- </i>
- with textual (if sometimes terse) explanation.
- <p>
-  Should the
-  <i>
-   input
-  </i>
-  archives be corrupted (this can happen
-if the
-  <b>
-   pmlogger
-  </b>
-  instance writing the archive suddenly dies), then
-  <b>
-   pmlogreduce
-  </b>
-  will detect and report the position of the corruption in the file,
-and any subsequent information from the
-  <i>
-   input
-  </i>
-  archives will not be processed.
- </p>
- <p>
-  If any error is detected,
-  <b>
-   pmlogreduce
-  </b>
-  will exit with a non-zero status.
-  <a name="lbAK">
-  </a>
- </p>
- <h2>
-  CAVEATS
- </h2>
- <p>
-  The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
-and pmcd.pmlogger.port), which are automatically recorded by
-  <b>
-   pmlogger
-  </b>
-  at the start of the archive, may not be present in the archive output by
-  <b>
-   pmlogreduce
-  </b>
-  .
-
-These metrics are only relevant while the archive is being created,
-and have no significance once recording has finished.
- </p>
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    OPTIONS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    DATA REDUCTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAJ">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAK">
-    CAVEATS
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMLOGREDUCE
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmlogreduce
+               </b>
+               - temporal reduction of Performance Co-Pilot archives
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                $PCP_BINADM_DIR/pmlogreduce
+               </b>
+               [
+               <b>
+                -z
+               </b>
+               ]
+              [
+               <b>
+                -A
+               </b>
+               <i>
+                align
+               </i>
+               ]
+              [
+               <b>
+                -S
+               </b>
+               <i>
+                starttime
+               </i>
+               ]
+              [
+               <b>
+                -s
+               </b>
+               <i>
+                samples
+               </i>
+               ]
+              [
+               <b>
+                -T
+               </b>
+               <i>
+                endtime
+               </i>
+               ]
+              [
+               <b>
+                -t
+               </b>
+               <i>
+                interval
+               </i>
+               ]
+              [
+               <b>
+                -v
+               </b>
+               <i>
+                volsamples
+               </i>
+               ]
+              [
+               <b>
+                -Z
+               </b>
+               <i>
+                timezone
+               </i>
+               ]
+               <i>
+                input
+               </i>
+               <i>
+                output
+               </i>
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmlogreduce
+               </b>
+               reads one set of Performance Co-Pilot (PCP) archives
+              identified by
+               <i>
+                input
+               </i>
+               and creates a temporally reduced PCP archive in
+               <i>
+                output
+               </i>
+               .
+               <i>
+                input
+               </i>
+               is a comma-separated list of names, each
+              of which may be the base name of an archive or the name of a directory containing
+              one or more archives.
+              The 
+              data reduction involves statistical and temporal reduction of samples with
+              an output sampling
+              interval defined by the
+               <b>
+                -t
+               </b>
+               option in the
+               <i>
+                output
+               </i>
+               archive (independent of the sampling intervals in the
+               <i>
+                input
+               </i>
+               archives), and is further controlled by
+              other command line arguments.
+               <p>
+                For some metrics, temporal data reduction is not going to be helpful,
+              so for metrics with types
+                <b>
+                 PM_TYPE_AGGREGATE
+                </b>
+                or
+                <b>
+                 PM_TYPE_EVENT
+                </b>
+                ,
+              
+              a warning is issued if these metrics are found in
+                <i>
+                 input
+                </i>
+                and they will be skipped and not appear in the
+                <i>
+                 output
+                </i>
+                archive.
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                OPTIONS
+               </h2>
+               The command line options for
+               <b>
+                pmlogreduce
+               </b>
+               are as follows:
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -A
+                 </b>
+                 <i>
+                  align
+                 </i>
+                </dt>
+                <dd>
+                 Specify a ``natural'' alignment of the output sample times; refer
+              to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1).
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -S
+                 </b>
+                 <i>
+                  starttime
+                 </i>
+                </dt>
+                <dd>
+                 Define the start of a time window to restrict the samples retrieved
+              from the
+                 <i>
+                  input
+                 </i>
+                 archives; refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1).
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -s
+                 </b>
+                 <i>
+                  samples
+                 </i>
+                </dt>
+                <dd>
+                 The argument
+                 <i>
+                  samples
+                 </i>
+                 defines the number of samples to be written to
+                 <i>
+                  output
+                 </i>
+                 .
+              
+              If
+                 <i>
+                  samples
+                 </i>
+                 is 0 or
+                 <b>
+                  -s
+                 </b>
+                 is not specified,
+                 <b>
+                  pmlogreduce
+                 </b>
+                 will sample until the end of the set of PCP archives,
+              or the end of the time window as specified by
+                 <b>
+                  -T
+                 </b>
+                 ,
+              
+              whichever comes first.  The
+                 <b>
+                  -s
+                 </b>
+                 option will override the
+                 <b>
+                  -T
+                 </b>
+                 option if it occurs sooner.
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -T
+                 </b>
+                 <i>
+                  endtime
+                 </i>
+                </dt>
+                <dd>
+                 Define the termination of a time window to restrict the samples
+              retrieved from the
+                 <i>
+                  input
+                 </i>
+                 archives; refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1).
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -v
+                 </b>
+                 <i>
+                  volsamples
+                 </i>
+                </dt>
+                <dd>
+                 The
+                 <i>
+                  output
+                 </i>
+                 archive is potentially a multi-volume data set, and the
+                 <b>
+                  -v
+                 </b>
+                 option causes
+                 <b>
+                  pmlogreduce
+                 </b>
+                 to start a new volume after
+                 <i>
+                  volsamples
+                 </i>
+                 log records have been written to the
+                 <i>
+                  output
+                 </i>
+                 archive.
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <p>
+                    Independent of any
+                    <b>
+                     -v
+                    </b>
+                    option, each volume of an archive is limited to no more than
+              2^31 bytes, so
+                    <i>
+                     pmlogreduce
+                    </i>
+                    will automatically create a new volume for the archive before
+              this limit is reached.
+                   </p>
+                  </dd>
+                 </dl>
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -t
+                 </b>
+                 <i>
+                  interval
+                 </i>
+                </dt>
+                <dd>
+                 Consecutive samples in the
+                 <i>
+                  output
+                 </i>
+                 archive will appear with a time delta defined by
+                 <i>
+                  interval
+                 </i>
+                 ;
+              
+              refer to
+                 <b>
+                  <a href="/man/man1/pcpintro.1.html">
+                   PCPIntro
+                  </a>
+                 </b>
+                 (1).
+              
+              Note the default value is 600 (seconds, i.e. 10 minutes).
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -Z
+                 </b>
+                 <i>
+                  timezone
+                 </i>
+                </dt>
+                <dd>
+                 Use
+                 <i>
+                  timezone
+                 </i>
+                 when displaying the date and time, or interpreting the
+                 <b>
+                  -S
+                 </b>
+                 and
+                 <b>
+                  -T
+                 </b>
+                 options.
+                 <i>
+                  Timezone
+                 </i>
+                 is in the format of the environment variable
+                 <b>
+                  TZ
+                 </b>
+                 as described in
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+                   environ
+                  </a>
+                 </b>
+                 (7).
+                </dd>
+               </dl>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -z
+                 </b>
+                </dt>
+                <dd>
+                 Use the local timezone of the host from the
+                 <i>
+                  input
+                 </i>
+                 archives when displaying the date and time, or interpreting the
+                 <b>
+                  -S
+                 </b>
+                 and
+                 <b>
+                  -T
+                 </b>
+                 options.
+              The default is to initially use the timezone of the local host.
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                DATA REDUCTION
+               </h2>
+               <p>
+                The statistical and temporal reduction follows the following rules:
+               </p>
+               <dl compact="">
+                <dt>
+                 1.
+                </dt>
+                <dd>
+                 Consecutive records from
+                 <i>
+                  input
+                 </i>
+                 are read without interpolation, and at most one output record
+              is written for each
+                 <i>
+                  interval
+                 </i>
+                 ,
+              
+              summarizing the performance data over that period.
+                </dd>
+                <dt>
+                 2.
+                </dt>
+                <dd>
+                 If the semantics of a metric indicates it is
+                 <b>
+                  instantaneous
+                 </b>
+                 or
+                 <b>
+                  discrete
+                 </b>
+                 then
+                 <i>
+                  output
+                 </i>
+                 value is computed as the arithmetic mean of the observations (if any)
+              over each
+                 <i>
+                  interval
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 3.
+                </dt>
+                <dd>
+                 If the semantics of a metric indicates it is a
+                 <b>
+                  counter
+                 </b>
+                 then the following transformations are applied:
+                 <dl compact="">
+                  <dt>
+                  </dt>
+                  <dd>
+                   <dl compact="">
+                    <dt>
+                     a)
+                    </dt>
+                    <dd>
+                     Metrics with 32-bit precision are promoted to 64-bit precision.
+                    </dd>
+                    <dt>
+                     b)
+                    </dt>
+                    <dd>
+                     Any counter wrap (overflow) is noted, and appropriate adjustment made
+              in the value of the metric over each
+                     <i>
+                      interval
+                     </i>
+                     .
+              
+              This will be correct in the case of a single counter wrap, but will
+              silently
+                     <b>
+                      underestimate
+                     </b>
+                     in the case where more than one counter wrap occurs between consecutive
+              observations in the
+                     <i>
+                      input
+                     </i>
+                     archives, and silently
+                     <b>
+                      overestimate
+                     </b>
+                     in the case where a counter reset occurs between consecutive
+              observations in the
+                     <i>
+                      input
+                     </i>
+                     archives; unfortunately these situations cannot be detected, but
+              are believed to be rare events for the sort of production monitoring
+              environments where
+                     <b>
+                      pmlogreduce
+                     </b>
+                     is most likely to be deployed.
+                    </dd>
+                   </dl>
+                  </dd>
+                 </dl>
+                </dd>
+                <dt>
+                 4.
+                </dt>
+                <dd>
+                 Any changes in instance domains, and indeed all metadata, is preserved.
+                </dd>
+                <dt>
+                 5.
+                </dt>
+                <dd>
+                 Any ``mark'' records in the
+                 <i>
+                  input
+                 </i>
+                 archives (as created by
+                 <b>
+                  <a href="/man/man1/pmlogextract.1.html">
+                   pmlogextract
+                  </a>
+                 </b>
+                 (1))
+              
+              will be preserved in the
+                 <i>
+                  output
+                 </i>
+                 archive, so periods where no data is available are maintained, and data
+              interpolation will
+                 <b>
+                  not
+                 </b>
+                 occur across these periods when the
+                 <i>
+                  output
+                 </i>
+                 archive is subsequently processed with PCP applications.
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                FILES
+               </h2>
+               For each of the
+               <i>
+                input
+               </i>
+               and
+               <i>
+                output
+               </i>
+               archives, several physical files are used.
+               <dl compact="">
+                <dt>
+                 <i>
+                  archive
+                 </i>
+                 <b>
+                  .meta
+                  <dd>
+                   metadata (metric descriptions, instance domains, etc.) for the archive log
+                  </dd>
+                  <dt>
+                  </dt>
+                 </b>
+                 <i>
+                  archive
+                 </i>
+                 <b>
+                  .0
+                  <dd>
+                   initial volume of metrics values (subsequent volumes have suffixes
+              1
+                  </dd>
+                 </b>
+                 ,
+                 <b>
+                  2
+                 </b>
+                 ,
+              
+              ...) - for
+                 <i>
+                  input
+                 </i>
+                 these files may have been previously compressed with
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man1/bzip2.1.html">
+                   bzip2
+                  </a>
+                 </b>
+                 (1)
+              
+              or
+                 <b>
+                  <a href="http://man7.org/linux/man-pages/man1/gzip.1.html">
+                   gzip
+                  </a>
+                 </b>
+                 (1)
+              
+              and thus may have an additional
+                 <b>
+                  .bz2
+                 </b>
+                 or
+                 <b>
+                  .gz
+                 </b>
+                 suffix.
+                 <dt>
+                  <i>
+                   archive
+                  </i>
+                  <b>
+                   .index
+                   <dd>
+                    temporal index to support rapid random access to the other files in the
+              archive log.
+                   </dd>
+                  </b>
+                 </dt>
+                </dt>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <i>
+                /etc/pcp.conf
+               </i>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAI">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmdumplog.1.html">
+                 pmdumplog
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlc.1.html">
+                 pmlc
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlogextract.1.html">
+                 pmlogextract
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlogger.1.html">
+                 pmlogger
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5)
+              
+              and
+               <b>
+                <a href="/man/man5/pcp.env.5.html">
+                 pcp.env
+                </a>
+               </b>
+               (5).
+               <a name="lbAJ">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               All error conditions detected by
+               <b>
+                pmlogreduce
+               </b>
+               are reported on
+               <i>
+                stderr
+               </i>
+               with textual (if sometimes terse) explanation.
+               <p>
+                Should the
+                <i>
+                 input
+                </i>
+                archives be corrupted (this can happen
+              if the
+                <b>
+                 pmlogger
+                </b>
+                instance writing the archive suddenly dies), then
+                <b>
+                 pmlogreduce
+                </b>
+                will detect and report the position of the corruption in the file,
+              and any subsequent information from the
+                <i>
+                 input
+                </i>
+                archives will not be processed.
+               </p>
+               <p>
+                If any error is detected,
+                <b>
+                 pmlogreduce
+                </b>
+                will exit with a non-zero status.
+                <a name="lbAK">
+                </a>
+               </p>
+               <h2>
+                CAVEATS
+               </h2>
+               <p>
+                The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
+              and pmcd.pmlogger.port), which are automatically recorded by
+                <b>
+                 pmlogger
+                </b>
+                at the start of the archive, may not be present in the archive output by
+                <b>
+                 pmlogreduce
+                </b>
+                .
+              
+              These metrics are only relevant while the archive is being created,
+              and have no significance once recording has finished.
+               </p>
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  DATA REDUCTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAJ">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAK">
+                  CAVEATS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  TELNET-PROBE
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  telnet-probe
+ </b>
+ - lightweight telnet-like port probe
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_BINADM_DIR/telnet-probe
+ </b>
+ [
+ <b>
+  -c
+ </b>
+ ]
+[
+ <b>
+  -v
+ </b>
+ ]
+ <i>
+  host
+ </i>
+ <i>
+  port
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  telnet-probe
+ </b>
+ allows the
+ <b>
+  <a href="/man/man1/pmdashping.1.html">
+   pmdashping
+  </a>
+ </b>
+ (1)
+
+daemons to establish connections to arbitrary local and remote
+service-providing daemons so that response time and service
+availability information can be obtained.
+ <p>
+  The required
+  <i>
+   host
+  </i>
+  and
+  <i>
+   port
+  </i>
+  number arguments have the same meaning as their
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/telnet.1.html">
+    telnet
+   </a>
+  </b>
+  (1)
+
+equivalents.
+ </p>
+ <p>
+  The
+  <b>
+   -c
+  </b>
+  option causes
+  <b>
+   telnet-probe
+  </b>
+  to perform a
+  <b>
+   <a href="http://man7.org/linux/man-pages/man2/connect.2.html">
+    connect
+   </a>
+  </b>
+  (2)
+
+only.
+This skips the
+  <b>
+   <a href="http://man7.org/linux/man-pages/man2/read.2.html">
+    read
+   </a>
+  </b>
+  (2)
+
+and
+  <b>
+   <a href="http://man7.org/linux/man-pages/man2/write.2.html">
+    write
+   </a>
+  </b>
+  (2)
+
+exercise that would otherwise be done after connecting (see below).
+ </p>
+ <p>
+  The
+  <b>
+   -v
+  </b>
+  option causes
+  <b>
+   telnet-probe
+  </b>
+  to be verbose while operating.
+ </p>
+ <p>
+  Once the telnet connection has been established,
+  <b>
+   telnet-probe
+  </b>
+  reads from
+  <i>
+   stdin
+  </i>
+  until end-of-file, and writes all the input data to the
+telnet connection.
+Next,
+  <b>
+   telnet-probe
+  </b>
+  will read from the telnet connection until end-of-file,
+discarding whatever data it receives.
+Then
+  <b>
+   telnet-probe
+  </b>
+  exits.
+ </p>
+ <p>
+  To operate successfully, the input passed via
+  <b>
+   telnet-probe
+  </b>
+  to the remote service must be sufficient to cause the remote service to
+close the connection when the last line of input has been processed,
+e.g. ending with ``quit'' when probing SMTP on port 25.
+ </p>
+ <p>
+  By default
+  <b>
+   telnet-probe
+  </b>
+  will not produce any output, unless there is an error in which case
+a diagnostic message can be displayed (in verbose mode only) and the
+exit status will be non-zero indicating a failure.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAF">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ If
+ <b>
+  telnet-probe
+ </b>
+ succeeds, then 0 will be returned.
+If the attempt to establish a connection fails or is terminated, then
+a non-zero exit status is returned.
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPintro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdashping.1.html">
+   pmdashping
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmie.1.html">
+   pmie
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/telnet.1.html">
+   telnet
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man2/connect.2.html">
+   connect
+  </a>
+ </b>
+ (2),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man2/read.2.html">
+   read
+  </a>
+ </b>
+ (2)
+
+and
+ <b>
+  <a href="http://man7.org/linux/man-pages/man2/write.2.html">
+   write
+  </a>
+ </b>
+ (2).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

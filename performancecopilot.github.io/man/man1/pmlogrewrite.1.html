@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLOGREWRITE
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ Updated:
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmlogrewrite
+ </b>
+ - rewrite Performance Co-Pilot archives
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_BINADM_DIR/pmlogrewrite
+ </b>
+ [
+ <b>
+  -Cdiqsvw
+ </b>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  config
+ </i>
+ ]
+ <i>
+  inlog
+ </i>
+ [
+ <i>
+  outlog
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmlogrewrite
+ </b>
+ reads a set of Performance Co-Pilot (PCP) archive logs
+identified by
+ <i>
+  inlog
+ </i>
+ and creates a PCP archive log in
+ <i>
+  outlog
+ </i>
+ .
+
+Under normal usage, the
+ <b>
+  -c
+ </b>
+ option will be used to nominate a configuration file or files
+that contains specifications (see the
+ <b>
+  REWRITING RULES SYNTAX
+ </b>
+ section below)
+that describe how the data and metadata from
+ <i>
+  inlog
+ </i>
+ should be transformed to produce
+ <i>
+  outlog
+ </i>
+ .
+ <p>
+  The typical uses for
+  <b>
+   pmlogrewrite
+  </b>
+  would be to accommodate the evolution of Performance Metric Domain Agents
+(PMDAs) where the names, metadata and semantics of metrics and their associated
+instance domains may change over time, e.g. promoting the type of a metric
+from a 32-bit to a 64-bit integer, or renaming a group of metrics.
+Refer to the
+  <b>
+   EXAMPLES
+  </b>
+  section for some additional use cases.
+ </p>
+ <p>
+  <b>
+   pmlogrewrite
+  </b>
+  is most useful where PMDA changes, or errors in the production environment,
+result in archives that cannot be combined with
+  <b>
+   <a href="/man/man1/pmlogextract.1.html">
+    pmlogextract
+   </a>
+  </b>
+  (1).
+
+By pre-processing the archives with
+  <b>
+   pmlogrewrite
+  </b>
+  the resulting archives may be able to be merged with
+  <b>
+   <a href="/man/man1/pmlogextract.1.html">
+    pmlogextract
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The input
+  <i>
+   inlog
+  </i>
+  must be a set of PCP archive logs
+created by
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1),
+
+or possibly one of the tools that read and create PCP archives, e.g.
+  <b>
+   <a href="/man/man1/pmlogextract.1.html">
+    pmlogextract
+   </a>
+  </b>
+  (1)
+
+and
+  <b>
+   <a href="/man/man1/pmlogreduce.1.html">
+    pmlogreduce
+   </a>
+  </b>
+  (1).
+  <i>
+   inlog
+  </i>
+  is a comma-separated list of names, each
+of which may be the base name of an archive or the name of a directory containing
+one or more archives.
+ </p>
+ <p>
+  If no
+  <b>
+   -c
+  </b>
+  option is specified, then the default behavior simply creates
+  <i>
+   outlog
+  </i>
+  as a copy of
+  <i>
+   inlog
+  </i>
+  .
+
+This is a little more complicated than
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/cat.1.html">
+    cat
+   </a>
+  </b>
+  (1),
+
+as each PCP archive is made up of several physical files.
+ </p>
+ <p>
+  While
+  <b>
+   pmlogrewrite
+  </b>
+  may be used to repair some data consistency issues in PCP archives,
+there is also a class of repair tasks that cannot be handled by
+  <b>
+   pmlogrewrite
+  </b>
+  and
+  <b>
+   <a href="/man/man1/pmloglabel.1.html">
+    pmloglabel
+   </a>
+  </b>
+  (1)
+
+may be a useful tool in these cases.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The command line options for
+ <b>
+  pmlogrewrite
+ </b>
+ are as follows:
+ <dl compact="">
+  <dt>
+   <b>
+    -C
+   </b>
+  </dt>
+  <dd>
+   Parse the rewriting rules and quit.
+   <i>
+    outlog
+   </i>
+   is not created.
+When
+   <b>
+    -C
+   </b>
+   is specified, this also sets
+   <b>
+    -v
+   </b>
+   and
+   <b>
+    -w
+   </b>
+   so that all warnings and verbose messages are displayed as
+   <i>
+    config
+   </i>
+   is parsed.
+  </dd>
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    config
+   </i>
+  </dt>
+  <dd>
+   If
+   <i>
+    config
+   </i>
+   is a file or symbolic link,
+read and parse rewriting rules from there.
+If
+   <i>
+    config
+   </i>
+   is a directory, then all of the files or symbolic links in that
+directory (excluding those beginning with a period ``.'') will
+be used to provide the rewriting rules.
+Multiple
+   <b>
+    -c
+   </b>
+   options are allowed.
+  </dd>
+  <dt>
+   <b>
+    -d
+   </b>
+  </dt>
+  <dd>
+   Desperate mode.  Normally if a fatal error occurs, all trace of
+the partially written PCP archive
+   <i>
+    outlog
+   </i>
+   is removed.  With the
+   <b>
+    -d
+   </b>
+   option, the partially created
+   <i>
+    outlog
+   </i>
+   archive log is not removed.
+  </dd>
+  <dt>
+   <b>
+    -i
+   </b>
+  </dt>
+  <dd>
+   Rather than creating
+   <i>
+    outlog
+   </i>
+   ,
+   <i>
+    inlog
+   </i>
+   is rewritten in place when the
+   <b>
+    -i
+   </b>
+   option is used.
+A new archive is created using temporary file names and then renamed to
+   <i>
+    inlog
+   </i>
+   in such a way that
+if any errors (not warnings) are encountered,
+   <i>
+    inlog
+   </i>
+   remains unaltered.
+  </dd>
+  <dt>
+   <b>
+    -q
+   </b>
+  </dt>
+  <dd>
+   Quick mode, where if there are no rewriting actions to be
+performed (none of the global data, instance domains or metrics
+from
+   <i>
+    inlog
+   </i>
+   will be changed), then
+   <b>
+    pmlogrewrite
+   </b>
+   will exit (with status 0, so success) immediately after parsing
+the configuration file(s) and
+   <i>
+    outlog
+   </i>
+   is not created.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+  </dt>
+  <dd>
+   When the ``units'' of a metric are changed, if the dimension in terms
+of space, time and count is unaltered, then the scaling factor is being changed,
+e.g. BYTE to KBYTE, or MSEC
+   <font size="-3">
+    -1
+   </font>
+   to USEC
+   <font size="-3">
+    -1
+   </font>
+   , or the
+composite MBYTE.SEC
+   <font size="-3">
+    -1
+   </font>
+   to KBYTE.USEC
+   <font size="-3">
+    -1
+   </font>
+   .
+The
+motivation may be (a) that the original metadata was wrong but the
+values in
+   <i>
+    inlog
+   </i>
+   are correct, or (b) the metadata is changing so the values need
+to change as well.  The default
+   <b>
+    pmlogrewrite
+   </b>
+   behaviour matches case (a).  If case (b) applies, then use the
+   <b>
+    -s
+   </b>
+   option and the values of all the
+metrics with a scale factor change in each result will be rescaled.
+For finer control over value rescaling refer to
+the
+
+RESCALE
+
+option for the
+
+UNITS
+
+clause of the metric rewriting rule described below.
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   Increase verbosity of diagnostic output.
+  </dd>
+  <dt>
+   <b>
+    -w
+   </b>
+  </dt>
+  <dd>
+   Emit warnings.  Normally
+   <b>
+    pmlogrewrite
+   </b>
+   remains silent for any warning that is not fatal and
+it is expected that for a particular archive, some (or indeed, all)
+of the rewriting specifications may not apply.  For example, changes to
+a PMDA may be captured in a set of rewriting rules, but a single archive
+may not contain all of the modified metrics nor all of the modified
+instance domains and/or instances.  Because these cases are expected,
+they do not prevent
+   <b>
+    pmlogrewrite
+   </b>
+   executing, and rules that do not apply to
+   <i>
+    inlog
+   </i>
+   are silently ignored by default.
+Similarly, some rewriting rules may involve no change because
+the metadata in
+   <i>
+    inlog
+   </i>
+   already matches the intent of the rewriting rule to correct data
+from a previous version of a PMDA.
+The
+   <b>
+    -w
+   </b>
+   flag forces warnings to be emitted for all of these cases.
+  </dd>
+ </dl>
+ <p>
+  The argument
+  <i>
+   outlog
+  </i>
+  is required in all cases, except when
+  <b>
+   -i
+  </b>
+  is specified.
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  REWRITING RULES SYNTAX
+ </h2>
+ A configuration file
+contains zero or more rewriting rules as defined below.
+ <p>
+  Keywords and special punctuation characters are shown below in
+
+bolditalic
+
+font and are case-insensitive, so
+
+METRIC,
+
+
+metric
+
+and
+
+Metric
+
+are all equivalent in rewriting rules.
+ </p>
+ <p>
+  The character ``#'' introduces
+a comment and the remainder of the line is ignored.  Otherwise the
+input is relatively free format with optional white space (spaces, tabs or
+newlines) between lexical items in the rules.
+ </p>
+ <p>
+  A
+  <b>
+   global
+  </b>
+  rewriting rule has the form:
+ </p>
+ <p>
+  GLOBAL
+
+
+{
+  <i>
+   globalspec
+  </i>
+  ...
+
+}
+ </p>
+ <p>
+  where
+  <i>
+   globalspec
+  </i>
+  is zero or more of the following clauses:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <p>
+    HOSTNAME
+
+
+-&gt;
+    <i>
+     hostname
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Modifies the label records in the
+      <i>
+       outlog
+      </i>
+      PCP archive, so that the metrics will appear to have
+been collected from the host
+      <i>
+       hostname
+      </i>
+      .
+     </p>
+    </dd>
+   </dl>
+   <p>
+    TIME
+
+
+-&gt;
+    <i>
+     delta
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Both metric values and the instance domain metadata in a PCP
+archive carry timestamps.
+This clause forces all the timestamps to be adjusted by
+      <i>
+       delta
+      </i>
+      ,
+
+where
+      <i>
+       delta
+      </i>
+      is an optional sign ``+'' (the default) or ``-'', an optional number of
+hours followed by a colon ``:'', an optional number of minutes followed by a 
+colon ``:'', a number of seconds, an optional fraction of seconds following
+a period ``.''.  The simplest example would be ``30'' to increase the
+timestamps by 30 seconds.  A more complex example would be ``-23:59:59.999''
+to move the timestamps backwards by one millisecond less than one day.
+     </p>
+    </dd>
+   </dl>
+   <p>
+    TZ
+
+
+-&gt;
+
+"
+    <i>
+     timezone
+    </i>
+    "
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Modifies the label records in the
+      <i>
+       outlog
+      </i>
+      PCP archive, so that the metrics will appear to have been
+collected from a host with a local timezone of
+      <i>
+       timezone
+      </i>
+      .
+      <i>
+       timezone
+      </i>
+      must be enclosed in quotes, and should conform to the valid
+timezone syntax rules for the local platform.
+     </p>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  An
+  <b>
+   indom
+  </b>
+  rewriting rule modifies an instance domain and has the form:
+ </p>
+ <p>
+  INDOM
+  <i>
+   domain
+  </i>
+  .
+  <i>
+   serial
+  </i>
+  {
+  <i>
+   indomspec
+  </i>
+  ...
+
+}
+ </p>
+ <p>
+  where
+  <i>
+   domain
+  </i>
+  and
+  <i>
+   serial
+  </i>
+  identify one or more existing instance domains from
+  <i>
+   inlog
+  </i>
+  - typically
+  <i>
+   domain
+  </i>
+  would be an integer in the range 1 to 510
+and
+  <i>
+   serial
+  </i>
+  would be an integer in the range 0 to 4194304.
+ </p>
+ <p>
+  As a special
+case
+  <i>
+   serial
+  </i>
+  could be an asterisk ``*'' which means the rule applies to every
+instance domain with a domain number of
+  <i>
+   domain
+  </i>
+  .
+ </p>
+ <p>
+  If a designated instance domain is not in
+  <i>
+   inlog
+  </i>
+  the rule has no effect.
+ </p>
+ <p>
+  The
+  <i>
+   indomspec
+  </i>
+  is zero or more of the following clauses:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <p>
+    INAME
+
+"
+    <i>
+     oldname
+    </i>
+    "
+
+-&gt;
+
+"
+    <i>
+     newname
+    </i>
+    "
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The instance identified by the external instance name
+      <i>
+       oldname
+      </i>
+      is renamed to
+      <i>
+       newname
+      </i>
+      .
+
+Both
+      <i>
+       oldname
+      </i>
+      and
+      <i>
+       newname
+      </i>
+      must be enclosed in quotes.
+     </p>
+     <p>
+      As a special case, the new name may be the keyword
+
+DELETE
+
+(with no quotes), and then the instance
+      <i>
+       oldname
+      </i>
+      will be expunged from
+      <i>
+       outlog
+      </i>
+      which removes it from the instance domain metadata and removes all
+values of this instance for all the associated metrics.
+     </p>
+     <p>
+      If the instance names contain any embedded
+spaces then special care needs to be taken in respect of the
+PCP instance naming rule that treats the leading non-space
+part of the instance name as the unique portion of the name for
+the purposes of matching and ensuring uniqueness within an
+instance domain, refer to
+      <b>
+       <a href="/man/man3/pmdainstance.3.html">
+        pmdaInstance
+       </a>
+      </b>
+      (3)
+
+for a discussion of this issue.
+     </p>
+     <p>
+      As an illustration, consider the hypothetical instance domain for a metric
+which contains 2 instances with the following names:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       <pre>
+red
+eek urk
+</pre>
+      </dd>
+     </dl>
+     <p>
+      Then some possible
+
+INAME
+
+clauses might be:
+     </p>
+     <dl compact="">
+      <dt>
+       <tt>
+        "eek" -&gt; "yellow like a flower"
+       </tt>
+      </dt>
+      <dd>
+       Acceptable,
+       <i>
+        oldname
+       </i>
+       "eek" matches the "eek urk" instance.
+      </dd>
+      <dt>
+       <tt>
+        "red" -&gt; "eek"
+       </tt>
+      </dt>
+      <dd>
+       Error,
+       <i>
+        newname
+       </i>
+       "eek" matches the existing "eek urk"
+instance.
+      </dd>
+      <dt>
+       <tt>
+        "eek urk" -&gt; "red of another hue"
+       </tt>
+      </dt>
+      <dd>
+       Error,
+       <i>
+        newname
+       </i>
+       "red of another hue" matches the existing "red"
+instance.
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+   <p>
+    INDOM
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newserial
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Modifies the metadata for the instance domain and every metric associated
+with the instance domain.
+As a special case,
+      <i>
+       newserial
+      </i>
+      could be an asterisk ``*'' which means use
+      <i>
+       serial
+      </i>
+      from the
+      <b>
+       indom
+      </b>
+      rewriting rule, although this is most useful when
+      <i>
+       serial
+      </i>
+      is also an asterisk.
+So for example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       indom 29.* { indom -&gt; 109.* }
+      </dd>
+     </dl>
+     will move all instance domains from domain 29 to domain 109.
+    </dd>
+   </dl>
+   <p>
+    INDOM
+
+
+-&gt;
+
+
+DUPLICATE
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newserial
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      A special case of the previous
+
+INDOM
+
+clause where the instance domain is a duplicate copy of the
+      <i>
+       domain
+      </i>
+      .
+      <i>
+       serial
+      </i>
+      instance domain from the
+      <i>
+       indom
+      </i>
+      rewriting rule, and then any
+mapping rules are applied to the copied
+      <i>
+       newdomain
+      </i>
+      .
+      <i>
+       newserial
+      </i>
+      instance domain.  This is
+useful when a PMDA is split and the same instance domain needs to
+be replicated for domain
+      <i>
+       domain
+      </i>
+      and domain
+      <i>
+       newdomain
+      </i>
+      .
+So for example if the metrics
+      <i>
+       foo.one
+      </i>
+      and
+      <i>
+       foo.two
+      </i>
+      are both defined over instance domain 12.34, and
+      <i>
+       foo.two
+      </i>
+      is moved to another PMDA using domain 27, then the
+following rewriting rules could be used:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       indom 12.34 { indom -&gt; duplicate 27.34 }
+       <br/>
+       metric foo.two { indom -&gt; 27.34 pmid -&gt; 27.*.*  }
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+   <p>
+    INST
+    <i>
+     oldid
+    </i>
+    -&gt;
+    <i>
+     newid
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The instance identified by the internal instance identifier
+      <i>
+       oldid
+      </i>
+      is renumbered to
+      <i>
+       newid
+      </i>
+      .
+
+Both
+      <i>
+       oldid
+      </i>
+      and
+      <i>
+       newid
+      </i>
+      are integers in the range 0 to 2
+      <font size="-3">
+       31
+      </font>
+      -1.
+     </p>
+     <p>
+      As a special case,
+      <i>
+       newid
+      </i>
+      may be the keyword
+
+DELETE
+
+and then the instance
+      <i>
+       oldid
+      </i>
+      will be expunged from
+      <i>
+       outlog
+      </i>
+      which removes it from the instance domain metadata and removes all
+values of this instance for all the associated metrics.
+     </p>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  A
+  <b>
+   metric
+  </b>
+  rewriting rule has the form:
+ </p>
+ <p>
+  METRIC
+  <i>
+   metricid
+  </i>
+  {
+  <i>
+   metricspec
+  </i>
+  ...
+
+}
+ </p>
+ <p>
+  where
+  <i>
+   metricid
+  </i>
+  identifies one or more existing metrics from
+  <i>
+   inlog
+  </i>
+  using either a metric name, or the internal encoding for a metric's PMID as
+  <i>
+   domain
+  </i>
+  .
+  <i>
+   cluster
+  </i>
+  .
+  <i>
+   item
+  </i>
+  .
+In the latter case, typically
+  <i>
+   domain
+  </i>
+  would be an integer in the range 1 to 510,
+  <i>
+   cluster
+  </i>
+  would be an integer in the range 0 to 4095,
+and
+  <i>
+   item
+  </i>
+  would be an integer in the range 0 to 1023.
+ </p>
+ <p>
+  As special
+cases
+  <i>
+   item
+  </i>
+  could be an asterisk ``*'' which means the rule applies to every
+metric with a domain number of
+  <i>
+   domain
+  </i>
+  and a cluster number of
+  <i>
+   cluster
+  </i>
+  ,
+
+or
+  <i>
+   cluster
+  </i>
+  could be an asterisk which means the rule applies to every
+metric with a domain number of
+  <i>
+   domain
+  </i>
+  and an item number of
+  <i>
+   item
+  </i>
+  ,
+
+or both
+  <i>
+   cluster
+  </i>
+  and
+  <i>
+   item
+  </i>
+  could be asterisks, and rule applies to every metric with a domain
+number of
+  <i>
+   domain
+  </i>
+  .
+ </p>
+ <p>
+  If a designated metric is not in
+  <i>
+   inlog
+  </i>
+  the rule has no effect.
+ </p>
+ <p>
+  The
+  <i>
+   metricspec
+  </i>
+  is zero or more of the following clauses:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <p>
+   </p>
+   <p>
+    DELETE
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The metric is completely removed from
+      <i>
+       outlog
+      </i>
+      ,
+
+both the metadata and all values in results are expunged.
+     </p>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    INDOM
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newserial
+    </i>
+    [
+    <i>
+     pick
+    </i>
+    ]
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Modifies the metadata to change the instance domain for this metric.
+The new instance domain must exist in
+      <i>
+       outlog
+      </i>
+      .
+     </p>
+     <p>
+      The optional
+      <i>
+       pick
+      </i>
+      clause may be used to select one input value, or compute an aggregate
+value from the instances in an input result, or assign an internal
+instance identifier to a single output value.
+If no
+      <i>
+       pick
+      </i>
+      clause is specified, the default behaviour is to copy all input values
+from each input result to
+an output result, however if the input instance domain is singular
+(indom
+      <b>
+       PM_INDOM_NULL
+      </b>
+      )
+
+then the one output value must be assigned an internal instance
+identifier, which is 0 by default, unless over-ridden by a
+
+INST
+
+or
+
+INAME
+
+clause as defined below.
+     </p>
+     <p>
+      The choices for
+      <i>
+       pick
+      </i>
+      are as follows:
+     </p>
+     <dl compact="">
+      <dt>
+       OUTPUT FIRST
+      </dt>
+      <dd>
+       choose the value of the first instance from each input result
+      </dd>
+      <dt>
+       OUTPUT LAST
+      </dt>
+      <dd>
+       choose the value of the last instance from each input result
+      </dd>
+      <dt>
+       OUTPUT INST
+       <i>
+        instid
+       </i>
+      </dt>
+      <dd>
+       choose the value of the instance with internal instance identifier
+       <i>
+        instid
+       </i>
+       from each result; the sequence of rewriting rules ensures the
+
+OUTPUT
+
+processing happens before instance identifier renumbering
+from any associated
+       <b>
+        indom
+       </b>
+       rule, so
+       <i>
+        instid
+       </i>
+       should be one of the internal instance identifiers that appears in
+       <i>
+        inlog
+       </i>
+      </dd>
+      <dt>
+       OUTPUT INAME "
+       <i>
+        name
+       </i>
+       "
+      </dt>
+      <dd>
+       choose the value of the instance with
+       <i>
+        name
+       </i>
+       for its external instance name
+from each result; the sequence of rewriting rules ensures the
+
+OUTPUT
+
+processing happens before instance renaming
+from any associated
+       <b>
+        indom
+       </b>
+       rule, so
+       <i>
+        name
+       </i>
+       should be one of the external instance names that appears in
+       <i>
+        inlog
+       </i>
+      </dd>
+      <dt>
+       OUTPUT MIN
+      </dt>
+      <dd>
+       choose the smallest value in each result (metric type must be numeric
+and output instance will be 0 for a non-singular instance domain)
+      </dd>
+      <dt>
+       OUTPUT MAX
+      </dt>
+      <dd>
+       choose the largest value in each result (metric type must be numeric
+and output instance will be 0 for a non-singular instance domain)
+      </dd>
+      <dt>
+       OUTPUT SUM
+      </dt>
+      <dd>
+       choose the sum of all values in each result (metric type must be numeric
+and output instance will be 0 for a non-singular instance domain)
+      </dd>
+      <dt>
+       OUTPUT AVG
+      </dt>
+      <dd>
+       choose the average of all values in each result (metric type must be numeric
+and output instance will be 0 for a non-singular instance domain)
+      </dd>
+     </dl>
+     <p>
+      If the input instance domain is singular
+(indom
+      <b>
+       PM_INDOM_NULL
+      </b>
+      )
+
+then independent of any
+      <i>
+       pick
+      </i>
+      specifications, there is at most one value in each input result and
+so
+
+FIRST,
+
+
+LAST,
+
+
+MIN,
+
+
+MAX,
+
+
+SUM
+
+and
+
+AVG
+
+are all equivalent and the output instance identifier will be 0.
+     </p>
+     <p>
+      In general it is an error to specify a rewriting action for the
+same metadata or result values more than once, e.g. more than one
+
+INDOM
+
+clause for the same instance domain.  The one exception is the possible
+interaction between the
+
+INDOM
+
+clauses in the
+      <b>
+       indom
+      </b>
+      and
+      <b>
+       metric
+      </b>
+      rules.
+For example the metric
+      <i>
+       sample.bin
+      </i>
+      is defined over the instance domain 29.2 in
+      <i>
+       inlog
+      </i>
+      and the following is acceptable (albeit redundant):
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       <pre>
+indom 29.* { indom -&gt; 109.* }
+metric sample.bin { indom -&gt; 109.2 }
+</pre>
+      </dd>
+     </dl>
+     However the following is an error, because the instance domain for
+     <i>
+      sample.bin
+     </i>
+     has two conflicting definitions:
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       <pre>
+indom 29.* { indom -&gt; 109.* }
+metric sample.bin { indom -&gt; 123.2 }
+</pre>
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    INDOM
+
+
+-&gt;
+
+
+NULL[
+    <i>
+     pick
+    </i>
+    ]
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The metric (which must have been
+previously defined over an instance domain) is being modified to
+be a singular metric.  This involves a metadata change and collapsing
+all results for this metric so that multiple values become one value.
+     </p>
+     <p>
+      The optional
+      <i>
+       pick
+      </i>
+      part of the clause defines how the one value for each result
+should be calculated and follows the same rules as described for the
+non-NULL
+
+INDOM
+
+case above.
+     </p>
+     <p>
+      In the absence of
+      <i>
+       pick
+      </i>
+      ,
+
+the default is
+
+OUTPUT FIRST.
+     </p>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    NAME
+
+
+-&gt;
+    <i>
+     newname
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Renames the metric in the PCP archive's metadata that supports
+the Performance Metrics Name Space (PMNS).
+      <i>
+       newname
+      </i>
+      should not match any existing name in the archive's PMNS and must
+follow the syntactic rules for valid metric names as outlined in
+      <b>
+       <a href="/man/man5/pmns.5.html">
+        pmns
+       </a>
+      </b>
+      (5).
+     </p>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    PMID
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newcluster
+    </i>
+    .
+    <i>
+     newitem
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Modifies the metadata and results to renumber the metric's PMID.
+As special cases,
+      <i>
+       newcluster
+      </i>
+      could be an asterisk ``*'' which means use
+      <i>
+       cluster
+      </i>
+      from the
+      <b>
+       metric
+      </b>
+      rewriting rule and/or
+      <i>
+       item
+      </i>
+      could be an asterisk which means use
+      <i>
+       item
+      </i>
+      from the
+      <b>
+       metric
+      </b>
+      rewriting rule.
+This is most useful when
+      <i>
+       cluster
+      </i>
+      and/or
+      <i>
+       item
+      </i>
+      is also an asterisk.
+So for example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       metric 30.*.* { pmid -&gt; 123.*.* }
+      </dd>
+     </dl>
+     will move all metrics from domain 30 to domain 123.
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    SEM
+
+
+-&gt;
+    <i>
+     newsem
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Change the semantics of the metric.
+      <i>
+       newsem
+      </i>
+      should be the XXX part of the name of one of the
+      <b>
+       PM_SEM_XXX
+      </b>
+      macros defined in &lt;
+      <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+       pcp/pmapi.h
+      </a>
+      &gt; or
+      <b>
+       <a href="/man/man3/pmlookupdesc.3.html">
+        pmLookupDesc
+       </a>
+      </b>
+      (3),
+
+e.g.
+
+COUNTER
+
+for
+      <b>
+       PM_TYPE_COUNTER
+      </b>
+      .
+     </p>
+     <p>
+      No data value rewriting is performed as a result of the
+
+SEM
+
+clause, so the usefulness
+is limited to cases where a version of the associated
+PMDA was exporting incorrect semantics for the metric.
+      <b>
+       <a href="/man/man1/pmlogreduce.1.html">
+        pmlogreduce
+       </a>
+      </b>
+      (1)
+
+may provide an alternative in cases where re-computation of result
+values is desired.
+     </p>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    TYPE
+
+
+-&gt;
+    <i>
+     newtype
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Change the type of the metric which alters the metadata and may change the
+encoding of values in results.
+      <i>
+       newtype
+      </i>
+      should be the XXX part of the name of one of the
+      <b>
+       PM_TYPE_XXX
+      </b>
+      macros defined in &lt;
+      <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+       pcp/pmapi.h
+      </a>
+      &gt; or
+      <b>
+       <a href="/man/man3/pmlookupdesc.3.html">
+        pmLookupDesc
+       </a>
+      </b>
+      (3),
+
+e.g.
+
+FLOAT
+
+for
+      <b>
+       PM_TYPE_FLOAT
+      </b>
+      .
+     </p>
+     <p>
+      Type conversion is only supported for cases where the old and new
+metric type is numeric, so
+      <b>
+       PM_TYPE_STRING
+      </b>
+      ,
+      <b>
+       PM_TYPE_AGGREGATE
+      </b>
+      and
+      <b>
+       PM_TYPE_EVENT
+      </b>
+      are not allowed.
+Even for the numeric cases, some conversions may produce run-time errors,
+e.g. integer overflow, or attempting to rewrite a negative value into
+an unsigned type.
+     </p>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    TYPE
+
+
+IF
+    <i>
+     oldtype
+    </i>
+    -&gt;
+    <i>
+     newtype
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The same as the preceding
+
+TYPE
+
+clause, except the type of the metric is only changed to
+      <i>
+       newtype
+      </i>
+      if the type of the metric in
+      <i>
+       inlog
+      </i>
+      is
+      <i>
+       oldtype.
+      </i>
+     </p>
+     <p>
+      This useful in cases where the type of
+      <i>
+       metricid
+      </i>
+      in
+      <i>
+       inlog
+      </i>
+      may be platform dependent and so more than one type rewriting rule is
+required.
+     </p>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    UNITS
+
+
+-&gt;
+    <i>
+     newunits
+    </i>
+    [
+
+RESCALE
+
+]
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      <i>
+       newunits
+      </i>
+      is six values separated by commas.  The first 3 values describe the
+dimension of the metric along the dimensions of space, time and count; these
+are integer values, usually 0, 1 or -1.  The remaining 3 values describe
+the scale of the metric's values in the dimensions of space, time and
+count.
+Space scale values should be 0 (if the space dimension is 0), else
+the XXX part of the name of one of the
+      <b>
+       PM_SPACE_XXX
+      </b>
+      macros, e.g.
+
+KBYTE
+
+for
+      <b>
+       PM_TYPE_KBYTE
+      </b>
+      .
+
+Time scale values should be 0 (if the time dimension is 0), else
+the XXX part of the name of one of the
+      <b>
+       PM_TIME_XXX
+      </b>
+      macros, e.g.
+
+SEC
+
+for
+      <b>
+       PM_TIME_SEC
+      </b>
+      .
+
+Count scale values should be 0 (if the time dimension is 0), else
+
+ONE
+
+for
+      <b>
+       PM_COUNT_ONE
+      </b>
+      .
+     </p>
+     <p>
+      The
+      <b>
+       PM_SPACE_XXX
+      </b>
+      ,
+      <b>
+       PM_TIME_XXX
+      </b>
+      and
+      <b>
+       PM_COUNT_XXX
+      </b>
+      macros are defined in &lt;
+      <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+       pcp/pmapi.h
+      </a>
+      &gt; or
+      <b>
+       <a href="/man/man3/pmlookupdesc.3.html">
+        pmLookupDesc
+       </a>
+      </b>
+      (3).
+     </p>
+     <p>
+      When the scale is changed (but the dimension is
+unaltered) the optional keyword
+
+RESCALE
+
+may be used to chose value rescaling as per the
+      <b>
+       -s
+      </b>
+      command line option, but applied to just this metric.
+     </p>
+    </dd>
+   </dl>
+   <p>
+   </p>
+   <p>
+    When changing the domain number for a metric or instance domain,
+the new domain number will usually match an existing PMDA's domain
+number.  If this is not the case, then the new domain number
+should not be randomly chosen; consult
+    <b>
+     $PCP_VAR_DIR/pmns/stdpmid
+    </b>
+    for domain numbers that are already assigned to PMDAs.
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  EXAMPLES
+ </h2>
+ <p>
+  To promote the values of the per-disk IOPS metrics to 64-bit to
+allow aggregation over a long time period for capacity
+planning, or because the PMDA has changed to export 64-bit counters
+and we want to convert old archives so they can be processed
+alongside new archives.
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+metric disk.dev.read { type -&gt; U64 }
+metric disk.dev.write { type -&gt; U64 }
+metric disk.dev.total { type -&gt; U64 }
+</pre>
+  </dd>
+ </dl>
+ <p>
+  The instances associated with the load average metric
+  <b>
+   kernel.all.load
+  </b>
+  could be renamed and renumbered by the
+rules below.
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+# for the Linux PMDA, the kernel.all.load metric is defined
+# over instance domain 60.2
+indom 60.2 {
+    inst 1 -&gt; 60 iname "1 minute" -&gt; "60 second"
+    inst 5 -&gt; 300 iname "5 minute" -&gt; "300 second"
+    inst 15 -&gt; 900 iname "15 minute" -&gt; "900 second"
+}
+</pre>
+  </dd>
+ </dl>
+ <p>
+  If we decide to split the ``proc'' metrics out of the Linux PMDA, this
+will involve changing the domain number for the PMID of these metrics
+and the associated instance domains.  The rules below would rewrite an
+old archive to match the changes after the PMDA split.
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+# all Linux proc metrics are in 7 clusters
+metric 60.8.* { pmid -&gt; 123.*.* }
+metric 60.9.* { pmid -&gt; 123.*.* }
+metric 60.13.* { pmid -&gt; 123.*.* }
+metric 60.24.* { pmid -&gt; 123.*.* }
+metric 60.31.* { pmid -&gt; 123.*.* }
+metric 60.32.* { pmid -&gt; 123.*.* }
+metric 60.51.* { pmid -&gt; 123.*.* }
+# only one instance domain for Linux proc metrics
+indom 60.9 { indom -&gt; 123.0 }
+</pre>
+  </dd>
+ </dl>
+ <p>
+  If the metric foo.count_em was exported as a native ``long'' then it
+could be a 32-bit integer on some platforms and a 64-bit integer on
+other platforms.  Subsequent investigations show the value is in
+fact unsigned, so the following rules could be used.
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+metric foo.count_em {
+        type if 32 -&gt; U32
+        type if 64 -&gt; U64
+}
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAH">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ For each of the
+ <i>
+  inlog
+ </i>
+ and
+ <i>
+  outlog
+ </i>
+ archive logs, several physical files are used.
+ <dl compact="">
+  <dt>
+   <i>
+    archive
+   </i>
+   <b>
+    .meta
+    <dd>
+     metadata (metric descriptions, instance domains, etc.) for the archive log
+    </dd>
+    <dt>
+    </dt>
+   </b>
+   <i>
+    archive
+   </i>
+   <b>
+    .0
+    <dd>
+     initial volume of metrics values (subsequent volumes have suffixes
+1
+    </dd>
+   </b>
+   ,
+   <b>
+    2
+   </b>
+   ,
+
+...).
+   <dt>
+    <i>
+     archive
+    </i>
+    <b>
+     .index
+     <dd>
+      temporal index to support rapid random access to the other files in the
+archive log.
+     </dd>
+    </b>
+   </dt>
+  </dt>
+ </dl>
+ <a name="lbAI">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAJ">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmdainstance.3.html">
+   pmdaInstance
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogextract.1.html">
+   pmlogextract
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmloglabel.1.html">
+   pmloglabel
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogreduce.1.html">
+   pmlogreduce
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   pmns
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <a name="lbAK">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All error conditions detected by
+ <b>
+  pmlogrewrite
+ </b>
+ are reported on
+ <i>
+  stderr
+ </i>
+ with textual (if sometimes terse) explanation.
+ <p>
+  Should the input archive log be corrupted (this can happen
+if the
+  <b>
+   pmlogger
+  </b>
+  instance writing the log suddenly dies), then
+  <b>
+   pmlogrewrite
+  </b>
+  will detect and report the position of the corruption in the file,
+and any subsequent information from that archive log will not be processed.
+ </p>
+ <p>
+  If any error is detected,
+  <b>
+   pmlogrewrite
+  </b>
+  will exit with a non-zero status.
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    OPTIONS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    REWRITING RULES SYNTAX
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

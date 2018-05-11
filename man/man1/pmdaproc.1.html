@@ -1,1052 +1,1048 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMDAPROC
- </h1>
- Section: User Commands  (1)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmdaproc
- </b>
- - process performance metrics domain agent (PMDA)
- <a name="lbAC">
- </a>
- <h2>
-  SYNOPSIS
- </h2>
- <b>
-  $PCP_PMDAS_DIR/proc/pmdaproc
- </b>
- [
- <b>
-  -AL
- </b>
- ]
-[
- <b>
-  -d
- </b>
- <i>
-  domain
- </i>
- ]
-[
- <b>
-  -l
- </b>
- <i>
-  logfile
- </i>
- ]
-[
- <b>
-  -r
- </b>
- <i>
-  cgroup
- </i>
- ]
-[
- <b>
-  -U
- </b>
- <i>
-  username
- </i>
- ]
- <a name="lbAD">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pmdaproc
- </b>
- is a Performance Metrics Domain Agent (PMDA) which extracts
-performance metrics describing the state of the individual
-processes running on a Linux system.
- <p>
-  The
-  <b>
-   proc
-  </b>
-  PMDA exports metrics that measure the memory, processor and
-other resource use of each process, as well as summary information
-collated across all of the running processes.
-The PMDA uses credentials passed from the
-  <b>
-   <a href="/man/man3/pmapi.3.html">
-    PMAPI
-   </a>
-  </b>
-  (3)
-
-monitoring tool identifying the user requesting the information,
-to ensure that only values the user is allowed to access are
-returned by the PMDA.
-This involves the PMDA temporarily changing its effective user and
-group identifiers for the duration of requests for instances and
-values.
-In other words, system calls to extract information are performed
-as the user originating the request and not as a privileged user.
-The mechanisms available for transfer of user credentials are
-described further in the
-  <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
-   </a>
-  </b>
-  (1)
-
-page.
- </p>
- <p>
-  A brief description of the
-  <b>
-   pmdaproc
-  </b>
-  command line options follows:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -A
-   </b>
-  </dt>
-  <dd>
-   Disables use of the credentials provided by
-   <b>
-    PMAPI
-   </b>
-   client tools,
-and simply runs everything under the "root" account.
-Only enable this option if you understand the risks involved, and
-are sure that all remote accesses will be from benevolent users.
-If enabled, unauthenticated remote
-   <b>
-    PMAPI
-   </b>
-   clients will be able to access potentially sensitive performance
-metric values which an unauthenticated
-   <b>
-    PMAPI
-   </b>
-   client usually would not be able to.
-Refer to CVE-2012-3419 for additional details.
-  </dd>
-  <dt>
-   <b>
-    -L
-   </b>
-  </dt>
-  <dd>
-   Changes the per-process instance domain used by most
-   <b>
-    pmdaproc
-   </b>
-   metrics to include threads as well.
-  </dd>
-  <dt>
-   <b>
-    -d
-   </b>
-  </dt>
-  <dd>
-   It is absolutely crucial that the performance metrics
-   <i>
-    domain
-   </i>
-   number specified here is unique and consistent.
-That is,
-   <i>
-    domain
-   </i>
-   should be different for every PMDA on the one host, and the same
-   <i>
-    domain
-   </i>
-   number should be used for the same PMDA on all hosts.
-  </dd>
-  <dt>
-   <b>
-    -l
-   </b>
-  </dt>
-  <dd>
-   Location of the log file.  By default, a log file named
-   <i>
-    proc.log
-   </i>
-   is written in the current directory of
-   <b>
-    <a href="/man/man1/pmcd.1.html">
-     pmcd
-    </a>
-   </b>
-   (1)
-
-when
-   <b>
-    pmdaproc
-   </b>
-   is started, i.e.
-   <b>
-    $PCP_LOG_DIR/pmcd
-   </b>
-   .
-
-If the log file cannot
-be created or is not writable, output is written to the standard error instead.
-  </dd>
-  <dt>
-   <b>
-    -r
-   </b>
-  </dt>
-  <dd>
-   Restrict the set of processes exported in the per-process instance domain
-to only those processes that are contained by the specified
-   <i>
-    cgroup
-   </i>
-   resource container.
-This option provides an optional finer granularity to the monitoring, and
-can also be used to reduce the resources consumed by
-   <i>
-    pmdaproc
-   </i>
-   during requests for instances and values.
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-  </dt>
-  <dd>
-   User account under which to run the agent.
-The default is the privileged "root" account, with
-seteuid (2)
-and
-setegid (2)
-switching for accessing most information.
-  </dd>
- </dl>
- <a name="lbAE">
- </a>
- <h2>
-  HOTPROC OVERVIEW
- </h2>
- The
- <b>
-  pmdaproc
- </b>
- Performance Metrics Domain Agent (PMDA) includes an additional set of
-per-process metrics with an instance domain of processes restricted
-to an "interesting" or "hot" set.
-Unlike the stock metrics exported by the
- <b>
-  proc
- </b>
- PMDA, which have an instance domain equal to the current processes,
- <b>
-  hot
- </b>
- metrics have an instance domain which is a subset of this.
-This
- <b>
-  hotproc
- </b>
- instance domain is determined by a configurable predicate evaluated
-over some refresh interval.
- <p>
-  As well as the equivalent per-process
-  <b>
-   proc
-  </b>
-  metrics,
-  <b>
-   hotproc
-  </b>
-  provides a
-  <b>
-   cpuburn
-  </b>
-  metric which specifies the CPU utilization
-of the process over the refresh interval,
-  <b>
-   total
-  </b>
-  metrics which
-indicate how much of the available CPU time the "interesting" processes
-account for,
-  <b>
-   predicate
-  </b>
-  metrics which show the values of
-the reserved variables (see below) that are being used in the hotproc
-predicate, and
-  <b>
-   control
-  </b>
-  metrics for controlling the agent.
- </p>
- <p>
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  HOTPROC CONFIGURATION
- </h2>
- The configuration file consists of one predicate used to determine if
-a process should be in the interesting set or not.
- <p>
-  An example configuration file may be found at
-  <b>
-   $PCP_PMDAS_DIR/proc/samplehotproc.conf
-  </b>
- </p>
- <p>
-  This file with any modifications can be copied to
-  <b>
-   $PCP_PMDAS_DIR/proc/hotproc.conf
-  </b>
-  in order to configure the
-  <b>
-   hot
-  </b>
-  metrics. The
-  <b>
-   <a href="/man/man1/pmstore.1.html">
-    pmstore
-   </a>
-  </b>
-  (1)
-
-and
-  <b>
-   <a href="/man/man3/pmstore.3.html">
-    pmStore
-   </a>
-  </b>
-  (3)
-
-interfaces can be used as well (described below).
- </p>
- <p>
-  The predicate is described using the language specified below.
-The symbols are based on those used by the
-  <b>
-   <a href="/man/man1/c.1.html">
-    C
-   </a>
-  </b>
-  (1)
-
-and
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/awk.1.html">
-    awk
-   </a>
-  </b>
-  (1)
-
-languages.
- </p>
- <dl compact="">
-  <dt>
-   Boolean Connectives
-  </dt>
-  <dd>
-   <b>
-    &amp;&amp;
-   </b>
-   (and),
-   <b>
-    ||
-   </b>
-   (or),
-   <b>
-    !
-   </b>
-   (not),
-   <b>
-    ()
-   </b>
-   (precedence overriding)
-  </dd>
-  <dt>
-   Number comparators
-  </dt>
-  <dd>
-   <b>
-    &lt;
-   </b>
-   ,
-   <b>
-    &lt;=
-   </b>
-   ,
-   <b>
-    &gt;
-   </b>
-   ,
-   <b>
-    &gt;=
-   </b>
-   ,
-   <b>
-    ==
-   </b>
-   ,
-   <b>
-    !=
-   </b>
-  </dd>
-  <dt>
-   String comparators
-  </dt>
-  <dd>
-   <b>
-    ==
-   </b>
-   ,
-   <b>
-    !=
-   </b>
-  </dd>
-  <dt>
-   String/Pattern comparators
-  </dt>
-  <dd>
-   <b>
-    ~
-   </b>
-   (string matches pattern)
-,
-   <b>
-    !~
-   </b>
-   (string does not match pattern)
-  </dd>
-  <dt>
-   Reserved variables
-  </dt>
-  <dd>
-   <b>
-    uid
-   </b>
-   (user id; type integer)
-   <b>
-    uname
-   </b>
-   (user name; type string),
-   <b>
-    gid
-   </b>
-   (group id; type integer)
-   <b>
-    gname
-   </b>
-   (group name; type string),
-   <b>
-    fname
-   </b>
-   (process file name; type string),
-   <b>
-    psargs
-   </b>
-   (process file name with args; type string),
-   <b>
-    cpuburn
-   </b>
-   (cpu utilization; type float),
-   <b>
-    iodemand
-   </b>
-   (I/O demand - Kbytes read/written per second; type float),
-   <b>
-    ctxswitch
-   </b>
-   (number of context switches per second; type float),
-   <b>
-    syscalls
-   </b>
-   (number of system calls per second; type float),
-   <b>
-    virtualsize
-   </b>
-   (virtual size in Kbytes; type float),
-   <b>
-    residentsize
-   </b>
-   (resident size in Kbytes; type float),
-   <b>
-    iowait
-   </b>
-   (blocked and raw io wait in secs/sec; type float),
-   <b>
-    schedwait
-   </b>
-   (time waiting in run queue in secs/sec; type float).
-  </dd>
-  <dt>
-   Literal values
-  </dt>
-  <dd>
-   <b>
-    1234
-   </b>
-   (positive integer),
-   <b>
-    0.35
-   </b>
-   (positive float),
-   <b>
-    "foobar"
-   </b>
-   (string; delimited by
-   <b>
-    "
-   </b>
-   ),
-   <b>
-    /[fF](o)+bar/
-   </b>
-   (pattern; delimited by
-   <b>
-    /
-   </b>
-   ),
-   <b>
-    true
-   </b>
-   (boolean),
-   <b>
-    false
-   </b>
-   (boolean)
-  </dd>
-  <dt>
-   Comments
-  </dt>
-  <dd>
-   <b>
-    #this is a comment
-   </b>
-   (from
-   <b>
-    #
-   </b>
-   to the end of the line).
-  </dd>
-  <dt>
-   Examples
-  </dt>
-  <dd>
-   <br/>
-   cpuburn &gt; 0.2 # cpu utilization of more than 20%
-   <br/>
-   cpuburn &gt; 0.2 &amp;&amp; uname == "root"
-   <br/>
-   cpuburn &gt; 0.2 &amp;&amp; (uname == "root" || uname == "hot")
-   <br/>
-   psargs ~ /pmda/ &amp;&amp; cpuburn &gt; 0.4
-   <p>
-   </p>
-  </dd>
- </dl>
- <p>
-  The
-  <b>
-   hotproc.predicate
-  </b>
-  metrics may be used
-to see what the values of the reserved variables are
-that were used by the predicate at the last refresh.
-They do not cover the reserved variables which are
-already exported elsewhere. A
-  <b>
-   hotproc.predicate
-  </b>
-  metric
-may not have a value if it is not referenced in the configuration
-predicate.
- </p>
- <p>
-  <a name="lbAG">
-  </a>
- </p>
- <h2>
-  DYNAMIC CONFIGURATION
- </h2>
- The
- <b>
-  hot
- </b>
- metrics can also be configured at runtime through the
- <b>
-  <a href="/man/man1/pmstore.1.html">
-   pmstore
-  </a>
- </b>
- (1)
-
-interface (and, implicitly, the
- <b>
-  <a href="/man/man3/pmstore.3.html">
-   pmStore
-  </a>
- </b>
- (3)
-
-API)
- <dl compact="">
-  <dt>
-   Examples
-  </dt>
-  <dd>
-   <br/>
-   pmstore hotproc.control.config 'fname == "mingetty"'
-   <br/>
-   pmstore hotproc.control.config 'uid == 0'
-  </dd>
-  <dt>
-   To force the config file to be reloaded:
-  </dt>
-  <dd>
-   <br/>
-   pmstore hotproc.control.reload_config "1"
-  </dd>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  INSTALLATION
- </h2>
- The
- <b>
-  proc
- </b>
- PMDA is installed and available by default.
-If you want to undo the installation, do the following as root:
- <p>
- </p>
- <pre>
-# cd $PCP_PMDAS_DIR/proc
-# ./Remove
-</pre>
- <p>
-  If you want to establish access to the names, help text and values for the proc
-performance metrics once more, after removal, do the following as root:
- </p>
- <p>
- </p>
- <pre>
-# cd $PCP_PMDAS_DIR/proc
-# ./Install
-</pre>
- <p>
-  <b>
-   pmdaproc
-  </b>
-  is launched by
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-and should never be executed directly.
-The Install and Remove scripts notify
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-when the agent is installed or removed.
-  <a name="lbAI">
-  </a>
- </p>
- <h2>
-  FILES
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    $PCP_PMCDCONF_PATH
-   </b>
-  </dt>
-  <dd>
-   command line options used to launch
-   <b>
-    pmdaproc
-   </b>
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/proc/help
-   </b>
-  </dt>
-  <dd>
-   default help text file for the proc metrics
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/proc/Install
-   </b>
-  </dt>
-  <dd>
-   installation script for the
-   <b>
-    pmdaproc
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/proc/Remove
-   </b>
-  </dt>
-  <dd>
-   undo installation script for the
-   <b>
-    pmdaproc
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/proc.log
-   </b>
-  </dt>
-  <dd>
-   default log file for error messages and other information from
-   <b>
-    pmdaproc
-   </b>
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/proc/samplehotproc.conf
-   </b>
-  </dt>
-  <dd>
-   simple sample hotproc configuration
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/proc/hotproc.conf
-   </b>
-  </dt>
-  <dd>
-   default hotproc configuration file
-  </dd>
- </dl>
- <a name="lbAJ">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
- <i>
-  /etc/pcp.conf
- </i>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file,
-as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <a name="lbAK">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmstore.1.html">
-   pmstore
-  </a>
- </b>
- (1),
- <b>
-  <a href="http://man7.org/linux/man-pages/man2/seteuid.2.html">
-   seteuid
-  </a>
- </b>
- (2),
- <b>
-  <a href="http://man7.org/linux/man-pages/man2/setegid.2.html">
-   setegid
-  </a>
- </b>
- (2),
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5)
-
-and
- <b>
-  <a href="/man/man5/pcp.env.5.html">
-   pcp.env
-  </a>
- </b>
- (5).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    HOTPROC OVERVIEW
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    HOTPROC CONFIGURATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    DYNAMIC CONFIGURATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    INSTALLATION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAJ">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAK">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMDAPROC
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmdaproc
+               </b>
+               - process performance metrics domain agent (PMDA)
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                $PCP_PMDAS_DIR/proc/pmdaproc
+               </b>
+               [
+               <b>
+                -AL
+               </b>
+               ]
+              [
+               <b>
+                -d
+               </b>
+               <i>
+                domain
+               </i>
+               ]
+              [
+               <b>
+                -l
+               </b>
+               <i>
+                logfile
+               </i>
+               ]
+              [
+               <b>
+                -r
+               </b>
+               <i>
+                cgroup
+               </i>
+               ]
+              [
+               <b>
+                -U
+               </b>
+               <i>
+                username
+               </i>
+               ]
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pmdaproc
+               </b>
+               is a Performance Metrics Domain Agent (PMDA) which extracts
+              performance metrics describing the state of the individual
+              processes running on a Linux system.
+               <p>
+                The
+                <b>
+                 proc
+                </b>
+                PMDA exports metrics that measure the memory, processor and
+              other resource use of each process, as well as summary information
+              collated across all of the running processes.
+              The PMDA uses credentials passed from the
+                <b>
+                 <a href="/man/man3/pmapi.3.html">
+                  PMAPI
+                 </a>
+                </b>
+                (3)
+              
+              monitoring tool identifying the user requesting the information,
+              to ensure that only values the user is allowed to access are
+              returned by the PMDA.
+              This involves the PMDA temporarily changing its effective user and
+              group identifiers for the duration of requests for instances and
+              values.
+              In other words, system calls to extract information are performed
+              as the user originating the request and not as a privileged user.
+              The mechanisms available for transfer of user credentials are
+              described further in the
+                <b>
+                 <a href="/man/man1/pcpintro.1.html">
+                  PCPIntro
+                 </a>
+                </b>
+                (1)
+              
+              page.
+               </p>
+               <p>
+                A brief description of the
+                <b>
+                 pmdaproc
+                </b>
+                command line options follows:
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -A
+                 </b>
+                </dt>
+                <dd>
+                 Disables use of the credentials provided by
+                 <b>
+                  PMAPI
+                 </b>
+                 client tools,
+              and simply runs everything under the "root" account.
+              Only enable this option if you understand the risks involved, and
+              are sure that all remote accesses will be from benevolent users.
+              If enabled, unauthenticated remote
+                 <b>
+                  PMAPI
+                 </b>
+                 clients will be able to access potentially sensitive performance
+              metric values which an unauthenticated
+                 <b>
+                  PMAPI
+                 </b>
+                 client usually would not be able to.
+              Refer to CVE-2012-3419 for additional details.
+                </dd>
+                <dt>
+                 <b>
+                  -L
+                 </b>
+                </dt>
+                <dd>
+                 Changes the per-process instance domain used by most
+                 <b>
+                  pmdaproc
+                 </b>
+                 metrics to include threads as well.
+                </dd>
+                <dt>
+                 <b>
+                  -d
+                 </b>
+                </dt>
+                <dd>
+                 It is absolutely crucial that the performance metrics
+                 <i>
+                  domain
+                 </i>
+                 number specified here is unique and consistent.
+              That is,
+                 <i>
+                  domain
+                 </i>
+                 should be different for every PMDA on the one host, and the same
+                 <i>
+                  domain
+                 </i>
+                 number should be used for the same PMDA on all hosts.
+                </dd>
+                <dt>
+                 <b>
+                  -l
+                 </b>
+                </dt>
+                <dd>
+                 Location of the log file.  By default, a log file named
+                 <i>
+                  proc.log
+                 </i>
+                 is written in the current directory of
+                 <b>
+                  <a href="/man/man1/pmcd.1.html">
+                   pmcd
+                  </a>
+                 </b>
+                 (1)
+              
+              when
+                 <b>
+                  pmdaproc
+                 </b>
+                 is started, i.e.
+                 <b>
+                  $PCP_LOG_DIR/pmcd
+                 </b>
+                 .
+              
+              If the log file cannot
+              be created or is not writable, output is written to the standard error instead.
+                </dd>
+                <dt>
+                 <b>
+                  -r
+                 </b>
+                </dt>
+                <dd>
+                 Restrict the set of processes exported in the per-process instance domain
+              to only those processes that are contained by the specified
+                 <i>
+                  cgroup
+                 </i>
+                 resource container.
+              This option provides an optional finer granularity to the monitoring, and
+              can also be used to reduce the resources consumed by
+                 <i>
+                  pmdaproc
+                 </i>
+                 during requests for instances and values.
+                </dd>
+                <dt>
+                 <b>
+                  -U
+                 </b>
+                </dt>
+                <dd>
+                 User account under which to run the agent.
+              The default is the privileged "root" account, with
+              seteuid (2)
+              and
+              setegid (2)
+              switching for accessing most information.
+                </dd>
+               </dl>
+               <a name="lbAE">
+               </a>
+               <h2>
+                HOTPROC OVERVIEW
+               </h2>
+               The
+               <b>
+                pmdaproc
+               </b>
+               Performance Metrics Domain Agent (PMDA) includes an additional set of
+              per-process metrics with an instance domain of processes restricted
+              to an "interesting" or "hot" set.
+              Unlike the stock metrics exported by the
+               <b>
+                proc
+               </b>
+               PMDA, which have an instance domain equal to the current processes,
+               <b>
+                hot
+               </b>
+               metrics have an instance domain which is a subset of this.
+              This
+               <b>
+                hotproc
+               </b>
+               instance domain is determined by a configurable predicate evaluated
+              over some refresh interval.
+               <p>
+                As well as the equivalent per-process
+                <b>
+                 proc
+                </b>
+                metrics,
+                <b>
+                 hotproc
+                </b>
+                provides a
+                <b>
+                 cpuburn
+                </b>
+                metric which specifies the CPU utilization
+              of the process over the refresh interval,
+                <b>
+                 total
+                </b>
+                metrics which
+              indicate how much of the available CPU time the "interesting" processes
+              account for,
+                <b>
+                 predicate
+                </b>
+                metrics which show the values of
+              the reserved variables (see below) that are being used in the hotproc
+              predicate, and
+                <b>
+                 control
+                </b>
+                metrics for controlling the agent.
+               </p>
+               <p>
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                HOTPROC CONFIGURATION
+               </h2>
+               The configuration file consists of one predicate used to determine if
+              a process should be in the interesting set or not.
+               <p>
+                An example configuration file may be found at
+                <b>
+                 $PCP_PMDAS_DIR/proc/samplehotproc.conf
+                </b>
+               </p>
+               <p>
+                This file with any modifications can be copied to
+                <b>
+                 $PCP_PMDAS_DIR/proc/hotproc.conf
+                </b>
+                in order to configure the
+                <b>
+                 hot
+                </b>
+                metrics. The
+                <b>
+                 <a href="/man/man1/pmstore.1.html">
+                  pmstore
+                 </a>
+                </b>
+                (1)
+              
+              and
+                <b>
+                 <a href="/man/man3/pmstore.3.html">
+                  pmStore
+                 </a>
+                </b>
+                (3)
+              
+              interfaces can be used as well (described below).
+               </p>
+               <p>
+                The predicate is described using the language specified below.
+              The symbols are based on those used by the
+                <b>
+                 <a href="/man/man1/c.1.html">
+                  C
+                 </a>
+                </b>
+                (1)
+              
+              and
+                <b>
+                 <a href="http://man7.org/linux/man-pages/man1/awk.1.html">
+                  awk
+                 </a>
+                </b>
+                (1)
+              
+              languages.
+               </p>
+               <dl compact="">
+                <dt>
+                 Boolean Connectives
+                </dt>
+                <dd>
+                 <b>
+                  &amp;&amp;
+                 </b>
+                 (and),
+                 <b>
+                  ||
+                 </b>
+                 (or),
+                 <b>
+                  !
+                 </b>
+                 (not),
+                 <b>
+                  ()
+                 </b>
+                 (precedence overriding)
+                </dd>
+                <dt>
+                 Number comparators
+                </dt>
+                <dd>
+                 <b>
+                  &lt;
+                 </b>
+                 ,
+                 <b>
+                  &lt;=
+                 </b>
+                 ,
+                 <b>
+                  &gt;
+                 </b>
+                 ,
+                 <b>
+                  &gt;=
+                 </b>
+                 ,
+                 <b>
+                  ==
+                 </b>
+                 ,
+                 <b>
+                  !=
+                 </b>
+                </dd>
+                <dt>
+                 String comparators
+                </dt>
+                <dd>
+                 <b>
+                  ==
+                 </b>
+                 ,
+                 <b>
+                  !=
+                 </b>
+                </dd>
+                <dt>
+                 String/Pattern comparators
+                </dt>
+                <dd>
+                 <b>
+                  ~
+                 </b>
+                 (string matches pattern)
+              ,
+                 <b>
+                  !~
+                 </b>
+                 (string does not match pattern)
+                </dd>
+                <dt>
+                 Reserved variables
+                </dt>
+                <dd>
+                 <b>
+                  uid
+                 </b>
+                 (user id; type integer)
+                 <b>
+                  uname
+                 </b>
+                 (user name; type string),
+                 <b>
+                  gid
+                 </b>
+                 (group id; type integer)
+                 <b>
+                  gname
+                 </b>
+                 (group name; type string),
+                 <b>
+                  fname
+                 </b>
+                 (process file name; type string),
+                 <b>
+                  psargs
+                 </b>
+                 (process file name with args; type string),
+                 <b>
+                  cpuburn
+                 </b>
+                 (cpu utilization; type float),
+                 <b>
+                  iodemand
+                 </b>
+                 (I/O demand - Kbytes read/written per second; type float),
+                 <b>
+                  ctxswitch
+                 </b>
+                 (number of context switches per second; type float),
+                 <b>
+                  syscalls
+                 </b>
+                 (number of system calls per second; type float),
+                 <b>
+                  virtualsize
+                 </b>
+                 (virtual size in Kbytes; type float),
+                 <b>
+                  residentsize
+                 </b>
+                 (resident size in Kbytes; type float),
+                 <b>
+                  iowait
+                 </b>
+                 (blocked and raw io wait in secs/sec; type float),
+                 <b>
+                  schedwait
+                 </b>
+                 (time waiting in run queue in secs/sec; type float).
+                </dd>
+                <dt>
+                 Literal values
+                </dt>
+                <dd>
+                 <b>
+                  1234
+                 </b>
+                 (positive integer),
+                 <b>
+                  0.35
+                 </b>
+                 (positive float),
+                 <b>
+                  "foobar"
+                 </b>
+                 (string; delimited by
+                 <b>
+                  "
+                 </b>
+                 ),
+                 <b>
+                  /[fF](o)+bar/
+                 </b>
+                 (pattern; delimited by
+                 <b>
+                  /
+                 </b>
+                 ),
+                 <b>
+                  true
+                 </b>
+                 (boolean),
+                 <b>
+                  false
+                 </b>
+                 (boolean)
+                </dd>
+                <dt>
+                 Comments
+                </dt>
+                <dd>
+                 <b>
+                  #this is a comment
+                 </b>
+                 (from
+                 <b>
+                  #
+                 </b>
+                 to the end of the line).
+                </dd>
+                <dt>
+                 Examples
+                </dt>
+                <dd>
+                 <br/>
+                 cpuburn &gt; 0.2 # cpu utilization of more than 20%
+                 <br/>
+                 cpuburn &gt; 0.2 &amp;&amp; uname == "root"
+                 <br/>
+                 cpuburn &gt; 0.2 &amp;&amp; (uname == "root" || uname == "hot")
+                 <br/>
+                 psargs ~ /pmda/ &amp;&amp; cpuburn &gt; 0.4
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <p>
+                The
+                <b>
+                 hotproc.predicate
+                </b>
+                metrics may be used
+              to see what the values of the reserved variables are
+              that were used by the predicate at the last refresh.
+              They do not cover the reserved variables which are
+              already exported elsewhere. A
+                <b>
+                 hotproc.predicate
+                </b>
+                metric
+              may not have a value if it is not referenced in the configuration
+              predicate.
+               </p>
+               <p>
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                DYNAMIC CONFIGURATION
+               </h2>
+               The
+               <b>
+                hot
+               </b>
+               metrics can also be configured at runtime through the
+               <b>
+                <a href="/man/man1/pmstore.1.html">
+                 pmstore
+                </a>
+               </b>
+               (1)
+              
+              interface (and, implicitly, the
+               <b>
+                <a href="/man/man3/pmstore.3.html">
+                 pmStore
+                </a>
+               </b>
+               (3)
+              
+              API)
+               <dl compact="">
+                <dt>
+                 Examples
+                </dt>
+                <dd>
+                 <br/>
+                 pmstore hotproc.control.config 'fname == "mingetty"'
+                 <br/>
+                 pmstore hotproc.control.config 'uid == 0'
+                </dd>
+                <dt>
+                 To force the config file to be reloaded:
+                </dt>
+                <dd>
+                 <br/>
+                 pmstore hotproc.control.reload_config "1"
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                INSTALLATION
+               </h2>
+               The
+               <b>
+                proc
+               </b>
+               PMDA is installed and available by default.
+              If you want to undo the installation, do the following as root:
+               <p>
+               </p>
+               <pre>
+              # cd $PCP_PMDAS_DIR/proc
+              # ./Remove
+              </pre>
+               <p>
+                If you want to establish access to the names, help text and values for the proc
+              performance metrics once more, after removal, do the following as root:
+               </p>
+               <p>
+               </p>
+               <pre>
+              # cd $PCP_PMDAS_DIR/proc
+              # ./Install
+              </pre>
+               <p>
+                <b>
+                 pmdaproc
+                </b>
+                is launched by
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              and should never be executed directly.
+              The Install and Remove scripts notify
+                <b>
+                 <a href="/man/man1/pmcd.1.html">
+                  pmcd
+                 </a>
+                </b>
+                (1)
+              
+              when the agent is installed or removed.
+                <a name="lbAI">
+                </a>
+               </p>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  $PCP_PMCDCONF_PATH
+                 </b>
+                </dt>
+                <dd>
+                 command line options used to launch
+                 <b>
+                  pmdaproc
+                 </b>
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/proc/help
+                 </b>
+                </dt>
+                <dd>
+                 default help text file for the proc metrics
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/proc/Install
+                 </b>
+                </dt>
+                <dd>
+                 installation script for the
+                 <b>
+                  pmdaproc
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/proc/Remove
+                 </b>
+                </dt>
+                <dd>
+                 undo installation script for the
+                 <b>
+                  pmdaproc
+                 </b>
+                 agent
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_LOG_DIR/pmcd/proc.log
+                 </b>
+                </dt>
+                <dd>
+                 default log file for error messages and other information from
+                 <b>
+                  pmdaproc
+                 </b>
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/proc/samplehotproc.conf
+                 </b>
+                </dt>
+                <dd>
+                 simple sample hotproc configuration
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_PMDAS_DIR/proc/hotproc.conf
+                 </b>
+                </dt>
+                <dd>
+                 default hotproc configuration file
+                </dd>
+               </dl>
+               <a name="lbAJ">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <i>
+                /etc/pcp.conf
+               </i>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAK">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmstore.1.html">
+                 pmstore
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man2/seteuid.2.html">
+                 seteuid
+                </a>
+               </b>
+               (2),
+               <b>
+                <a href="http://man7.org/linux/man-pages/man2/setegid.2.html">
+                 setegid
+                </a>
+               </b>
+               (2),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5)
+              
+              and
+               <b>
+                <a href="/man/man5/pcp.env.5.html">
+                 pcp.env
+                </a>
+               </b>
+               (5).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  HOTPROC OVERVIEW
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  HOTPROC CONFIGURATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  DYNAMIC CONFIGURATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  INSTALLATION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAJ">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAK">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

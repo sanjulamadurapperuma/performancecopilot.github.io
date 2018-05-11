@@ -1,796 +1,792 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PCP-PIDSTAT
- </h1>
- Section: User Commands  (1)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pcp-pidstat
- </b>
- - Report statistics for Linux tasks.
- <a name="lbAC">
- </a>
- <h2>
-  SYNOPSIS
- </h2>
- <b>
-  pcp
- </b>
- <b>
-  pidstat
- </b>
- [
- <b>
-  -s
- </b>
- N]
-[
- <b>
-  -t
- </b>
- DELTA]
-[
- <b>
-  -I
- </b>
- ]
-[
- <b>
-  -a
- </b>
- FILE]
-[
- <b>
-  -f
- </b>
- FORMAT]
-[
- <b>
-  -G
- </b>
- NAME]
-[
- <b>
-  -U
- </b>
- [USERNAME]]
-[
- <b>
-  -p
- </b>
- PID1,PID2..]
-[
- <b>
-  -R
- </b>
- /
- <b>
-  -r/-k
- </b>
- ]
-[
- <b>
-  -V
- </b>
- ]
-[
- <b>
-  -?
- </b>
- ]
- <p>
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  DESCRIPTION
- </h2>
- <b>
-  pcp-pidstat
- </b>
- command is used for monitoring individual tasks currently being managed by the Linux kernel. Using various options it helps user to see useful information related with the processes. This information can include percentage CPU, memory and stack usages, scheduling and priority information. By default pcp-pidstat reports live
-data for the local host but can also report for a remote host (--host) or from a previously captured PCP archive (-a).
- <b>
-  pcp-pidstat
- </b>
- fetches the data to be analysed from PMCD unless provided -a option. (See below)
- <p>
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  OPTIONS
- </h2>
- Output control options:
- <dl compact="">
-  <dt>
-   <b>
-    -s
-   </b>
-   N
-   <b>
-    ,
-   </b>
-   <b>
-    --samples=
-   </b>
-   <i>
-    N
-   </i>
-  </dt>
-  <dd>
-   Set the number of samples to be displayed.
-Since the first sample is used for the rate conversion of some of the metrics, the total number of samples reported are one less that N. Default is continous.
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -t
-   </b>
-   DELTA
-   <b>
-    ,
-   </b>
-   <b>
-    --interval=
-   </b>
-   <i>
-    DELTA
-   </i>
-  </dt>
-  <dd>
-   Set the interval between two samples.
-Default is one second.
-   <p>
-   </p>
-  </dd>
- </dl>
- <p>
-  General Options:
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -I
-   </b>
-  </dt>
-  <dd>
-   In  an  SMP environment, indicates that tasks CPU usage should be divided by the total number of processors.
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -a
-   </b>
-   FILE
-   <b>
-    ,
-   </b>
-   <b>
-    --archive=
-   </b>
-   <i>
-    FILE
-   </i>
-  </dt>
-  <dd>
-   Causes pcp-pidstat to use the specified archive than connecting to PMCD. The argument to -a is a comma-separated
-list of names, each of which may be the base name of an archive or the name of a directory containing one or more archives. Archives can be created using
-   <b>
-    <a href="/man/man1/pmlogger.1.html">
-     pmlogger
-    </a>
-   </b>
-   (1).
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    --host
-   </b>
-  </dt>
-  <dd>
-   Current performance metric values are retrieved from the nominated
-   <i>
-    host
-   </i>
-   machine.
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -B
-   </b>
-  </dt>
-  <dd>
-   Report process states. The argument to -B is one of the following:
-   <p>
-    <b>
-     detail
-    </b>
-    <br/>
-    Show total time processes have spent in each of the 5 different states
-   </p>
-   <p>
-    <b>
-     all
-    </b>
-    <br/>
-    Show total time processes spent in their current state
-   </p>
-   <p>
-    [
-    <b>
-     R
-    </b>
-    ,
-    <b>
-     S
-    </b>
-    ,
-    <b>
-     T
-    </b>
-    ,
-    <b>
-     D
-    </b>
-    ,
-    <b>
-     Z
-    </b>
-    ]
-    <br/>
-    A comma separated list of states which can be any or all of [
-    <b>
-     R
-    </b>
-    ,
-    <b>
-     S
-    </b>
-    ,
-    <b>
-     T
-    </b>
-    ,
-    <b>
-     Z
-    </b>
-    ,
-    <b>
-     D
-    </b>
-    ]. For example,
-    <b>
-     -B R,S
-    </b>
-    will report processes currently in either
-    <b>
-     R
-    </b>
-    or
-    <b>
-     S
-    </b>
-    states and not report processes currently in any other states.
-   </p>
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -f
-   </b>
-  </dt>
-  <dd>
-   Use the format string for formatting the timestamp. The format will be used with Python's datetime.strftime method which is mostly the same as that described
-in
-   <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
-    strftime
-   </a>
-   (3). An empty format string(i.e,"") will remove the timestamps from the output. The default with stdout is %H:%M:%S.
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -R
-   </b>
-  </dt>
-  <dd>
-   Report realtime priority and scheduling policy information.  The following values may be displayed:
-   <p>
-    UID
-    <br/>
-    The real user identification number of the task being monitored.
-   </p>
-   <p>
-    USER
-    <br/>
-    The name of the real user owning the task being monitored.
-   </p>
-   <p>
-    PID
-    <br/>
-    The identification number of the task being monitored.
-   </p>
-   <p>
-    prio
-    <br/>
-    The realtime priority of the task being monitored.
-   </p>
-   <p>
-    policy
-    <br/>
-    The scheduling policy of the task being monitored.
-   </p>
-   <p>
-    Command
-    <br/>
-    The command name of the task.
-   </p>
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -r
-   </b>
-  </dt>
-  <dd>
-   Report page faults and memory utilization. The following values may be displayed:
-   <p>
-    UID
-    <br/>
-    The real user identification number of the task being monitored.
-   </p>
-   <p>
-    USER
-    <br/>
-    The name of the real user owning the task being monitored.
-   </p>
-   <p>
-    PID
-    <br/>
-    The identification number of the task being monitored.
-   </p>
-   <p>
-    minflt/s
-    <br/>
-    Total number of minor faults the task has made per second, those which have not required loading a memory page from disk.
-   </p>
-   <p>
-    majflt/s
-    <br/>
-    Total number of major faults the task has made per second, those which have required loading a memory page from disk.
-   </p>
-   <p>
-    VSZ
-    <br/>
-    Virtual Size: The virtual memory usage of entire task in kilobytes.
-   </p>
-   <p>
-    RSS
-    <br/>
-    Resident Set Size: The non-swapped physical memory used by the task in kilobytes.
-   </p>
-   <p>
-    %MEM
-    <br/>
-    The tasks's currently used share of available physical memory.
-   </p>
-   <p>
-    Command
-    <br/>
-    The command name of the task.
-   </p>
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -k
-   </b>
-  </dt>
-  <dd>
-   Report stack utilization.  The following values may be displayed:
-   <p>
-    UID
-    <br/>
-    The real user identification number of the task being monitored.
-   </p>
-   <p>
-    USER
-    <br/>
-    The name of the real user owning the task being monitored.
-   </p>
-   <p>
-    PID
-    <br/>
-    The identification number of the task being monitored.
-   </p>
-   <p>
-    StkSize
-    <br/>
-    The amount of memory in kilobytes reserved for the task as stack, but not necessarily used.
-   </p>
-   <p>
-    StkRef
-    <br/>
-    The amount of memory in kilobytes used as stack, referenced by the task.
-   </p>
-   <p>
-    Command
-    <br/>
-    The command name of the task.
-   </p>
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -V
-   </b>
-  </dt>
-  <dd>
-   Display version and exit
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -?
-   </b>
-   ,
-   <b>
-    --help
-   </b>
-  </dt>
-  <dd>
-   Display help and exit
-   <p>
-   </p>
-  </dd>
- </dl>
- <p>
-  Ouput Filter Options
- </p>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -G
-   </b>
-   NAME
-   <b>
-    ,
-   </b>
-   <b>
-    --process-name=
-   </b>
-   <i>
-    NAME
-   </i>
-  </dt>
-  <dd>
-   Display only processes whose command name includes the string
-   <i>
-    NAME
-   </i>
-   .  This string can be a regular expression.
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-   <i>
-    [USERNAME]
-   </i>
-   ,
-   <b>
-    --user-name
-   </b>
-   =
-   <i>
-    [USERNAME]
-   </i>
-  </dt>
-  <dd>
-   Display  the real user name of the tasks being monitored instead of the UID.  If
-   <i>
-    username
-   </i>
-   is specified, then only tasks belonging to the specified user are displayed.
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -p
-   </b>
-   <i>
-    PID1,PID2
-   </i>
-   <b>
-    ..
-   </b>
-   ,
-   <b>
-    --pid-list
-   </b>
-   =
-   <i>
-    PID1,PID2
-   </i>
-   <b>
-    ..
-   </b>
-  </dt>
-  <dd>
-   Display only processes whose PID belongs to the given Pid List.
-   <p>
-   </p>
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  NOTES
- </h2>
- <b>
-  pcp-pidstat
- </b>
- is inspired by the
- <b>
-  <a href="/man/man1/pidstat.1.html">
-   pidstat
-  </a>
- </b>
- (1)
-
-command and aims to be command line and output compatible with it.
- <p>
- </p>
- <p>
-  <a name="lbAG">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcp.1.html">
-   pcp
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pidstat.1.html">
-   pidstat
-  </a>
-  (1),
- </b>
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man3/pmparseinterval.3.html">
-   pmParseInterval
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-   environ
-  </a>
- </b>
- (7).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    OPTIONS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    NOTES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP-PIDSTAT
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pcp-pidstat
+               </b>
+               - Report statistics for Linux tasks.
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pcp
+               </b>
+               <b>
+                pidstat
+               </b>
+               [
+               <b>
+                -s
+               </b>
+               N]
+              [
+               <b>
+                -t
+               </b>
+               DELTA]
+              [
+               <b>
+                -I
+               </b>
+               ]
+              [
+               <b>
+                -a
+               </b>
+               FILE]
+              [
+               <b>
+                -f
+               </b>
+               FORMAT]
+              [
+               <b>
+                -G
+               </b>
+               NAME]
+              [
+               <b>
+                -U
+               </b>
+               [USERNAME]]
+              [
+               <b>
+                -p
+               </b>
+               PID1,PID2..]
+              [
+               <b>
+                -R
+               </b>
+               /
+               <b>
+                -r/-k
+               </b>
+               ]
+              [
+               <b>
+                -V
+               </b>
+               ]
+              [
+               <b>
+                -?
+               </b>
+               ]
+               <p>
+                <a name="lbAD">
+                </a>
+               </p>
+               <h2>
+                DESCRIPTION
+               </h2>
+               <b>
+                pcp-pidstat
+               </b>
+               command is used for monitoring individual tasks currently being managed by the Linux kernel. Using various options it helps user to see useful information related with the processes. This information can include percentage CPU, memory and stack usages, scheduling and priority information. By default pcp-pidstat reports live
+              data for the local host but can also report for a remote host (--host) or from a previously captured PCP archive (-a).
+               <b>
+                pcp-pidstat
+               </b>
+               fetches the data to be analysed from PMCD unless provided -a option. (See below)
+               <p>
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                OPTIONS
+               </h2>
+               Output control options:
+               <dl compact="">
+                <dt>
+                 <b>
+                  -s
+                 </b>
+                 N
+                 <b>
+                  ,
+                 </b>
+                 <b>
+                  --samples=
+                 </b>
+                 <i>
+                  N
+                 </i>
+                </dt>
+                <dd>
+                 Set the number of samples to be displayed.
+              Since the first sample is used for the rate conversion of some of the metrics, the total number of samples reported are one less that N. Default is continous.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -t
+                 </b>
+                 DELTA
+                 <b>
+                  ,
+                 </b>
+                 <b>
+                  --interval=
+                 </b>
+                 <i>
+                  DELTA
+                 </i>
+                </dt>
+                <dd>
+                 Set the interval between two samples.
+              Default is one second.
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <p>
+                General Options:
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -I
+                 </b>
+                </dt>
+                <dd>
+                 In  an  SMP environment, indicates that tasks CPU usage should be divided by the total number of processors.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -a
+                 </b>
+                 FILE
+                 <b>
+                  ,
+                 </b>
+                 <b>
+                  --archive=
+                 </b>
+                 <i>
+                  FILE
+                 </i>
+                </dt>
+                <dd>
+                 Causes pcp-pidstat to use the specified archive than connecting to PMCD. The argument to -a is a comma-separated
+              list of names, each of which may be the base name of an archive or the name of a directory containing one or more archives. Archives can be created using
+                 <b>
+                  <a href="/man/man1/pmlogger.1.html">
+                   pmlogger
+                  </a>
+                 </b>
+                 (1).
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  --host
+                 </b>
+                </dt>
+                <dd>
+                 Current performance metric values are retrieved from the nominated
+                 <i>
+                  host
+                 </i>
+                 machine.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -B
+                 </b>
+                </dt>
+                <dd>
+                 Report process states. The argument to -B is one of the following:
+                 <p>
+                  <b>
+                   detail
+                  </b>
+                  <br/>
+                  Show total time processes have spent in each of the 5 different states
+                 </p>
+                 <p>
+                  <b>
+                   all
+                  </b>
+                  <br/>
+                  Show total time processes spent in their current state
+                 </p>
+                 <p>
+                  [
+                  <b>
+                   R
+                  </b>
+                  ,
+                  <b>
+                   S
+                  </b>
+                  ,
+                  <b>
+                   T
+                  </b>
+                  ,
+                  <b>
+                   D
+                  </b>
+                  ,
+                  <b>
+                   Z
+                  </b>
+                  ]
+                  <br/>
+                  A comma separated list of states which can be any or all of [
+                  <b>
+                   R
+                  </b>
+                  ,
+                  <b>
+                   S
+                  </b>
+                  ,
+                  <b>
+                   T
+                  </b>
+                  ,
+                  <b>
+                   Z
+                  </b>
+                  ,
+                  <b>
+                   D
+                  </b>
+                  ]. For example,
+                  <b>
+                   -B R,S
+                  </b>
+                  will report processes currently in either
+                  <b>
+                   R
+                  </b>
+                  or
+                  <b>
+                   S
+                  </b>
+                  states and not report processes currently in any other states.
+                 </p>
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -f
+                 </b>
+                </dt>
+                <dd>
+                 Use the format string for formatting the timestamp. The format will be used with Python's datetime.strftime method which is mostly the same as that described
+              in
+                 <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+                  strftime
+                 </a>
+                 (3). An empty format string(i.e,"") will remove the timestamps from the output. The default with stdout is %H:%M:%S.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -R
+                 </b>
+                </dt>
+                <dd>
+                 Report realtime priority and scheduling policy information.  The following values may be displayed:
+                 <p>
+                  UID
+                  <br/>
+                  The real user identification number of the task being monitored.
+                 </p>
+                 <p>
+                  USER
+                  <br/>
+                  The name of the real user owning the task being monitored.
+                 </p>
+                 <p>
+                  PID
+                  <br/>
+                  The identification number of the task being monitored.
+                 </p>
+                 <p>
+                  prio
+                  <br/>
+                  The realtime priority of the task being monitored.
+                 </p>
+                 <p>
+                  policy
+                  <br/>
+                  The scheduling policy of the task being monitored.
+                 </p>
+                 <p>
+                  Command
+                  <br/>
+                  The command name of the task.
+                 </p>
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -r
+                 </b>
+                </dt>
+                <dd>
+                 Report page faults and memory utilization. The following values may be displayed:
+                 <p>
+                  UID
+                  <br/>
+                  The real user identification number of the task being monitored.
+                 </p>
+                 <p>
+                  USER
+                  <br/>
+                  The name of the real user owning the task being monitored.
+                 </p>
+                 <p>
+                  PID
+                  <br/>
+                  The identification number of the task being monitored.
+                 </p>
+                 <p>
+                  minflt/s
+                  <br/>
+                  Total number of minor faults the task has made per second, those which have not required loading a memory page from disk.
+                 </p>
+                 <p>
+                  majflt/s
+                  <br/>
+                  Total number of major faults the task has made per second, those which have required loading a memory page from disk.
+                 </p>
+                 <p>
+                  VSZ
+                  <br/>
+                  Virtual Size: The virtual memory usage of entire task in kilobytes.
+                 </p>
+                 <p>
+                  RSS
+                  <br/>
+                  Resident Set Size: The non-swapped physical memory used by the task in kilobytes.
+                 </p>
+                 <p>
+                  %MEM
+                  <br/>
+                  The tasks's currently used share of available physical memory.
+                 </p>
+                 <p>
+                  Command
+                  <br/>
+                  The command name of the task.
+                 </p>
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -k
+                 </b>
+                </dt>
+                <dd>
+                 Report stack utilization.  The following values may be displayed:
+                 <p>
+                  UID
+                  <br/>
+                  The real user identification number of the task being monitored.
+                 </p>
+                 <p>
+                  USER
+                  <br/>
+                  The name of the real user owning the task being monitored.
+                 </p>
+                 <p>
+                  PID
+                  <br/>
+                  The identification number of the task being monitored.
+                 </p>
+                 <p>
+                  StkSize
+                  <br/>
+                  The amount of memory in kilobytes reserved for the task as stack, but not necessarily used.
+                 </p>
+                 <p>
+                  StkRef
+                  <br/>
+                  The amount of memory in kilobytes used as stack, referenced by the task.
+                 </p>
+                 <p>
+                  Command
+                  <br/>
+                  The command name of the task.
+                 </p>
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -V
+                 </b>
+                </dt>
+                <dd>
+                 Display version and exit
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -?
+                 </b>
+                 ,
+                 <b>
+                  --help
+                 </b>
+                </dt>
+                <dd>
+                 Display help and exit
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <p>
+                Ouput Filter Options
+               </p>
+               <p>
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -G
+                 </b>
+                 NAME
+                 <b>
+                  ,
+                 </b>
+                 <b>
+                  --process-name=
+                 </b>
+                 <i>
+                  NAME
+                 </i>
+                </dt>
+                <dd>
+                 Display only processes whose command name includes the string
+                 <i>
+                  NAME
+                 </i>
+                 .  This string can be a regular expression.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -U
+                 </b>
+                 <i>
+                  [USERNAME]
+                 </i>
+                 ,
+                 <b>
+                  --user-name
+                 </b>
+                 =
+                 <i>
+                  [USERNAME]
+                 </i>
+                </dt>
+                <dd>
+                 Display  the real user name of the tasks being monitored instead of the UID.  If
+                 <i>
+                  username
+                 </i>
+                 is specified, then only tasks belonging to the specified user are displayed.
+                 <p>
+                 </p>
+                </dd>
+                <dt>
+                 <b>
+                  -p
+                 </b>
+                 <i>
+                  PID1,PID2
+                 </i>
+                 <b>
+                  ..
+                 </b>
+                 ,
+                 <b>
+                  --pid-list
+                 </b>
+                 =
+                 <i>
+                  PID1,PID2
+                 </i>
+                 <b>
+                  ..
+                 </b>
+                </dt>
+                <dd>
+                 Display only processes whose PID belongs to the given Pid List.
+                 <p>
+                 </p>
+                </dd>
+               </dl>
+               <a name="lbAF">
+               </a>
+               <h2>
+                NOTES
+               </h2>
+               <b>
+                pcp-pidstat
+               </b>
+               is inspired by the
+               <b>
+                <a href="/man/man1/pidstat.1.html">
+                 pidstat
+                </a>
+               </b>
+               (1)
+              
+              command and aims to be command line and output compatible with it.
+               <p>
+               </p>
+               <p>
+                <a name="lbAG">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcp.1.html">
+                 pcp
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pidstat.1.html">
+                 pidstat
+                </a>
+                (1),
+               </b>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmparseinterval.3.html">
+                 pmParseInterval
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+                 environ
+                </a>
+               </b>
+               (7).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  OPTIONS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  NOTES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

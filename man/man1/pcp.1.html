@@ -1,756 +1,752 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PCP
- </h1>
- Section: User Commands  (1)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pcp
- </b>
- ,
- <b>
-  pcp-summary
- </b>
- - run a command or summarize an installation
- <a name="lbAC">
- </a>
- <h2>
-  SYNOPSIS
- </h2>
- <b>
-  pcp
- </b>
- [pcp options...]
-pcp-
- <i>
-  command
- </i>
- [command options...]
- <br/>
- <b>
-  pcp
- </b>
- [
- <b>
-  -P
- </b>
- ]
-[
- <b>
-  -a
- </b>
- <i>
-  archive
- </i>
- ]
-[
- <b>
-  -h
- </b>
- <i>
-  host
- </i>
- ]
-[
- <b>
-  -n
- </b>
- <i>
-  pmnsfile
- </i>
- ]
- <a name="lbAD">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- The
- <b>
-  pcp
- </b>
- command is used in one of two modes.
-By default, it summarizes the Performance Co-Pilot (PCP) installation
-on the local host.
-This mode can also be used to summarize the installation from a remote
- <i>
-  host
- </i>
- ,
-
-or a historical installation from a set of PCP
- <i>
-  archives
- </i>
- .
-
-This mode indirectly invokes the
- <b>
-  pcp-summary
- </b>
- <i>
-  command
- </i>
- (in the absence of any other requested command).
- <p>
-  Alternatively, a
-  <i>
-   command
-  </i>
-  can be passed to
-  <b>
-   pcp
-  </b>
-  to run, again possibly in the context of a remote
-  <i>
-   host
-  </i>
-  or set of historical
-  <i>
-   archives
-  </i>
-  .
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  COMMAND MODE
- </h2>
- When
- <b>
-  pcp
- </b>
- is invoked with a command to run, it will search for the named
- <i>
-  command
- </i>
- in
- <b>
-  $PCP_BINADM_DIR
- </b>
- and also
- <b>
-  $HOME/.pcp/bin
- </b>
- (these are usually scripts, and are installed with a "pcp-" prefix).
-This mode of operation allows system performance tools to be
-implemented using
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3)
-
-services, while still preserving all of their usual command line
-options.
-These options are thus (indirectly) augmented with the standard PCP
-option set, as described in
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1).
- <p>
-  This provides a convenient mechanism for obtaining retrospective or
-remote monitoring capabilities while preserving the behaviour of the
-system tools.
- </p>
- <p>
-  For example, the
-  <b>
-   <a href="/man/man1/pcp-free.1.html">
-    pcp-free
-   </a>
-  </b>
-  (1)
-
-utility can be invoked as follows, for recorded data from host
-  <i>
-   munch
-  </i>
-  :
- </p>
- <p>
- </p>
- <pre>
-$ pcp -a $PCP_LOG_DIR/pmlogger/<i>munch</i>/20140317 -O 11:35:50am <b>free -m</b>
-             total       used       free     shared    buffers     cached
-Mem:         23960      14554       9406          0        176       2137
--/+ buffers/cache:      12240      11720
-Swap         12047          0      12047
-</pre>
- <p>
-  A complete list of the available and installed tools is provided
-along with the
-  <b>
-   <a href="/man/man1/pcp.1.html">
-    pcp
-   </a>
-  </b>
-  (1)
-
-usage message, but some examples include:
-  <b>
-   <a href="/man/man1/pcp-free.1.html">
-    pcp-free
-   </a>
-  </b>
-  (1),
-  <b>
-   <a href="/man/man1/pcp-uptime.1.html">
-    pcp-uptime
-   </a>
-  </b>
-  (1)
-
-and
-  <b>
-   <a href="/man/man1/pcp-numastat.1.html">
-    pcp-numastat
-   </a>
-  </b>
-  (1).
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  SUMMARY MODE
- </h2>
- The
-summary report includes: the OS version, a summary of the hardware inventory,
-the local timezone, the PCP software version, the state of the
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1)
-
-process and associated Performance Metrics Domain Agents
-(PMDAs), as well as information about any PCP archive loggers (
- <b>
-  <a href="/man/man1/pmlogger.1.html">
-   pmlogger
-  </a>
- </b>
- (1))
-
-and PCP inference engines (
- <b>
-  <a href="/man/man1/pmie.1.html">
-   pmie
-  </a>
- </b>
- (1))
-
-that are running.
- <p>
-  With no arguments,
-  <b>
-   pcp
-  </b>
-  reports on the local host, however the
-following options are accepted:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -a
-   </b>
-   <i>
-    archive
-   </i>
-  </dt>
-  <dd>
-   Report the PCP
-configuration as described in the set of PCP archive logs,
-   <i>
-    archive
-   </i>
-   ,
-
-which is a comma-separated list of names, each
-of which may be the base name of an archive or the name of a directory containing
-one or more archives.
-  </dd>
-  <dt>
-   <b>
-    -h
-   </b>
-   <i>
-    host
-   </i>
-  </dt>
-  <dd>
-   Report the PCP configuration on
-   <i>
-    host
-   </i>
-   rather than the local host.
-  </dd>
-  <dt>
-   <b>
-    -n
-   </b>
-   <i>
-    pmnsfile
-   </i>
-  </dt>
-  <dd>
-   Load an alternative Performance Metrics Name Space
-(
-   <b>
-    <a href="/man/man5/pmns.5.html">
-     pmns
-    </a>
-   </b>
-   (5))
-
-from the file
-   <i>
-    pmnsfile
-   </i>
-   .
-  </dd>
-  <dt>
-   <b>
-    -P
-   </b>
-  </dt>
-  <dd>
-   Display
-   <b>
-    pmie
-   </b>
-   performance information - counts of rules evaluating to true, false, or
-indeterminate, as well as the expected rate of rule calculation, for each
-   <b>
-    pmie
-   </b>
-   process running on the default host.
-Refer to the individual metric help text for full details on these values.
-  </dd>
- </dl>
- <p>
-  All of the displayed values are performance
-  <i>
-   metric
-  </i>
-  values and further information for each can be obtained using the command:
- </p>
- <pre>
-
-$ pminfo -dtT <i>metric</i>
-
-</pre>
- The complete set of
- <i>
-  metric
- </i>
- s
-
-required by
- <b>
-  pcp
- </b>
- to produce its output is contained in
- <b>
-  $PCP_VAR_DIR/config/pmlogconf/tools/pcp-summary
- </b>
- .
- <a name="lbAG">
- </a>
- <h2>
-  FILES
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    $HOME/.pcp/bin
-   </b>
-  </dt>
-  <dd>
-   Per-user location for
-   <i>
-    command
-   </i>
-   scripts.
-  </dd>
-  <dt>
-   <b>
-    $PCP_BINADM_DIR
-   </b>
-  </dt>
-  <dd>
-   System location for installed
-   <i>
-    command
-   </i>
-   scripts.
-  </dd>
-  <dt>
-   <b>
-    $PCP_VAR_DIR/config/pmlogconf/tools/pcp-summary
-   </b>
-  </dt>
-  <dd>
-   <b>
-    <a href="/man/man1/pmlogconf.1.html">
-     pmlogconf
-    </a>
-   </b>
-   (1)
-
-configuration file for collecting all of the metrics required by
-   <b>
-    pcp
-   </b>
-   .
-  </dd>
- </dl>
- <a name="lbAH">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
- <b>
-  /etc/pcp.conf
- </b>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file,
-as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <a name="lbAI">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-free.1.html">
-   pcp-free
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-numastat.1.html">
-   pcp-numastat
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-python.1.html">
-   pcp-python
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-uptime.1.html">
-   pcp-uptime
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-verify.1.html">
-   pcp-verify
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmie.1.html">
-   pmie
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogconf.1.html">
-   pmlogconf
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogger.1.html">
-   pmlogger
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5)
-
-and
- <b>
-  <a href="/man/man5/pcp.env.5.html">
-   pcp.env
-  </a>
- </b>
- (5).
- <a name="lbAJ">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- <b>
-  pcp
- </b>
- will terminate with an exit status of
- <b>
-  1
- </b>
- if
- <b>
-  pmcd
- </b>
- on the target host could not be reached or the set of archives could not be opened, 
-or
- <b>
-  2
- </b>
- for any other error.
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    COMMAND MODE
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    SUMMARY MODE
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAJ">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PCP
+               </h1>
+               Section: User Commands  (1)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pcp
+               </b>
+               ,
+               <b>
+                pcp-summary
+               </b>
+               - run a command or summarize an installation
+               <a name="lbAC">
+               </a>
+               <h2>
+                SYNOPSIS
+               </h2>
+               <b>
+                pcp
+               </b>
+               [pcp options...]
+              pcp-
+               <i>
+                command
+               </i>
+               [command options...]
+               <br/>
+               <b>
+                pcp
+               </b>
+               [
+               <b>
+                -P
+               </b>
+               ]
+              [
+               <b>
+                -a
+               </b>
+               <i>
+                archive
+               </i>
+               ]
+              [
+               <b>
+                -h
+               </b>
+               <i>
+                host
+               </i>
+               ]
+              [
+               <b>
+                -n
+               </b>
+               <i>
+                pmnsfile
+               </i>
+               ]
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               The
+               <b>
+                pcp
+               </b>
+               command is used in one of two modes.
+              By default, it summarizes the Performance Co-Pilot (PCP) installation
+              on the local host.
+              This mode can also be used to summarize the installation from a remote
+               <i>
+                host
+               </i>
+               ,
+              
+              or a historical installation from a set of PCP
+               <i>
+                archives
+               </i>
+               .
+              
+              This mode indirectly invokes the
+               <b>
+                pcp-summary
+               </b>
+               <i>
+                command
+               </i>
+               (in the absence of any other requested command).
+               <p>
+                Alternatively, a
+                <i>
+                 command
+                </i>
+                can be passed to
+                <b>
+                 pcp
+                </b>
+                to run, again possibly in the context of a remote
+                <i>
+                 host
+                </i>
+                or set of historical
+                <i>
+                 archives
+                </i>
+                .
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                COMMAND MODE
+               </h2>
+               When
+               <b>
+                pcp
+               </b>
+               is invoked with a command to run, it will search for the named
+               <i>
+                command
+               </i>
+               in
+               <b>
+                $PCP_BINADM_DIR
+               </b>
+               and also
+               <b>
+                $HOME/.pcp/bin
+               </b>
+               (these are usually scripts, and are installed with a "pcp-" prefix).
+              This mode of operation allows system performance tools to be
+              implemented using
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3)
+              
+              services, while still preserving all of their usual command line
+              options.
+              These options are thus (indirectly) augmented with the standard PCP
+              option set, as described in
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1).
+               <p>
+                This provides a convenient mechanism for obtaining retrospective or
+              remote monitoring capabilities while preserving the behaviour of the
+              system tools.
+               </p>
+               <p>
+                For example, the
+                <b>
+                 <a href="/man/man1/pcp-free.1.html">
+                  pcp-free
+                 </a>
+                </b>
+                (1)
+              
+              utility can be invoked as follows, for recorded data from host
+                <i>
+                 munch
+                </i>
+                :
+               </p>
+               <p>
+               </p>
+               <pre>
+              $ pcp -a $PCP_LOG_DIR/pmlogger/<i>munch</i>/20140317 -O 11:35:50am <b>free -m</b>
+                           total       used       free     shared    buffers     cached
+              Mem:         23960      14554       9406          0        176       2137
+              -/+ buffers/cache:      12240      11720
+              Swap         12047          0      12047
+              </pre>
+               <p>
+                A complete list of the available and installed tools is provided
+              along with the
+                <b>
+                 <a href="/man/man1/pcp.1.html">
+                  pcp
+                 </a>
+                </b>
+                (1)
+              
+              usage message, but some examples include:
+                <b>
+                 <a href="/man/man1/pcp-free.1.html">
+                  pcp-free
+                 </a>
+                </b>
+                (1),
+                <b>
+                 <a href="/man/man1/pcp-uptime.1.html">
+                  pcp-uptime
+                 </a>
+                </b>
+                (1)
+              
+              and
+                <b>
+                 <a href="/man/man1/pcp-numastat.1.html">
+                  pcp-numastat
+                 </a>
+                </b>
+                (1).
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                SUMMARY MODE
+               </h2>
+               The
+              summary report includes: the OS version, a summary of the hardware inventory,
+              the local timezone, the PCP software version, the state of the
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1)
+              
+              process and associated Performance Metrics Domain Agents
+              (PMDAs), as well as information about any PCP archive loggers (
+               <b>
+                <a href="/man/man1/pmlogger.1.html">
+                 pmlogger
+                </a>
+               </b>
+               (1))
+              
+              and PCP inference engines (
+               <b>
+                <a href="/man/man1/pmie.1.html">
+                 pmie
+                </a>
+               </b>
+               (1))
+              
+              that are running.
+               <p>
+                With no arguments,
+                <b>
+                 pcp
+                </b>
+                reports on the local host, however the
+              following options are accepted:
+               </p>
+               <dl compact="">
+                <dt>
+                 <b>
+                  -a
+                 </b>
+                 <i>
+                  archive
+                 </i>
+                </dt>
+                <dd>
+                 Report the PCP
+              configuration as described in the set of PCP archive logs,
+                 <i>
+                  archive
+                 </i>
+                 ,
+              
+              which is a comma-separated list of names, each
+              of which may be the base name of an archive or the name of a directory containing
+              one or more archives.
+                </dd>
+                <dt>
+                 <b>
+                  -h
+                 </b>
+                 <i>
+                  host
+                 </i>
+                </dt>
+                <dd>
+                 Report the PCP configuration on
+                 <i>
+                  host
+                 </i>
+                 rather than the local host.
+                </dd>
+                <dt>
+                 <b>
+                  -n
+                 </b>
+                 <i>
+                  pmnsfile
+                 </i>
+                </dt>
+                <dd>
+                 Load an alternative Performance Metrics Name Space
+              (
+                 <b>
+                  <a href="/man/man5/pmns.5.html">
+                   pmns
+                  </a>
+                 </b>
+                 (5))
+              
+              from the file
+                 <i>
+                  pmnsfile
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 <b>
+                  -P
+                 </b>
+                </dt>
+                <dd>
+                 Display
+                 <b>
+                  pmie
+                 </b>
+                 performance information - counts of rules evaluating to true, false, or
+              indeterminate, as well as the expected rate of rule calculation, for each
+                 <b>
+                  pmie
+                 </b>
+                 process running on the default host.
+              Refer to the individual metric help text for full details on these values.
+                </dd>
+               </dl>
+               <p>
+                All of the displayed values are performance
+                <i>
+                 metric
+                </i>
+                values and further information for each can be obtained using the command:
+               </p>
+               <pre>
+              
+              $ pminfo -dtT <i>metric</i>
+              
+              </pre>
+               The complete set of
+               <i>
+                metric
+               </i>
+               s
+              
+              required by
+               <b>
+                pcp
+               </b>
+               to produce its output is contained in
+               <b>
+                $PCP_VAR_DIR/config/pmlogconf/tools/pcp-summary
+               </b>
+               .
+               <a name="lbAG">
+               </a>
+               <h2>
+                FILES
+               </h2>
+               <dl compact="">
+                <dt>
+                 <b>
+                  $HOME/.pcp/bin
+                 </b>
+                </dt>
+                <dd>
+                 Per-user location for
+                 <i>
+                  command
+                 </i>
+                 scripts.
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_BINADM_DIR
+                 </b>
+                </dt>
+                <dd>
+                 System location for installed
+                 <i>
+                  command
+                 </i>
+                 scripts.
+                </dd>
+                <dt>
+                 <b>
+                  $PCP_VAR_DIR/config/pmlogconf/tools/pcp-summary
+                 </b>
+                </dt>
+                <dd>
+                 <b>
+                  <a href="/man/man1/pmlogconf.1.html">
+                   pmlogconf
+                  </a>
+                 </b>
+                 (1)
+              
+              configuration file for collecting all of the metrics required by
+                 <b>
+                  pcp
+                 </b>
+                 .
+                </dd>
+               </dl>
+               <a name="lbAH">
+               </a>
+               <h2>
+                PCP ENVIRONMENT
+               </h2>
+               Environment variables with the prefix
+               <b>
+                PCP_
+               </b>
+               are used to parameterize the file and directory names
+              used by PCP.
+              On each installation, the file
+               <b>
+                /etc/pcp.conf
+               </b>
+               contains the local values for these variables.
+              The
+               <b>
+                $PCP_CONF
+               </b>
+               variable may be used to specify an alternative
+              configuration file,
+              as described in
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5).
+               <a name="lbAI">
+               </a>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pcpintro.1.html">
+                 PCPIntro
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-free.1.html">
+                 pcp-free
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-numastat.1.html">
+                 pcp-numastat
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-python.1.html">
+                 pcp-python
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-uptime.1.html">
+                 pcp-uptime
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pcp-verify.1.html">
+                 pcp-verify
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmie.1.html">
+                 pmie
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlogconf.1.html">
+                 pmlogconf
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man1/pmlogger.1.html">
+                 pmlogger
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man5/pcp.conf.5.html">
+                 pcp.conf
+                </a>
+               </b>
+               (5)
+              
+              and
+               <b>
+                <a href="/man/man5/pcp.env.5.html">
+                 pcp.env
+                </a>
+               </b>
+               (5).
+               <a name="lbAJ">
+               </a>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               <b>
+                pcp
+               </b>
+               will terminate with an exit status of
+               <b>
+                1
+               </b>
+               if
+               <b>
+                pmcd
+               </b>
+               on the target host could not be reached or the set of archives could not be opened, 
+              or
+               <b>
+                2
+               </b>
+               for any other error.
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  COMMAND MODE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  SUMMARY MODE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  FILES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  PCP ENVIRONMENT
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAJ">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

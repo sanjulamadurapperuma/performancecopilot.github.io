@@ -1,997 +1,993 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset='utf-8'>
-<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-<meta content='initial-scale=1' name='viewport'>
-<title>Performance Co-Pilot</title>
-<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-
-</head>
-<body>
-<header class='global-header'>
-<div class='row'>
-<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-<a href='/index.html'>Performance Co-Pilot</a>
-</h1>
-<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a href='/download.html'>Download</a>
-</li>
-<li>
-<a href='/community.html'>Get Involved</a>
-</li>
-</ul>
-</nav>
-</div>
-</header>
-
-<div class='site-content'>
-<div class='how-to is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<div class='manpage'>
-﻿
- <h1>
-  PMLOOKUPLABELS
- </h1>
- Section: C Library Functions (3)
- <br/>
- <a href="#index">
-  Index
- </a>
- <a href="/man">
-  Return to Main Contents
- </a>
- <hr/>
- <a name="lbAB">
- </a>
- <h2>
-  NAME
- </h2>
- <b>
-  pmLookupLabels
- </b>
- ,
- <b>
-  pmGetInstancesLabels
- </b>
- ,
- <b>
-  pmGetItemLabels
- </b>
- ,
- <b>
-  pmGetClusterLabels
- </b>
- ,
- <b>
-  pmGetInDomLabels
- </b>
- ,
- <b>
-  pmGetDomainLabels
- </b>
- ,
- <b>
-  pmGetContextLabels
- </b>
- - retrieve labels associated with performance metric values
- <a name="lbAC">
- </a>
- <h2>
-  C SYNOPSIS
- </h2>
- <b>
-  #include &lt;
-  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-   pcp/pmapi.h
-  </a>
-  &gt;
- </b>
- <p>
- </p>
- <pre>
-int pmLookupLabels(pmID <i>pmid</i>, pmLabelSet **<i>labelsets</i>);
-
-int pmGetInstancesLabels(pmInDom <i>indom</i>, pmLabelSet **<i>labelsets</i>);
-<br/>
-int pmGetItemLabels(pmID <i>pmid</i>, pmLabelSet **<i>labelsets</i>);
-<br/>
-int pmGetClusterLabels(pmID <i>pmid</i>, pmLabelSet **<i>labelsets</i>);
-<br/>
-int pmGetInDomLabels(pmInDom <i>indom</i>, pmLabelSet **<i>labelsets</i>);
-<br/>
-int pmGetDomainLabels(int <i>domain</i>, pmLabelSet **<i>labelsets</i>);
-<br/>
-int pmGetContextLabels(pmLabelSet **<i>labelsets</i>);
-
-cc ... -lpcp
-</pre>
- <a name="lbAD">
- </a>
- <h2>
-  DESCRIPTION
- </h2>
- Labels are
- <i>
-  name
- </i>
- :
- <i>
-  value
- </i>
- pairs associated with performance metric values for the
-purpose of attaching additional metric metadata to values.
-This metadata is less structured and exists separately to
-the metric descriptor available for every PCP metric from
- <b>
-  <a href="/man/man3/pmlookupdesc.3.html">
-   pmLookupDesc
-  </a>
- </b>
- (3).
- <p>
-  Much like the metric descriptor metadata, labels are an
-integral part of the identity of each metric, and should
-rarely, if ever, change.
- </p>
- <p>
-  The
-  <b>
-   pmLookupLabels
-  </b>
-  routine is a convenience interface providing retrieval for all
-labels associated with a single performance metric identifier,
-  <i>
-   pmid
-  </i>
-  .
-
-It performs no caching of labels internally.
- </p>
- <p>
-  For efficiency in communication and storage within the various
-components of the PMCS (Performance Metrics Collection System),
-labels are maintained using a hierarchy.
-The set of labels associated with any individual metric value
-consists of the union of labels from each of these sets of labels:
- </p>
- <dl compact="">
-  <dt>
-   1. Global labels (apply to all metric values from a host or archive context)
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <b>
-    pmGetContextLabels
-   </b>
-  </dt>
-  <dd>
-   provides the
-   <i>
-    labelset
-   </i>
-   associated with all metric values from a given source (PMAPI context).
-  </dd>
-  <dt>
-   2. Domain labels (apply to every metric within a PMDA)
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <b>
-    pmGetDomainLabels
-   </b>
-  </dt>
-  <dd>
-   provides the
-   <i>
-    labelset
-   </i>
-   associated with the
-   <i>
-    domain
-   </i>
-   identifier.
-  </dd>
-  <dt>
-   3. Instance Domain labels (apply to all metrics sharing that indom)
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <b>
-    pmGetInDomLabels
-   </b>
-  </dt>
-  <dd>
-   provides the
-   <i>
-    labelset
-   </i>
-   associated with the instance domain identifier
-   <i>
-    indom
-   </i>
-   .
-  </dd>
-  <dt>
-   4. Cluster labels (apply to a group of metrics within one domain)
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <b>
-    pmGetClusterLabels
-   </b>
-  </dt>
-  <dd>
-   provides the
-   <i>
-    labelset
-   </i>
-   associated with the metric cluster (domain,cluster) identified by
-   <i>
-    pmid
-   </i>
-   .
-  </dd>
-  <dt>
-   5. Item labels (apply to an individual performance metric)
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <b>
-    pmGetItemLabels
-   </b>
-  </dt>
-  <dd>
-   provides the
-   <i>
-    labelset
-   </i>
-   associated with the metric item (domain,cluster,item) identified by
-   <i>
-    pmid
-   </i>
-   .
-  </dd>
-  <dt>
-   6. Instance labels (apply to individual instances of a metric)
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <b>
-    pmGetInstancesLabels
-   </b>
-  </dt>
-  <dd>
-   provides the set of instance identifiers and labels in
-   <i>
-    labelsets
-   </i>
-   for each instance associated with the instance domain identifier
-   <i>
-    indom
-   </i>
-   .
-
-The return value indicates the number of elements in the result - one
-   <i>
-    labelset
-   </i>
-   for each instance.
-  </dd>
- </dl>
- <p>
-  These independent
-  <i>
-   labelsets
-  </i>
-  can be merged using
-  <b>
-   <a href="/man/man3/pmmergelabelsets.3.html">
-    pmMergeLabelSets
-   </a>
-  </b>
-  (3)
-
-to form the complete set of all labels associated with a given value.
- </p>
- <p>
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  LABEL SYNTAX
- </h2>
- Labels are stored and communicated within PCP using JSONB format.
-This format is a restricted form of JSON suitable for indexing
-and other operations.
-In JSONB form, insignificant whitespace is discarded,
-and the order of label names is not preserved.
-Within the PMCS a lexicographically sorted key space is always
-maintained, however.
-Duplicate label names are not permitted.
-The label with highest precedence is the only one presented.
-If duplicate names are presented at the same hierarchy level, only
-one will be preserved (exactly which one wins is arbitrary, so do
-not rely on this).
- <p>
-  All
-  <i>
-   name
-  </i>
-  :
-  <i>
-   value
-  </i>
-  pair(s) present will be converted to
-JSONB form and merged with the existing set of labels for the
-requested entity (context, domain, indom, metric or instance).
- </p>
- <p>
-  The label names are further constrained to the same set of rules
-defined for
-  <b>
-   PMNS
-  </b>
-  subtree names.
- </p>
- <p>
-  Each component in a label
-  <i>
-   name
-  </i>
-  must begin with an alphabetic character, and be followed by zero
-or more characters drawn from the alphabetics, the digits and the
-underscore (``_'') character.  For alphabetic characters in a
-  <i>
-   name
-  </i>
-  ,
-
-upper and lower case are distinguished.
- </p>
- <p>
-  The
-  <i>
-   value
-  </i>
-  of a label offers significantly more freedom, and may be any valid
-value as defined by the JSON (
-  <i>
-   <a href="http://json.org">
-    http://json.org
-   </a>
-  </i>
-  )
-
-specification.
-Redundant whitespace is always removed within the PMCS.
-  <a name="lbAF">
-  </a>
- </p>
- <h2>
-  PRECEDENCE
- </h2>
- The complete set of labels associated with any metric value is
-built from several sources and duplicate label names may exist
-at any point in the source hierarchy.
-However, when evaluating the label set (merging labels from the
-different sources) the JSONB concept of only presenting unique
-labels is used.
-It is therefore important to define precedence rules in order
-that a deterministic set of uniquely named labels can be defined.
- <p>
-  As a rule of thumb, the labels closest to PMNS leaf nodes and
-metric values take precedence:
- </p>
- <dl compact="">
-  <dt>
-   1. Global context labels
-  </dt>
-  <dd>
-   (as reported by the
-   <i>
-    pmcd.labels
-   </i>
-   metric) are the lowest precedence.
-  </dd>
-  <dt>
-   2. Domain labels
-  </dt>
-  <dd>
-   (for all metrics and instances from a PMDA) are the next highest precedence.
-  </dd>
-  <dt>
-   3. Instance Domain labels
-  </dt>
-  <dd>
-   associated with an InDom are the next highest precedence.
-  </dd>
-  <dt>
-   4. Metric cluster labels
-  </dt>
-  <dd>
-   associated with a PMID cluster are the next highest precedence.
-  </dd>
-  <dt>
-   5. Metric item labels
-  </dt>
-  <dd>
-   associated with an individual PMID are the next highest precedence.
-  </dd>
-  <dt>
-   6. Instance labels
-  </dt>
-  <dd>
-   associated with a metric instance identifier have highest precedence.
-  </dd>
- </dl>
- <a name="lbAG">
- </a>
- <h2>
-  DATA STRUCTURES
- </h2>
- The primary output from
- <b>
-  pmLookupLabels
- </b>
- is returned in the
-argument
- <i>
-  labelset
- </i>
- as an array, using the following component data structures;
- <p>
- </p>
- <pre>
-struct {
-    uint     name : 16;      /* label name offset in JSONB string */
-    uint     namelen : 8;    /* length of name excluding the null */
-    uint     flags : 8;      /* information about this label */
-    uint     value : 16;     /* offset of the label value */
-    uint     valuelen : 16;  /* length of value in bytes */
-} pmLabel;
-
-struct {
-    uint     inst;           /* PM_IN_NULL or the instance ID */
-    int      nlabels;        /* count of labels or error code */
-    char     *json;          /* JSON formatted labels string */
-    uint     jsonlen : 16;   /* JSON string length byte count */
-    uint     padding : 16;   /* zero, reserved for future use */
-    pmLabel  *labels;        /* indexing into the JSON string */
-} pmLabelSet;
-</pre>
- <p>
-  The
-  <i>
-   pmLabel
-  </i>
-  provides information about an individual label.
-This includes the offsets to
-the start of its
-  <i>
-   name
-  </i>
-  and
-  <i>
-   value
-  </i>
-  in the
-  <i>
-   json
-  </i>
-  string of a
-  <i>
-   pmLabelSet
-  </i>
-  ,
-
-their respective lengths, and also any informative flags associated
-with the label (describing where it lies in the hierarchy of labels,
-and whether it is an intrinsic or extrinsic label).
- </p>
- <p>
-  Building on this, the
-  <i>
-   pmLabelSet
-  </i>
-  provides information about the set of labels associated with an
-entity (context, domain, indom, metric cluster, item or instance).
-The entity will be from any one level of the label hierarchy.
-If at the lowest hierarchy level (which happens to be highest
-precedence - PM_LABEL_INSTANCES) then the
-  <i>
-   inst
-  </i>
-  field will contain an actual instance identifier instead of PM_IN_NULL.
- </p>
- <p>
-  The
-  <i>
-   nlabels
-  </i>
-  field describes the number of labels (name:value pairs) that can be
-found in both the accompanying
-  <i>
-   json
-  </i>
-  string (which is JSONB format - no unnecessary whitespace and with
-no duplicate label names)
-and the accompanying
-  <i>
-   labels
-  </i>
-  array (which has
-  <i>
-   nlabels
-  </i>
-  elements).
-  <a name="lbAH">
-  </a>
- </p>
- <h2>
-  EXAMPLES
- </h2>
- Consider a deployment with global labels (assume $PCP_SYSCONF_DIR
-is set to its usual location of
- <i>
-  /etc/pcp
- </i>
- )
-
-as follows:
- <p>
- </p>
- <pre>
-<b>$ cat /etc/pcp/labels/*</b>
-{
-  "tier": "production",
-  "datacenter": "hkg",
-  "services": ["indexer","database"]
-}
-</pre>
- <p>
-  Use
-  <b>
-   pminfo
-  </b>
-  to form the merged
-  <i>
-   labelsets
-  </i>
-  for several
-  <b>
-   <a href="/man/man1/pmdasample.1.html">
-    pmdasample
-   </a>
-  </b>
-  (1)
-
-metrics as follows:
- </p>
- <p>
- </p>
- <p>
- </p>
- <pre>
-<b>$ pminfo -m -f --labels sample.rapid sample.colour sample.mirage</b>
-
-sample.rapid PMID: 30.0.64
-value 800000000
-<br/>
-labels {"agent":"sample","datacenter":"sydney","hostname":"acme.com","measure":"speed","role":"testing","services":["indexer","database"],"tier":"production","units":"metres per second","unitsystem":"SI"}
-</pre>
- <p>
- </p>
- <pre>
-sample.colour PMID: 30.0.5
-inst [0 or "red"] value 101
-<br/>
-inst [1 or "green"] value 202
-<br/>
-inst [2 or "blue"] value 303
-<br/>
-inst [0 or "red"] labels {"agent":"sample","datacenter":"syd","hostname":"acme.com","model":"RGB","role":"testing","services":["indexer","database"],"tier":"production"}
-<br/>
-inst [1 or "green"] labels {"agent":"sample","datacenter":"syd","hostname":"acme.com","model":"RGB","role":"testing","services":["indexer","database"],"tier":"production"}
-<br/>
-inst [2 or "blue"] labels {"agent":"sample","datacenter":"syd","hostname":"acme.com","model":"RGB","role":"testing","services":["indexer","database"],"tier":"production"}
-</pre>
- <p>
- </p>
- <pre>
-sample.mirage PMID: 29.0.37
-inst [0 or "m-00"] value 99
-<br/>
-inst [0 or "m-00"] labels {"agent":"sample","datacenter":"sydney","hostname":"acme.com","role":"testing","services":["indexer","database"],"tier":"production","transient":false}
-</pre>
- <p>
-  Here,
-  <b>
-   pminfo
-  </b>
-  has merged the separate sets of labels returned from
-  <b>
-   pmGetContextLabels
-  </b>
-  (
-  <i>
-   name
-  </i>
-  s:
-
-datacenter, hostname, services, tier),
-  <b>
-   pmGetDomainLabels
-  </b>
-  (
-  <i>
-   name
-  </i>
-  s:
-
-role, agent),
-  <b>
-   pmGetInDomLabels
-  </b>
-  (
-  <i>
-   name
-  </i>
-  s:
-
-model),
-  <b>
-   pmGetItemLabels
-  </b>
-  (
-  <i>
-   name
-  </i>
-  s:
-
-units, unitsystem)
-and
-  <b>
-   pmGetInstancesLabels
-  </b>
-  (
-  <i>
-   name
-  </i>
-  s:
-
-transient)
-to form the complete set for each of the metrics.
-  <a name="lbAI">
-  </a>
- </p>
- <h2>
-  DIAGNOSTICS
- </h2>
- On success these interfaces all return the number of elements in
-the
- <i>
-  labelsets
- </i>
- array.
-associated with performance metrics.
-The memory associated with
- <i>
-  labelsets
- </i>
- should be released using
- <b>
-  <a href="/man/man3/pmfreelabelsets.3.html">
-   pmFreeLabelSets
-  </a>
- </b>
- (3)
-
-when no longer needed.
- <p>
-  Only in the case of
-  <b>
-   pmLookupLabels
-  </b>
-  will the resulting
-  <i>
-   labelset
-  </i>
-  be a merged set of labels from all hierarchy levels.
- </p>
- <p>
-  For the other routines, except for
-  <b>
-   pmGetInstancesLabels
-  </b>
-  ,
-
-if no labels exist at all for the requested hierarchy level the
-return code will be zero and no space will have been allocated.
- </p>
- <p>
-  In the case of
-  <b>
-   pmGetInstancesLabels
-  </b>
-  ,
-
-which can return multiple elements in its
-  <i>
-   labelsets
-  </i>
-  result (one set of labels for each instance), the
-  <i>
-   nlabels
-  </i>
-  field may be either zero indicating no labels for that instance,
-or a positive count of labels, or a negative PMAPI error code.
- </p>
- <p>
-  Note that it is mandatory for a call to
-  <b>
-   pmGetInstancesLabels
-  </b>
-  to be preceded by a call to
-  <b>
-   <a href="/man/man3/pmgetindom.3.html">
-    pmGetInDom
-   </a>
-  </b>
-  (3)
-
-to ensure the instances have been resolved within the PMDA.
- </p>
- <p>
-  If no result can be obtained,
-e.g. due to IPC failure using the current PMAPI context then
-  <b>
-   pmGetInstancesLabels
-  </b>
-  will return a negative error code which may be examined using
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3).
-  <a name="lbAJ">
-  </a>
- </p>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmfetch.3.html">
-   pmFetch
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmgetindom.3.html">
-   pmGetInDom
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmlookupdesc.3.html">
-   pmLookupDesc
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmlookupname.3.html">
-   pmLookupName
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmfreelabelsets.3.html">
-   pmFreeLabelSets
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmmergelabelsets.3.html">
-   pmMergeLabelSets
-  </a>
- </b>
- (3)
-
-and
- <b>
-  <a href="/man/man3/pmnewcontext.3.html">
-   pmNewContext
-  </a>
- </b>
- (3).
- <p>
- </p>
- <hr/>
- <a name="index">
- </a>
- <h2>
-  Index
- </h2>
- <dl>
-  <dt>
-   <a href="#lbAB">
-    NAME
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAC">
-    C SYNOPSIS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAD">
-    DESCRIPTION
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAE">
-    LABEL SYNTAX
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAF">
-    PRECEDENCE
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
-    DATA STRUCTURES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
-    EXAMPLES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAJ">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
- </dl>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-<footer class='global-footer is-typeset'>
-<div class='row-parent'>
-<div class='row'>
-<section class='row__colspaced'>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Main Menu</h4>
-<ul>
-<li>
-<a href='/features.html'>Features</a>
-</li>
-<li>
-<a href='/documentation.html'>Documentation</a>
-</li>
-<li>
-<a class='download' href='/download.html'>Download</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Developers</h4>
-<ul>
-<li>
-<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-</li>
-<li>
-<a href='https://www.pcp.io/roadmap'>Roadmap</a>
-</li>
-<li>
-<a href='/community.html'>Contributing</a>
-</li>
-<li>
-<a href='/team.html'>Team</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>About</h4>
-<ul>
-<li>
-<a href='/testimonials.html'>Testimonials</a>
-</li>
-<li>
-<a href='/faq.html'>FAQ</a>
-</li>
-<li>
-<a href='/website.html'>Website</a>
-</li>
-</ul>
-</div>
-</div>
-<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-<div class='col__module'>
-<h4>Get Social</h4>
-<ul>
-<li>
-<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-</li>
-<li>
-<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<div class='row'>
-<div class='colspan2-2'>
-<p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-</p>
-</div>
-</div>
-</div>
-</footer>
-
-</body>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='initial-scale=1' name='viewport'>
+    <title>Performance Co-Pilot</title>
+    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+  </head>
+  <body>
+    <header class='global-header'>
+      <div class='row'>
+        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+          <a href='/index.html'>Performance Co-Pilot</a>
+        </h1>
+        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+          <ul>
+            <li>
+              <a href='/features.html'>Features</a>
+            </li>
+            <li>
+              <a href='/documentation.html'>Documentation</a>
+            </li>
+            <li>
+              <a href='/download.html'>Download</a>
+            </li>
+            <li>
+              <a href='/community.html'>Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class='site-content'>
+      <div class='how-to is-typeset'>
+        <div class='row-parent'>
+          <div class='row'>
+            <div class='manpage'>
+              ﻿
+               <h1>
+                PMLOOKUPLABELS
+               </h1>
+               Section: C Library Functions (3)
+               <br/>
+               <a href="#index">
+                Index
+               </a>
+               <a href="/man">
+                Return to Main Contents
+               </a>
+               <hr/>
+               <a name="lbAB">
+               </a>
+               <h2>
+                NAME
+               </h2>
+               <b>
+                pmLookupLabels
+               </b>
+               ,
+               <b>
+                pmGetInstancesLabels
+               </b>
+               ,
+               <b>
+                pmGetItemLabels
+               </b>
+               ,
+               <b>
+                pmGetClusterLabels
+               </b>
+               ,
+               <b>
+                pmGetInDomLabels
+               </b>
+               ,
+               <b>
+                pmGetDomainLabels
+               </b>
+               ,
+               <b>
+                pmGetContextLabels
+               </b>
+               - retrieve labels associated with performance metric values
+               <a name="lbAC">
+               </a>
+               <h2>
+                C SYNOPSIS
+               </h2>
+               <b>
+                #include &lt;
+                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+                 pcp/pmapi.h
+                </a>
+                &gt;
+               </b>
+               <p>
+               </p>
+               <pre>
+              int pmLookupLabels(pmID <i>pmid</i>, pmLabelSet **<i>labelsets</i>);
+              
+              int pmGetInstancesLabels(pmInDom <i>indom</i>, pmLabelSet **<i>labelsets</i>);
+              <br/>
+              int pmGetItemLabels(pmID <i>pmid</i>, pmLabelSet **<i>labelsets</i>);
+              <br/>
+              int pmGetClusterLabels(pmID <i>pmid</i>, pmLabelSet **<i>labelsets</i>);
+              <br/>
+              int pmGetInDomLabels(pmInDom <i>indom</i>, pmLabelSet **<i>labelsets</i>);
+              <br/>
+              int pmGetDomainLabels(int <i>domain</i>, pmLabelSet **<i>labelsets</i>);
+              <br/>
+              int pmGetContextLabels(pmLabelSet **<i>labelsets</i>);
+              
+              cc ... -lpcp
+              </pre>
+               <a name="lbAD">
+               </a>
+               <h2>
+                DESCRIPTION
+               </h2>
+               Labels are
+               <i>
+                name
+               </i>
+               :
+               <i>
+                value
+               </i>
+               pairs associated with performance metric values for the
+              purpose of attaching additional metric metadata to values.
+              This metadata is less structured and exists separately to
+              the metric descriptor available for every PCP metric from
+               <b>
+                <a href="/man/man3/pmlookupdesc.3.html">
+                 pmLookupDesc
+                </a>
+               </b>
+               (3).
+               <p>
+                Much like the metric descriptor metadata, labels are an
+              integral part of the identity of each metric, and should
+              rarely, if ever, change.
+               </p>
+               <p>
+                The
+                <b>
+                 pmLookupLabels
+                </b>
+                routine is a convenience interface providing retrieval for all
+              labels associated with a single performance metric identifier,
+                <i>
+                 pmid
+                </i>
+                .
+              
+              It performs no caching of labels internally.
+               </p>
+               <p>
+                For efficiency in communication and storage within the various
+              components of the PMCS (Performance Metrics Collection System),
+              labels are maintained using a hierarchy.
+              The set of labels associated with any individual metric value
+              consists of the union of labels from each of these sets of labels:
+               </p>
+               <dl compact="">
+                <dt>
+                 1. Global labels (apply to all metric values from a host or archive context)
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <b>
+                  pmGetContextLabels
+                 </b>
+                </dt>
+                <dd>
+                 provides the
+                 <i>
+                  labelset
+                 </i>
+                 associated with all metric values from a given source (PMAPI context).
+                </dd>
+                <dt>
+                 2. Domain labels (apply to every metric within a PMDA)
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <b>
+                  pmGetDomainLabels
+                 </b>
+                </dt>
+                <dd>
+                 provides the
+                 <i>
+                  labelset
+                 </i>
+                 associated with the
+                 <i>
+                  domain
+                 </i>
+                 identifier.
+                </dd>
+                <dt>
+                 3. Instance Domain labels (apply to all metrics sharing that indom)
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <b>
+                  pmGetInDomLabels
+                 </b>
+                </dt>
+                <dd>
+                 provides the
+                 <i>
+                  labelset
+                 </i>
+                 associated with the instance domain identifier
+                 <i>
+                  indom
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 4. Cluster labels (apply to a group of metrics within one domain)
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <b>
+                  pmGetClusterLabels
+                 </b>
+                </dt>
+                <dd>
+                 provides the
+                 <i>
+                  labelset
+                 </i>
+                 associated with the metric cluster (domain,cluster) identified by
+                 <i>
+                  pmid
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 5. Item labels (apply to an individual performance metric)
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <b>
+                  pmGetItemLabels
+                 </b>
+                </dt>
+                <dd>
+                 provides the
+                 <i>
+                  labelset
+                 </i>
+                 associated with the metric item (domain,cluster,item) identified by
+                 <i>
+                  pmid
+                 </i>
+                 .
+                </dd>
+                <dt>
+                 6. Instance labels (apply to individual instances of a metric)
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <b>
+                  pmGetInstancesLabels
+                 </b>
+                </dt>
+                <dd>
+                 provides the set of instance identifiers and labels in
+                 <i>
+                  labelsets
+                 </i>
+                 for each instance associated with the instance domain identifier
+                 <i>
+                  indom
+                 </i>
+                 .
+              
+              The return value indicates the number of elements in the result - one
+                 <i>
+                  labelset
+                 </i>
+                 for each instance.
+                </dd>
+               </dl>
+               <p>
+                These independent
+                <i>
+                 labelsets
+                </i>
+                can be merged using
+                <b>
+                 <a href="/man/man3/pmmergelabelsets.3.html">
+                  pmMergeLabelSets
+                 </a>
+                </b>
+                (3)
+              
+              to form the complete set of all labels associated with a given value.
+               </p>
+               <p>
+                <a name="lbAE">
+                </a>
+               </p>
+               <h2>
+                LABEL SYNTAX
+               </h2>
+               Labels are stored and communicated within PCP using JSONB format.
+              This format is a restricted form of JSON suitable for indexing
+              and other operations.
+              In JSONB form, insignificant whitespace is discarded,
+              and the order of label names is not preserved.
+              Within the PMCS a lexicographically sorted key space is always
+              maintained, however.
+              Duplicate label names are not permitted.
+              The label with highest precedence is the only one presented.
+              If duplicate names are presented at the same hierarchy level, only
+              one will be preserved (exactly which one wins is arbitrary, so do
+              not rely on this).
+               <p>
+                All
+                <i>
+                 name
+                </i>
+                :
+                <i>
+                 value
+                </i>
+                pair(s) present will be converted to
+              JSONB form and merged with the existing set of labels for the
+              requested entity (context, domain, indom, metric or instance).
+               </p>
+               <p>
+                The label names are further constrained to the same set of rules
+              defined for
+                <b>
+                 PMNS
+                </b>
+                subtree names.
+               </p>
+               <p>
+                Each component in a label
+                <i>
+                 name
+                </i>
+                must begin with an alphabetic character, and be followed by zero
+              or more characters drawn from the alphabetics, the digits and the
+              underscore (``_'') character.  For alphabetic characters in a
+                <i>
+                 name
+                </i>
+                ,
+              
+              upper and lower case are distinguished.
+               </p>
+               <p>
+                The
+                <i>
+                 value
+                </i>
+                of a label offers significantly more freedom, and may be any valid
+              value as defined by the JSON (
+                <i>
+                 <a href="http://json.org">
+                  http://json.org
+                 </a>
+                </i>
+                )
+              
+              specification.
+              Redundant whitespace is always removed within the PMCS.
+                <a name="lbAF">
+                </a>
+               </p>
+               <h2>
+                PRECEDENCE
+               </h2>
+               The complete set of labels associated with any metric value is
+              built from several sources and duplicate label names may exist
+              at any point in the source hierarchy.
+              However, when evaluating the label set (merging labels from the
+              different sources) the JSONB concept of only presenting unique
+              labels is used.
+              It is therefore important to define precedence rules in order
+              that a deterministic set of uniquely named labels can be defined.
+               <p>
+                As a rule of thumb, the labels closest to PMNS leaf nodes and
+              metric values take precedence:
+               </p>
+               <dl compact="">
+                <dt>
+                 1. Global context labels
+                </dt>
+                <dd>
+                 (as reported by the
+                 <i>
+                  pmcd.labels
+                 </i>
+                 metric) are the lowest precedence.
+                </dd>
+                <dt>
+                 2. Domain labels
+                </dt>
+                <dd>
+                 (for all metrics and instances from a PMDA) are the next highest precedence.
+                </dd>
+                <dt>
+                 3. Instance Domain labels
+                </dt>
+                <dd>
+                 associated with an InDom are the next highest precedence.
+                </dd>
+                <dt>
+                 4. Metric cluster labels
+                </dt>
+                <dd>
+                 associated with a PMID cluster are the next highest precedence.
+                </dd>
+                <dt>
+                 5. Metric item labels
+                </dt>
+                <dd>
+                 associated with an individual PMID are the next highest precedence.
+                </dd>
+                <dt>
+                 6. Instance labels
+                </dt>
+                <dd>
+                 associated with a metric instance identifier have highest precedence.
+                </dd>
+               </dl>
+               <a name="lbAG">
+               </a>
+               <h2>
+                DATA STRUCTURES
+               </h2>
+               The primary output from
+               <b>
+                pmLookupLabels
+               </b>
+               is returned in the
+              argument
+               <i>
+                labelset
+               </i>
+               as an array, using the following component data structures;
+               <p>
+               </p>
+               <pre>
+              struct {
+                  uint     name : 16;      /* label name offset in JSONB string */
+                  uint     namelen : 8;    /* length of name excluding the null */
+                  uint     flags : 8;      /* information about this label */
+                  uint     value : 16;     /* offset of the label value */
+                  uint     valuelen : 16;  /* length of value in bytes */
+              } pmLabel;
+              
+              struct {
+                  uint     inst;           /* PM_IN_NULL or the instance ID */
+                  int      nlabels;        /* count of labels or error code */
+                  char     *json;          /* JSON formatted labels string */
+                  uint     jsonlen : 16;   /* JSON string length byte count */
+                  uint     padding : 16;   /* zero, reserved for future use */
+                  pmLabel  *labels;        /* indexing into the JSON string */
+              } pmLabelSet;
+              </pre>
+               <p>
+                The
+                <i>
+                 pmLabel
+                </i>
+                provides information about an individual label.
+              This includes the offsets to
+              the start of its
+                <i>
+                 name
+                </i>
+                and
+                <i>
+                 value
+                </i>
+                in the
+                <i>
+                 json
+                </i>
+                string of a
+                <i>
+                 pmLabelSet
+                </i>
+                ,
+              
+              their respective lengths, and also any informative flags associated
+              with the label (describing where it lies in the hierarchy of labels,
+              and whether it is an intrinsic or extrinsic label).
+               </p>
+               <p>
+                Building on this, the
+                <i>
+                 pmLabelSet
+                </i>
+                provides information about the set of labels associated with an
+              entity (context, domain, indom, metric cluster, item or instance).
+              The entity will be from any one level of the label hierarchy.
+              If at the lowest hierarchy level (which happens to be highest
+              precedence - PM_LABEL_INSTANCES) then the
+                <i>
+                 inst
+                </i>
+                field will contain an actual instance identifier instead of PM_IN_NULL.
+               </p>
+               <p>
+                The
+                <i>
+                 nlabels
+                </i>
+                field describes the number of labels (name:value pairs) that can be
+              found in both the accompanying
+                <i>
+                 json
+                </i>
+                string (which is JSONB format - no unnecessary whitespace and with
+              no duplicate label names)
+              and the accompanying
+                <i>
+                 labels
+                </i>
+                array (which has
+                <i>
+                 nlabels
+                </i>
+                elements).
+                <a name="lbAH">
+                </a>
+               </p>
+               <h2>
+                EXAMPLES
+               </h2>
+               Consider a deployment with global labels (assume $PCP_SYSCONF_DIR
+              is set to its usual location of
+               <i>
+                /etc/pcp
+               </i>
+               )
+              
+              as follows:
+               <p>
+               </p>
+               <pre>
+              <b>$ cat /etc/pcp/labels/*</b>
+              {
+                "tier": "production",
+                "datacenter": "hkg",
+                "services": ["indexer","database"]
+              }
+              </pre>
+               <p>
+                Use
+                <b>
+                 pminfo
+                </b>
+                to form the merged
+                <i>
+                 labelsets
+                </i>
+                for several
+                <b>
+                 <a href="/man/man1/pmdasample.1.html">
+                  pmdasample
+                 </a>
+                </b>
+                (1)
+              
+              metrics as follows:
+               </p>
+               <p>
+               </p>
+               <p>
+               </p>
+               <pre>
+              <b>$ pminfo -m -f --labels sample.rapid sample.colour sample.mirage</b>
+              
+              sample.rapid PMID: 30.0.64
+              value 800000000
+              <br/>
+              labels {"agent":"sample","datacenter":"sydney","hostname":"acme.com","measure":"speed","role":"testing","services":["indexer","database"],"tier":"production","units":"metres per second","unitsystem":"SI"}
+              </pre>
+               <p>
+               </p>
+               <pre>
+              sample.colour PMID: 30.0.5
+              inst [0 or "red"] value 101
+              <br/>
+              inst [1 or "green"] value 202
+              <br/>
+              inst [2 or "blue"] value 303
+              <br/>
+              inst [0 or "red"] labels {"agent":"sample","datacenter":"syd","hostname":"acme.com","model":"RGB","role":"testing","services":["indexer","database"],"tier":"production"}
+              <br/>
+              inst [1 or "green"] labels {"agent":"sample","datacenter":"syd","hostname":"acme.com","model":"RGB","role":"testing","services":["indexer","database"],"tier":"production"}
+              <br/>
+              inst [2 or "blue"] labels {"agent":"sample","datacenter":"syd","hostname":"acme.com","model":"RGB","role":"testing","services":["indexer","database"],"tier":"production"}
+              </pre>
+               <p>
+               </p>
+               <pre>
+              sample.mirage PMID: 29.0.37
+              inst [0 or "m-00"] value 99
+              <br/>
+              inst [0 or "m-00"] labels {"agent":"sample","datacenter":"sydney","hostname":"acme.com","role":"testing","services":["indexer","database"],"tier":"production","transient":false}
+              </pre>
+               <p>
+                Here,
+                <b>
+                 pminfo
+                </b>
+                has merged the separate sets of labels returned from
+                <b>
+                 pmGetContextLabels
+                </b>
+                (
+                <i>
+                 name
+                </i>
+                s:
+              
+              datacenter, hostname, services, tier),
+                <b>
+                 pmGetDomainLabels
+                </b>
+                (
+                <i>
+                 name
+                </i>
+                s:
+              
+              role, agent),
+                <b>
+                 pmGetInDomLabels
+                </b>
+                (
+                <i>
+                 name
+                </i>
+                s:
+              
+              model),
+                <b>
+                 pmGetItemLabels
+                </b>
+                (
+                <i>
+                 name
+                </i>
+                s:
+              
+              units, unitsystem)
+              and
+                <b>
+                 pmGetInstancesLabels
+                </b>
+                (
+                <i>
+                 name
+                </i>
+                s:
+              
+              transient)
+              to form the complete set for each of the metrics.
+                <a name="lbAI">
+                </a>
+               </p>
+               <h2>
+                DIAGNOSTICS
+               </h2>
+               On success these interfaces all return the number of elements in
+              the
+               <i>
+                labelsets
+               </i>
+               array.
+              associated with performance metrics.
+              The memory associated with
+               <i>
+                labelsets
+               </i>
+               should be released using
+               <b>
+                <a href="/man/man3/pmfreelabelsets.3.html">
+                 pmFreeLabelSets
+                </a>
+               </b>
+               (3)
+              
+              when no longer needed.
+               <p>
+                Only in the case of
+                <b>
+                 pmLookupLabels
+                </b>
+                will the resulting
+                <i>
+                 labelset
+                </i>
+                be a merged set of labels from all hierarchy levels.
+               </p>
+               <p>
+                For the other routines, except for
+                <b>
+                 pmGetInstancesLabels
+                </b>
+                ,
+              
+              if no labels exist at all for the requested hierarchy level the
+              return code will be zero and no space will have been allocated.
+               </p>
+               <p>
+                In the case of
+                <b>
+                 pmGetInstancesLabels
+                </b>
+                ,
+              
+              which can return multiple elements in its
+                <i>
+                 labelsets
+                </i>
+                result (one set of labels for each instance), the
+                <i>
+                 nlabels
+                </i>
+                field may be either zero indicating no labels for that instance,
+              or a positive count of labels, or a negative PMAPI error code.
+               </p>
+               <p>
+                Note that it is mandatory for a call to
+                <b>
+                 pmGetInstancesLabels
+                </b>
+                to be preceded by a call to
+                <b>
+                 <a href="/man/man3/pmgetindom.3.html">
+                  pmGetInDom
+                 </a>
+                </b>
+                (3)
+              
+              to ensure the instances have been resolved within the PMDA.
+               </p>
+               <p>
+                If no result can be obtained,
+              e.g. due to IPC failure using the current PMAPI context then
+                <b>
+                 pmGetInstancesLabels
+                </b>
+                will return a negative error code which may be examined using
+                <b>
+                 <a href="/man/man3/pmerrstr.3.html">
+                  pmErrStr
+                 </a>
+                </b>
+                (3).
+                <a name="lbAJ">
+                </a>
+               </p>
+               <h2>
+                SEE ALSO
+               </h2>
+               <b>
+                <a href="/man/man1/pmcd.1.html">
+                 pmcd
+                </a>
+               </b>
+               (1),
+               <b>
+                <a href="/man/man3/pmapi.3.html">
+                 PMAPI
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmfetch.3.html">
+                 pmFetch
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmgetindom.3.html">
+                 pmGetInDom
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmlookupdesc.3.html">
+                 pmLookupDesc
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmlookupname.3.html">
+                 pmLookupName
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmfreelabelsets.3.html">
+                 pmFreeLabelSets
+                </a>
+               </b>
+               (3),
+               <b>
+                <a href="/man/man3/pmmergelabelsets.3.html">
+                 pmMergeLabelSets
+                </a>
+               </b>
+               (3)
+              
+              and
+               <b>
+                <a href="/man/man3/pmnewcontext.3.html">
+                 pmNewContext
+                </a>
+               </b>
+               (3).
+               <p>
+               </p>
+               <hr/>
+               <a name="index">
+               </a>
+               <h2>
+                Index
+               </h2>
+               <dl>
+                <dt>
+                 <a href="#lbAB">
+                  NAME
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAC">
+                  C SYNOPSIS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAD">
+                  DESCRIPTION
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAE">
+                  LABEL SYNTAX
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAF">
+                  PRECEDENCE
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAG">
+                  DATA STRUCTURES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAH">
+                  EXAMPLES
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAI">
+                  DIAGNOSTICS
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+                <dt>
+                 <a href="#lbAJ">
+                  SEE ALSO
+                 </a>
+                </dt>
+                <dd>
+                </dd>
+               </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class='global-footer is-typeset'>
+      <div class='row-parent'>
+        <div class='row'>
+          <section class='row__colspaced'>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Main Menu</h4>
+                <ul>
+                  <li>
+                    <a href='/features.html'>Features</a>
+                  </li>
+                  <li>
+                    <a href='/documentation.html'>Documentation</a>
+                  </li>
+                  <li>
+                    <a class='download' href='/download.html'>Download</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Developers</h4>
+                <ul>
+                  <li>
+                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+                  </li>
+                  <li>
+                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
+                  </li>
+                  <li>
+                    <a href='/community.html'>Contributing</a>
+                  </li>
+                  <li>
+                    <a href='/team.html'>Team</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>About</h4>
+                <ul>
+                  <li>
+                    <a href='/testimonials.html'>Testimonials</a>
+                  </li>
+                  <li>
+                    <a href='/faq.html'>FAQ</a>
+                  </li>
+                  <li>
+                    <a href='/website.html'>Website</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+              <div class='col__module'>
+                <h4>Get Social</h4>
+                <ul>
+                  <li>
+                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+                  </li>
+                  <li>
+                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class='row'>
+          <div class='colspan2-2'>
+            <p class='legal'>
+              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

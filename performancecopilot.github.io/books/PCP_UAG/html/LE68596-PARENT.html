@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.2. General PCP Tool Options</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="LE94335-PARENT.html" title="Chapter 3. Common Conventions and Arguments" /><link rel="prev" href="LE94335-PARENT.html" title="Chapter 3. Common Conventions and Arguments" /><link rel="next" href="id5194616.html" title="3.2.2. Alternate Performance Metric Name Spaces" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE94335-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5194616.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="LE68596-PARENT">
+      ⁠</a>3.2. General PCP Tool Options</h2></div></div></div><div class="para">
+				<a id="IG31371888118" class="indexterm"></a>The following sections provide information relevant to most of the PCP tools. It is presented here in a single place for convenience.
+			</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5194103">
+      ⁠</a>3.2.1. Common Directories and File Locations</h3></div></div></div><div class="para">
+					<a id="IG31371888119" class="indexterm"></a><a id="IG31371888120" class="indexterm"></a>The following files and directories are used by the PCP tools as repositories for option and configuration files and for binaries:
+				</div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename">${PCP_DIR}/etc/pcp.env</code></span></dt><dd><div class="para">
+								<a id="IG31371888121" class="indexterm"></a>Script to set PCP run-time environment variables.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_DIR}/etc/pcp.conf</code></span></dt><dd><div class="para">
+								<a id="IG31371888122" class="indexterm"></a>PCP configuration and environment file.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_PMCDCONF_PATH}</code></span></dt><dd><div class="para">
+								<a id="IG31371888123" class="indexterm"></a><a id="IG31371888124" class="indexterm"></a>Configuration file for Performance Metrics Collection Daemon (PMCD). Sets environment variables, including <code class="literal">PATH</code>.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_BINADM_DIR}/pmcd</code></span></dt><dd><div class="para">
+								<a id="IG31371888125" class="indexterm"></a>The PMCD binary.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_PMCDOPTIONS_PATH}</code></span></dt><dd><div class="para">
+								<a id="IG31371888126" class="indexterm"></a>Command line options for PMCD.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_RC_DIR}/pmcd</code></span></dt><dd><div class="para">
+								<a id="IG31371888127" class="indexterm"></a>The PMCD startup script.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_BIN_DIR}/<em class="replaceable">pcptool</em></code></span></dt><dd><div class="para">
+								Directory containing PCP tools such as <code class="command">pmstat </code>, <code class="command">pminfo</code>, <code class="command">pmlogger</code>, <code class="command">pmlogsummary</code>, <code class="command">pmchart</code>, <code class="command">pmie</code>, and so on.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_SHARE_DIR}</code></span></dt><dd><div class="para">
+								Directory containing shareable PCP-specific files and repository directories such as <code class="command">bin</code>, <code class="command">demos</code>, <code class="command">examples</code> and <code class="command">lib</code>.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_VAR_DIR}</code></span></dt><dd><div class="para">
+								Directory containing non-shareable (that is, per-host) PCP specific files and repository directories.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_BINADM_DIR}/<em class="replaceable">pcptool</em></code></span></dt><dd><div class="para">
+								PCP tools that are typically not executed directly by the end user such as <code class="command">pmcd_wait</code>.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_SHARE_DIR}/lib/<em class="replaceable">pcplib</em></code></span></dt><dd><div class="para">
+								Miscellaneous PCP libraries and executables.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_PMDAS_DIR}</code></span></dt><dd><div class="para">
+								Performance Metric Domain Agents (PMDAs), one directory per PMDA.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_VAR_DIR}/config</code></span></dt><dd><div class="para">
+								Configuration files for PCP tools, typically with one directory per tool.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_DEMOS_DIR}</code></span></dt><dd><div class="para">
+								Demonstration data files and example programs.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_LOG_DIR}</code></span></dt><dd><div class="para">
+								By default, diagnostic and trace log files generated by PMCD and PMDAs. Also, the PCP archive logs are managed in one directory per logged host below here.
+							</div></dd><dt><span class="term"><code class="filename">${PCP_VAR_DIR}/pmns</code></span></dt><dd><div class="para">
+								Files and scripts for the Performance Metrics Name Space (PMNS).
+							</div></dd></dl></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE94335-PARENT.html"><strong>Prev</strong>Chapter 3. Common Conventions and Arguments</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5194616.html"><strong>Next</strong>3.2.2. Alternate Performance Metric Name Spaces</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

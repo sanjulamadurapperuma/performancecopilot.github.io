@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMIE2COL
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmie2col
+ </b>
+ - convert pmie output to multi-column format
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmie2col
+ </b>
+ [
+ <b>
+  -d
+ </b>
+ <i>
+  delimiter
+ </i>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  precision
+ </i>
+ ]
+[
+ <b>
+  -w
+ </b>
+ <i>
+  width
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmie2col
+ </b>
+ is a simple tool that converts output from
+ <b>
+  <a href="/man/man1/pmie.1.html">
+   pmie
+  </a>
+ </b>
+ (1)
+
+into regular column format.  Each column is 7 characters wide
+(by default, may be changed with the
+ <b>
+  -w
+ </b>
+ option) with a single space between columns.
+That single space can be substituted with an alternate
+delimiter using the
+ <b>
+  -d
+ </b>
+ option (this is useful for importing the data into a spreadsheet,
+for example).
+ <p>
+  The precision of the tabulated values from
+  <b>
+   pmie
+  </b>
+  can be specified with the
+  <b>
+   -p
+  </b>
+  option (default is 2 decimal places).
+This option can and will override any width setting in order to
+present the requested precision.
+ </p>
+ <p>
+  The
+  <b>
+   <a href="/man/man1/pmie.1.html">
+    pmie
+   </a>
+  </b>
+  (1)
+
+configuration must follow these rules:
+ </p>
+ <dl compact="">
+  <dt>
+   (1)
+  </dt>
+  <dd>
+   Each
+   <b>
+    <a href="/man/man1/pmie.1.html">
+     pmie
+    </a>
+   </b>
+   (1)
+
+expression is of the form ``NAME = expr;''.
+NAME will be used as the column heading, and must contain no white space,
+although special characters can be escaped by enclosing NAME in single
+quotes.
+  </dd>
+  <dt>
+   (2)
+  </dt>
+  <dd>
+   The ``expr'' must be a valid
+   <b>
+    <a href="/man/man1/pmie.1.html">
+     pmie
+    </a>
+   </b>
+   (1)
+
+expression that produces a singular value.
+  </dd>
+ </dl>
+ <p>
+  In addition,
+  <b>
+   <a href="/man/man1/pmie.1.html">
+    pmie
+   </a>
+  </b>
+  (1)
+
+must be run with the
+  <b>
+   -v
+  </b>
+  command line option.
+ </p>
+ <p>
+  It is also possible to use the
+  <b>
+   -e
+  </b>
+  command line to
+  <b>
+   <a href="/man/man1/pmie.1.html">
+    pmie
+   </a>
+  </b>
+  (1)
+
+and output lines will be prefixed by a timestamp.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  EXAMPLE
+ </h2>
+ <p>
+  Given this
+  <b>
+   <a href="/man/man1/pmie.1.html">
+    pmie
+   </a>
+  </b>
+  (1)
+
+configuration file
+  <i>
+   (config)
+  </i>
+  :
+  <b>
+  </b>
+ </p>
+ <p>
+ </p>
+ <pre>
+loadav = kernel.all.load #'1 minute';
+'%usr' = kernel.all.cpu.user;
+'%sys' = kernel.all.cpu.sys;
+'%wio' = kernel.all.cpu.wait.total;
+'%idle' = kernel.all.cpu.idle;
+'max-iops' = max_inst(disk.dev.total);
+
+</pre>
+ <p>
+  Then this command pipeline:
+  <b>
+  </b>
+ </p>
+ <p>
+ </p>
+ <pre>
+$ pmie -v -t 5 &lt;config | pmie2col -w 8
+
+</pre>
+ <p>
+  Produces output like this:
+  <b>
+  </b>
+ </p>
+ <p>
+ </p>
+ <pre>
+   loadav     %usr     %sys     %wio    %idle max-iops
+     0.21        ?        ?        ?        ?        ?
+     0.36     0.49     0.03     0.18     0.29    25.40
+     0.49     0.41     0.10     0.36     0.13    51.00
+     0.69     0.49     0.10     0.05     0.37    43.20
+     0.71     0.39     0.08     0.04     0.49    14.00
+     0.83     0.63     0.15     0.00     0.21    32.30
+     1.09     0.60     0.02     0.10     0.27    47.00
+     0.92     0.01     0.00     0.00     0.99     2.40
+
+</pre>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1)
+
+and
+ <b>
+  <a href="/man/man1/pmie.1.html">
+   pmie
+  </a>
+ </b>
+ (1).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

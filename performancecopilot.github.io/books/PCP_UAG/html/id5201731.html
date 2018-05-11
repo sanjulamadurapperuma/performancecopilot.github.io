@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">5.3.6.2. Relational Expressions</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-users-and-administrators-guide-3-en-US-2.0-2" /><link rel="home" href="index.html" title="Performance Co-Pilot™ User's and Administrator's Guide" /><link rel="up" href="id5201630.html" title="5.3.6. pmie Logical Expressions" /><link rel="prev" href="id5201630.html" title="5.3.6. pmie Logical Expressions" /><link rel="next" href="id5201927.html" title="5.3.6.3. Boolean Expressions" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5201630.html"><strong>Prev</strong></a></li><li class="home">pcp-users-and-administrators-guide</li><li class="next"><a accesskey="n" href="id5201927.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="id5201731">
+      ⁠</a>5.3.6.2. Relational Expressions</h4></div></div></div><div class="para">
+						<a id="IG31371888202" class="indexterm"></a>Relational expressions are the simplest form of logical expression, in which values may be derived from arithmetic expressions using <code class="command">pmie</code> relational operators. For example, the following is a relational expression that is true or false, depending on the aggregate total of disk read operations per second being greater than 50.
+					</div><pre class="literallayout">disk.all.read &gt; 50 count/sec</pre><div class="para">
+						All of the relational logical operators and precedence rules of the C programming language are supported in <code class="command">pmie</code>.
+					</div><div class="para">
+						As described in <a class="xref" href="LE73508-PARENT.html">Section 5.3.3, “<code class="command">pmie</code> Metric Expressions”</a>, arithmetic expressions in <code class="command">pmie</code> may assume set values. The relational operators are also required to take constant, singleton, and set-valued expressions as arguments. The result has the same dimensionality as the operands. Suppose the rule in <a class="xref" href="id5201731.html#Z983832287sdc">Example 5.6, “Relational Expressions ”</a> is given:
+					</div><div class="example"><a id="Z983832287sdc">
+      ⁠</a><p class="title"><strong>Example 5.6. Relational Expressions </strong></p><div class="example-contents"><pre class="literallayout"><strong class="userinput"><code>hosts = ":gonzo";</code></strong>
+<strong class="userinput"><code>intfs = "#eth0 #eth2";</code></strong>
+<strong class="userinput"><code>all_intf = network.interface.in.packets</code></strong>
+               <strong class="userinput"><code>$hosts $intfs @0..2 &gt; 300 count/sec;</code></strong></pre><div class="para">
+							Then the execution of <code class="command">pmie</code> may proceed as follows:
+						</div><pre class="literallayout"><strong class="userinput"><code>pmie -V uag.11</code></strong>
+all_intf: 
+       gonzo: [eth0]      ?      ?      ? 
+       gonzo: [eth2]      ?      ?      ?
+all_intf:
+       gonzo: [eth0]  false      ?      ?
+       gonzo: [eth2]  false      ?      ?
+all_intf:
+       gonzo: [eth0]   true  false      ?
+       gonzo: [eth2]  false  false      ?
+all_intf:
+       gonzo: [eth0]   true   true  false
+       gonzo: [eth2]  false  false  false</pre></div></div><div class="para">
+						At each sample, the relational operator greater than (&gt;) produces six truth values for the cross-product of the <code class="literal">instance</code> and <code class="literal">sample time</code> dimensions.
+					</div><div class="para">
+						<a class="xref" href="LE97708-PARENT.html">Section 5.3.6.4, “Quantification Operators”</a>, describes additional logical operators that may be used to reduce the dimensionality of a relational expression.
+					</div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5201630.html"><strong>Prev</strong>5.3.6. pmie Logical Expressions</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5201927.html"><strong>Next</strong>5.3.6.3. Boolean Expressions</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

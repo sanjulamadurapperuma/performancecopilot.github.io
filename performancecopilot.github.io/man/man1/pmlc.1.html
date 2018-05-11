@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLC
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmlc
+ </b>
+ - configure active Performance Co-Pilot pmlogger(s) interactively
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmlc
+ </b>
+ [
+ <b>
+  -e
+ </b>
+ ]
+[
+ <b>
+  -h
+ </b>
+ <i>
+  host
+ </i>
+ ]
+[
+ <b>
+  -i
+ </b>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -P
+ </b>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  port
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+[
+ <b>
+  -z
+ </b>
+ ]
+[
+ <b>
+  pid
+ </b>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmlc
+ </b>
+ may be used to change those metrics and instances which a
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+writes to a Performance Co-Pilot archive (see
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1)),
+
+the frequency with which the metrics are collected and whether the
+logging is mandatory, advisory, on or off.  It also reports the
+current logging status of metrics and instances.
+ <b>
+  pmlc
+ </b>
+ may be used to control pmlogger instances on remote hosts as well as those
+on the local host.
+ <p>
+  Normally
+  <b>
+   pmlc
+  </b>
+  operates on the distributed Performance Metrics Name Space (PMNS), however
+if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative local PMNS is loaded from the file
+  <i>
+   pmnsfile
+  </i>
+  .
+ </p>
+ <p>
+  If the
+  <b>
+   -P
+  </b>
+  option is specified,
+  <b>
+   pmlc
+  </b>
+  will attempt to start with a connection to the primary pmlogger on the
+local host.  If the
+  <b>
+   -p
+  </b>
+  option is specified, then
+  <b>
+   pmlc
+  </b>
+  will attempt to start with a connection to the pmlogger on this TCP/IP
+  <i>
+   port
+  </i>
+  .
+
+Alternatively, if
+  <i>
+   pid
+  </i>
+  is specified, a connection to the pmlogger instance with that process
+id will be attempted on startup.  The
+  <b>
+   -h
+  </b>
+  option may only be used if
+  <b>
+   -P,
+  </b>
+  <b>
+   -p
+  </b>
+  <i>
+   port
+  </i>
+  or a
+  <i>
+   pid
+  </i>
+  is also specified.  In that case
+  <b>
+   pmlc
+  </b>
+  will initially connect to the specified (remote) pmlogger instance on
+  <i>
+   host
+  </i>
+  rather than the local host.  If the connection to the specified pmlogger
+instance cannot be established,
+  <b>
+   pmlc
+  </b>
+  will start with no connection.  These options typically allow the same file of
+  <b>
+   pmlc
+  </b>
+  commands to be directed to multiple pmlogger instances by varying the
+command line arguments.  Note that
+  <b>
+   -P
+  </b>
+  ,
+  <b>
+   -p
+  </b>
+  <i>
+   port
+  </i>
+  ,
+  <i>
+   pid
+  </i>
+  and
+  <b>
+   -h
+  </b>
+  are used only when making an initial connection to a pmlogger
+instance.  They are not used as defaults if subsequent connections are made
+interactively (see the
+  <b>
+   connect
+  </b>
+  command below).
+ </p>
+ <p>
+  By default,
+  <b>
+   pmlc
+  </b>
+  reports the time of day according to the local timezone on the
+system where
+  <b>
+   pmlc
+  </b>
+  is run.  The
+  <b>
+   -Z
+  </b>
+  option changes the timezone to
+  <i>
+   timezone
+  </i>
+  in the format of the environment variable
+  <b>
+   TZ
+  </b>
+  as described in
+  <b>
+   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+    environ
+   </a>
+  </b>
+  (7).
+
+The
+  <b>
+   -z
+  </b>
+  option changes the timezone to the timezone of the pmlogger
+instance from which information is being obtained.  Only one of
+  <b>
+   -z
+  </b>
+  or
+  <b>
+   -Z
+  </b>
+  may be specified.
+ </p>
+ <p>
+  If standard input is from a tty,
+  <b>
+   pmlc
+  </b>
+  is interactive, with prompts.
+The
+  <b>
+   -i
+  </b>
+  flag may be used to force interactive behavior, and is typically
+used in conjunction with
+  <b>
+   -e
+  </b>
+  to echo all command input on standard output.
+ </p>
+ <p>
+  The following commands may be used:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    show
+   </b>
+   [
+   <b>
+    loggers
+   </b>
+   ] [
+   <b>
+    @
+   </b>
+   <i>
+    host
+   </i>
+   ]
+  </dt>
+  <dd>
+   Displays the process identities of all pmlogger instances running
+on the local host (or
+   <i>
+    host
+   </i>
+   ,
+
+if specified).  The primary pmlogger pid is parenthesized because
+it can be referred to as "primary" as well as by its pid.
+  </dd>
+  <dt>
+   <b>
+    connect
+   </b>
+   <i>
+    pid
+   </i>
+   [
+   <b>
+    @
+   </b>
+   <i>
+    host
+   </i>
+   ]
+  </dt>
+  <dd>
+   <br/>
+   <b>
+    connect
+   </b>
+   <b>
+    primary
+   </b>
+   [
+   <b>
+    @
+   </b>
+   <i>
+    host
+   </i>
+   ]
+
+Connects
+   <b>
+    pmlc
+   </b>
+   to the specified pmlogger process.  Any existing connection to
+a pmlogger instance is closed first.  Each pmlogger instance will
+accept at most one connection at a time, so if the connection is
+successfully established, your
+   <b>
+    pmlc
+   </b>
+   will be the only one controlling the pmlogger instance it is connected to.
+  </dd>
+  <dt>
+   <b>
+    new volume
+   </b>
+  </dt>
+  <dd>
+   This command works only while a connection to a pmlogger
+instance is established.  It tells the pmlogger to close the current
+volume of the log and open a new volume.  Closed volumes may be archived,
+e.g. as part of a regular log management procedure to control the size of
+the physical log files.
+  </dd>
+  <dt>
+   <b>
+    status
+   </b>
+  </dt>
+  <dd>
+   This command works only while a connection to a pmlogger instance is
+established.  It prints information about the state of the pmlogger
+instance and its associated log.
+  </dd>
+  <dt>
+   <b>
+    timezone
+   </b>
+   <b>
+    local
+   </b>
+   |
+   <b>
+    logger
+   </b>
+   |
+   <b>
+    "
+   </b>
+   <i>
+    timezone
+   </i>
+   <b>
+    "
+   </b>
+  </dt>
+  <dd>
+   This command sets the time zone used when times are printed.
+   <b>
+    local
+   </b>
+   means use the time zone of the machine that
+   <b>
+    pmlc
+   </b>
+   is running on.
+   <b>
+    logger
+   </b>
+   means use the time zone of the machine where the pmlogger
+instance is
+running.  Alternatively an explicit
+   <i>
+    timezone
+   </i>
+   enclosed in quotes may be supplied (refer to
+   <b>
+    TZ
+   </b>
+   in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7)
+
+for details).  The default time zone is
+   <b>
+    local
+   </b>
+   unless one of the
+   <b>
+    -z
+   </b>
+   or
+   <b>
+    -Z
+   </b>
+   options has been supplied on the command line.
+  </dd>
+  <dt>
+   <b>
+    flush
+   </b>
+  </dt>
+  <dd>
+   This command works only while a connection to a pmlogger instance is
+established, and requests the pmlogger instance
+to flush to disk all buffers associated with the current archive.
+For old-timers,
+   <b>
+    sync
+   </b>
+   is a synonym for
+   <b>
+    flush
+   </b>
+   .
+In current versions of
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+all writes are unbuffered and aligned with the logical records in the external
+files, so this command achieves nothing, but is retained for backwards
+compatibility.
+  </dd>
+  <dt>
+   <b>
+    help
+   </b>
+  </dt>
+  <dd>
+   Displays a summary of the available commands.
+   <p>
+    <b>
+     h
+    </b>
+    and
+    <b>
+     ?
+    </b>
+    are synonyms for
+    <b>
+     help
+    </b>
+    .
+   </p>
+  </dd>
+  <dt>
+   <b>
+    quit
+   </b>
+  </dt>
+  <dd>
+   Exits from
+   <b>
+    pmlc
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  The remaining commands query and change the logging state of metrics and
+instances.  They will work only if
+  <b>
+   pmlc
+  </b>
+  has a connection to a pmlogger instance.  Metrics may be specified as fully
+qualified names (e.g. hinv.ncpu) or subtrees of the PMNS (e.g. hinv) which
+are expanded to include all metrics in the subtree (e.g. hinv.ncpu,
+hinv.cpuclock, etc.).  Lists of metrics may be specified by enclosing them
+in braces with spaces or a comma between metrics (e.g. {hinv.ncpu
+hinv.ndisk}).  Subtrees of metrics may be included in such lists.
+ </p>
+ <p>
+  Each individual metric specification may be further qualified with a space
+or comma separated list of instances in square brackets
+(e.g. kernel.all.load["1 minute", "5 minute"]).  External instance
+names or numeric internal instance identifiers or both may be used in the
+same list (e.g. sample.colour.[red,1,"blue"]).
+If an instance qualification is applied to a subtree of the PMNS all of the
+metrics in the subtree must have the same instance domain.  Instance
+qualifications may not be applied to entire lists of metrics but may appear
+inside such lists.
+ </p>
+ <p>
+  If no instances are specified for a metric, all instances are used.  All
+instances means all instances available at the time the pmlogger instance in
+question fetches the metrics for logging.  If an instance domain changes over
+time this is not always the same as the set of instances displayed by
+  <b>
+   pmlc
+  </b>
+  ,
+
+which can only display the currently available instances.  To prevent
+unintentional errors, only the instances that are currently available to
+  <b>
+   pmlc
+  </b>
+  may appear in instance specifications.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    query
+   </b>
+   <i>
+    metriclist
+   </i>
+  </dt>
+  <dd>
+   The current logging state of each metric (and instances, where applicable) in
+   <i>
+    metriclist
+   </i>
+   is displayed.  This includes the logging state (e.g. on, maybe, off) and the
+logging interval for each metric (and instance) requested.  The following
+abbreviations pertaining to metrics (and instances) may appear in the output:
+   <b>
+    adv
+   </b>
+   ,
+
+advisory;
+   <b>
+    mand
+   </b>
+   ,
+
+mandatory;
+   <b>
+    nl
+   </b>
+   ,
+
+not in the log;
+   <b>
+    na
+   </b>
+   ,
+
+in the log but not currently available from its Performance Metrics Domain
+Agent (PMDA).  Where appropriate, an instance name will appear last on a line
+preceded by its numeric internal instance identifier.
+  </dd>
+  <dt>
+   [
+   <b>
+    log
+   </b>
+   ]
+   <b>
+    mandatory on
+   </b>
+   <i>
+    interval
+   </i>
+   <i>
+    metriclist
+   </i>
+  </dt>
+  <dd>
+   This form of the
+   <b>
+    log
+   </b>
+   command turns on logging for the metrics (and any instances) in
+   <i>
+    metriclist.
+   </i>
+   <i>
+    interval
+   </i>
+   specifies how often the specified metrics/instances should be logged.
+   <b>
+    once
+   </b>
+   indicates that the metrics/instances should appear at most once in the log.
+More often one would use the optional keyword
+   <b>
+    every
+   </b>
+   followed by a positive number and one of
+   <b>
+    millisecond
+   </b>
+   (or
+   <b>
+    msec
+   </b>
+   ),
+   <b>
+    second
+   </b>
+   (or
+   <b>
+    sec
+   </b>
+   ),
+   <b>
+    minute
+   </b>
+   (or
+   <b>
+    min
+   </b>
+   ),
+   <b>
+    hour
+   </b>
+   or their plurals.
+   <p>
+    Note that the keyword
+    <b>
+     default
+    </b>
+    which may be used for the default
+    <i>
+     interval
+    </i>
+    in a
+    <b>
+     <a href="/man/man1/pmlogger.1.html">
+      pmlogger
+     </a>
+    </b>
+    (1)
+
+configuration file cannot be used in
+    <b>
+     pmlc
+    </b>
+    .
+   </p>
+   <p>
+    Internal limitations require the
+    <i>
+     interval
+    </i>
+    to be less than (approximately) 74 hours.  An
+    <i>
+     interval
+    </i>
+    value of zero is a synonym for
+    <b>
+     once
+    </b>
+    .
+   </p>
+  </dd>
+  <dt>
+   [
+   <b>
+    log
+   </b>
+   ]
+   <b>
+    mandatory off
+   </b>
+   <i>
+    metriclist
+   </i>
+  </dt>
+  <dd>
+   This tells the pmlogger instance not to log any of the metrics/instances in
+   <i>
+    metriclist
+   </i>
+   .
+  </dd>
+  <dt>
+   [
+   <b>
+    log
+   </b>
+   ]
+   <b>
+    mandatory maybe
+   </b>
+   <i>
+    metriclist
+   </i>
+  </dt>
+  <dd>
+   This tells the pmlogger instance to honor any subsequent advisory logging
+requests for the metrics/instances in
+   <i>
+    metriclist
+   </i>
+   .
+
+If the current logging state of the metrics/instances is mandatory (either on
+or off) the new state will be set to maybe (effectively advisory off).  If the
+current state of the metrics/instances is already advisory (either on or off)
+the state(s) for the metrics/instances will remain as they are.
+  </dd>
+  <dt>
+   [
+   <b>
+    log
+   </b>
+   ]
+   <b>
+    advisory on
+   </b>
+   <i>
+    interval
+   </i>
+   <i>
+    metriclist
+   </i>
+  </dt>
+  <dd>
+   <br/>
+   [
+   <b>
+    log
+   </b>
+   ]
+   <b>
+    advisory off
+   </b>
+   <i>
+    metriclist
+   </i>
+   Advisory logging is only applicable if the last logging state specified for a
+metric/instance was "mandatory maybe" (which permits subsequent advisory
+logging control) or if the logging state is already advisory.  These two
+statements turn advisory logging on or off (respectively) for the specified
+metrics/instances.
+   <p>
+    The interpretation for
+    <i>
+     interval
+    </i>
+    is as above for the
+    <b>
+     mandatory
+    </b>
+    case.
+   </p>
+  </dd>
+ </dl>
+ <p>
+  There is no continuation character required for commands that span lines.
+ </p>
+ <p>
+  The word
+  <b>
+   at
+  </b>
+  may be used interchangeably with
+  <b>
+   @
+  </b>
+  .
+ </p>
+ <p>
+  A request to log all instances of a metric will supersede any prior request to
+log either all or specific instances of a metric (if the request specifies a
+permissible transition in the logging state).  A request to log specific
+instances of a metric when all instances of a metric are already being logged
+is refused by
+  <b>
+   pmlogger
+  </b>
+  .
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  ACCESS CONTROL
+ </h2>
+ <b>
+  pmlc
+ </b>
+ may have restricted access to and control over
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+processes.
+ <p>
+  If a
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+is unable to export its control information to the local
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1),
+
+then that
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+cannot cannot be connected to nor controlled by
+  <b>
+   pmlc
+  </b>
+  .
+
+In practice, this means the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+process has to be owned by the user ``pcp'' and/or the group ``pcp''.
+If
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+is running on the host ``foo'' then
+use ``pminfo -f -h foo pmcd.pmlogger'' to verify that the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+of interest is known to
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1),
+
+alternatively
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instances that are not reported from the
+  <b>
+   pmlc
+  </b>
+  <b>
+   show loggers @foo
+  </b>
+  command are not known to
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+on the host ``foo''.
+ </p>
+ <p>
+  If
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+is launched with a configuration file that contains an
+  <b>
+   [access]
+  </b>
+  section, then
+  <b>
+   pmlc
+  </b>
+  will be unable to connect to that
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+unless the access controls allow
+  <b>
+   some
+  </b>
+  access from the host where
+  <b>
+   pmlc
+  </b>
+  is being run.
+Minimally this requires the
+  <b>
+   enquire
+  </b>
+  access to be permitted in the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+access control section.
+ </p>
+ <p>
+  If
+  <b>
+   pmlc
+  </b>
+  is able to connect to the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+of interest, then the following table summarizes the permissions needed
+to perform different
+  <b>
+   pmlc
+  </b>
+  commands:
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        <b>
+         pmlc
+        </b>
+        command
+       </td>
+       <td align="center">
+        Required
+        <b>
+         pmlogger
+        </b>
+        access
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="2">
+        <hr/>
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        show loggers
+       </td>
+       <td>
+        Any
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        connect
+       </td>
+       <td>
+        Any of
+        <b>
+         enquire
+        </b>
+        ,
+        <b>
+         advisory
+        </b>
+        or
+        <b>
+         mandatory
+        </b>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        status
+       </td>
+       <td>
+        Any of
+        <b>
+         enquire
+        </b>
+        ,
+        <b>
+         advisory
+        </b>
+        or
+        <b>
+         mandatory
+        </b>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        query ...
+       </td>
+       <td>
+        Any of
+        <b>
+         enquire
+        </b>
+        ,
+        <b>
+         advisory
+        </b>
+        or
+        <b>
+         mandatory
+        </b>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        log advisory ...
+       </td>
+       <td>
+        <b>
+         advisory
+        </b>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        log mandatory ...
+       </td>
+       <td>
+        <b>
+         mandatory
+        </b>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        new volume
+       </td>
+       <td>
+        <b>
+         mandatory
+        </b>
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+   environ
+  </a>
+ </b>
+ (7).
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Most error or warning messages are self-explanatory.  A message of the form
+ <br/>
+ Warning: unable to change logging state for...
+
+followed by a list of metrics (and possibly instances) indicates that
+ <b>
+  pmlogger
+ </b>
+ refused the request for the metrics (and instances) that appear.  Any metrics
+(and instances) that were specified but do not appear in the message have had
+their logging state updated successfully (no news is good news).  Usually this
+warning results from requesting advisory logging when a mandatory control is
+already in place, or requesting logging for specific instances when all
+instances are already being logged.
+ <a name="lbAI">
+ </a>
+ <h2>
+  CAVEAT
+ </h2>
+ If all instances of a metric are being logged and a request is made to log
+specific instances of the metric with the same state and frequency, the request
+may appear to succeed, even though
+ <b>
+  pmlogger
+ </b>
+ has refused the request.  This is not normally a problem, as the required
+information will still be placed into the log by
+ <b>
+  pmlogger
+ </b>
+ .
+ <p>
+  However in the case where the metric is to be logged once, the outcome is not
+what might be expected.  When
+  <b>
+   pmlogger
+  </b>
+  receives a request to log a metric once, it places the current value(s) of the
+metric into the log as soon as it can, regardless of whether the metric is
+already in the log.  This may be used to force values into the log.  When a
+request to log specific instances of a metric arrives and is refused because
+all instances of the metric are already being logged,
+  <b>
+   pmlogger
+  </b>
+  does not place values for the instances requested into the log.  It returns
+the current logging state for each instance requested to
+  <b>
+   pmlc
+  </b>
+  .
+
+The requested and returned states are identical, so
+  <b>
+   pmlc
+  </b>
+  doesn't raise an error as it should.
+ </p>
+ <p>
+  To ensure that only certain instances of a metric are being logged, one should
+always turn off logging for all instances of the metric prior to turning on
+logging for the specific instances required.
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    ACCESS CONTROL
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

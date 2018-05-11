@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.8.6. PMAPI Metrics Services</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5199561.html" title="3.8. PMAPI Procedural Interface" /><link rel="prev" href="id5205444.html" title="3.8.5.4.  pmWhichZone Function" /><link rel="next" href="id5205941.html" title="3.8.6.2.  pmFreeResult Function" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5205444.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5205941.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE25844-PARENT">
+      ⁠</a>3.8.6. PMAPI Metrics Services</h3></div></div></div><div class="para">
+					The functions described in this section provide Performance Metrics Application Programming Interface (PMAPI) metrics services.
+				</div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h4 class="title"><a id="Z1034802678tls">
+      ⁠</a>3.8.6.1.  <code class="command">pmFetch</code> Function</h4></div></div></div><pre class="programlisting">int pmFetch(int <em class="replaceable">numpmid</em>, pmID <em class="replaceable">pmidlist</em>[], pmResult **<em class="replaceable">result</em>)
+<code class="command">Python:</code>
+pmResult* <em class="replaceable">pmresult</em> = pmFetch(c_uint <em class="replaceable">pmid[]</em>)</pre><div class="para">
+						<a id="IG31340177383" class="indexterm"></a> <a id="IG31340177384" class="indexterm"></a> <a id="IG31340177385" class="indexterm"></a>The most common PMAPI operation is likely to be calls to <code class="command">pmFetch</code>, specifying a list of PMIDs (for example, as constructed by <code class="command">pmLookupName</code>) through <em class="replaceable">pmidlist</em> and <em class="replaceable">numpmid</em>. The call to <code class="command">pmFetch</code> is executed in the context of a source of metrics, instance profile, and collection time, previously established by calls to the functions described in <a class="xref" href="LE94187-PARENT.html">Section 3.8.4, “PMAPI Context Services”</a>.
+					</div><div class="para">
+						The principal result from <code class="command">pmFetch</code> is returned as a tree structured <em class="replaceable">result</em>, described in the <a class="xref" href="LE82331-PARENT.html">Section 3.5, “Performance Metrics Values”</a>.
+					</div><div class="para">
+						If one value (for example, associated with a particular instance) for a requested metric is unavailable at the requested time, then there is no associated <code class="command">pmValue</code> structure in the result. If there are no available values for a metric, then <em class="replaceable">numval</em> is zero and the associated <code class="command">pmValue</code>[] instance is empty; <em class="replaceable">valfmt</em> is undefined in these circumstances, but <em class="replaceable">pmid</em> is correctly set to the PMID of the metric with no values.
+					</div><div class="para">
+						If the source of the performance metrics is able to provide a reason why no values are available for a particular metric, this reason is encoded as a standard error code in the corresponding <em class="replaceable">numval</em>; see the <code class="command">pmerr(1)</code> and <code class="command">pmErrStr(3)</code> man pages. Since all error codes are negative, values for a requested metric are unavailable if <em class="replaceable">numval</em> is less than or equal to zero.
+					</div><div class="para">
+						The argument definition and the result specifications have been constructed to ensure that for each PMID in the requested <em class="replaceable">pmidlist</em> there is exactly one <code class="command">pmValueSet</code> in the result, and that the PMIDs appear in exactly the same sequence in both <em class="replaceable">pmidlist</em> and <em class="replaceable">result</em>. This makes the number and order of entries in <em class="replaceable">result</em> completely deterministic, and greatly simplifies the application programming logic after the call to <code class="command">pmFetch</code>.
+					</div><div class="para">
+						<a id="IG31340177386" class="indexterm"></a>The result structure returned by <code class="command">pmFetch</code> is dynamically allocated using one or more calls to <code class="command">malloc</code> and specialized allocation strategies, and should be released when no longer required by calling <code class="command">pmFreeResult</code>. Under no circumstances should <code class="command">free</code> be called directly to release this space.
+					</div><div class="para">
+						As common error conditions are encoded in the result data structure, only serious events (such as loss of connection to PMCD, <code class="command">malloc</code> failure, and so on) would cause an error value to be returned by <code class="command"><a id="IG31340177387" class="indexterm"></a>pmFetch</code>. Otherwise, the value returned by the <code class="command">pmFetch</code> function is zero.
+					</div><div class="para">
+						In <a class="xref" href="LE25844-PARENT.html#Z976559487sdc">Example 3.15, “PMAPI Metrics Services”</a>, the code fragment dumps the values (assumed to be stored in the <em class="replaceable">lval</em> element of the <code class="filename">pmValue</code> structure) of selected performance metrics once every 10 seconds:
+					</div><div class="example"><a id="Z976559487sdc">
+      ⁠</a><p class="title"><strong>Example 3.15. PMAPI Metrics Services</strong></p><div class="example-contents"><pre class="programlisting">    int       i, j, sts;
+    pmID      pmidlist[10];
+    pmResult  *result;
+    time_t    now;
+
+    /* set up PMAPI context, numpmid and pmidlist[] ... */
+    while ((sts = pmFetch(10, pmidlist, &amp;result)) &gt;= 0) {
+        now = (time_t)result-&gt;timestamp.tv_sec;
+        printf("\n@ %s", ctime(&amp;now));
+        for (i = 0; i &lt; result-&gt;numpmid; i++) {
+            printf("PMID: %s", pmIDStr(result-&gt;vset[i]-&gt;pmid));
+            for (j = 0; j &lt; result-&gt;vset[i]-&gt;numval; j++) {
+                printf(" 0x%x", result-&gt;vset[i]-&gt;vlist[j].value.lval);
+                putchar('\n');
+            }
+        }
+        pmFreeResult(result);
+        sleep(10);
+    }</pre></div></div><div xmlns:d="http://docbook.org/ns/docbook" class="note"><div class="admonition_header"><p><strong>Note</strong></p></div><div class="admonition"><div class="para">
+							<a id="IG31340177388" class="indexterm"></a> <a id="IG31340177389" class="indexterm"></a>If a response is not received back from PMCD within 10 seconds, the <code class="command">pmFetch</code> times out and returns <code class="literal">PM_ERR_TIMEOUT</code>. This is most likely to occur when the PMAPI client and PMCD are communicating over a slow network connection, but may also occur when one of the hosts is extremely busy. The time out period may be modified using the <code class="literal">PMCD_REQUEST_TIMEOUT</code> environment variable; see the <code class="command">PCPIntro(1)</code> man page.
+						</div></div></div><div class="para">
+						The python bindings fetch a pmResult corresponding to a <em class="replaceable">pmid</em> list, which is returned from <code class="command">pmLookupName</code>. The returned <em class="replaceable">pmresult</em> is passed to <code class="command">pmExtractValue</code>.
+					</div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="id5205444.html"><strong>Prev</strong>3.8.5.4.  pmWhichZone Function</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5205941.html"><strong>Next</strong>3.8.6.2.  pmFreeResult Function</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>
