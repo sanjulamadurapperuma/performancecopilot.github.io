@@ -1,0 +1,452 @@
+rm -rf *.html doc docs man books images favicon.ico /home/mgoodwin/src/performancecopilot.github.io/* assets/css/*.css || /bin/true
+mkdir doc docs man images 2>/dev/null || /bin/true
+rsync -Lrdp stock-images/* images/
+rsync -Lrdp /home/mgoodwin/src/pcp/man/html/* docs/
+rsync -Lrdp /home/mgoodwin/src/pcp/man/* man
+rsync -Lrdp /home/mgoodwin/src/pcp/man/html/images/* images/
+rsync -Lrdp /home/mgoodwin/src/pcp/images/* docs/images
+rm -rf man/html man/retired
+cd doc && ln -s ../books/PCP_UAG/pdf/pcp-users-and-administrators-guide.pdf pcp-users-and-administrators-guide.pdf
+cd doc && ln -s ../books/PCP_PG/pdf/pcp-programmers-guide.pdf pcp-programmers-guide.pdf
+ln -s images/pcp.ico favicon.ico
+./scripts/build-books.sh /home/mgoodwin/src/pcp
++ rm -rf books
++ mkdir books
++ for i in PCP_PG PCP_UAG
++ echo PCP_PG
+PCP_PG
++ mkdir books/PCP_PG
++ HTMLPATH=/home/mgoodwin/src/pcp/books/PCP_PG/tmp/en-US/html
++ cp -rdp /home/mgoodwin/src/pcp/books/PCP_PG/tmp/en-US/html books/PCP_PG
++ HTMLPATH=/home/mgoodwin/src/pcp/books/PCP_PG/tmp/en-US/html-single
++ cp -rdp /home/mgoodwin/src/pcp/books/PCP_PG/tmp/en-US/html-single books/PCP_PG
++ PDFPATH=/home/mgoodwin/src/pcp/books/PCP_PG/tmp/en-US/pdf
++ cp -rdp /home/mgoodwin/src/pcp/books/PCP_PG/tmp/en-US/pdf books/PCP_PG
++ for i in PCP_PG PCP_UAG
++ echo PCP_UAG
+PCP_UAG
++ mkdir books/PCP_UAG
++ HTMLPATH=/home/mgoodwin/src/pcp/books/PCP_UAG/tmp/en-US/html
++ cp -rdp /home/mgoodwin/src/pcp/books/PCP_UAG/tmp/en-US/html books/PCP_UAG
++ HTMLPATH=/home/mgoodwin/src/pcp/books/PCP_UAG/tmp/en-US/html-single
++ cp -rdp /home/mgoodwin/src/pcp/books/PCP_UAG/tmp/en-US/html-single books/PCP_UAG
++ PDFPATH=/home/mgoodwin/src/pcp/books/PCP_UAG/tmp/en-US/pdf
++ cp -rdp /home/mgoodwin/src/pcp/books/PCP_UAG/tmp/en-US/pdf books/PCP_UAG
+./scripts/build-man.sh /home/mgoodwin/src/pcp
+Building: man/man3i/pmparsehostattrsspec.3
+Building: man/man3i/__pmaf.3
+Building: man/man3i/pmfreeprofile.3
+Building: man/man3i/__pmconnectlogger.3
+Building: man/man3i/pmparsehostspec.3
+Building: man/man3i/__pmlookupipc.3
+Building: man/man3i/__pmprocesspipe.3
+Building: man/man3i/__pmconverttime.3
+Building: man/man3i/pmapi_internal.3
+Building: man/man3i/__pmcontrollog.3
+Building: man/man3i/__pmprocessexec.3
+Building: man/man3i/__pmparsetime.3
+Building: man/man3i/__pmmktime.3
+Building: man/man3i/__pmlocalpmda.3
+Building: man/man3i/__pmparsectime.3
+Building: man/man3d/pmparsedebug.3
+Building: man/man5/pcp.env.5
+Building: man/man5/pmrep.conf.5
+Building: man/man5/LOGARCHIVE.5
+Building: man/man5/mmv.5
+Building: man/man5/pmns.5
+Building: man/man5/pcp.conf.5
+Building: man/man5/pmieconf.5
+Building: man/man5/pmview.5
+Building: man/man5/pcp-atoprc.5
+Building: man/man5/perfevent.conf.5
+Building: man/man1/pmhostname.1
+Building: man/man1/autofsd-probe.1
+Building: man/man1/pmdanvidia.1
+Building: man/man1/pmdalustre.1
+Building: man/man1/pmwebd.1
+Building: man/man1/pmpost.1
+Building: man/man1/perfalloc.1
+Building: man/man1/pmlogrewrite.1
+Building: man/man1/pcp-verify.1
+Building: man/man1/pmconfig.1
+Building: man/man1/genpmda.1
+Building: man/man1/pmlogextract.1
+Building: man/man1/pmrep.1
+Building: man/man1/pmlogger_check.1
+Building: man/man1/pmdapapi.1
+Building: man/man1/pmdalogger.1
+Building: man/man1/pmquery.1
+Building: man/man1/pmdadm.1
+Building: man/man1/pmdaproc.1
+Building: man/man1/pcp-atopsar.1
+Building: man/man1/pmdaunbound.1
+Building: man/man1/pmdumptext.1
+Building: man/man1/dbpmda.1
+Building: man/man1/pmdate.1
+Building: man/man1/pmdads389log.1
+Building: man/man1/pmstore.1
+Building: man/man1/pmdaprometheus.1
+Building: man/man1/pmdiff.1
+Building: man/man1/mrtg2pcp.1
+Building: man/man1/pmdagfs2.1
+Building: man/man1/sheet2pcp.1
+Building: man/man1/collectl2pcp.1
+Building: man/man1/pmdaxfs.1
+Building: man/man1/pmsignal.1
+Building: man/man1/pcp-free.1
+Building: man/man1/pmdarsyslog.1
+Building: man/man1/pmlogcheck.1
+Building: man/man1/pmdaroot.1
+Building: man/man1/pmgetopt.1
+Building: man/man1/pmdanginx.1
+Building: man/man1/pmdaoracle.1
+Building: man/man1/pcp-iostat.1
+Building: man/man1/pcp2influxdb.1
+Building: man/man1/pmdasystemd.1
+Building: man/man1/pmclient.1
+Building: man/man1/pmdanutcracker.1
+Building: man/man1/pmdacisco.1
+Building: man/man1/pcp-shping.1
+Building: man/man1/pmdamic.1
+Building: man/man1/pmdasample.1
+Building: man/man1/pmchart.1
+Building: man/man1/pmdaslurm.1
+Building: man/man1/pcp-dmcache.1
+Building: man/man1/pmsleep.1
+Building: man/man1/pmdabcc.1
+Building: man/man1/pmdammv.1
+Building: man/man1/pmie2col.1
+Building: man/man1/pcp2xml.1
+Building: man/man1/pmcd_wait.1
+Building: man/man1/pmgenmap.1
+Building: man/man1/pmsnap.1
+Building: man/man1/pmdasimple.1
+Building: man/man1/pmtrace.1
+Building: man/man1/pmdajbd2.1
+Building: man/man1/pcp2graphite.1
+Building: man/man1/pmdaactivemq.1
+Building: man/man1/pmdamounts.1
+Building: man/man1/pmlogger_daily_report.1
+Building: man/man1/pmjson.1
+Building: man/man1/pmdads389.1
+Building: man/man1/pcp-uptime.1
+Building: man/man1/pmlock.1
+Building: man/man1/pmdanetfilter.1
+Building: man/man1/pmval.1
+Building: man/man1/pmloglabel.1
+Building: man/man1/pmerr.1
+Building: man/man1/pmsocks.1
+Building: man/man1/pcp2elasticsearch.1
+Building: man/man1/pmcpp.1
+Building: man/man1/mkaf.1
+Building: man/man1/pmdamemcache.1
+Building: man/man1/pmnsmerge.1
+Building: man/man1/pmdarpm.1
+Building: man/man1/pmdatxmon.1
+Building: man/man1/pmdadocker.1
+Building: man/man1/pmlogsize.1
+Building: man/man1/pmdacifs.1
+Building: man/man1/pcp-mpstat.1
+Building: man/man1/pmdazimbra.1
+Building: man/man1/pmtime.1
+Building: man/man1/pmafm.1
+Building: man/man1/pmdumplog.1
+Building: man/man1/pmdalmsensors.1
+Building: man/man1/pmiestatus.1
+Building: man/man1/pmdbg.1
+Building: man/man1/pmdatrivial.1
+Building: man/man1/pmdazswap.1
+Building: man/man1/pmcd.1
+Building: man/man1/pmdamysql.1
+Building: man/man1/pcp-kube-pods.1
+Building: man/man1/pmdaperfevent.1
+Building: man/man1/pcp-python.1
+Building: man/man1/pmdaapache.1
+Building: man/man1/pmdaweblog.1
+Building: man/man1/newhelp.1
+Building: man/man1/pmdadbping.1
+Building: man/man1/pcp-ipcs.1
+Building: man/man1/pmdashping.1
+Building: man/man1/iostat2pcp.1
+Building: man/man1/pcp-pidstat.1
+Building: man/man1/pcp-atop.1
+Building: man/man1/pcp2json.1
+Building: man/man1/chkhelp.1
+Building: man/man1/telnet-probe.1
+Building: man/man1/pmnsadd.1
+Building: man/man1/pmdamailq.1
+Building: man/man1/pcp2zabbix.1
+Building: man/man1/pmie.1
+Building: man/man1/pmdasmart.1
+Building: man/man1/pmdapostfix.1
+Building: man/man1/pcpintro.1
+Building: man/man1/pmdapipe.1
+Building: man/man1/pmdalustrecomm.1
+Building: man/man1/pmdagpfs.1
+Building: man/man1/pmdagluster.1
+Building: man/man1/pmmgr.1
+Building: man/man1/pmdasendmail.1
+Building: man/man1/pmlogsummary.1
+Building: man/man1/pmie_check.1
+Building: man/man1/pmprobe.1
+Building: man/man1/pcp.1
+Building: man/man1/dbprobe.1
+Building: man/man1/pmdatrace.1
+Building: man/man1/pmdajson.1
+Building: man/man1/pmdaredis.1
+Building: man/man1/pmview.1
+Building: man/man1/pmdahaproxy.1
+Building: man/man1/pmdaelasticsearch.1
+Building: man/man1/pcp-tapestat.1
+Building: man/man1/pmproxy.1
+Building: man/man1/pmdabind2.1
+Building: man/man1/pmdaroomtemp.1
+Building: man/man1/pmdapostgresql.1
+Building: man/man1/pmlogreduce.1
+Building: man/man1/pmdalibvirt.1
+Building: man/man1/pmlc.1
+Building: man/man1/sar2pcp.1
+Building: man/man1/pmdanfsclient.1
+Building: man/man1/pmdakernel.1
+Building: man/man1/pcp2csv.1
+Building: man/man1/pmdaib.1
+Building: man/man1/pmlogconf.1
+Building: man/man1/pmlogger.1
+Building: man/man1/pmdakvm.1
+Building: man/man1/pmdasummary.1
+Building: man/man1/pcp-numastat.1
+Building: man/man1/pmstat.1
+Building: man/man1/pcp2xlsx.1
+Building: man/man1/pmfind.1
+Building: man/man1/pmpython.1
+Building: man/man1/pmdabash.1
+Building: man/man1/ganglia2pcp.1
+Building: man/man1/pmnewlog.1
+Building: man/man1/pminfo.1
+Building: man/man1/pmnsdel.1
+Building: man/man1/pmdabonding.1
+Building: man/man1/pmlogmv.1
+Building: man/man1/pmieconf.1
+Building: man/man3/pmdalabel.3
+Building: man/man3/pmregisterderived.3
+Building: man/man3/pmderivederrstr.3
+Building: man/man3/pmiusecontext.3
+Building: man/man3/pmdestroycontext.3
+Building: man/man3/pmdaconnect.3
+Building: man/man3/pmdacache.3
+Building: man/man3/pmiputvalue.3
+Building: man/man3/pmconvscale.3
+Building: man/man3/pmdadaemon.3
+Building: man/man3/pmiputvaluehandle.3
+Building: man/man3/pmprintf.3
+Building: man/man3/pmunloadnamespace.3
+Building: man/man3/pmatomstr.3
+Building: man/man3/pmsemstr.3
+Building: man/man3/pmlookuptext.3
+Building: man/man3/pmisethostname.3
+Building: man/man3/pmsprintf.3
+Building: man/man3/pmiend.3
+Building: man/man3/pmdainstance.3
+Building: man/man3/pmdelprofile.3
+Building: man/man3/pmwhichcontext.3
+Building: man/man3/pmlookuplabels.3
+Building: man/man3/pmtime.3
+Building: man/man3/pmtimeval.3
+Building: man/man3/pcpintro.3
+Building: man/man3/pmlookupindomtext.3
+Building: man/man3/pmparseunitsstr.3
+Building: man/man3/pmistart.3
+Building: man/man3/pmafm.3
+Building: man/man3/pmdainit.3
+Building: man/man3/pmerrstr.3
+Building: man/man3/pmiaddinstance.3
+Building: man/man3/pmgetchildren.3
+Building: man/man3/pmiunits.3
+Building: man/man3/pmnotifyerr.3
+Building: man/man3/pmgetconfig.3
+Building: man/man3/pmtypestr.3
+Building: man/man3/mmv_inc_value.3
+Building: man/man3/pmwhichzone.3
+Building: man/man3/pmjsonget.3
+Building: man/man3/pmlocaltime.3
+Building: man/man3/pmaddprofile.3
+Building: man/man3/pmiputresult.3
+Building: man/man3/QmcGroup.3
+Building: man/man3/pmparsemetricspec.3
+Building: man/man3/pmprintdesc.3
+Building: man/man3/mmv_lookup_value_desc.3
+Building: man/man3/pmgetusername.3
+Building: man/man3/QmcIndom.3
+Building: man/man3/pmid_helper.3
+Building: man/man3/pmgetpmnslocation.3
+Building: man/man3/pmstore.3
+Building: man/man3/pmusecontext.3
+Building: man/man3/logimport.3
+Building: man/man3/pmdupcontext.3
+Building: man/man3/pmfetch.3
+Building: man/man3/pmdagetoptions.3
+Building: man/man3/pmfetchgroup.3
+Building: man/man3/pmdaopenlog.3
+Building: man/man3/pmparsetimewindow.3
+Building: man/man3/QMC.3
+Building: man/man3/pmsetprocessidentity.3
+Building: man/man3/pmmergelabels.3
+Building: man/man3/pmfreeeventresult.3
+Building: man/man3/pmspeclocalpmda.3
+Building: man/man3/pmnumberstr.3
+Building: man/man3/pmnewcontext.3
+Building: man/man3/pmdafetch.3
+Building: man/man3/QmcMetric.3
+Building: man/man3/pmnameindomarchive.3
+Building: man/man3/pmpathseparator.3
+Building: man/man3/pmloadnamespace.3
+Building: man/man3/pmsetmode.3
+Building: man/man3/pmeventflagsstr.3
+Building: man/man3/pmdasenderror.3
+Building: man/man3/pmindomstr.3
+Building: man/man3/pmopenlog.3
+Building: man/man3/pmloadasciinamespace.3
+Building: man/man3/QmcSource.3
+Building: man/man3/pmgetarchiveend.3
+Building: man/man3/pmdaeventclient.3
+Building: man/man3/pmidstr.3
+Building: man/man3/pmtraversepmns.3
+Building: man/man3/pmnewzone.3
+Building: man/man3/pmdastore.3
+Building: man/man3/pmdiscoverservices.3
+Building: man/man3/pmfreelabelsets.3
+Building: man/man3/pmnameid.3
+Building: man/man3/pmgetversion.3
+Building: man/man3/pmextractvalue.3
+Building: man/man3/pmdamain.3
+Building: man/man3/pmtrimnamespace.3
+Building: man/man3/zbxpcp.3
+Building: man/man3/pmdaname.3
+Building: man/man3/pmusezone.3
+Building: man/man3/pmdatrace.3
+Building: man/man3/pmfreeresult.3
+Building: man/man3/pmparseinterval.3
+Building: man/man3/pmsetprogname.3
+Building: man/man3/pmnewcontextzone.3
+Building: man/man3/pmdarootconnect.3
+Building: man/man3/pmunitsstr.3
+Building: man/man3/pmgetcontexthostname.3
+Building: man/man3/mmv_stats_init.3
+Building: man/man3/pmlookupindomarchive.3
+Building: man/man3/pmsetdebug.3
+Building: man/man3/pmlookupdesc.3
+Building: man/man3/pmnameall.3
+Building: man/man3/pmgetoptions.3
+Building: man/man3/pmwebapi.3
+Building: man/man3/pmdadesc.3
+Building: man/man3/pmhttpnewclient.3
+Building: man/man3/pmsortinstances.3
+Building: man/man3/pmgetchildrenstatus.3
+Building: man/man3/pmctime.3
+Building: man/man3/pmdadso.3
+Building: man/man3/pmnomem.3
+Building: man/man3/pmiputmark.3
+Building: man/man3/pmdatext.3
+Building: man/man3/pmloadderivedconfig.3
+Building: man/man3/pmlookupname.3
+Building: man/man3/pmdapmid.3
+Building: man/man3/pmdahelp.3
+Building: man/man3/pmdainterfacemoved.3
+Building: man/man3/pmunpackeventrecords.3
+Building: man/man3/pmdaprofile.3
+Building: man/man3/pmapi.3
+Building: man/man3/pmprintlabelsets.3
+Building: man/man3/pmdaeventarray.3
+Building: man/man3/pmierrstr.3
+Building: man/man3/pmreconnectcontext.3
+Building: man/man3/pmdaattribute.3
+Building: man/man3/pmgetindom.3
+Building: man/man3/pmisettimezone.3
+Building: man/man3/QmcDesc.3
+Building: man/man3/pmfetcharchive.3
+Building: man/man3/pmlookupindom.3
+Building: man/man3/pmdachildren.3
+Building: man/man3/pmiwrite.3
+Building: man/man3/pmdaeventqueue.3
+Building: man/man3/pmnameindom.3
+Building: man/man3/pmigethandle.3
+Building: man/man3/pmda.3
+Building: man/man3/pmprintvalue.3
+Building: man/man3/pmgetarchivelabel.3
+Building: man/man3/pmgetindomarchive.3
+Building: man/man3/QmcContext.3
+Building: man/man3/pmindom_helper.3
+Building: man/man3/pmiaddmetric.3
+./scripts/create-manindex.py
+./scripts/build-docs.sh
+Building: docs/qwtlicense.html
+Building: docs/lab.containers.html
+Building: docs/lab.importdata.html
+Building: docs/glossary.html
+Building: docs/overview.html
+Building: docs/howto.diskmodel.html
+Building: docs/howto.systemlog.html
+Building: docs/contacts.html
+Building: docs/views.html
+Building: docs/credits.html
+Building: docs/timecontrol.html
+Building: docs/guide.html
+Building: docs/howto.diskperf.html
+Building: docs/pmchart.html
+Building: docs/howto.enterprise.html
+Building: docs/index.html
+Building: docs/lab.pmchart.html
+Building: docs/howto.cpuperf.html
+Building: docs/lab.trace.html
+Building: docs/lab.secure.html
+Building: docs/lab.pmie.html
+Building: docs/lab.pmview.html
+Building: docs/gpl.html
+Building: docs/lab.secureclient.html
+Building: docs/installation.html
+Building: docs/pcpintro.html
+Building: docs/lab.auth.html
+Building: docs/lab.pmieconf.html
+Building: docs/lab.pmlogger.html
+compass compile -c compass/config.rb -s compressed
+/usr/share/gems/gems/compass-core-1.0.1/lib/compass/core/caniuse.rb:72: warning: circular argument reference - browsers
+    write assets/css/master.css
+    write assets/css/screen.css
+for h in `echo index features documentation community website faq buildbot presentations glider screenshots download testimonials gsoc/2015/ideas gsoc/2016/ideas gsoc/2017/ideas gsoc/2018/ideas conference/2018/home conference/2018/contact conference/2018/schedule `; do \
+    haml $h.haml > $h.html; \
+done
+Syntax error on line 100: Inconsistent indentation: "\t\t      " used for indentation, but the rest of the document was indented using 2 spaces.
+  Use --trace for backtrace.
+./scripts/build-team.py /home/mgoodwin/src/pcp | haml > team.html
+find . -type f -exec chmod 644 "{}" \;
+find scripts/ -type f -iname '*.sh' -exec chmod 755 "{}" \;
+find scripts/ -type f -iname '*.py' -exec chmod 755 "{}" \;
+rsync -azvP --prune-empty-dirs --exclude '*.scss' --exclude '*.haml' --exclude 'Makefile' --exclude 'README' --exclude 'TODO' --exclude 'links.out' --exclude '.git' --exclude '*.swp' --exclude '.sass-cache' --exclude '.gitignore' --exclude 'scripts' --exclude 'README.md' --exclude 'compass' --exclude '*.[1-9]' --exclude 'GNUmakefile' --exclude 'Check' --exclude 'stock-images' --exclude 'pcp-brand' --exclude 'NEWRELEASE' --exclude 'pcp.git' --exclude 'pcp-gui.git' --exclude 'srpm' --exclude 'buildbot' --exclude 'Vagrantfile' --exclude '.vagrant'  . /home/mgoodwin/src/performancecopilot.github.io
+building file list ... 
+ 0 files... 100 files... 200 files... 300 files... 400 files... 500 files... 600 files... 700 files... 800 files... 900 files... 1000 files... 1100 files... 1200 files... 1300 files... 1400 files... 1500 files... 1600 files... 1700 files... 1800 files... 1900 files... 2000 files... 2100 files... 2200 files... 2300 files... 2400 files... 2500 files... 2600 files... 2700 files... 2800 files... 2900 files... 3000 files... 3100 files... 3200 files... 3300 files... 3400 files... 3500 files... 3600 files... 3700 files... 3800 files... 3900 files... 4000 files... 4100 files... 4200 files... 4300 files... 4400 files... 4500 files... 4600 files... 4700 files... 4800 files... 4900 files... 5000 files... 5100 files... 5200 files... 5300 files... 5400 files... 5500 files... 5600 files... 5700 files...5747 files to consider
+./
+CNAME
+              6 100%    0.00kB/s    0:00:00                6 100%    0.00kB/s    0:00:00 (xfr#1, to-chk=5745/5747)
+GPG-KEY-PCP
+          3,128 100%    2.98MB/s    0:00:00            3,128 100%    2.98MB/s    0:00:00 (xfr#2, to-chk=5744/5747)
+buildbot.html
+         11,802 100%   11.26MB/s    0:00:00           11,802 100%   11.26MB/s    0:00:00 (xfr#3, to-chk=5743/5747)
+community.html
+         10,825 100%   10.32MB/s    0:00:00           10,825 100%   10.32MB/s    0:00:00 (xfr#4, to-chk=5742/5747)
+documentation.html
+         13,583 100%   12.95MB/s    0:00:00           13,583 100%   12.95MB/s    0:00:00 (xfr#5, to-chk=5741/5747)
+download.html
+         11,012 100%   10.50MB/s    0:00:00           11,012 100%   10.50MB/s    0:00:00 (xfr#6, to-chk=5740/5747)
+faq.html
+         32,768  53%   15.62MB/s    0:00:00           60,925 100%   29.05MB/s    0:00:00 (xfr#7, to-chk=5739/5747)
+favicon.ico -> images/pcp.ico
+features.html
+         11,509 100%    3.66MB/s    0:00:00           11,509 100%    3.66MB/s    0:00:00 (xfr#8, to-chk=5737/5747)
+glider.html
+          7,270 100%    2.31MB/s    0:00:00            7,270 100%    2.31MB/s    0:00:00 (xfr#9, to-chk=5736/5747)
+index.html
+              0 100%    0.00kB/s    0:00:00 (xfr#10, to-chk=5735/5747)
+localdefs
+             85 100%   27.67kB/s    0:00:00               85 100%   27.67kB/s    0:00:00 (xfr#11, to-chk=5734/5747)
+localdefs.pcp.io
+             71 100%   23.11kB/s    0:00:00               71 100%   23.11kB/s    0:00:00 (xfr#12, to-chk=5733/5747)
