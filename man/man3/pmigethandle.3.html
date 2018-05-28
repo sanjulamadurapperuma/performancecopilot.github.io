@@ -1,396 +1,400 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMIGETHANDLE3
-               </h1>
-               Section: Misc. Reference Manual Pages ()
-               <br/>
-               Updated: Performance Co-Pilot
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmiGetHandle
-               </b>
-               - define a handle for a metric-instance pair
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-                <br/>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/import.h">
-                 pcp/import.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                int pmiGetHandle(const char *
-                <i>
-                 name
-                </i>
-                , const char *
-                <i>
-                 instance
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp_import -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                Perl SYNOPSIS
-               </h2>
-               <b>
-                use PCP::LogImport;
-               </b>
-               <p>
-                $
-                <i>
-                 handle
-                </i>
-                = pmiGetHandle($
-                <i>
-                 name
-                </i>
-                , $
-                <i>
-                 instance
-                </i>
-                );
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               As part of the Performance Co-Pilot Log Import API (see
-               <b>
-                <a href="/man/man3/logimport.3.html">
-                 LOGIMPORT
-                </a>
-               </b>
-               (3)),
-               <b>
-                pmiGetHandle
-               </b>
-               creates a handle for a given
-              metric and instance.  The handle is returned as the value from the
-               <b>
-                pmiGetHandle
-               </b>
-               call and can be used in subsequent calls to
-               <b>
-                <a href="/man/man3/pmiputvaluehandle.3.html">
-                 pmiPutValueHandle
-                </a>
-               </b>
-               (3).
-               <p>
-                The metric's
-                <i>
-                 name
-                </i>
-                should match one defined earlier in a call to
-                <b>
-                 <a href="/man/man3/pmiaddmetric.3.html">
-                  pmiAddMetric
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                For singular metrics (those defined with an instance domain of
-                <b>
-                 PM_INDOM_NULL
-                </b>
-                ),
-              
-              the
-                <i>
-                 instance
-                </i>
-                should be NULL or an empty string, otherwise
-                <i>
-                 instance
-                </i>
-                should match the name of an instance defined earlier in a call
-              to
-                <b>
-                 <a href="/man/man3/pmiaddinstance.3.html">
-                  pmiAddInstance
-                 </a>
-                </b>
-                (3)
-              
-              for the metric's instance domain.
-               </p>
-               <p>
-                When combined with
-                <b>
-                 <a href="/man/man3/pmiputvaluehandle.3.html">
-                  pmiPutValueHandle
-                 </a>
-                </b>
-                (3),
-              
-              the use of handles provide a performance improvement over the
-              alternative lookup for a metric name and an instance name for
-              each data value that is required for
-                <b>
-                 <a href="/man/man3/pmiputvalue.3.html">
-                  pmiPutValue
-                 </a>
-                </b>
-                (3).
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               On failure
-               <b>
-                pmiGetHandle
-               </b>
-               returns a negative value that can be turned into an
-              error message by calling
-               <b>
-                <a href="/man/man3/pmierrstr.3.html">
-                 pmiErrStr
-                </a>
-               </b>
-               (3).
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/logimport.3.html">
-                 LOGIMPORT
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmiaddinstance.3.html">
-                 pmiAddInstance
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmiaddmetric.3.html">
-                 pmiAddMetric
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmierrstr.3.html">
-                 pmiErrStr
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmiputvaluehandle.3.html">
-                 pmiPutValueHandle
-                </a>
-               </b>
-               (3).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  Perl SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMIGETHANDLE3
+ </h1>
+ Section: Misc. Reference Manual Pages ()
+ <br/>
+ Updated: Performance Co-Pilot
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmiGetHandle
+ </b>
+ - define a handle for a metric-instance pair
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+  <br/>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/import.h">
+   pcp/import.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  int pmiGetHandle(const char *
+  <i>
+   name
+  </i>
+  , const char *
+  <i>
+   instance
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp_import -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  Perl SYNOPSIS
+ </h2>
+ <b>
+  use PCP::LogImport;
+ </b>
+ <p>
+  $
+  <i>
+   handle
+  </i>
+  = pmiGetHandle($
+  <i>
+   name
+  </i>
+  , $
+  <i>
+   instance
+  </i>
+  );
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ As part of the Performance Co-Pilot Log Import API (see
+ <b>
+  <a href="/man/man3/logimport.3.html">
+   LOGIMPORT
+  </a>
+ </b>
+ (3)),
+ <b>
+  pmiGetHandle
+ </b>
+ creates a handle for a given
+metric and instance.  The handle is returned as the value from the
+ <b>
+  pmiGetHandle
+ </b>
+ call and can be used in subsequent calls to
+ <b>
+  <a href="/man/man3/pmiputvaluehandle.3.html">
+   pmiPutValueHandle
+  </a>
+ </b>
+ (3).
+ <p>
+  The metric's
+  <i>
+   name
+  </i>
+  should match one defined earlier in a call to
+  <b>
+   <a href="/man/man3/pmiaddmetric.3.html">
+    pmiAddMetric
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  For singular metrics (those defined with an instance domain of
+  <b>
+   PM_INDOM_NULL
+  </b>
+  ),
+
+the
+  <i>
+   instance
+  </i>
+  should be NULL or an empty string, otherwise
+  <i>
+   instance
+  </i>
+  should match the name of an instance defined earlier in a call
+to
+  <b>
+   <a href="/man/man3/pmiaddinstance.3.html">
+    pmiAddInstance
+   </a>
+  </b>
+  (3)
+
+for the metric's instance domain.
+ </p>
+ <p>
+  When combined with
+  <b>
+   <a href="/man/man3/pmiputvaluehandle.3.html">
+    pmiPutValueHandle
+   </a>
+  </b>
+  (3),
+
+the use of handles provide a performance improvement over the
+alternative lookup for a metric name and an instance name for
+each data value that is required for
+  <b>
+   <a href="/man/man3/pmiputvalue.3.html">
+    pmiPutValue
+   </a>
+  </b>
+  (3).
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ On failure
+ <b>
+  pmiGetHandle
+ </b>
+ returns a negative value that can be turned into an
+error message by calling
+ <b>
+  <a href="/man/man3/pmierrstr.3.html">
+   pmiErrStr
+  </a>
+ </b>
+ (3).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/logimport.3.html">
+   LOGIMPORT
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmiaddinstance.3.html">
+   pmiAddInstance
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmiaddmetric.3.html">
+   pmiAddMetric
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmierrstr.3.html">
+   pmiErrStr
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmiputvaluehandle.3.html">
+   pmiPutValueHandle
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    Perl SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

@@ -1,459 +1,463 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                ZBXPCP
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                zbxpcp
-               </b>
-               - Zabbix Agent Loadable PCP Module
-               <a name="lbAC">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               The
-               <b>
-                zbxpcp
-               </b>
-               loadable module extends Zabbix agent by making Performance Co-Pilot
-              (PCP) metrics available to it.
-              With the
-               <b>
-                zbxpcp
-               </b>
-               module configured in
-               <i>
-                zabbix_agentd.conf
-               </i>
-               all the PCP metrics are available from the Zabbix agent like any other
-              agent items.
-              As a loadable module (DSO)
-               <b>
-                zbxpcp
-               </b>
-               does not rely on any external programs but directly uses the PCP APIs to
-              fetch PCP metrics when requested.
-               <p>
-                A typical Linux PCP installation offers over 1,000 metrics by default
-              and is in turn extensible with its own plugins, or PMDAs (``Performance
-              Metrics Domain Agents'').
-              In addition to very complete
-                <i>
-                 /proc
-                </i>
-                based statistics, readily available PCP PMDAs provide support for such
-              system and application level components as 389 Directory Server, Apache,
-              containers, HAProxy, GFS2, Gluster, libvirt, MySQL, NFS, Oracle, Postfix,
-              PostgreSQL, Samba, and Sendmail, among others.
-              PCP also runs on many platforms, including Linux, Mac OS X, FreeBSD,
-              NetBSD, Solaris, and Windows.
-               </p>
-               <p>
-                For PCP introduction, see
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1).
-              
-              To investigate the available PCP metrics, use for example
-                <b>
-                 <a href="/man/man1/pminfo.1.html">
-                  pminfo
-                 </a>
-                </b>
-                (1).
-              
-              The
-                <i>
-                 PCP Quick Reference Guide
-                </i>
-                is available at the PCP home page
-                <a href="http://pcp.io/.">
-                 http://pcp.io/.
-                </a>
-               </p>
-               <p>
-                For general information about Zabbix data collection and loadable
-              modules, see
-                <a href="https://www.zabbix.com/documentation/3.0/manual/config/items.">
-                 https://www.zabbix.com/documentation/3.0/manual/config/items.
-                </a>
-                For Zabbix introduction and downloads, see
-                <a href="http://www.zabbix.com/.">
-                 http://www.zabbix.com/.
-                </a>
-               </p>
-               <p>
-                <b>
-                 zbxpcp
-                </b>
-                is compatible with the Zabbix module API version
-                <b>
-                 1
-                </b>
-                .
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                CONFIGURATION
-               </h2>
-               First make sure PCP is installed and configured properly, see the above
-              references for instructions and use for example
-               <b>
-                <a href="/man/man1/pminfo.1.html">
-                 pminfo
-                </a>
-               </b>
-               (1)
-              
-              to make sure the PCP metrics can be fetched.
-              To enable the
-               <b>
-                zbxpcp
-               </b>
-               loadable module in a Zabbix agent, the following lines must be added to
-              the Zabbix agent configuration file
-               <i>
-                zabbix_agentd.conf
-               </i>
-               (make sure to use the correct
-               <i>
-                LoadModulePath
-               </i>
-               ):
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <pre>
-              LoadModulePath=/usr/lib64/zabbix/agent/
-              LoadModule=zbxpcp.so
-              </pre>
-                </dd>
-               </dl>
-               <p>
-                After restarting the Zabbix agent all the PCP metrics will be available
-              with the ``
-                <b>
-                 pcp.
-                </b>
-                ''
-              
-              prefix like all the other agent items.
-              This can be verified with the commands:
-               </p>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <b>
-                 </b>
-                 <pre>
-              $ pminfo -t
-              $ zabbix_agentd -p
-              $ pminfo -f kernel.all.sysfork
-              $ zabbix_get -s 127.0.0.1 -p 10050 -k pcp.kernel.all.sysfork
-              </pre>
-                </dd>
-               </dl>
-               <p>
-                Then to collect PCP metrics from Zabbix agents, the Zabbix server side
-              configuration is as usual (see Zabbix documentation if needed).
-               </p>
-               <p>
-                The PCP
-                <b>
-                 pmcd
-                </b>
-                service must always be running when starting up a
-                <b>
-                 zbxpcp
-                </b>
-                enabled Zabbix agent, otherwise the module will fail to load and the PCP
-              metrics will not become available.
-              Special care must be taken to make sure this happens also when rebooting
-              the system.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <i>
-                  /etc/zabbix/zabbix_agentd.conf
-                 </i>
-                </dt>
-                <dd>
-                 Typical Zabbix agent configuration file location.
-                </dd>
-                <dt>
-                 <i>
-                  /etc/zabbix/zbxpcp-derived-metrics.conf
-                 </i>
-                </dt>
-                <dd>
-                 Optional PCP derived metrics configuration file for
-                 <b>
-                  zbxpcp
-                 </b>
-                 .
-              
-              See
-                 <b>
-                  <a href="/man/man3/pmloadderivedconfig.3.html">
-                   pmLoadDerivedConfig
-                  </a>
-                 </b>
-                 (3)
-              
-              for more info on derived metrics.
-                </dd>
-                <dt>
-                 <i>
-                 </i>
-                 <tt>
-                  $PCP_LIB_DIR
-                 </tt>
-                 /zabbix/agent/zbxpcp.so
-                </dt>
-                <dd>
-                 Zabbix agent loadable PCP module.
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pminfo.1.html">
-                 pminfo
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmrep.1.html">
-                 pmrep
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/zabbix_get.1.html">
-                 zabbix_get
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmloadderivedconfig.3.html">
-                 pmLoadDerivedConfig
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man8/zabbix_agentd.8.html">
-                 zabbix_agentd
-                </a>
-               </b>
-               (8).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  CONFIGURATION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  ZBXPCP
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  zbxpcp
+ </b>
+ - Zabbix Agent Loadable PCP Module
+ <a name="lbAC">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ The
+ <b>
+  zbxpcp
+ </b>
+ loadable module extends Zabbix agent by making Performance Co-Pilot
+(PCP) metrics available to it.
+With the
+ <b>
+  zbxpcp
+ </b>
+ module configured in
+ <i>
+  zabbix_agentd.conf
+ </i>
+ all the PCP metrics are available from the Zabbix agent like any other
+agent items.
+As a loadable module (DSO)
+ <b>
+  zbxpcp
+ </b>
+ does not rely on any external programs but directly uses the PCP APIs to
+fetch PCP metrics when requested.
+ <p>
+  A typical Linux PCP installation offers over 1,000 metrics by default
+and is in turn extensible with its own plugins, or PMDAs (``Performance
+Metrics Domain Agents'').
+In addition to very complete
+  <i>
+   /proc
+  </i>
+  based statistics, readily available PCP PMDAs provide support for such
+system and application level components as 389 Directory Server, Apache,
+containers, HAProxy, GFS2, Gluster, libvirt, MySQL, NFS, Oracle, Postfix,
+PostgreSQL, Samba, and Sendmail, among others.
+PCP also runs on many platforms, including Linux, Mac OS X, FreeBSD,
+NetBSD, Solaris, and Windows.
+ </p>
+ <p>
+  For PCP introduction, see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1).
+
+To investigate the available PCP metrics, use for example
+  <b>
+   <a href="/man/man1/pminfo.1.html">
+    pminfo
+   </a>
+  </b>
+  (1).
+
+The
+  <i>
+   PCP Quick Reference Guide
+  </i>
+  is available at the PCP home page
+  <a href="https://pcp.io/.">
+   https://pcp.io/.
+  </a>
+ </p>
+ <p>
+  For general information about Zabbix data collection and loadable
+modules, see
+  <a href="https://www.zabbix.com/documentation/3.0/manual/config/items.">
+   https://www.zabbix.com/documentation/3.0/manual/config/items.
+  </a>
+  For Zabbix introduction and downloads, see
+  <a href="https://www.zabbix.com/.">
+   https://www.zabbix.com/.
+  </a>
+ </p>
+ <p>
+  <b>
+   zbxpcp
+  </b>
+  is compatible with the Zabbix module API version
+  <b>
+   1
+  </b>
+  .
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  CONFIGURATION
+ </h2>
+ First make sure PCP is installed and configured properly, see the above
+references for instructions and use for example
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1)
+
+to make sure the PCP metrics can be fetched.
+To enable the
+ <b>
+  zbxpcp
+ </b>
+ loadable module in a Zabbix agent, the following lines must be added to
+the Zabbix agent configuration file
+ <i>
+  zabbix_agentd.conf
+ </i>
+ (make sure to use the correct
+ <i>
+  LoadModulePath
+ </i>
+ ):
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+LoadModulePath=/usr/lib64/zabbix/agent/
+LoadModule=zbxpcp.so
+</pre>
+  </dd>
+ </dl>
+ <p>
+  After restarting the Zabbix agent all the PCP metrics will be available
+with the ``
+  <b>
+   pcp.
+  </b>
+  ''
+
+prefix like all the other agent items.
+This can be verified with the commands:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+$ pminfo -t
+$ zabbix_agentd -p
+$ pminfo -f kernel.all.sysfork
+$ zabbix_get -s 127.0.0.1 -p 10050 -k pcp.kernel.all.sysfork
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Then to collect PCP metrics from Zabbix agents, the Zabbix server side
+configuration is as usual (see Zabbix documentation if needed).
+ </p>
+ <p>
+  The PCP
+  <b>
+   pmcd
+  </b>
+  service must always be running when starting up a
+  <b>
+   zbxpcp
+  </b>
+  enabled Zabbix agent, otherwise the module will fail to load and the PCP
+metrics will not become available.
+Special care must be taken to make sure this happens also when rebooting
+the system.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <i>
+    /etc/zabbix/zabbix_agentd.conf
+   </i>
+  </dt>
+  <dd>
+   Typical Zabbix agent configuration file location.
+  </dd>
+  <dt>
+   <i>
+    /etc/zabbix/zbxpcp-derived-metrics.conf
+   </i>
+  </dt>
+  <dd>
+   Optional PCP derived metrics configuration file for
+   <b>
+    zbxpcp
+   </b>
+   .
+
+See
+   <b>
+    <a href="/man/man3/pmloadderivedconfig.3.html">
+     pmLoadDerivedConfig
+    </a>
+   </b>
+   (3)
+
+for more info on derived metrics.
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_LIB_DIR
+   </tt>
+   /zabbix/agent/zbxpcp.so
+  </dt>
+  <dd>
+   Zabbix agent loadable PCP module.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/zabbix_get.1.html">
+   zabbix_get
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmloadderivedconfig.3.html">
+   pmLoadDerivedConfig
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man8/zabbix_agentd.8.html">
+   zabbix_agentd
+  </a>
+ </b>
+ (8).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    CONFIGURATION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

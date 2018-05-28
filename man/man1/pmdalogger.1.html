@@ -1,617 +1,621 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMDALOGGER
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmdalogger
-               </b>
-               - log file performance metrics domain agent (PMDA)
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                $PCP_PMDAS_DIR/logger/pmdalogger
-               </b>
-               [
-               <b>
-                -d
-               </b>
-               <i>
-                domain
-               </i>
-               ]
-              [
-               <b>
-                -l
-               </b>
-               <i>
-                logfile
-               </i>
-               ]
-              [
-               <b>
-                -m
-               </b>
-               <i>
-                memory
-               </i>
-               ]
-              [
-               <b>
-                -s
-               </b>
-               <i>
-                interval
-               </i>
-               ]
-              [
-               <b>
-                -U
-               </b>
-               <i>
-                username
-               </i>
-               ]
-              [
-               <i>
-                configfile
-               </i>
-               ]
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmdalogger
-               </b>
-               is a configurable log file monitoring Performance Metrics Domain
-              Agent (PMDA).
-              It can be seen as analogous to the
-               <b>
-                -f
-               </b>
-               option to
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/tail.1.html">
-                 tail
-                </a>
-               </b>
-               (1)
-              
-              and converts each new log line into a performance event.
-              It was the first PMDA to make extensive use of event metrics, which
-              can be consumed by client tools like
-               <b>
-                <a href="/man/man1/pmevent.1.html">
-                 pmevent
-                </a>
-               </b>
-               (1).
-               <p>
-                The
-                <b>
-                 logger
-                </b>
-                PMDA exports both event-style metrics reflecting timestamped event records
-              for text logged to a file (or set of files or output from a process),
-              as well as the more orthodox sample-style metrics such as event counts
-              and throughput size values.
-               </p>
-               <p>
-                The PMDA is configured via a
-                <i>
-                 configfile
-                </i>
-                which contains one line for each source of events (file or process).
-              This file is setup by the Install script described in the later
-              section on ``INSTALLATION'' of the PMDA.
-               </p>
-               <p>
-                A brief description of the
-                <b>
-                 pmdalogger
-                </b>
-                command line options follows:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -d
-                 </b>
-                </dt>
-                <dd>
-                 It is absolutely crucial that the performance metrics
-                 <i>
-                  domain
-                 </i>
-                 number specified here is unique and consistent.
-              That is,
-                 <i>
-                  domain
-                 </i>
-                 should be different for every PMDA on the one host, and the same
-                 <i>
-                  domain
-                 </i>
-                 number should be used for the same PMDA on all hosts.
-                </dd>
-                <dt>
-                 <b>
-                  -l
-                 </b>
-                </dt>
-                <dd>
-                 Location of the log file.  By default, a log file named
-                 <i>
-                  logger.log
-                 </i>
-                 is written in the current directory of
-                 <b>
-                  <a href="/man/man1/pmcd.1.html">
-                   pmcd
-                  </a>
-                 </b>
-                 (1)
-              
-              when
-                 <b>
-                  pmdalogger
-                 </b>
-                 is started, i.e.
-                 <b>
-                  $PCP_LOG_DIR/pmcd
-                 </b>
-                 .
-              
-              If the log file cannot
-              be created or is not writable, output is written to the standard error instead.
-                </dd>
-                <dt>
-                 <b>
-                  -m
-                 </b>
-                </dt>
-                <dd>
-                 Limit the physical memory used by the PMDA to buffer event records to
-                 <i>
-                  maxsize
-                 </i>
-                 bytes.
-              As log events arrive at the PMDA, they must be buffered until individual
-              client tools request the next batch since their previous batch of events.
-              The default maximum is 2 megabytes.
-                </dd>
-                <dt>
-                 <b>
-                  -s
-                 </b>
-                </dt>
-                <dd>
-                 Sets the polling interval for detecting newly arrived log lines.
-              Mirrors the same option from the
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man1/tail.1.html">
-                   tail
-                  </a>
-                 </b>
-                 (1)
-              
-              command.
-                </dd>
-                <dt>
-                 <b>
-                  -U
-                 </b>
-                </dt>
-                <dd>
-                 User account under which to run the agent.
-              The default is the unprivileged "pcp" account in current versions of PCP,
-              but in older versions the superuser account ("root") was used by default.
-                </dd>
-               </dl>
-               <a name="lbAE">
-               </a>
-               <h2>
-                INSTALLATION
-               </h2>
-               If you want access to the names, help text and values for the logger
-              performance metrics, do the following as root:
-               <p>
-               </p>
-               <pre>
-              # cd $PCP_PMDAS_DIR/logger
-              # ./Install
-              </pre>
-               <p>
-                This is an interactive installation process which prompts for each
-              log file path to be monitored (or command to be run), a metric
-              instance name to identify it, and whether access should be restricted
-              (refer to the
-                <b>
-                 -x
-                </b>
-                option to
-                <b>
-                 <a href="/man/man1/pmevent.1.html">
-                  pmevent
-                 </a>
-                </b>
-                (1)
-              
-              for further details).
-               </p>
-               <p>
-                If you want to undo the installation, do the following as root:
-               </p>
-               <p>
-               </p>
-               <pre>
-              # cd $PCP_PMDAS_DIR/logger
-              # ./Remove
-              </pre>
-               <p>
-                <b>
-                 pmdalogger
-                </b>
-                is launched by
-                <b>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </b>
-                (1)
-              
-              and should never be executed directly.
-              The Install and Remove scripts notify
-                <b>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </b>
-                (1)
-              
-              when the agent is installed or removed.
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $PCP_PMCDCONF_PATH
-                 </b>
-                </dt>
-                <dd>
-                 command line options used to launch
-                 <b>
-                  pmdalogger
-                 </b>
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/logger/logger.conf
-                 </b>
-                </dt>
-                <dd>
-                 default configuration file for the logger metrics
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/logger/help
-                 </b>
-                </dt>
-                <dd>
-                 default help text file for the logger metrics
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/logger/Install
-                 </b>
-                </dt>
-                <dd>
-                 installation script for the
-                 <b>
-                  pmdalogger
-                 </b>
-                 agent
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_PMDAS_DIR/logger/Remove
-                 </b>
-                </dt>
-                <dd>
-                 undo installation script for the
-                 <b>
-                  pmdalogger
-                 </b>
-                 agent
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_LOG_DIR/pmcd/logger.log
-                 </b>
-                </dt>
-                <dd>
-                 default log file for error messages and other information from
-                 <b>
-                  pmdalogger
-                 </b>
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAH">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmevent.1.html">
-                 pmevent
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmcd.1.html">
-                 pmcd
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="http://man7.org/linux/man-pages/man1/tail.1.html">
-                 tail
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  INSTALLATION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMDALOGGER
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmdalogger
+ </b>
+ - log file performance metrics domain agent (PMDA)
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_PMDAS_DIR/logger/pmdalogger
+ </b>
+ [
+ <b>
+  -d
+ </b>
+ <i>
+  domain
+ </i>
+ ]
+[
+ <b>
+  -l
+ </b>
+ <i>
+  logfile
+ </i>
+ ]
+[
+ <b>
+  -m
+ </b>
+ <i>
+  memory
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  interval
+ </i>
+ ]
+[
+ <b>
+  -U
+ </b>
+ <i>
+  username
+ </i>
+ ]
+[
+ <i>
+  configfile
+ </i>
+ ]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmdalogger
+ </b>
+ is a configurable log file monitoring Performance Metrics Domain
+Agent (PMDA).
+It can be seen as analogous to the
+ <b>
+  -f
+ </b>
+ option to
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/tail.1.html">
+   tail
+  </a>
+ </b>
+ (1)
+
+and converts each new log line into a performance event.
+It was the first PMDA to make extensive use of event metrics, which
+can be consumed by client tools like
+ <b>
+  <a href="/man/man1/pmevent.1.html">
+   pmevent
+  </a>
+ </b>
+ (1).
+ <p>
+  The
+  <b>
+   logger
+  </b>
+  PMDA exports both event-style metrics reflecting timestamped event records
+for text logged to a file (or set of files or output from a process),
+as well as the more orthodox sample-style metrics such as event counts
+and throughput size values.
+ </p>
+ <p>
+  The PMDA is configured via a
+  <i>
+   configfile
+  </i>
+  which contains one line for each source of events (file or process).
+This file is setup by the Install script described in the later
+section on ``INSTALLATION'' of the PMDA.
+ </p>
+ <p>
+  A brief description of the
+  <b>
+   pmdalogger
+  </b>
+  command line options follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -d
+   </b>
+  </dt>
+  <dd>
+   It is absolutely crucial that the performance metrics
+   <i>
+    domain
+   </i>
+   number specified here is unique and consistent.
+That is,
+   <i>
+    domain
+   </i>
+   should be different for every PMDA on the one host, and the same
+   <i>
+    domain
+   </i>
+   number should be used for the same PMDA on all hosts.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+  </dt>
+  <dd>
+   Location of the log file.  By default, a log file named
+   <i>
+    logger.log
+   </i>
+   is written in the current directory of
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+when
+   <b>
+    pmdalogger
+   </b>
+   is started, i.e.
+   <b>
+    $PCP_LOG_DIR/pmcd
+   </b>
+   .
+
+If the log file cannot
+be created or is not writable, output is written to the standard error instead.
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+  </dt>
+  <dd>
+   Limit the physical memory used by the PMDA to buffer event records to
+   <i>
+    maxsize
+   </i>
+   bytes.
+As log events arrive at the PMDA, they must be buffered until individual
+client tools request the next batch since their previous batch of events.
+The default maximum is 2 megabytes.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+  </dt>
+  <dd>
+   Sets the polling interval for detecting newly arrived log lines.
+Mirrors the same option from the
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/tail.1.html">
+     tail
+    </a>
+   </b>
+   (1)
+
+command.
+  </dd>
+  <dt>
+   <b>
+    -U
+   </b>
+  </dt>
+  <dd>
+   User account under which to run the agent.
+The default is the unprivileged "pcp" account in current versions of PCP,
+but in older versions the superuser account ("root") was used by default.
+  </dd>
+ </dl>
+ <a name="lbAE">
+ </a>
+ <h2>
+  INSTALLATION
+ </h2>
+ If you want access to the names, help text and values for the logger
+performance metrics, do the following as root:
+ <p>
+ </p>
+ <pre>
+# cd $PCP_PMDAS_DIR/logger
+# ./Install
+</pre>
+ <p>
+  This is an interactive installation process which prompts for each
+log file path to be monitored (or command to be run), a metric
+instance name to identify it, and whether access should be restricted
+(refer to the
+  <b>
+   -x
+  </b>
+  option to
+  <b>
+   <a href="/man/man1/pmevent.1.html">
+    pmevent
+   </a>
+  </b>
+  (1)
+
+for further details).
+ </p>
+ <p>
+  If you want to undo the installation, do the following as root:
+ </p>
+ <p>
+ </p>
+ <pre>
+# cd $PCP_PMDAS_DIR/logger
+# ./Remove
+</pre>
+ <p>
+  <b>
+   pmdalogger
+  </b>
+  is launched by
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+and should never be executed directly.
+The Install and Remove scripts notify
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+when the agent is installed or removed.
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_PMCDCONF_PATH
+   </b>
+  </dt>
+  <dd>
+   command line options used to launch
+   <b>
+    pmdalogger
+   </b>
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/logger/logger.conf
+   </b>
+  </dt>
+  <dd>
+   default configuration file for the logger metrics
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/logger/help
+   </b>
+  </dt>
+  <dd>
+   default help text file for the logger metrics
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/logger/Install
+   </b>
+  </dt>
+  <dd>
+   installation script for the
+   <b>
+    pmdalogger
+   </b>
+   agent
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/logger/Remove
+   </b>
+  </dt>
+  <dd>
+   undo installation script for the
+   <b>
+    pmdalogger
+   </b>
+   agent
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmcd/logger.log
+   </b>
+  </dt>
+  <dd>
+   default log file for error messages and other information from
+   <b>
+    pmdalogger
+   </b>
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAH">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmevent.1.html">
+   pmevent
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/tail.1.html">
+   tail
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    INSTALLATION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

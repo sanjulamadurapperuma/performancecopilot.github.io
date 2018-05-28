@@ -1,809 +1,813 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMCONTROLLOG
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                __pmControlLog
-               </b>
-               - enable, disable or enquire about logging of performance
-              metrics
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include "pmapi.h"
-                <br/>
-                #include "libpcp.h"
-               </b>
-               <p>
-                <br/>
-                int __pmControlLog(int
-                <i>
-                 fd
-                </i>
-                , const pmResult *
-                <i>
-                 request
-                </i>
-                , int
-                <i>
-                 control
-                </i>
-                , int
-                <i>
-                 state
-                </i>
-                , int
-                <i>
-                 delta
-                </i>
-                , pmResult **
-                <i>
-                 status
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                CAVEAT
-               </h2>
-               This documentation is intended for internal Performance Co-Pilot
-              (PCP) developer use.
-               <p>
-                These interfaces are not part of the PCP APIs that are guaranteed to
-              remain fixed across releases, and they may not work, or may provide
-              different semantics at some point in the future.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                __pmControlLog
-               </b>
-               may be used to enable or disable the archive logging for particular performance
-              metrics, as identified by the
-               <i>
-                request
-               </i>
-               parameter;
-              see
-               <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
-                </a>
-               </b>
-               (3)
-              
-              for an explanation of the
-               <i>
-                pmResult
-               </i>
-               structure.
-               <p>
-                The application must have previously issued a call to
-                <b>
-                 <a href="/man/man3/pmconnectlogger.3.html">
-                  __pmConnectLogger
-                 </a>
-                </b>
-                (3)
-              
-              to establish a control-port connection
-              to the
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              instance to whom the control request is to be directed, and
-                <i>
-                 fd
-                </i>
-                (the result from
-                <b>
-                 <a href="/man/man3/pmconnectlogger.3.html">
-                  __pmConnectLogger
-                 </a>
-                </b>
-                (3))
-              
-              identifies this connection.
-               </p>
-               <p>
-                Within
-                <i>
-                 request
-                </i>
-                ,
-              
-              only the details of the performance metrics and their associated
-              instances will be used, i.e.
-              the values of the metrics, if any, will be ignored.
-                <i>
-                 request
-                </i>
-                would typically be constructed as the result of an earlier call to
-                <b>
-                 <a href="/man/man3/pmfetch.3.html">
-                  pmFetch
-                 </a>
-                </b>
-                (3).
-              
-              For metrics with a singular value (having an instance domain of
-                <b>
-                 PM_INDOM_NULL
-                </b>
-                )
-              
-              the corresponding
-                <i>
-                 pmValueSet
-                </i>
-                should have the value one in the
-                <i>
-                 numval
-                </i>
-                field and
-                <b>
-                 PM_IN_NULL
-                </b>
-                as the
-                <i>
-                 inst
-                </i>
-                field of the single
-                <i>
-                 pmValue
-                </i>
-                supplied.
-              If multiple explicit instances are to be logged, the
-                <i>
-                 numval
-                </i>
-                field of the
-                <i>
-                 pmValueSet
-                </i>
-                should contain the number of instances supplied and the
-                <i>
-                 inst
-                </i>
-                fields of the
-                <i>
-                 pmValue
-                </i>
-                structures should contain specific instance identifiers (which may not have the
-              reserved value
-                <b>
-                 PM_IN_NULL
-                </b>
-                ).
-               </p>
-               <p>
-                If the
-                <i>
-                 numval
-                </i>
-                field within any of the
-                <i>
-                 pmValueSet
-                </i>
-                structures in
-                <i>
-                 request
-                </i>
-                has a value of zero, it indicates that all available instances of the metric
-              should be used.  Enumeration of the instance domain is deferred until the
-              logger fetches the metric prior to writing it to the log, rather than being
-              performed when the
-                <b>
-                 __pmControlLog
-                </b>
-                request is received.  This is useful for metrics with instance domains that
-              change over time.  It is an error to specify
-                <i>
-                 numval
-                </i>
-                equal to zero if the corresponding metric has a singular value (no instance
-              domain).
-               </p>
-               <p>
-                There are several sorts of logging control available, namely mandatory or
-              advisory, as defined by the
-                <i>
-                 control
-                </i>
-                argument, and on, off or maybe as defined by the
-                <i>
-                 state
-                </i>
-                argument. These different types of control may be used to ensure that some
-              performance metrics can be guaranteed to always be in the log, while others may
-              be dynamically enabled or disabled as determined by the level and type of
-              system activity.
-               </p>
-               <p>
-                The actual action to be performed is defined by the combination of
-                <i>
-                 control
-                </i>
-                and
-                <i>
-                 state
-                </i>
-                as follows.
-              If
-                <i>
-                 control
-                </i>
-                is
-                <b>
-                 PM_LOG_MANDATORY
-                </b>
-                and
-                <i>
-                 state
-                </i>
-                is
-                <b>
-                 PM_LOG_ON
-                </b>
-                ,
-              
-              then logging is enabled.
-              If
-                <i>
-                 control
-                </i>
-                is
-                <b>
-                 PM_LOG_MANDATORY
-                </b>
-                and
-                <i>
-                 state
-                </i>
-                is
-                <b>
-                 PM_LOG_OFF
-                </b>
-                ,
-              
-              then logging is disabled.
-              If
-                <i>
-                 control
-                </i>
-                is
-                <b>
-                 PM_LOG_MANDATORY
-                </b>
-                and
-                <i>
-                 state
-                </i>
-                is
-                <b>
-                 PM_LOG_MAYBE
-                </b>
-                ,
-              
-              then subsequent advisory controls will be honored.  If the logging state prior
-              to the request was mandatory (on or off), the state is changed to advisory off.
-              If the logging state was already advisory (either on or off), it remains
-              unchanged.  If
-                <i>
-                 control
-                </i>
-                is
-                <b>
-                 PM_LOG_ADVISORY
-                </b>
-                and the last mandatory control for the metric was
-                <b>
-                 PM_LOG_MAYBE
-                </b>
-                ,
-              
-              then logging is enabled or disabled as specified by the
-                <i>
-                 state
-                </i>
-                argument, i.e.
-                <b>
-                 PM_LOG_ON
-                </b>
-                or
-                <b>
-                 PM_LOG_OFF
-                </b>
-                .
-              
-              When the arguments
-                <i>
-                 state
-                </i>
-                and
-                <i>
-                 control
-                </i>
-                specify a request to change the logging behavior, the 
-              argument
-                <i>
-                 delta
-                </i>
-                defines the logging interval in milliseconds to be applied to all metrics and
-              instances identified in
-                <i>
-                 request
-                </i>
-                .
-               </p>
-               <p>
-                The result argument
-                <i>
-                 status
-                </i>
-                returns the current logging state for each of the nominated performance
-              metrics.  There is a 1:1 correspondence between the elements of
-                <i>
-                 request
-                </i>
-                and
-                <i>
-                 status.
-                </i>
-                For metrics in
-                <i>
-                 request
-                </i>
-                that have
-                <i>
-                 pmValueSet
-                </i>
-                s
-              
-              with
-                <i>
-                 numval
-                </i>
-                equal to zero, the corresponding
-                <i>
-                 pmValueSet
-                </i>
-                in
-                <i>
-                 result
-                </i>
-                will contain a value for each available instance at the time of the call.  Each
-              metric value in
-                <i>
-                 status
-                </i>
-                will have the current logging state encoded in it.  The detailed outcome of the
-              operation for each metric can be determined by comparing these values to that
-              requested via
-                <i>
-                 control
-                </i>
-                ,
-                <i>
-                 state
-                </i>
-                and
-                <i>
-                 delta
-                </i>
-                .
-               </p>
-               <p>
-                Macros defined in
-                <b>
-                 libpcp.h
-                </b>
-                may be used to extract the state and logging interval from the returned metric
-              values.
-                <b>
-                 PMLC_GET_ON
-                </b>
-                returns true if logging is on, or false if it is off;
-                <b>
-                 PMLC_GET_MAND
-                </b>
-                returns true if logging is mandatory, or false if it is advisory;
-                <b>
-                 PMLC_GET_INLOG
-                </b>
-                returns true if the metric has been logged at least once, or false otherwise;
-                <b>
-                 PMLC_GET_AVAIL
-                </b>
-                returns true if the metric was available from its source the last time it was
-              supposed to be logged, or false if it was unavailable; and
-                <b>
-                 PMLC_GET_DELTA
-                </b>
-                returns the current logging interval for the metric (in milliseconds).
-                <b>
-                 PMLC_MAX_DELTA
-                </b>
-                defines the greatest
-                <i>
-                 delta
-                </i>
-                that can be returned in an encoded metric value.
-               </p>
-               <p>
-                As a special case, when
-                <i>
-                 control
-                </i>
-                is
-                <b>
-                 PM_LOG_ENQUIRE
-                </b>
-                ,
-                <i>
-                 state
-                </i>
-                and
-                <i>
-                 delta
-                </i>
-                are ignored, and
-                <i>
-                 status
-                </i>
-                returns the current logging state of the nominated performance metrics (this
-              variant makes no changes to the logging state).
-               </p>
-               <p>
-                If the value of the logging interval is 0, either for
-                <i>
-                 delta
-                </i>
-                in a request to change state to
-                <b>
-                 PM_LOG_ON
-                </b>
-                ,
-              
-              or encoded in the value returned from
-                <b>
-                 PM_LOG_ENQUIRE
-                </b>
-                ,
-              
-              then this corresponds to the special ``once only'' logging of metrics
-              that appear once in the archive log, and are never logged again.
-               </p>
-               <p>
-                <b>
-                 __pmControlLog
-                </b>
-                returns zero on success.
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                NOTE
-               </h2>
-               This routine is not thread-safe as there is no serialization on the
-              use of the communication channel between the sending of the request
-              and receiving the reply.
-              It is assumed that the caller is single-threaded,
-              which is true for the only current user of this routine, namely
-               <b>
-                <a href="/man/man1/pmlc.1.html">
-                 pmlc
-                </a>
-               </b>
-               (1).
-               <a name="lbAG">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pmlc.1.html">
-                 pmlc
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmfetch.3.html">
-                 pmFetch
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmconnectlogger.3.html">
-                 __pmConnectLogger
-                </a>
-               </b>
-               (3).
-               <a name="lbAH">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  PM_ERR_TOOSMALL
-                 </b>
-                </dt>
-                <dd>
-                 The number of metrics in
-                 <i>
-                  request
-                 </i>
-                 is less than one.
-                </dd>
-                <dt>
-                 <b>
-                  PM_ERR_VALUE
-                 </b>
-                </dt>
-                <dd>
-                 One or more of the
-                 <i>
-                  pmValueSet
-                 </i>
-                 s
-              
-              in
-                 <i>
-                  request
-                 </i>
-                 had
-                 <i>
-                  numval
-                 </i>
-                 (the number of instances) less than one.
-                </dd>
-                <dt>
-                 <b>
-                  EINVAL
-                 </b>
-                </dt>
-                <dd>
-                 An invalid combination of
-                 <i>
-                  control
-                 </i>
-                 and
-                 <i>
-                  state
-                 </i>
-                 was specified, or
-                 <i>
-                  delta
-                 </i>
-                 was negative.
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  CAVEAT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  NOTE
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMCONTROLLOG
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  __pmControlLog
+ </b>
+ - enable, disable or enquire about logging of performance
+metrics
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include "pmapi.h"
+  <br/>
+  #include "libpcp.h"
+ </b>
+ <p>
+  <br/>
+  int __pmControlLog(int
+  <i>
+   fd
+  </i>
+  , const pmResult *
+  <i>
+   request
+  </i>
+  , int
+  <i>
+   control
+  </i>
+  , int
+  <i>
+   state
+  </i>
+  , int
+  <i>
+   delta
+  </i>
+  , pmResult **
+  <i>
+   status
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  CAVEAT
+ </h2>
+ This documentation is intended for internal Performance Co-Pilot
+(PCP) developer use.
+ <p>
+  These interfaces are not part of the PCP APIs that are guaranteed to
+remain fixed across releases, and they may not work, or may provide
+different semantics at some point in the future.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  __pmControlLog
+ </b>
+ may be used to enable or disable the archive logging for particular performance
+metrics, as identified by the
+ <i>
+  request
+ </i>
+ parameter;
+see
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3)
+
+for an explanation of the
+ <i>
+  pmResult
+ </i>
+ structure.
+ <p>
+  The application must have previously issued a call to
+  <b>
+   <a href="/man/man3/pmconnectlogger.3.html">
+    __pmConnectLogger
+   </a>
+  </b>
+  (3)
+
+to establish a control-port connection
+to the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+instance to whom the control request is to be directed, and
+  <i>
+   fd
+  </i>
+  (the result from
+  <b>
+   <a href="/man/man3/pmconnectlogger.3.html">
+    __pmConnectLogger
+   </a>
+  </b>
+  (3))
+
+identifies this connection.
+ </p>
+ <p>
+  Within
+  <i>
+   request
+  </i>
+  ,
+
+only the details of the performance metrics and their associated
+instances will be used, i.e.
+the values of the metrics, if any, will be ignored.
+  <i>
+   request
+  </i>
+  would typically be constructed as the result of an earlier call to
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3).
+
+For metrics with a singular value (having an instance domain of
+  <b>
+   PM_INDOM_NULL
+  </b>
+  )
+
+the corresponding
+  <i>
+   pmValueSet
+  </i>
+  should have the value one in the
+  <i>
+   numval
+  </i>
+  field and
+  <b>
+   PM_IN_NULL
+  </b>
+  as the
+  <i>
+   inst
+  </i>
+  field of the single
+  <i>
+   pmValue
+  </i>
+  supplied.
+If multiple explicit instances are to be logged, the
+  <i>
+   numval
+  </i>
+  field of the
+  <i>
+   pmValueSet
+  </i>
+  should contain the number of instances supplied and the
+  <i>
+   inst
+  </i>
+  fields of the
+  <i>
+   pmValue
+  </i>
+  structures should contain specific instance identifiers (which may not have the
+reserved value
+  <b>
+   PM_IN_NULL
+  </b>
+  ).
+ </p>
+ <p>
+  If the
+  <i>
+   numval
+  </i>
+  field within any of the
+  <i>
+   pmValueSet
+  </i>
+  structures in
+  <i>
+   request
+  </i>
+  has a value of zero, it indicates that all available instances of the metric
+should be used.  Enumeration of the instance domain is deferred until the
+logger fetches the metric prior to writing it to the log, rather than being
+performed when the
+  <b>
+   __pmControlLog
+  </b>
+  request is received.  This is useful for metrics with instance domains that
+change over time.  It is an error to specify
+  <i>
+   numval
+  </i>
+  equal to zero if the corresponding metric has a singular value (no instance
+domain).
+ </p>
+ <p>
+  There are several sorts of logging control available, namely mandatory or
+advisory, as defined by the
+  <i>
+   control
+  </i>
+  argument, and on, off or maybe as defined by the
+  <i>
+   state
+  </i>
+  argument. These different types of control may be used to ensure that some
+performance metrics can be guaranteed to always be in the log, while others may
+be dynamically enabled or disabled as determined by the level and type of
+system activity.
+ </p>
+ <p>
+  The actual action to be performed is defined by the combination of
+  <i>
+   control
+  </i>
+  and
+  <i>
+   state
+  </i>
+  as follows.
+If
+  <i>
+   control
+  </i>
+  is
+  <b>
+   PM_LOG_MANDATORY
+  </b>
+  and
+  <i>
+   state
+  </i>
+  is
+  <b>
+   PM_LOG_ON
+  </b>
+  ,
+
+then logging is enabled.
+If
+  <i>
+   control
+  </i>
+  is
+  <b>
+   PM_LOG_MANDATORY
+  </b>
+  and
+  <i>
+   state
+  </i>
+  is
+  <b>
+   PM_LOG_OFF
+  </b>
+  ,
+
+then logging is disabled.
+If
+  <i>
+   control
+  </i>
+  is
+  <b>
+   PM_LOG_MANDATORY
+  </b>
+  and
+  <i>
+   state
+  </i>
+  is
+  <b>
+   PM_LOG_MAYBE
+  </b>
+  ,
+
+then subsequent advisory controls will be honored.  If the logging state prior
+to the request was mandatory (on or off), the state is changed to advisory off.
+If the logging state was already advisory (either on or off), it remains
+unchanged.  If
+  <i>
+   control
+  </i>
+  is
+  <b>
+   PM_LOG_ADVISORY
+  </b>
+  and the last mandatory control for the metric was
+  <b>
+   PM_LOG_MAYBE
+  </b>
+  ,
+
+then logging is enabled or disabled as specified by the
+  <i>
+   state
+  </i>
+  argument, i.e.
+  <b>
+   PM_LOG_ON
+  </b>
+  or
+  <b>
+   PM_LOG_OFF
+  </b>
+  .
+
+When the arguments
+  <i>
+   state
+  </i>
+  and
+  <i>
+   control
+  </i>
+  specify a request to change the logging behavior, the 
+argument
+  <i>
+   delta
+  </i>
+  defines the logging interval in milliseconds to be applied to all metrics and
+instances identified in
+  <i>
+   request
+  </i>
+  .
+ </p>
+ <p>
+  The result argument
+  <i>
+   status
+  </i>
+  returns the current logging state for each of the nominated performance
+metrics.  There is a 1:1 correspondence between the elements of
+  <i>
+   request
+  </i>
+  and
+  <i>
+   status.
+  </i>
+  For metrics in
+  <i>
+   request
+  </i>
+  that have
+  <i>
+   pmValueSet
+  </i>
+  s
+
+with
+  <i>
+   numval
+  </i>
+  equal to zero, the corresponding
+  <i>
+   pmValueSet
+  </i>
+  in
+  <i>
+   result
+  </i>
+  will contain a value for each available instance at the time of the call.  Each
+metric value in
+  <i>
+   status
+  </i>
+  will have the current logging state encoded in it.  The detailed outcome of the
+operation for each metric can be determined by comparing these values to that
+requested via
+  <i>
+   control
+  </i>
+  ,
+  <i>
+   state
+  </i>
+  and
+  <i>
+   delta
+  </i>
+  .
+ </p>
+ <p>
+  Macros defined in
+  <b>
+   libpcp.h
+  </b>
+  may be used to extract the state and logging interval from the returned metric
+values.
+  <b>
+   PMLC_GET_ON
+  </b>
+  returns true if logging is on, or false if it is off;
+  <b>
+   PMLC_GET_MAND
+  </b>
+  returns true if logging is mandatory, or false if it is advisory;
+  <b>
+   PMLC_GET_INLOG
+  </b>
+  returns true if the metric has been logged at least once, or false otherwise;
+  <b>
+   PMLC_GET_AVAIL
+  </b>
+  returns true if the metric was available from its source the last time it was
+supposed to be logged, or false if it was unavailable; and
+  <b>
+   PMLC_GET_DELTA
+  </b>
+  returns the current logging interval for the metric (in milliseconds).
+  <b>
+   PMLC_MAX_DELTA
+  </b>
+  defines the greatest
+  <i>
+   delta
+  </i>
+  that can be returned in an encoded metric value.
+ </p>
+ <p>
+  As a special case, when
+  <i>
+   control
+  </i>
+  is
+  <b>
+   PM_LOG_ENQUIRE
+  </b>
+  ,
+  <i>
+   state
+  </i>
+  and
+  <i>
+   delta
+  </i>
+  are ignored, and
+  <i>
+   status
+  </i>
+  returns the current logging state of the nominated performance metrics (this
+variant makes no changes to the logging state).
+ </p>
+ <p>
+  If the value of the logging interval is 0, either for
+  <i>
+   delta
+  </i>
+  in a request to change state to
+  <b>
+   PM_LOG_ON
+  </b>
+  ,
+
+or encoded in the value returned from
+  <b>
+   PM_LOG_ENQUIRE
+  </b>
+  ,
+
+then this corresponds to the special ``once only'' logging of metrics
+that appear once in the archive log, and are never logged again.
+ </p>
+ <p>
+  <b>
+   __pmControlLog
+  </b>
+  returns zero on success.
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  NOTE
+ </h2>
+ This routine is not thread-safe as there is no serialization on the
+use of the communication channel between the sending of the request
+and receiving the reply.
+It is assumed that the caller is single-threaded,
+which is true for the only current user of this routine, namely
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmconnectlogger.3.html">
+   __pmConnectLogger
+  </a>
+ </b>
+ (3).
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    PM_ERR_TOOSMALL
+   </b>
+  </dt>
+  <dd>
+   The number of metrics in
+   <i>
+    request
+   </i>
+   is less than one.
+  </dd>
+  <dt>
+   <b>
+    PM_ERR_VALUE
+   </b>
+  </dt>
+  <dd>
+   One or more of the
+   <i>
+    pmValueSet
+   </i>
+   s
+
+in
+   <i>
+    request
+   </i>
+   had
+   <i>
+    numval
+   </i>
+   (the number of instances) less than one.
+  </dd>
+  <dt>
+   <b>
+    EINVAL
+   </b>
+  </dt>
+  <dd>
+   An invalid combination of
+   <i>
+    control
+   </i>
+   and
+   <i>
+    state
+   </i>
+   was specified, or
+   <i>
+    delta
+   </i>
+   was negative.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    NOTE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

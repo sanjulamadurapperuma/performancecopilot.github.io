@@ -1,577 +1,581 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMDADAEMON
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmdaDaemon
-               </b>
-               - initialize the PMDA to run as a daemon
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-                <br/>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmda.h">
-                 pcp/pmda.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                <br/>
-                void pmdaDaemon(pmdaInterface *
-                <i>
-                 dispatch
-                </i>
-                , int
-                <i>
-                 interface
-                </i>
-                , const char *
-                <i>
-                 name
-                </i>
-                , int
-                <i>
-                 domain
-                </i>
-                , const char *
-                <i>
-                 logfile
-                </i>
-                , const char *
-                <i>
-                 helptext
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp_pmda -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmdaDaemon
-               </b>
-               initializes the
-               <b>
-                pmdaInterface
-               </b>
-               structure to use the
-               <i>
-                interface
-               </i>
-               extensions assuming the
-               <b>
-                <a href="/man/man3/pmda.3.html">
-                 PMDA
-                </a>
-               </b>
-               (3)
-              
-              is to be run as a daemon.  The
-               <b>
-                pmdaInterface
-               </b>
-               structure is initialized with:
-               <dl compact="">
-                <dt>
-                 <i>
-                  name
-                 </i>
-                </dt>
-                <dd>
-                 The name of the agent.
-                </dd>
-                <dt>
-                 <i>
-                  domain
-                 </i>
-                </dt>
-                <dd>
-                 The default domain number of the agent which uniquely identifies this PMDA
-              from other running PMDAs.  This may be subsequently changed by a command line 
-              option
-                 <b>
-                  -d
-                 </b>
-                 (see
-                 <b>
-                  <a href="/man/man3/pmdagetopt.3.html">
-                   pmdaGetOpt
-                  </a>
-                 </b>
-                 (3)).
-                </dd>
-                <dt>
-                 <i>
-                  logfile
-                 </i>
-                </dt>
-                <dd>
-                 The default path to the log file.  This may be replaced by the
-                 <b>
-                  -l
-                 </b>
-                 command line option if using
-                 <b>
-                  pmdaGetOpt
-                 </b>
-                 .
-                 <i>
-                  logfile
-                 </i>
-                 will be copied with
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/strdup.3.html">
-                   strdup
-                  </a>
-                 </b>
-                 (3),
-              
-              so the storage associated with
-                 <i>
-                  logfile
-                 </i>
-                 may be released after the call to
-                 <b>
-                  pmdaDaemon
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <i>
-                  helptext
-                 </i>
-                </dt>
-                <dd>
-                 The default path to the help text (see
-                 <b>
-                  <a href="/man/man3/pmdatext.3.html">
-                   pmdaText
-                  </a>
-                 </b>
-                 (3).
-              
-              This may be replaced by the
-                 <b>
-                  -h
-                 </b>
-                 command line option if using
-                 <b>
-                  <a href="/man/man3/pmdagetopt.3.html">
-                   pmdaGetOpt
-                  </a>
-                 </b>
-                 (3).
-              
-              If no help text is installed, or you are not using
-                 <b>
-                  <a href="/man/man3/pmdatext.3.html">
-                   pmdaText
-                  </a>
-                 </b>
-                 (3),
-              
-              then this should be set to NULL, otherwise
-                 <i>
-                  helptext
-                 </i>
-                 will be copied with
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man3/strdup.3.html">
-                   strdup
-                  </a>
-                 </b>
-                 (3),
-              
-              so the storage associated with
-                 <i>
-                  helptext
-                 </i>
-                 may be released after the call to
-                 <b>
-                  pmdaDaemon
-                 </b>
-                 .
-                </dd>
-               </dl>
-               <p>
-                The callbacks are initialized to
-                <b>
-                 <a href="/man/man3/pmdaprofile.3.html">
-                  pmdaProfile
-                 </a>
-                </b>
-                (3),
-                <b>
-                 <a href="/man/man3/pmdafetch.3.html">
-                  pmdaFetch
-                 </a>
-                </b>
-                (3),
-                <b>
-                 <a href="/man/man3/pmdadesc.3.html">
-                  pmdaDesc
-                 </a>
-                </b>
-                (3),
-                <b>
-                 <a href="/man/man3/pmdatext.3.html">
-                  pmdaText
-                 </a>
-                </b>
-                (3),
-                <b>
-                 <a href="/man/man3/pmdainstance.3.html">
-                  pmdaInstance
-                 </a>
-                </b>
-                (3)
-              
-              and
-                <b>
-                 <a href="/man/man3/pmdastore.3.html">
-                  pmdaStore
-                 </a>
-                </b>
-                (3).
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  Unable to allocate memory for pmdaExt structure
-                 </b>
-                </dt>
-                <dd>
-                 In addition, the
-                 <i>
-                  dispatch-&gt;status
-                 </i>
-                 field is set to a value less than zero.
-                </dd>
-                <dt>
-                 <b>
-                  PMDA interface version
-                 </b>
-                 <i>
-                  interface
-                 </i>
-                 <b>
-                  not supported
-                 </b>
-                </dt>
-                <dd>
-                 The
-                 <i>
-                  interface
-                 </i>
-                 version is not supported by
-                 <b>
-                  pmdaDaemon
-                 </b>
-                 .
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                CAVEAT
-               </h2>
-               The PMDA must be using
-               <b>
-                PMDA_INTERFACE_2
-               </b>
-               or later.
-               <p>
-                Once
-                <b>
-                 pmdaDaemon
-                </b>
-                has been called, it is expected that the
-                <b>
-                 pmdaInterface
-                </b>
-                structure pointed to by
-                <i>
-                 dispatch
-                </i>
-                will remain accessible to the 
-              routines in
-                <i>
-                 libpcp_pmda
-                </i>
-                (not reclaimed off the stack,
-              not freed or oherwise released, etc.).
-              If the caller needs to move or relocate the
-                <b>
-                 pmdaInterface
-                </b>
-                structure for any reason, then after the move
-                <b>
-                 <a href="/man/man3/pmdainterfacemoved.3.html">
-                  pmdaInterfaceMoved
-                 </a>
-                </b>
-                (3)
-              
-              must be called to resestablish the internal integrity of the
-                <i>
-                 pmdaInterface
-                </i>
-                structure at the new location before any other routine in
-                <i>
-                 libpcp_pmda
-                </i>
-                is called.
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmda.3.html">
-                 PMDA
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmdadso.3.html">
-                 pmdaDSO
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmdagetopt.3.html">
-                 pmdaGetOpt
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmdainterfacemoved.3.html">
-                 pmdaInterfaceMoved
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmdatext.3.html">
-                 pmdaText
-                </a>
-               </b>
-               (3).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  CAVEAT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMDADAEMON
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmdaDaemon
+ </b>
+ - initialize the PMDA to run as a daemon
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+  <br/>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmda.h">
+   pcp/pmda.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  void pmdaDaemon(pmdaInterface *
+  <i>
+   dispatch
+  </i>
+  , int
+  <i>
+   interface
+  </i>
+  , const char *
+  <i>
+   name
+  </i>
+  , int
+  <i>
+   domain
+  </i>
+  , const char *
+  <i>
+   logfile
+  </i>
+  , const char *
+  <i>
+   helptext
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp_pmda -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmdaDaemon
+ </b>
+ initializes the
+ <b>
+  pmdaInterface
+ </b>
+ structure to use the
+ <i>
+  interface
+ </i>
+ extensions assuming the
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3)
+
+is to be run as a daemon.  The
+ <b>
+  pmdaInterface
+ </b>
+ structure is initialized with:
+ <dl compact="">
+  <dt>
+   <i>
+    name
+   </i>
+  </dt>
+  <dd>
+   The name of the agent.
+  </dd>
+  <dt>
+   <i>
+    domain
+   </i>
+  </dt>
+  <dd>
+   The default domain number of the agent which uniquely identifies this PMDA
+from other running PMDAs.  This may be subsequently changed by a command line 
+option
+   <b>
+    -d
+   </b>
+   (see
+   <b>
+    <a href="/man/man3/pmdagetopt.3.html">
+     pmdaGetOpt
+    </a>
+   </b>
+   (3)).
+  </dd>
+  <dt>
+   <i>
+    logfile
+   </i>
+  </dt>
+  <dd>
+   The default path to the log file.  This may be replaced by the
+   <b>
+    -l
+   </b>
+   command line option if using
+   <b>
+    pmdaGetOpt
+   </b>
+   .
+   <i>
+    logfile
+   </i>
+   will be copied with
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/strdup.3.html">
+     strdup
+    </a>
+   </b>
+   (3),
+
+so the storage associated with
+   <i>
+    logfile
+   </i>
+   may be released after the call to
+   <b>
+    pmdaDaemon
+   </b>
+   .
+  </dd>
+  <dt>
+   <i>
+    helptext
+   </i>
+  </dt>
+  <dd>
+   The default path to the help text (see
+   <b>
+    <a href="/man/man3/pmdatext.3.html">
+     pmdaText
+    </a>
+   </b>
+   (3).
+
+This may be replaced by the
+   <b>
+    -h
+   </b>
+   command line option if using
+   <b>
+    <a href="/man/man3/pmdagetopt.3.html">
+     pmdaGetOpt
+    </a>
+   </b>
+   (3).
+
+If no help text is installed, or you are not using
+   <b>
+    <a href="/man/man3/pmdatext.3.html">
+     pmdaText
+    </a>
+   </b>
+   (3),
+
+then this should be set to NULL, otherwise
+   <i>
+    helptext
+   </i>
+   will be copied with
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/strdup.3.html">
+     strdup
+    </a>
+   </b>
+   (3),
+
+so the storage associated with
+   <i>
+    helptext
+   </i>
+   may be released after the call to
+   <b>
+    pmdaDaemon
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  The callbacks are initialized to
+  <b>
+   <a href="/man/man3/pmdaprofile.3.html">
+    pmdaProfile
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmdafetch.3.html">
+    pmdaFetch
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmdadesc.3.html">
+    pmdaDesc
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmdatext.3.html">
+    pmdaText
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmdainstance.3.html">
+    pmdaInstance
+   </a>
+  </b>
+  (3)
+
+and
+  <b>
+   <a href="/man/man3/pmdastore.3.html">
+    pmdaStore
+   </a>
+  </b>
+  (3).
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    Unable to allocate memory for pmdaExt structure
+   </b>
+  </dt>
+  <dd>
+   In addition, the
+   <i>
+    dispatch-&gt;status
+   </i>
+   field is set to a value less than zero.
+  </dd>
+  <dt>
+   <b>
+    PMDA interface version
+   </b>
+   <i>
+    interface
+   </i>
+   <b>
+    not supported
+   </b>
+  </dt>
+  <dd>
+   The
+   <i>
+    interface
+   </i>
+   version is not supported by
+   <b>
+    pmdaDaemon
+   </b>
+   .
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CAVEAT
+ </h2>
+ The PMDA must be using
+ <b>
+  PMDA_INTERFACE_2
+ </b>
+ or later.
+ <p>
+  Once
+  <b>
+   pmdaDaemon
+  </b>
+  has been called, it is expected that the
+  <b>
+   pmdaInterface
+  </b>
+  structure pointed to by
+  <i>
+   dispatch
+  </i>
+  will remain accessible to the 
+routines in
+  <i>
+   libpcp_pmda
+  </i>
+  (not reclaimed off the stack,
+not freed or oherwise released, etc.).
+If the caller needs to move or relocate the
+  <b>
+   pmdaInterface
+  </b>
+  structure for any reason, then after the move
+  <b>
+   <a href="/man/man3/pmdainterfacemoved.3.html">
+    pmdaInterfaceMoved
+   </a>
+  </b>
+  (3)
+
+must be called to resestablish the internal integrity of the
+  <i>
+   pmdaInterface
+  </i>
+  structure at the new location before any other routine in
+  <i>
+   libpcp_pmda
+  </i>
+  is called.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdadso.3.html">
+   pmdaDSO
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdagetopt.3.html">
+   pmdaGetOpt
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdainterfacemoved.3.html">
+   pmdaInterfaceMoved
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmdatext.3.html">
+   pmdaText
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

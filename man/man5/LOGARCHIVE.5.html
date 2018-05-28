@@ -1,2369 +1,2373 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                LOGARCHIVE
-               </h1>
-               Section: File Formats (5)
-               <br/>
-               Updated:
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                LOGARCHIVE
-               </b>
-               - performance metrics archive format
-               <a name="lbAC">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               Performance Co-Pilot (PCP) archives store historical values
-              about arbitrary metrics recorded from a single host.
-              Archives are machine independent and self-contained - all
-              metadata required for off-line or off-site analysis is stored.
-               <p>
-                The format is stable in order to allow long-term historical
-              storage and processing by PMAPI client tools.
-               </p>
-               <p>
-                Archives may be read by most PCP client tools, using the
-                <i>
-                 -a/--archive NAME
-                </i>
-                option, or dumped raw by
-                <b>
-                 <a href="/man/man1/pmdumplog.1.html">
-                  pmdumplog
-                 </a>
-                </b>
-                (1).
-              
-              Archives are created primarily by
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1),
-              
-              however they can also be created using the
-                <b>
-                 <a href="/man/man3/logimport.3.html">
-                  LOGIMPORT
-                 </a>
-                </b>
-                (3)
-              
-              programming interface.
-               </p>
-               <p>
-                Archives may be merged, analyzed, modified and subsampled using
-                <b>
-                 <a href="/man/man1/pmlogreduce.1.html">
-                  pmlogreduce
-                 </a>
-                </b>
-                (1),
-                <b>
-                 <a href="/man/man1/pmlogsummary.1.html">
-                  pmlogsummary
-                 </a>
-                </b>
-                (1),
-                <b>
-                 <a href="/man/man1/pmlogrewrite.1.html">
-                  pmlogrewrite
-                 </a>
-                </b>
-                (1)
-              
-              and
-                <b>
-                 <a href="/man/man1/pmlogextract.1.html">
-                  pmlogextract
-                 </a>
-                </b>
-                (1).
-              
-              In addition, PCP archives may be examined in sets or grouped
-              together into "archive folios", which are created and managed
-              by the
-                <b>
-                 <a href="/man/man1/mkaf.1.html">
-                  mkaf
-                 </a>
-                </b>
-                (1)
-              
-              and
-                <b>
-                 <a href="/man/man1/pmafm.1.html">
-                  pmafm
-                 </a>
-                </b>
-                (1)
-              
-              tools.
-               </p>
-               <p>
-                Archives consist of several physical files that share a common
-              arbitrary prefix, e.g.
-                <i>
-                 myarchive
-                </i>
-                .
-               </p>
-               <dl compact="">
-                <dt>
-                 <i>
-                  myarchive
-                 </i>
-                 .0,
-                 <i>
-                  myarchive
-                 </i>
-                 .1, ...
-                </dt>
-                <dd>
-                 One or more data volumes containing the metric values and any
-              error codes encountered during metric sampling.
-              Typically the largest of the files and may grow very rapidly,
-              depending on the
-                 <b>
-                  pmlogger
-                 </b>
-                 sampling interval(s) being used.
-                </dd>
-                <dt>
-                 <i>
-                  myarchive
-                 </i>
-                 .meta
-                </dt>
-                <dd>
-                 Information for PMAPI functions such as
-                 <b>
-                  <a href="/man/man3/pmlookupdesc.3.html">
-                   pmLookupDesc
-                  </a>
-                 </b>
-                 (3),
-                 <b>
-                  <a href="/man/man3/pmlookuplabels.3.html">
-                   pmLookupLabels
-                  </a>
-                 </b>
-                 (3)
-              
-              and
-                 <b>
-                  <a href="/man/man3/pmlookupindom.3.html">
-                   pmLookupInDom
-                  </a>
-                 </b>
-                 (3).
-              
-              The metadata file may grow sporadically as logged metrics,
-              instance domains and labels vary over time.
-                </dd>
-                <dt>
-                 <i>
-                  myarchive
-                 </i>
-                 .index
-                </dt>
-                <dd>
-                 A temporal index, mapping timestamps to offsets in the other files.
-                </dd>
-               </dl>
-               <a name="lbAD">
-               </a>
-               <h2>
-                COMMON FEATURES
-               </h2>
-               All three types of files have a similar record-based structure, a
-              convention of network-byte-order (big-endian) encoding, and 32-bit
-              fields for tagging/padding for those records.
-              Strings are stored as 8-bit characters without assuming a specific
-              encoding, so normally ASCII.
-              See also the
-               <b>
-                __pmLog*
-               </b>
-               types in
-               <i>
-                libpcp.h
-               </i>
-               .
-               <a name="lbAE">
-               </a>
-               <h3>
-                RECORD FRAMING
-               </h3>
-               <p>
-                The volume and meta files are divided into self-identifying records.
-               </p>
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      N, length of record, in bytes, including this field
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      N-8
-                     </td>
-                     <td>
-                      record payload, usually starting with a 32-bit tag
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      N-4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      N, length of record (again)
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-                <a name="lbAF">
-                </a>
-               </p>
-               <h3>
-                ARCHIVE LOG LABEL
-               </h3>
-               All three types of files begin with a "log label" header, which
-              identifies the host name, the time interval covered, and a time zone.
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      tag, PM_LOG_MAGIC | PM_LOG_VERS02=0x50052602
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      pid of pmlogger process that wrote file
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      log start time, seconds part (past UNIX epoch)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      log start time, microseconds part
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      16
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      current log volume number (or -1=.meta, -2=.index)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20
-                     </td>
-                     <td align="center">
-                      64
-                     </td>
-                     <td>
-                      name of collection host
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      80
-                     </td>
-                     <td align="center">
-                      40
-                     </td>
-                     <td>
-                      time zone string ($TZ environment variable)
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                All fields, except for the current log volume number field, match for
-              all archive-related files produced by a single run of the tool.
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                ARCHIVE VOLUME (.0, .1, ...) RECORDS
-               </h2>
-               <a name="lbAH">
-               </a>
-               <h3>
-                pmResult
-               </h3>
-               After the archive log label record, an archive volume file contains
-              metric values corresponding to the
-               <i>
-                pmResult
-               </i>
-               set of one
-               <i>
-                pmFetch
-               </i>
-               operation, which is almost identical to the form on disk.
-              The record size may vary according to number of PMIDs being fetched,
-              the number of instances for their domains.
-              File size is limited to 2GiB, due to storage of 32-bit offsets within
-              the temporal index.
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      timestamp, seconds part (past UNIX epoch)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      timestamp, microseconds part
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      number of PMIDs with data following
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      M
-                     </td>
-                     <td>
-                      pmValueSet #0
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12+M
-                     </td>
-                     <td align="center">
-                      N
-                     </td>
-                     <td>
-                      pmValueSet #1
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12+M+N
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      NOP
-                     </td>
-                     <td align="center">
-                      X
-                     </td>
-                     <td>
-                      pmValueBlock #0
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      NOP+X
-                     </td>
-                     <td align="center">
-                      Y
-                     </td>
-                     <td>
-                      pmValueBlock #1
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      NOP+X+Y
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                Records with a number-of-PMIDs equal to zero are "mark records", and
-              represent interruptions, missing data, or time discontinuities in
-              logging.
-                <a name="lbAI">
-                </a>
-               </p>
-               <h3>
-                pmValueSet
-               </h3>
-               This subrecord represents the measurements for one metric.
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      PMID
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      number of values
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      storage mode, PM_VAL_INSITU=0 or PM_VAL_DPTR=1
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      M
-                     </td>
-                     <td>
-                      pmValue #0
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12+M
-                     </td>
-                     <td align="center">
-                      N
-                     </td>
-                     <td>
-                      pmValue #1
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12+M+N
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                The metric-description metadata for PMIDs is found in the .meta files.
-              These entries are not timestamped, so the metadata is assumed to be
-              unchanging throughout the archiving session.
-                <a name="lbAJ">
-                </a>
-               </p>
-               <h3>
-                pmValue
-               </h3>
-               This subrecord represents one measurement for one instance of the metric.
-              It is a variant type, depending on the parent pmValueSet's value-format
-              field.  This allows small numbers to be encoded compactly, but retain
-              flexibility for larger or variable-length data to be stored later in the
-              pmResult record.
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      number in instance-domain (or PM_IN_NULL=-1)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      value (INSITU)
-                      <i>
-                       or
-                      </i>
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                     </td>
-                     <td align="center">
-                     </td>
-                     <td>
-                      offset in pmResult to our pmValueBlock (DPTR)
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                The instance-domain metadata for PMIDs is found in the .meta files.
-              Since the numeric mappings may change during the lifetime of the
-              logging session, it is important to match up the timestamp of the
-              measurement record with the corresponding instance-domain record.
-              That is, the instance-domain corresponding to a measurement at time T
-              are the records with largest timestamps T' &lt;= T.
-                <a name="lbAK">
-                </a>
-               </p>
-               <h3>
-                pmValueBlock
-               </h3>
-               Instances of this subrecord are placed at the end of the
-               <i>
-                pmValueSet
-               </i>
-               ,
-              
-              after all the
-               <i>
-                pmValue
-               </i>
-               subrecords.
-              If (and only if) needed, they are padded at the end to the
-              next-higher 32-bit boundary.
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      1
-                     </td>
-                     <td>
-                      value type (same as
-                      <i>
-                       pmDesc.type
-                      </i>
-                      )
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      1
-                     </td>
-                     <td align="center">
-                      3
-                     </td>
-                     <td>
-                      4 + N, the length of the subrecord
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      N
-                     </td>
-                     <td>
-                      bytes that make up the raw value
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4+N
-                     </td>
-                     <td align="center">
-                      0-3
-                     </td>
-                     <td>
-                      padding (not included in the 4+N length field)
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                Note that for
-                <i>
-                 PM_TYPE_STRING
-                </i>
-                ,
-              
-              the length includes an explicit NULL terminator byte.
-              For
-                <i>
-                 PM_TYPE_EVENT
-                </i>
-                ,
-              
-              the value bytestring is further structured.
-                <a name="lbAL">
-                </a>
-               </p>
-               <h2>
-                METADATA FILE (.meta) RECORDS
-               </h2>
-               After the archive log label record, the metadata file contains
-              interleaved metric-description and timestamped instance-domain
-              descriptors.
-              File size is limited to 2GiB, due to storage of 32-bit offsets
-              within the temporal index.
-              Unlike the data volumes, these records are not forced to 32-bit
-              alignment.
-              See also
-               <i>
-                libpcp/logmeta.c
-               </i>
-               .
-               <a name="lbAM">
-               </a>
-               <h3>
-                pmDesc
-               </h3>
-               Instances of this record represent the metric description, giving a
-              name, type, instance-domain identifier, and a set of names to each
-              PMID used in the archive volume.
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      tag, TYPE_DESC=1
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      PMID
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      type (PM_TYPE_*)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      instance domain number
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      16
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      semantics of value (PM_SEM_*)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      units: bit-packed pmUnits
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      number of alternative names for this PMID
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      28
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      N: number of bytes in this name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      32
-                     </td>
-                     <td align="center">
-                      N
-                     </td>
-                     <td>
-                      bytes of the name, no NULL terminator nor padding
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      32+N
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      N2: number of bytes in next name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      36+N
-                     </td>
-                     <td align="center">
-                      N2
-                     </td>
-                     <td>
-                      bytes of the name, no NULL terminator nor padding
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      ...
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                <a name="lbAN">
-                </a>
-               </p>
-               <h3>
-                pmLogIndom
-               </h3>
-               Instances of this record represent the number-string mapping
-              table of an instance domain.
-              The instance domain number will have already been mentioned
-              in a prior
-               <i>
-                pmDesc
-               </i>
-               record.
-              As new instances may appear over a long archiving run these
-              records are timestamped, and must be searched when decoding
-               <i>
-                pmResult
-               </i>
-               records from the archive data volumes.
-              Instance names may be reused between instance numbers, so an
-              offset-based string table is used that facilitates sharing.
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      tag, TYPE_INDOM=2
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      timestamp, seconds part (past UNIX epoch)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      timestamp, microseconds part
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      instance domain number
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      16
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      N: number of instances in domain, normally &gt;0
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      first instance number
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      24
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      second instance number (if appropriate)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      ...
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20+4*N
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      first offset into string table (see below)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20+4*N+4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      second offset into string table (etc.)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      ...
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20+8*N
-                     </td>
-                     <td align="center">
-                      M
-                     </td>
-                     <td>
-                      base of string table, containing
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                     </td>
-                     <td align="center">
-                     </td>
-                     <td>
-                      packed, NULL-terminated instance names
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                Records of this form
-                <i>
-                 replace
-                </i>
-                the existing instance-domain: prior
-              records are not searched for resolving instance numbers in measurements
-              after this timestamp.
-                <a name="lbAO">
-                </a>
-               </p>
-               <h3>
-                pmLogLabelSet
-               </h3>
-               Instances of this record represent sets of name:value pairs
-              associated with labels of the context, instance domains and
-              individual performance metrics - refer to
-               <b>
-                <a href="/man/man3/pmlookuplabels.3.html">
-                 pmLookupLabels
-                </a>
-               </b>
-               (3)
-              
-              for further details.
-               <p>
-                Any instance domain number will have already been mentioned
-              in a prior
-                <i>
-                 pmDesc
-                </i>
-                record.
-              As new labels can appear during an archiving session, these
-              records are timestamped and must be searched when decoding
-                <i>
-                 pmResult
-                </i>
-                records from the archive data volumes.
-               </p>
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      tag, TYPE_LABEL=3
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      timestamp, seconds part (past UNIX epoch)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      timestamp, microseconds part
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      label type (PM_LABEL_* type macros.)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      16
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      numeric identifier - domain, PMID, etc
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                     </td>
-                     <td align="center">
-                     </td>
-                     <td>
-                      or PM_IN_NULL=-1 for context labels
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      N: number of label sets in this record,
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                     </td>
-                     <td align="center">
-                     </td>
-                     <td>
-                      usually 1 except in the case of instances
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      24
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      offset to the start of the JSONB labels string
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      28
-                     </td>
-                     <td align="center">
-                      L1
-                     </td>
-                     <td>
-                      first labelset array entry (see below)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      ...
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      28+L1
-                     </td>
-                     <td align="center">
-                      LN
-                     </td>
-                     <td>
-                      N-th labelset array entry (see below)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      ...
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      28+L1+...LN
-                     </td>
-                     <td align="center">
-                      M
-                     </td>
-                     <td>
-                      concatenated JSONB strings for all labelsets
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                Records of this form
-                <i>
-                 replace
-                </i>
-                the existing labels for a given
-              type: prior records are not searched for resolving that class of
-              label in measurements after this timestamp.
-               </p>
-               <p>
-                The individual labelset array entries are variable length, depending
-              on the number of labels present within that set.
-              These entries contain the instance identifiers (in the case of type
-              PM_LABEL_INSTANCES labels), lengths and offsets of each label name
-              and value, and also any flags set for each label.
-               </p>
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      instance identifier (or PM_IN_NULL=-1)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      length of JSONB label string
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      N: number of labels in this labelset
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      2
-                     </td>
-                     <td>
-                      first label name offset
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      14
-                     </td>
-                     <td align="center">
-                      1
-                     </td>
-                     <td>
-                      first label name length
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      15
-                     </td>
-                     <td align="center">
-                      1
-                     </td>
-                     <td>
-                      first label flags (e.g. optionality)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      16
-                     </td>
-                     <td align="center">
-                      2
-                     </td>
-                     <td>
-                      first label value offset
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      18
-                     </td>
-                     <td align="center">
-                      2
-                     </td>
-                     <td>
-                      first label value length
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      20
-                     </td>
-                     <td align="center">
-                      2
-                     </td>
-                     <td>
-                      second label name offset (if appropriate)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      ...
-                     </td>
-                     <td align="center">
-                      ...
-                     </td>
-                     <td>
-                      ...
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-                <a name="lbAP">
-                </a>
-               </p>
-               <h3>
-                pmLogText
-               </h3>
-               This record stores help text associated with a metric or an
-              instance domain - as provided by
-               <b>
-                <a href="/man/man3/pmlookuptext.3.html">
-                 pmLookupText
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmlookupindomtext.3.html">
-                 pmLookupInDomText
-                </a>
-               </b>
-               (3).
-               <p>
-                The metric identifier and instance domain number will have
-              already been mentioned in a prior
-                <i>
-                 pmDesc
-                </i>
-                record.
-               </p>
-               <p>
-               </p>
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      tag, TYPE_TEXT=4
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      text and identifier type (PM_TEXT_* macros.)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      numeric identifier - PMID or instance domain
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      M
-                     </td>
-                     <td>
-                      help text string, arbitrary text
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-                <a name="lbAQ">
-                </a>
-               </p>
-               <h2>
-                INDEX FILE (.index) RECORDS
-               </h2>
-               After the archive log label record, the temporal index file contains a
-              plainly concatenated, unframed group of tuples, which relate timestamps
-              to 32-bit seek offsets in the volume and meta files.
-              These records are fixed-size, fixed-format, and are
-               <i>
-                not
-               </i>
-               enclosed
-              in the standard length/payload/length wrapper: they take up the entire
-              remainder of the .index file.
-              See also
-               <i>
-                libpcp/logutil.c
-               </i>
-               .
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      Offset
-                     </td>
-                     <td align="center">
-                      Length
-                     </td>
-                     <td align="center">
-                      Name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      0
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      event time, seconds part (past UNIX epoch)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      4
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      event time, microseconds part
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      8
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      archive volume number (0...N)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      12
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      byte offset in .meta file of pmDesc or pmLogIndom
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      16
-                     </td>
-                     <td align="center">
-                      4
-                     </td>
-                     <td>
-                      byte offset in archive volume file of pmResult
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-               </p>
-               <p>
-                Since the temporal index is optional, and exists only to speed up
-              time-based random access to metrics and their metadata, the index
-              records are emitted only intermittently.
-              An archive reader program should not presume any particular rate of
-              data flow into the index.
-              However, common events that may trigger a new temporal-index record
-              include changes in instance-domains, switching over to a new archive
-              volume, and starting or stopping logging.
-              One reliable invariant however is that, for each index entry, there
-              are to be no meta or archive-volume records with a timestamp after
-              that in the index, but physically before the byte-offset in the index.
-                <a name="lbAR">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               Several PCP tools create archives in standard locations:
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  $HOME/.pcp/pmlogger
-                 </b>
-                </dt>
-                <dd>
-                 default location for the interactive chart recording mode in
-                 <b>
-                  <a href="/man/man1/pmchart.1.html">
-                   pmchart
-                  </a>
-                 </b>
-                 (1)
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_LOG_DIR/pmlogger
-                 </b>
-                </dt>
-                <dd>
-                 default location for
-                 <b>
-                  <a href="/man/man1/pmlogger_daily.1.html">
-                   pmlogger_daily
-                  </a>
-                 </b>
-                 (1)
-              
-              and
-                 <b>
-                  <a href="/man/man1/pmlogger_check.1.html">
-                   pmlogger_check
-                  </a>
-                 </b>
-                 (1)
-              
-              scripts
-                </dd>
-                <dt>
-                 <b>
-                  $PCP_LOG_DIR/pmmgr
-                 </b>
-                </dt>
-                <dd>
-                 default location for the PCP daemon manager
-                 <b>
-                  <a href="/man/man1/pmmgr.1.html">
-                   pmmgr
-                  </a>
-                 </b>
-                 (1)
-                </dd>
-               </dl>
-               <a name="lbAS">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupdesc.3.html">
-                 pmLookupDesc
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupindom.3.html">
-                 pmLookupInDom
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookupindomtext.3.html">
-                 pmLookupInDomText
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookuplabels.3.html">
-                 pmLookupLabels
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmlookuptext.3.html">
-                 pmLookupText
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man1/mkaf.1.html">
-                 mkaf
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmafm.1.html">
-                 pmafm
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmchart.1.html">
-                 pmchart
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumplog.1.html">
-                 pmdumplog
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger_check.1.html">
-                 pmlogger_check
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger_daily.1.html">
-                 pmlogger_daily
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogreduce.1.html">
-                 pmlogreduce
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogrewrite.1.html">
-                 pmlogrewrite
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogsummary.1.html">
-                 pmlogsummary
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmmgr.1.html">
-                 pmmgr
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5),
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  COMMON FEATURES
-                 </a>
-                </dt>
-                <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAE">
-                    RECORD FRAMING
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAF">
-                    ARCHIVE LOG LABEL
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  ARCHIVE VOLUME (.0, .1, ...) RECORDS
-                 </a>
-                </dt>
-                <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAH">
-                    pmResult
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAI">
-                    pmValueSet
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAJ">
-                    pmValue
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAK">
-                    pmValueBlock
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <a href="#lbAL">
-                  METADATA FILE (.meta) RECORDS
-                 </a>
-                </dt>
-                <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAM">
-                    pmDesc
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAN">
-                    pmLogIndom
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAO">
-                    pmLogLabelSet
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAP">
-                    pmLogText
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <a href="#lbAQ">
-                  INDEX FILE (.index) RECORDS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAR">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAS">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  LOGARCHIVE
+ </h1>
+ Section: File Formats (5)
+ <br/>
+ Updated:
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  LOGARCHIVE
+ </b>
+ - performance metrics archive format
+ <a name="lbAC">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ Performance Co-Pilot (PCP) archives store historical values
+about arbitrary metrics recorded from a single host.
+Archives are machine independent and self-contained - all
+metadata required for off-line or off-site analysis is stored.
+ <p>
+  The format is stable in order to allow long-term historical
+storage and processing by PMAPI client tools.
+ </p>
+ <p>
+  Archives may be read by most PCP client tools, using the
+  <i>
+   -a/--archive NAME
+  </i>
+  option, or dumped raw by
+  <b>
+   <a href="/man/man1/pmdumplog.1.html">
+    pmdumplog
+   </a>
+  </b>
+  (1).
+
+Archives are created primarily by
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1),
+
+however they can also be created using the
+  <b>
+   <a href="/man/man3/logimport.3.html">
+    LOGIMPORT
+   </a>
+  </b>
+  (3)
+
+programming interface.
+ </p>
+ <p>
+  Archives may be merged, analyzed, modified and subsampled using
+  <b>
+   <a href="/man/man1/pmlogreduce.1.html">
+    pmlogreduce
+   </a>
+  </b>
+  (1),
+  <b>
+   <a href="/man/man1/pmlogsummary.1.html">
+    pmlogsummary
+   </a>
+  </b>
+  (1),
+  <b>
+   <a href="/man/man1/pmlogrewrite.1.html">
+    pmlogrewrite
+   </a>
+  </b>
+  (1)
+
+and
+  <b>
+   <a href="/man/man1/pmlogextract.1.html">
+    pmlogextract
+   </a>
+  </b>
+  (1).
+
+In addition, PCP archives may be examined in sets or grouped
+together into "archive folios", which are created and managed
+by the
+  <b>
+   <a href="/man/man1/mkaf.1.html">
+    mkaf
+   </a>
+  </b>
+  (1)
+
+and
+  <b>
+   <a href="/man/man1/pmafm.1.html">
+    pmafm
+   </a>
+  </b>
+  (1)
+
+tools.
+ </p>
+ <p>
+  Archives consist of several physical files that share a common
+arbitrary prefix, e.g.
+  <i>
+   myarchive
+  </i>
+  .
+ </p>
+ <dl compact="">
+  <dt>
+   <i>
+    myarchive
+   </i>
+   .0,
+   <i>
+    myarchive
+   </i>
+   .1, ...
+  </dt>
+  <dd>
+   One or more data volumes containing the metric values and any
+error codes encountered during metric sampling.
+Typically the largest of the files and may grow very rapidly,
+depending on the
+   <b>
+    pmlogger
+   </b>
+   sampling interval(s) being used.
+  </dd>
+  <dt>
+   <i>
+    myarchive
+   </i>
+   .meta
+  </dt>
+  <dd>
+   Information for PMAPI functions such as
+   <b>
+    <a href="/man/man3/pmlookupdesc.3.html">
+     pmLookupDesc
+    </a>
+   </b>
+   (3),
+   <b>
+    <a href="/man/man3/pmlookuplabels.3.html">
+     pmLookupLabels
+    </a>
+   </b>
+   (3)
+
+and
+   <b>
+    <a href="/man/man3/pmlookupindom.3.html">
+     pmLookupInDom
+    </a>
+   </b>
+   (3).
+
+The metadata file may grow sporadically as logged metrics,
+instance domains and labels vary over time.
+  </dd>
+  <dt>
+   <i>
+    myarchive
+   </i>
+   .index
+  </dt>
+  <dd>
+   A temporal index, mapping timestamps to offsets in the other files.
+  </dd>
+ </dl>
+ <a name="lbAD">
+ </a>
+ <h2>
+  COMMON FEATURES
+ </h2>
+ All three types of files have a similar record-based structure, a
+convention of network-byte-order (big-endian) encoding, and 32-bit
+fields for tagging/padding for those records.
+Strings are stored as 8-bit characters without assuming a specific
+encoding, so normally ASCII.
+See also the
+ <b>
+  __pmLog*
+ </b>
+ types in
+ <i>
+  libpcp.h
+ </i>
+ .
+ <a name="lbAE">
+ </a>
+ <h3>
+  RECORD FRAMING
+ </h3>
+ <p>
+  The volume and meta files are divided into self-identifying records.
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        N, length of record, in bytes, including this field
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        N-8
+       </td>
+       <td>
+        record payload, usually starting with a 32-bit tag
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        N-4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        N, length of record (again)
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h3>
+  ARCHIVE LOG LABEL
+ </h3>
+ All three types of files begin with a "log label" header, which
+identifies the host name, the time interval covered, and a time zone.
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        tag, PM_LOG_MAGIC | PM_LOG_VERS02=0x50052602
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        pid of pmlogger process that wrote file
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        log start time, seconds part (past UNIX epoch)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        log start time, microseconds part
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        16
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        current log volume number (or -1=.meta, -2=.index)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20
+       </td>
+       <td align="center">
+        64
+       </td>
+       <td>
+        name of collection host
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        80
+       </td>
+       <td align="center">
+        40
+       </td>
+       <td>
+        time zone string ($TZ environment variable)
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  All fields, except for the current log volume number field, match for
+all archive-related files produced by a single run of the tool.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  ARCHIVE VOLUME (.0, .1, ...) RECORDS
+ </h2>
+ <a name="lbAH">
+ </a>
+ <h3>
+  pmResult
+ </h3>
+ After the archive log label record, an archive volume file contains
+metric values corresponding to the
+ <i>
+  pmResult
+ </i>
+ set of one
+ <i>
+  pmFetch
+ </i>
+ operation, which is almost identical to the form on disk.
+The record size may vary according to number of PMIDs being fetched,
+the number of instances for their domains.
+File size is limited to 2GiB, due to storage of 32-bit offsets within
+the temporal index.
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        timestamp, seconds part (past UNIX epoch)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        timestamp, microseconds part
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        number of PMIDs with data following
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        M
+       </td>
+       <td>
+        pmValueSet #0
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12+M
+       </td>
+       <td align="center">
+        N
+       </td>
+       <td>
+        pmValueSet #1
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12+M+N
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        NOP
+       </td>
+       <td align="center">
+        X
+       </td>
+       <td>
+        pmValueBlock #0
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        NOP+X
+       </td>
+       <td align="center">
+        Y
+       </td>
+       <td>
+        pmValueBlock #1
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        NOP+X+Y
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  Records with a number-of-PMIDs equal to zero are "mark records", and
+represent interruptions, missing data, or time discontinuities in
+logging.
+  <a name="lbAI">
+  </a>
+ </p>
+ <h3>
+  pmValueSet
+ </h3>
+ This subrecord represents the measurements for one metric.
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        PMID
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        number of values
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        storage mode, PM_VAL_INSITU=0 or PM_VAL_DPTR=1
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        M
+       </td>
+       <td>
+        pmValue #0
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12+M
+       </td>
+       <td align="center">
+        N
+       </td>
+       <td>
+        pmValue #1
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12+M+N
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  The metric-description metadata for PMIDs is found in the .meta files.
+These entries are not timestamped, so the metadata is assumed to be
+unchanging throughout the archiving session.
+  <a name="lbAJ">
+  </a>
+ </p>
+ <h3>
+  pmValue
+ </h3>
+ This subrecord represents one measurement for one instance of the metric.
+It is a variant type, depending on the parent pmValueSet's value-format
+field.  This allows small numbers to be encoded compactly, but retain
+flexibility for larger or variable-length data to be stored later in the
+pmResult record.
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        number in instance-domain (or PM_IN_NULL=-1)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        value (INSITU)
+        <i>
+         or
+        </i>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+       </td>
+       <td align="center">
+       </td>
+       <td>
+        offset in pmResult to our pmValueBlock (DPTR)
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  The instance-domain metadata for PMIDs is found in the .meta files.
+Since the numeric mappings may change during the lifetime of the
+logging session, it is important to match up the timestamp of the
+measurement record with the corresponding instance-domain record.
+That is, the instance-domain corresponding to a measurement at time T
+are the records with largest timestamps T' &lt;= T.
+  <a name="lbAK">
+  </a>
+ </p>
+ <h3>
+  pmValueBlock
+ </h3>
+ Instances of this subrecord are placed at the end of the
+ <i>
+  pmValueSet
+ </i>
+ ,
+
+after all the
+ <i>
+  pmValue
+ </i>
+ subrecords.
+If (and only if) needed, they are padded at the end to the
+next-higher 32-bit boundary.
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        1
+       </td>
+       <td>
+        value type (same as
+        <i>
+         pmDesc.type
+        </i>
+        )
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        1
+       </td>
+       <td align="center">
+        3
+       </td>
+       <td>
+        4 + N, the length of the subrecord
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        N
+       </td>
+       <td>
+        bytes that make up the raw value
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4+N
+       </td>
+       <td align="center">
+        0-3
+       </td>
+       <td>
+        padding (not included in the 4+N length field)
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  Note that for
+  <i>
+   PM_TYPE_STRING
+  </i>
+  ,
+
+the length includes an explicit NULL terminator byte.
+For
+  <i>
+   PM_TYPE_EVENT
+  </i>
+  ,
+
+the value bytestring is further structured.
+  <a name="lbAL">
+  </a>
+ </p>
+ <h2>
+  METADATA FILE (.meta) RECORDS
+ </h2>
+ After the archive log label record, the metadata file contains
+interleaved metric-description and timestamped instance-domain
+descriptors.
+File size is limited to 2GiB, due to storage of 32-bit offsets
+within the temporal index.
+Unlike the data volumes, these records are not forced to 32-bit
+alignment.
+See also
+ <i>
+  libpcp/logmeta.c
+ </i>
+ .
+ <a name="lbAM">
+ </a>
+ <h3>
+  pmDesc
+ </h3>
+ Instances of this record represent the metric description, giving a
+name, type, instance-domain identifier, and a set of names to each
+PMID used in the archive volume.
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        tag, TYPE_DESC=1
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        PMID
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        type (PM_TYPE_*)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        instance domain number
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        16
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        semantics of value (PM_SEM_*)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        units: bit-packed pmUnits
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        number of alternative names for this PMID
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        28
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        N: number of bytes in this name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        32
+       </td>
+       <td align="center">
+        N
+       </td>
+       <td>
+        bytes of the name, no NULL terminator nor padding
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        32+N
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        N2: number of bytes in next name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        36+N
+       </td>
+       <td align="center">
+        N2
+       </td>
+       <td>
+        bytes of the name, no NULL terminator nor padding
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        ...
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  <a name="lbAN">
+  </a>
+ </p>
+ <h3>
+  pmLogIndom
+ </h3>
+ Instances of this record represent the number-string mapping
+table of an instance domain.
+The instance domain number will have already been mentioned
+in a prior
+ <i>
+  pmDesc
+ </i>
+ record.
+As new instances may appear over a long archiving run these
+records are timestamped, and must be searched when decoding
+ <i>
+  pmResult
+ </i>
+ records from the archive data volumes.
+Instance names may be reused between instance numbers, so an
+offset-based string table is used that facilitates sharing.
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        tag, TYPE_INDOM=2
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        timestamp, seconds part (past UNIX epoch)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        timestamp, microseconds part
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        instance domain number
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        16
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        N: number of instances in domain, normally &gt;0
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        first instance number
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        24
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        second instance number (if appropriate)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        ...
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20+4*N
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        first offset into string table (see below)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20+4*N+4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        second offset into string table (etc.)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        ...
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20+8*N
+       </td>
+       <td align="center">
+        M
+       </td>
+       <td>
+        base of string table, containing
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+       </td>
+       <td align="center">
+       </td>
+       <td>
+        packed, NULL-terminated instance names
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  Records of this form
+  <i>
+   replace
+  </i>
+  the existing instance-domain: prior
+records are not searched for resolving instance numbers in measurements
+after this timestamp.
+  <a name="lbAO">
+  </a>
+ </p>
+ <h3>
+  pmLogLabelSet
+ </h3>
+ Instances of this record represent sets of name:value pairs
+associated with labels of the context, instance domains and
+individual performance metrics - refer to
+ <b>
+  <a href="/man/man3/pmlookuplabels.3.html">
+   pmLookupLabels
+  </a>
+ </b>
+ (3)
+
+for further details.
+ <p>
+  Any instance domain number will have already been mentioned
+in a prior
+  <i>
+   pmDesc
+  </i>
+  record.
+As new labels can appear during an archiving session, these
+records are timestamped and must be searched when decoding
+  <i>
+   pmResult
+  </i>
+  records from the archive data volumes.
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        tag, TYPE_LABEL=3
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        timestamp, seconds part (past UNIX epoch)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        timestamp, microseconds part
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        label type (PM_LABEL_* type macros.)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        16
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        numeric identifier - domain, PMID, etc
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+       </td>
+       <td align="center">
+       </td>
+       <td>
+        or PM_IN_NULL=-1 for context labels
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        N: number of label sets in this record,
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+       </td>
+       <td align="center">
+       </td>
+       <td>
+        usually 1 except in the case of instances
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        24
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        offset to the start of the JSONB labels string
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        28
+       </td>
+       <td align="center">
+        L1
+       </td>
+       <td>
+        first labelset array entry (see below)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        ...
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        28+L1
+       </td>
+       <td align="center">
+        LN
+       </td>
+       <td>
+        N-th labelset array entry (see below)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        ...
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        28+L1+...LN
+       </td>
+       <td align="center">
+        M
+       </td>
+       <td>
+        concatenated JSONB strings for all labelsets
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  Records of this form
+  <i>
+   replace
+  </i>
+  the existing labels for a given
+type: prior records are not searched for resolving that class of
+label in measurements after this timestamp.
+ </p>
+ <p>
+  The individual labelset array entries are variable length, depending
+on the number of labels present within that set.
+These entries contain the instance identifiers (in the case of type
+PM_LABEL_INSTANCES labels), lengths and offsets of each label name
+and value, and also any flags set for each label.
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        instance identifier (or PM_IN_NULL=-1)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        length of JSONB label string
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        N: number of labels in this labelset
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        2
+       </td>
+       <td>
+        first label name offset
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        14
+       </td>
+       <td align="center">
+        1
+       </td>
+       <td>
+        first label name length
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        15
+       </td>
+       <td align="center">
+        1
+       </td>
+       <td>
+        first label flags (e.g. optionality)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        16
+       </td>
+       <td align="center">
+        2
+       </td>
+       <td>
+        first label value offset
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        18
+       </td>
+       <td align="center">
+        2
+       </td>
+       <td>
+        first label value length
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        20
+       </td>
+       <td align="center">
+        2
+       </td>
+       <td>
+        second label name offset (if appropriate)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        ...
+       </td>
+       <td align="center">
+        ...
+       </td>
+       <td>
+        ...
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+  <a name="lbAP">
+  </a>
+ </p>
+ <h3>
+  pmLogText
+ </h3>
+ This record stores help text associated with a metric or an
+instance domain - as provided by
+ <b>
+  <a href="/man/man3/pmlookuptext.3.html">
+   pmLookupText
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmlookupindomtext.3.html">
+   pmLookupInDomText
+  </a>
+ </b>
+ (3).
+ <p>
+  The metric identifier and instance domain number will have
+already been mentioned in a prior
+  <i>
+   pmDesc
+  </i>
+  record.
+ </p>
+ <p>
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        tag, TYPE_TEXT=4
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        text and identifier type (PM_TEXT_* macros.)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        numeric identifier - PMID or instance domain
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        M
+       </td>
+       <td>
+        help text string, arbitrary text
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+  <a name="lbAQ">
+  </a>
+ </p>
+ <h2>
+  INDEX FILE (.index) RECORDS
+ </h2>
+ After the archive log label record, the temporal index file contains a
+plainly concatenated, unframed group of tuples, which relate timestamps
+to 32-bit seek offsets in the volume and meta files.
+These records are fixed-size, fixed-format, and are
+ <i>
+  not
+ </i>
+ enclosed
+in the standard length/payload/length wrapper: they take up the entire
+remainder of the .index file.
+See also
+ <i>
+  libpcp/logutil.c
+ </i>
+ .
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset
+       </td>
+       <td align="center">
+        Length
+       </td>
+       <td align="center">
+        Name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        0
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        event time, seconds part (past UNIX epoch)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        4
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        event time, microseconds part
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        8
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        archive volume number (0...N)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        12
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        byte offset in .meta file of pmDesc or pmLogIndom
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        16
+       </td>
+       <td align="center">
+        4
+       </td>
+       <td>
+        byte offset in archive volume file of pmResult
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+ </p>
+ <p>
+  Since the temporal index is optional, and exists only to speed up
+time-based random access to metrics and their metadata, the index
+records are emitted only intermittently.
+An archive reader program should not presume any particular rate of
+data flow into the index.
+However, common events that may trigger a new temporal-index record
+include changes in instance-domains, switching over to a new archive
+volume, and starting or stopping logging.
+One reliable invariant however is that, for each index entry, there
+are to be no meta or archive-volume records with a timestamp after
+that in the index, but physically before the byte-offset in the index.
+  <a name="lbAR">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ Several PCP tools create archives in standard locations:
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    $HOME/.pcp/pmlogger
+   </b>
+  </dt>
+  <dd>
+   default location for the interactive chart recording mode in
+   <b>
+    <a href="/man/man1/pmchart.1.html">
+     pmchart
+    </a>
+   </b>
+   (1)
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmlogger
+   </b>
+  </dt>
+  <dd>
+   default location for
+   <b>
+    <a href="/man/man1/pmlogger_daily.1.html">
+     pmlogger_daily
+    </a>
+   </b>
+   (1)
+
+and
+   <b>
+    <a href="/man/man1/pmlogger_check.1.html">
+     pmlogger_check
+    </a>
+   </b>
+   (1)
+
+scripts
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmmgr
+   </b>
+  </dt>
+  <dd>
+   default location for the PCP daemon manager
+   <b>
+    <a href="/man/man1/pmmgr.1.html">
+     pmmgr
+    </a>
+   </b>
+   (1)
+  </dd>
+ </dl>
+ <a name="lbAS">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupindom.3.html">
+   pmLookupInDom
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookupindomtext.3.html">
+   pmLookupInDomText
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookuplabels.3.html">
+   pmLookupLabels
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmlookuptext.3.html">
+   pmLookupText
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man1/mkaf.1.html">
+   mkaf
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmafm.1.html">
+   pmafm
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger_check.1.html">
+   pmlogger_check
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger_daily.1.html">
+   pmlogger_daily
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogreduce.1.html">
+   pmlogreduce
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogrewrite.1.html">
+   pmlogrewrite
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogsummary.1.html">
+   pmlogsummary
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmmgr.1.html">
+   pmmgr
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    COMMON FEATURES
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAE">
+      RECORD FRAMING
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAF">
+      ARCHIVE LOG LABEL
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    ARCHIVE VOLUME (.0, .1, ...) RECORDS
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAH">
+      pmResult
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAI">
+      pmValueSet
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAJ">
+      pmValue
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAK">
+      pmValueBlock
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAL">
+    METADATA FILE (.meta) RECORDS
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAM">
+      pmDesc
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAN">
+      pmLogIndom
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAO">
+      pmLogLabelSet
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAP">
+      pmLogText
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAQ">
+    INDEX FILE (.index) RECORDS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAR">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAS">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

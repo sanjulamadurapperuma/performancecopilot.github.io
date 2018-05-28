@@ -1,1135 +1,1139 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMWEBAPI
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                PMWEBAPI
-               </b>
-               - introduction to the Performance Metrics Web Application Programming Interface
-               <p>
-               </p>
-               <p>
-                <a name="lbAC">
-                </a>
-               </p>
-               <h2>
-                OVERVIEW
-               </h2>
-               <p>
-                The PMWEBAPI interface is a binding of a subset of the PMAPI to the
-              web.  It uses HTTP as transport, REST as organizational style for
-              request/parameter encoding (the GET and POST methods are
-              interchangeable), and JSON as response encoding.  A context identifier
-              is used as a persistent way to refer to PMAPI contexts across related
-              web requests.  These context identifiers expire after a configurable
-              period of disuse.
-               </p>
-               <p>
-                Errors generally result in HTTP-level error responses.
-              An
-                <i>
-                 Access-Control-Allow-Origin: *
-                </i>
-                header is added to all JSON responses.
-               </p>
-               <p>
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                CONTEXT CREATION: pmNewContext
-               </h2>
-               <p>
-                To create a new web context identifier, a web client invokes:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/context?hostname=STRING
-                 </b>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/context?hostspec=STRING
-                 </b>
-                </dt>
-                <dd>
-                 Creates a PM_CONTEXT_HOST PMAPI context with the given host name and/or extended
-              specification.  If the host specification contains a userid/password combination,
-              then the corresponding PMAPI context operations will require HTTP Basic authentication
-              credentials with matching userid/password.
-                </dd>
-               </dl>
-               <p>
-                In addition, the web client may add the parameter
-                <b>
-                 &amp;polltimeout=MMMM
-                </b>
-                for a maximum interval (in seconds) between expected accesses to the
-              given context.  This value is limited by pmwebd configuration, and is
-              a courtesy to allow pmwebd to free up memory earlier in case of sudden
-              web application shutdown.
-               </p>
-               <p>
-                If successful, the response from these requests is a JSON document of the form:
-               </p>
-               <p>
-                <br/>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <pre>
-              { "context" : NNNNN }
-              
-              </pre>
-                </dd>
-               </dl>
-               <p>
-                The number (a 32-bit unsigned decimal) is then used in all later
-              operations.
-               </p>
-               <p>
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                CONTEXT CREATION: configurable permanent contexts
-               </h2>
-               <p>
-                In addition, permanent contexts may be created by pmwebd at
-              initialization using its -h, -a, -L command line options, so that a
-              set of fixed NNNNN numbers may be made available to web clients.
-               </p>
-               <p>
-                <a name="lbAF">
-                </a>
-               </p>
-               <h2>
-                PMAPI OPERATIONS
-               </h2>
-               <p>
-                The general form of the requests is as follows:
-                <b>
-                 /pmapi/NNNNN/OPERATION
-                </b>
-                where
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi
-                 </b>
-                </dt>
-                <dd>
-                 is the fixed prefix for all PMWEBAPI operations,
-                </dd>
-                <dt>
-                 <b>
-                  NNNNN
-                 </b>
-                </dt>
-                <dd>
-                 is a PMWEBAPI context number returned from a context-creation call, or
-              assigned permanently at pmwebd startup, and
-                </dd>
-                <dt>
-                 <b>
-                  OPERATION?PARAM1=VALUE2&amp;PARAM2=VALUE2
-                 </b>
-                </dt>
-                <dd>
-                 identifies the operation and its URL-encoded parameters.  Some
-              parameters may be optional.
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h3>
-                METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
-               </h3>
-               <p>
-                The general form of the requests is as follows:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/_metric
-                 </b>
-                </dt>
-                <dd>
-                 Traverse the entire Performance Metrics Name Space (PMNS).
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/_metric?prefix=NAME
-                 </b>
-                </dt>
-                <dd>
-                 Traverse the subtree of PMNS with the prefix NAME.
-                </dd>
-               </dl>
-               <p>
-                The response is a JSON document that provides the metric metadata
-              as an array.  For example:
-               </p>
-               <p>
-                <br/>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <pre>
-              { "metrics": [ 
-                  { "name":"foo.bar", "pmID":PPPP, "indom":DDDD,
-                    "type":"32", "sem":"instant", "units":"MHz",
-                    "text-oneline":"foo bar", "text-help":"blah blah blah" },
-                  { "name":"foo.bar2", ... }
-                  ...
-                ] }
-              
-              </pre>
-                </dd>
-               </dl>
-               <p>
-                Most of the fields are self-explanatory.
-               </p>
-               <dl compact="">
-                <dt>
-                 name
-                </dt>
-                <dd>
-                 A name for the metric as defined in the PMNS.
-              If the PMNS contains multiple names associated with the metric's
-              Performance Metric Identifier (PMID),
-              one of these will be returned via name, but there is no way to
-              determine which of the duplicate names this will be.
-                </dd>
-                <dt>
-                 PPPP
-                </dt>
-                <dd>
-                 the PMID
-                </dd>
-                <dt>
-                 DDDD
-                </dt>
-                <dd>
-                 the instance domain
-                </dd>
-                <dt>
-                 type
-                </dt>
-                <dd>
-                 from pmTypeStr
-                </dd>
-                <dt>
-                 units
-                </dt>
-                <dd>
-                 from pmUnitsStr
-                </dd>
-                <dt>
-                 sem
-                </dt>
-                <dd>
-                 an abbreviation of the metric semantic:
-                 <table>
-                  <tr valign="top">
-                   <td>
-                    PM_SEM_COUNTER  "counter"
-                   </td>
-                   <td>
-                    <br/>
-                   </td>
-                  </tr>
-                  <tr valign="top">
-                   <td>
-                    PM_SEM_INSTANT  "instant"
-                   </td>
-                   <td>
-                    <br/>
-                   </td>
-                  </tr>
-                  <tr valign="top">
-                   <td>
-                    PM_SEM_DISCRETE "discrete"
-                   </td>
-                   <td>
-                    <br/>
-                   </td>
-                  </tr>
-                 </table>
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAH">
-               </a>
-               <h3>
-                METRIC VALUE: pmFetch
-               </h3>
-               <p>
-                The general form of the requests is as follows:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/_fetch?names=NAME1,NAME2
-                 </b>
-                </dt>
-                <dd>
-                 Fetch current values for given named metrics.
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/_fetch?pmids=PPPP1,PPPP2
-                 </b>
-                </dt>
-                <dd>
-                 Fetch current values for given PMIDs.
-                </dd>
-               </dl>
-               <p>
-                If any of the names/pmids are valid, the response is a JSON document that
-              provides the values for all requested metrics, for all their instances.
-               </p>
-               <p>
-                <br/>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <pre>
-              { "timestamp": { "s":SEC, "us":USEC },
-                "values": [
-                      { "pmid":PPPP1, "name":"NAME1",
-                        "instances:" [
-                             { "instance":IIII1, "value":VALUE1 }
-                             { "instance":IIII2, "value":VALUE2 }
-                             ...
-                        ] },
-                      { "pmid":PPPP2, "name":"NAME2", ... }
-                      ...
-                ] }
-              
-              </pre>
-                </dd>
-               </dl>
-               <p>
-                Most of the fields are self-explanatory.  Numeric metric types
-              are represented as JSON integer or floating-point values.  Strings
-              are passed verbatim, except that non-ASCII values are replaced
-              with a Unicode 0xFFFD REPLACEMENT CHARACTER code.  Event type metrics
-              are not currently supported.
-               </p>
-               <p>
-                <a name="lbAI">
-                </a>
-               </p>
-               <h3>
-                INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
-               </h3>
-               <p>
-                The general form of the requests is as follows:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_indom?indom=DDDD
-                 </b>
-                </dt>
-                <dd>
-                 List instances of the given instance domain.
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_indom?name=NAME
-                 </b>
-                </dt>
-                <dd>
-                 List instances of the instance domain belonging to the named metric.
-                </dd>
-               </dl>
-               <p>
-                In addition, either query may be suffixed with:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  &amp;instance=IIII,JJJJ
-                 </b>
-                </dt>
-                <dd>
-                 Restrict listings to given instance code numbers.
-                </dd>
-                <dt>
-                 <b>
-                  &amp;iname=INAME1,INAME2
-                 </b>
-                </dt>
-                <dd>
-                 Restrict listings to given instance names.
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <p>
-                The response is a JSON document that provides the metric metadata
-              as an array.  For example:
-               </p>
-               <p>
-                <br/>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <pre>
-              { "indom":DDDD,
-                 "instances": [
-                    { "instance":IIII, "name":"INAME" }
-                    ...
-                 ] }
-              
-              </pre>
-                </dd>
-               </dl>
-               <p>
-                <a name="lbAJ">
-                </a>
-               </p>
-               <h3>
-                INSTANCE PROFILE: pmAddProfile, pmDelProfile
-               </h3>
-               <p>
-                The general form of these requests is as follows:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_profile_reset?indom=DDDD
-                 </b>
-                </dt>
-                <dd>
-                 These are not currently supported.
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_profile_add?indom=DDDD&amp;instance=IIII,JJJJ
-                 </b>
-                </dt>
-                <dd>
-                 These are not currently supported.
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_profile_add?indom=DDDD&amp;iname=IIII,JJJJ
-                 </b>
-                </dt>
-                <dd>
-                 These are not currently supported.
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_profile_del?indom=DDDD&amp;instance=JJJJ
-                 </b>
-                </dt>
-                <dd>
-                 These are not currently supported.
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_profile_del?indom=DDDD&amp;iname=INAME1,INAME2
-                 </b>
-                </dt>
-                <dd>
-                 These are not currently supported.
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAK">
-               </a>
-               <h3>
-                METRIC STORE: pmStore
-               </h3>
-               <p>
-                The general form of these requests is as follows:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNN/_store?name=NAME&amp;value=VALUE
-                 </b>
-                </dt>
-                <dd>
-                 Store a new value for given named metrics.
-                </dd>
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/_store?pmid=PPPP&amp;value=VALUE
-                 </b>
-                </dt>
-                <dd>
-                 Store a new value for given performance metric identifier (PMID).
-                </dd>
-               </dl>
-               <p>
-                In addition, either query may be suffixed with:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  &amp;instance=IIII,JJJJ
-                 </b>
-                </dt>
-                <dd>
-                 Restrict store to given instance code numbers.
-                </dd>
-                <dt>
-                 <b>
-                  &amp;iname=INAME1,INAME2
-                 </b>
-                </dt>
-                <dd>
-                 Restrict store to given instance names.
-                </dd>
-               </dl>
-               <p>
-                If successful, the response from these requests is a JSON document of the form:
-               </p>
-               <p>
-                <br/>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <pre>
-              { "success" : true }
-              
-              </pre>
-                </dd>
-               </dl>
-               <p>
-                <a name="lbAL">
-                </a>
-               </p>
-               <h3>
-                DERIVED METRICS: pmRegisterDerived
-               </h3>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/_derive?name=NAME&amp;expr=EXPRESSION
-                 </b>
-                </dt>
-                <dd>
-                 These are not currently supported.
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAM">
-               </a>
-               <h3>
-                CONTEXT COPY: pmDupContext
-               </h3>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/copy
-                 </b>
-                </dt>
-                <dd>
-                 These are not currently supported.
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAN">
-               </a>
-               <h3>
-                CONTEXT CLOSE: pmDestroyContext
-               </h3>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/destroy
-                 </b>
-                </dt>
-                <dd>
-                 This is not likely to be supported, as it is destructive and would offer
-              a tempting target to brute-force attackers.  Instead, the pmwebd timeout
-              is used to automatically free unused contexts.
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAO">
-               </a>
-               <h3>
-                PROMETHEUS
-               </h3>
-               <p>
-                Prometheus exporting of live metrics from a preexisting PMWEBAPI context
-              is available:
-               </p>
-               <p>
-                The general form of the requests is:
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /pmapi/NNNNN/metrics?target=NAME1,NAME2,...
-                 </b>
-                </dt>
-                <dd>
-                 Fetch current values for given named metrics.
-                </dd>
-               </dl>
-               <p>
-                For all numeric metrics with the given NAME prefixes, create a
-              prometheus text export format giving their current value and related
-              metadata.  The response has text/plain type rather than JSON, and is
-              designed to be ingested by a Prometheus server, or pcp's own
-              pmdaprometheus.
-               </p>
-               <p>
-                The native PCP metric metadata (metric name, semantics and units) are first output with the
-                <b>
-                 # PCP
-                </b>
-                prefix.
-              If the units string is empty, then
-                <b>
-                 none
-                </b>
-                is output.
-              The units metadata string may contain spaces and extends to the end of the line.
-              Prometheus metric types are heuristically inferred from PCP
-              metric types, and units/scales are converted to base
-              seconds/bytes/count if possible, with a corresponding suffix added to
-              the metric name.
-              PCP metric names are mapped so that
-                <b>
-                 .
-                </b>
-                are exchanged with
-                <b>
-                 :
-                </b>
-                .  Instance domain instances are represented as Prometheus labels
-              with quoted instance names.
-               </p>
-               <p>
-                <br/>
-               </p>
-               <dl compact="">
-                <dt>
-                </dt>
-                <dd>
-                 <pre>
-              # PCP proc.nprocs instant none
-              # HELP proc:nprocs instantaneous number of processes
-              # TYPE proc:nprocs gauge
-              proc:nprocs 7
-              
-              # PCP kernel.pernode.cpu.intr counter millisec
-              # HELP kernel:pernode:cpu:intr_seconds_total total interrupt CPU time from /proc/stat for each node
-              # TYPE kernel:pernode:cpu:intr_seconds_total counter
-              kernel:pernode:cpu:intr_seconds_total{instance="node0"} 25603.540000000001
-              
-              # PCP filesys.blocksize instant byte
-              # HELP filesys:blocksize_bytes Size of each block on mounted filesystem (Bytes)
-              # TYPE filesys:blocksize_bytes gauge
-              filesys:blocksize_bytes{instance="/dev/mapper/docker-253:0-83713-\
-              9a130460b46163fcf4443710db3159dea6bb5ec2aaca108515839a7a28c191ce"} 4096
-              filesys:blocksize_bytes{instance="/dev/mapper/VolGroup00-root17"} 4096
-              
-              </pre>
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <p>
-                <a name="lbAP">
-                </a>
-               </p>
-               <h2>
-                GRAPHITE
-               </h2>
-               <p>
-                When enabled, pmwebd can emulate a subset of the graphite web-api to
-              allow web applications like graphite and grafana to extract data from
-              all archives under the configured -A directory.  The graphite
-              namespace is constructed from the PCP archives using a simple mapping
-              that encodes the Cartesian product of archives, metrics, and
-              instance-domain instances into dot-separated strings.  Some
-              metacharacter-quoting is employed to encode general strings into
-              components.  Only numeric PCP metrics are exposed; COUNTER semantic
-              values are rate-converted.
-               </p>
-               <p>
-               </p>
-               <center>
-                <table border="">
-                 <tr>
-                  <td>
-                   <table>
-                    <tr valign="top">
-                     <td align="center">
-                      position
-                     </td>
-                     <td align="center">
-                      number
-                     </td>
-                     <td align="center">
-                      purpose
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td colspan="3">
-                      <hr/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      1
-                     </td>
-                     <td align="center">
-                      1
-                     </td>
-                     <td>
-                      encoded pathname of the archive .meta file (default),
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                     </td>
-                     <td align="center">
-                     </td>
-                     <td>
-                      or canonicalized archive hostname (
-                      <i>
-                       -J
-                      </i>
-                      mode)
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      2
-                     </td>
-                     <td align="center">
-                      N
-                     </td>
-                     <td>
-                      the N components of the pcp metric name
-                      <br/>
-                     </td>
-                    </tr>
-                    <tr valign="top">
-                     <td align="center">
-                      N+2
-                     </td>
-                     <td align="center">
-                      1
-                     </td>
-                     <td>
-                      instance name of the metric (if any)
-                      <br/>
-                     </td>
-                    </tr>
-                   </table>
-                  </td>
-                 </tr>
-                </table>
-               </center>
-               <p>
-                Since glob wildcarding is supported within metric name components,
-              using them in the first component (an encoding of the archive name) is
-              a good way to identify machines, or to match multiple archives
-              spanning times of interest.
-               </p>
-               <p>
-                We list here only the broadest outline of the supported calls.  pmwebd
-              does not support every graphite web-api option, so many querystring
-              parameters may be ignored.  Arithmetic/statistical functions on
-              metrics are not supported.
-               </p>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  /graphite/render?format=json&amp;target=FOO&amp;from=TIME&amp;until=TIME
-                 </b>
-                </dt>
-                <dd>
-                 Return a series of values of the given metrics, between the two times, sampled every 60 seconds.
-                </dd>
-                <dt>
-                 <b>
-                  /graphite/rawdata?target=FOO.BAR&amp;from=TIME&amp;until=TIME
-                 </b>
-                </dt>
-                <dd>
-                 Same, with a slightly different result encoding.
-                </dd>
-                <dt>
-                 <b>
-                  /graphite/render?format=png&amp;target=FOO&amp;from=TIME&amp;until=TIME&amp;....
-                 </b>
-                </dt>
-                <dd>
-                 Same, but render the curves into a PNG image file.  Several color- and
-              rendering-control-related parameters are supported.
-                </dd>
-                <dt>
-                 <b>
-                  /graphite/metrics/find?query=FOO.BAR.*
-                 </b>
-                </dt>
-                <dd>
-                 Provide incremental metric-tree traversal using wildcards.
-                </dd>
-                <dt>
-                 <b>
-                  /graphite/graphlot/findmetric?query=FOO+BAR
-                 </b>
-                </dt>
-                <dd>
-                 Search through metrics with space-separated regular expressions.
-                </dd>
-                <dt>
-                 <b>
-                  /graphite/browser/search?q=FOO+BAR
-                 </b>
-                </dt>
-                <dd>
-                 Same, with a slightly different result encoding.
-                 <p>
-                 </p>
-                 <p>
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAQ">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <p>
-                <b>
-                 <a href="/man/man1/pcpintro.1.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (1),
-                <b>
-                 <a href="/man/man3/pcpintro.3.html">
-                  PCPIntro
-                 </a>
-                </b>
-                (3),
-                <b>
-                 <a href="/man/man1/pmwebd.1.html">
-                  pmwebd
-                 </a>
-                </b>
-                (1),
-                <b>
-                 <a href="http://graphite.readthedocs.org/">
-                  http://graphite.readthedocs.org/
-                 </a>
-                </b>
-                and
-                <b>
-                 <a href="/man/man3/pmapi.3.html">
-                  PMAPI
-                 </a>
-                </b>
-                (3)
-               </p>
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  OVERVIEW
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  CONTEXT CREATION: pmNewContext
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  CONTEXT CREATION: configurable permanent contexts
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  PMAPI OPERATIONS
-                 </a>
-                </dt>
-                <dd>
-                 <dl>
-                  <dt>
-                   <a href="#lbAG">
-                    METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAH">
-                    METRIC VALUE: pmFetch
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAI">
-                    INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAJ">
-                    INSTANCE PROFILE: pmAddProfile, pmDelProfile
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAK">
-                    METRIC STORE: pmStore
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAL">
-                    DERIVED METRICS: pmRegisterDerived
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAM">
-                    CONTEXT COPY: pmDupContext
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAN">
-                    CONTEXT CLOSE: pmDestroyContext
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                  <dt>
-                   <a href="#lbAO">
-                    PROMETHEUS
-                   </a>
-                  </dt>
-                  <dd>
-                  </dd>
-                 </dl>
-                </dd>
-                <dt>
-                 <a href="#lbAP">
-                  GRAPHITE
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAQ">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMWEBAPI
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  PMWEBAPI
+ </b>
+ - introduction to the Performance Metrics Web Application Programming Interface
+ <p>
+ </p>
+ <p>
+  <a name="lbAC">
+  </a>
+ </p>
+ <h2>
+  OVERVIEW
+ </h2>
+ <p>
+  The PMWEBAPI interface is a binding of a subset of the PMAPI to the
+web.  It uses HTTP as transport, REST as organizational style for
+request/parameter encoding (the GET and POST methods are
+interchangeable), and JSON as response encoding.  A context identifier
+is used as a persistent way to refer to PMAPI contexts across related
+web requests.  These context identifiers expire after a configurable
+period of disuse.
+ </p>
+ <p>
+  Errors generally result in HTTP-level error responses.
+An
+  <i>
+   Access-Control-Allow-Origin: *
+  </i>
+  header is added to all JSON responses.
+ </p>
+ <p>
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  CONTEXT CREATION: pmNewContext
+ </h2>
+ <p>
+  To create a new web context identifier, a web client invokes:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/context?hostname=STRING
+   </b>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <b>
+    /pmapi/context?hostspec=STRING
+   </b>
+  </dt>
+  <dd>
+   Creates a PM_CONTEXT_HOST PMAPI context with the given host name and/or extended
+specification.  If the host specification contains a userid/password combination,
+then the corresponding PMAPI context operations will require HTTP Basic authentication
+credentials with matching userid/password.
+  </dd>
+ </dl>
+ <p>
+  In addition, the web client may add the parameter
+  <b>
+   &amp;polltimeout=MMMM
+  </b>
+  for a maximum interval (in seconds) between expected accesses to the
+given context.  This value is limited by pmwebd configuration, and is
+a courtesy to allow pmwebd to free up memory earlier in case of sudden
+web application shutdown.
+ </p>
+ <p>
+  If successful, the response from these requests is a JSON document of the form:
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+{ "context" : NNNNN }
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  The number (a 32-bit unsigned decimal) is then used in all later
+operations.
+ </p>
+ <p>
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  CONTEXT CREATION: configurable permanent contexts
+ </h2>
+ <p>
+  In addition, permanent contexts may be created by pmwebd at
+initialization using its -h, -a, -L command line options, so that a
+set of fixed NNNNN numbers may be made available to web clients.
+ </p>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  PMAPI OPERATIONS
+ </h2>
+ <p>
+  The general form of the requests is as follows:
+  <b>
+   /pmapi/NNNNN/OPERATION
+  </b>
+  where
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi
+   </b>
+  </dt>
+  <dd>
+   is the fixed prefix for all PMWEBAPI operations,
+  </dd>
+  <dt>
+   <b>
+    NNNNN
+   </b>
+  </dt>
+  <dd>
+   is a PMWEBAPI context number returned from a context-creation call, or
+assigned permanently at pmwebd startup, and
+  </dd>
+  <dt>
+   <b>
+    OPERATION?PARAM1=VALUE2&amp;PARAM2=VALUE2
+   </b>
+  </dt>
+  <dd>
+   identifies the operation and its URL-encoded parameters.  Some
+parameters may be optional.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h3>
+  METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
+ </h3>
+ <p>
+  The general form of the requests is as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/_metric
+   </b>
+  </dt>
+  <dd>
+   Traverse the entire Performance Metrics Name Space (PMNS).
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNNN/_metric?prefix=NAME
+   </b>
+  </dt>
+  <dd>
+   Traverse the subtree of PMNS with the prefix NAME.
+  </dd>
+ </dl>
+ <p>
+  The response is a JSON document that provides the metric metadata
+as an array.  For example:
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+{ "metrics": [ 
+    { "name":"foo.bar", "pmID":PPPP, "indom":DDDD,
+      "type":"32", "sem":"instant", "units":"MHz",
+      "text-oneline":"foo bar", "text-help":"blah blah blah" },
+    { "name":"foo.bar2", ... }
+    ...
+  ] }
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Most of the fields are self-explanatory.
+ </p>
+ <dl compact="">
+  <dt>
+   name
+  </dt>
+  <dd>
+   A name for the metric as defined in the PMNS.
+If the PMNS contains multiple names associated with the metric's
+Performance Metric Identifier (PMID),
+one of these will be returned via name, but there is no way to
+determine which of the duplicate names this will be.
+  </dd>
+  <dt>
+   PPPP
+  </dt>
+  <dd>
+   the PMID
+  </dd>
+  <dt>
+   DDDD
+  </dt>
+  <dd>
+   the instance domain
+  </dd>
+  <dt>
+   type
+  </dt>
+  <dd>
+   from pmTypeStr
+  </dd>
+  <dt>
+   units
+  </dt>
+  <dd>
+   from pmUnitsStr
+  </dd>
+  <dt>
+   sem
+  </dt>
+  <dd>
+   an abbreviation of the metric semantic:
+   <table>
+    <tr valign="top">
+     <td>
+      PM_SEM_COUNTER  "counter"
+     </td>
+     <td>
+      <br/>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      PM_SEM_INSTANT  "instant"
+     </td>
+     <td>
+      <br/>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      PM_SEM_DISCRETE "discrete"
+     </td>
+     <td>
+      <br/>
+     </td>
+    </tr>
+   </table>
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAH">
+ </a>
+ <h3>
+  METRIC VALUE: pmFetch
+ </h3>
+ <p>
+  The general form of the requests is as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/_fetch?names=NAME1,NAME2
+   </b>
+  </dt>
+  <dd>
+   Fetch current values for given named metrics.
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNNN/_fetch?pmids=PPPP1,PPPP2
+   </b>
+  </dt>
+  <dd>
+   Fetch current values for given PMIDs.
+  </dd>
+ </dl>
+ <p>
+  If any of the names/pmids are valid, the response is a JSON document that
+provides the values for all requested metrics, for all their instances.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+{ "timestamp": { "s":SEC, "us":USEC },
+  "values": [
+        { "pmid":PPPP1, "name":"NAME1",
+          "instances:" [
+               { "instance":IIII1, "value":VALUE1 }
+               { "instance":IIII2, "value":VALUE2 }
+               ...
+          ] },
+        { "pmid":PPPP2, "name":"NAME2", ... }
+        ...
+  ] }
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Most of the fields are self-explanatory.  Numeric metric types
+are represented as JSON integer or floating-point values.  Strings
+are passed verbatim, except that non-ASCII values are replaced
+with a Unicode 0xFFFD REPLACEMENT CHARACTER code.  Event type metrics
+are not currently supported.
+ </p>
+ <p>
+  <a name="lbAI">
+  </a>
+ </p>
+ <h3>
+  INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
+ </h3>
+ <p>
+  The general form of the requests is as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNN/_indom?indom=DDDD
+   </b>
+  </dt>
+  <dd>
+   List instances of the given instance domain.
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNN/_indom?name=NAME
+   </b>
+  </dt>
+  <dd>
+   List instances of the instance domain belonging to the named metric.
+  </dd>
+ </dl>
+ <p>
+  In addition, either query may be suffixed with:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    &amp;instance=IIII,JJJJ
+   </b>
+  </dt>
+  <dd>
+   Restrict listings to given instance code numbers.
+  </dd>
+  <dt>
+   <b>
+    &amp;iname=INAME1,INAME2
+   </b>
+  </dt>
+  <dd>
+   Restrict listings to given instance names.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <p>
+  The response is a JSON document that provides the metric metadata
+as an array.  For example:
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+{ "indom":DDDD,
+   "instances": [
+      { "instance":IIII, "name":"INAME" }
+      ...
+   ] }
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  <a name="lbAJ">
+  </a>
+ </p>
+ <h3>
+  INSTANCE PROFILE: pmAddProfile, pmDelProfile
+ </h3>
+ <p>
+  The general form of these requests is as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNN/_profile_reset?indom=DDDD
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNN/_profile_add?indom=DDDD&amp;instance=IIII,JJJJ
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNN/_profile_add?indom=DDDD&amp;iname=IIII,JJJJ
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNN/_profile_del?indom=DDDD&amp;instance=JJJJ
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNN/_profile_del?indom=DDDD&amp;iname=INAME1,INAME2
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAK">
+ </a>
+ <h3>
+  METRIC STORE: pmStore
+ </h3>
+ <p>
+  The general form of these requests is as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNN/_store?name=NAME&amp;value=VALUE
+   </b>
+  </dt>
+  <dd>
+   Store a new value for given named metrics.
+  </dd>
+  <dt>
+   <b>
+    /pmapi/NNNNN/_store?pmid=PPPP&amp;value=VALUE
+   </b>
+  </dt>
+  <dd>
+   Store a new value for given performance metric identifier (PMID).
+  </dd>
+ </dl>
+ <p>
+  In addition, either query may be suffixed with:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    &amp;instance=IIII,JJJJ
+   </b>
+  </dt>
+  <dd>
+   Restrict store to given instance code numbers.
+  </dd>
+  <dt>
+   <b>
+    &amp;iname=INAME1,INAME2
+   </b>
+  </dt>
+  <dd>
+   Restrict store to given instance names.
+  </dd>
+ </dl>
+ <p>
+  If successful, the response from these requests is a JSON document of the form:
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+{ "success" : true }
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  <a name="lbAL">
+  </a>
+ </p>
+ <h3>
+  DERIVED METRICS: pmRegisterDerived
+ </h3>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/_derive?name=NAME&amp;expr=EXPRESSION
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAM">
+ </a>
+ <h3>
+  CONTEXT COPY: pmDupContext
+ </h3>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/copy
+   </b>
+  </dt>
+  <dd>
+   These are not currently supported.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAN">
+ </a>
+ <h3>
+  CONTEXT CLOSE: pmDestroyContext
+ </h3>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/destroy
+   </b>
+  </dt>
+  <dd>
+   This is not likely to be supported, as it is destructive and would offer
+a tempting target to brute-force attackers.  Instead, the pmwebd timeout
+is used to automatically free unused contexts.
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAO">
+ </a>
+ <h3>
+  PROMETHEUS
+ </h3>
+ <p>
+  Prometheus exporting of live metrics from a preexisting PMWEBAPI context
+is available:
+ </p>
+ <p>
+  The general form of the requests is:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /pmapi/NNNNN/metrics?target=NAME1,NAME2,...
+   </b>
+  </dt>
+  <dd>
+   Fetch current values for given named metrics.
+  </dd>
+ </dl>
+ <p>
+  For all numeric metrics with the given NAME prefixes, create a
+prometheus text export format giving their current value and related
+metadata.  The response has text/plain type rather than JSON, and is
+designed to be ingested by a Prometheus server, or pcp's own
+pmdaprometheus.
+ </p>
+ <p>
+  The native PCP metric metadata (metric name, semantics and units) are first output with the
+  <b>
+   # PCP
+  </b>
+  prefix.
+If the units string is empty, then
+  <b>
+   none
+  </b>
+  is output.
+The units metadata string may contain spaces and extends to the end of the line.
+Prometheus metric types are heuristically inferred from PCP
+metric types, and units/scales are converted to base
+seconds/bytes/count if possible, with a corresponding suffix added to
+the metric name.
+PCP metric names are mapped so that
+  <b>
+   .
+  </b>
+  are exchanged with
+  <b>
+   :
+  </b>
+  .  Instance domain instances are represented as Prometheus labels
+with quoted instance names.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+# PCP proc.nprocs instant none
+# HELP proc:nprocs instantaneous number of processes
+# TYPE proc:nprocs gauge
+proc:nprocs 7
+
+# PCP kernel.pernode.cpu.intr counter millisec
+# HELP kernel:pernode:cpu:intr_seconds_total total interrupt CPU time from /proc/stat for each node
+# TYPE kernel:pernode:cpu:intr_seconds_total counter
+kernel:pernode:cpu:intr_seconds_total{instance="node0"} 25603.540000000001
+
+# PCP filesys.blocksize instant byte
+# HELP filesys:blocksize_bytes Size of each block on mounted filesystem (Bytes)
+# TYPE filesys:blocksize_bytes gauge
+filesys:blocksize_bytes{instance="/dev/mapper/docker-253:0-83713-\
+9a130460b46163fcf4443710db3159dea6bb5ec2aaca108515839a7a28c191ce"} 4096
+filesys:blocksize_bytes{instance="/dev/mapper/VolGroup00-root17"} 4096
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <p>
+  <a name="lbAP">
+  </a>
+ </p>
+ <h2>
+  GRAPHITE
+ </h2>
+ <p>
+  When enabled, pmwebd can emulate a subset of the graphite web-api to
+allow web applications like graphite and grafana to extract data from
+all archives under the configured -A directory.  The graphite
+namespace is constructed from the PCP archives using a simple mapping
+that encodes the Cartesian product of archives, metrics, and
+instance-domain instances into dot-separated strings.  Some
+metacharacter-quoting is employed to encode general strings into
+components.  Only numeric PCP metrics are exposed; COUNTER semantic
+values are rate-converted.
+ </p>
+ <p>
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        position
+       </td>
+       <td align="center">
+        number
+       </td>
+       <td align="center">
+        purpose
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        1
+       </td>
+       <td align="center">
+        1
+       </td>
+       <td>
+        encoded pathname of the archive .meta file (default),
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+       </td>
+       <td align="center">
+       </td>
+       <td>
+        or canonicalized archive hostname (
+        <i>
+         -J
+        </i>
+        mode)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        2
+       </td>
+       <td align="center">
+        N
+       </td>
+       <td>
+        the N components of the pcp metric name
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="center">
+        N+2
+       </td>
+       <td align="center">
+        1
+       </td>
+       <td>
+        instance name of the metric (if any)
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
+  Since glob wildcarding is supported within metric name components,
+using them in the first component (an encoding of the archive name) is
+a good way to identify machines, or to match multiple archives
+spanning times of interest.
+ </p>
+ <p>
+  We list here only the broadest outline of the supported calls.  pmwebd
+does not support every graphite web-api option, so many querystring
+parameters may be ignored.  Arithmetic/statistical functions on
+metrics are not supported.
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /graphite/render?format=json&amp;target=FOO&amp;from=TIME&amp;until=TIME
+   </b>
+  </dt>
+  <dd>
+   Return a series of values of the given metrics, between the two times, sampled every 60 seconds.
+  </dd>
+  <dt>
+   <b>
+    /graphite/rawdata?target=FOO.BAR&amp;from=TIME&amp;until=TIME
+   </b>
+  </dt>
+  <dd>
+   Same, with a slightly different result encoding.
+  </dd>
+  <dt>
+   <b>
+    /graphite/render?format=png&amp;target=FOO&amp;from=TIME&amp;until=TIME&amp;....
+   </b>
+  </dt>
+  <dd>
+   Same, but render the curves into a PNG image file.  Several color- and
+rendering-control-related parameters are supported.
+  </dd>
+  <dt>
+   <b>
+    /graphite/metrics/find?query=FOO.BAR.*
+   </b>
+  </dt>
+  <dd>
+   Provide incremental metric-tree traversal using wildcards.
+  </dd>
+  <dt>
+   <b>
+    /graphite/graphlot/findmetric?query=FOO+BAR
+   </b>
+  </dt>
+  <dd>
+   Search through metrics with space-separated regular expressions.
+  </dd>
+  <dt>
+   <b>
+    /graphite/browser/search?q=FOO+BAR
+   </b>
+  </dt>
+  <dd>
+   Same, with a slightly different result encoding.
+   <p>
+   </p>
+   <p>
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAQ">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <p>
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1),
+  <b>
+   <a href="/man/man3/pcpintro.3.html">
+    PCPIntro
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man1/pmwebd.1.html">
+    pmwebd
+   </a>
+  </b>
+  (1),
+  <b>
+   <a href="http://graphite.readthedocs.org/">
+    http://graphite.readthedocs.org/
+   </a>
+  </b>
+  and
+  <b>
+   <a href="/man/man3/pmapi.3.html">
+    PMAPI
+   </a>
+  </b>
+  (3)
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    OVERVIEW
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    CONTEXT CREATION: pmNewContext
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    CONTEXT CREATION: configurable permanent contexts
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PMAPI OPERATIONS
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAG">
+      METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAH">
+      METRIC VALUE: pmFetch
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAI">
+      INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAJ">
+      INSTANCE PROFILE: pmAddProfile, pmDelProfile
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAK">
+      METRIC STORE: pmStore
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAL">
+      DERIVED METRICS: pmRegisterDerived
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAM">
+      CONTEXT COPY: pmDupContext
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAN">
+      CONTEXT CLOSE: pmDestroyContext
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAO">
+      PROMETHEUS
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAP">
+    GRAPHITE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAQ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

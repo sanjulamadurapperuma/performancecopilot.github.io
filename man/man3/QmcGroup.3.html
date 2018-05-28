@@ -1,899 +1,903 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                QMC_GROUP
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                QmcGroup
-               </b>
-               - container representing a single fetch group of metrics from
-              multiple sources
-               <a name="lbAC">
-               </a>
-               <h2>
-                C++ SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="file:///usr/include/QmcGroup.h">
-                 QmcGroup.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                CC ... -lqmc -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               A
-               <b>
-                QmcGroup
-               </b>
-               object is a container for contexts and metrics that should be fetched at
-              the same time.  The class manages the
-               <b>
-                <a href="/man/man3/qmccontext.3.html">
-                 QmcContext
-                </a>
-               </b>
-               (3)
-              
-              objects, timezones and bounds for every context created with
-               <b>
-                QmcGroup::use
-               </b>
-               and
-               <b>
-                QmcGroup::addMetric
-               </b>
-               .
-               <a name="lbAE">
-               </a>
-               <h2>
-                CONSTRUCTORS &amp; DESTRUCTOR
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  ~QmcGroup();
-                 </b>
-                </dt>
-                <dd>
-                 Destructor which destroys all metrics and contexts created by this group.
-                </dd>
-                <dt>
-                 <b>
-                  QmcGroup(bool restrictArchives = false);
-                 </b>
-                </dt>
-                <dd>
-                 Construct a new fetch group.
-                 <i>
-                  restrictArchives
-                 </i>
-                 will restrict the creating of multiple archive contexts created from the same
-              host.
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                CONTEXTS
-               </h2>
-               The default context of the group is defined as the first context created with
-               <b>
-                QmcGroup::use
-               </b>
-               before the first call to
-               <b>
-                QmcGroup::addMetric
-               </b>
-               .
-              
-              If no context is created before the first metric is added, the localhost
-              is used as the default context.  Therefore, if any metrics specifications
-              contain archive sources, an archive source must have been created with
-               <b>
-                QmcGroup::use
-               </b>
-               to avoid an error for mixing context types.
-               <dl compact="">
-                <dt>
-                 <b>
-                  uint_t numContexts() const;
-                 </b>
-                </dt>
-                <dd>
-                 The number of valid contexts created in this group.
-                </dd>
-                <dt>
-                 <b>
-                  QmcContext const&amp; context(uint_t index) const
-                 </b>
-                </dt>
-                <dd>
-                 Return a handle to a context.
-                </dd>
-                <dt>
-                 <b>
-                  QmcContext&amp; context(uint_t index);
-                 </b>
-                </dt>
-                <dd>
-                 Return a modifiable handle to a context.
-                </dd>
-                <dt>
-                 <b>
-                  int mode() const;
-                 </b>
-                </dt>
-                <dd>
-                 Return the type of context, either
-                 <b>
-                  PM_CONTEXT_LOCAL
-                 </b>
-                 ,
-                 <b>
-                  PM_CONTEXT_HOST
-                 </b>
-                 or
-                 <b>
-                  PM_CONTEXT_ARCHIVE
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  QmcContext* which() const;
-                 </b>
-                </dt>
-                <dd>
-                 Return a handle to the current context of this group. This does not
-              call
-                 <b>
-                  <a href="/man/man3/pmusecontext.3.html">
-                   pmUseContext
-                  </a>
-                 </b>
-                 (3)
-              
-              so it may not be the current
-                 <b>
-                  <a href="/man/man3/pmapi.3.html">
-                   PMAPI
-                  </a>
-                 </b>
-                 (3)
-              
-              context.
-                </dd>
-                <dt>
-                 <b>
-                  uint_t whichIndex() const
-                 </b>
-                </dt>
-                <dd>
-                 The index to the current group context.
-                </dd>
-                <dt>
-                 <b>
-                  int use(int type, char const* source);
-                 </b>
-                </dt>
-                <dd>
-                 Use the context of
-                 <i>
-                  type
-                 </i>
-                 from
-                 <i>
-                  source
-                 </i>
-                 .
-              
-              If a context to this
-                 <i>
-                  source
-                 </i>
-                 already exists in this group, that context will become the current
-                 <b>
-                  <a href="/man/man3/pmapi.3.html">
-                   PMAPI
-                  </a>
-                 </b>
-                 (3)
-              
-              context.  Otherwise a new context will be created.  The result is the
-                 <b>
-                  <a href="/man/man3/pmapi.3.html">
-                   PMAPI
-                  </a>
-                 </b>
-                 (3)
-              
-              context handle
-              for the
-                 <b>
-                  QmcGroup::context
-                 </b>
-                 or a
-                 <b>
-                  <a href="/man/man3/pmapi.3.html">
-                   PMAPI
-                  </a>
-                 </b>
-                 (3)
-              
-              error code if the context failed.
-                </dd>
-                <dt>
-                 <b>
-                  bool defaultDefined() const;
-                 </b>
-                </dt>
-                <dd>
-                 Returns
-                 <b>
-                  true
-                 </b>
-                 if a default context has been determined.
-                </dd>
-                <dt>
-                 <b>
-                  int useDefault();
-                 </b>
-                </dt>
-                <dd>
-                 Use the default context. If a default context has not been created, the
-              context to the local host will be attempted.  A result less than zero indicates
-              that the method failed with the
-                 <b>
-                  <a href="/man/man3/pmapi.3.html">
-                   PMAPI
-                  </a>
-                 </b>
-                 (3)
-              
-              error encoded in the result.
-                </dd>
-                <dt>
-                 <b>
-                  void createLocalContext();
-                 </b>
-                </dt>
-                <dd>
-                 Create and use a context to the local host.  A result less than zero indicates
-              that the method failed with the
-                 <b>
-                  <a href="/man/man3/pmapi.3.html">
-                   PMAPI
-                  </a>
-                 </b>
-                 (3)
-              
-              error encoded in the result.
-                </dd>
-               </dl>
-               <a name="lbAG">
-               </a>
-               <h2>
-                METRICS
-               </h2>
-               These
-               <b>
-                addMetric
-               </b>
-               methods should be used to create new metrics as the
-               <b>
-                QmcMetric
-               </b>
-               constructors are private. These methods will always return a pointer to
-              a
-               <b>
-                QmcMetric
-               </b>
-               object, however the
-               <b>
-                QmcMetric::status()
-               </b>
-               field should be checked to ensure the metric is valid.
-               <dl compact="">
-                <dt>
-                 <b>
-                  QmcMetric* addMetric(char const* str, double theScale = 0.0,
-                 </b>
-                </dt>
-                <dd>
-                 <b>
-                  bool active = false);
-                 </b>
-                 <p>
-                  Add the metric
-                  <i>
-                   str
-                  </i>
-                  to the group, with a scaling factor of
-                  <i>
-                   scale
-                  </i>
-                  .
-              
-              If
-                  <i>
-                   active
-                  </i>
-                  is set the metric will use only active instances (see
-                  <b>
-                   <a href="/man/man3/qmcmetric.3.html">
-                    QmcMetric
-                   </a>
-                  </b>
-                  (3)).
-                 </p>
-                </dd>
-                <dt>
-                 <b>
-                  QmcMetric* addMetric(pmMetricSpec* theMetric, double theScale
-                 </b>
-                </dt>
-                <dd>
-                 <b>
-                  = 0.0, bool active);
-                 </b>
-                 <p>
-                  Add the metric
-                  <i>
-                   theMetric
-                  </i>
-                  to the group, with a scaling factor of
-                  <i>
-                   scale
-                  </i>
-                  .
-              
-              If
-                  <i>
-                   active
-                  </i>
-                  is set the metric will use only active instances (see
-                  <b>
-                   <a href="/man/man3/qmcmetric.3.html">
-                    QmcMetric
-                   </a>
-                  </b>
-                  (3)).
-                 </p>
-                </dd>
-                <dt>
-                 <b>
-                  int fetch(bool update = true);
-                 </b>
-                </dt>
-                <dd>
-                 Fetch all the metrics in all the contexts in this group.  If
-                 <i>
-                  update
-                 </i>
-                 is equal to
-                 <b>
-                  true
-                 </b>
-                 ,
-              
-              all counter metrics will be automatically converted to rates (see
-                 <b>
-                  <a href="/man/man3/qmcmetric.3.html">
-                   QmcMetric
-                  </a>
-                 </b>
-                 (3)).
-                </dd>
-                <dt>
-                 <b>
-                  int setArchiveMode(int mode, const struct timeval *when,
-                 </b>
-                </dt>
-                <dd>
-                 <b>
-                  int interval);
-                 </b>
-                 <p>
-                  Set the mode and time to access all archive contexts in this group.  See
-                  <b>
-                   <a href="/man/man3/pmsetmode.3.html">
-                    pmSetmode
-                   </a>
-                  </b>
-                  (3)
-              
-              for more details.
-                 </p>
-                </dd>
-               </dl>
-               <a name="lbAH">
-               </a>
-               <h2>
-                TIMEZONES
-               </h2>
-               These methods assist in the management of multiple timezones and help to
-              control the current timezone.
-               <dl compact="">
-                <dt>
-                 <b>
-                  enum TimeZoneFlag { localTZ, userTZ, groupTZ, unknownTZ };
-                 </b>
-                </dt>
-                <dd>
-                 Enumeration used to describe the origin of the default timezone.
-                 <b>
-                  localTZ
-                 </b>
-                 ,
-                 <b>
-                  userTZ
-                 </b>
-                 and
-                 <b>
-                  groupTZ
-                 </b>
-                 indicate that the timezone was set with
-                 <b>
-                  QmcGroup::useLocalTZ
-                 </b>
-                 ,
-                 <b>
-                  QmcGroup::useTZ(QString const&amp;)
-                 </b>
-                 and
-                 <b>
-                  QmcGroup::useTZ()
-                 </b>
-                 respectively.
-                 <b>
-                  unknownTZ
-                 </b>
-                 indicates that a timezone has not been set.
-                 <b>
-                  userTZ
-                 </b>
-                 indicates that the timezone was
-                </dd>
-                <dt>
-                 <b>
-                  int useTZ();
-                 </b>
-                </dt>
-                <dd>
-                 Use the timezone of the current group context as the default.
-                </dd>
-                <dt>
-                 <b>
-                  int useTZ(const QString &amp;tz);
-                 </b>
-                </dt>
-                <dd>
-                 Add and use
-                 <i>
-                  tz
-                 </i>
-                 as the default timezone of this group.
-                </dd>
-                <dt>
-                 <b>
-                  int useLocalTZ();
-                 </b>
-                </dt>
-                <dd>
-                 Use the timezone of the localhost as the default for this group.
-                </dd>
-                <dt>
-                 <b>
-                  void defaultTZ(QString &amp;label, QString &amp;tz);
-                 </b>
-                </dt>
-                <dd>
-                 Return the
-                 <i>
-                  label
-                 </i>
-                 and
-                 <i>
-                  tz
-                 </i>
-                 string of the default timezone of this group.
-                </dd>
-                <dt>
-                 <b>
-                  TimeZoneFlag defaultTZ() const
-                 </b>
-                </dt>
-                <dd>
-                 Return the origin of the default timezone.
-                </dd>
-                <dt>
-                 <b>
-                  int useDefaultTZ();
-                 </b>
-                </dt>
-                <dd>
-                 Set the timezone to be the default timezone as defined in a previous call
-              to
-                 <b>
-                  QmcGroup::useTZ
-                 </b>
-                 or
-                 <b>
-                  QmcGroup::useLocalTZ
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  struct timeval const&amp; logStart() const;
-                 </b>
-                </dt>
-                <dd>
-                 Return the earliest starting time of any archives in this group.  Assumes that
-                 <b>
-                  QmcGroup::updateBounds
-                 </b>
-                 has been called.
-                </dd>
-                <dt>
-                 <b>
-                  struct timeval const&amp; logEnd() const;
-                 </b>
-                </dt>
-                <dd>
-                 Return the latest finish time of any archives in this group.  Assumes that
-                 <b>
-                  QmcGroup::updateBounds
-                 </b>
-                 has been called.
-                </dd>
-                <dt>
-                 <b>
-                  void updateBounds();
-                 </b>
-                </dt>
-                <dd>
-                 Determine the earliest start and latest finish times of all archives in this
-              group.
-                </dd>
-                <dt>
-                 <b>
-                  int sendTimezones();
-                 </b>
-                </dt>
-                <dd>
-                 Send the current timezones to
-                 <b>
-                  kmtime (3).
-                 </b>
-                </dd>
-               </dl>
-               <a name="lbAI">
-               </a>
-               <h2>
-                DEBUGGING
-               </h2>
-               <dl compact="">
-                <dt>
-                 <b>
-                  void dump(ostream &amp;os);
-                 </b>
-                </dt>
-                <dd>
-                 Dump state information about this group to
-                 <i>
-                  os
-                 </i>
-                 .
-                </dd>
-               </dl>
-               <a name="lbAJ">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmc.3.html">
-                 QMC
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmccontext.3.html">
-                 QmcContext
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/qmcmetric.3.html">
-                 QmcMetric
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmflush.3.html">
-                 pmflush
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmprintf.3.html">
-                 pmprintf
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/pmsetmode.3.html">
-                 pmSetMode
-                </a>
-               </b>
-               (3).
-               <a name="lbAK">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               Error messages are generated using
-               <b>
-                <a href="/man/man3/pmprintf.3.html">
-                 pmprintf
-                </a>
-               </b>
-               (3)
-              
-              but are not flushed. It is the responsibility of the user to call
-               <b>
-                <a href="/man/man3/pmflush.3.html">
-                 pmflush
-                </a>
-               </b>
-               (3)
-              
-              to output any messages.
-               <p>
-                Additional diagnostics may be activated by adding the option
-                <b>
-                 pmc
-                </b>
-                to the global debugging specification, as described in
-                <b>
-                 <a href="/man/man3/pmsetdebug.3.html">
-                  pmSetDebug
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C++ SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  CONSTRUCTORS &amp; DESTRUCTOR
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  CONTEXTS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  METRICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  TIMEZONES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  DEBUGGING
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAJ">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAK">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  QMC_GROUP
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  QmcGroup
+ </b>
+ - container representing a single fetch group of metrics from
+multiple sources
+ <a name="lbAC">
+ </a>
+ <h2>
+  C++ SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="file:///usr/include/QmcGroup.h">
+   QmcGroup.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  CC ... -lqmc -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ A
+ <b>
+  QmcGroup
+ </b>
+ object is a container for contexts and metrics that should be fetched at
+the same time.  The class manages the
+ <b>
+  <a href="/man/man3/qmccontext.3.html">
+   QmcContext
+  </a>
+ </b>
+ (3)
+
+objects, timezones and bounds for every context created with
+ <b>
+  QmcGroup::use
+ </b>
+ and
+ <b>
+  QmcGroup::addMetric
+ </b>
+ .
+ <a name="lbAE">
+ </a>
+ <h2>
+  CONSTRUCTORS &amp; DESTRUCTOR
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    ~QmcGroup();
+   </b>
+  </dt>
+  <dd>
+   Destructor which destroys all metrics and contexts created by this group.
+  </dd>
+  <dt>
+   <b>
+    QmcGroup(bool restrictArchives = false);
+   </b>
+  </dt>
+  <dd>
+   Construct a new fetch group.
+   <i>
+    restrictArchives
+   </i>
+   will restrict the creating of multiple archive contexts created from the same
+host.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CONTEXTS
+ </h2>
+ The default context of the group is defined as the first context created with
+ <b>
+  QmcGroup::use
+ </b>
+ before the first call to
+ <b>
+  QmcGroup::addMetric
+ </b>
+ .
+
+If no context is created before the first metric is added, the localhost
+is used as the default context.  Therefore, if any metrics specifications
+contain archive sources, an archive source must have been created with
+ <b>
+  QmcGroup::use
+ </b>
+ to avoid an error for mixing context types.
+ <dl compact="">
+  <dt>
+   <b>
+    uint_t numContexts() const;
+   </b>
+  </dt>
+  <dd>
+   The number of valid contexts created in this group.
+  </dd>
+  <dt>
+   <b>
+    QmcContext const&amp; context(uint_t index) const
+   </b>
+  </dt>
+  <dd>
+   Return a handle to a context.
+  </dd>
+  <dt>
+   <b>
+    QmcContext&amp; context(uint_t index);
+   </b>
+  </dt>
+  <dd>
+   Return a modifiable handle to a context.
+  </dd>
+  <dt>
+   <b>
+    int mode() const;
+   </b>
+  </dt>
+  <dd>
+   Return the type of context, either
+   <b>
+    PM_CONTEXT_LOCAL
+   </b>
+   ,
+   <b>
+    PM_CONTEXT_HOST
+   </b>
+   or
+   <b>
+    PM_CONTEXT_ARCHIVE
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    QmcContext* which() const;
+   </b>
+  </dt>
+  <dd>
+   Return a handle to the current context of this group. This does not
+call
+   <b>
+    <a href="/man/man3/pmusecontext.3.html">
+     pmUseContext
+    </a>
+   </b>
+   (3)
+
+so it may not be the current
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+context.
+  </dd>
+  <dt>
+   <b>
+    uint_t whichIndex() const
+   </b>
+  </dt>
+  <dd>
+   The index to the current group context.
+  </dd>
+  <dt>
+   <b>
+    int use(int type, char const* source);
+   </b>
+  </dt>
+  <dd>
+   Use the context of
+   <i>
+    type
+   </i>
+   from
+   <i>
+    source
+   </i>
+   .
+
+If a context to this
+   <i>
+    source
+   </i>
+   already exists in this group, that context will become the current
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+context.  Otherwise a new context will be created.  The result is the
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+context handle
+for the
+   <b>
+    QmcGroup::context
+   </b>
+   or a
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+error code if the context failed.
+  </dd>
+  <dt>
+   <b>
+    bool defaultDefined() const;
+   </b>
+  </dt>
+  <dd>
+   Returns
+   <b>
+    true
+   </b>
+   if a default context has been determined.
+  </dd>
+  <dt>
+   <b>
+    int useDefault();
+   </b>
+  </dt>
+  <dd>
+   Use the default context. If a default context has not been created, the
+context to the local host will be attempted.  A result less than zero indicates
+that the method failed with the
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+error encoded in the result.
+  </dd>
+  <dt>
+   <b>
+    void createLocalContext();
+   </b>
+  </dt>
+  <dd>
+   Create and use a context to the local host.  A result less than zero indicates
+that the method failed with the
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+error encoded in the result.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  METRICS
+ </h2>
+ These
+ <b>
+  addMetric
+ </b>
+ methods should be used to create new metrics as the
+ <b>
+  QmcMetric
+ </b>
+ constructors are private. These methods will always return a pointer to
+a
+ <b>
+  QmcMetric
+ </b>
+ object, however the
+ <b>
+  QmcMetric::status()
+ </b>
+ field should be checked to ensure the metric is valid.
+ <dl compact="">
+  <dt>
+   <b>
+    QmcMetric* addMetric(char const* str, double theScale = 0.0,
+   </b>
+  </dt>
+  <dd>
+   <b>
+    bool active = false);
+   </b>
+   <p>
+    Add the metric
+    <i>
+     str
+    </i>
+    to the group, with a scaling factor of
+    <i>
+     scale
+    </i>
+    .
+
+If
+    <i>
+     active
+    </i>
+    is set the metric will use only active instances (see
+    <b>
+     <a href="/man/man3/qmcmetric.3.html">
+      QmcMetric
+     </a>
+    </b>
+    (3)).
+   </p>
+  </dd>
+  <dt>
+   <b>
+    QmcMetric* addMetric(pmMetricSpec* theMetric, double theScale
+   </b>
+  </dt>
+  <dd>
+   <b>
+    = 0.0, bool active);
+   </b>
+   <p>
+    Add the metric
+    <i>
+     theMetric
+    </i>
+    to the group, with a scaling factor of
+    <i>
+     scale
+    </i>
+    .
+
+If
+    <i>
+     active
+    </i>
+    is set the metric will use only active instances (see
+    <b>
+     <a href="/man/man3/qmcmetric.3.html">
+      QmcMetric
+     </a>
+    </b>
+    (3)).
+   </p>
+  </dd>
+  <dt>
+   <b>
+    int fetch(bool update = true);
+   </b>
+  </dt>
+  <dd>
+   Fetch all the metrics in all the contexts in this group.  If
+   <i>
+    update
+   </i>
+   is equal to
+   <b>
+    true
+   </b>
+   ,
+
+all counter metrics will be automatically converted to rates (see
+   <b>
+    <a href="/man/man3/qmcmetric.3.html">
+     QmcMetric
+    </a>
+   </b>
+   (3)).
+  </dd>
+  <dt>
+   <b>
+    int setArchiveMode(int mode, const struct timeval *when,
+   </b>
+  </dt>
+  <dd>
+   <b>
+    int interval);
+   </b>
+   <p>
+    Set the mode and time to access all archive contexts in this group.  See
+    <b>
+     <a href="/man/man3/pmsetmode.3.html">
+      pmSetmode
+     </a>
+    </b>
+    (3)
+
+for more details.
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAH">
+ </a>
+ <h2>
+  TIMEZONES
+ </h2>
+ These methods assist in the management of multiple timezones and help to
+control the current timezone.
+ <dl compact="">
+  <dt>
+   <b>
+    enum TimeZoneFlag { localTZ, userTZ, groupTZ, unknownTZ };
+   </b>
+  </dt>
+  <dd>
+   Enumeration used to describe the origin of the default timezone.
+   <b>
+    localTZ
+   </b>
+   ,
+   <b>
+    userTZ
+   </b>
+   and
+   <b>
+    groupTZ
+   </b>
+   indicate that the timezone was set with
+   <b>
+    QmcGroup::useLocalTZ
+   </b>
+   ,
+   <b>
+    QmcGroup::useTZ(QString const&amp;)
+   </b>
+   and
+   <b>
+    QmcGroup::useTZ()
+   </b>
+   respectively.
+   <b>
+    unknownTZ
+   </b>
+   indicates that a timezone has not been set.
+   <b>
+    userTZ
+   </b>
+   indicates that the timezone was
+  </dd>
+  <dt>
+   <b>
+    int useTZ();
+   </b>
+  </dt>
+  <dd>
+   Use the timezone of the current group context as the default.
+  </dd>
+  <dt>
+   <b>
+    int useTZ(const QString &amp;tz);
+   </b>
+  </dt>
+  <dd>
+   Add and use
+   <i>
+    tz
+   </i>
+   as the default timezone of this group.
+  </dd>
+  <dt>
+   <b>
+    int useLocalTZ();
+   </b>
+  </dt>
+  <dd>
+   Use the timezone of the localhost as the default for this group.
+  </dd>
+  <dt>
+   <b>
+    void defaultTZ(QString &amp;label, QString &amp;tz);
+   </b>
+  </dt>
+  <dd>
+   Return the
+   <i>
+    label
+   </i>
+   and
+   <i>
+    tz
+   </i>
+   string of the default timezone of this group.
+  </dd>
+  <dt>
+   <b>
+    TimeZoneFlag defaultTZ() const
+   </b>
+  </dt>
+  <dd>
+   Return the origin of the default timezone.
+  </dd>
+  <dt>
+   <b>
+    int useDefaultTZ();
+   </b>
+  </dt>
+  <dd>
+   Set the timezone to be the default timezone as defined in a previous call
+to
+   <b>
+    QmcGroup::useTZ
+   </b>
+   or
+   <b>
+    QmcGroup::useLocalTZ
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    struct timeval const&amp; logStart() const;
+   </b>
+  </dt>
+  <dd>
+   Return the earliest starting time of any archives in this group.  Assumes that
+   <b>
+    QmcGroup::updateBounds
+   </b>
+   has been called.
+  </dd>
+  <dt>
+   <b>
+    struct timeval const&amp; logEnd() const;
+   </b>
+  </dt>
+  <dd>
+   Return the latest finish time of any archives in this group.  Assumes that
+   <b>
+    QmcGroup::updateBounds
+   </b>
+   has been called.
+  </dd>
+  <dt>
+   <b>
+    void updateBounds();
+   </b>
+  </dt>
+  <dd>
+   Determine the earliest start and latest finish times of all archives in this
+group.
+  </dd>
+  <dt>
+   <b>
+    int sendTimezones();
+   </b>
+  </dt>
+  <dd>
+   Send the current timezones to
+   <b>
+    kmtime (3).
+   </b>
+  </dd>
+ </dl>
+ <a name="lbAI">
+ </a>
+ <h2>
+  DEBUGGING
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    void dump(ostream &amp;os);
+   </b>
+  </dt>
+  <dd>
+   Dump state information about this group to
+   <i>
+    os
+   </i>
+   .
+  </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmc.3.html">
+   QMC
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmccontext.3.html">
+   QmcContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/qmcmetric.3.html">
+   QmcMetric
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmflush.3.html">
+   pmflush
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmprintf.3.html">
+   pmprintf
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmsetmode.3.html">
+   pmSetMode
+  </a>
+ </b>
+ (3).
+ <a name="lbAK">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Error messages are generated using
+ <b>
+  <a href="/man/man3/pmprintf.3.html">
+   pmprintf
+  </a>
+ </b>
+ (3)
+
+but are not flushed. It is the responsibility of the user to call
+ <b>
+  <a href="/man/man3/pmflush.3.html">
+   pmflush
+  </a>
+ </b>
+ (3)
+
+to output any messages.
+ <p>
+  Additional diagnostics may be activated by adding the option
+  <b>
+   pmc
+  </b>
+  to the global debugging specification, as described in
+  <b>
+   <a href="/man/man3/pmsetdebug.3.html">
+    pmSetDebug
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C++ SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    CONSTRUCTORS &amp; DESTRUCTOR
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    CONTEXTS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    METRICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    TIMEZONES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    DEBUGGING
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

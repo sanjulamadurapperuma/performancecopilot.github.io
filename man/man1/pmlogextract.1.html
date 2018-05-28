@@ -1,1388 +1,1392 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMLOGEXTRACT
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmlogextract
-               </b>
-               - reduce, extract, concatenate
-              and merge Performance Co-Pilot archives
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmlogextract
-               </b>
-               [
-               <b>
-                -dfmwz
-               </b>
-               ]
-              [
-               <b>
-                -c
-               </b>
-               <i>
-                configfile
-               </i>
-               ]
-              [
-               <b>
-                -S
-               </b>
-               <i>
-                starttime
-               </i>
-               ]
-              [
-               <b>
-                -s
-               </b>
-               <i>
-                samples
-               </i>
-               ]
-              [
-               <b>
-                -T
-               </b>
-               <i>
-                endtime
-               </i>
-               ]
-              [
-               <b>
-                -v
-               </b>
-               <i>
-                volsamples
-               </i>
-               ]
-              [
-               <b>
-                -Z
-               </b>
-               <i>
-                timezone
-               </i>
-               ]
-               <i>
-                input
-               </i>
-               [...]
-               <i>
-                output
-               </i>
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmlogextract
-               </b>
-               reads one or more Performance Co-Pilot (PCP) archive logs
-              identified by
-               <i>
-                input
-               </i>
-               and creates a temporally merged and/or reduced PCP archive log in
-               <i>
-                output
-               </i>
-               .
-               <i>
-                input
-               </i>
-               is a comma-separated list of names, each
-              of which may be the base name of an archive or the name of a directory containing
-              one or more archives.
-              The nature of merging is controlled by the number of input
-              archive logs, while the nature of data reduction is controlled by
-              the command line arguments.  The input(s) must be sets of PCP archive logs
-              created by
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1)
-              
-              with performance data collected from the
-               <b>
-                same
-               </b>
-               host, but usually over different time periods and possibly (although
-              not usually) with different performance metrics being logged.
-               <p>
-                If only one
-                <i>
-                 input
-                </i>
-                is specified, then the default behavior simply copies the input
-              set of PCP archive logs, into the output PCP archive log.  When two or
-              more sets of PCP archive logs are specified as
-                <i>
-                 input
-                </i>
-                ,
-              
-              the sets of logs are merged (or concatenated) and written to
-                <i>
-                 output
-                </i>
-                .
-               </p>
-               <p>
-                In the output archive log a
-                <i>
-                 &lt;mark&gt;
-                </i>
-                record may be inserted at a time
-              just past the end of each of the input archive logs to indicate
-              a possible temporal discontinuity between the end of one input
-              archive log and the start of the next input archive log.
-              See the
-                <b>
-                 MARK RECORDS
-                </b>
-                section below for more information.
-              There is no
-                <i>
-                 &lt;mark&gt;
-                </i>
-                record after the end of the
-                <i>
-                 last
-                </i>
-                (in temporal order) of the input archive logs.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                OPTIONS
-               </h2>
-               The command line options for
-               <b>
-                pmlogextract
-               </b>
-               are as follows:
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -c
-                 </b>
-                 <i>
-                  configfile
-                 </i>
-                </dt>
-                <dd>
-                 Extract only the metrics specified in
-                 <i>
-                  configfile
-                 </i>
-                 from the
-                 <i>
-                  input
-                 </i>
-                 PCP archive log(s).  The
-                 <i>
-                  configfile
-                 </i>
-                 syntax accepted by
-                 <b>
-                  pmlogextract
-                 </b>
-                 is explained in more detail in the
-                 <b>
-                  Configuration File Syntax
-                 </b>
-                 section.
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -d
-                 </b>
-                </dt>
-                <dd>
-                 Desperate mode.  Normally if a fatal error occurs, all trace of
-              the partially written PCP archive
-                 <i>
-                  output
-                 </i>
-                 is removed.  With the
-                 <b>
-                  -d
-                 </b>
-                 option, the
-                 <i>
-                  output
-                 </i>
-                 archive log is not removed.
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -f
-                 </b>
-                </dt>
-                <dd>
-                 For most common uses, all of the
-              input archive logs will have been collected in the same timezone.
-              But if this is not the case, then
-                 <b>
-                  pmlogextract
-                 </b>
-                 must choose one of the timezones from the input archive logs to be
-              used as the timezone for the output archive log.
-              The default is to use the timezone from the
-                 <i>
-                  last
-                 </i>
-                 input archive log.
-              The
-                 <b>
-                  -f
-                 </b>
-                 option forces the timezone from the
-                 <i>
-                  first
-                 </i>
-                 input archive log to be used.
-                </dd>
-                <dt>
-                 <b>
-                  -m
-                 </b>
-                </dt>
-                <dd>
-                 As described in the
-                 <b>
-                  MARK RECORDS
-                 </b>
-                 section below, sometimes it is possible to safely omit
-                 <i>
-                  &lt;mark&gt;
-                 </i>
-                 records from the output archive.
-              If the
-                 <b>
-                  -m
-                 </b>
-                 option is specified, then the
-                 <i>
-                  epilogue
-                 </i>
-                 and
-                 <i>
-                  prologue
-                 </i>
-                 test is skipped and a
-                 <i>
-                  &lt;mark&gt;
-                 </i>
-                 record will always be inserted at the end of each input
-              archive (except the last).  This is the original behaviour for
-                 <b>
-                  pmlogextract
-                 </b>
-                 .
-                </dd>
-                <dt>
-                 <b>
-                  -S
-                 </b>
-                 <i>
-                  starttime
-                 </i>
-                </dt>
-                <dd>
-                 Define the start of a time window to restrict the samples retrieved
-              or specify a ``natural'' alignment of the output sample times; refer
-              to
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPIntro
-                  </a>
-                 </b>
-                 (1).
-              
-              See also the
-                 <b>
-                  -w
-                 </b>
-                 option.
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -s
-                 </b>
-                 <i>
-                  samples
-                 </i>
-                </dt>
-                <dd>
-                 The argument
-                 <i>
-                  samples
-                 </i>
-                 defines the number of samples to be written to
-                 <i>
-                  output
-                 </i>
-                 .
-              
-              If
-                 <i>
-                  samples
-                 </i>
-                 is 0 or
-                 <b>
-                  -s
-                 </b>
-                 is not specified,
-                 <b>
-                  pmlogextract
-                 </b>
-                 will sample until the end of the PCP archive log,
-              or the end of the time window as specified by
-                 <b>
-                  -T
-                 </b>
-                 ,
-              
-              whichever comes first.  The
-                 <b>
-                  -s
-                 </b>
-                 option will override the
-                 <b>
-                  -T
-                 </b>
-                 option if it occurs sooner.
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -T
-                 </b>
-                 <i>
-                  endtime
-                 </i>
-                </dt>
-                <dd>
-                 Define the termination of a time window to restrict the samples
-              retrieved or specify a ``natural'' alignment of the output sample
-              times; refer to
-                 <b>
-                  <a href="/man/man1/pcpintro.1.html">
-                   PCPIntro
-                  </a>
-                 </b>
-                 (1).
-              
-              See also the
-                 <b>
-                  -w
-                 </b>
-                 option.
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -v
-                 </b>
-                 <i>
-                  volsamples
-                 </i>
-                </dt>
-                <dd>
-                 The
-                 <i>
-                  output
-                 </i>
-                 archive log is potentially a multi-volume data set, and the
-                 <b>
-                  -v
-                 </b>
-                 option causes
-                 <b>
-                  pmlogextract
-                 </b>
-                 to start a new volume after
-                 <i>
-                  volsamples
-                 </i>
-                 log records have been written to the archive log.
-                 <dl compact="">
-                  <dt>
-                  </dt>
-                  <dd>
-                   <p>
-                    Independent of any
-                    <b>
-                     -v
-                    </b>
-                    option, each volume of an archive is limited to no more than
-              2^31 bytes, so
-                    <i>
-                     pmlogextract
-                    </i>
-                    will automatically create a new volume for the archive before
-              this limit is reached.
-                   </p>
-                  </dd>
-                 </dl>
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -w
-                 </b>
-                </dt>
-                <dd>
-                 Where
-                 <b>
-                  -S
-                 </b>
-                 and
-                 <b>
-                  -T
-                 </b>
-                 specify a time window within the same day, the
-                 <b>
-                  -w
-                 </b>
-                 flag will cause the data within the time window to be extracted,
-              for every day in the archive log.
-              For example, the options
-                 <b>
-                  -w -S @11:00 -T @15:00
-                 </b>
-                 specify that
-                 <b>
-                  pmlogextract
-                 </b>
-                 should include archive log records only for the periods from 11am
-              to 3pm on each day.  When
-                 <b>
-                  -w
-                 </b>
-                 is used, the
-                 <i>
-                  output
-                 </i>
-                 archive log will contain
-                 <i>
-                  &lt;mark&gt;
-                 </i>
-                 records to indicate the temporal
-              discontinuity between the end of one time window and the start of
-              the next.
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -Z
-                 </b>
-                 <i>
-                  timezone
-                 </i>
-                </dt>
-                <dd>
-                 Use
-                 <i>
-                  timezone
-                 </i>
-                 when displaying the date and time.
-                 <i>
-                  Timezone
-                 </i>
-                 is in the format of the environment variable
-                 <b>
-                  TZ
-                 </b>
-                 as described in
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-                   environ
-                  </a>
-                 </b>
-                 (7).
-                </dd>
-               </dl>
-               <p>
-               </p>
-               <dl compact="">
-                <dt>
-                 <b>
-                  -z
-                 </b>
-                </dt>
-                <dd>
-                 Use the local timezone of the host from the input archive logs.
-              The default is to initially use the timezone of the local host.
-                </dd>
-               </dl>
-               <a name="lbAF">
-               </a>
-               <h2>
-                CONFIGURATION FILE SYNTAX
-               </h2>
-               The
-               <i>
-                configfile
-               </i>
-               contains metrics of interest - only those metrics (or instances)
-              mentioned explicitly or implicitly in the configuration file will be
-              included in the
-               <i>
-                output
-               </i>
-               archive.
-              Each specifications must begin on a new line, and may span multiple lines
-              in the configuration file.
-              Instances
-              may also be specified, but they are optional.  The format for
-              each specification is
-               <p>
-                <br/>
-                metric [[instance[,instance...]]]
-               </p>
-               <p>
-                where
-                <i>
-                 metric
-                </i>
-                may be a leaf or a non-leaf name in the Performance Metrics
-              Name Space (PMNS, see
-                <b>
-                 <a href="/man/man5/pmns.5.html">
-                  pmns
-                 </a>
-                </b>
-                (5)).
-              
-              If a metric refers to a non-leaf node in the PMNS,
-                <b>
-                 pmlogextract
-                </b>
-                will recursively descend the PMNS and include all metrics
-              corresponding to descendent leaf nodes.
-               </p>
-               <p>
-                Instances are
-              optional, and may be specified as a list of one or more
-              space (or comma) separated names, numbers or strings (enclosed
-              in single or double quotes).
-              Elements in the list that are numbers are assumed to be internal
-              instance identifiers - see
-                <b>
-                 <a href="/man/man3/pmgetindom.3.html">
-                  pmGetInDom
-                 </a>
-                </b>
-                (3)
-              
-              for more information.
-              If no instances are given, then
-                <b>
-                 all
-                </b>
-                instances of the associated metric(s) will be extracted.
-               </p>
-               <p>
-                Any additional white space is ignored and
-              comments may be added with a `#' prefix.
-                <a name="lbAG">
-                </a>
-               </p>
-               <h2>
-                CONFIGURATION FILE EXAMPLE
-               </h2>
-               This is an example of a valid
-               <i>
-                configfile
-               </i>
-               :
-               <p>
-                <br/>
-                #
-                <br/>
-                # config file for pmlogextract
-                <br/>
-                #
-               </p>
-               <p>
-                <br/>
-                kernel.all.cpu
-                <br/>
-                kernel.percpu.cpu.sys ["cpu0","cpu1"]
-                <br/>
-                disk.dev ["dks0d1"]
-                <a name="lbAH">
-                </a>
-               </p>
-               <h2>
-                MARK RECORDS
-               </h2>
-               When more than one input archive log contributes performance data to the
-              output archive log, then
-               <i>
-                &lt;mark&gt;
-               </i>
-               records may be inserted to indicate a possible
-              discontinuity in the performance data.
-               <p>
-                A
-                <i>
-                 &lt;mark&gt;
-                </i>
-                record contains a timestamp and no performance data and
-              is used to indicate that there is a time period
-              in the PCP archive log where we do not know the values of
-                <b>
-                 any
-                </b>
-                performance metrics, because there was no
-                <b>
-                 <a href="/man/man1/pmlogger.1.html">
-                  pmlogger
-                 </a>
-                </b>
-                (1)
-              
-              collecting performance data during this period.  Since these periods are
-              often associated with the restart of a service or
-                <b>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </b>
-                (1)
-              
-              or a system, there may be considerable doubt as to the continuity of
-              performance data across this time period.
-               </p>
-               <p>
-                Most current archives are created with a
-                <i>
-                 prologue
-                </i>
-                record at the beginning and an
-                <i>
-                 epilogue
-                </i>
-                record at the end.
-              These records identify the state of
-                <b>
-                 <a href="/man/man1/pmcd.1.html">
-                  pmcd
-                 </a>
-                </b>
-                (1)
-              
-              at the time, and may be used by
-                <b>
-                 pmlogextract
-                </b>
-                to determine that there is no discontinuity between the end of
-              one archive and the next output record, and as a consequence the
-                <i>
-                 &lt;mark&gt;
-                </i>
-                record can safely be omitted from the output archive.
-               </p>
-               <p>
-                The rationale behind
-                <i>
-                 &lt;mark&gt;
-                </i>
-                records may be demonstrated with an example.
-              Consider one input archive log that starts at 00:10 and ends at 09:15 on the
-              same day, and another input archive log that starts at 09:20 on the
-              same day and ends at 00:10 the following morning.  This would be a very
-              common case for archives managed and rotated by
-                <b>
-                 <a href="/man/man1/pmlogger_check.1.html">
-                  pmlogger_check
-                 </a>
-                </b>
-                (1)
-              
-              and
-                <b>
-                 <a href="/man/man1/pmlogger_daily.1.html">
-                  pmlogger_daily
-                 </a>
-                </b>
-                (1).
-               </p>
-               <p>
-                The output archive log created by
-                <b>
-                 pmlogextract
-                </b>
-                would contain:
-                <br/>
-                00:10.000
-                <tt>
-                </tt>
-                first record from first input archive log
-                <br/>
-                <br/>
-                ...
-                <br/>
-                09:15.000
-                <tt>
-                </tt>
-                last record from first input archive log
-                <br/>
-                <br/>
-                09:15.001
-                <tt>
-                </tt>
-                &lt;mark&gt; record
-                <br/>
-                <br/>
-                09:20.000
-                <tt>
-                </tt>
-                first record from second input archive log
-                <br/>
-                <br/>
-                ...
-                <br/>
-                01:10.000
-                <tt>
-                </tt>
-                last record from second input archive log
-                <br/>
-               </p>
-               <p>
-                The time period where the performance data is missing starts just after
-              09:15 and ends just before 09:20.
-              When the output archive log is processed with any of the PCP reporting
-              tools, the
-                <i>
-                 &lt;mark&gt;
-                </i>
-                record is used to indicate a period of missing
-              data.  For example using the output archive above, imagine one was reporting the average
-              I/O rate at 30 minute intervals
-              aligned on the hour and half-hour.
-              The I/O count metric is a counter, so the
-              average I/O rate requires two valid values from
-              consecutive sample times.
-              There would be
-              values for all the intervals ending at 09:00,
-              then no values at 09:30 because of the
-                <i>
-                 &lt;mark&gt;
-                </i>
-                record, then no values at 10:00 because the ``prior'' value at 09:30 is not
-              available, then the rate would be reported again at 10:30 and continue
-              every 30 minutes until the last reported value at 01:00.
-               </p>
-               <p>
-                The presence of
-                <i>
-                 &lt;mark&gt;
-                </i>
-                records in a PCP archive log can be established
-              using
-                <b>
-                 <a href="/man/man1/pmdumplog.1.html">
-                  pmdumplog
-                 </a>
-                </b>
-                (1)
-              
-              where a timestamp and the annotation
-                <b>
-                 &lt;mark&gt;
-                </b>
-                is used to indicate a
-                <i>
-                 &lt;mark&gt;
-                </i>
-                record.
-                <a name="lbAI">
-                </a>
-               </p>
-               <h2>
-                METADATA CHECKS
-               </h2>
-               When more than one
-               <i>
-                input
-               </i>
-               archive set is specified,
-               <b>
-                pmlogextract
-               </b>
-               performs a number of checks to ensure the metadata is consistent for
-              metrics appearing in more than one of the
-               <i>
-                input
-               </i>
-               archive sets.
-              These checks include:
-               <dl compact="">
-                <dt>
-                 *
-                </dt>
-                <dd>
-                 metric data type is the same
-                </dd>
-                <dt>
-                 *
-                </dt>
-                <dd>
-                 metric semantics are the same
-                </dd>
-                <dt>
-                 *
-                </dt>
-                <dd>
-                 metric units are the same
-                </dd>
-                <dt>
-                 *
-                </dt>
-                <dd>
-                 metric is either always singular or always has the same instance domain
-                </dd>
-                <dt>
-                 *
-                </dt>
-                <dd>
-                 metrics with the same name have the same PMID
-                </dd>
-                <dt>
-                 *
-                </dt>
-                <dd>
-                 metrics with the same PMID have the same name
-                </dd>
-               </dl>
-               <p>
-                If any of these checks fail,
-                <b>
-                 pmlogextract
-                </b>
-                reports the details and aborts without creating the
-                <i>
-                 output
-                </i>
-                archive.
-               </p>
-               <p>
-                To address these semantic issues, use
-                <b>
-                 <a href="/man/man1/pmlogrewrite.1.html">
-                  pmlogrewrite
-                 </a>
-                </b>
-                (1)
-              
-              to translate the
-                <i>
-                 input
-                </i>
-                archives into equivalent archives with consistent metdadata before using
-                <b>
-                 pmlogextract
-                </b>
-                .
-                <a name="lbAJ">
-                </a>
-               </p>
-               <h2>
-                FILES
-               </h2>
-               For each of the
-               <i>
-                input
-               </i>
-               and
-               <i>
-                output
-               </i>
-               archive logs, several physical files are used.
-               <dl compact="">
-                <dt>
-                 <i>
-                  archive
-                 </i>
-                 <b>
-                  .meta
-                  <dd>
-                   metadata (metric descriptions, instance domains, etc.) for the archive log
-                  </dd>
-                  <dt>
-                  </dt>
-                 </b>
-                 <i>
-                  archive
-                 </i>
-                 <b>
-                  .0
-                  <dd>
-                   initial volume of metrics values (subsequent volumes have suffixes
-              1
-                  </dd>
-                 </b>
-                 ,
-                 <b>
-                  2
-                 </b>
-                 ,
-              
-              ...) - for
-                 <i>
-                  input
-                 </i>
-                 these files may have been previously compressed with
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man1/bzip2.1.html">
-                   bzip2
-                  </a>
-                 </b>
-                 (1)
-              
-              or
-                 <b>
-                  <a href="http://man7.org/linux/man-pages/man1/gzip.1.html">
-                   gzip
-                  </a>
-                 </b>
-                 (1)
-              
-              and thus may have an additional
-                 <b>
-                  .bz2
-                 </b>
-                 or
-                 <b>
-                  .gz
-                 </b>
-                 suffix.
-                 <dt>
-                  <i>
-                   archive
-                  </i>
-                  <b>
-                   .index
-                   <dd>
-                    temporal index to support rapid random access to the other files in the
-              archive log.
-                   </dd>
-                  </b>
-                 </dt>
-                </dt>
-               </dl>
-               <a name="lbAK">
-               </a>
-               <h2>
-                PCP ENVIRONMENT
-               </h2>
-               Environment variables with the prefix
-               <b>
-                PCP_
-               </b>
-               are used to parameterize the file and directory names
-              used by PCP.
-              On each installation, the file
-               <i>
-                /etc/pcp.conf
-               </i>
-               contains the local values for these variables.
-              The
-               <b>
-                $PCP_CONF
-               </b>
-               variable may be used to specify an alternative
-              configuration file,
-              as described in
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5).
-               <a name="lbAL">
-               </a>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumplog.1.html">
-                 pmdumplog
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlc.1.html">
-                 pmlc
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogreduce.1.html">
-                 pmlogreduce
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogrewrite.1.html">
-                 pmlogrewrite
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man5/pcp.conf.5.html">
-                 pcp.conf
-                </a>
-               </b>
-               (5)
-              
-              and
-               <b>
-                <a href="/man/man5/pcp.env.5.html">
-                 pcp.env
-                </a>
-               </b>
-               (5).
-               <a name="lbAM">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               All error conditions detected by
-               <b>
-                pmlogextract
-               </b>
-               are reported on
-               <i>
-                stderr
-               </i>
-               with textual (if sometimes terse) explanation.
-               <p>
-                Should one of the input archive logs be corrupted (this can happen
-              if the
-                <b>
-                 pmlogger
-                </b>
-                instance writing the log suddenly dies), then
-                <b>
-                 pmlogextract
-                </b>
-                will detect and report the position of the corruption in the file,
-              and any subsequent information from that archive log will not be processed.
-               </p>
-               <p>
-                If any error is detected,
-                <b>
-                 pmlogextract
-                </b>
-                will exit with a non-zero status.
-                <a name="lbAN">
-                </a>
-               </p>
-               <h2>
-                CAVEATS
-               </h2>
-               The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
-              and pmcd.pmlogger.port), which are automatically recorded by
-               <b>
-                pmlogger
-               </b>
-               at the start of the archive, may not be present in the archive output by
-               <b>
-                pmlogextract
-               </b>
-               .
-              
-              These metrics are only relevant while the archive is being created,
-              and have no significance once recording has finished.
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  OPTIONS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  CONFIGURATION FILE SYNTAX
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAG">
-                  CONFIGURATION FILE EXAMPLE
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAH">
-                  MARK RECORDS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAI">
-                  METADATA CHECKS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAJ">
-                  FILES
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAK">
-                  PCP ENVIRONMENT
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAL">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAM">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAN">
-                  CAVEATS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLOGEXTRACT
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmlogextract
+ </b>
+ - reduce, extract, concatenate
+and merge Performance Co-Pilot archives
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmlogextract
+ </b>
+ [
+ <b>
+  -dfmwz
+ </b>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  configfile
+ </i>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  starttime
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  samples
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
+ </i>
+ ]
+[
+ <b>
+  -v
+ </b>
+ <i>
+  volsamples
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+ <i>
+  input
+ </i>
+ [...]
+ <i>
+  output
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmlogextract
+ </b>
+ reads one or more Performance Co-Pilot (PCP) archive logs
+identified by
+ <i>
+  input
+ </i>
+ and creates a temporally merged and/or reduced PCP archive log in
+ <i>
+  output
+ </i>
+ .
+ <i>
+  input
+ </i>
+ is a comma-separated list of names, each
+of which may be the base name of an archive or the name of a directory containing
+one or more archives.
+The nature of merging is controlled by the number of input
+archive logs, while the nature of data reduction is controlled by
+the command line arguments.  The input(s) must be sets of PCP archive logs
+created by
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+with performance data collected from the
+ <b>
+  same
+ </b>
+ host, but usually over different time periods and possibly (although
+not usually) with different performance metrics being logged.
+ <p>
+  If only one
+  <i>
+   input
+  </i>
+  is specified, then the default behavior simply copies the input
+set of PCP archive logs, into the output PCP archive log.  When two or
+more sets of PCP archive logs are specified as
+  <i>
+   input
+  </i>
+  ,
+
+the sets of logs are merged (or concatenated) and written to
+  <i>
+   output
+  </i>
+  .
+ </p>
+ <p>
+  In the output archive log a
+  <i>
+   &lt;mark&gt;
+  </i>
+  record may be inserted at a time
+just past the end of each of the input archive logs to indicate
+a possible temporal discontinuity between the end of one input
+archive log and the start of the next input archive log.
+See the
+  <b>
+   MARK RECORDS
+  </b>
+  section below for more information.
+There is no
+  <i>
+   &lt;mark&gt;
+  </i>
+  record after the end of the
+  <i>
+   last
+  </i>
+  (in temporal order) of the input archive logs.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The command line options for
+ <b>
+  pmlogextract
+ </b>
+ are as follows:
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    configfile
+   </i>
+  </dt>
+  <dd>
+   Extract only the metrics specified in
+   <i>
+    configfile
+   </i>
+   from the
+   <i>
+    input
+   </i>
+   PCP archive log(s).  The
+   <i>
+    configfile
+   </i>
+   syntax accepted by
+   <b>
+    pmlogextract
+   </b>
+   is explained in more detail in the
+   <b>
+    Configuration File Syntax
+   </b>
+   section.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -d
+   </b>
+  </dt>
+  <dd>
+   Desperate mode.  Normally if a fatal error occurs, all trace of
+the partially written PCP archive
+   <i>
+    output
+   </i>
+   is removed.  With the
+   <b>
+    -d
+   </b>
+   option, the
+   <i>
+    output
+   </i>
+   archive log is not removed.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -f
+   </b>
+  </dt>
+  <dd>
+   For most common uses, all of the
+input archive logs will have been collected in the same timezone.
+But if this is not the case, then
+   <b>
+    pmlogextract
+   </b>
+   must choose one of the timezones from the input archive logs to be
+used as the timezone for the output archive log.
+The default is to use the timezone from the
+   <i>
+    last
+   </i>
+   input archive log.
+The
+   <b>
+    -f
+   </b>
+   option forces the timezone from the
+   <i>
+    first
+   </i>
+   input archive log to be used.
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+  </dt>
+  <dd>
+   As described in the
+   <b>
+    MARK RECORDS
+   </b>
+   section below, sometimes it is possible to safely omit
+   <i>
+    &lt;mark&gt;
+   </i>
+   records from the output archive.
+If the
+   <b>
+    -m
+   </b>
+   option is specified, then the
+   <i>
+    epilogue
+   </i>
+   and
+   <i>
+    prologue
+   </i>
+   test is skipped and a
+   <i>
+    &lt;mark&gt;
+   </i>
+   record will always be inserted at the end of each input
+archive (except the last).  This is the original behaviour for
+   <b>
+    pmlogextract
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    starttime
+   </i>
+  </dt>
+  <dd>
+   Define the start of a time window to restrict the samples retrieved
+or specify a ``natural'' alignment of the output sample times; refer
+to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1).
+
+See also the
+   <b>
+    -w
+   </b>
+   option.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    samples
+   </i>
+  </dt>
+  <dd>
+   The argument
+   <i>
+    samples
+   </i>
+   defines the number of samples to be written to
+   <i>
+    output
+   </i>
+   .
+
+If
+   <i>
+    samples
+   </i>
+   is 0 or
+   <b>
+    -s
+   </b>
+   is not specified,
+   <b>
+    pmlogextract
+   </b>
+   will sample until the end of the PCP archive log,
+or the end of the time window as specified by
+   <b>
+    -T
+   </b>
+   ,
+
+whichever comes first.  The
+   <b>
+    -s
+   </b>
+   option will override the
+   <b>
+    -T
+   </b>
+   option if it occurs sooner.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    endtime
+   </i>
+  </dt>
+  <dd>
+   Define the termination of a time window to restrict the samples
+retrieved or specify a ``natural'' alignment of the output sample
+times; refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1).
+
+See also the
+   <b>
+    -w
+   </b>
+   option.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -v
+   </b>
+   <i>
+    volsamples
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    output
+   </i>
+   archive log is potentially a multi-volume data set, and the
+   <b>
+    -v
+   </b>
+   option causes
+   <b>
+    pmlogextract
+   </b>
+   to start a new volume after
+   <i>
+    volsamples
+   </i>
+   log records have been written to the archive log.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Independent of any
+      <b>
+       -v
+      </b>
+      option, each volume of an archive is limited to no more than
+2^31 bytes, so
+      <i>
+       pmlogextract
+      </i>
+      will automatically create a new volume for the archive before
+this limit is reached.
+     </p>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -w
+   </b>
+  </dt>
+  <dd>
+   Where
+   <b>
+    -S
+   </b>
+   and
+   <b>
+    -T
+   </b>
+   specify a time window within the same day, the
+   <b>
+    -w
+   </b>
+   flag will cause the data within the time window to be extracted,
+for every day in the archive log.
+For example, the options
+   <b>
+    -w -S @11:00 -T @15:00
+   </b>
+   specify that
+   <b>
+    pmlogextract
+   </b>
+   should include archive log records only for the periods from 11am
+to 3pm on each day.  When
+   <b>
+    -w
+   </b>
+   is used, the
+   <i>
+    output
+   </i>
+   archive log will contain
+   <i>
+    &lt;mark&gt;
+   </i>
+   records to indicate the temporal
+discontinuity between the end of one time window and the start of
+the next.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   Use
+   <i>
+    timezone
+   </i>
+   when displaying the date and time.
+   <i>
+    Timezone
+   </i>
+   is in the format of the environment variable
+   <b>
+    TZ
+   </b>
+   as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -z
+   </b>
+  </dt>
+  <dd>
+   Use the local timezone of the host from the input archive logs.
+The default is to initially use the timezone of the local host.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CONFIGURATION FILE SYNTAX
+ </h2>
+ The
+ <i>
+  configfile
+ </i>
+ contains metrics of interest - only those metrics (or instances)
+mentioned explicitly or implicitly in the configuration file will be
+included in the
+ <i>
+  output
+ </i>
+ archive.
+Each specifications must begin on a new line, and may span multiple lines
+in the configuration file.
+Instances
+may also be specified, but they are optional.  The format for
+each specification is
+ <p>
+  <br/>
+  metric [[instance[,instance...]]]
+ </p>
+ <p>
+  where
+  <i>
+   metric
+  </i>
+  may be a leaf or a non-leaf name in the Performance Metrics
+Name Space (PMNS, see
+  <b>
+   <a href="/man/man5/pmns.5.html">
+    pmns
+   </a>
+  </b>
+  (5)).
+
+If a metric refers to a non-leaf node in the PMNS,
+  <b>
+   pmlogextract
+  </b>
+  will recursively descend the PMNS and include all metrics
+corresponding to descendent leaf nodes.
+ </p>
+ <p>
+  Instances are
+optional, and may be specified as a list of one or more
+space (or comma) separated names, numbers or strings (enclosed
+in single or double quotes).
+Elements in the list that are numbers are assumed to be internal
+instance identifiers - see
+  <b>
+   <a href="/man/man3/pmgetindom.3.html">
+    pmGetInDom
+   </a>
+  </b>
+  (3)
+
+for more information.
+If no instances are given, then
+  <b>
+   all
+  </b>
+  instances of the associated metric(s) will be extracted.
+ </p>
+ <p>
+  Any additional white space is ignored and
+comments may be added with a `#' prefix.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  CONFIGURATION FILE EXAMPLE
+ </h2>
+ This is an example of a valid
+ <i>
+  configfile
+ </i>
+ :
+ <p>
+  <br/>
+  #
+  <br/>
+  # config file for pmlogextract
+  <br/>
+  #
+ </p>
+ <p>
+  <br/>
+  kernel.all.cpu
+  <br/>
+  kernel.percpu.cpu.sys ["cpu0","cpu1"]
+  <br/>
+  disk.dev ["dks0d1"]
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  MARK RECORDS
+ </h2>
+ When more than one input archive log contributes performance data to the
+output archive log, then
+ <i>
+  &lt;mark&gt;
+ </i>
+ records may be inserted to indicate a possible
+discontinuity in the performance data.
+ <p>
+  A
+  <i>
+   &lt;mark&gt;
+  </i>
+  record contains a timestamp and no performance data and
+is used to indicate that there is a time period
+in the PCP archive log where we do not know the values of
+  <b>
+   any
+  </b>
+  performance metrics, because there was no
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+collecting performance data during this period.  Since these periods are
+often associated with the restart of a service or
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+or a system, there may be considerable doubt as to the continuity of
+performance data across this time period.
+ </p>
+ <p>
+  Most current archives are created with a
+  <i>
+   prologue
+  </i>
+  record at the beginning and an
+  <i>
+   epilogue
+  </i>
+  record at the end.
+These records identify the state of
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+at the time, and may be used by
+  <b>
+   pmlogextract
+  </b>
+  to determine that there is no discontinuity between the end of
+one archive and the next output record, and as a consequence the
+  <i>
+   &lt;mark&gt;
+  </i>
+  record can safely be omitted from the output archive.
+ </p>
+ <p>
+  The rationale behind
+  <i>
+   &lt;mark&gt;
+  </i>
+  records may be demonstrated with an example.
+Consider one input archive log that starts at 00:10 and ends at 09:15 on the
+same day, and another input archive log that starts at 09:20 on the
+same day and ends at 00:10 the following morning.  This would be a very
+common case for archives managed and rotated by
+  <b>
+   <a href="/man/man1/pmlogger_check.1.html">
+    pmlogger_check
+   </a>
+  </b>
+  (1)
+
+and
+  <b>
+   <a href="/man/man1/pmlogger_daily.1.html">
+    pmlogger_daily
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The output archive log created by
+  <b>
+   pmlogextract
+  </b>
+  would contain:
+  <br/>
+  00:10.000
+  <tt>
+  </tt>
+  first record from first input archive log
+  <br/>
+  <br/>
+  ...
+  <br/>
+  09:15.000
+  <tt>
+  </tt>
+  last record from first input archive log
+  <br/>
+  <br/>
+  09:15.001
+  <tt>
+  </tt>
+  &lt;mark&gt; record
+  <br/>
+  <br/>
+  09:20.000
+  <tt>
+  </tt>
+  first record from second input archive log
+  <br/>
+  <br/>
+  ...
+  <br/>
+  01:10.000
+  <tt>
+  </tt>
+  last record from second input archive log
+  <br/>
+ </p>
+ <p>
+  The time period where the performance data is missing starts just after
+09:15 and ends just before 09:20.
+When the output archive log is processed with any of the PCP reporting
+tools, the
+  <i>
+   &lt;mark&gt;
+  </i>
+  record is used to indicate a period of missing
+data.  For example using the output archive above, imagine one was reporting the average
+I/O rate at 30 minute intervals
+aligned on the hour and half-hour.
+The I/O count metric is a counter, so the
+average I/O rate requires two valid values from
+consecutive sample times.
+There would be
+values for all the intervals ending at 09:00,
+then no values at 09:30 because of the
+  <i>
+   &lt;mark&gt;
+  </i>
+  record, then no values at 10:00 because the ``prior'' value at 09:30 is not
+available, then the rate would be reported again at 10:30 and continue
+every 30 minutes until the last reported value at 01:00.
+ </p>
+ <p>
+  The presence of
+  <i>
+   &lt;mark&gt;
+  </i>
+  records in a PCP archive log can be established
+using
+  <b>
+   <a href="/man/man1/pmdumplog.1.html">
+    pmdumplog
+   </a>
+  </b>
+  (1)
+
+where a timestamp and the annotation
+  <b>
+   &lt;mark&gt;
+  </b>
+  is used to indicate a
+  <i>
+   &lt;mark&gt;
+  </i>
+  record.
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  METADATA CHECKS
+ </h2>
+ When more than one
+ <i>
+  input
+ </i>
+ archive set is specified,
+ <b>
+  pmlogextract
+ </b>
+ performs a number of checks to ensure the metadata is consistent for
+metrics appearing in more than one of the
+ <i>
+  input
+ </i>
+ archive sets.
+These checks include:
+ <dl compact="">
+  <dt>
+   *
+  </dt>
+  <dd>
+   metric data type is the same
+  </dd>
+  <dt>
+   *
+  </dt>
+  <dd>
+   metric semantics are the same
+  </dd>
+  <dt>
+   *
+  </dt>
+  <dd>
+   metric units are the same
+  </dd>
+  <dt>
+   *
+  </dt>
+  <dd>
+   metric is either always singular or always has the same instance domain
+  </dd>
+  <dt>
+   *
+  </dt>
+  <dd>
+   metrics with the same name have the same PMID
+  </dd>
+  <dt>
+   *
+  </dt>
+  <dd>
+   metrics with the same PMID have the same name
+  </dd>
+ </dl>
+ <p>
+  If any of these checks fail,
+  <b>
+   pmlogextract
+  </b>
+  reports the details and aborts without creating the
+  <i>
+   output
+  </i>
+  archive.
+ </p>
+ <p>
+  To address these semantic issues, use
+  <b>
+   <a href="/man/man1/pmlogrewrite.1.html">
+    pmlogrewrite
+   </a>
+  </b>
+  (1)
+
+to translate the
+  <i>
+   input
+  </i>
+  archives into equivalent archives with consistent metdadata before using
+  <b>
+   pmlogextract
+  </b>
+  .
+  <a name="lbAJ">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ For each of the
+ <i>
+  input
+ </i>
+ and
+ <i>
+  output
+ </i>
+ archive logs, several physical files are used.
+ <dl compact="">
+  <dt>
+   <i>
+    archive
+   </i>
+   <b>
+    .meta
+    <dd>
+     metadata (metric descriptions, instance domains, etc.) for the archive log
+    </dd>
+    <dt>
+    </dt>
+   </b>
+   <i>
+    archive
+   </i>
+   <b>
+    .0
+    <dd>
+     initial volume of metrics values (subsequent volumes have suffixes
+1
+    </dd>
+   </b>
+   ,
+   <b>
+    2
+   </b>
+   ,
+
+...) - for
+   <i>
+    input
+   </i>
+   these files may have been previously compressed with
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/bzip2.1.html">
+     bzip2
+    </a>
+   </b>
+   (1)
+
+or
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/gzip.1.html">
+     gzip
+    </a>
+   </b>
+   (1)
+
+and thus may have an additional
+   <b>
+    .bz2
+   </b>
+   or
+   <b>
+    .gz
+   </b>
+   suffix.
+   <dt>
+    <i>
+     archive
+    </i>
+    <b>
+     .index
+     <dd>
+      temporal index to support rapid random access to the other files in the
+archive log.
+     </dd>
+    </b>
+   </dt>
+  </dt>
+ </dl>
+ <a name="lbAK">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAL">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlc.1.html">
+   pmlc
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogreduce.1.html">
+   pmlogreduce
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogrewrite.1.html">
+   pmlogrewrite
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5).
+ <a name="lbAM">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All error conditions detected by
+ <b>
+  pmlogextract
+ </b>
+ are reported on
+ <i>
+  stderr
+ </i>
+ with textual (if sometimes terse) explanation.
+ <p>
+  Should one of the input archive logs be corrupted (this can happen
+if the
+  <b>
+   pmlogger
+  </b>
+  instance writing the log suddenly dies), then
+  <b>
+   pmlogextract
+  </b>
+  will detect and report the position of the corruption in the file,
+and any subsequent information from that archive log will not be processed.
+ </p>
+ <p>
+  If any error is detected,
+  <b>
+   pmlogextract
+  </b>
+  will exit with a non-zero status.
+  <a name="lbAN">
+  </a>
+ </p>
+ <h2>
+  CAVEATS
+ </h2>
+ The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
+and pmcd.pmlogger.port), which are automatically recorded by
+ <b>
+  pmlogger
+ </b>
+ at the start of the archive, may not be present in the archive output by
+ <b>
+  pmlogextract
+ </b>
+ .
+
+These metrics are only relevant while the archive is being created,
+and have no significance once recording has finished.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    OPTIONS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    CONFIGURATION FILE SYNTAX
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    CONFIGURATION FILE EXAMPLE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    MARK RECORDS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    METADATA CHECKS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAM">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAN">
+    CAVEATS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

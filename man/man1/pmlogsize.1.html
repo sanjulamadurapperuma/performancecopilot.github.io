@@ -1,373 +1,377 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMLOGSIZE
-               </h1>
-               Section: User Commands  (1)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmlogsize
-               </b>
-               - report sizes for parts of PCP archive(s)
-               <a name="lbAC">
-               </a>
-               <h2>
-                SYNOPSIS
-               </h2>
-               <b>
-                pmlogsize
-               </b>
-               [
-               <b>
-                -drv
-               </b>
-               ]
-              [
-               <b>
-                -x
-               </b>
-               <i>
-                thres
-               </i>
-               ]
-               <i>
-                archive
-               </i>
-               ...
-               <a name="lbAD">
-               </a>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmlogsize
-               </b>
-               prints information about the size of the index, metadata and data
-              sections of a Performance Co-Pilot (PCP) archive.
-              The output is intended to guide improvements in archive encoding
-              format for PCP developers and to help trim
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1)
-              
-              configuration files to remove metrics that are bloating the PCP archives
-              with low-value data in production environments.
-               <p>
-                The
-                <i>
-                 archive
-                </i>
-                arguments can be any mixture of the names of the physical files
-              of a PCP archive or the basename that is common to all the
-              component physical
-              files in a single archive.  In the latter case
-                <i>
-                 archive
-                </i>
-                is replaced by a list of all of the matching component file names.
-               </p>
-               <p>
-                Note the semantics is a little different to other PCP tools in
-              that
-                <b>
-                 foo.meta
-                </b>
-                means
-                <b>
-                 just
-                </b>
-                the file
-                <b>
-                 foo.meta
-                </b>
-                ,
-              
-              not
-                <b>
-                 foo.index
-                </b>
-                ,
-                <b>
-                 foo.meta
-                </b>
-                ,
-                <b>
-                 foo.0
-                </b>
-                ,
-              
-              etc.
-               </p>
-               <p>
-                The
-                <b>
-                 -d
-                </b>
-                flag requests more detailed reporting.  This means space per instance domain
-              in a metadata file and space per metric (for values) in a data file.
-               </p>
-               <p>
-                The -r
-              flag requests additional information about possible replicated values
-              in the data file and replicated instances in the metadata file.  It implies
-                <b>
-                 -d
-                </b>
-                .
-               </p>
-               <p>
-                When the
-                <b>
-                 -d
-                </b>
-                (or
-                <b>
-                 -r
-                </b>
-                )
-              
-              flag is specified, the
-                <b>
-                 -x
-                </b>
-                flag may be used to cut off the report after at least
-                <i>
-                 thres
-                </i>
-                percent of the associated space (metric values or instance domains) has
-              been reported.  The default behaviour is equivalent to
-                <i>
-                 thres
-                </i>
-                being set to 100.
-               </p>
-               <p>
-                Additional verbosity can be enabled with one or more
-                <b>
-                 -v
-                </b>
-                flags.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man1/pcpintro.1.html">
-                 PCPIntro
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmdumplog.1.html">
-                 pmdumplog
-                </a>
-               </b>
-               (1),
-               <b>
-                <a href="/man/man1/pmlogcheck.1.html">
-                 pmlogcheck
-                </a>
-               </b>
-               (1)
-              
-              and
-               <b>
-                <a href="/man/man1/pmlogger.1.html">
-                 pmlogger
-                </a>
-               </b>
-               (1).
-               <a name="lbAF">
-               </a>
-               <h2>
-                DIAGNOSTICS
-               </h2>
-               All are generated on standard error and are intended to be self-
-              explanatory.
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAF">
-                  DIAGNOSTICS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLOGSIZE
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmlogsize
+ </b>
+ - report sizes for parts of PCP archive(s)
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmlogsize
+ </b>
+ [
+ <b>
+  -drv
+ </b>
+ ]
+[
+ <b>
+  -x
+ </b>
+ <i>
+  thres
+ </i>
+ ]
+ <i>
+  archive
+ </i>
+ ...
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmlogsize
+ </b>
+ prints information about the size of the index, metadata and data
+sections of a Performance Co-Pilot (PCP) archive.
+The output is intended to guide improvements in archive encoding
+format for PCP developers and to help trim
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1)
+
+configuration files to remove metrics that are bloating the PCP archives
+with low-value data in production environments.
+ <p>
+  The
+  <i>
+   archive
+  </i>
+  arguments can be any mixture of the names of the physical files
+of a PCP archive or the basename that is common to all the
+component physical
+files in a single archive.  In the latter case
+  <i>
+   archive
+  </i>
+  is replaced by a list of all of the matching component file names.
+ </p>
+ <p>
+  Note the semantics is a little different to other PCP tools in
+that
+  <b>
+   foo.meta
+  </b>
+  means
+  <b>
+   just
+  </b>
+  the file
+  <b>
+   foo.meta
+  </b>
+  ,
+
+not
+  <b>
+   foo.index
+  </b>
+  ,
+  <b>
+   foo.meta
+  </b>
+  ,
+  <b>
+   foo.0
+  </b>
+  ,
+
+etc.
+ </p>
+ <p>
+  The
+  <b>
+   -d
+  </b>
+  flag requests more detailed reporting.  This means space per instance domain
+in a metadata file and space per metric (for values) in a data file.
+ </p>
+ <p>
+  The -r
+flag requests additional information about possible replicated values
+in the data file and replicated instances in the metadata file.  It implies
+  <b>
+   -d
+  </b>
+  .
+ </p>
+ <p>
+  When the
+  <b>
+   -d
+  </b>
+  (or
+  <b>
+   -r
+  </b>
+  )
+
+flag is specified, the
+  <b>
+   -x
+  </b>
+  flag may be used to cut off the report after at least
+  <i>
+   thres
+  </i>
+  percent of the associated space (metric values or instance domains) has
+been reported.  The default behaviour is equivalent to
+  <i>
+   thres
+  </i>
+  being set to 100.
+ </p>
+ <p>
+  Additional verbosity can be enabled with one or more
+  <b>
+   -v
+  </b>
+  flags.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogcheck.1.html">
+   pmlogcheck
+  </a>
+ </b>
+ (1)
+
+and
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1).
+ <a name="lbAF">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-
+explanatory.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

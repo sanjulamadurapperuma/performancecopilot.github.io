@@ -1,307 +1,311 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
-    <meta content='initial-scale=1' name='viewport'>
-    <title>Performance Co-Pilot</title>
-    <link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
-    <link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
-  </head>
-  <body>
-    <header class='global-header'>
-      <div class='row'>
-        <h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
-          <a href='/index.html'>Performance Co-Pilot</a>
-        </h1>
-        <nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
-          <ul>
-            <li>
-              <a href='/features.html'>Features</a>
-            </li>
-            <li>
-              <a href='/documentation.html'>Documentation</a>
-            </li>
-            <li>
-              <a href='/download.html'>Download</a>
-            </li>
-            <li>
-              <a href='/community.html'>Get Involved</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div class='site-content'>
-      <div class='how-to is-typeset'>
-        <div class='row-parent'>
-          <div class='row'>
-            <div class='manpage'>
-              ﻿
-               <h1>
-                PMSETPROCESSIDENTITY
-               </h1>
-               Section: C Library Functions (3)
-               <br/>
-               <a href="#index">
-                Index
-               </a>
-               <a href="/man">
-                Return to Main Contents
-               </a>
-               <hr/>
-               <a name="lbAB">
-               </a>
-               <h2>
-                NAME
-               </h2>
-               <b>
-                pmSetProcessIdentity
-               </b>
-               - set process user and group id
-               <a name="lbAC">
-               </a>
-               <h2>
-                C SYNOPSIS
-               </h2>
-               <b>
-                #include &lt;
-                <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
-                 pcp/pmapi.h
-                </a>
-                &gt;
-               </b>
-               <p>
-                pmSetProcessIdentity(const char *
-                <i>
-                 username
-                </i>
-                );
-               </p>
-               <p>
-                cc ... -lpcp
-                <a name="lbAD">
-                </a>
-               </p>
-               <h2>
-                DESCRIPTION
-               </h2>
-               <b>
-                pmSetProcessIdentity
-               </b>
-               provides a platform-independent method to set the user id
-              of a process to that matching
-               <i>
-                username
-               </i>
-               .
-               <p>
-                If possible (when the caller is already running as root)
-                <b>
-                 pmSetProcessIdentity
-                </b>
-                will set the group id of the process to that of the matching
-              user, e.g. using
-                <i>
-                 username
-                </i>
-                and
-                <b>
-                 <a href="/man/man3/getpwnam.3.html">
-                  getpwnam
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                A return value of 0 indicates success, otherwise the return
-              value is an error code that may be decoded with
-                <b>
-                 <a href="/man/man3/pmerrstr.3.html">
-                  pmErrStr
-                 </a>
-                </b>
-                (3).
-               </p>
-               <p>
-                <b>
-                 pmSetProcessIdentity
-                </b>
-                is most often used in conjunction with
-                <b>
-                 <a href="/man/man3/pmgetusername.3.html">
-                  pmGetUsername
-                 </a>
-                </b>
-                (3)
-              
-              at process start up.
-                <a name="lbAE">
-                </a>
-               </p>
-               <h2>
-                SEE ALSO
-               </h2>
-               <b>
-                <a href="/man/man3/getpwnam.3.html">
-                 getpwnam
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmapi.3.html">
-                 PMAPI
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmerrstr.3.html">
-                 pmErrStr
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/pmgetusername.3.html">
-                 pmGetUsername
-                </a>
-               </b>
-               (3),
-               <b>
-                <a href="/man/man3/setgid.3.html">
-                 setgid
-                </a>
-               </b>
-               (3)
-              
-              and
-               <b>
-                <a href="/man/man3/setuid.3.html">
-                 setuid
-                </a>
-               </b>
-               (3).
-               <p>
-               </p>
-               <hr/>
-               <a name="index">
-               </a>
-               <h2>
-                Index
-               </h2>
-               <dl>
-                <dt>
-                 <a href="#lbAB">
-                  NAME
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAC">
-                  C SYNOPSIS
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAD">
-                  DESCRIPTION
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-                <dt>
-                 <a href="#lbAE">
-                  SEE ALSO
-                 </a>
-                </dt>
-                <dd>
-                </dd>
-               </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <footer class='global-footer is-typeset'>
-      <div class='row-parent'>
-        <div class='row'>
-          <section class='row__colspaced'>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Main Menu</h4>
-                <ul>
-                  <li>
-                    <a href='/features.html'>Features</a>
-                  </li>
-                  <li>
-                    <a href='/documentation.html'>Documentation</a>
-                  </li>
-                  <li>
-                    <a class='download' href='/download.html'>Download</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Developers</h4>
-                <ul>
-                  <li>
-                    <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
-                  </li>
-                  <li>
-                    <a href='https://www.pcp.io/roadmap'>Roadmap</a>
-                  </li>
-                  <li>
-                    <a href='/community.html'>Contributing</a>
-                  </li>
-                  <li>
-                    <a href='/team.html'>Team</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>About</h4>
-                <ul>
-                  <li>
-                    <a href='/testimonials.html'>Testimonials</a>
-                  </li>
-                  <li>
-                    <a href='/faq.html'>FAQ</a>
-                  </li>
-                  <li>
-                    <a href='/website.html'>Website</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
-              <div class='col__module'>
-                <h4>Get Social</h4>
-                <ul>
-                  <li>
-                    <a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
-                  </li>
-                  <li>
-                    <a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class='row'>
-          <div class='colspan2-2'>
-            <p class='legal'>
-              This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMSETPROCESSIDENTITY
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmSetProcessIdentity
+ </b>
+ - set process user and group id
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  pmSetProcessIdentity(const char *
+  <i>
+   username
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmSetProcessIdentity
+ </b>
+ provides a platform-independent method to set the user id
+of a process to that matching
+ <i>
+  username
+ </i>
+ .
+ <p>
+  If possible (when the caller is already running as root)
+  <b>
+   pmSetProcessIdentity
+  </b>
+  will set the group id of the process to that of the matching
+user, e.g. using
+  <i>
+   username
+  </i>
+  and
+  <b>
+   <a href="/man/man3/getpwnam.3.html">
+    getpwnam
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  A return value of 0 indicates success, otherwise the return
+value is an error code that may be decoded with
+  <b>
+   <a href="/man/man3/pmerrstr.3.html">
+    pmErrStr
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  <b>
+   pmSetProcessIdentity
+  </b>
+  is most often used in conjunction with
+  <b>
+   <a href="/man/man3/pmgetusername.3.html">
+    pmGetUsername
+   </a>
+  </b>
+  (3)
+
+at process start up.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/getpwnam.3.html">
+   getpwnam
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmerrstr.3.html">
+   pmErrStr
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetusername.3.html">
+   pmGetUsername
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/setgid.3.html">
+   setgid
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/setuid.3.html">
+   setuid
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
 </html>

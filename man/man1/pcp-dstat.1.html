@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PCP-DSTAT
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pcp-dstat
+ </b>
+ - versatile tool for generating system resource statistics
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pcp
+ </b>
+ [
+ <i>
+  pcp options
+ </i>
+ ]
+ <b>
+  dstat
+ </b>
+ [
+ <i>
+  dstat options
+ </i>
+ ] [
+ <i>
+  delay
+ </i>
+ [
+ <i>
+  count
+ </i>
+ ]]
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pcp-dstat
+ </b>
+ is a general performance analysis tool allowing you to view multiple
+system resources instantly, for example you can compare disk usage in
+combination with interrupts from a disk controller, or compare the
+network bandwidth numbers directly with the disk throughput (in the
+same interval).
+ <p>
+  It also cleverly gives you the most detailed information in columns
+and clearly indicates in what magnitude and unit the output is being
+displayed.
+Less confusion, fewer mistakes, more efficient.
+ </p>
+ <p>
+  The
+  <i>
+   delay
+  </i>
+  is the delay in seconds between each update, and the
+  <i>
+   count
+  </i>
+  is the number of updates to display before exiting.
+The default
+  <i>
+   delay
+  </i>
+  is 1 second and
+  <i>
+   count
+  </i>
+  is unspecified (run until interrupted or end of archive is reached).
+ </p>
+ <p>
+  This latest generation of Dstat,
+  <b>
+   pcp-dstat
+  </b>
+  ,
+
+allows for analysis of historical performance data (in the PCP archive
+format created by
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)),
+
+as well as distributed systems analysis of live performance data from
+remote hosts running the
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+process.
+ </p>
+ <p>
+  Additionally, this version introduces configuration files similar to
+  <b>
+   <a href="/man/man5/pmrep.conf.5.html">
+    pmrep.conf
+   </a>
+  </b>
+  (5)
+
+from the
+  <b>
+   <a href="/man/man1/pmrep.1.html">
+    pmrep
+   </a>
+  </b>
+  (1)
+
+utility.
+The original Dstat notion of ``plugins'' is replaced by use of named
+metrics in a Performance Metric Name Space (
+  <b>
+   <a href="/man/man5/pmns.5.html">
+    PMNS
+   </a>
+  </b>
+  (5))
+  <b>
+   suppliced
+  </b>
+  by
+  <b>
+   Performance
+  </b>
+  Metric
+  <b>
+   Domain
+  </b>
+  Agents
+  <b>
+   (PMDAs).
+  </b>
+  Metrics and other formatting information is now specified as plugin
+configuration files.
+This new style of plugin is either built-in (time-related reporting
+only), or sourced from the system-wide location (
+  <i>
+   $PCP_ETC_DIR/dstat
+  </i>
+  )
+
+and/or sourced from an individual users set of personal plugins (
+  <i>
+   $HOME/pcp/dstat
+  </i>
+  ).
+ </p>
+ <p>
+  The list of all available plugins can be seen using the
+  <b>
+   --list
+  </b>
+  dstat command line option.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  OPTIONS
+ </h2>
+ When invoked via the
+ <b>
+  <a href="/man/man1/pcp.1.html">
+   pcp
+  </a>
+ </b>
+ (1)
+
+command, the
+ <b>
+  -h
+ </b>
+ /
+ <b>
+  --host
+ </b>
+ ,
+ <b>
+  -a
+ </b>
+ /
+ <b>
+  --archive
+ </b>
+ ,
+ <b>
+  -O
+ </b>
+ /
+ <b>
+  --origin
+ </b>
+ ,
+ <b>
+  -Z
+ </b>
+ /
+ <b>
+  --timezone
+ </b>
+ and several other
+ <i>
+  pcp options
+ </i>
+ become indirectly available.
+ <p>
+  The available
+  <i>
+   dstat options
+  </i>
+  are:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    --list
+   </b>
+  </dt>
+  <dd>
+   list all available plugin names
+  </dd>
+  <dt>
+   <b>
+    --plugin-name
+    <dd>
+     enable any plugin by name
+    </dd>
+    <dt>
+     -a
+    </dt>
+   </b>
+   ,
+   <b>
+    --all
+   </b>
+  </dt>
+  <dd>
+   equals
+   <b>
+    -cdngy
+   </b>
+   (default plugin set)
+  </dd>
+  <dt>
+   <b>
+    -c
+   </b>
+   ,
+   <b>
+    --cpu
+   </b>
+  </dt>
+  <dd>
+   enable cpu stats (system, user, idle, wait), for more CPU related stats also see
+   <b>
+    --cpu-adv
+   </b>
+   and
+   <b>
+    --cpu-use
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+   <i>
+    0,3,total
+   </i>
+  </dt>
+  <dd>
+   include cpu0, cpu3 and total (when using
+   <b>
+    -c
+   </b>
+   /
+   <b>
+    --cpu
+   </b>
+   ); use
+   <i>
+    all
+   </i>
+   to show all CPUs
+  </dd>
+  <dt>
+   <b>
+    -d
+   </b>
+   ,
+   <b>
+    --disk
+   </b>
+  </dt>
+  <dd>
+   enable disk stats (read, write), for more disk related stats look into the other
+   <b>
+    --disk
+   </b>
+   plugins.
+  </dd>
+  <dt>
+   <b>
+    -D
+   </b>
+   <i>
+    total,hda
+   </i>
+  </dt>
+  <dd>
+   include
+   <i>
+    total
+   </i>
+   and
+   <i>
+    hda
+   </i>
+   (when using
+   <b>
+    -d
+   </b>
+   /
+   <b>
+    --disk
+   </b>
+   )
+  </dd>
+  <dt>
+   <b>
+    -g
+   </b>
+   ,
+   <b>
+    --page
+   </b>
+  </dt>
+  <dd>
+   enable page stats (page in, page out)
+  </dd>
+  <dt>
+   <b>
+    -i
+   </b>
+   ,
+   <b>
+    --int
+   </b>
+  </dt>
+  <dd>
+   enable interrupt stats
+  </dd>
+  <dt>
+   <b>
+    -I
+   </b>
+   <i>
+    5,10
+   </i>
+  </dt>
+  <dd>
+   include interrupt 5 and 10 (when using
+   <b>
+    -i
+   </b>
+   /
+   <b>
+    --int
+   </b>
+   )
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   ,
+   <b>
+    --load
+   </b>
+  </dt>
+  <dd>
+   enable load average stats (1 min, 5 mins, 15mins)
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+   ,
+   <b>
+    --mem
+   </b>
+  </dt>
+  <dd>
+   enable memory stats (used, buffers, cache, free); for more memory related stats also try
+   <b>
+    --mem-adv
+   </b>
+   and
+   <b>
+    --swap
+   </b>
+  </dd>
+  <dt>
+   <b>
+    -n
+   </b>
+   ,
+   <b>
+    --net
+   </b>
+  </dt>
+  <dd>
+   enable network stats (receive, send)
+  </dd>
+  <dt>
+   <b>
+    -N
+   </b>
+   <i>
+    eth1,total
+   </i>
+  </dt>
+  <dd>
+   include
+   <i>
+    eth1
+   </i>
+   and
+   <i>
+    total
+   </i>
+   (when using
+   <b>
+    -n
+   </b>
+   /
+   <b>
+    --net
+   </b>
+   )
+  </dd>
+  <dt>
+   <b>
+    --net-packets
+   </b>
+  </dt>
+  <dd>
+   show the number of packets received and transmitted
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   ,
+   <b>
+    --proc
+   </b>
+  </dt>
+  <dd>
+   enable process stats (runnable, uninterruptible, new)
+  </dd>
+  <dt>
+   --proc-count
+  </dt>
+  <dd>
+   show total number of processes
+  </dd>
+  <dt>
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    --io
+   </b>
+  </dt>
+  <dd>
+   enable I/O request stats (read, write requests)
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   ,
+   <b>
+    --swap
+   </b>
+  </dt>
+  <dd>
+   enable swap stats (used, free)
+  </dd>
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    swap1,total
+   </i>
+  </dt>
+  <dd>
+   include swap1 and total (when using
+   <b>
+    -s
+   </b>
+   /
+   <b>
+    --swap
+   </b>
+   )
+  </dd>
+ </dl>
+ <p>
+  <b>
+   --snooze
+  </b>
+  show time spent between updates in seconds
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -t
+   </b>
+   ,
+   <b>
+    --time
+   </b>
+  </dt>
+  <dd>
+   enable time/date output (try
+   <b>
+    --time-adv
+   </b>
+   for millisecond precision)
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   ,
+   <b>
+    --epoch
+   </b>
+  </dt>
+  <dd>
+   enable time counter (seconds since epoch, or millisecond precision from
+the
+   <b>
+    --epoch-adv
+   </b>
+   plugin)
+  </dd>
+  <dt>
+   <b>
+    -y
+   </b>
+   ,
+   <b>
+    --sys
+   </b>
+  </dt>
+  <dd>
+   enable system stats (interrupts, context switches)
+  </dd>
+  <dt>
+   <b>
+    --aio
+   </b>
+  </dt>
+  <dd>
+   enable aio stats (asynchronous I/O)
+  </dd>
+  <dt>
+   <b>
+    --cpu-adv
+   </b>
+  </dt>
+  <dd>
+   enable advanced cpu stats
+  </dd>
+  <dt>
+   <b>
+    --cpu-use
+   </b>
+  </dt>
+  <dd>
+   enable only cpu usage stats
+  </dd>
+  <dt>
+   <b>
+    --disk-avgqu
+   </b>
+  </dt>
+  <dd>
+   average queue length of the requests that were issued to the device
+  </dd>
+  <dt>
+   <b>
+    --disk-avgrq
+   </b>
+  </dt>
+  <dd>
+   average size (in sectors) of the requests that were issued to the device
+  </dd>
+  <dt>
+   <b>
+    --disk-svctm
+   </b>
+  </dt>
+  <dd>
+   average service time (in milliseconds) for I/O requests that were issued to the device
+  </dd>
+  <dt>
+   <b>
+    --disk-tps
+   </b>
+  </dt>
+  <dd>
+   number of transfers per second that were issued to the device
+  </dd>
+  <dt>
+   <b>
+    --disk-util
+   </b>
+  </dt>
+  <dd>
+   percentage of CPU time during which I/O requests were issued to the device (bandwidth utilization for the device)
+  </dd>
+  <dt>
+   <b>
+    --disk-wait
+   </b>
+  </dt>
+  <dd>
+   average time (in milliseconds) for I/O requests issued to the device to be served
+  </dd>
+  <dt>
+   <b>
+    --fs
+   </b>
+   ,
+   <b>
+    --filesystem
+   </b>
+  </dt>
+  <dd>
+   enable filesystem stats (open files, inodes)
+  </dd>
+  <dt>
+   <b>
+    --freespace
+   </b>
+  </dt>
+  <dd>
+   per filesystem used and available space
+  </dd>
+  <dt>
+   <b>
+    --ipc
+   </b>
+  </dt>
+  <dd>
+   enable ipc stats (message queue, semaphores, shared memory)
+  </dd>
+  <dt>
+   <b>
+    --lock
+   </b>
+  </dt>
+  <dd>
+   enable file lock stats (posix, flock, read, write)
+  </dd>
+  <dt>
+   <b>
+    --mem-adv
+   </b>
+  </dt>
+  <dd>
+   enable advanced memory stats
+  </dd>
+  <dt>
+   <b>
+    --raw
+   </b>
+  </dt>
+  <dd>
+   enable raw stats (raw sockets)
+  </dd>
+  <dt>
+   <b>
+    --socket
+   </b>
+  </dt>
+  <dd>
+   enable socket stats (total, tcp, udp, raw, ip-fragments)
+  </dd>
+  <dt>
+   <b>
+    --tcp
+   </b>
+  </dt>
+  <dd>
+   enable tcp stats (listen, established, syn, time_wait, close)
+  </dd>
+  <dt>
+   <b>
+    --udp
+   </b>
+  </dt>
+  <dd>
+   enable udp stats (listen, active)
+  </dd>
+  <dt>
+   <b>
+    --unix
+   </b>
+  </dt>
+  <dd>
+   enable unix stats (datagram, stream, listen, active)
+  </dd>
+  <dt>
+   <b>
+    --utmp
+   </b>
+  </dt>
+  <dd>
+   shows login information from
+   <b>
+    <a href="/man/man5/utmp.5.html">
+     utmp
+    </a>
+   </b>
+   (5)
+  </dd>
+  <dt>
+   <b>
+    --vm
+   </b>
+  </dt>
+  <dd>
+   enable virtual memory stats (hard pagefaults, soft pagefaults, allocated, free)
+  </dd>
+  <dt>
+   <b>
+    --vm-adv
+   </b>
+  </dt>
+  <dd>
+   enable advance virtual memory stats (steal, scanK, scanD, pgoru, astll)
+  </dd>
+  <dt>
+   <b>
+    --nfs3
+   </b>
+  </dt>
+  <dd>
+   show NFS v3 client operations
+  </dd>
+  <dt>
+   <b>
+    --nfs3-ops
+   </b>
+  </dt>
+  <dd>
+   show extended NFS v3 client operations
+  </dd>
+  <dt>
+   <b>
+    --nfsd3
+   </b>
+  </dt>
+  <dd>
+   show NFS v3 server operations
+  </dd>
+  <dt>
+   <b>
+    --nfsd3-ops
+   </b>
+  </dt>
+  <dd>
+   show extended NFS v3 server operations
+  </dd>
+  <dt>
+   <b>
+    --nfsd4-ops
+   </b>
+  </dt>
+  <dd>
+   show extended NFS v4 server operations
+  </dd>
+  <dt>
+   <b>
+    --nfsstat4
+   </b>
+  </dt>
+  <dd>
+   show NFS v4 stats
+  </dd>
+  <dt>
+   <b>
+    --rpc
+   </b>
+  </dt>
+  <dd>
+   show remote proceduce call (RPC) client calls stats
+  </dd>
+  <dt>
+   <b>
+    --rpcd
+   </b>
+  </dt>
+  <dd>
+   show remote proceduce call (RPC) server calls stats
+  </dd>
+  <dt>
+   <b>
+    --top-bio
+   </b>
+  </dt>
+  <dd>
+   show most expensive block I/O process
+  </dd>
+  <dt>
+   <b>
+    --top-bio-adv
+   </b>
+  </dt>
+  <dd>
+   show most expensive block I/O process (incl. pid and other stats)
+  </dd>
+  <dt>
+   <b>
+    --top-childwait
+   </b>
+  </dt>
+  <dd>
+   show process waiting for child the most
+  </dd>
+  <dt>
+   <b>
+    --top-cpu
+   </b>
+  </dt>
+  <dd>
+   show most expensive CPU process
+  </dd>
+  <dt>
+   <b>
+    --top-cpu-adv
+   </b>
+  </dt>
+  <dd>
+   show most expensive CPU process (incl. pid and other stats)
+  </dd>
+  <dt>
+   <b>
+    --top-cputime
+   </b>
+  </dt>
+  <dd>
+   show process using the most CPU time (in milliseconds)
+  </dd>
+  <dt>
+   <b>
+    --top-cputime-avg
+   </b>
+  </dt>
+  <dd>
+   show process with the highest average timeslice (in milliseconds)
+  </dd>
+  <dt>
+   <b>
+    --top-int
+    <dd>
+     show most frequent interrupt
+    </dd>
+   </b>
+   <dt>
+    <b>
+     --top-io
+     <dd>
+      show most expensive I/O process
+     </dd>
+    </b>
+    <dt>
+     <b>
+      --top-io-adv
+     </b>
+    </dt>
+   </dt>
+  </dt>
+  <dd>
+   show most expensive I/O process (incl. pid and other stats)
+  </dd>
+  <dt>
+   <b>
+    --top-latency
+   </b>
+  </dt>
+  <dd>
+   show process with highest total latency (in milliseconds)
+  </dd>
+  <dt>
+   <b>
+    --top-latency-avg
+   </b>
+  </dt>
+  <dd>
+   show process with the highest average latency (in milliseconds)
+  </dd>
+  <dt>
+   <b>
+    --top-mem
+   </b>
+  </dt>
+  <dd>
+   show process using the most memory
+  </dd>
+  <dt>
+   <b>
+    --top-oom
+   </b>
+  </dt>
+  <dd>
+   show process that will be killed by the out-of-memory (OOM) killer the first
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+   ,
+   <b>
+    --full
+   </b>
+  </dt>
+  <dd>
+   expand
+   <b>
+    -C
+   </b>
+   ,
+   <b>
+    -D
+   </b>
+   ,
+   <b>
+    -I
+   </b>
+   ,
+   <b>
+    -N
+   </b>
+   and
+   <b>
+    -S
+   </b>
+   discovery lists
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+   ,
+   <b>
+    --vmstat
+   </b>
+  </dt>
+  <dd>
+   equals
+   <b>
+    -pmgdsc -D total
+   </b>
+  </dd>
+  <dt>
+   <b>
+    --bits
+   </b>
+  </dt>
+  <dd>
+   force bits for values expressed in bytes
+  </dd>
+  <dt>
+   <b>
+    --float
+   </b>
+  </dt>
+  <dd>
+   force float values on screen (mutually exclusive with
+   <b>
+    --integer
+   </b>
+   )
+  </dd>
+  <dt>
+   <b>
+    --integer
+   </b>
+  </dt>
+  <dd>
+   force integer values on screen (mutually exclusive with
+   <b>
+    --float
+   </b>
+   )
+  </dd>
+  <dt>
+   <b>
+    --bw
+   </b>
+   ,
+   <b>
+    --blackonwhite
+   </b>
+  </dt>
+  <dd>
+   change colors for white background terminal
+  </dd>
+  <dt>
+   <b>
+    --nocolor
+   </b>
+  </dt>
+  <dd>
+   disable colors
+  </dd>
+  <dt>
+   <b>
+    --noheaders
+   </b>
+  </dt>
+  <dd>
+   disable repetitive headers
+  </dd>
+  <dt>
+   <b>
+    --noupdate
+   </b>
+  </dt>
+  <dd>
+   disable intermediate updates when
+   <i>
+    delay
+   </i>
+   greater than 1.
+  </dd>
+  <dt>
+   <b>
+    --output file
+   </b>
+  </dt>
+  <dd>
+   write CSV output to file
+  </dd>
+ </dl>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  OPTIONAL METRICS PLUGINS
+ </h2>
+ Some
+ <b>
+  pcp-dstat
+ </b>
+ configuration files require the installation of optional
+Performance Metric Domain Agents, above and beyond the
+default installed set.
+ <dl compact="">
+  <dt>
+   <b>
+    --innodb-buffer
+   </b>
+  </dt>
+  <dd>
+   show innodb buffer stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --innodb-io
+   </b>
+  </dt>
+  <dd>
+   show innodb I/O stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --innodb-ops
+   </b>
+  </dt>
+  <dd>
+   show innodb operations counters (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --lustre
+   </b>
+  </dt>
+  <dd>
+   show lustre I/O throughput (needs the Lustre PMDA)
+  </dd>
+  <dt>
+   <b>
+    --memcache-hits
+   </b>
+  </dt>
+  <dd>
+   show the number of hits and misses from memcache
+  </dd>
+  <dt>
+   <b>
+    --mysql5-cmds
+   </b>
+  </dt>
+  <dd>
+   show the MySQL5 command stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --mysql5-conn
+   </b>
+  </dt>
+  <dd>
+   show the MySQL5 connection stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --mysql5-innodb
+   </b>
+  </dt>
+  <dd>
+   show the MySQL5 innodb stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --mysql5-io
+   </b>
+  </dt>
+  <dd>
+   show the MySQL5 I/O stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --mysql5-keys
+   </b>
+  </dt>
+  <dd>
+   show the MySQL5 keys stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --mysql-io
+   </b>
+  </dt>
+  <dd>
+   show the MySQL I/O stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --mysql-keys
+   </b>
+  </dt>
+  <dd>
+   show the MySQL keys stats (needs the MySQL PMDA)
+  </dd>
+  <dt>
+   <b>
+    --postfix
+   </b>
+  </dt>
+  <dd>
+   show postfix queue sizes (needs the Postfix PMDA)
+  </dd>
+  <dt>
+   <b>
+    --redis
+   </b>
+  </dt>
+  <dd>
+   show Redis stats (needs the Redis PMDA)
+  </dd>
+  <dt>
+   <b>
+    --sendmail
+   </b>
+  </dt>
+  <dd>
+   show sendmail queue size (needs the Sendmail PMDA)
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  HISTORICAL METRICS PLUGINS
+ </h2>
+ Anyone can create additional, custom
+ <b>
+  pcp-dstat
+ </b>
+ plugin configuration files, for any metrics - the list of
+available metrics can be produced by either the
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1)
+
+or
+ <b>
+  <a href="/man/man1/pmprobe.1.html">
+   pmprobe
+  </a>
+ </b>
+ (1)
+
+command.
+ <p>
+  The following do not yet have metrics backing them, but have
+been included from the original Dstat utility.
+Please contact
+  <i>
+   &lt;
+   <a href="mailto:pcp@groups.io">
+    pcp@groups.io
+   </a>
+   &gt;
+  </i>
+  if you need or implement any of these, and we'll work with
+you to get them included.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    --battery
+   </b>
+  </dt>
+  <dd>
+   battery in percentage (needs an ACPI PMDA)
+  </dd>
+  <dt>
+   <b>
+    --battery-remain
+   </b>
+  </dt>
+  <dd>
+   battery remaining in hours, minutes (needs an ACPI PMDA)
+  </dd>
+  <dt>
+   <b>
+    --cpufreq
+   </b>
+  </dt>
+  <dd>
+   CPU frequency in percentage (needs an ACPI PMDA)
+  </dd>
+  <dt>
+   <b>
+    --dbus
+   </b>
+  </dt>
+  <dd>
+   number of dbus connections (needs a python-dbus PMDA)
+  </dd>
+  <dt>
+   <b>
+    --fan
+   </b>
+  </dt>
+  <dd>
+   fan speed (needs an ACPI PMDA)
+  </dd>
+  <dt>
+   <b>
+    --gpfs
+   </b>
+  </dt>
+  <dd>
+   GPFS read/write I/O (needs mmpmon and a GPFS PMDA)
+  </dd>
+  <dt>
+   <b>
+    --gpfs-ops
+   </b>
+  </dt>
+  <dd>
+   GPFS filesystem operations (needs mmpmon and a GPFS PMDA)
+  </dd>
+  <dt>
+   <b>
+    --md-status
+   </b>
+  </dt>
+  <dd>
+   show software raid (MD driver) progress and speed (needs new
+   <i>
+    disk.md
+   </i>
+   metrics)
+  </dd>
+  <dt>
+   <b>
+    --power
+   </b>
+  </dt>
+  <dd>
+   show power usage (needs an ACPI PMDA)
+  </dd>
+  <dt>
+   <b>
+    --qmail
+   </b>
+  </dt>
+  <dd>
+   show qmail queue sizes (needs qmail)
+  </dd>
+  <dt>
+   <b>
+    --squid
+   </b>
+  </dt>
+  <dd>
+   show squid usage statistics (needs a Squid PMDA)
+  </dd>
+  <dt>
+   <b>
+    --thermal
+   </b>
+  </dt>
+  <dd>
+   system temperature sensors (needs an ACPI PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vm-cpu
+   </b>
+  </dt>
+  <dd>
+   show VMware CPU stats from hypervisor (needs a VMware PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vm-mem
+   </b>
+  </dt>
+  <dd>
+   show VMware memory stats from hypervisor (needs a VMware PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vm-mem-adv
+   </b>
+  </dt>
+  <dd>
+   show advanced VMware memory stats from hypervisor (needs a VMware PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vmk-hba
+   </b>
+  </dt>
+  <dd>
+   show VMware ESX kernel vmhba stats (needs a VMware PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vmk-int
+   </b>
+  </dt>
+  <dd>
+   show VMware ESX kernel interrupt stats (needs a VMware PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vmk-nic
+   </b>
+  </dt>
+  <dd>
+   show VMware ESX kernel port stats (needs a VMware PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vz-cpu
+   </b>
+  </dt>
+  <dd>
+   show CPU usage per OpenVZ guest (needs an OpenVZ PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vz-io
+   </b>
+  </dt>
+  <dd>
+   show I/O usage per OpenVZ guest (needs an OpenVZ PMDA)
+  </dd>
+  <dt>
+   <b>
+    --vz-ubc
+   </b>
+  </dt>
+  <dd>
+   show OpenVZ user beancounters (needs an OpenVZ PMDA)
+  </dd>
+  <dt>
+   <b>
+    --wifi
+   </b>
+  </dt>
+  <dd>
+   wireless link quality and signal to noise ratio (needs Linux PMDA metrics)
+  </dd>
+  <dt>
+   <b>
+    --zfs-arc
+   </b>
+  </dt>
+  <dd>
+   show ZFS arc stats (needs a Linux ZFS PMDA)
+  </dd>
+  <dt>
+   <b>
+    --zfs-l2arc
+   </b>
+  </dt>
+  <dd>
+   show ZFS l2arc stats (needs a Linux ZFS PMDA)
+  </dd>
+  <dt>
+   <b>
+    --zfs-zil
+   </b>
+  </dt>
+  <dd>
+   show ZFS zil stats (needs a Linux ZFS PMDA)
+  </dd>
+ </dl>
+ <a name="lbAH">
+ </a>
+ <h2>
+  INTERMEDIATE UPDATES
+ </h2>
+ When invoking
+ <b>
+  pcp-dstat
+ </b>
+ with a
+ <i>
+  delay
+ </i>
+ greater than 1 second and without the
+ <b>
+  --noupdate
+ </b>
+ option, it will show intermediate updates, ie. the first time a 1 second
+average, the second update a 2 second average, etc. until the
+ <i>
+  delay
+ </i>
+ <b>
+  has been reached.
+ </b>
+ <p>
+  So in case you specified a delay of 10, the 9 intermediate updates are NOT snapshots, they are averages over the time that passed since the last final update. The end result is that you get a 10 second average on a new line, just like with vmstat.
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  EXAMPLES
+ </h2>
+ Using
+ <b>
+  pcp-dstat
+ </b>
+ to relate disk-throughput with network-usage (eth0), total CPU-usage and system counters:
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+pcp-dstat -dnyc -N eth0 -C total -f 5
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Using the time plugin together with cpu, net, disk, system, load, proc and top_cpu plugins:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+pcp-dstat -tcndylp --top-cpu
+</pre>
+  </dd>
+ </dl>
+ <p>
+  this is identical to
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+pcp-dstat --time --cpu --net --disk --sys --load --proc --top-cpu
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Using pcp-dstat to relate advanced cpu stats with interrupts per device:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+pcp-dstat -t --cpu-adv -yif
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <i>
+    ~/.pcp/dstat/
+   </i>
+  </dt>
+  <dd>
+   private per-user configuration files
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_ETC_DIR
+   </tt>
+   /pcp/dstat/
+  </dt>
+  <dd>
+   system-wide configuration files
+  </dd>
+ </dl>
+ <a name="lbAK">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <b>
+  /etc/pcp.conf
+ </b>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAL">
+  </a>
+ </p>
+ <h2>
+  ENVIRONMENT VARIABLES
+ </h2>
+ Internal plugins behaviour can be changed through environment variables.
+ <dl compact="">
+  <dt>
+   <i>
+    DSTAT_TIMEFMT
+   </i>
+  </dt>
+  <dd>
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+     strftime
+    </a>
+   </b>
+   (3)
+
+format string for reporting time (see
+   <b>
+    --time
+   </b>
+   )
+  </dd>
+ </dl>
+ <a name="lbAM">
+ </a>
+ <h2>
+  AUTHORS
+ </h2>
+ <p>
+  The Dstat utility was initially written by Dag Wieers m[blue]
+  <b>
+   <a href="mailto:dag@wieers.com">
+    dag@wieers.com
+   </a>
+  </b>
+  m[]
+ </p>
+ <p>
+  Homepage at m[blue]
+  <b>
+   <a href="http://dag.wieers.com/home-made/dstat/">
+    http://dag.wieers.com/home-made/dstat/
+   </a>
+  </b>
+  m[]
+ </p>
+ <p>
+  This manpage was initially written by Andrew Pollock m[blue]
+  <b>
+   <a href="mailto:apollock@debian.org">
+    apollock@debian.org
+   </a>
+  </b>
+  m[] for the Debian GNU/Linux system.
+ </p>
+ <p>
+  The
+  <b>
+   pcp-dstat
+  </b>
+  utility is written and maintained by the PCP developers m[blue]
+  <b>
+   <a href="mailto:pcp@groups.io">
+    pcp@groups.io
+   </a>
+  </b>
+  m[]
+  <a name="lbAN">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcp.1.html">
+   pcp
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmprobe.1.html">
+   pmprobe
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmgetoptions.3.html">
+   pmGetOptions
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+   strftime
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   PMNS
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pmrep.conf.5.html">
+   pmrep.conf
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5)
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    OPTIONS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    OPTIONAL METRICS PLUGINS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    HISTORICAL METRICS PLUGINS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    INTERMEDIATE UPDATES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
+    ENVIRONMENT VARIABLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAM">
+    AUTHORS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAN">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>
