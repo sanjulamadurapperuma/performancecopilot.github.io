@@ -138,18 +138,29 @@ function.  It accepts a
  </b>
  structure.
  <p>
-  Either a fully specified
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/asctime.3.html">
-    asctime
-   </a>
-  </b>
-  (3)
+  <i>
+   string
+  </i>
+  is either a fully specified date and time
+in the format
+  <i>
+   Day MMM DD HH:MM:SS YYYY
+  </i>
+  (e.g "Mon Mar  4 13:07:47 1996")
+or a partially specified date and time
+like "1996", "Mar 1996", "Mar 4 1996", "Mar", "13:07:47", "13:07",
+"Mar 4 13:07:47",....
+For a partially specified date and time, the order of the fields must be preserved
+and missing fields are filled in from the current date and time.
+ </p>
+ <p>
+  The seconds component (
+  <i>
+   SS
+  </i>
+  )
 
-string like "Mon Mar  4 13:07:47 1996" or a partially specified time
-like '1996", "Mar 1996", "Mar 4 1996", "Mar", "13:07:47", "13:07",
-"Mar 4 13:07:47",... is accepted.  In addition, the seconds component
-may be a floating point number, for example "13:07:47.5".  The 12 hour
+may be a floating point number, for example the time "13:07:47.5".  The 12 hour
 clock is also supported, so "13:07" and "1:07 pm" are equivalent.
  </p>
  <p>

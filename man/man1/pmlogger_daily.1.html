@@ -311,7 +311,7 @@ in earlier PCP releases).
    compress
   </i>
   specifies the number of days after which to compress archive data
-files.
+files and metadata files.
 If
   <i>
    compress
@@ -1607,6 +1607,83 @@ The normal case is no output in which case the file does not exist.
        </b>
        produced any output it is saved here.
 The normal case is no output in which case the file does not exist.
+      </dd>
+      <dt>
+       <b>
+        $PCP_LOG_DIR/pmlogger/
+       </b>
+       <i>
+        hostname
+       </i>
+       <b>
+        /SaveLogs
+       </b>
+      </dt>
+      <dd>
+       if this directory exists,
+then the log file from the
+       <b>
+        -l
+       </b>
+       argument
+of a newly launched
+       <b>
+        <a href="/man/man1/pmlogger.1.html">
+         pmlogger
+        </a>
+       </b>
+       (1)
+
+for
+       <i>
+        hostname
+       </i>
+       will be linked into this directory with the name
+       <i>
+        archive
+       </i>
+       <b>
+        .log
+       </b>
+       where
+       <i>
+        archive
+       </i>
+       is the basename of the associated
+       <b>
+        <a href="/man/man1/pmlogger.1.html">
+         pmlogger
+        </a>
+       </b>
+       (1)
+
+PCP archive files.
+This allows the log file to be inspected at a later time, even if
+several
+       <b>
+        <a href="/man/man1/pmlogger.1.html">
+         pmlogger
+        </a>
+       </b>
+       (1)
+
+instances for
+       <i>
+        hostname
+       </i>
+       have been launched in the interim.
+Because the cron-driven PCP archive management scripts run under
+the uid of the user ``pcp'',
+       <b>
+        $PCP_LOG_DIR/pmlogger/
+       </b>
+       <i>
+        hostname
+       </i>
+       <b>
+        /SaveLogs
+       </b>
+       typically needs to be owned by the user ``pcp''.
       </dd>
      </dl>
      <a name="lbAF">

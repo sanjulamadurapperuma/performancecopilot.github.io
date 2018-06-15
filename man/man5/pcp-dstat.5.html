@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PCP-DSTAT
+ </h1>
+ Section: File Formats (5)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pcp-dstat
+ </b>
+ - pcp-dstat configuration file
+ <a name="lbAC">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pcp-dstat
+ </b>
+ is a customizable performance metrics reporting tool.
+It has a ``plugin'' architecture, where a set of pre-defined plugins
+offer small sets of columnar metric reports, and
+ <b>
+  pcp-dstat
+ </b>
+ command line options select which of these plugins are used in the
+generated report.
+ <p>
+  Each plugin is defined in a section of a configuration file.
+A typical installation will provide many configuration files,
+and often multiple sections (plugins) within each file.
+ </p>
+ <p>
+  Configuration files are read from both a system directory
+and the users home directory (
+  <i>
+   $PCP_ETC_DIR/pcp/dstat
+  </i>
+  and
+  <i>
+   $HOME/.pcp/dstat
+  </i>
+  ).
+ </p>
+ <p>
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  FILE FORMAT
+ </h2>
+ The configuration files have an ini-style syntax consisting of
+sections (plugins) and options within sections.
+A section begins with the name of the plugin in square brackets
+and continues until the next section begins.
+An example section with two options follows:
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+[<i>plugin</i>]
+<i>option</i> = <i>value</i>
+<i>metric.option</i> = <i>value2</i>
+</pre>
+  </dd>
+ </dl>
+ <p>
+  A line comment starts with a hash sign (``#'') or a semicolon (``;'').
+Inline comments are not supported.
+ </p>
+ <p>
+  There are some options which apply to the plugin as a whole,
+and anything else is considered to be a column definition.
+Column definitions map directly to individual PCP metrics.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h3>
+  The [plugin] options
+ </h3>
+ <p>
+  label (string)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   The overall title to be used for this plugin.
+In the special case of metrics with instances being reported
+as a group (see
+   <b>
+    grouptype
+   </b>
+   below) this string may contain
+the
+   <i>
+    %I
+   </i>
+   pattern, which will be substituted with the name
+of the instance - refer to the cpu, disk, net and int(errupts)
+plugins for examples of this special syntax.
+Undefined by default, set automatically to the section (plugin) name.
+  </dd>
+ </dl>
+ <p>
+  width (integer)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   The column width used for metrics in this plugin.
+The default is 5.
+  </dd>
+ </dl>
+ <p>
+  precision (integer)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   The maximum
+   <b>
+    precision
+   </b>
+   to be used when reporting
+columns in floating point for this plugin.
+Undefined by default, set automatically based on
+   <b>
+    width
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  printtype (character)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates the reporting style for metric values in this plugin.
+Possible settings are d(ecimal), f(loat), p(ercent), s(tring),
+b(its), t(ime).
+By default a setting will be used based on the metric type and
+semantic - refer to
+   <b>
+    <a href="/man/man3/pmapi.3.html">
+     PMAPI
+    </a>
+   </b>
+   (3)
+
+for further details of PCP metric metadata.
+  </dd>
+ </dl>
+ <p>
+  colorstep (integer)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates a ``step'' at which the next color will be transitioned
+to, when reporting metric values.
+As metric values change on each sample, the
+   <b>
+    colorstep
+   </b>
+   is used to determine the increments beyond which a new color is
+to be selected.
+Defaults to 1000.
+  </dd>
+ </dl>
+ <p>
+  grouptype (integer)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   For plugins with metrics sharing the same instance domain, it is
+possible to request more complex grouping behaviour.
+The default behaviour is to not use instance grouping, and to
+report each instance of the metric in a separate column (the
+   <i>
+    load
+   </i>
+   plugin is an example of this, using the
+   <i>
+    kernel.all.load
+   </i>
+   metric).
+   <p>
+    The grouping can be set at three distinct levels - 1, 2 or 3.
+Level 1 displays instances of metrics only (no totals) - this
+is the equivalent of using the
+    <b>
+     --cpu
+    </b>
+    plugin on the
+    <b>
+     pcp-dstat
+    </b>
+    command line with specific processors' utilization displayed,
+e.g. displaying CPU numbers 4, 5 and 12 (
+    <b>
+     -C
+    </b>
+    <i>
+     4,5,12
+    </i>
+    ).
+Level 2 displays the total column - the sum of all instances
+for the specified metric(s) in this plugin.
+Level 3 is a combination of both modes, for example using the
+    <b>
+     pcp-dstat
+    </b>
+    <b>
+     --cpu
+    </b>
+    plugin with options
+    <b>
+     -C
+    </b>
+    <i>
+     4,5,12,total
+    </i>
+    .
+   </p>
+  </dd>
+ </dl>
+ <p>
+  instances (comma-separated-value string)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Defines the instances to be reported for the metric.
+The default is to report all instances for set-values metrics.
+  </dd>
+ </dl>
+ <p>
+  cullinsts (regex pattern)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   An optional regular expression that can be used to cull metric
+instances from the generated reports.
+For example it is common to exclude loopback devices from the
+network interface reports, this is achieved using this option.
+Default is to report on all instances (no culling).
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h3>
+  The [plugin] metrics
+ </h3>
+ Each plugin must have at least one metric associated with it.
+Any key that is not one of the above global plugin options is
+considered to be a metric specification or a metric option.
+These keys define the metrics and their report formatting.
+ <p>
+  First and foremost, each column is typically represented by an
+individual metric (if the metric is set-valued - i.e. it has
+instances - this will result in multiple columns).
+This is specified by a new key (column) being set to a metric
+specification.
+The column (key) name is an arbitrary word using alphabetic
+characters.
+The metric specification is any PCP metric name or derived
+metric specification, allowing basic arithmetic calculations
+to be used to form this individual column.
+The derived metric syntax is described on the
+  <b>
+   <a href="/man/man3/pmregisterderived.3.html">
+    pmRegisterDerived
+   </a>
+  </b>
+  (3)
+
+manual page.
+ </p>
+ <p>
+  Some examples of both forms of metric specification are given
+below in the ``EXAMPLES'' section.
+Once a column has been associated with a metric, other options
+specific to that column can be set using a dot-separated syntax.
+ </p>
+ <p>
+  <b>
+   Metric options
+  </b>
+ </p>
+ <p>
+  metric.label
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   The subtitle to be used for the reported values of this metric.
+The default label is the column name from the configuration file.
+   <p>
+    When set-valued PCP metrics (i.e. with instances) are being used,
+it is often convenient to specify either the instance number or
+instance name in the heading.
+This is achieved using format specifiers - ``%d'' or ``%i'' for
+instance numbers (e.g. replaced by ``6'' for the sixth processor),
+and ``%s'' or ``%I'' for instance names (e.g. replaced by ``eth0''
+for the ethernet interface).
+Available instance names for any metric can be discovered via the
+    <b>
+     <a href="/man/man1/pminfo.1.html">
+      pminfo
+     </a>
+    </b>
+    (1)
+
+or
+    <b>
+     <a href="/man/man1/pmprobe.1.html">
+      pmprobe
+     </a>
+    </b>
+    (1)
+
+commands.
+   </p>
+  </dd>
+ </dl>
+ <p>
+  metric.width
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   The column width to be used when reporting values for this metric.
+  </dd>
+ </dl>
+ <p>
+  metric.unit (string)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Defines the unit/scale conversion for the metric.
+Needs to be dimension-compatible and is used with non-string metrics.
+For allowed values, see
+   <b>
+    <a href="/man/man1/pmrep.1.html">
+     pmrep
+    </a>
+   </b>
+   (1).
+  </dd>
+ </dl>
+ <p>
+  metric.type (string)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   If set to
+   <b>
+    raw
+   </b>
+   rate conversion for the metric will be disabled.
+  </dd>
+ </dl>
+ <p>
+  metric.precision (integer)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Defines precision for floating point values.
+  </dd>
+ </dl>
+ <p>
+  metric.limit (string)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Defines value limit filter for numeric metric values.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  EXAMPLES
+ </h2>
+ The following example defines a virtual filesystem plugin, with two
+columns, defined using three PCP metrics -
+ <b>
+  vfs.files.count
+ </b>
+ ,
+ <b>
+  vfs.inodes.count
+ </b>
+ and
+ <b>
+  vfs.inodes.free
+ </b>
+ .
+The inodes metrics are combined using the derived metric notation.
+ <p>
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+[vfs]
+width = 6
+label = filesystem
+files = vfs.files.count
+inode = vfs.inodes.count - vfs.inodes.free
+inode.label = inodes
+</pre>
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <p>
+  The system default
+  <b>
+   pcp-dstat
+  </b>
+  plugin files contain many more examples.
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $HOME
+   </tt>
+   /.pcp/dstat/
+  </dt>
+  <dd>
+   private per-user configuration files
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_ETC_DIR
+   </tt>
+   /pcp/dstat/
+  </dt>
+  <dd>
+   system-wide configuration files
+  </dd>
+ </dl>
+ <a name="lbAI">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <b>
+  /etc/pcp.conf
+ </b>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAJ">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcp-dstat.1.html">
+   pcp-dstat
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmprobe.1.html">
+   pmprobe
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmgetoptions.3.html">
+   pmGetOptions
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmregisterderived.3.html">
+   pmRegisterDerived
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man5/pmrep.conf.5.html">
+   pmrep.conf
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    FILE FORMAT
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAE">
+      The [plugin] options
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAF">
+      The [plugin] metrics
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

@@ -150,6 +150,12 @@ for the following PMDA options:
       <dd>
        prefix
       </dd>
+      <dt>
+       •
+      </dt>
+      <dd>
+       module_failure_fatal
+      </dd>
      </dl>
     </dd>
    </dl>
@@ -175,6 +181,15 @@ By default, all metrics from the modules will appear under the
   </b>
   (optional) can be
 used to change this generic prefix.
+A boolean value for
+  <b>
+   module_failure_fatal
+  </b>
+  (optional) controls whether
+a module failing to compile should cause the whole PMDA to abort (this is
+the default) or to start up with any possibly functional modules.
+Module configuration errors and internal errors (such as failing to
+register the provided PMNS metrics) will always cause the PMDA to fail.
  </p>
  <p>
   For each listed module a corresponding

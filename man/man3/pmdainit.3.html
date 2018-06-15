@@ -71,6 +71,10 @@
  </b>
  ,
  <b>
+  pmdaSetCommFlags
+ </b>
+ ,
+ <b>
   pmdaExtSetFlags
  </b>
  - initialize a PMDA
@@ -133,6 +137,17 @@
   <br/>
   <br/>
   void pmdaSetFlags(pmdaInterface *
+  <i>
+   dispatch
+  </i>
+  , int
+  <i>
+   flags
+  </i>
+  );
+  <br/>
+  <br/>
+  void pmdaSetCommFlags(pmdaInterface *
   <i>
    dispatch
   </i>
@@ -557,6 +572,28 @@ and is provided as a convenience interface in situations where the
   </a>
  </p>
  <h2>
+  COMMUNICATION ATTRIBUTES
+ </h2>
+ <p>
+  Agents that make use of authentication or container attributes
+should indicate this using the
+  <b>
+   pmdaSetCommFlags
+  </b>
+  interface.
+This indicates the need for these attributes to be communicated
+on the channel between the PMDA and
+  <b>
+   pmcd
+  </b>
+  or local context client.
+Valid flags are PMDA_FLAG_AUTHORIZE (for authentication related
+attributes) and PMDA_FLAG_CONTAINER (for container name related
+attributes).
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
   DIAGNOSTICS
  </h2>
  <b>
@@ -711,7 +748,8 @@ This message is only a warning.
   </dt>
   <dd>
    The unit numbers of the metrics did not correspond to the index in the
-metric description table.  The direct mapping failed for metric number
+metric description table.
+The direct mapping failed for metric number
    <i>
     num
    </i>
@@ -719,8 +757,8 @@ metric description table.  The direct mapping failed for metric number
    <i>
     metrics
    </i>
-   table.  This is less efficient but is not fatal and the message is only a 
-warning.
+   table.
+This is less efficient but is not fatal and the message is only a warning.
   </dd>
   <dt>
    <b>
@@ -737,7 +775,7 @@ This is a non-fatal warning message - a fallback to linear searching
 will be automatically performed should this situation arise.
   </dd>
  </dl>
- <a name="lbAI">
+ <a name="lbAJ">
  </a>
  <h2>
   CAVEAT
@@ -783,7 +821,7 @@ to use
   .
  </p>
  <p>
-  <a name="lbAJ">
+  <a name="lbAK">
   </a>
  </p>
  <h2>
@@ -916,20 +954,27 @@ and
   </dd>
   <dt>
    <a href="#lbAH">
-    DIAGNOSTICS
+    COMMUNICATION ATTRIBUTES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    CAVEAT
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
     SEE ALSO
    </a>
   </dt>

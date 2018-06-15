@@ -331,6 +331,12 @@ and friends for information on how this is done.
   SEE ALSO
  </h2>
  <b>
+  <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+   free
+  </a>
+ </b>
+ (3),
+ <b>
   <a href="/man/man3/pmapi.3.html">
    PMAPI
   </a>
@@ -430,8 +436,14 @@ In this case,
   <b>
    errMsg
   </b>
-  will point to a warning message in an internal static buffer.
-This buffer should not be freed.
+  will point to a warning message in a dynamically allocated buffer.
+The caller is responsible for releasing the buffer by calling
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+    free
+   </a>
+  </b>
+  (3).
  </p>
  <p>
   If the argument strings could not be parsed,
@@ -444,7 +456,14 @@ In this case,
    errMsg
   </b>
   will point to an error message
-in a static internal buffer.
+in a dynamically allocated buffer.
+The caller is responsible for releasing the buffer by calling
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/free.3.html">
+    free
+   </a>
+  </b>
+  (3).
  </p>
  <p>
  </p>
