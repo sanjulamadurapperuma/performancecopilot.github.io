@@ -112,6 +112,11 @@
  ]
 [
  <b>
+  -p
+ </b>
+ ]
+[
+ <b>
   -t
  </b>
  <i>
@@ -315,6 +320,47 @@ As such, this tool can be configured by editing the crontab entry,
   and adding whatever command line options are required.
  </p>
  <p>
+  If the
+  <b>
+   -p
+  </b>
+  option is specified
+then the status of the daily processing is polled and if the
+report has not been done in the last 24 hours then it is done now.
+The intent is to have
+  <b>
+   pmlogger_daily_report
+  </b>
+  called regularly with the
+  <b>
+   -p
+  </b>
+  option (at 30 mins past the hour, every hour in the default
+  <b>
+   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
+    cron
+   </a>
+  </b>
+  (8)
+
+set up) to ensure daily processing happens as soon as possible if
+it was missed at the regularly scheduled time (which is 02:00
+by default), e.g. if the system was down or suspended at that
+time.
+ </p>
+ <p>
+  With the
+  <b>
+   -p
+  </b>
+  option,
+  <b>
+   pmlogger_daily_report
+  </b>
+  simply exits if the previous day's processing has already been
+done.
+ </p>
+ <p>
   The reports themselves are created by the
   <b>
    <a href="/man/man1/pmrep.1.html">
@@ -420,9 +466,13 @@ are generated to the log file.
  <p>
   The output from the
   <b>
-   cron
+   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
+    cron
+   </a>
   </b>
-  execution of the script may be extended using the
+  (8)
+
+execution of the script may be extended using the
   <b>
    -V
   </b>
