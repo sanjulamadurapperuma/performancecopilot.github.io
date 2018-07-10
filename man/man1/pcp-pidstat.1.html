@@ -129,6 +129,28 @@
  ]
 [
  <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ <b>
+  --timezone=
+ </b>
+ <i>
+  TZ
+ </i>
+ ]
+[
+ <b>
+  -z
+ </b>
+ <b>
+  --hostzone
+ </b>
+ ]
+[
+ <b>
   -?
  </b>
  ]
@@ -495,6 +517,69 @@ in
   </dt>
   <dd>
    Display version and exit
+   <p>
+   </p>
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+  </dt>
+  <dd>
+   By default,
+   <b>
+    pcp-pidstat
+   </b>
+   reports the time of day according to the local timezone on the
+system where
+   <b>
+    pcp-pidstat
+   </b>
+   is run.
+The
+   <b>
+    -Z
+   </b>
+   option changes the timezone to
+   <i>
+    timezone
+   </i>
+   in the format of the environment variable
+   <b>
+    TZ
+   </b>
+   as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+   <p>
+   </p>
+  </dd>
+  <dt>
+   <b>
+    -z
+   </b>
+  </dt>
+  <dd>
+   Change the reporting timezone to the local timezone at the host that is
+the source of the performance metrics, as identified via either the
+   <b>
+    -h
+   </b>
+   or
+   <b>
+    -a
+   </b>
+   options.
+When replaying a PCP archive that was captured in a foreign timezone, the
+   <b>
+    -z
+   </b>
+   option would almost always be used (the default reporting timezone is the local timezone,
+which may not be the same as the timezone of the PCP archive).
    <p>
    </p>
   </dd>

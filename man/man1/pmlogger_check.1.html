@@ -65,10 +65,6 @@
  <b>
   pmlogger_daily
  </b>
- ,
- <b>
-  pmlogger_merge
- </b>
  - administration of Performance Co-Pilot archive log files
  <a name="lbAC">
  </a>
@@ -105,7 +101,7 @@
  </b>
  [
  <b>
-  -KMNoprV
+  -KMNoprRV
  </b>
  ]
 [
@@ -180,31 +176,12 @@
   regex
  </i>
  ]
- <br/>
- <b>
-  $PCP_BINADM_DIR/pmlogger_merge
- </b>
- [
- <b>
-  -fNV
- </b>
- ]
-[
- <i>
-  input-basename
- </i>
- ...
- <i>
-  output-name
- </i>
- ]
- <br/>
  <a name="lbAD">
  </a>
  <h2>
   DESCRIPTION
  </h2>
- This series of shell scripts and associated control files may be used to
+ These shell scripts and associated control files may be used to
 create a customized regime of administration and management for
 Performance Co-Pilot (see
  <b>
@@ -221,8 +198,10 @@ archive log files.
   </b>
   is intended to be run once per day, preferably in the early morning, as
 soon after midnight as practicable.
-Its task is to aggregate and rotate one or more sets of PCP archives.
-After some period, old PCP archives are discarded.
+Its task is to aggregate, rotate and perform general housekeeping one or more sets of PCP archives.
+ </p>
+ <p>
+  After some period, old PCP archives are discarded.
 This period is 14 days by default, but may be changed using the
   <b>
    -k
@@ -404,7 +383,7 @@ attempting to compress it more than once.  The default
   <i>
    regex
   </i>
-  is ".(meta|index|Z|gz|bz2|zip|xz|lzma|lzo|lz4)$" - such files are
+  is ".(index|Z|gz|bz2|zip|xz|lzma|lzo|lz4)$" - such files are
 filtered using the
   <b>
    -v
@@ -517,6 +496,60 @@ prevents all archive rewriting with
 independent of the presence of any rewriting rule files or directories.
  </p>
  <p>
+  Sometimes PMDA changes require
+  <i>
+   all
+  </i>
+  archives to be rewritten,
+not just the ones involved
+in any current merging.
+This is required for example after a PCP upgrade where a new version of an
+existing PMDA has revised metadata.
+The
+  <b>
+   -R
+  </b>
+  command line forces this universal-style of rewriting.
+ </p>
+ <p>
+  The
+  <b>
+   -R
+  </b>
+  option to
+  <b>
+   pmlogger_daily
+  </b>
+  is mutually exclusive with both the
+  <b>
+   -r
+  </b>
+  and
+  <b>
+   -M
+  </b>
+  options.
+ </p>
+ <p>
+  As an alternate mechanism, if the file
+  <b>
+   $PCP_LOG_DIR/pmlogger/.NeedRewrite
+  </b>
+  exists when
+  <b>
+   pmlogger_daily
+  </b>
+  starts then this is treated the same as specifying
+  <b>
+   -R
+  </b>
+  on the command line and
+  <b>
+   $PCP_LOG_DIR/pmlogger/.NeedRewrite
+  </b>
+  will be removed once all the rewriting has been done.
+ </p>
+ <p>
   By default all possible archives will be merged.  The
   <b>
    -o
@@ -534,12 +567,16 @@ needs to be merged,
   </b>
   (1)
 
-is used to rename the archive, rather than copy the input archive
-using
+is used to rename the archive, otherwise
   <b>
-   pmlogger_merge
+   <a href="/man/man1/pmlogger_merge.1.html">
+    pmlogger_merge
+   </a>
   </b>
-  .
+  (1)
+
+is used to merge all of the archives for a single host and a single day into a new
+PCP archive and the individual archives are removed.
  </p>
  <p>
   The
@@ -886,55 +923,18 @@ and uses that to determine whether to start processes.
   are expected to be running.
  </p>
  <p>
+  Using
   <b>
-   pmlogger_merge
+   -N
   </b>
-  is a wrapper script for
+  option invokes the scripts in a ``show me'' or ``dry run'' mode where the
+tasks that would be performed are reported, but no changes are made.
+This is typically used for debugging in combination with one (verbose)
+or two (very verbose)
   <b>
-   <a href="/man/man1/pmlogextract.1.html">
-    pmlogextract
-   </a>
+   -V
   </b>
-  (1)
-
-that merges all of the archive logs matching the
-  <i>
-   input-basename
-  </i>
-  arguments, and creates a new archive using
-  <i>
-   output-name
-  </i>
-  as the base name for the physical files that constitute
-an archive log.
-The
-  <i>
-   input-basename
-  </i>
-  arguments may contain meta characters in the style of
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/sh.1.html">
-    sh
-   </a>
-  </b>
-  (1).
-
-If specified, the
-  <b>
-   -f
-  </b>
-  option causes all of the input files to be removed once the output
-archive has been created.
- </p>
- <p>
-  <b>
-   pmlogger_merge
-  </b>
-  is used by
-  <b>
-   pmlogger_daily
-  </b>
-  .
+  options.
  </p>
  <p>
   Both
@@ -1685,6 +1685,19 @@ the uid of the user ``pcp'',
        </b>
        typically needs to be owned by the user ``pcp''.
       </dd>
+      <dt>
+       <b>
+        $PCP_LOG_DIR/pmlogger/.NeedRewrite
+       </b>
+      </dt>
+      <dd>
+       if this file exists, then this is treated as equivalent to using
+       <b>
+        -R
+       </b>
+       on the command line and the file will be removed once all rewriting
+has been done.
+      </dd>
      </dl>
      <a name="lbAF">
      </a>
@@ -1751,12 +1764,6 @@ as described in
      </b>
      (1),
      <b>
-      <a href="/man/man1/pmlogextract.1.html">
-       pmlogextract
-      </a>
-     </b>
-     (1),
-     <b>
       <a href="/man/man1/pmlogger.1.html">
        pmlogger
       </a>
@@ -1765,6 +1772,12 @@ as described in
      <b>
       <a href="/man/man1/pmlogger_daily_report.1.html">
        pmlogger_daily_report
+      </a>
+     </b>
+     (1),
+     <b>
+      <a href="/man/man1/pmlogger_merge.1.html">
+       pmlogger_merge
       </a>
      </b>
      (1),
