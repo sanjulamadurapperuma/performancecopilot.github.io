@@ -429,6 +429,12 @@ Values
    5:
 String
   </dd>
+  <dt>
+  </dt>
+  <dd>
+   6:
+Labels
+  </dd>
  </dl>
  <p>
   The only mandatory sections are Metrics and Values.
@@ -438,6 +444,9 @@ String sections only appear if there are metrics with string values,
 when Metrics or Indoms are defined with help text, or in v2 MMV format
 where metric names and instance names are stored in string sections
 (providing significantly more space than v1 MMV format for these names).
+Label sections only appear if there are metrics annotated with labels
+(name/value pairs).
+Labels are supported in v3 MMV format.
  </p>
  <p>
   The entries in the Indoms sections have the following format:
@@ -1242,6 +1251,91 @@ where metric names and instance names are stored in string sections
 containing a single NULL-terminated character string.
 So each string has a maximum length of 256 bytes, which includes
 the terminating NULL.
+ </p>
+ <p>
+  The entries in the Labels (v3) section have the following format:
+ </p>
+ <center>
+  <table border="">
+   <tr>
+    <td>
+     <table>
+      <tr valign="top">
+       <td align="center">
+        Offset  Length  Value
+       </td>
+       <td align="center">
+       </td>
+       <td align="center">
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="right">
+        0       4       Flags (PM_LABEL_[CLUSTER|ITEM|INDOM|INSTANCES]|OPTIONAL)
+       </td>
+       <td align="right">
+       </td>
+       <td>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="right">
+        4       4       Identifier for given type (indom, cluster or item)
+       </td>
+       <td align="right">
+       </td>
+       <td>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="right">
+        8       4       Internal Instance or PM_IN_NULL
+       </td>
+       <td align="right">
+       </td>
+       <td>
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td align="right">
+        12      244     Payload (Name and Value JSONB String)
+       </td>
+       <td align="right">
+       </td>
+       <td>
+        <br/>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </center>
+ <p>
   <a name="lbAF">
   </a>
  </p>

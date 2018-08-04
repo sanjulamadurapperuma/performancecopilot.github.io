@@ -73,7 +73,12 @@
  <h2>
   C SYNOPSIS
  </h2>
- <b>
+ <p>
+  <b>
+  </b>
+ </p>
+ <p>
+  <br/>
   #include &lt;
   <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
    pcp/pmapi.h
@@ -85,7 +90,7 @@
    pcp/mmv_stats.h
   </a>
   &gt;
- </b>
+ </p>
  <p>
   <br/>
   void *mmv_stats_init(const char *
@@ -157,6 +162,15 @@
  <h2>
   DESCRIPTION
  </h2>
+ <p>
+  <b>
+   Note: these functions are deprecated - see
+   <a href="/man/man3/mmv_stats_resgistry.3.html">
+    mmv_stats_resgistry
+   </a>
+   (3).
+  </b>
+ </p>
  <p>
   <b>
    mmv_stats_init
@@ -279,7 +293,7 @@ on name length (previously MMV_NAMEMAX, which is 64 bytes).
             __uint32_t indom;           /* Instance domain identifier */
             char *shorttext;            /* Optional, one-line help */
             char *helptext;             /* Optional, full help text */
-        } mmv_metric_t;
+        } mmv_metric2_t;
 </pre>
  <p>
   If

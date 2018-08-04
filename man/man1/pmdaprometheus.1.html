@@ -106,6 +106,14 @@
  ]
 [
  <b>
+  -r
+ </b>
+ <i>
+  root
+ </i>
+ ]
+[
+ <b>
   -t
  </b>
  <i>
@@ -241,6 +249,16 @@ The
    pmdaprometheus
   </b>
   PMDA on all hosts.
+See also the
+  <b>
+   -r
+  </b>
+  option, which allows the root of the dynamic namespace
+to be changed from the default
+  <b>
+   prometheus
+  </b>
+  .
  </p>
  <p>
   The
@@ -301,6 +319,40 @@ This redirection is normally most useful in a containerized environment, or when
    </a>
   </b>
   (1).
+ </p>
+ <p>
+  The
+  <b>
+   -r
+  </b>
+  option allows the root of the dynamic namespace to be changed to
+  <i>
+   root
+  </i>
+  from the default,
+  <b>
+   prometheus
+  </b>
+  .
+
+In conjunction with other command line options,
+this allows
+  <b>
+   pmdaprometheus
+  </b>
+  to be deployed as a different PMDA with distinct metrics namespace
+and metrics domain on the same host system.
+Note that all PMDAs require a unique domain number so the
+  <b>
+   -d
+  </b>
+  option must also be specified.
+Use of the
+  <b>
+   -r
+  </b>
+  option may also change the defaults for some other command line options,
+e.g. the default log file name and the default configuration directory.
   <a name="lbAE">
   </a>
  </p>

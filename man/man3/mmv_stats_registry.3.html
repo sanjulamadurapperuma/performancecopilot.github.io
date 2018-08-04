@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  MMV_STATS_REGISTRY
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ Updated:
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  mmv_stats_registry
+ </b>
+ - Initialize the Memory Mapped Value file
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+  <br/>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/mmv_stats.h">
+   pcp/mmv_stats.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  mmv_registry_t *mmv_stats_registry(const char *
+  <i>
+   file
+  </i>
+  , int
+  <i>
+   cluster
+  </i>
+  ,
+  <br/>
+  mmv_stats_flags_t
+  <i>
+   flags
+  </i>
+  );
+  <br/>
+  <br/>
+ </p>
+ <p>
+  void *mmv_stats_start(mmv_registry_t *
+  <i>
+   registry
+  </i>
+  );
+  <br/>
+  <br/>
+  void  mmv_stats_stop(const char *
+  <i>
+   fname
+  </i>
+  , void *
+  <i>
+   addr
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp_mmv -lpcp
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <p>
+  <b>
+   mmv_stats_registry
+  </b>
+  initializes an opaque structure that defines
+various aspects of a memory mapped file.
+This file is used for lightweight interprocess communication between
+an instrumented application and
+  <i>
+   <a href="/man/man1/pmdammv.1.html">
+    pmdammv
+   </a>
+  </i>
+  (1).
+ </p>
+ <p>
+  The
+  <b>
+   mmv_stats_registry
+  </b>
+  interface is used to allocate a registry,
+and allows the
+  <i>
+   name
+  </i>
+  of the
+  <i>
+   <a href="/man/man5/mmv.5.html">
+    MMV
+   </a>
+  </i>
+  (5) file, the
+  <i>
+   cluster
+  </i>
+  identifier and the
+  <i>
+   flags
+  </i>
+  (if any) to be set.
+It returns a handle that is used in subsequent MMV API calls when
+adding metrics, indoms, instances and labels to the registry - before
+actually creating the file.
+ </p>
+ <p>
+  <b>
+   mmv_stats_start
+  </b>
+  is the call that creates the
+  <i>
+   <a href="/man/man5/mmv.5.html">
+    MMV
+   </a>
+  </i>
+  (5) file with 
+the handle that returns
+  <b>
+   mmv_stats_registry
+  </b>
+  .
+It returns the mapped memory handle used in subsequent MMV API calls,
+such as
+  <b>
+   <a href="/man/man3/mmv_inc_value.3.html">
+    mmv_inc_value
+   </a>
+  </b>
+  (3).
+ </p>
+ <p>
+  <b>
+   mmv_stats_stop
+  </b>
+  performs an orderly shutdown of the mapping
+handle returned by an earlier initialization call and also frees
+the registry structure.
+ </p>
+ <p>
+  The combination of
+  <b>
+   mmv_stats_registry
+  </b>
+  and
+  <b>
+   mmv_stats_start
+  </b>
+  do the same as the deprecated calls
+  <b>
+   <a href="/man/man2/mmv_stats.2.html">
+    mmv_stats
+   </a>
+   (2)_init
+  </b>
+  .
+However, now, one should first call
+  <b>
+   mmv_stats_registry
+  </b>
+  and then
+the API calls that add instances, indoms, metrics and labels.
+In this way, there is no need to know in advance which version of the
+MMV(1|2|3) mapping will be used as it is calculated automatically.
+ </p>
+ <p>
+  The file is created in the
+  <i>
+   $PCP_TMP_DIR/mmv
+  </i>
+  directory, the
+  <i>
+   name
+  </i>
+  argument is expected to be a basename of the file, not
+the full path.
+The metadata content of the file does not change after the file has
+been created.
+ </p>
+ <p>
+  The old file is removed unconditionally unless there was an error.
+ </p>
+ <p>
+  <i>
+   cluster
+  </i>
+  is the preferred MMV PMDA cluster ID to be used for
+the metrics the originates the call
+  <b>
+   mmv_stats_start
+  </b>
+  .
+The
+  <i>
+   flags
+  </i>
+  provide additional control over the behaviour
+of the MMV PMDA - e.g. use of MMV_FLAG_PROCESS will ensure values
+are only exported when the instrumented application is running -
+this is verified on each request for new values.
+ </p>
+ <p>
+  The next sections explain how to add metrics, indoms, instances
+and labels.
+ </p>
+ <p>
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  ADD METRICS
+ </h2>
+ <b>
+  <br/>
+  int mmv_stats_add_metric(mmv_registry_t *registry, const char *
+ </b>
+ <i>
+  name
+ </i>
+ , int
+ <i>
+  item
+ </i>
+ ,
+ <br/>
+ mmv_metric_type_t
+ <i>
+  type
+ </i>
+ , mmv_metric_sem_t
+ <i>
+  sem
+ </i>
+ , pmUnits
+ <i>
+  units
+ </i>
+ ,
+ <br/>
+ int
+ <i>
+  serial
+ </i>
+ , const char *
+ <i>
+  shorthelp
+ </i>
+ , const char *
+ <i>
+  longhelp
+ </i>
+ );
+ <p>
+  When adding a metric, internally it is being handled using the next struct.
+  <i>
+   sem
+  </i>
+  match in the struct is semantics.
+  <i>
+   units
+  </i>
+  match in the struct
+is dimension.
+  <i>
+   serial
+  </i>
+  match in the struct is indom.
+ </p>
+ <p>
+ </p>
+ <pre>
+        typedef struct {
+            char *name;                 /* Name of the metric */
+            __uint32_t item;            /* Item component of PMID */
+            mmv_metric_type_t type;     /* Type of the metric */
+            mmv_metric_sem_t semantics; /* Semantics of the metric */
+            pmUnits dimension;          /* Dimensions (TIME,SPACE,etc) */
+            __uint32_t indom;           /* Instance domain identifier */
+            char *shorttext;            /* Optional, one-line help */
+            char *helptext;             /* Optional, full help text */
+        } mmv_metric2_t;
+</pre>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  ADD INDOMS
+ </h2>
+ <b>
+  <br/>
+  int mmv_stats_add_indom(mmv_registry_t *
+ </b>
+ <i>
+  registry
+ </i>
+ , int
+ <i>
+  serial
+ </i>
+ ,
+ <br/>
+ const char *
+ <i>
+  shorthelp
+ </i>
+ , const char *
+ <i>
+  longhelp
+ </i>
+ );
+ <p>
+ </p>
+ <p>
+  When adding an indom, internally it is being handled using the next struct.
+ </p>
+ <p>
+ </p>
+ <pre>
+        typedef struct {
+            __uint32_t serial;           /* Unique serial number */
+            __uint32_t count;            /* Number of instances */
+            mmv_instances2_t *instances; /* Internal/external IDs */
+            char *shorttext;             /* Short help text */
+            char *helptext;              /* Long help text */
+        } mmv_indom2_t;
+</pre>
+ <p>
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  ADD INSTANCES
+ </h2>
+ <br/>
+ int mmv_stats_add_instance(mmv_registry_t *
+ <i>
+  registry
+ </i>
+ , int
+ <i>
+  serial
+ </i>
+ ,
+ <br/>
+ int
+ <i>
+  instid
+ </i>
+ , const char *
+ <i>
+  instname
+ </i>
+ );
+ <p>
+  When adding an instance, internally it is being handled using the next struct.
+  <i>
+   instid
+  </i>
+  match in the struct is internal while
+  <i>
+   instname
+  </i>
+  is external.
+ </p>
+ <p>
+ </p>
+ <p>
+ </p>
+ <pre>
+        typedef struct {
+            __int32_t internal;
+            char *external;
+        } mmv_instances2_t;
+
+</pre>
+ <p>
+  It is worth mentioning that if the indom of the instance is not found it 
+returns an error.
+ </p>
+ <p>
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  ADD LABELS
+ </h2>
+ <b>
+  <br/>
+  int mmv_stats_add_registry_label(mmv_registry_t *
+ </b>
+ <i>
+  registry
+ </i>
+ ,
+ <br/>
+ const char *
+ <i>
+  name
+ </i>
+ , const char *
+ <i>
+  value
+ </i>
+ ,
+ <br/>
+ mmv_value_type_t
+ <i>
+  type
+ </i>
+ , int
+ <i>
+  optional
+ </i>
+ );
+ <p>
+  <br/>
+  int mmv_stats_add_indom_label(mmv_registry_t *
+  <i>
+   registry
+  </i>
+  , int
+  <i>
+   serial
+  </i>
+  ,
+  <br/>
+  const char *
+  <i>
+   name
+  </i>
+  , const char *
+  <i>
+   value
+  </i>
+  ,
+  <br/>
+  mmv_value_type_t
+  <i>
+   type
+  </i>
+  , int
+  <i>
+   optional
+  </i>
+  );
+ </p>
+ <p>
+  <br/>
+  int mmv_stats_add_metric_label(mmv_registry_t *
+  <i>
+   registry
+  </i>
+  , int
+  <i>
+   item
+  </i>
+  ,
+  <br/>
+  const char *
+  <i>
+   name
+  </i>
+  , const char *
+  <i>
+   value
+  </i>
+  ,
+  <br/>
+  mmv_value_type_t
+  <i>
+   type
+  </i>
+  , int
+  <i>
+   optional
+  </i>
+  );
+ </p>
+ <p>
+  <br/>
+  int mmv_stats_add_instance_label(mmv_registry_t *
+  <i>
+   registry
+  </i>
+  , int
+  <i>
+   serial
+  </i>
+  ,
+  <br/>
+  int
+  <i>
+   instid
+  </i>
+  , const char *
+  <i>
+   name
+  </i>
+  , const char *
+  <i>
+   value
+  </i>
+  ,
+  <br/>
+  mmv_value_type_t
+  <i>
+   type
+  </i>
+  , int
+  <i>
+   optional
+  </i>
+  );
+ </p>
+ <p>
+ </p>
+ <p>
+  <br/>
+  <i>
+   registry
+  </i>
+  is the handle obtained from
+  <b>
+   mmv_stats_registry
+  </b>
+  .
+  <i>
+   name
+  </i>
+  and
+  <i>
+   value
+  </i>
+  are the strings that will form the label.
+ </p>
+ <p>
+  <i>
+   type
+  </i>
+  specifies the value type that can be: MMV_STRING_TYPE,
+MMV_NUMBER_TYPE, MMV_BOOLEAN_TYPE, MMV_NULL_TYPE, MMV_ARRAY_TYPE and MMV_MAP_TYPE.
+ </p>
+ <p>
+  At the moment there is a simple check of the correctness of the value.
+After adding a label, it is called a function to verify if it is correct.
+ </p>
+ <p>
+  Additionally, if
+  <i>
+   optional
+  </i>
+  is set, it is added the flag PM_LABEL_OPTIONAL.
+ </p>
+ <p>
+  <i>
+   serial
+  </i>
+  is the serial of the indom when adding an indom or instance label.
+  <i>
+   item
+  </i>
+  is the metric identifier when adding a metric label. Finally, when 
+adding a registry label it is not necessary to give the cluster id because 
+it will be taken from the internal registry struct already created.
+ </p>
+ <p>
+  <b>
+   mmv_stats_add_registry_label
+  </b>
+  adds a PM_LABEL_CLUSTER.
+ </p>
+ <p>
+  <b>
+   mmv_stats_add_indom_label
+  </b>
+  adds a PM_LABEL_INDOM.
+ </p>
+ <p>
+  <b>
+   mmv_stats_add_metric_label
+  </b>
+  adds a PM_LABEL_ITEM.
+ </p>
+ <p>
+  <b>
+   mmv_stats_add_instance_label
+  </b>
+  adds a PM_LABEL_INSTANCES.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <p>
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  RETURN VALUES
+ </h2>
+ <br/>
+ When adding metrics, indoms, instances and labels, if correct returns 0
+ <br/>
+ and if not it returns an errno code. The other functions return the address
+ <br/>
+ of the memory mapped region on success. On failure, NULL is returned and
+ <br/>
+ <i>
+  errno
+ </i>
+ is set to a value suitable
+for decoding with
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/strerror.3.html">
+   strerror
+  </a>
+ </b>
+ (3).
+ <a name="lbAJ">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/mmv_inc_value.3.html">
+   mmv_inc_value
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/mmv_lookup_value_desc.3.html">
+   mmv_lookup_value_desc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/strerror.3.html">
+   strerror
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man5/mmv.5.html">
+   mmv
+  </a>
+ </b>
+ (5).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    ADD METRICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    ADD INDOMS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    ADD INSTANCES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    ADD LABELS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    RETURN VALUES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

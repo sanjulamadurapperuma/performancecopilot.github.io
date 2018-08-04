@@ -1945,6 +1945,633 @@ should not be randomly chosen; consult
    </p>
   </dd>
  </dl>
+ <p>
+  A
+  <b>
+   text
+  </b>
+  rewriting rule modifies a help text record and has the form:
+ </p>
+ <p>
+  TEXT
+  <i>
+   textid
+  </i>
+  [
+  <i>
+   texttype
+  </i>
+  ]
+
+{
+  <i>
+   textspec
+  </i>
+  ...
+
+}
+ </p>
+ <p>
+  where
+  <i>
+   textid
+  </i>
+  identifies the metric or instance domain with which the text is currently associated, and is either
+
+METRIC
+  <i>
+   metricid
+  </i>
+  or
+
+INDOM
+  <i>
+   domain
+  </i>
+  .
+  <i>
+   serial
+  </i>
+  .
+ </p>
+ <p>
+  <i>
+   metricid
+  </i>
+  has the same form and meaning as for a METRIC rewriting rule (see above) and
+  <i>
+   domain
+  </i>
+  .
+  <i>
+   serial
+  </i>
+  has the same form and meaning as for an INDOM rewriting rule (see above).
+ </p>
+ <p>
+  The optional
+  <i>
+   texttype
+  </i>
+  identifies the type of text and may be one of
+
+ONELINE
+
+to select the one line help text,
+
+HELP
+
+to select the full help text, or
+
+ALL
+
+to select both types of help text. If
+  <i>
+   texttype
+  </i>
+  is not specified, then the default is
+
+ONELINE.
+ </p>
+ <p>
+  If a designated help text record is not in
+  <i>
+   inlog
+  </i>
+  the rule has no effect.
+ </p>
+ <p>
+  The
+  <i>
+   textspec
+  </i>
+  is zero or more of the following clauses:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <p>
+    DELETE
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The selected text is completely removed from
+      <i>
+       outlog
+      </i>
+      .
+     </p>
+    </dd>
+   </dl>
+   <p>
+    INDOM
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newserial
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Reassociates the text with the specified instance domain.
+As a special case,
+      <i>
+       newserial
+      </i>
+      could be an asterisk ``*'' which means use
+      <i>
+       serial
+      </i>
+      from the
+      <b>
+       text
+      </b>
+      rewriting rule, although this is most useful when
+      <i>
+       serial
+      </i>
+      is also an asterisk.
+So for example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       text indom 29.* all { indom -&gt; 109.* }
+      </dd>
+     </dl>
+     will reassociate all text associated with instance domains from domain 29 to domain 109.
+    </dd>
+   </dl>
+   <p>
+    METRIC
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newcluster
+    </i>
+    .
+    <i>
+     newitem
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Reassociates the text with the specified metric.
+As special cases,
+      <i>
+       newcluster
+      </i>
+      could be an asterisk ``*'' which means use
+      <i>
+       cluster
+      </i>
+      from the
+      <b>
+       text
+      </b>
+      rewriting rule and/or
+      <i>
+       item
+      </i>
+      could be an asterisk which means use
+      <i>
+       item
+      </i>
+      from the
+      <b>
+       text
+      </b>
+      rewriting rule.
+This is most useful when
+      <i>
+       cluster
+      </i>
+      and/or
+      <i>
+       item
+      </i>
+      is also an asterisk.
+So for example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       text metric 30.*.* all { metric -&gt; 123.*.* }
+      </dd>
+     </dl>
+     will reassociate all text associated with metrics from domain 30 to domain 123.
+    </dd>
+   </dl>
+   <p>
+    TEXT
+
+
+-&gt;
+
+"
+    <i>
+     new-text
+    </i>
+    "
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Replaces the content of the selected text with
+      <i>
+       new-text
+      </i>
+      .
+     </p>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  A
+  <b>
+   label
+  </b>
+  rewriting rule modifies a label record and has the form:
+ </p>
+ <p>
+  LABEL
+  <i>
+   labelid
+  </i>
+  {
+  <i>
+   labelspec
+  </i>
+  ...
+
+}
+ </p>
+ <p>
+  where
+  <i>
+   labelid
+  </i>
+  refers to the global context or identifies the metric domain, metric cluster,
+metric item, instance domain, or instance domain instances with which the label is currently
+associated, and is either
+
+CONTEXT
+
+or
+
+DOMAIN
+  <i>
+   domainid
+  </i>
+  or
+
+CLUSTER
+  <i>
+   domainid
+  </i>
+  .
+  <i>
+   clusterid
+  </i>
+  or
+
+ITEM
+  <i>
+   metricid
+  </i>
+  or
+
+INDOM
+  <i>
+   domain
+  </i>
+  .
+  <i>
+   serial
+  </i>
+  or
+
+INSTANCES
+  <i>
+   domain
+  </i>
+  .
+  <i>
+   serial
+  </i>
+  .
+ </p>
+ <p>
+  <i>
+   metricid
+  </i>
+  has the same form and meaning as for a METRIC rewriting rule (see above).
+  <i>
+   clusterid
+  </i>
+  may be an asterisk ``*''
+which means the rule applies to every
+metric with a domain number of
+  <i>
+   domainid
+  </i>
+  in the same way as an asterisk may be used for the cluster within
+  <i>
+   metricid
+  </i>
+  .
+ </p>
+ <p>
+  <i>
+   domain
+  </i>
+  .
+  <i>
+   serial
+  </i>
+  has the same form and meaning as for an INDOM rewriting rule (see above).
+ </p>
+ <p>
+  If a designated label record is not in
+  <i>
+   inlog
+  </i>
+  the rule has no effect.
+ </p>
+ <p>
+  The
+  <i>
+   labelspec
+  </i>
+  is zero or more of the following clauses:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <p>
+    DELETE
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The selected label(s) are completely removed from
+      <i>
+       outlog
+      </i>
+      .
+     </p>
+    </dd>
+   </dl>
+   <p>
+    DOMAIN
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Reassociates the selected label(s) with the specified metric domain.
+For example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       label domain 30 { domain -&gt; 123 }
+      </dd>
+     </dl>
+     will reassociate all labels associated with domains from domain 30 to domain 123.
+    </dd>
+   </dl>
+   <p>
+    CLUSTER
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newcluster
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Reassociates the selected label(s) with the specified metric cluster.
+As a special case,
+      <i>
+       newcluster
+      </i>
+      could be an asterisk ``*'' which means use
+      <i>
+       cluster
+      </i>
+      from the
+      <b>
+       label
+      </b>
+      rewriting rule.
+This is most useful when
+      <i>
+       cluster
+      </i>
+      is also an asterisk.
+So for example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       label cluster 30.* { cluster -&gt; 123.* }
+      </dd>
+     </dl>
+     will reassociate all labels associated with clusters from domain 30 to domain 123.
+    </dd>
+   </dl>
+   <p>
+    ITEM
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newcluster
+    </i>
+    .
+    <i>
+     newitem
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Reassociates the selected label(s) with the specified metric item.
+As special cases,
+      <i>
+       newcluster
+      </i>
+      could be an asterisk ``*'' which means use
+      <i>
+       cluster
+      </i>
+      from the
+      <b>
+       label
+      </b>
+      rewriting rule and/or
+      <i>
+       item
+      </i>
+      could be an asterisk which means use
+      <i>
+       item
+      </i>
+      from the
+      <b>
+       label
+      </b>
+      rewriting rule.
+This is most useful when
+      <i>
+       cluster
+      </i>
+      and/or
+      <i>
+       item
+      </i>
+      is also an asterisk.
+So for example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       label item 30.*.* { item -&gt; 123.*.* }
+      </dd>
+     </dl>
+     will reassociate all labels associated with metrics from domain 30 to domain 123.
+    </dd>
+   </dl>
+   <p>
+    INDOM
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newserial
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      Reassociates the selected label(s) with the specified instance domain.
+As a special case,
+      <i>
+       newserial
+      </i>
+      could be an asterisk ``*'' which means use
+      <i>
+       serial
+      </i>
+      from the
+      <b>
+       label
+      </b>
+      rewriting rule, although this is most useful when
+      <i>
+       serial
+      </i>
+      is also an asterisk.
+So for example:
+     </p>
+     <dl compact="">
+      <dt>
+      </dt>
+      <dd>
+       label indom 29.* { indom -&gt; 109.* }
+      </dd>
+     </dl>
+     will reassociate all labels associated with instance domains from domain 29 to domain 109.
+    </dd>
+   </dl>
+   <p>
+    INSTANCES
+
+
+-&gt;
+    <i>
+     newdomain
+    </i>
+    .
+    <i>
+     newserial
+    </i>
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      This is the same as
+
+INDOM
+
+except that it reassociates the selected label(s) with the instances of the specified
+instance domain.
+     </p>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
  <a name="lbAG">
  </a>
  <h2>

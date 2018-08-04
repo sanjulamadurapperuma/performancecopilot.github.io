@@ -1547,12 +1547,12 @@ average, the second update a 2 second average, etc. until the
   </dt>
   <dd>
    <pre>
-pcp-dstat -dnyc -N eth0 -C total -f 5
+pcp dstat -dnyc -N eth0 -C total -f 5
 </pre>
   </dd>
  </dl>
  <p>
-  Using the time plugin together with cpu, net, disk, system, load, proc and top_cpu plugins:
+  Using the time plugin together with cpu, net, disk, system, load and proc plugins:
  </p>
  <p>
  </p>
@@ -1561,7 +1561,7 @@ pcp-dstat -dnyc -N eth0 -C total -f 5
   </dt>
   <dd>
    <pre>
-pcp-dstat -tcndylp --top-cpu
+pcp dstat -tcndylp
 </pre>
   </dd>
  </dl>
@@ -1575,12 +1575,16 @@ pcp-dstat -tcndylp --top-cpu
   </dt>
   <dd>
    <pre>
-pcp-dstat --time --cpu --net --disk --sys --load --proc --top-cpu
+pcp dstat --time --cpu --net --disk --sys --load --proc
 </pre>
   </dd>
  </dl>
  <p>
-  Using pcp-dstat to relate advanced cpu stats with interrupts per device:
+  Using
+  <b>
+   pcp-dstat
+  </b>
+  to report 10 samples from metrics recorded in a PCP archive from 2:30am:
  </p>
  <p>
  </p>
@@ -1589,7 +1593,7 @@ pcp-dstat --time --cpu --net --disk --sys --load --proc --top-cpu
   </dt>
   <dd>
    <pre>
-pcp-dstat -t --cpu-adv -yif
+pcp --origin '@02:30'  --archive 20180729 dstat --time --cpu-adv --sys 1 10
 </pre>
   </dd>
  </dl>
