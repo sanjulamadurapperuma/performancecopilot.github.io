@@ -31,7 +31,7 @@
         </nav>
       </div>
     </header>
-<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5195283.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="Z976310185sdc.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="id5195340">
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="https://pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="https://pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="id5195283.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="Z976310185sdc.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="id5195340">
       ⁠</a>2.8. Integration of a PMDA</h2></div></div></div><div class="para">
 				<a id="IG31340177237" class="indexterm"></a>Several steps are required to install (or remove) a PMDA from a production PMCD environment without affecting the operation of other PMDAs or related visualization and logging tools.<a id="IG31340177238" class="indexterm"></a>
 			</div><div class="para">
@@ -62,8 +62,6 @@
 . ${PCP_SHARE_DIR}/lib/pmdaproc.sh
 
 iam=trivial
-pmda_interface=2
-
 pmdaSetup
 pmdainstall
 exit</pre></div></div><div class="para">
@@ -181,15 +179,6 @@ exit</pre></div></div><div class="para">
 									 
 								</div>
 								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
-									<code class="literal">$pmda_interface</code>
-								</div>
-								 </td><td align="left" valign="top"> <div class="para">
-									Version of the <code class="filename">libpcp_pmda</code> library required, used to determine the version for generating help text files.
-								</div>
-								 </td><td align="left" valign="top"> <div class="para">
-									<code class="literal">1</code>
-								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$pmns_source</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -198,7 +187,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									<code class="literal">pmns</code>
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$pmns_name</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -207,7 +196,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									<code class="literal">$iam</code>
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$help_source</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -216,7 +205,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									<code class="literal">help</code>
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$pmda_name</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -225,7 +214,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									<code class="literal">pmda$iam</code>
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$dso_name</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -234,7 +223,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									<code class="literal">pmda$iam.$dso_suffix</code>
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$dso_entry</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -243,7 +232,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									<code class="literal">${iam}_init</code>
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$domain</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -252,7 +241,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									 
 								</div>
-								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$SYMDOM</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">
@@ -261,7 +250,7 @@ exit</pre></div></div><div class="para">
 								 </td><td align="left" valign="top"> <div class="para">
 									 
 								</div>
-								 </td></tr><tr valign="top"><td align="left" valign="top"> <div class="para">
+								 </td></tr><tr class="even" valign="top"><td align="left" valign="top"> <div class="para">
 									<code class="literal">$status</code>
 								</div>
 								 </td><td align="left" valign="top"> <div class="para">

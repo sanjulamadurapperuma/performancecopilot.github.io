@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -dfFIlLmMsStTvxz
+  -dfFIlLmMstTvxz
  </b>
  ]
 [
@@ -685,39 +685,20 @@ for a complete description of this option, and the syntax for the
    </b>
   </dt>
   <dd>
-   Print time series identifiers associated with metrics and instances.
+   Print time series identifiers associated with metrics, instances and
+sources.
 These unique identifiers are calculated from intrinsic (non-optional)
-labels and other metric metadata associated with every metric and
-instance.
-See also
+labels and other metric metadata associated with each PMAPI context
+(sources), metrics and instances.
+Archive, local context or
    <b>
-    <a href="/man/man3/pmlookuplabels.3.html">
-     pmLookupLabels
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
     </a>
    </b>
-   (3)
+   (1)
 
-and the
-   <b>
-    -l/--labels
-   </b>
-   option.
-  </dd>
-  <dt>
-   <b>
-    -S
-   </b>
-   ,
-   <b>
-    --source
-   </b>
-  </dt>
-  <dd>
-   Print the source identifier associated with the PMAPI context.
-These unique identifiers are calculated from the intrinsic labels
-associated with the context.
-Archive, local context or host connections for the same host will
-all produce the same source identifier.
+connections for the same host all produce the same source identifier.
 See also
    <b>
     <a href="/man/man3/pmlookuplabels.3.html">

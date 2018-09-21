@@ -54,7 +54,7 @@
  <p align="center">
   <font size="3">
    <i>
-    May 2018
+    September 2018
    </i>
   </font>
  </p>
@@ -253,9 +253,9 @@ using the
     configure.ac
    </a>
    and
-   <i>
+   <b>
     cpp
-   </i>
+   </b>
    conditionals and macros are used to guard
 the inclusion of these headers, e.g. &lt;strings.h&gt; in
    <a href="https://github.com/performancecopilot/pcp/blob/master/src/dbpmda/src/util.c">
@@ -286,9 +286,9 @@ appropriate for the current platform.  See the tests for the Python
     OrderedDict
    </b>
    module and the
-   <i>
+   <b>
     pmrep
-   </i>
+   </b>
    application in
    <a href="https://github.com/performancecopilot/pcp/blob/master/qa/035">
     qa/035
@@ -303,13 +303,13 @@ appropriate for the current platform.  See the tests for the Python
   Mostly what's been done here is common and good engineering
 practice.  For example using configure, conditionals in the
 GNUmakefiles and assorted
-  <i>
+  <b>
    sed
-  </i>
+  </b>
   /
-  <i>
+  <b>
    awk
-  </i>
+  </b>
   rewriting scripts
 to ensure the code will compile cleanly on all platforms.  Compiler
 warnings are enabled and builds are expected to complete without
@@ -329,14 +329,14 @@ bound to values at build time by configure and installed
 in /etc/pcp.conf.  These can then be used in
 shell scripts and applications in C, C++, Perl, Python
 have run-time access to these via
-  <i>
+  <b>
    pmGetConfig
-  </i>
+  </b>
   ()
 or
-  <i>
+  <b>
    pmGetOptionalConfig
-  </i>
+  </b>
   (), see for example
   <a href="https://github.com/performancecopilot/pcp/blob/master/src/pmie/src/pmie.c">
    src/pmie/src/pmie.c
@@ -346,9 +346,9 @@ or
  <p>
   Even file pathname separators (/ for the sane world, \ elsewhere)
 have been abstracted out and
-  <i>
+  <b>
    pmPathSeparator
-  </i>
+  </b>
   () is used to
 construct pathnames from directory components.
  </p>
@@ -524,27 +524,27 @@ available:
    <ul>
     <li>
      $PCP_AWK_PROG Posix-compliant
-     <i>
+     <b>
       awk
-     </i>
+     </b>
     </li>
     <li>
      $PCP_SORT_PROG Unix-like
-     <i>
+     <b>
       sort
-     </i>
+     </b>
     </li>
     <li>
      $PCP_MAKE_PROG the preferred
-     <i>
+     <b>
       gmake
-     </i>
+     </b>
     </li>
     <li>
      $PCP_CC_PROG the preferred
-     <i>
+     <b>
       gcc
-     </i>
+     </b>
     </li>
     <li>
      $PCP_ECHO_PROG the standard echo and importantly the
@@ -570,18 +570,18 @@ without a trailing newline.  These are important because
     </li>
     <li>
      $PCP_PS_PROG the preferred
-     <i>
+     <b>
       ps
-     </i>
+     </b>
      and more importantly when
 $PCP_PS_PROG is run with $PCP_PS_ALL_FLAGS as the argument we
 get the fields and field-order that a QA test can rely upon.
     </li>
     <li>
      $PCP_PYTHON_PROG the version of
-     <i>
+     <b>
       python
-     </i>
+     </b>
      that the installed PCP
 components are expecting (critical for version 2 vs version 3
 differences).
@@ -632,9 +632,9 @@ removed when the script ends.  For example:
     sudo
    </b>
    : run the
-   <i>
+   <b>
     sudo
-   </i>
+   </b>
    command with arguments that make it work
 the same everywhere
   </li>
@@ -645,22 +645,25 @@ the same everywhere
    </b>
    : if you need to refer to a shared
 library by name, avoid the literal
-".
+"
    <b>
-    so
+    .so
    </b>
-   " suffix; instead use .$DSO_SUFFIX that will become
-.
+   " suffix; instead use
    <b>
-    so
+    .
    </b>
-   or .
+   $DSO_SUFFIX that will become
    <b>
-    dll
+    .so
    </b>
-   or .
+   or
    <b>
-    dylib
+    .dll
+   </b>
+   or
+   <b>
+    .dylib
    </b>
    or ... and will work across all
 platforms.
@@ -678,9 +681,9 @@ The script
    qa/admin/check-vm
   </a>
   tries to capture all of these requirements.
-  <i>
+  <b>
    check-vm
-  </i>
+  </b>
   should be used as follows:
  </p>
  <ul>
@@ -717,55 +720,117 @@ captured in qa/admin/check-vm.
    bash
   </b>
   and on
-some platforms these are really different!  Things like an
+some platforms these are really different!
+ </p>
+ <p>
+  Things like an
   <b>
    ==
   </b>
   operand
 used with
-  <i>
+  <b>
    test
-  </i>
+  </b>
   (aka
-  <i>
+  <b>
    [
-  </i>
+  </b>
   ) as in
   <br/>
   <code>
    $ if [ "$foo" == "bar" ] ...
   </code>
   <br/>
-  will not work and any use of
+  will not work with the Bourne shell.
+Instead, use the
+  <b>
+   =
+  </b>
+  operator, e.g.
+  <br/>
+  <code>
+   $ sh
+  </code>
+  <br/>
+  <code>
+   $ x=1
+  </code>
+  <br/>
+  <code>
+   $ [ "$x" = 1 ] &amp;&amp; echo yippee
+  </code>
+  <br/>
+  <code>
+   yippee
+  </code>
+  <br/>
+  <code>
+   $ [ "$x" == 1 ] &amp;&amp; echo boo
+  </code>
+  <br/>
+  <code>
+   sh: 3: [: 1: unexpected operator
+  </code>
+ </p>
+ <p>
+  Also and any use of the
+  <b>
+   bash
+  </b>
+  <b>
+   [[
+  </b>
+  operator
   <br/>
   <code>
    $ ... [[ ... ]]
   </code>
   <br/>
   is going to blow up when presented to a real Bourne shell.
+In most cases
+  <b>
+   test
+  </b>
+  (aka
+  <b>
+   [
+  </b>
+  ) can be used for a
+straight forward rewrite.
  </p>
  <p>
-  Instead, use the = operator, e.g.
+  Even less portable is any use of the
+  <b>
+   bash
+  </b>
+  <b>
+   $((...))
+  </b>
+  construct for in-built arithmetic.
+For these cases, you'll need equivalent logic using
+  <b>
+   expr
+  </b>
+  , e.g.
+  <br/>
+  instead of
+  <br/>
   <code>
-   <br/>
-   $ sh
-   <br/>
-   $ x=1
-   <br/>
-   $ [ "$x" = 1 ] &amp;&amp; echo yippee
-   <br/>
-   yippee
-   <br/>
-   $ [ "$x" == 1 ] &amp;&amp; echo boo
-   <br/>
-   sh: 3: [: 1: unexpected operator
+   x=$(($x+1))
+  </code>
+  <br/>
+  use
+  <br/>
+  <code>
+   x=`expr $x + 1`
   </code>
  </p>
  <p>
   Another recurring one is the
-  <i>
+  <b>
    -i
-  </i>
+  </b>
   argument for
   <b>
    sed
@@ -780,9 +845,9 @@ it. The alternative:
   <br/>
   works everywhere for most of the cases in QA.
 If cross-filesystem linking and a lame
-  <i>
+  <b>
    mv
-  </i>
+  </b>
   are in play then the
 following is even more portable:
   <br/>
@@ -798,9 +863,9 @@ following is even more portable:
  </p>
  <p>
   Do not use
-  <i>
+  <b>
    seq
-  </i>
+  </b>
   as it is not portable.
 For example, this is not portable:
   <br/>
@@ -868,9 +933,9 @@ to the success or otherwise of the test.
 The most obvious example is the current date from an application
 run on the test system.
 Consequently, most QA test scripts include one or more
-  <i>
+  <b>
    _filter
-  </i>
+  </b>
   () functions
 that are responsible to translating the raw output from the applications
 run in the test into the deterministic output.
@@ -900,167 +965,167 @@ functions in
    that may be used, for example:
    <ul>
     <li>
-     <i>
+     <b>
       _filter_pcp_start
-     </i>
+     </b>
      () filters the output from running the
-     <i>
+     <b>
       pcp
-     </i>
+     </b>
      "init" script that starts
-     <i>
+     <b>
       pmcd
-     </i>
+     </b>
      and
-     <i>
+     <b>
       pmlogger
-     </i>
+     </b>
      .
 May also be used for the separate
-     <i>
+     <b>
       pmcd
-     </i>
+     </b>
      and
-     <i>
+     <b>
       pmlogger
-     </i>
+     </b>
      "init" scripts that start just
-     <i>
+     <b>
       pmcd
-     </i>
+     </b>
      and
-     <i>
+     <b>
       pmlogger
-     </i>
+     </b>
      respectively.
     </li>
     <li>
-     <i>
+     <b>
       _filter_pcp_stop
-     </i>
+     </b>
      () filters the output from running the
-     <i>
+     <b>
       pcp
-     </i>
+     </b>
      "init" script that stops
-     <i>
+     <b>
       pmcd
-     </i>
+     </b>
      and
-     <i>
+     <b>
       pmlogger
-     </i>
+     </b>
      .
 May also be used for the separate
-     <i>
+     <b>
       pmcd
-     </i>
+     </b>
      and
-     <i>
+     <b>
       pmlogger
-     </i>
+     </b>
      "init" scripts that stop just
-     <i>
+     <b>
       pmcd
-     </i>
+     </b>
      and
-     <i>
+     <b>
       pmlogger
-     </i>
+     </b>
     </li>
     <li>
-     <i>
+     <b>
       _filter_pmie_start
-     </i>
+     </b>
      () filters the output from running the
-     <i>
+     <b>
       pmie
-     </i>
+     </b>
      "init" script that starts
-     <i>
+     <b>
       pmie
-     </i>
+     </b>
      .
     </li>
     <li>
-     <i>
+     <b>
       _filter_pmda_install
-     </i>
+     </b>
      () filters the output from installing a
 new PMDA.
     </li>
     <li>
-     <i>
+     <b>
       _filter_pmcd_log
-     </i>
+     </b>
      () filters the log file from
-     <i>
+     <b>
       pmcd
-     </i>
+     </b>
      .
     </li>
     <li>
-     <i>
+     <b>
       _filter_pmlogger_log
-     </i>
+     </b>
      () filters the log file from
-     <i>
+     <b>
       pmlogger
-     </i>
+     </b>
      .
     </li>
     <li>
-     <i>
+     <b>
       _filter_pmdumplog_log
-     </i>
+     </b>
      () filters the log file from
-     <i>
+     <b>
       pmdumplog
-     </i>
+     </b>
      .
     </li>
     <li>
-     <i>
+     <b>
       _filter_pmdumptext_log
-     </i>
+     </b>
      () filters the log file from
-     <i>
+     <b>
       pmdumptext
-     </i>
+     </b>
      .
     </li>
     <li>
-     <i>
+     <b>
       _filter_optional_pmdas
-     </i>
+     </b>
      () removes lines containing the names
 of executable PMDAs that may, or may not, be installed.
     </li>
     <li>
-     <i>
+     <b>
       _filter_top_pmns
-     </i>
+     </b>
      () removes lines containing the just the
 top-level PMNS names for PMDAs that may, or may not, be installed.
     </li>
     <li>
-     <i>
+     <b>
       _filter_pmie_log
-     </i>
+     </b>
      () filters the log file from
-     <i>
+     <b>
       pmie
-     </i>
+     </b>
      .
     </li>
     <li>
-     <i>
+     <b>
       _filter_dumpresult
-     </i>
+     </b>
      () filters the diagnostic output from
-     <i>
+     <b>
       pmDumpResult
-     </i>
+     </b>
      () (translate timestamp to a literal
      <b>
       TIMESTAMP
@@ -1086,9 +1151,9 @@ like
      ).
     </li>
     <li>
-     <i>
+     <b>
       _filter_dbg
-     </i>
+     </b>
      () strips timestamps from some of the diagnostics
 generated by the
      <b>
@@ -1108,9 +1173,9 @@ _filter() in
    </a>
    , or
 TIMESTAMP in
-   <i>
+   <b>
     _filter__pmdumplog
-   </i>
+   </b>
    () in
    <a href="https://github.com/performancecopilot/pcp/blob/master/qa/common.filter">
     qa/common.filter
@@ -1150,9 +1215,9 @@ is confined to one or more fields or columns.  If the
 and columns are not deterministic, then vertical filtering may be
 appropriate.
 For an example using
-   <i>
+   <b>
     cut
-   </i>
+   </b>
    see
    <a href="https://github.com/performancecopilot/pcp/blob/master/qa/951">
     qa/951
@@ -1162,9 +1227,9 @@ For an example using
     qa/957
    </a>
    shows how vertical filtering can be achieved using
-   <i>
+   <b>
     awk
-   </i>
+   </b>
    .
   </li>
   <li>
@@ -1172,27 +1237,27 @@ For an example using
 the outcome of a QA test may be in only some of the output lines
 while the other lines are not constant across platforms.
 Horizontal filtering may be pattern-based (e.g. using
-   <i>
+   <b>
     grep
-   </i>
+   </b>
    or
-   <i>
+   <b>
     sed
-   </i>
+   </b>
    )
 or ordinal line number based (e.g. using
-   <i>
+   <b>
     sed
-   </i>
+   </b>
    or
-   <i>
+   <b>
     awk
-   </i>
+   </b>
    to remove or
 keep lines N-M) or FSA-based (e.g. using
-   <i>
+   <b>
     awk
-   </i>
+   </b>
    to skip lines until
 the first line of interest is found, then output the following lines
 until the last line of interest is found).
@@ -1201,18 +1266,18 @@ until the last line of interest is found).
    Gratuitous white space differences for the same command across different
 platforms is another common scenario.
 See for example
-   <i>
+   <b>
     od
-   </i>
+   </b>
    output filtering in
    <a href="https://github.com/performancecopilot/pcp/blob/master/qa/079">
     qa/079
    </a>
    ,
 or
-   <i>
+   <b>
     wc
-   </i>
+   </b>
    output filtering in
    <a href="https://github.com/performancecopilot/pcp/blob/master/qa/1059">
     qa/1059
@@ -1224,9 +1289,9 @@ or
 if it is in an expected range.
 In these cases filtering is required to map the actual value onto
 a constant literal value.  For an example, see the
-   <i>
+   <b>
     _range
-   </i>
+   </b>
    () function in
    <a href="https://github.com/performancecopilot/pcp/blob/master/qa/178">
     qa/178
@@ -1279,9 +1344,9 @@ Optionally
  </p>
  <p>
   The convenience function
-  <i>
+  <b>
    _notrun
-  </i>
+  </b>
   () defined in
   <a href="https://github.com/performancecopilot/pcp/blob/master/qa/common.check">
    qa/common.check
@@ -1324,9 +1389,9 @@ in different orders on different platforms.
  <p>
   The simplest solution is to enumerate the PMNS nodes of interest
 in the QA script using
-  <i>
+  <b>
    pminfo
-  </i>
+  </b>
   , sort the list and then have the
 application being tested operate on the leaf nodes of the PMNS one
 at a time.
@@ -1365,12 +1430,12 @@ See
    $here/src/sortinst
   </i>
   to re-order
-  <i>
+  <b>
    pminfo
-  </i>
-  <i>
+  </b>
+  <b>
    -
-  </i>
+  </b>
   f output.
  </p>
  <h3>
@@ -1378,9 +1443,9 @@ See
  </h3>
  <p>
   Unfortunately
-  <i>
+  <b>
    sort
-  </i>
+  </b>
   does not produce the same sorted
 order on all platforms by default.
 We need to take control of
@@ -1409,9 +1474,9 @@ but this is a relatively recent change so
   </b>
   is liberally
 sprinkled throughout the QA test suite ahead of running
-  <i>
+  <b>
    sort
-  </i>
+  </b>
   .
  </p>
  <h3>
@@ -1419,9 +1484,9 @@ sprinkled throughout the QA test suite ahead of running
  </h3>
  <p>
   Some PMDAs use
-  <i>
+  <b>
    readdir
-  </i>
+  </b>
   () or similar routines to scan a directory
 contents to find metrics and/or instances.
 This practice is certain to expose platform differences as the order

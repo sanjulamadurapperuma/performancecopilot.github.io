@@ -1035,8 +1035,11 @@ the
   <dd>
    equals
    <b>
-    -pmgdsc -D total
+    -pmgdsc -D
    </b>
+   <i>
+    total
+   </i>
   </dd>
   <dt>
    <b>
@@ -1112,11 +1115,25 @@ the
   </dd>
   <dt>
    <b>
-    --output file
+    -o
    </b>
+   <i>
+    file
+   </i>
+   ,
+   <b>
+    --output
+   </b>
+   <i>
+    file
+   </i>
   </dt>
   <dd>
-   write CSV output to file
+   write CSV (Comma-Separated Value) format output to a
+   <i>
+    file
+   </i>
+   .
   </dd>
  </dl>
  <p>
@@ -1566,7 +1583,7 @@ pcp dstat -tcndylp
   </dd>
  </dl>
  <p>
-  this is identical to
+  this is identical to:
  </p>
  <p>
  </p>
@@ -1593,7 +1610,21 @@ pcp dstat --time --cpu --net --disk --sys --load --proc
   </dt>
   <dd>
    <pre>
-pcp --origin '@02:30'  --archive 20180729 dstat --time --cpu-adv --sys 1 10
+pcp --origin '@02:30' --archive 20180729 dstat --time --cpu-adv --sys 1 10
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Examine the same metrics live from a remote host:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+pcp --host <a href="http://www.acme.com">www.acme.com</a> dstat --time --cpu-adv --sys 1 10
 </pre>
   </dd>
  </dl>

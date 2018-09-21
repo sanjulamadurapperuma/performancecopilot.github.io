@@ -2223,7 +2223,23 @@ So for example:
   <i>
    labelid
   </i>
-  {
+  [
+  <i>
+   instance
+  </i>
+  ]
+[ "
+  <i>
+   label-name
+  </i>
+  " ]
+[ "
+  <i>
+   label-value
+  </i>
+  " ]
+
+{
   <i>
    labelspec
   </i>
@@ -2317,6 +2333,37 @@ metric with a domain number of
   has the same form and meaning as for an INDOM rewriting rule (see above).
  </p>
  <p>
+  In the case of an
+
+INSTANCES
+  <i>
+   labelid
+  </i>
+  , the number of a specific instance may be optionally specified as
+  <i>
+   instance
+  </i>
+  .
+This number may be omitted or specified as an asterisk ``*'' to indicate that
+labels for all instances of the specified instance domain are selected.
+ </p>
+ <p>
+  In all cases, a "
+  <i>
+   label-name
+  </i>
+  " and/or a
+"
+  <i>
+   label-value
+  </i>
+  " may be optionally specified
+in double quotes in order to select labels with the given name and/or
+given value. These may individually be omitted or specified as
+asterisks ``*'' to indicate that labels with all names and/or values are
+selected.
+ </p>
+ <p>
   If a designated label record is not in
   <i>
    inlog
@@ -2342,11 +2389,131 @@ metric with a domain number of
     </dt>
     <dd>
      <p>
-      The selected label(s) are completely removed from
+      The selected labels are completely removed from
       <i>
        outlog
       </i>
       .
+     </p>
+    </dd>
+   </dl>
+   <p>
+    NEW
+
+"
+    <i>
+     new-label-name
+    </i>
+    "
+"
+    <i>
+     new-label-value
+    </i>
+    "
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      A new label with the name "
+      <i>
+       new-label-name
+      </i>
+      " and the value
+"
+      <i>
+       new-label-value
+      </i>
+      " is created and associated with the
+specified
+      <i>
+       labelid
+      </i>
+      and optional
+      <i>
+       instance
+      </i>
+      (in the case of a
+
+INSTANCES
+      <i>
+       labelid
+      </i>
+      ). If "
+      <i>
+       label-name
+      </i>
+      " or
+"
+      <i>
+       label-value
+      </i>
+      " were specified, then they are ignored
+with a warning. If
+      <i>
+       instance
+      </i>
+      is not specified for an 
+
+INSTANCES
+      <i>
+       labelid
+      </i>
+      , then a new label will be created for each instance in the
+specified instance domain.
+     </p>
+    </dd>
+   </dl>
+   <p>
+    LABEL
+
+
+-&gt;
+
+"
+    <i>
+     new-label-name
+    </i>
+    "
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The name of the selected label(s) is changed to
+"
+      <i>
+       new-label-name
+      </i>
+      ".
+     </p>
+    </dd>
+   </dl>
+   <p>
+    VALUE
+
+
+-&gt;
+
+"
+    <i>
+     new-label-value
+    </i>
+    "
+   </p>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      The value of the selected label(s) is changed to
+"
+      <i>
+       new-label-value
+      </i>
+      ".
      </p>
     </dd>
    </dl>
