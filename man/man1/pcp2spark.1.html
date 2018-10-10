@@ -307,13 +307,13 @@ arguments or a configuration file.
   <b>
    pcp2spark
   </b>
-  acts as a bridge which provides a network socket stream on a given 
-address/port which an Apache Spark worker task can connect to 
+  acts as a bridge which provides a network socket stream on a given
+address/port which an Apache Spark worker task can connect to
 and pull the configured PCP metrics from
   <b>
    pcp2spark
   </b>
-  exporting them using the streaming extensions of the Apache Spark 
+  exporting them using the streaming extensions of the Apache Spark
 API.
  </p>
  <p>
@@ -407,6 +407,60 @@ environment variables (if any).
 Command line options override the corresponding configuration
 file options (if any).
   <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  GENERAL USAGE
+ </h2>
+ A general setup for making use of
+ <b>
+  pcp2spark
+ </b>
+ would involve the user configuring
+ <b>
+  pcp2spark
+ </b>
+ for the PCP metrics to export followed by starting the
+ <b>
+  pcp2spark
+ </b>
+ application. The
+ <b>
+  pcp2spark
+ </b>
+ application will then wait and listen on the given address/port for a
+connection from an Apache Spark worker thread to be started.
+The worker thread will then connect to
+ <b>
+  pcp2spark.
+ </b>
+ <p>
+  When an Apache Spark worker thread has connected
+  <b>
+   pcp2spark
+  </b>
+  will begin streaming PCP metric data to Apache Spark until the worker
+thread completes or the connection is interrupted.
+If the connectionis interrupted or the socket is closed from the Apache
+Spark worker thread
+  <b>
+   pcp2spark
+  </b>
+  will exit.
+ </p>
+ <p>
+  For an example Apache Spark worker job which will connect to an
+  <b>
+   pcp2spark
+  </b>
+  instance on a given address/port and pull in PCP metric data please
+see the example provided in the PCP examples directory for
+  <b>
+   pcp2spark
+  </b>
+  (often provided by the PCP development package) or the online version
+at
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -546,7 +600,7 @@ The
   pmrep.conf
  </b>
  compatibility.
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h3>
   pcp2spark specific options
@@ -562,7 +616,7 @@ The
    <b>
     pcp2spark
    </b>
-   will listen for connections from an apache spark worker thread.
+   will listen for connections from an Apache Spark worker thread.
 Corresponding command line option is
    <b>
     -g
@@ -584,9 +638,10 @@ Default is
   <dd>
    Specify the port to run
    <b>
-    pcp2spark on.
+    pcp2spark
    </b>
-   Corresponding command line option is
+   on.
+Corresponding command line option is
    <b>
     -p
    </b>
@@ -598,7 +653,7 @@ Default is
    .
   </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   OPTIONS
@@ -1998,7 +2053,7 @@ See also
    Display usage message and exit.
   </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   FILES
@@ -2020,60 +2075,8 @@ See also
    )
   </dd>
  </dl>
- <a name="lbAI">
+ <a name="lbAJ">
  </a>
- <h2>
-  GENERAL USAGE
- </h2>
- A general setup for making use of
- <b>
-  pcp2spark
- </b>
- would involve the user configuring
- <b>
-  pcp2spark
- </b>
- for the PCP metrics to export followed by starting the
- <b>
-  pcp2spark
- </b>
- application. The
- <b>
-  pcp2spark
- </b>
- application will then wait and listen on the given address/port for a
-connection from an apache spark worker thread to be started. The 
-worker thread will then connect to
- <b>
-  pcp2spark.
- </b>
- <p>
-  When an apache spark worker thread has connected
-  <b>
-   pcp2spark
-  </b>
-  will begin streaming PCP metric data to apache spark until the worker
-thread completes or the connection is interrupted. If the connection
-is interrupted or the socket is closed from the apache spark worker
-thread
-  <b>
-   pcp2spark
-  </b>
-  will exit.
- </p>
- <p>
-  For an example apache spark worker job which will connect to an
-  <b>
-   pcp2spark
-  </b>
-  instance on a given address/port and pull in pcp metric data please 
-look at the example in the examples directory of
-  <b>
-   pcp2spark.
-  </b>
-  <a name="lbAJ">
-  </a>
- </p>
  <h2>
   PCP ENVIRONMENT
  </h2>
@@ -2281,13 +2284,20 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
+    GENERAL USAGE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
     CONFIGURATION FILE
    </a>
   </dt>
   <dd>
    <dl>
     <dt>
-     <a href="#lbAF">
+     <a href="#lbAG">
       pcp2spark specific options
      </a>
     </dt>
@@ -2296,22 +2306,15 @@ and
    </dl>
   </dd>
   <dt>
-   <a href="#lbAG">
+   <a href="#lbAH">
     OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAH">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
    <a href="#lbAI">
-    GENERAL USAGE
+    FILES
    </a>
   </dt>
   <dd>
