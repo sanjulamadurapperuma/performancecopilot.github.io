@@ -44,7 +44,7 @@
  <h1>
   PMDALMSENSORS
  </h1>
- Section: User Commands  (1)
+ Section:  (1)
  <br/>
  <a href="#index">
   Index
@@ -59,7 +59,7 @@
   NAME
  </h2>
  <b>
-  pmdalmsensors
+  pmdalmsensors.python
  </b>
  - Linux hardware monitoring performance metrics domain agent (PMDA)
  <a name="lbAC">
@@ -68,31 +68,12 @@
   SYNOPSIS
  </h2>
  <b>
-  $PCP_PMDAS_DIR/lmsensors/pmdalmsensors
+  $PCP_PMDAS_DIR/lmsensors/pmdalmsensors.python
  </b>
  [
  <b>
-  -d
+  debug
  </b>
- <i>
-  domain
- </i>
- ]
-[
- <b>
-  -l
- </b>
- <i>
-  logfile
- </i>
- ]
-[
- <b>
-  -U
- </b>
- <i>
-  username
- </i>
  ]
  <a name="lbAD">
  </a>
@@ -104,86 +85,18 @@
  </b>
  is a Performance Metrics Domain Agent (PMDA) which extracts
 performance metrics describing the state of hardware using
-the lm-sensors on compatible motherboards.
+the lm-sensors software on compatible motherboards.
  <p>
   The
   <b>
    lmsensors
   </b>
-  PMDA exports metrics that measure fan speeds, core temperatures
-and voltage levels.
+  PMDA exports metrics that measure fan speeds and core temperatures.
  </p>
  <p>
-  A brief description of the
-  <b>
-   pmdalmsensors
-  </b>
-  command line options follows:
+  <a name="lbAE">
+  </a>
  </p>
- <dl compact="">
-  <dt>
-   <b>
-    -d
-   </b>
-  </dt>
-  <dd>
-   It is absolutely crucial that the performance metrics
-   <i>
-    domain
-   </i>
-   number specified here is unique and consistent.
-That is,
-   <i>
-    domain
-   </i>
-   should be different for every PMDA on the one host, and the same
-   <i>
-    domain
-   </i>
-   number should be used for the same PMDA on all hosts.
-  </dd>
-  <dt>
-   <b>
-    -l
-   </b>
-  </dt>
-  <dd>
-   Location of the log file.  By default, a log file named
-   <i>
-    lmsensors.log
-   </i>
-   is written in the current directory of
-   <b>
-    <a href="/man/man1/pmcd.1.html">
-     pmcd
-    </a>
-   </b>
-   (1)
-
-when
-   <b>
-    pmdalmsensors
-   </b>
-   is started, i.e.
-   <b>
-    $PCP_LOG_DIR/pmcd .
-   </b>
-   If the log file cannot
-be created or is not writable, output is written to the standard error instead.
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-  </dt>
-  <dd>
-   User account under which to run the agent.
-The default is the unprivileged "pcp" account in current versions of PCP,
-but in older versions the superuser account ("root") was used by default.
-  </dd>
- </dl>
- <a name="lbAE">
- </a>
  <h2>
   INSTALLATION
  </h2>
@@ -205,30 +118,72 @@ performance metrics, do the following as root:
 # ./Remove
 </pre>
  <p>
-  <b>
-   pmdalmsensors
-  </b>
-  is launched by
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-and should never be executed directly.
-The Install and Remove scripts notify
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-when the agent is installed or removed.
+  pmdalmsensors.python is usually launched by pmcd (1), and not
+executed directly. Direct execution is mostly used for debugging
+purposes.
+ </p>
+ <p>
+ </p>
+ <p>
+  The Install and Remove scripts notify pmcd (1) when the agent 
+is installed or removed.
   <a name="lbAF">
   </a>
  </p>
+ <h2>
+  OPTIONS
+ </h2>
+ <p>
+  pmdalmsensors.python supports the following options.
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -i
+   </b>
+   ,
+   <b>
+    --inject
+   </b>
+  </dt>
+  <dd>
+   inject data from file instead of using sensors
+  </dd>
+  <dt>
+   <b>
+    -d
+   </b>
+   ,
+   <b>
+    --debug
+   </b>
+  </dt>
+  <dd>
+   debug level: 0 (default), 1 or 2
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   show a help message
+   <p>
+    To use options while pmdalmsensors.python is run from PMCD,
+you might want to use 'args' in the 'Install' stript, for
+example
+   </p>
+   <p>
+    args="-i /path/static_sensors_output.txt"
+   </p>
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
  <h2>
   FILES
  </h2>
@@ -276,19 +231,8 @@ when the agent is installed or removed.
    </b>
    agent
   </dd>
-  <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/lmsensors.log
-   </b>
-  </dt>
-  <dd>
-   default log file for error messages and other information from
-   <b>
-    pmdalmsensors
-   </b>
-  </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -317,7 +261,7 @@ as described in
   </a>
  </b>
  (5).
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   SEE ALSO
@@ -339,15 +283,21 @@ as described in
    pcp.conf
   </a>
  </b>
- (5)
-
-and
+ (5),
  <b>
   <a href="/man/man5/pcp.env.5.html">
    pcp.env
   </a>
  </b>
- (5).
+ (5)
+
+and
+ <b>
+  <a href="/man/man1/sensors.1.html">
+   sensors
+  </a>
+ </b>
+ (1).
  <p>
  </p>
  <hr/>
@@ -387,20 +337,27 @@ and
   </dd>
   <dt>
    <a href="#lbAF">
-    FILES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

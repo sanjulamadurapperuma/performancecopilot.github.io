@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">2.4.4. PMDA Help Text</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="id5191164.html" title="2.4. Other Issues" /><link rel="prev" href="LE83854-PARENT.html" title="2.4.3. Name Space" /><link rel="next" href="id5191869.html" title="2.4.5. Management of Evolution within a PMDA" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE83854-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5191869.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="LE72473-PARENT">
+      ⁠</a>2.4.4. PMDA Help Text</h3></div></div></div><div class="para">
+					<a id="IG31340177157" class="indexterm"></a> <a id="IG31340177158" class="indexterm"></a>For each metric defined within a PMDA, the PMDA developer is strongly encouraged to provide both terse and extended help text to describe the metric, and perhaps provide hints about the expected value ranges.
+				</div><div class="para">
+					<a id="IG31340177159" class="indexterm"></a>The help text is used to describe each metric in the visualization tools and <code class="command">pminfo</code> with the <code class="command">-T</code> option. The help text, such as the help text for the simple PMDA in <a class="xref" href="LE72473-PARENT.html#Z963526754sdc">Example 2.18, “Help Text for the Simple PMDA”</a>, is specified in a specially formatted file, normally called <code class="filename">help</code>. This file is converted to the expected run-time format using the <code class="command">newhelp</code> command; see the <code class="command">newhelp(1)</code> man page. Converted help text files are usually placed in the PMDA's directory below <code class="filename">${PCP_PMDAS_DIR}</code> as part of the PMDA installation procedure.
+				</div><div class="example"><a id="Z963526754sdc">
+      ⁠</a><p class="title"><strong>Example 2.18. Help Text for the Simple PMDA</strong></p><div class="example-contents"><div class="para">
+						The two instance domains and five metrics have a short and a verbose description. Each entry begins with a line that starts with the character “@” and is followed by either the metric name (<code class="literal">simple.numfetch</code>) or a symbolic reference to the instance domain number (<code class="literal">SIMPLE.1</code>), followed by the short description. The verbose description is on the following lines, terminated by the next line starting with “@” or end of file:
+					</div><pre class="programlisting">@ SIMPLE.0 Instance domain “colour” for simple PMDA
+Universally 3 instances, “red” (0), “green” (1) and “blue” (3).
+
+@ SIMPLE.1 Dynamic instance domain “time” for simple PMDA
+An instance domain is computed on-the-fly for exporting current time
+information. Refer to the help text for simple.now for more details.
+
+@ simple.numfetch Number of pmFetch operations.
+The cumulative number of pmFetch operations directed to “simple” PMDA.
+
+This counter may be modified with pmstore(1).
+
+@ simple.color Metrics which increment with each fetch
+This metric has 3 instances, designated “red”, “green” and “blue”.
+
+The value of the metric is monotonic increasing in the range 0 to
+255, then back to 0.  The different instances have different starting
+values, namely 0 (red), 100 (green) and 200 (blue).
+
+The metric values my be altered using pmstore(1).
+
+@ simple.time.user Time agent has spent executing user code
+The time in seconds that the CPU has spent executing agent user code.
+
+@ simple.time.sys Time agent has spent executing system code
+The time in seconds that the CPU has spent executing agent system code.
+
+@ simple.now Time of day with a configurable instance domain
+The value reflects the current time of day through a dynamically
+reconfigurable instance domain.  On each metric value fetch request,
+the agent checks to see whether the configuration file in
+${PCP_PMDAS_DIR}/simple/simple.conf has been modified - if it has then
+the file is re-parsed and the instance domain for this metric is again
+constructed according to its contents.
+
+This configuration file contains a single line of comma-separated time
+tokens from this set:
+  “sec”  (seconds after the minute),
+  “min”  (minutes after the hour),
+  “hour” (hour since midnight).
+
+An example configuration file could be:  sec,min,hour
+and in this case the simple.now metric would export values for the
+three instances “sec”, “min” and “hour” corresponding respectively to
+the components seconds, minutes and hours of the current time of day.
+
+The instance domain reflects each token present in the file, and the
+values reflect the time at which the PMDA processes the fetch.</pre></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE83854-PARENT.html"><strong>Prev</strong>2.4.3. Name Space</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5191869.html"><strong>Next</strong>2.4.5. Management of Evolution within a PMDA</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

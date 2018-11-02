@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMLOGCHECK
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmlogcheck
+ </b>
+ - checks for invalid data in a PCP archive
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  pmlogcheck
+ </b>
+ [
+ <b>
+  -lwz
+ </b>
+ ]
+[
+ <b>
+  -n
+ </b>
+ <i>
+  pmnsfile
+ </i>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  start
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  finish
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+ <i>
+  archive
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmlogcheck
+ </b>
+ prints information about the nature of any invalid data which it detects
+in the files of a PCP archive.
+ <p>
+  The archive has the base name
+  <i>
+   archive
+  </i>
+  and must have been previously created using
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  Normally
+  <b>
+   pmlogcheck
+  </b>
+  operates on the default Performance Metrics Name Space (
+  <b>
+   <a href="/man/man5/pmns.5.html">
+    pmns
+   </a>
+  </b>
+  (5)),
+
+however if the
+  <b>
+   -n
+  </b>
+  option is specified an alternative namespace is loaded
+from the file
+  <i>
+   pmnsfile
+  </i>
+  .
+ </p>
+ <p>
+  The command line options
+  <b>
+   -S
+  </b>
+  and
+  <b>
+   -T
+  </b>
+  can be used to specify a time window over which metrics should be checked
+in Pass 3 (see below).
+These options are common to many Performance Co-Pilot tools and are fully
+described in
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The
+  <b>
+   -l
+  </b>
+  option prints the archive label, showing the log format version,
+the time and date for the start and (current) end of the archive, and
+the host from which the performance metrics values were collected.
+ </p>
+ <p>
+  By default,
+  <b>
+   pmlogcheck
+  </b>
+  reports the time of day according to the local timezone on the
+system where
+  <b>
+   pmlogcheck
+  </b>
+  is run.
+The
+  <b>
+   -Z
+  </b>
+  option changes the timezone to
+  <i>
+   timezone
+  </i>
+  in the format of the environment variable
+  <b>
+   TZ
+  </b>
+  as described in
+  <b>
+   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+    environ
+   </a>
+  </b>
+  (7).
+
+The
+  <b>
+   -z
+  </b>
+  option changes the timezone to the local timezone at the
+host that is the source of the performance metrics, as specified in
+the label record of the archive log.
+ </p>
+ <p>
+  The checking proceeds in a number of passes, each designed to validate
+progressively more complex semantic relationships between the information
+in a PCP archive.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  Pass 0
+ </h2>
+ Each physical file of the PCP archive is processed to ensure the label
+records are valid and consistent, and that each file contains an
+integral number of physical records with correct header and trailer
+fields.
+ <p>
+  Any errors at this stage are usually fatal.  The PCP archive is
+probably damaged beyond repair, and no more passes of
+  <b>
+   pmlogcheck
+  </b>
+  are attempted.
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  Pass 1
+ </h2>
+ Validates the integrity of the temporal index, usually
+ <i>
+  archive
+ </i>
+ <b>
+  .index
+ </b>
+ .
+ <p>
+  As the temporal index is (strictly speaking) optional, errors at this
+stage are handled by marking the index as bad and ignoring it for
+the remainder of the
+  <b>
+   pmlogcheck
+  </b>
+  passes.
+ </p>
+ <p>
+  Permanent repair can be achieved by removing the temporal index file
+and then making a copy of the PCP archive using
+  <b>
+   <a href="/man/man1/pmlogrewrite.1.html">
+    pmlogrewrite
+   </a>
+  </b>
+  (1)
+
+or
+  <b>
+   <a href="/man/man1/pmlogextract.1.html">
+    pmlogextract
+   </a>
+  </b>
+  (1).
+
+This will create a new temporal index for the copied archive as a side-effect.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  Pass 2
+ </h2>
+ Validates the integrity of the metadata file, usually
+ <i>
+  archive
+ </i>
+ <b>
+  .meta
+ </b>
+ .
+ <a name="lbAH">
+ </a>
+ <h2>
+  Pass 3
+ </h2>
+ Validates the integrity of each of the log volumes of the PCP archive, usually
+ <i>
+  archive
+ </i>
+ <b>
+  .0
+ </b>
+ ,
+ <i>
+  archive
+ </i>
+ <b>
+  .1
+ </b>
+ , etc.
+ <p>
+  There is some basic integrity checks to ensure the encoding of
+values for each metric remains consistent and the values are well formed
+across all the observations in the archive.
+ </p>
+ <p>
+  Also the timestamps for the observations are expected to be
+monotonically increasing as the archive is tranversed.
+ </p>
+ <p>
+  Additional attention is given to
+counter metrics (
+  <i>
+   type
+  </i>
+  from
+  <b>
+   <a href="/man/man3/pmlookupdesc.3.html">
+    pmLookupDesc
+   </a>
+  </b>
+  (3)
+
+is
+  <b>
+   PM_SEM_COUNTER
+  </b>
+  )
+
+which are expected to have monotonically increasing values.
+If the values are not monotonic increasing this may suggest
+a counter wrap has happened or there has been some interruption
+or reset to
+the underlying source of the performance data that is no captured in
+the archive.
+ </p>
+ <p>
+  For each counter metric which has been detected as having wrapped at some
+point in the archive,
+  <b>
+   pmlogcheck
+  </b>
+  produces output describing the metric name (with instance identifiers where
+appropriate), the internal storage type for the metric, the value of the
+metric before the counter wrap (with its associated timestamp), and the value of
+the metric after the wrap (also with a timestamp).
+ </p>
+ <p>
+  The
+  <b>
+   -w
+  </b>
+  option may be used to suppress reporting of counter wraps.
+ </p>
+ <p>
+  <b>
+   pmlogcheck
+  </b>
+  produces two different timestamp formats, depending on the interval over
+which it is run.  For an interval greater than 24 hours, the date is displayed
+in addition to the time at which the counter wrap occurred.
+If the extent of the data being checked is less than 24 hours, a more
+precise format is used (time is displayed with millisecond precision, but
+without the date).
+ </p>
+ <p>
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_VAR_DIR/pmns/
+   </b>
+   <i>
+    *
+   </i>
+  </dt>
+  <dd>
+   default PMNS specification files
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmlogger/
+   </b>
+   <i>
+    hostname
+   </i>
+  </dt>
+  <dd>
+   default directory for PCP archives containing performance data collected
+from the host
+   <i>
+    hostname
+   </i>
+   .
+  </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize the file and directory names
+used by PCP.
+On each installation, the file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file,
+as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAK">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogextract.1.html">
+   pmlogextract
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogrewrite.1.html">
+   pmlogrewrite
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogsummary.1.html">
+   pmlogsummary
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmval.1.html">
+   pmval
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   pmns
+  </a>
+ </b>
+ (5).
+ <a name="lbAL">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-
+explanatory.
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    Pass 0
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    Pass 1
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    Pass 2
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    Pass 3
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

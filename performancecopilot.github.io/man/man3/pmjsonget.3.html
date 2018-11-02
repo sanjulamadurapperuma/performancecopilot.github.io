@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMJSONGET
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmjsonGet
+ </b>
+ ,
+ <b>
+  pmjsonPrint
+ </b>
+ ,
+ <b>
+  pmjsonInit
+ </b>
+ ,
+ <b>
+  pmjsonInitIndom
+ </b>
+ - JSON string helpers and metrics extraction
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmapi.h">
+   pcp/pmapi.h
+  </a>
+  &gt;
+  <br/>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmjson.h">
+   pcp/pmjson.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  typedef int (*json_get)(void *
+  <i>
+   buffer
+  </i>
+  , int
+  <i>
+   length
+  </i>
+  , void *
+  <i>
+   data
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmjsonGet(json_metric_desc *
+  <i>
+   json_metrics
+  </i>
+  , int
+  <i>
+   nmetrics
+  </i>
+  , pmInDom
+  <i>
+   indom
+  </i>
+  , json_get
+  <i>
+   callback
+  </i>
+  , void *
+  <i>
+   data
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmjsonPrint(FILE *
+  <i>
+   fp
+  </i>
+  , json_flag *
+  <i>
+   output_flags
+  </i>
+  , const char *
+  <i>
+   json_pointer
+  </i>
+  , json_get
+  <i>
+   callback
+  </i>
+  , void *
+  <i>
+   data
+  </i>
+  );
+ </p>
+ <p>
+  <br/>
+  int pmjsonInit(int
+  <i>
+   fd
+  </i>
+  , json_metric_desc *
+  <i>
+   json_metrics
+  </i>
+  , int
+  <i>
+   nmetrics
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmjsonInitIndom(int
+  <i>
+   fd
+  </i>
+  , json_metric_desc *
+  <i>
+   json_metrics
+  </i>
+  , int
+  <i>
+   nmetrics
+  </i>
+  , pmInDom
+  <i>
+   indom
+  </i>
+  );
+  <br/>
+ </p>
+ <p>
+  cc ... -lpcp_web
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmjsonGet
+ </b>
+ performs metric value extraction from JSON strings for a
+Performance Metric Domain Agent (
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3)).
+Metrics and instances are defined by the
+ <i>
+  json_metrics
+ </i>
+ parameter.
+The result of parsing is the extraction of values for the requested
+metrics (as defined in the
+ <i>
+  json_pointer
+ </i>
+ field) in the values field.
+ <p>
+  A simple diagnostic utility for reporting JSON strings iss provided as
+a convenience as well.
+Its
+  <i>
+   output_flags
+  </i>
+  argument allows it to support a variety of alternate output formats,
+including minimal JSON (no optional whitespace), pretty-printed, and
+a simple YAML subset.
+ </p>
+ <p>
+  <i>
+   json_metrics
+  </i>
+  is the array of json_metric_desc struct which
+contains the json pointer to the metric data, possible flags to check
+the data against, number of values (in the case of an array),
+  <i>
+   pmAtomValue
+  </i>
+  where the data is stored, as well as the instance
+domain in the event the PMDA has multiple instance domains.
+The number of elements in the
+  <i>
+   json_metrics
+  </i>
+  array is indicated by the
+  <i>
+   nmetrics
+  </i>
+  parameter.
+ </p>
+ <p>
+  Interfaces for common cases are provided -
+  <b>
+   pmjsonInit
+  </b>
+  specifies
+a call to the JSON parsing and metric value extraction functionality
+where there are no instance domains (or the PMDA wishes to perform
+instance domain operations itself) and where data can be read directly
+from an open file descriptor.
+  <b>
+   pmjsonInitIndom
+  </b>
+  is similar, but makes use of the
+  <b>
+   <a href="/man/man3/pmdacacheadd.3.html">
+    pmdaCacheAdd
+   </a>
+  </b>
+  (3)
+
+function where possible.
+ </p>
+ <p>
+  The JSON string must be provided by the
+  <i>
+   callback
+  </i>
+  function.
+This function is passed a memory
+  <i>
+   buffer
+  </i>
+  of
+  <i>
+   length
+  </i>
+  bytes and
+an opaque user
+  <i>
+   data
+  </i>
+  pointer which is unchanged from the original
+call to
+  <b>
+   pmjsonGet
+  </b>
+  or
+  <b>
+   pmjsonPrint
+  </b>
+  .
+
+The returned result must be the number of bytes written into
+  <i>
+   buffer
+  </i>
+  ,
+zero when no more data is available or less than zero on error conditions.
+ </p>
+ <p>
+  <i>
+   indom
+  </i>
+  is the instance domain to be passed to
+  <b>
+   pmdaCacheAdd
+  </b>
+  .
+ </p>
+ <p>
+ </p>
+ <pre>
+        typedef struct json_metrics_desc {
+            char          *json_pointer;  /* json pointer to metric */
+            int           flags;          /* flags to check if set */
+            int           num_values;     /* number of values */
+            pmAtomValue   values;         /* metric value */
+            char          *dom;           /* instance domain */
+        } json_metric_desc;
+</pre>
+ <p>
+  The JSON Pointer syntax current follows
+  <i>
+   RFC6901
+  </i>
+  in specifying a
+metrics location within the JSON document.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  EXAMPLE
+ </h2>
+ For the sample JSON document:
+ <p>
+ </p>
+ <pre>
+{
+    "Name": "/clever_almeida",
+    "State": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2016-07-18T21:21:20.332488706Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 0,
+        "Restarting": false,
+        "Running": false,
+        "StartedAt": "2016-07-18T14:10:58.52487316Z"
+    }
+}
+</pre>
+ <p>
+  A possible corresponding json_metric array would be as follows for the
+Pid, Name, and metrics to indicate whether the container is Running,
+Paused, or Restarting.
+ </p>
+ <p>
+ </p>
+ <pre>
+static json_metric_desc json_metrics[] = {
+    { "State/Pid", 0, 1, {0}, ""},
+    { "Name", 0, 1, {0}, ""},
+    { "State/Running", CONTAINER_FLAG_RUNNING, 1, {0}, ""},
+    { "State/Paused", CONTAINER_FLAG_PAUSED, 1, {0}, ""},
+    { "State/Restarting", CONTAINER_FLAG_RESTARTING, 1, {0}, ""},
+};
+</pre>
+ <a name="lbAF">
+ </a>
+ <h2>
+  RETURN CODE
+ </h2>
+ The functions return zero on success, otherwise an error code suitable
+for passing to
+ <b>
+  <a href="/man/man3/pmerrstr_r.3.html">
+   pmErrStr_r
+  </a>
+ </b>
+ (3)
+
+is returned.
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmerrstr_r.3.html">
+   pmErrStr_r
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmdacacheadd.3.html">
+   pmdaCacheAdd
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://json.org/">
+   http://json.org/
+  </a>
+ </b>
+ ,
+ <b>
+  <a href="https://tools.ietf.org/html/rfc7159">
+   https://tools.ietf.org/html/rfc7159
+  </a>
+ </b>
+ ,
+
+
+and
+ <b>
+  <a href="https://tools.ietf.org/html/rfc6901">
+   https://tools.ietf.org/html/rfc6901
+  </a>
+ </b>
+ .
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    RETURN CODE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

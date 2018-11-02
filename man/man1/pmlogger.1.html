@@ -72,6 +72,11 @@
  </b>
  [
  <b>
+  -CLoPruy
+ </b>
+ ]
+[
+ <b>
   -c
  </b>
  <i>
@@ -112,11 +117,6 @@
  ]
 [
  <b>
-  -L
- </b>
- ]
-[
- <b>
   -m
  </b>
  <i>
@@ -133,26 +133,11 @@
  ]
 [
  <b>
-  -o
- </b>
- ]
-[
- <b>
   -p
  </b>
  <i>
   pid
  </i>
- ]
-[
- <b>
-  -P
- </b>
- ]
-[
- <b>
-  -r
- </b>
  ]
 [
  <b>
@@ -177,11 +162,6 @@
  <i>
   endtime
  </i>
- ]
-[
- <b>
-  -u
- </b>
  ]
 [
  <b>
@@ -214,11 +194,6 @@
  <i>
   fd
  </i>
- ]
-[
- <b>
-  -y
- </b>
  ]
  <i>
   archive
@@ -1070,6 +1045,28 @@ This mirrors the
   (1)
 
 is used.
+ </p>
+ <p>
+  The
+  <b>
+   -C
+  </b>
+  option will cause the configuration file to be parsed and
+  <i>
+   pmlogger
+  </i>
+  will then exit
+without creating an output archive,
+so when
+  <b>
+   -C
+  </b>
+  is specified, the
+  <i>
+   archive
+  </i>
+  command line argument is not required.
+Any errors in the configuration file are reported.
   <a name="lbAE">
   </a>
  </p>

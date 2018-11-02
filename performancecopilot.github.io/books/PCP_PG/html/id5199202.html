@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/TR/xhtml1/transitional" xmlns:fo="http://www.w3.org/1999/XSL/Format"><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title xmlns:d="http://docbook.org/ns/docbook">3.6. Performance Event Metrics</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css" /><link rel="stylesheet" media="print" href="Common_Content/css/print.css" type="text/css" /><meta xmlns:d="http://docbook.org/ns/docbook" name="generator" content="publican v4.3.2" /><meta xmlns:d="http://docbook.org/ns/docbook" name="package" content="PCP-pcp-programmers-guide-3-en-US-4.0-4" /><link rel="home" href="index.html" title="Performance Co-Pilot™ Programmer's Guide" /><link rel="up" href="LE97135-PARENT.html" title="Chapter 3. PMAPI--The Performance Metrics API" /><link rel="prev" href="LE82331-PARENT.html" title="3.5. Performance Metrics Values" /><link rel="next" href="id5199204nat.html" title="3.6.2. Event Collector Considerations" />
+<meta xmlns="" charset="utf-8" />
+<meta xmlns="" content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta xmlns="" content="initial-scale=1" name="viewport" />
+<title xmlns="">Performance Co-Pilot</title>
+<link xmlns="" href="/assets/css/screen.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/assets/css/master.css" media="all" rel="stylesheet" type="text/css" />
+<link xmlns="" href="/images/pcp.ico" rel="shortcut icon" type="image/ico" />
+</head><body>
+    <header xmlns="" class="global-header">
+      <div class="row">
+        <h1 class="global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid">
+          <a href="/index.html">Performance Co-Pilot</a>
+        </h1>
+        <nav class="global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid">
+          <ul>
+            <li>
+              <a href="/features.html">Features</a>
+            </li>
+            <li>
+              <a href="/documentation.html">Documentation</a>
+            </li>
+            <li>
+              <a href="/download.html">Download</a>
+            </li>
+            <li>
+              <a href="/community.html">Get Involved</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+<div class="site-content"><div class="how-to is-typeset"><div class="row-parent"><div class="row"><p xmlns="http://www.w3.org/1999/xhtml" id="title"><a class="left" href="http://www.pcp.io"><img alt="Product Site" src="Common_Content/images//image_left.png" /></a><a class="right" href="http://www.pcp.io/documentation.html"><img alt="Documentation Site" src="Common_Content/images//image_right.png" /></a></p><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav top"><li class="previous"><a accesskey="p" href="LE82331-PARENT.html"><strong>Prev</strong></a></li><li class="home">pcp-programmers-guide</li><li class="next"><a accesskey="n" href="id5199204nat.html"><strong>Next</strong></a></li></ul><div xmlns="http://www.w3.org/1999/xhtml" class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h2 class="title"><a id="id5199202">
+      ⁠</a>3.6. Performance Event Metrics</h2></div></div></div><div class="para">
+				In addition to performance metric values which are sampled by monitor tools, PCP supports the notion of performance event metrics which occur independently to any sampling frequency. These event metrics (PM_TYPE_EVENT) are delivered using a novel approach which allows both sampled and event trace data to be delivered via the same live wire protocol, the same on-disk archive format, and fundamentally using the same PMAPI services. In other words, a monitor tool may be sample and trace, simultaneously, using the PMAPI services discussed here.
+			</div><div class="para">
+				Event metrics are characterised by certain key properties, distinguishing them from the other metric types (counters, instantaneous, and discrete):
+			</div><div xmlns:d="http://docbook.org/ns/docbook" class="itemizedlist"><ul><li class="listitem"><div class="para">
+						Occur at times outside of any monitor tools control, and often have a fine-grained timestamp associated with each event.
+					</div></li><li class="listitem"><div class="para">
+						Often have parameters associated with the event, which further describe each individual event, as shown in <a class="xref" href="id5199202.html#id5198719nat">Figure 3.2, “Sample <code class="command">write(2)</code> syscall entry point encoding”</a>.
+					</div></li><li class="listitem"><div class="para">
+						May occur in very rapid succession, at rates such that both the collector and monitor sides may not be able to track all events. This property requires the PCP protocol to support the notion of "dropped" or "missed" events.
+					</div></li><li class="listitem"><div class="para">
+						There may be inherent relationships between events, for example the start and commit (or rollback) of a database transaction could be separate events, linked by a common transaction identifier (which would likely also be one of the parameters to each event). Begin-end and parent-child relationships are relatively common, and these properties require the PCP protocol to support the notion of "flags" that can be associated with events.
+					</div></li></ul></div><div class="para">
+				These differences aside, the representation of event metrics within PCP shares many aspects of the other metric types - event metrics appear in the Name Space (as do each of the event parameters), each has an associated Performance Metric Identifier and Descriptor, may have an instance domain associated with them, and may be recorded by <code class="command">pmlogger</code> for subsequent replay.
+			</div><div class="para">
+				<div class="figure"><a id="id5198719nat">
+      ⁠</a><div class="figure-contents"><div class="mediaobject"><object data="images/syscallevent.svg" type="image/svg+xml"><img src="images/syscallevent.png" alt="Sample syscall entry point encoding" /></object></div></div><p class="title"><strong>Figure 3.2. Sample <code class="command">write(2)</code> syscall entry point encoding</strong></p></div>
+
+			</div><div class="para">
+				Event metrics and their associated information (parameters, timestamps, flags, and so on) are delivered to monitoring tools alongside sampled metrics as part of the <code class="command">pmResult</code> structure seen previously in <a class="xref" href="LE82331-PARENT.html#Z976549833sdc">Example 3.9, “ <code class="filename">pmResult</code> Structure”</a>.
+			</div><div class="para">
+				The semantics of <code class="command">pmFetch(3)</code> specifying an event metric PMID are such that all events observed on the collector since the previous fetch (by this specific monitor client) are to transfered to the monitor. Each event will have the metadata described earlier encoded with it (timestamps, flags, and so on) for each event. The encoding of the series of events involves a compound data structure within the <code class="command">pmValueSet</code> associated with the event metric PMID, as illustrated in <a class="xref" href="id5199202.html#id5198719">Figure 3.3, “Result Format for Event Performance Metrics from <code class="command">pmFetch</code>”</a>.
+			</div><div class="para">
+				<div class="figure"><a id="id5198719">
+      ⁠</a><div class="figure-contents"><div class="mediaobject"><object data="images/pmevents.svg" type="image/svg+xml"><img src="images/pmevents.png" alt="Result Format for Event Performance Metrics from pmFetch" /></object></div></div><p class="title"><strong>Figure 3.3. Result Format for Event Performance Metrics from <code class="command">pmFetch</code></strong></p></div>
+
+			</div><div class="para">
+				At the highest level, the "series of events" is encapsulated within a <code class="command">pmEventArray</code> structure, as in <a class="xref" href="id5199202.html#Z976557818nat">Example 3.10, “ <code class="command">pmEventArray</code> and <code class="command">pmEventRecord</code> Structures”</a>:
+			</div><div class="example"><a id="Z976557818nat">
+      ⁠</a><p class="title"><strong>Example 3.10.  <code class="command">pmEventArray</code> and <code class="command">pmEventRecord</code> Structures</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
+    pmTimeval      er_timestamp;  /* 2 x 32-bit timestamp format */
+    unsigned int     er_flags;      /* event record characteristics */
+    int              er_nparams;    /* number of ea_param[] entries */
+    pmEventParameter er_param[1];
+} pmEventRecord;
+
+typedef struct {
+    unsigned int     ea_len :  24;  /* bytes for type/len + records */
+    unsigned int     ea_type : 8;   /* value type */
+    int              ea_nrecords;   /* number of ea_record entries */
+    pmEventRecord    ea_record[1];
+} pmEventArray;</pre></div></div><div class="para">
+				Note that in the case of dropped events, the <code class="command">pmEventRecord</code> structure is used to convey the number of events dropped - <em class="replaceable">er_flags</em> is used to indicate the presence of dropped events, and <em class="replaceable">er_nparams</em> is used to hold a count. Unsurprisingly, the parameters (<em class="replaceable">er_param</em>) will be empty in this situation.
+			</div><div class="para">
+				The <code class="literal">pmEventParameter</code> structure is as follows:
+			</div><div class="example"><a id="Z1034793415nat">
+      ⁠</a><p class="title"><strong>Example 3.11.  <code class="literal">pmEventParameter</code> Structure</strong></p><div class="example-contents"><pre class="programlisting">typedef struct {
+    pmID             ep_pmid;       /* parameter identifier */
+    unsigned int     ep_type;       /* value type */
+    int              ep_len;        /* bytes for type/len + vbuf */
+    /* actual value (vbuf) here */
+} pmEventParameter;</pre></div></div><div class="section"><div class="titlepage"><div><div keep-together.within-column="always"><h3 class="title"><a id="id5199203nat">
+      ⁠</a>3.6.1. Event Monitor Considerations</h3></div></div></div><div class="para">
+					<a id="IG31340177280nat" class="indexterm"></a>In order to simplify the decoding of event record arrays, the PMAPI provides the <code class="command">pmUnpackEventRecords</code> function for monitor tools. This function is passed a pointer to a <code class="command">pmValueSet</code> associated with an event metric (within a <code class="command">pmResult</code>) from a <code class="command">pmFetch(3)</code>. For a given instance of that event metric, it returns an array of "unpacked" <code class="command">pmResult</code> structures for each event.
+				</div><div class="para">
+					The control information (flags and optionally dropped events) is included as derived metrics within each result structure. As such, these values can be queried similarly to other metrics, using their names - <code class="literal">event.flags</code> and <code class="literal">event.missed</code>. Note that these metrics will only exist after the first call to <code class="command">pmUnpackEventRecords</code>.
+				</div><div class="para">
+					An example of decoding event metrics in this way is presented in <a class="xref" href="id5199202.html#Z976557819nat">Example 3.12, “Unpacking Event Records from an Event Metric <code class="literal">pmValueSet</code>”</a>:
+				</div><div class="example"><a id="Z976557819nat">
+      ⁠</a><p class="title"><strong>Example 3.12. Unpacking Event Records from an Event Metric <code class="literal">pmValueSet</code></strong></p><div class="example-contents"><pre class="programlisting">enum { event_flags = 0, event_missed = 1 };
+static char *metadata[] = { "event.flags", "event.missed" };
+static pmID metapmid[2];
+
+void dump_event(pmValueSet *vsp, int idx)
+{
+    pmResult    **res;
+    int	        r, sts, nrecords;
+
+    nrecords = pmUnpackEventRecords(vsp, idx, &amp;res);
+    if (nrecords &lt; 0)
+        fprintf(stderr, " pmUnpackEventRecords: %s\n", pmErrStr(nrecords));
+    else
+        printf(" %d event records\n", nrecords);
+
+    if ((sts = pmLookupName(2, &amp;metadata, &amp;metapmid)) &lt; 0) {
+        fprintf(stderr, "Event metadata error: %s\n", pmErrStr(sts));
+        exit(1);
+    }
+
+    for (r = 0; r &lt; nrecords; r++)
+        dump_event_record(res, r);
+
+    if (nrecords &gt;= 0)
+        pmFreeEventResult(res);
+}
+
+void dump_event_record(pmResult *res, int r)
+{
+    int         p;
+
+    pmPrintStamp(stdout, &amp;res[r]-&gt;timestamp);
+    if (res[r]-&gt;numpmid == 0)
+       	printf(" ==&gt; No parameters\n");
+    for (p = 0; p &lt; res[r]-&gt;numpmid; p++) {
+        pmValueSet  *vsp = res[r]-&gt;vset[p];
+
+        if (vsp-&gt;numval &lt; 0) {
+            int error = vsp-&gt;numval;
+            printf("%s: %s\n", pmIDStr(vsp-&gt;pmid), pmErrStr(error));
+        } else if (vsp-&gt;pmid == metapmid[event_flags]) {
+            int flags = vsp-&gt;vlist[0].value.lval;
+            printf(" flags 0x%x (%s)\n", flags, pmEventFlagsStr(flags));
+        } else if (vsp-&gt;pmid == metapmid[event_missed]) {
+            int count = vsp-&gt;vlist[0].value.lval;
+            printf(" ==&gt; %d missed event records\n", count);
+        } else {
+            dump_event_record_parameters(vsp);
+        }
+    }
+}
+
+void dump_event_record_parameters(pmValueSet *vsp)
+{
+    pmDesc      desc;
+    char        *name;
+    int         sts, j;
+
+    if ((sts = pmLookupDesc(vsp-&gt;pmid, &amp;desc)) &lt; 0) {
+        fprintf(stderr, "pmLookupDesc: %s\n", pmErrStr(sts));
+    } else
+    if ((sts = pmNameID(vsp-&gt;pmid, &amp;name)) &lt; 0) {
+        fprintf(stderr, "pmNameID: %s\n", pmErrStr(sts));
+    } else {
+        printf("parameter %s", name);
+        for (j = 0; j &lt; vsp-&gt;numval; j++) {
+            pmValue *vp = &amp;vsp-&gt;vlist[j];
+            if (vsp-&gt;numval &gt; 1) {
+                printf("[%d]", vp-&gt;inst);
+                pmPrintValue(stdout, vsp-&gt;valfmt, desc.type, vp, 1);
+                putchar('\n');
+            }
+        }
+        free(name);
+    }
+}</pre></div></div></div></div><ul xmlns="http://www.w3.org/1999/xhtml" class="docnav"><li class="previous"><a accesskey="p" href="LE82331-PARENT.html"><strong>Prev</strong>3.5. Performance Metrics Values</a></li><li class="up"><a accesskey="u" href="#"><strong>Up</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Home</strong></a></li><li class="next"><a accesskey="n" href="id5199204nat.html"><strong>Next</strong>3.6.2. Event Collector Considerations</a></li></ul></div></div></div></div>
+<footer xmlns="" class="global-footer is-typeset">
+  <div class="row-parent">
+    <div class="row">
+      <section class="row__colspaced"><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Main Menu</h4>
+            <ul>
+              <li>
+                <a href="/features.html">Features</a>
+              </li>
+              <li>
+                <a href="/documentation.html">Documentation</a>
+              </li>
+              <li>
+                <a class="download" href="/download.html">Download</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Developers</h4>
+            <ul>
+              <li>
+                <a href="http://git.pcp.io/bugzilla">Report a bug</a>
+              </li>
+              <li>
+                <a href="/community.html">Contributing</a>
+              </li>
+              <li>
+                <a href="/team.html">Team</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="/news.html">News</a>
+              </li>
+              <li>
+                <a href="/testimonials.html">Testimonials</a>
+              </li>
+              <li>
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li>
+                <a href="/website.html">Website</a>
+              </li>
+            </ul>
+          </div>
+        </div><div class="colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter">
+          <div class="col__module">
+            <h4>Get Social</h4>
+            <ul>
+              <li>
+                <a class="twitter" href="https://twitter.com/performancepcp" rel="external">Twitter</a>
+              </li>
+              <li>
+                <a class="github" href="https://github.com/performancecopilot" rel="external">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div></section>
+    </div>
+    <div class="row">
+      <div class="colspan2-2">
+        <p class="legal">
+          Copyright 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2015 Red Hat
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body></html>

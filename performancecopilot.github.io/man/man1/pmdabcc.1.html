@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMDABCC
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmdabcc
+ </b>
+ - BCC PMDA
+ <a name="lbAC">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  pmdabcc
+ </b>
+ is a Performance Metrics Domain Agent (PMDA) which
+extracts live performance data from extended BPF (Berkeley Packet Filter)
+programs by using BCC (BPF Compiler Collection) Python frontend.
+ <p>
+  <b>
+   pmdabcc
+  </b>
+  itself provides no PCP metrics or BPF code;
+instead it loads and acts as a bridge for any number of configured,
+separate PCP BCC PMDA Python modules running BPF programs.
+Existing BCC Python tools and programs should be possible to be utilized
+with PCP BCC PMDA modules with reasonable effort.
+ </p>
+ <p>
+  See the BPF and BCC documentation for detailed description of both.
+ </p>
+ <p>
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  INSTALLATION
+ </h2>
+ <b>
+  pmdabcc
+ </b>
+ reads a mandatory ini-style configuration file
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <dl compact="">
+      <dt>
+       •
+      </dt>
+      <dd>
+       <i>
+       </i>
+       <tt>
+        $PCP_PMDAS_DIR
+       </tt>
+       /bcc/bcc.conf
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  This file contains in its
+  <b>
+   [pmda]
+  </b>
+  section values
+for the following PMDA options:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <dl compact="">
+      <dt>
+       •
+      </dt>
+      <dd>
+       modules
+      </dd>
+      <dt>
+       •
+      </dt>
+      <dd>
+       prefix
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  <b>
+   pmdabcc
+  </b>
+  reads module-specific configuration for each module
+listed in the comma-separated list of
+  <b>
+   modules
+  </b>
+  (mandatory).
+By default, all metrics from the modules will appear under the
+  <i>
+   bcc
+  </i>
+  Performance Metrics Name Space (PMNS) tree,
+  <b>
+   prefix
+  </b>
+  (optional) can be used to change this generic prefix.
+ </p>
+ <p>
+  For each listed module a corresponding
+  <b>
+   [module]
+  </b>
+  section must
+be defined containing at least the following options:
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <dl compact="">
+      <dt>
+       •
+      </dt>
+      <dd>
+       module
+      </dd>
+      <dt>
+       •
+      </dt>
+      <dd>
+       cluster
+      </dd>
+     </dl>
+    </dd>
+   </dl>
+  </dd>
+ </dl>
+ <p>
+  <b>
+   module
+  </b>
+  defines the actual Python module file name to be loaded
+during PMDA startup under the
+  <i>
+   modules
+  </i>
+  subdirectory of the PCP
+BCC PMDA installation.
+  <b>
+   cluster
+  </b>
+  specifies the cluster ID for the metrics provided by
+the module under the PMNS path.
+Optionally,
+  <b>
+   prefix
+  </b>
+  can be defined to override the
+generic value described above.
+All modules accept but not necessarily use the boolean
+  <b>
+   debug
+  </b>
+  option.
+ </p>
+ <p>
+  Modules may also support additional module-specific configuration options,
+refer to each module for their supported options.
+ </p>
+ <p>
+  Once the needed setup is ready, you can install the PMDA to load the
+configured modules and the BPF programs they utilize.
+To install, do the following as root:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/bcc
+# ./Install
+</pre>
+  </dd>
+ </dl>
+ <p>
+  To uninstall, do the following as root:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/bcc
+# ./Remove
+</pre>
+  </dd>
+ </dl>
+ <p>
+  <b>
+   pmdabcc
+  </b>
+  is launched by
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1) and should never be
+executed directly.
+The Install and Remove scripts notify
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1) when the
+agent is installed or removed.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bcc/bcc.conf
+  </dt>
+  <dd>
+   configuration file for the
+   <b>
+    pmdabcc
+   </b>
+   agent
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bcc/modules/*.{py,python}
+  </dt>
+  <dd>
+   PCP BCC PMDA Python modules available for the
+   <b>
+    pmdabcc
+   </b>
+   agent
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bcc/Install
+  </dt>
+  <dd>
+   installation script for the
+   <b>
+    pmdabcc
+   </b>
+   agent
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bcc/Remove
+  </dt>
+  <dd>
+   undo installation script for the
+   <b>
+    pmdabcc
+   </b>
+   agent
+  </dd>
+  <dt>
+   <i>
+   </i>
+   <tt>
+    $PCP_LOG_DIR
+   </tt>
+   /pmcd/bcc.log
+  </dt>
+  <dd>
+   default log file for messages from the
+   <b>
+    pmdabcc
+   </b>
+   agent
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <b>
+  /etc/pcp.conf
+ </b>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/bcc.1.html">
+   bcc
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/bpf.1.html">
+   bpf
+  </a>
+ </b>
+ (1),
+
+and
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    INSTALLATION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://www.pcp.io/roadmap'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

@@ -1962,6 +1962,13 @@ should not be randomly chosen; consult
    texttype
   </i>
   ]
+[
+"
+  <i>
+   textcontent
+  </i>
+  "
+]
 
 {
   <i>
@@ -2025,13 +2032,24 @@ to select the full help text, or
 
 ALL
 
-to select both types of help text. If
+or an asterisk ``*''
+to select both types of help text.
+If
   <i>
    texttype
   </i>
   is not specified, then the default is
 
 ONELINE.
+ </p>
+ <p>
+  The optional
+  <i>
+   textcontent
+  </i>
+  further restricts the selected text records to
+those containing the specified content. Characters such as double quotes
+may be escaped by preceding them with a backslash ``\''.
  </p>
  <p>
   If a designated help text record is not in
@@ -2339,13 +2357,29 @@ INSTANCES
   <i>
    labelid
   </i>
-  , the number of a specific instance may be optionally specified as
+  , the name or number of a specific instance may be optionally
+specified as
   <i>
    instance
   </i>
   .
-This number may be omitted or specified as an asterisk ``*'' to indicate that
+This name or number number may be omitted or specified as an asterisk ``*'' to indicate that
 labels for all instances of the specified instance domain are selected.
+If an instance name is specified, it must be within double quotes.
+If the instance name contains any embedded
+spaces then special care needs to be taken in respect of the
+PCP instance naming rule that treats the leading non-space
+part of the instance name as the unique portion of the name for
+the purposes of matching and ensuring uniqueness within an
+instance domain, refer to
+  <b>
+   <a href="/man/man3/pmdainstance.3.html">
+    pmdaInstance
+   </a>
+  </b>
+  (3)
+
+for a discussion of this issue.
  </p>
  <p>
   In all cases, a "
