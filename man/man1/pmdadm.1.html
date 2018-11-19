@@ -81,10 +81,8 @@ metric values for Device Mapper on the local system.
   </b>
   (8)
 
-utility, dmstats API and requires that the program is installed in order to function.
- </p>
- <p>
-  In addition, at least a statistics region must be created to use
+utility and the dmstats API and requires that the program is installed in order to function.
+In addition, at least one statistics region must be created using the
   <b>
    <a href="/man/man8/dmstats.8.html">
     dmstats
@@ -92,13 +90,24 @@ utility, dmstats API and requires that the program is installed in order to func
   </b>
   (8)
 
-in order to get the basic counter value.
+utility in order to get basic counter values.
+See below for examples.
  </p>
  <p>
-  Further details on device mapper can be found at
-  <a href="http://redhat.com">
-   http://redhat.com
-  </a>
+  Note that device-mapper statistics collection is not enabled by default and is not
+persistent across reboots (unless a system administrator has configured something to run
+in
+  <b>
+   rc.local
+  </b>
+  or equivalent).
+This is because there are overheads associated with statistics collection.
+In addition, the
+  <b>
+   pmdadm
+  </b>
+  PMDA does not automatically enable any statistics collection
+because it may not be the only consumer of the data.
   <a name="lbAD">
   </a>
  </p>
@@ -108,20 +117,37 @@ in order to get the basic counter value.
  Install the DM PMDA by using the Install script as root:
  <p>
   <br/>
-  # cd $PCP_PMDAS_DIR/dm
+  <b>
+   # cd $PCP_PMDAS_DIR/dm
+  </b>
+  (
+  <b>
+   $PCP_PMDAS_DIR
+  </b>
+  is usually
+  <b>
+   /var/lib/pcp/pmdas
+  </b>
+  )
   <br/>
   <br/>
-  # ./Install
+  <b>
+   # ./Install
+  </b>
  </p>
  <p>
   To uninstall, do the following as root:
  </p>
  <p>
   <br/>
-  # cd $PCP_PMDAS_DIR/dm
+  <b>
+   # cd $PCP_PMDAS_DIR/dm
+  </b>
   <br/>
   <br/>
-  # ./Remove
+  <b>
+   # ./Remove
+  </b>
  </p>
  <p>
   <b>
@@ -136,7 +162,15 @@ in order to get the basic counter value.
   (1)
 
 and should never be executed directly.
-The Install and Remove scripts notify
+The
+  <b>
+   Install
+  </b>
+  and
+  <b>
+   Remove
+  </b>
+  scripts notify
   <b>
    pmcd
   </b>
@@ -145,81 +179,44 @@ The Install and Remove scripts notify
   </a>
  </p>
  <h2>
-  FILES
+  CONFIGURATION
  </h2>
- <dl compact="">
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/dm/help
-   </b>
-  </dt>
-  <dd>
-   default help text file for the dm metrics
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/dm/Install
-   </b>
-  </dt>
-  <dd>
-   installation script for the
-   <b>
-    pmdadm
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_PMDAS_DIR/dm/Remove
-   </b>
-  </dt>
-  <dd>
-   undo installation script for the
-   <b>
-    pmdadm
-   </b>
-   agent
-  </dd>
-  <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/dm.log
-   </b>
-  </dt>
-  <dd>
-   default log file for error messages from
-   <b>
-    pmdadm
-   </b>
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  dmstats metric
- </h2>
- This PMDA use the dmstats API (the userspace device-mapper support
-library) to allow dmstats performance data.
+ This PMDA uses the dmstats API (the userspace device-mapper support library)
+to capture device-mapper performance data.
  <br/>
  Using this PMDA, users need the userspace device-mapper support library (libdevmapper)
-and the userspace command line tool (dmstats).
-Before getting the statistics metric, statistics regions have to be created.
-When creating the statistics regions of all device-mapper device under /dev/mapper as below:
+and the userspace command line tool
+ <b>
+  <a href="/man/man8/dmstats.8.html">
+   dmstats
+  </a>
+ </b>
+ (8).
+
+Before device-mapper metrics will be available for PCP,
+statistics regions have to be created.
+For example, to enable basic statistics for all local device-mapper logical devices,
+use the following command:
  <p>
   <tt>
   </tt>
-  # dmstats create --alldevices
+  <b>
+   # dmstats create --alldevices
+  </b>
   <br/>
  </p>
  <p>
-  When creating the statistics regions with specified histogram boundaries as below:
+  To create statistics regions with specified histogram boundaries, use the following:
  </p>
  <p>
   <tt>
   </tt>
-  # dmstats create --alldevices --bounds
   <b>
-   histogram_boundaries
+   # dmstats create --alldevices --bounds
   </b>
+  <i>
+   histogram_boundaries
+  </i>
   <br/>
  </p>
  <p>
@@ -245,17 +242,31 @@ or
   </b>
   may be given after each value to specify units of nanoseconds,
 microseconds, miliseconds or seconds respectively.
+For example,
+ </p>
+ <p>
+  <tt>
+  </tt>
+  <b>
+   # dmstats create --alldevices --bounds 10us,30us,50us,70us,90us
+  </b>
   <br/>
-  Further Detail on
+ </p>
+ <p>
+  Further details and more complex examples can be found in
   <b>
    <a href="/man/man8/dmstats.8.html">
     dmstats
    </a>
-   (8)
   </b>
-  can be found at man page.
-  <br/>
+  (8).
+  <a name="lbAF">
+  </a>
  </p>
+ <h2>
+  METRICS
+ </h2>
+ <br/>
  <dl compact="">
   <dt>
    <b>
@@ -429,9 +440,7 @@ latency times falling into that bin's time range during the sample period.
  <a name="lbAG">
  </a>
  <h2>
-  <b>
-   Examples
-  </b>
+  EXAMPLES
  </h2>
  <p>
   <tt>
@@ -500,6 +509,56 @@ latency times falling into that bin's time range during the sample period.
   </a>
  </p>
  <h2>
+  FILES
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/dm/help
+   </b>
+  </dt>
+  <dd>
+   default help text file for the dm metrics
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/dm/Install
+   </b>
+  </dt>
+  <dd>
+   installation script for the
+   <b>
+    pmdadm
+   </b>
+   agent
+  </dd>
+  <dt>
+   <b>
+    $PCP_PMDAS_DIR/dm/Remove
+   </b>
+  </dt>
+  <dd>
+   undo installation script for the
+   <b>
+    pmdadm
+   </b>
+   agent
+  </dd>
+  <dt>
+   <b>
+    $PCP_LOG_DIR/pmcd/dm.log
+   </b>
+  </dt>
+  <dd>
+   default log file for error messages from
+   <b>
+    pmdadm
+   </b>
+  </dd>
+ </dl>
+ <a name="lbAI">
+ </a>
+ <h2>
   PCP ENVIRONMENT
  </h2>
  Environment variables with the prefix
@@ -529,7 +588,7 @@ configuration file, as described in
   </a>
  </i>
  (5).
- <a name="lbAI">
+ <a name="lbAJ">
  </a>
  <h2>
   SEE ALSO
@@ -592,36 +651,41 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    dmstats metric
+    METRICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    <b>
-     Examples
-    </b>
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
     SEE ALSO
    </a>
   </dt>

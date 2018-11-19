@@ -53,6 +53,7 @@
   <tr>
    <td>
     <pre><img alt="" border="0" height="16" src="images/system-search.png" width="16"/><i>Tools</i>
+podman
 docker
 lxc-info
 lxc-ls
@@ -127,21 +128,11 @@ the
     <li>
      Container-specific Metric Values
     </li>
-   </ul>
-  </li>
-  <li>
-   <a href="#nextstep">
-    Next Steps
-   </a>
-   <ul>
     <li>
-     Console Tools
+     Performance Metric Domain Agents
     </li>
     <li>
-     Graphical Tools
-    </li>
-    <li>
-     Domain Agents
+     Web and Graphical Tools
     </li>
    </ul>
   </li>
@@ -182,6 +173,17 @@ differ between engines, so we will skip over them here.
     docker ps -a
    </b>
    command can then be used to observe running containers.
+  </li>
+  <li>
+   Under
+   <a href="https://github.com/containers/libpod/blob/master/README.md">
+    libpod
+   </a>
+   ,
+   <b>
+    podman ps -a
+   </b>
+   is the equivalent command.
   </li>
   <li>
    With
@@ -574,6 +576,51 @@ pmcd.hostname [local hostname]
  <p>
   <br/>
  </p>
+ <p align="LEFT">
+  <font size="4">
+   <b>
+    Performance Metric Domain Agents
+   </b>
+  </font>
+ </p>
+ <p>
+  As the underlying container technologies have matured, instrumentation
+has been added for analysis.
+For example,
+  <b>
+   podman
+  </b>
+  and
+  <b>
+   docker
+  </b>
+  have APIs to extract operational
+metrics, and these are available from
+  <b>
+   pmdapodman
+  </b>
+  and
+  <b>
+   pmdadocker
+  </b>
+  .
+ </p>
+ <p>
+  Additionally, components of container infrastructure usually expose metrics
+via a
+  <i>
+   /metrics
+  </i>
+  HTTP endpoint in the OpenMetrics (Prometheus) format.
+These metrics can be observed using PCP tools via
+  <b>
+   pmdaprometheus
+  </b>
+  .
+ </p>
+ <p>
+  <br/>
+ </p>
  <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
    <td width="100%">
@@ -596,29 +643,7 @@ analysis in several directions, particularly on the monitoring tool side.
  <p align="LEFT">
   <font size="4">
    <b>
-    Console Tools
-   </b>
-  </font>
- </p>
- <p>
-  In addition to adding the container command line option to more of the
-existing monitoring tools, a light-weight console-based monitoring tool
-with deep container knowledge is planned. This tool will sample and report
-cgroup and namespaced metrics for a specified container, in an easily
-consumed form - a little like
-  <i>
-   top
-  </i>
-  or
-  <i>
-   vmstat
-  </i>
-  perhaps.
- </p>
- <p align="LEFT">
-  <font size="4">
-   <b>
-    Graphical Tools
+    Web and Graphical Tools
    </b>
   </font>
  </p>
@@ -636,7 +661,7 @@ consumed form - a little like
      <i>
       pmchart
      </i>
-     from version 3.10.3 onward, connections to containers can be established using the "Add Host" dialog, as shown to the left.
+     , connections to containers can be established using the "Add Host" dialog, as shown to the left.
     </p>
     <p>
      This can be accessed via the "New Chart" or "Open View" menu entries.
@@ -667,28 +692,25 @@ consumed form - a little like
     </ul>
    </td>
   </tr>
+  <tr>
+   <td>
+    <p align="CENTER">
+     PCP container metric charts using
+     <a href="http://getvector.io/">
+      Vector
+     </a>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p align="CENTER">
+     <br/>
+     <img align="MIDDLE" alt="" border="0" src="images/vector-containers.png"/>
+    </p>
+   </td>
+  </tr>
  </table>
- <p align="LEFT">
-  <font size="4">
-   <b>
-    Domain Agents
-   </b>
-  </font>
- </p>
- <p>
-  As the underlying container technologies are maturing, they are becoming
-instrumented for analysis. For example,
-  <b>
-   etcd
-  </b>
-  and
-  <b>
-   docker
-  </b>
-  now
-have APIs to extract the instrumentation about their behaviour, which will
-be exported as new PCP metrics.
- </p>
  <p>
   <br/>
  </p>
