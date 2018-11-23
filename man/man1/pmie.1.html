@@ -476,6 +476,19 @@ If this option is not used, and the
   </dd>
   <dt>
    <b>
+    -P
+   </b>
+  </dt>
+  <dd>
+   Identifies this as the primary
+   <b>
+    pmie
+   </b>
+   instance for a host.
+See the ``AUTOMATIC RESTART'' section below for further details.
+  </dd>
+  <dt>
+   <b>
     -q
    </b>
   </dt>
@@ -2309,8 +2322,109 @@ Refer to
  (1)
 
 for details on automating this process.
- <a name="lbAM">
- </a>
+ <p>
+  Optionally, each system running
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+may also be configured to run a ``primary''
+  <b>
+   pmie
+  </b>
+  instance.
+This
+  <b>
+   pmie
+  </b>
+  instance is launched by
+  <b>
+   $PCP_RC_DIR/pmie
+  </b>
+  ,
+
+and is affected by the files
+  <i>
+   $PCP_SYSCONF_DIR/pmie/control
+  </i>
+  ,
+  <i>
+   $PCP_SYSCONF_DIR/pmie/control
+  </i>
+  .d
+
+(use
+  <b>
+   <a href="http://man7.org/linux/man-pages/man8/chkconfig.8.html">
+    chkconfig
+   </a>
+  </b>
+  (8),
+  <b>
+   <a href="/man/man1/systemctl.1.html">
+    systemctl
+   </a>
+  </b>
+  (1)
+
+or similar platform-specific commands to activate or disable the primary
+  <b>
+   pmie
+  </b>
+  instance)
+and
+  <i>
+   $PCP_VAR_DIR/config/pmie/config.default
+  </i>
+  (the default initial configuration file for the primary
+  <b>
+   pmie
+  </b>
+  ).
+ </p>
+ <p>
+  The primary
+  <b>
+   pmie
+  </b>
+  instance is identified by the
+  <b>
+   -P
+  </b>
+  option.
+There may be at most one ``primary''
+  <b>
+   pmie
+  </b>
+  instance on each system.
+The primary
+  <b>
+   pmie
+  </b>
+  instance (if any)
+must be running on the same host as the
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+to which it connects (if any), so the
+  <b>
+   -h
+  </b>
+  and
+  <b>
+   -P
+  </b>
+  options are mutually exclusive.
+  <a name="lbAM">
+  </a>
+ </p>
  <h2>
   EVENT MONITORING
  </h2>
