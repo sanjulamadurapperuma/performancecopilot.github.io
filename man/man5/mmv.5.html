@@ -1262,11 +1262,13 @@ the terminating NULL.
      <table>
       <tr valign="top">
        <td align="center">
-        Offset  Length  Value
+        Offset
        </td>
        <td align="center">
+        Length
        </td>
        <td align="center">
+        Value
         <br/>
        </td>
       </tr>
@@ -1277,11 +1279,13 @@ the terminating NULL.
       </tr>
       <tr valign="top">
        <td align="right">
-        0       4       Flags (PM_LABEL_[CLUSTER|ITEM|INDOM|INSTANCES]|OPTIONAL)
+        0
        </td>
        <td align="right">
+        4
        </td>
        <td>
+        Flags (PM_LABEL_[CLUSTER|ITEM|INDOM|INSTANCES]|OPTIONAL)
         <br/>
        </td>
       </tr>
@@ -1292,11 +1296,13 @@ the terminating NULL.
       </tr>
       <tr valign="top">
        <td align="right">
-        4       4       Identifier for given type (indom, cluster or item)
+        4
        </td>
        <td align="right">
+        4
        </td>
        <td>
+        Identifier for given type (indom, cluster or item)
         <br/>
        </td>
       </tr>
@@ -1307,11 +1313,13 @@ the terminating NULL.
       </tr>
       <tr valign="top">
        <td align="right">
-        8       4       Internal Instance or PM_IN_NULL
+        8
        </td>
        <td align="right">
+        4
        </td>
        <td>
+        Internal Instance or PM_IN_NULL
         <br/>
        </td>
       </tr>
@@ -1322,11 +1330,13 @@ the terminating NULL.
       </tr>
       <tr valign="top">
        <td align="right">
-        12      244     Payload (Name and Value JSONB String)
+        12
        </td>
        <td align="right">
+        244
        </td>
        <td>
+        Payload (Name and Value JSONB String)
         <br/>
        </td>
       </tr>
@@ -1335,6 +1345,23 @@ the terminating NULL.
    </tr>
   </table>
  </center>
+ <p>
+  Each entry in the payload is a 244 byte (maximum) character array,
+containing a single NULL-terminated
+  <i>
+   name
+  </i>
+  :
+  <i>
+   value
+  </i>
+  pair in
+JSON format.
+Insignificant whitespace must not be present.
+Label names consist only of alphanumeric characters or underscores,
+and must begin with an alphabetic.
+Upper and lower case characters are considered distinct.
+ </p>
  <p>
   <a name="lbAF">
   </a>

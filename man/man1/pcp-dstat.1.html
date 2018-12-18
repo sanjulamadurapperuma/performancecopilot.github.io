@@ -183,34 +183,21 @@ metrics in a Performance Metric Name Space (
    </a>
   </b>
   (5))
-  <b>
-   supplied
-  </b>
-  by
-  <b>
-   Performance
-  </b>
-  Metric
-  <b>
-   Domain
-  </b>
-  Agents
-  <b>
-   (PMDAs).
-  </b>
-  Metrics and other formatting information is now specified as plugin
+
+supplied by Performance Metric Domain Agents (PMDAs).
+Metrics and other formatting information is now specified as plugin
 configuration files.
 This new style of plugin is either built-in (time-related reporting
 only), or sourced from the system-wide location (
-  <i>
+  <b>
    $PCP_ETC_DIR/dstat
-  </i>
+  </b>
   )
 
 and/or sourced from an individual users set of personal plugins (
-  <i>
+  <b>
    $HOME/pcp/dstat
-  </i>
+  </b>
   ).
  </p>
  <p>
@@ -318,7 +305,8 @@ command, the
    </b>
   </dt>
   <dd>
-   enable cpu stats (system, user, idle, wait), for more CPU related stats also see
+   enable CPU stats (system, user, idle, wait),
+for more CPU related stats also see
    <b>
     --cpu-adv
    </b>
@@ -326,7 +314,6 @@ command, the
    <b>
     --cpu-use
    </b>
-   .
   </dd>
   <dt>
    <b>
@@ -337,7 +324,7 @@ command, the
    </i>
   </dt>
   <dd>
-   include cpu0, cpu3 and total (when using
+   include CPU0, CPU3 and total (when using
    <b>
     -c
    </b>
@@ -361,11 +348,12 @@ command, the
    </b>
   </dt>
   <dd>
-   enable disk stats (read, write), for more disk related stats look into the other
+   enable disk stats (read, write),
+for more disk related stats look into the other
    <b>
     --disk
    </b>
-   plugins.
+   plugins
   </dd>
   <dt>
    <b>
@@ -447,7 +435,7 @@ command, the
    </b>
   </dt>
   <dd>
-   enable load average stats (1 min, 5 mins, 15mins)
+   enable load average stats (1 min, 5 mins, 15 mins)
   </dd>
   <dt>
    <b>
@@ -459,7 +447,8 @@ command, the
    </b>
   </dt>
   <dd>
-   enable memory stats (used, buffers, cache, free); for more memory related stats also try
+   enable memory stats (used, buffers, cache, free);
+for more memory related stats also try
    <b>
     --mem-adv
    </b>
@@ -528,7 +517,9 @@ command, the
    enable process stats (runnable, uninterruptible, new)
   </dd>
   <dt>
-   --proc-count
+   <b>
+    --proc-count
+   </b>
   </dt>
   <dd>
    show total number of processes
@@ -643,7 +634,7 @@ the
    </b>
   </dt>
   <dd>
-   enable advanced cpu stats
+   enable advanced CPU stats
   </dd>
   <dt>
    <b>
@@ -651,7 +642,7 @@ the
    </b>
   </dt>
   <dd>
-   enable only cpu usage stats
+   enable only CPU usage stats
   </dd>
   <dt>
    <b>
@@ -675,7 +666,8 @@ the
    </b>
   </dt>
   <dd>
-   average service time (in milliseconds) for I/O requests that were issued to the device
+   average service time (in milliseconds) for I/O requests that
+were issued to the device
   </dd>
   <dt>
    <b>
@@ -691,7 +683,8 @@ the
    </b>
   </dt>
   <dd>
-   percentage of CPU time during which I/O requests were issued to the device (bandwidth utilization for the device)
+   percentage of CPU time during which I/O requests
+were issued to the device (bandwidth utilization for the device)
   </dd>
   <dt>
    <b>
@@ -699,7 +692,8 @@ the
    </b>
   </dt>
   <dd>
-   average time (in milliseconds) for I/O requests issued to the device to be served
+   average time (in milliseconds) for I/O requests
+issued to the device to be served
   </dd>
   <dt>
    <b>
@@ -805,7 +799,8 @@ the
    </b>
   </dt>
   <dd>
-   enable virtual memory stats (hard pagefaults, soft pagefaults, allocated, free)
+   enable virtual memory stats
+(hard pagefaults, soft pagefaults, allocated, free)
   </dd>
   <dt>
    <b>
@@ -893,7 +888,7 @@ the
    </b>
   </dt>
   <dd>
-   show most expensive block I/O process (incl. pid and other stats)
+   show most expensive block I/O process (incl. PID and other stats)
   </dd>
   <dt>
    <b>
@@ -917,7 +912,7 @@ the
    </b>
   </dt>
   <dd>
-   show most expensive CPU process (incl. pid and other stats)
+   show most expensive CPU process (incl. PID and other stats)
   </dd>
   <dt>
    <b>
@@ -957,7 +952,7 @@ the
    </dt>
   </dt>
   <dd>
-   show most expensive I/O process (incl. pid and other stats)
+   show most expensive I/O process (incl. PID and other stats)
   </dd>
   <dt>
    <b>
@@ -1376,7 +1371,8 @@ you to get them included.
    </b>
   </dt>
   <dd>
-   show software raid (MD driver) progress and speed (needs new
+   show software raid (MD driver) progress and speed
+(needs new
    <i>
     disk.md
    </i>
@@ -1536,16 +1532,27 @@ you to get them included.
  <b>
   --noupdate
  </b>
- option, it will show intermediate updates, ie. the first time a 1 second
-average, the second update a 2 second average, etc. until the
+ option, it will show intermediate updates, i.e., the first time a 1
+second average, the second update a 2 second average, etc. until the
  <i>
   delay
  </i>
- <b>
-  has been reached.
- </b>
+ has been reached.
  <p>
-  So in case you specified a delay of 10, the 9 intermediate updates are NOT snapshots, they are averages over the time that passed since the last final update. The end result is that you get a 10 second average on a new line, just like with vmstat.
+  So in case you specified a delay of 10,
+  <b>
+   the 9 intermediate updates are NOT snapshots
+  </b>
+  ,
+they are averages over the time that passed since the last final update.
+The end result is that you get a 10 second average on a new line,
+just like with
+  <b>
+   <a href="/man/man1/vmstat.1.html">
+    vmstat
+   </a>
+  </b>
+  (1).
   <a name="lbAI">
   </a>
  </p>
@@ -1556,80 +1563,76 @@ average, the second update a 2 second average, etc. until the
  <b>
   pcp-dstat
  </b>
- to relate disk-throughput with network-usage (eth0), total CPU-usage and system counters:
+ to relate disk-throughput with network-usage (eth0),
+total CPU-usage and system counters:
+ <b>
+ </b>
  <p>
  </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-pcp dstat -dnyc -N eth0 -C total -f 5
+ <pre>
+$ pcp dstat -dnyc -N eth0 -C total -f 5
+
 </pre>
-  </dd>
- </dl>
  <p>
-  Using the time plugin together with cpu, net, disk, system, load and proc plugins:
+  Using the time plugin together with cpu, net, disk, system,
+load and proc plugins:
+  <b>
+  </b>
  </p>
  <p>
  </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-pcp dstat -tcndylp
+ <pre>
+$ pcp dstat -tcndylp
+
 </pre>
-  </dd>
- </dl>
  <p>
-  this is identical to:
+  This is identical to:
+  <b>
+  </b>
  </p>
  <p>
  </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-pcp dstat --time --cpu --net --disk --sys --load --proc
+ <pre>
+$ pcp dstat --time --cpu --net --disk --sys --load --proc
+
 </pre>
-  </dd>
- </dl>
  <p>
   Using
   <b>
    pcp-dstat
   </b>
-  to report 10 samples from metrics recorded in a PCP archive from 2:30am:
- </p>
- <p>
+  to report 10 samples from metrics recorded in a PCP archive
+  <i>
+   20180729
+  </i>
+  from 2:30 AM:
  </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
+   <b>
+   </b>
    <pre>
-pcp --origin '@02:30' --archive 20180729 dstat --time --cpu-adv --sys 1 10
+$ pcp --origin '@02:30' -a 20180729 dstat --time --cpu-adv --sys 1 10
 </pre>
   </dd>
  </dl>
  <p>
   Examine the same metrics live from a remote host:
+  <b>
+  </b>
  </p>
  <p>
  </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-pcp --host <a href="http://www.acme.com">www.acme.com</a> dstat --time --cpu-adv --sys 1 10
+ <pre>
+$ pcp --host <a href="http://www.acme.com">www.acme.com</a> dstat --time --cpu-adv --sys 1 10
+
 </pre>
-  </dd>
- </dl>
- <a name="lbAJ">
- </a>
+ <p>
+  <a name="lbAJ">
+  </a>
+ </p>
  <h2>
   FILES
  </h2>
@@ -1649,7 +1652,7 @@ pcp --host <a href="http://www.acme.com">www.acme.com</a> dstat --time --cpu-adv
    <i>
    </i>
    <tt>
-    $PCP_ETC_DIR
+    $PCP_SYSCONF_DIR
    </tt>
    /pcp/dstat/
   </dt>
@@ -1728,44 +1731,59 @@ format string for reporting time (see
   AUTHORS
  </h2>
  <p>
-  The Dstat utility was initially written by Dag Wieers m[blue]
-  <b>
+  The Dstat utility was initially written by Dag Wieers
+  <i>
+   &lt;
    <a href="mailto:dag@wieers.com">
     dag@wieers.com
    </a>
-  </b>
-  m[]
+   &gt;
+  </i>
+  .
  </p>
  <p>
-  Homepage at m[blue]
-  <b>
+  The Dstat homepage is at
+  <i>
    <a href="http://dag.wieers.com/home-made/dstat/">
     http://dag.wieers.com/home-made/dstat/
    </a>
-  </b>
-  m[]
+  </i>
+  .
  </p>
  <p>
-  This manpage was initially written by Andrew Pollock m[blue]
-  <b>
+  This manpage was initially written by Andrew Pollock
+  <i>
+   &lt;
    <a href="mailto:apollock@debian.org">
     apollock@debian.org
    </a>
-  </b>
-  m[] for the Debian GNU/Linux system.
+   &gt;
+  </i>
+  for the Debian GNU/Linux system.
  </p>
  <p>
   The
   <b>
    pcp-dstat
   </b>
-  utility is written and maintained by the PCP developers m[blue]
-  <b>
+  utility is written and maintained by the PCP developers
+  <i>
+   &lt;
    <a href="mailto:pcp@groups.io">
     pcp@groups.io
    </a>
-  </b>
-  m[]
+   &gt;
+  </i>
+  .
+ </p>
+ <p>
+  The PCP homepage is at
+  <i>
+   <a href="https://pcp.io/">
+    https://pcp.io/
+   </a>
+  </i>
+  .
   <a name="lbAN">
   </a>
  </p>
@@ -1785,8 +1803,8 @@ format string for reporting time (see
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmrep.1.html">
-   pmrep
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
   </a>
  </b>
  (1),
@@ -1797,14 +1815,26 @@ format string for reporting time (see
  </b>
  (1),
  <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
   <a href="/man/man1/pmprobe.1.html">
    pmprobe
   </a>
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmlogger.1.html">
-   pmlogger
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/vmstat.1.html">
+   vmstat
   </a>
  </b>
  (1),
@@ -1827,6 +1857,12 @@ format string for reporting time (see
  </b>
  (5),
  <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
   <a href="/man/man5/pmrep.conf.5.html">
    pmrep.conf
   </a>
@@ -1835,11 +1871,11 @@ format string for reporting time (see
 
 and
  <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
+  <a href="/man/man5/utmp.5.html">
+   utmp
   </a>
  </b>
- (5)
+ (5).
  <p>
  </p>
  <hr/>

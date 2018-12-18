@@ -586,7 +586,7 @@ Allowed values are
   </dd>
  </dl>
  <p>
-  ignore_incompat (string)
+  ignore_incompat (boolean)
  </p>
  <dl compact="">
   <dt>
@@ -601,6 +601,46 @@ Corresponding command line option is
 Defaults to
    <b>
     no
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  ignore_unknown (boolean)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates that unknown metrics are to be ignored.
+Corresponding command line option is
+   <b>
+    -5
+   </b>
+   .
+Defaults to
+   <b>
+    no
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  names_change (string)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Indicates the action to take on PMNS changes during sampling.
+Corresponding command line option is
+   <b>
+    -4
+   </b>
+   .
+Defaults to
+   <b>
+    ignore
    </b>
    .
   </dd>
@@ -772,7 +812,7 @@ Undefined by default.
   </dd>
  </dl>
  <p>
-  omit_flat (string)
+  omit_flat (boolean)
  </p>
  <dl compact="">
   <dt>

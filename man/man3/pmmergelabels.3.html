@@ -132,6 +132,21 @@
   </a>
  </p>
  <h2>
+  PYTHON SYNOPSIS
+ </h2>
+ <b>
+ </b>
+ <pre>
+from pcp import pmapi
+
+<i>buffer</i> = pmapi.pmContext().pmMergeLabels(<i>sets</i>)
+<br/>
+<i>buffer</i> = pmapi.pmContext().pmMergeLabelSets(<i>sets</i>, <i>filter</i>)
+
+</pre>
+ <a name="lbAE">
+ </a>
+ <h2>
   DESCRIPTION
  </h2>
  <b>
@@ -275,11 +290,39 @@ included in the
    buffer
   </i>
   .
- </p>
- <p>
-  <a name="lbAE">
+  <a name="lbAF">
   </a>
  </p>
+ <h2>
+  PYTHON EXAMPLE
+ </h2>
+ <b>
+ </b>
+ <pre>
+import sys
+import json
+from pcp import pmapi
+import cpmapi as c_api
+
+def merge_callback(label, jsondata, data=None):
+    d = json.loads(jsondata)
+    labelsD.update(d)
+    return 0
+
+ctx = pmapi.pmContext()
+
+for metric in sys.argv[1:]:
+    pmid = ctx.pmLookupName(metric)[0]
+    lset = ctx.pmLookupLabels(pmid)
+    labelsD = {}
+    ctx.pmMergeLabelSets(lset, merge_callback)
+    print("== %s ===" % metric)
+    for n,v in labelsD.items():
+        print("    %s = %s" % (n,v))
+    ctx.pmFreeLabelSets(lset)
+<i></i></pre>
+ <a name="lbAG">
+ </a>
  <h2>
   DIAGNOSTICS
  </h2>
@@ -299,7 +342,7 @@ included in the
  <p>
   Failure to parse the input strings, failure to allocate memory, or any
 internal inconsistencies found will result in a negative return code.
-  <a name="lbAF">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -350,20 +393,34 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    DESCRIPTION
+    PYTHON SYNOPSIS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    DIAGNOSTICS
+    DESCRIPTION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PYTHON EXAMPLE
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

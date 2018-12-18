@@ -72,8 +72,16 @@
  </b>
  [
  <b>
-  -CGHIjLnrRvV?
+  -5CGHIjLnrRvV?
  </b>
+ ]
+[
+ <b>
+  -4
+ </b>
+ <i>
+  action
+ </i>
  ]
 [
  <b>
@@ -468,6 +476,10 @@ The following options are common with
  </b>
  ,
  <b>
+  names_change
+ </b>
+ ,
+ <b>
   instances
  </b>
  ,
@@ -604,13 +616,123 @@ Corresponding command line option is
 Defaults to the metrics source host.
   </dd>
  </dl>
- <a name="lbAG">
- </a>
+ <p>
+  es_search_type (string)
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   Specify the Elasticsearch search type for measurements.
+Corresponding command line option is
+   <b>
+    -p
+   </b>
+   .
+Defaults to
+   <b>
+    pcp-metric
+   </b>
+   .
+  </dd>
+ </dl>
+ <p>
+  <a name="lbAG">
+  </a>
+ </p>
  <h2>
   OPTIONS
  </h2>
  The available command line options are:
  <dl compact="">
+  <dt>
+   <b>
+    -0
+   </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision-force
+   </b>
+   =
+   <i>
+    precision
+   </i>
+  </dt>
+  <dd>
+   Like
+   <b>
+    -P
+   </b>
+   but this option
+   <i>
+    will
+   </i>
+   override per-metric specifications.
+  </dd>
+  <dt>
+   <b>
+    -4
+   </b>
+   <i>
+    action
+   </i>
+   ,
+   <b>
+    --names-change
+   </b>
+   =
+   <i>
+    action
+   </i>
+  </dt>
+  <dd>
+   Specify which
+   <i>
+    action
+   </i>
+   to take on receiving a metric names change event during sampling.
+These events occur when a PMDA discovers new metrics sometime
+after starting up, and informs running client tools like
+   <b>
+    pcp2elasticsearch
+   </b>
+   .
+
+Valid values for
+   <i>
+    action
+   </i>
+   are
+   <b>
+    update
+   </b>
+   (refresh metrics being sampled),
+   <b>
+    ignore
+   </b>
+   (do nothing - the default behaviour)
+and
+   <b>
+    abort
+   </b>
+   (exit the program if such an event happens).
+  </dd>
+  <dt>
+   <b>
+    -5
+   </b>
+   ,
+   <i>
+    --ignore-unknown
+   </i>
+  </dt>
+  <dd>
+   Silently ignore any metric name that cannot be resolved.
+At least one metric must be found for the tool to start.
+  </dd>
   <dt>
    <b>
     -8
@@ -713,6 +835,10 @@ a directory containing one or more archives.
    <b>
     --archive-folio
    </b>
+   =
+   <i>
+    folio
+   </i>
   </dt>
   <dd>
    Read metric source archives from the PCP archive
@@ -1456,33 +1582,6 @@ This option will
     not
    </i>
    override possible per-metric specifications.
-  </dd>
-  <dt>
-   <b>
-    -0
-   </b>
-   <i>
-    precision
-   </i>
-   ,
-   <b>
-    --precision-force
-   </b>
-   =
-   <i>
-    precision
-   </i>
-  </dt>
-  <dd>
-   Like
-   <b>
-    -P
-   </b>
-   but this option
-   <i>
-    will
-   </i>
-   override per-metric specifications.
   </dd>
   <dt>
    <b>

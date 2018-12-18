@@ -120,6 +120,32 @@ cc ... -lpcp
  <a name="lbAD">
  </a>
  <h2>
+  PYTHON SYNOPSIS
+ </h2>
+ <b>
+  from pcp import pmapi
+ </b>
+ <p>
+ </p>
+ <pre>
+<i>labelsets</i> = pmapi.pmContext().pmLookupLabels(<i>pmid</i>)
+
+<i>labelsets</i> = pmapi.pmContext().pmGetInstancesLabels(<i>indom</i>)
+<br/>
+<i>labelsets</i> = pmapi.pmContext().pmGetItemLabels(<i>pmid</i>)
+<br/>
+<i>labelsets</i> = pmapi.pmContext().pmGetClusterLabels(<i>pmid</i>)
+<br/>
+<i>labelsets</i> = pmapi.pmContext().pmGetInDomLabels(<i>indom</i>)
+<br/>
+<i>labelsets</i> = pmapi.pmContext().pmGetDomainLabels(<i>domain</i>)
+<br/>
+<i>labelsets</i> = pmapi.pmContext().pmGetContextLabels()
+
+</pre>
+ <a name="lbAE">
+ </a>
+ <h2>
   DESCRIPTION
  </h2>
  Labels are
@@ -312,7 +338,7 @@ The return value indicates the number of elements in the result - one
 to form the complete set of all labels associated with a given value.
  </p>
  <p>
-  <a name="lbAE">
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -382,7 +408,7 @@ value as defined by the JSON (
 
 specification.
 Redundant whitespace is always removed within the PMCS.
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -442,7 +468,7 @@ metric values take precedence:
    associated with a metric instance identifier have highest precedence.
   </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   DATA STRUCTURES
@@ -542,7 +568,7 @@ and the accompanying
    nlabels
   </i>
   elements).
-  <a name="lbAH">
+  <a name="lbAI">
   </a>
  </p>
  <h2>
@@ -679,7 +705,7 @@ and
 
 transient)
 to form the complete set for each of the metrics.
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h2>
@@ -766,13 +792,22 @@ e.g. due to IPC failure using the current PMAPI context then
    pmGetInstancesLabels
   </b>
   will return a negative error code which may be examined using
+ </p>
+ <p>
+  A successful return from the Python API always provides the
+labelset in the form of a list, for all labels functions.
+On error a
+  <b>
+   pmErr
+  </b>
+  exception is raised containing the error code and diagnostic.
   <b>
    <a href="/man/man3/pmerrstr.3.html">
     pmErrStr
    </a>
   </b>
   (3).
-  <a name="lbAJ">
+  <a name="lbAK">
   </a>
  </p>
  <h2>
@@ -859,48 +894,55 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    DESCRIPTION
+    PYTHON SYNOPSIS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    LABEL SYNTAX
+    DESCRIPTION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PRECEDENCE
+    LABEL SYNTAX
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    DATA STRUCTURES
+    PRECEDENCE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    EXAMPLES
+    DATA STRUCTURES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    DIAGNOSTICS
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
     SEE ALSO
    </a>
   </dt>

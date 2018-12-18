@@ -1,0 +1,3 @@
+[server]
+DOMAIN = git.pcp.io
+SSH_DOMAIN = pcp.osci.io
