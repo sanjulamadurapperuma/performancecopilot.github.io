@@ -181,9 +181,21 @@ labels associated with a single performance metric identifier,
   <i>
    pmid
   </i>
-  .
-
-It performs no caching of labels internally.
+  ,
+  <b>
+   except
+  </b>
+  labels at the instances level.
+Labels at the instances level must be retrieved separately with a call to
+  <b>
+   pmGetInstancesLabels
+  </b>
+  because different metric instances may have labels with the same label name.
+The
+  <b>
+   pmLookupLabels
+  </b>
+  function performs no caching of labels internally.
  </p>
  <p>
   For efficiency in communication and storage within the various
@@ -336,6 +348,16 @@ The return value indicates the number of elements in the result - one
   (3)
 
 to form the complete set of all labels associated with a given value.
+Note that the label sets returned by
+  <b>
+   pmGetInstancesLabels
+  </b>
+  can be traversed but should not be merged because the label names are unlikely
+to be unique for different instances of the given
+  <i>
+   indom
+  </i>
+  .
  </p>
  <p>
   <a name="lbAF">
@@ -709,6 +731,40 @@ to form the complete set for each of the metrics.
   </a>
  </p>
  <h2>
+  PYTHON EXAMPLE
+ </h2>
+ <b>
+ </b>
+ <pre>
+#!/usr/bin/env pmpython
+
+import sys
+from pcp import pmapi
+import cpmapi as c_api
+
+ctx = pmapi.pmContext(c_api.PM_CONTEXT_HOST, "local:")
+
+for metric in sys.argv[1:]:
+    pmid = ctx.pmLookupName(metric)[0]
+    desc = ctx.pmLookupDescs(pmid)[0]
+
+    print("== label sets for %s ==" % metric)
+    labelSetList = ctx.pmLookupLabels(pmid)
+    # class pmLabelSet has a __str__ handler
+    for labelSet in labelSetList:
+        print("	%s" % labelSet)
+    ctx.pmFreeLabelSets(labelSetList)
+
+    if desc.contents.indom != c_api.PM_INDOM_NULL:
+        print("== instances label sets for %s ==" % metric)
+        labelSetList = ctx.pmGetInstancesLabels(desc.contents.indom)
+        for labelSet in labelSetList:
+            print("	%s" % labelSet)
+        ctx.pmFreeLabelSets(labelSetList)
+<i></i></pre>
+ <a name="lbAK">
+ </a>
+ <h2>
   DIAGNOSTICS
  </h2>
  On success these interfaces all return the number of elements in
@@ -740,7 +796,8 @@ when no longer needed.
   <i>
    labelset
   </i>
-  be a merged set of labels from all hierarchy levels.
+  be a merged set of labels from all hierarchy levels
+(except at the instances level, as described above).
  </p>
  <p>
   For the other routines, except for
@@ -807,7 +864,7 @@ On error a
    </a>
   </b>
   (3).
-  <a name="lbAK">
+  <a name="lbAL">
   </a>
  </p>
  <h2>
@@ -936,13 +993,20 @@ and
   </dd>
   <dt>
    <a href="#lbAJ">
-    DIAGNOSTICS
+    PYTHON EXAMPLE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
     SEE ALSO
    </a>
   </dt>

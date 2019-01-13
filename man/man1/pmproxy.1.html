@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -Af
+  -Aft
  </b>
  ]
 [
@@ -485,6 +485,36 @@ be unreadable by any user other than the user running the
     pmproxy
    </b>
    process).
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   ,
+   <b>
+    --timeseries
+   </b>
+  </dt>
+  <dd>
+   Operate in automatic archive timeseries discovery mode.
+This (experimental) mode of operation will detect system
+archives created by
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
+
+and import into a
+   <b>
+    <a href="/man/man1/redis-server.1.html">
+     redis-server
+    </a>
+   </b>
+   (1)
+
+automatically, for fast, scalable timeseries queries.
   </dd>
   <dt>
    <b>
@@ -934,6 +964,18 @@ as described in
  <b>
   <a href="/man/man1/pmdbg.1.html">
    pmdbg
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/redis-server.1.html">
+   redis-server
   </a>
  </b>
  (1),

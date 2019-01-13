@@ -1728,8 +1728,49 @@ as described in
       </a>
      </b>
      (5).
-     <a name="lbAG">
-     </a>
+     <p>
+      The default behaviour, when
+      <b>
+       <a href="/man/man1/pmlogger.1.html">
+        pmlogger
+       </a>
+      </b>
+      (1)
+
+configuration comes from
+      <b>
+       <a href="/man/man1/pmlogconf.1.html">
+        pmlogconf
+       </a>
+      </b>
+      (1),
+
+is to regenerate the configuration file and check for
+changes whenever
+      <b>
+       <a href="/man/man1/pmlogger.1.html">
+        pmlogger
+       </a>
+      </b>
+      (1)
+
+is started from
+      <b>
+       pmlogger_check.
+      </b>
+      If the PMDA configuration is stable, this is not necessary, 
+and setting
+      <b>
+       $PMLOGGER_CHECK_SKIP_LOGCONF
+      </b>
+      to
+      <b>
+       yes
+      </b>
+      disables the regeneration and checking.
+      <a name="lbAG">
+      </a>
+     </p>
      <h2>
       SEE ALSO
      </h2>

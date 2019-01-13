@@ -49,20 +49,40 @@
 Analysis Tools
 <ul>
 <li>
-<a href='#htop'>PCP version of htop</a>
+<a href='#pmlogreduce'>Temporal data reduction for PCP archives</a>
 </li>
 <li>
-<a href='#datavis'>Visualization and analysis of PCP datasets</a>
+<a href='#collectl'>PCP version of collectl</a>
+</li>
+<li>
+<a href='#htop'>PCP platform for htop</a>
+</li>
+<li>
+<a href='#nmon'>PCP version of nmon</a>
 </li>
 </ul>
 </li>
 <li>
 Integration Projects
-<ul></ul>
+<ul>
+<li>
+<a href='#statsd'>Using metrics from statsd with PCP</a>
+</li>
+</ul>
 </li>
 <li>
 Web Projects
-<ul></ul>
+<ul>
+<li>
+<a href='#pmseries'>Scaling timeseries injest and querying</a>
+</li>
+<li>
+<a href='#dashboards'>Grafana dashboards for PCP metrics</a>
+</li>
+<li>
+<a href='#worldmap'>Grafana world map for PCP metrics</a>
+</li>
+</ul>
 </li>
 </ol>
 <br>
@@ -86,8 +106,112 @@ Web Projects
 </div>
 <div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
 <div class='col__module--img'>
+<a name='pmlogreduce'></a>
+<h3>Temporal data reduction for PCP archives</h3>
+<p>
+The primary focus of this project is the implementation of proper
+and sound semantics for reduction of the PCP archive data volume,
+in the temporal domain.
+The PCP
+<a href='https://pcp.io/man/man1/pmlogreduce.1.html'>pmlogreduce</a>
+utility already exists to transform an input archive into a reduced
+archive.
+This will require a student to gain a deep understanding of the
+PCP archive format created by
+<a href='https://pcp.io/man/man1/pmlogger.1.html'>pmlogger</a>
+and to tackle issues around data reduction by pmlogreduce in the
+presence of counter wraps, restarts, small amounts of missing
+data, and so on.
+</p>
+<p>
+There are also several possible areas of extension on this work,
+which include:
+<ul>
+<li>
+Omitting repeated value-instance pairs
+</li>
+<li>
+Lazy (just in time) loading of metadata
+</li>
+<li>
+Delta encoding of metric instance domains
+</li>
+</ul>
+</p>
+<p>
+<strong>Expected results:</strong>
+The student will extend their C language programming skills,
+and can also expect to gain deep insight into the semantics of
+performance data stored by PCP.
+</p>
+<p>
+<strong>Prerequisite knowledge:</strong>
+C programming.
+</p>
+<p>
+<strong>Skill level:</strong>
+Intermediate-Advanced
+</p>
+<p>
+<strong>Mentors:</strong>
+<a href='mailto:kenj@kenj.id.au'>Ken McDonell</a>
+,
+<a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
+</p>
+<p>
+<strong>Interested students so far:</strong>
+0
+</p>
+</div>
+</div>
+<div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
+<div class='col__module--img'>
+<a name='collectl'></a>
+<h3>PCP version of collectl</h3>
+<p>
+The Performance Co-Pilot provides a cross-platform API for accessing
+live and historical performance data from the local or remote hosts.
+An initial PCP implementation (pcp-collectl) of the
+<a href='http://collectl.sourceforge.net/'>Collectl</a>
+utility provides some initial support for the same style of reports.
+This project will extend that initial code to complete the reporting
+coverage provided by the initial collectl utility.
+The pcp-collectl utility will be updated to use the more modern
+<a href='http://man7.org/linux/man-pages/man1/pmrep.1.html'>pmrep</a>
+utility modules under the covers.
+Additionally, the test coverage and documentation will be improved.
+</p>
+<p>
+<strong>Expected results:</strong>
+The student will extend their Python programming skills,
+and can also expect to gain insight into the meaning of the kernel
+data reported by this tool, and the sampling techniques it uses.
+</p>
+<p>
+<strong>Prerequisite knowledge:</strong>
+Python programming.
+</p>
+<p>
+<strong>Skill level:</strong>
+Introductory-Intermediate
+</p>
+<p>
+<strong>Mentors:</strong>
+<a href='mailto:nathans@redhat.com'>Nathan Scott</a>
+,
+<a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
+</p>
+<p>
+<strong>Interested students so far:</strong>
+0
+</p>
+<br>
+</div>
+</div>
+<div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
+<div class='col__module--img'>
 <a name='htop'></a>
-<h3>PCP version of htop</h3>
+<h3>PCP platform for htop</h3>
 <p>
 The Performance Co-Pilot provides a cross-platform API for accessing
 live and historical performance data from the local or remote hosts.
@@ -128,58 +252,226 @@ Intermediate
 <br>
 </div>
 </div>
-<div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
+<div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
 <div class='col__module--img'>
-<a name='datavis'></a>
-<h3>Visualization and analysis of PCP datasets</h3>
+<a name='nmon'></a>
+<h3>PCP version of nmon</h3>
 <p>
-The PCP
-<a href='http://man7.org/linux/man-pages/man1/pmlogger.1.html'>pmlogger</a>
-records performance statistics from a running machine,
-which can be efficiently queried and extracted as time
-series data using PCP tools like
-<a href='http://man7.org/linux/man-pages/man1/pmrep.1.html'>pmrep</a>
-</p>
-<p>
-This project will develop a
-Python application to query, extract, reformat and
-visualize PCP time series data using Python's extensive
-data-science class libraries (e.g.
-<a href='http://www.numpy.org/'>NumPy,</a>
-<a href='http://pandas.pydata.org/'>Pandas,</a>
-<a href='https://matplotlib.org/'>MatPlotLib,</a>
-<a href='https://www.scipy.org/'>SciPy</a>
-and others).
+The Performance Co-Pilot provides a cross-platform API for accessing
+live and historical performance data from the local or remote hosts.
+The
+<a href='http://nmon.sourceforge.net/pmwiki.php'>nmon</a>
+utility provides a curses-based interface for reporting on a variety
+of system and per-process metrics to a console, as well as a CSV
+(Comma Separated Value) output format.
+This project will implement a version of the nmon utility using the
+PCP metrics API (PMAPI), based on the current nmon source code.
+Additionally, regression tests will be implemented and documentation
+will be improved.
 </p>
 <p>
 <strong>Expected results:</strong>
-Construction of an application (and class libraries) to query PCP
-time-series data using various client tools and import this into
-existing scientific data-science libraries for visualization and
-analysis. Demonstration of meaningful statistical insights from
-real-world PCP data archives.
+The student will extend their C language programming skills,
+and can also expect to gain insight into the meaning of the kernel
+data reported by this tool, and the sampling techniques it uses.
 </p>
 <p>
 <strong>Prerequisite knowledge:</strong>
-Strong Python programming, knowledge of statistical
-analysis, some experience with one or more python data-science
-libraries.
+C programming.
 </p>
 <p>
 <strong>Skill level:</strong>
-Advanced
+Introductory-Intermediate
 </p>
 <p>
 <strong>Mentors:</strong>
-<a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
+<a href='mailto:nathans@redhat.com'>Nathan Scott</a>
 ,
-<a href='mailto:myllynen@redhat.com'>Marko Myllynen</a>
+<a href='mailto:lberk@redhat.com'>Lukas Berk</a>
 </p>
 <p>
 <strong>Interested students so far:</strong>
 0
 </p>
-<br>
+</div>
+</div>
+<div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
+<div class='col__module--img'>
+<a name='statsd'></a>
+<h3>Using metrics from statsd with PCP</h3>
+<p>
+Performance Co-Pilot is a system performance analysis toolkit which
+currently does not provide an agent for
+<a href='https://github.com/etsy/statsd'>statsd</a>
+protocol, a text-based UDP protocol for
+<a href='https://codeascraft.com/2011/02/15/measure-anything-measure-everything/'>performance data</a>
+aggregation.
+The goal is to design and write a PCP agent as a multi-threaded C
+process performing aggregation of statsd packets as pluggable modules
+with two implementations: exact computation and HDR histogram with
+parsing code as pluggable modules: custom parser or ragel-based parser.
+Additionally, regression tests will be implemented and documentation
+provided.
+</p>
+<p>
+<strong>Expected results:</strong>
+The student will extend their C language programming skills,
+and learn about the inner workings of performance analysis tools
+like PCP and statsd.
+</p>
+<p>
+<strong>Prerequisite knowledge:</strong>
+C programming.
+</p>
+<p>
+<strong>Skill level:</strong>
+Introductory-Intermediate
+</p>
+<p>
+<strong>Mentors:</strong>
+<a href='mailto:lzap@redhat.com'>Lukas Zapletal</a>
+,
+<a href='mailto:nathans@redhat.com'>Nathan Scott</a>
+</p>
+<p>
+<strong>Interested students so far:</strong>
+1
+</p>
+</div>
+</div>
+<div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
+<div class='col__module--img'>
+<a name='nmon'></a>
+<h3>Scaling timeseries injest and querying</h3>
+<p>
+The Performance Co-Pilot approach to scalable, multi-host performance
+analysis builds on the
+<a href='https://redis.io'>Redis</a>
+distributed data store and its native timeseries support.
+The
+<a href='https://pcp.io/man/man1/pmseries.1.html'>pmseries</a>
+utility and
+<a href='https://pcp.io/man/man1/pmproxy.1.html'>pmproxy</a>
+daemon provide the tooling and APIs to support this.
+This project will explore scalability limits of each these programs,
+with the aim of scaling up PCP timeseries injest and querying to the
+level of many-thousands-of-nodes.
+</p>
+<p>
+<strong>Expected results:</strong>
+The student will extend their C language programming skills,
+learn about the
+<a href='https://redis.io'>Redis</a>
+distributed data store (and
+<a href='https://redis.io/topics/cluster-spec'>Redis clustering</a>
+in particular),
+gain deep familiarity with performance tuning tools such as
+<a href='https://perf.wiki.kernel.org/index.php/Tutorial'>perf</a>
+as well as learning to apply PCP tools to analyse complex distributed
+system performance problems.
+</p>
+<p>
+<strong>Prerequisite knowledge:</strong>
+C programming.
+</p>
+<p>
+<strong>Skill level:</strong>
+Intermediate-Advanced
+</p>
+<p>
+<strong>Mentors:</strong>
+<a href='mailto:lberk@redhat.com'>Lukas Berk</a>
+,
+<a href='mailto:nathans@redhat.com'>Nathan Scott</a>
+</p>
+<p>
+<strong>Interested students so far:</strong>
+0
+</p>
+</div>
+</div>
+<div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
+<div class='col__module--img'>
+<a name='dashboards'></a>
+<h3>Grafana dashboards for PCP metrics</h3>
+<p>
+Grafana
+<a href='https://grafana.com/dashboards'>dashboards</a>
+project details ... (Mark, insert details here please).
+</p>
+<p>
+<strong>Expected results:</strong>
+The student will extend their Javascript programming skills,
+and will gain insight into the semantics of various forms of
+performance data available from systems and applications, and
+visualization techniques appropriate to their analysis.
+</p>
+<p>
+<strong>Prerequisite knowledge:</strong>
+Javascript programming.
+</p>
+<p>
+<strong>Skill level:</strong>
+Introductory
+</p>
+<p>
+<strong>Mentors:</strong>
+<a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
+,
+<a href='mailto:lberk@redhat.com'>Lukas Berk</a>
+</p>
+<p>
+<strong>Interested students so far:</strong>
+0
+</p>
+</div>
+</div>
+<div class='colspan12-12 colspan8-8 colspan6-6 colspan2-2 as-grid with-gutter'>
+<div class='col__module--img'>
+<a name='worldmap'></a>
+<h3>Grafana world map for PCP metrics</h3>
+<p>
+The Grafana
+<a href='https://grafana.com/plugins/grafana-worldmap-panel/installation'>world map</a>
+panel displays time series data or geohash data from a metric
+source overlaid on a world map.
+The PCP
+<a href='https://pcp.io/man/man1/pmseries.1.html'>pmseries</a>
+tool and APIs can injest and respond to queries about
+performance metrics labeled with geographical location
+information, with the help of the
+<a href='https://redis.io/commands/geohash'>geohash</a>
+support in the
+<a href='https://redis.io'>Redis</a>
+distributed data store.
+This project will implement tooling and APIs to interface
+Grafana and Redis for PCP metrics.
+</p>
+<p>
+<strong>Expected results:</strong>
+The student will extend their C and javascript programming skills,
+learn about the
+<a href='https://redis.io'>Redis</a>
+distributed data store and geolocation services.
+</p>
+<p>
+<strong>Prerequisite knowledge:</strong>
+C, Javascript programming.
+</p>
+<p>
+<strong>Skill level:</strong>
+Introductory
+</p>
+<p>
+<strong>Mentors:</strong>
+<a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
+,
+<a href='mailto:nathans@redhat.com'>Nathan Scott</a>
+</p>
+<p>
+<strong>Interested students so far:</strong>
+0
+</p>
 </div>
 </div>
 </div>
