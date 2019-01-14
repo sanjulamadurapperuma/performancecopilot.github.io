@@ -209,6 +209,14 @@
  ]
 [
  <b>
+  -x
+ </b>
+ <i>
+  file
+ </i>
+ ]
+[
+ <b>
   -v
  </b>
  ]
@@ -658,6 +666,37 @@ By default,
 mechanisms (such as Avahi/DNS-SD), assisting remote monitoring
 tools with finding it.
 These mechanisms are disabled with this option.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   Before the
+   <b>
+    pmwebd
+   </b>
+   <i>
+    logfile
+   </i>
+   can be opened,
+   <b>
+    pmwebd
+   </b>
+   may encounter a fatal error which prevents it from starting.  By default, the
+output describing this error is sent to
+   <b>
+    /dev/tty
+   </b>
+   but it may redirected to
+   <i>
+    file
+   </i>
+   .
   </dd>
   <dt>
    <b>

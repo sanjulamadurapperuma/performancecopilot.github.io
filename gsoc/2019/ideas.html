@@ -411,14 +411,29 @@ Intermediate-Advanced
 <a name='dashboards'></a>
 <h3>Grafana dashboards for PCP metrics</h3>
 <p>
-Grafana
+This project will involve developing Grafana
 <a href='https://grafana.com/dashboards'>dashboards</a>
-project details ... (Mark, insert details here please).
+and panels for displaying high level performance data across all of
+the common system level performance analysis domains - CPU, memory,
+network, disk, applications (and many more). With Grafana, each high
+level panel can be linked (via a URL) to more refined/specific
+performance data, and thus offer an intuitive drill-down model for
+rapidly solving common, yet complex, performance analysis issues. The
+new Grafana PCP data source currently under development will have
+access (via the new
+<a href='https://pcp.io/man/man1/pmproxy.1.html'>pmproxy</a>
+REST APIs) to all PCP PMDA data from any
+accessible host running the PCP daemons, and thus potentially have
+direct access to more performance data than any other datasource. The
+resulting Grafana charts and panels can be exported in JSON format
+with template variables and included as part of Grafana itself, or
+shipped separately as part of PCP and installed/imported using the
+Grafana provisioning mechanisms.
 </p>
 <p>
 <strong>Expected results:</strong>
-The student will extend their Javascript programming skills,
-and will gain insight into the semantics of various forms of
+The student will extend their Javascript programming
+skills, and will gain insight into the semantics of various forms of
 performance data available from systems and applications, and
 visualization techniques appropriate to their analysis.
 </p>
@@ -428,7 +443,7 @@ Javascript programming.
 </p>
 <p>
 <strong>Skill level:</strong>
-Introductory
+Introductory / Intermediate
 </p>
 <p>
 <strong>Mentors:</strong>
