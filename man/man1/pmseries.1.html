@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -adFilLmMnqsS
+  -adFiIlLmMnqsSV
  </b>
  ]
 [
@@ -130,19 +130,19 @@ Performance Co-Pilot (PCP) and the Redis distributed data store.
 
 however the
   <b>
-   -p
-  </b>
-  /
-  <b>
-   --port
-  </b>
-  option and
-  <b>
    -h
   </b>
   /
   <b>
    --host
+  </b>
+  and
+  <b>
+   -p
+  </b>
+  /
+  <b>
+   --port
   </b>
   options can be used to
 specify an alternate Redis instance.
@@ -258,28 +258,60 @@ metadata used in each timeseries identifier hash calculation.
 independent) identifier than the traditional PCP performance
 metric identifiers (pmID), instance domain identifiers (pmInDom)
 and metric names.
+See
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for more details about these traditional identifiers.
 However,
   <b>
    pmseries
   </b>
   uses timeseries identifiers in much the same way that
   <b>
-   pminfo
+   <a href="/man/man1/pminfo.1.html">
+    pminfo
+   </a>
   </b>
-  uses the lower level indom, metric identifiers and metric names.
+  (1)
+
+uses the lower level indom, metric identifiers and metric names.
+ </p>
+ <p>
+  The default mode of
+  <b>
+   pmseries
+  </b>
+  operation (i.e. with no command line options) depends on the
+arguments it is presented.
+If all non-option arguments appear to be timeseries
+identifiers (in 40 hex digit form)
+  <b>
+   pmseries
+  </b>
+  will report metadata for these timeseries - refer to
+the
+  <b>
+   -a
+  </b>
+  /
+  <b>
+   --all
+  </b>
+  option for details.
+Otherwise, the parameters will be treated as a timeseries
+query.
   <a name="lbAE">
   </a>
  </p>
  <h2>
   TIMESERIES QUERIES
  </h2>
- The default mode of
- <b>
-  pmseries
- </b>
- operation is to issue a query that will be evaluated over all
-known timeseries.
-Query expressions are formed using the
+ Query expressions are formed using the
  <b>
   pmseries
  </b>
@@ -290,7 +322,6 @@ metric name.
 hosts that match a metric name pattern (globbed):
  </p>
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
@@ -313,16 +344,15 @@ dcb2a032a308b5717bf605ba8f8737e9c6e1ed19
 syntax:
  </p>
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
    <pre>
-[<i>metric.name</i><b>] '{' metadata qualifiers '}' '[' time specification ']'
+[<i>metric.name</i>] '<b>{</b><i>metadata qualifiers</i><b>}</b>' '<b>[</b><i>time specification</i><b>]</b>'
 
-</b></pre>
+</pre>
   </dd>
  </dl>
  <p>
@@ -332,18 +362,22 @@ syntax:
   </i>
   component restricts the timeseries query
 to any matching PCP metric name (the list of metric names for a
-PCP archive or live host is the reported by
+PCP archive or live host is reported by
   <b>
-   pminfo
+   <a href="/man/man1/pminfo.1.html">
+    pminfo
+   </a>
   </b>
-  with no arguments beyond --
-  <i>
+  (1)
+
+with no arguments beyond --
+  <b>
    host
-  </i>
+  </b>
   or --
-  <i>
+  <b>
    archive
-  </i>
+  </b>
   ).
 The
   <b>
@@ -362,24 +396,30 @@ The
   (7)
 
 based pattern matching within the metric name.
+  <a name="lbAF">
+  </a>
  </p>
- <p>
-  Metadata qualifiers are enclosed by ('curly') braces, and further
-restrict the query results to timeseries with various metadata
-properties.
+ <h2>
+  METADATA QUALIFIERS AND OPERATORS
+ </h2>
+ Metadata qualifiers are enclosed by ``curly'' braces (
+ <b>
+  {}
+ </b>
+ ),
+and further restrict the query results to timeseries with various
+metadata properties.
 These qualifiers are based on metric or instance names, and
 metric label values, and take the general form
-  <i>
-   metadata.name
-  </i>
-  OPERATOR
-  <i>
-   value
-  </i>
-  , such as:
- </p>
+ <i>
+  metadata.name
+ </i>
+ OPERATOR
+ <i>
+  value
+ </i>
+ , such as:
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
@@ -397,7 +437,6 @@ metric.name != "kernel.all.pswitch"
 can be dropped, such as:
  </p>
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
@@ -414,7 +453,7 @@ hostname == "<a href="http://www.acme.com">www.acme.com</a>"
   For metric and instance names only the string operators apply,
 but for metric label values all operators are available.
 The set of available operators is:
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h3>
@@ -423,7 +462,7 @@ The set of available operators is:
  All string (label, metrics and instances) and numeric
 (label) values can be tested for equality ("==") or
 inequality ("!=").
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h3>
   String operators
@@ -431,9 +470,9 @@ inequality ("!=").
  Strings can be subject to pattern matching in the form of
 glob matching ("~~"), regular expression matching ("=~"),
 and regular expression non-matching ("!~").
-The ":" operator is equivalent to "~~" - i.e. regular expression
+The ":" operator is equivalent to "~~" - i.e., regular expression
 matching.
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h3>
   Relational operators (numeric label values only)
@@ -442,7 +481,7 @@ matching.
 greater than ("&gt;"), less than or equal ("&lt;="), greater than
 or equal ("&gt;="), equal ("==") and not equal ("!=") operators.
  <p>
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h3>
@@ -452,7 +491,7 @@ or equal ("&gt;="), equal ("==") and not equal ("!=") operators.
 operators for AND ("&amp;&amp;") and OR ("||") as in many programming
 languages.
 The comma (",") character is equivalent to logical AND ("&amp;&amp;").
- <a name="lbAJ">
+ <a name="lbAK">
  </a>
  <h2>
   TIME SPECIFICATION
@@ -460,10 +499,14 @@ The comma (",") character is equivalent to logical AND ("&amp;&amp;").
  The final (optional) component of a query allows the user to
 specify a specific time window of interest.
 Any time specification will result in values being returned
-for all matching timeseries, for the time window specified.
+for all matching timeseries only for the time window specified.
  <p>
-  The specification is ('square') bracket enclosed, and consists
-of one or more comma-separated components.
+  The specification is ``square'' bracket (
+  <b>
+   []
+  </b>
+  ) enclosed,
+and consists of one or more comma-separated components.
 Each component specifies some aspect related to time, taking
 the general form:
   <b>
@@ -476,7 +519,6 @@ the general form:
   , such as:
  </p>
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
@@ -488,19 +530,19 @@ samples: 10
 </pre>
   </dd>
  </dl>
- <a name="lbAK">
+ <a name="lbAL">
  </a>
  <h3>
   Sample count
  </h3>
  The number of samples to return, specified via either the
- <i>
+ <b>
   samples
- </i>
+ </b>
  or (equivalent)
- <i>
+ <b>
   count
- </i>
+ </b>
  keyword.
 The
  <i>
@@ -509,7 +551,7 @@ The
  provided must be a positive integer.
 If no end time is explicitly set (see ``Time window'' later)
 then the most recent samples will be returned.
- <a name="lbAL">
+ <a name="lbAM">
  </a>
  <h3>
   Sample interval
@@ -535,8 +577,18 @@ be parsed by
    pmParseTimeInterval
   </a>
  </b>
- (3).
- <a name="lbAM">
+ (3),
+
+such as
+ <b>
+  5
+ </b>
+ (seconds) or
+ <b>
+  2min
+ </b>
+ (minutes).
+ <a name="lbAN">
  </a>
  <h3>
   Time window
@@ -552,31 +604,31 @@ The keywords match the parameters to the
  (3)
 
 function which will be used to parse them, and are:
- <i>
+ <b>
   start
- </i>
+ </b>
  or (equivalent)
- <i>
+ <b>
   begin
- </i>
+ </b>
  ,
- <i>
+ <b>
   finish
- </i>
+ </b>
  or (equivalent)
- <i>
+ <b>
   end
- </i>
+ </b>
  ,
- <i>
+ <b>
   align
- </i>
+ </b>
  and
- <i>
+ <b>
   offset
- </i>
+ </b>
  .
- <a name="lbAN">
+ <a name="lbAO">
  </a>
  <h3>
   Time zones
@@ -608,13 +660,13 @@ The
  (3).
 
 A
- <i>
+ <b>
   true
- </i>
+ </b>
  or
- <i>
+ <b>
   false
- </i>
+ </b>
  value should be associated with
  <b>
   hostzone
@@ -622,9 +674,9 @@ A
  ,
 
 and when set to
- <i>
+ <b>
   true
- </i>
+ </b>
  this has the same effect as described by
  <b>
   <a href="/man/man3/pmnewcontextzone.3.html">
@@ -632,7 +684,7 @@ and when set to
   </a>
  </b>
  (3).
- <a name="lbAO">
+ <a name="lbAP">
  </a>
  <h2>
   TIMESERIES METADATA
@@ -645,7 +697,6 @@ and when set to
 names, labels, descriptors) associated with either individual
 timeseries or a group of timeseries, for example:
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
@@ -690,7 +741,7 @@ dcb2a032a308b5717bf605ba8f8737e9c6e1ed19
    Convenience option to report all metadata for the given timeseries,
 equivalent to
    <b>
-    -dilms
+    -dilmsS
    </b>
    .
   </dd>
@@ -806,6 +857,19 @@ This option has a direct
   </dd>
   <dt>
    <b>
+    -n
+   </b>
+   ,
+   <b>
+    --names
+   </b>
+  </dt>
+  <dd>
+   Print comma-separated label names only (not values) for the labels
+associated with metrics and instances.
+  </dd>
+  <dt>
+   <b>
     -s
    </b>
    ,
@@ -814,7 +878,7 @@ This option has a direct
    </b>
   </dt>
   <dd>
-   Print time series identifiers associated with metrics, instances and
+   Print timeseries identifiers associated with metrics, instances and
 sources.
 These unique identifiers are calculated from intrinsic (non-optional)
 labels and other metric metadata associated with each PMAPI context
@@ -850,37 +914,48 @@ and the
    option.
   </dd>
  </dl>
- <a name="lbAP">
+ <a name="lbAQ">
  </a>
  <h2>
   TIMESERIES SOURCES
  </h2>
  A source is a unique identifier (represented externally as a 40-byte
 hexadecimal SHA-1 hash) that represents both the live host and/or
-archives from which each timeseries originated.
- <p>
-  The
-  <b>
-   -S
-  </b>
-  /
-  <b>
-   --sources
-  </b>
-  option reports names for timeseries
-sources.
+archives from which each timeseries originated can be reported with:
+ <dl compact="">
+  <dt>
+   <b>
+    -S
+   </b>
+   ,
+   <b>
+    --sources
+   </b>
+  </dt>
+  <dd>
+   Print names for timeseries sources.
 These names are either hostnames or fully qualified archive paths.
- </p>
+This option has a direct
+   <b>
+    <a href="/man/man1/pminfo.1.html">
+     pminfo
+    </a>
+   </b>
+   (1) equivalent.
+  </dd>
+ </dl>
  <p>
   It is important to note that live and archived sources can and will
-generate the same SHA-1 source identifier hash - that is, provided
+generate the same SHA-1 source identifier hash, provided that
 the context labels remain the same for that host (labels are stored
 in PCP archives and can also be fetched live from
   <b>
-   pmcd
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
   </b>
-  ).
-  <a name="lbAQ">
+  (1)).
+  <a name="lbAR">
   </a>
  </p>
  <h2>
@@ -889,25 +964,26 @@ in PCP archives and can also be fetched live from
  Timeseries metadata and data are loaded either automatically
 by a local
  <b>
-  pmproxy
+  <a href="/man/man1/pmproxy.1.html">
+   pmproxy
+  </a>
  </b>
- ,
+ (1),
 
 or manually using a specially crafted
  <b>
   pmseries
  </b>
  query and the
- <i>
-  -l
- </i>
+ <b>
+  -L
+ </b>
  /
- <i>
+ <b>
   --load
- </i>
- option.
+ </b>
+ option:
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
@@ -923,11 +999,127 @@ pmseries: [Info] processed 2275 archive records from [...]
  <p>
   This query must specify a source archive path, but can also restrict
 the import to specific timeseries (using metric names, labels, etc)
-and to specific a time window using the time specification component
+and to a specific time window using the time specification component
 of the query language.
-  <a name="lbAR">
+  <a name="lbAS">
   </a>
  </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options, in addition to timeseries
+metadata and sources options described above, are:
+ <dl compact="">
+  <dt>
+   <dt>
+    <b>
+     -h
+    </b>
+    <i>
+     host
+    </i>
+    ,
+    <b>
+     --host
+    </b>
+    =
+    <i>
+     host
+    </i>
+   </dt>
+  </dt>
+  <dd>
+   <dd>
+    Connect Redis server at
+    <i>
+     host
+    </i>
+    ,
+
+rather than the one the localhost.
+   </dd>
+  </dd>
+  <dt>
+   <b>
+    -L
+   </b>
+   ,
+   <b>
+    --load
+   </b>
+  </dt>
+  <dd>
+   Load timeseries metadata and data into the Redis cluster.
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   <i>
+    port
+   </i>
+   ,
+   <b>
+    --port
+   </b>
+   =
+   <i>
+    port
+   </i>
+  </dt>
+  <dd>
+   Connect Redis server at
+   <i>
+    port
+   </i>
+   ,
+
+rather than the default
+   <b>
+    6379
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -q
+   </b>
+   ,
+   <b>
+    --query
+   </b>
+  </dt>
+  <dd>
+   Perform a timeseries query.
+This is the default action.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAT">
+ </a>
  <h2>
   EXAMPLES
  </h2>
@@ -937,22 +1129,21 @@ of the query language.
  </b>
  query language:
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
    <pre>
-$ pmseries 'kernel.all.load{hostname:toium}[count:2]' 
+$ pmseries 'kernel.all.load{hostname:toium}[count:2]'
 
 eb713a9cf472f775aa59ae90c43cd7f960f7870f
-    [1545346764128.128] 1.000000e-01 b84040ffccd54f839b65140cf139bab51cbbcf62
-    [1545346764128.128] 6.800000e-01 a60b5b3bf25e71071c41934fa4d7d251f765f30c
-    [1545346764128.128] 6.400000e-01 e1974a062375e6e62370ffadf5b0650dad739480
-    [1545346774112.112] 1.600000e-01 b84040ffccd54f839b65140cf139bab51cbbcf62
-    [1545346774112.112] 6.700000e-01 a60b5b3bf25e71071c41934fa4d7d251f765f30c
-    [1545346774112.112] 6.400000e-01 e1974a062375e6e62370ffadf5b0650dad739480
+    [1545346764128.128] 1.0e-01 b84040ffccd54f839b65140cf139bab51cbbcf62
+    [1545346764128.128] 6.8e-01 a60b5b3bf25e71071c41934fa4d7d251f765f30c
+    [1545346764128.128] 6.4e-01 e1974a062375e6e62370ffadf5b0650dad739480
+    [1545346774112.112] 1.6e-01 b84040ffccd54f839b65140cf139bab51cbbcf62
+    [1545346774112.112] 6.7e-01 a60b5b3bf25e71071c41934fa4d7d251f765f30c
+    [1545346774112.112] 6.4e-01 e1974a062375e6e62370ffadf5b0650dad739480
 
 </pre>
   </dd>
@@ -960,23 +1151,23 @@ eb713a9cf472f775aa59ae90c43cd7f960f7870f
  <p>
   This query returns the two most recent values for all instances of
 the
-  <i>
+  <b>
    kernel.all.load
-  </i>
+  </b>
   metric with a
   <i>
    label.hostname
   </i>
   matching the regular expression "toium".
-This is a set-valued metric (i.e. with an instance domain or
-1, 5 and 15 minute averages).
+This is a set-valued metric (i.e., a metric with an ``instance
+domain'' which in this case consists of three instances: 1, 5
+and 15 minute averages).
 The first column returned is a timestamp, then a floating point
 value, and finally an instance identifier timeseries hash (two
 values returned for three instances, so six rows are returned).
 The metadata for these timeseries can then be further examined:
  </p>
  <p>
-  <br/>
  </p>
  <dl compact="">
   <dt>
@@ -1002,9 +1193,7 @@ eb713a9cf472f775aa59ae90c43cd7f960f7870f
   </dd>
  </dl>
  <p>
- </p>
- <p>
-  <a name="lbAS">
+  <a name="lbAU">
   </a>
  </p>
  <h2>
@@ -1034,11 +1223,23 @@ as described in
   </a>
  </b>
  (5).
- <a name="lbAT">
+ <a name="lbAV">
  </a>
  <h2>
   SEE ALSO
  </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
  <b>
   <a href="/man/man1/pminfo.1.html">
    pminfo
@@ -1070,8 +1271,8 @@ as described in
  </b>
  (3),
  <b>
-  <a href="/man/man3/pmlookuplabels.3.html">
-   pmLookupLabels
+  <a href="/man/man3/pmlookupdesc.3.html">
+   pmLookupDesc
   </a>
  </b>
  (3),
@@ -1082,14 +1283,20 @@ as described in
  </b>
  (3),
  <b>
+  <a href="/man/man3/pmlookuplabels.3.html">
+   pmLookupLabels
+  </a>
+ </b>
+ (3),
+ <b>
   <a href="/man/man3/pmlookupname.3.html">
    pmLookupName
   </a>
  </b>
  (3),
  <b>
-  <a href="/man/man3/pmlookupdesc.3.html">
-   pmLookupDesc
+  <a href="/man/man3/pmnewcontextzone.3.html">
+   pmNewContextZone
   </a>
  </b>
  (3),
@@ -1098,13 +1305,7 @@ as described in
    pmNewZone
   </a>
  </b>
- (3).
- <b>
-  <a href="/man/man3/pmnewcontextzone.3.html">
-   pmNewContextZone
-  </a>
- </b>
- (3).
+ (3),
  <b>
   <a href="/man/man3/pmparsetimeinterval.3.html">
    pmParseTimeInterval
@@ -1120,12 +1321,6 @@ as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
-  </a>
- </b>
- (5),
- <b>
-  <a href="/man/man5/pcp.env.5.html">
-   pcp.env
   </a>
  </b>
  (5),
@@ -1179,30 +1374,37 @@ and
    </a>
   </dt>
   <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    METADATA QUALIFIERS AND OPERATORS
+   </a>
+  </dt>
+  <dd>
    <dl>
     <dt>
-     <a href="#lbAF">
+     <a href="#lbAG">
       Boolean operators
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAG">
+     <a href="#lbAH">
       String operators
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAH">
+     <a href="#lbAI">
       Relational operators (numeric label values only)
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAI">
+     <a href="#lbAJ">
       Logical operators
      </a>
     </dt>
@@ -1211,35 +1413,35 @@ and
    </dl>
   </dd>
   <dt>
-   <a href="#lbAJ">
+   <a href="#lbAK">
     TIME SPECIFICATION
    </a>
   </dt>
   <dd>
    <dl>
     <dt>
-     <a href="#lbAK">
+     <a href="#lbAL">
       Sample count
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAL">
+     <a href="#lbAM">
       Sample interval
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAM">
+     <a href="#lbAN">
       Time window
      </a>
     </dt>
     <dd>
     </dd>
     <dt>
-     <a href="#lbAN">
+     <a href="#lbAO">
       Time zones
      </a>
     </dt>
@@ -1248,42 +1450,49 @@ and
    </dl>
   </dd>
   <dt>
-   <a href="#lbAO">
+   <a href="#lbAP">
     TIMESERIES METADATA
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAP">
+   <a href="#lbAQ">
     TIMESERIES SOURCES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAQ">
+   <a href="#lbAR">
     TIMESERIES LOADING
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAR">
-    EXAMPLES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
    <a href="#lbAS">
-    PCP ENVIRONMENT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAT">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAU">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAV">
     SEE ALSO
    </a>
   </dt>
