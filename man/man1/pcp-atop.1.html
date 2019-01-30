@@ -410,6 +410,32 @@ as well (see separate man-page of pcp-atoprc).
   </a>
  </p>
  <h2>
+  GPU STATISTICS GATHERING
+ </h2>
+ GPU statistics can be gathered by
+ <b>
+  <a href="/man/man1/pmdanvidia.1.html">
+   pmdanvidia
+  </a>
+ </b>
+ (1)
+
+which is a separate data collection daemon process.
+It gathers cumulative utilization counters of every Nvidia GPU
+in the system, as well as utilization counters of every 
+process that uses a GPU.
+When
+ <b>
+  atop
+ </b>
+ notices that the daemon is active, it reads these GPU utilization
+counters with every interval.
+ <p>
+  Find a description about the utilization counters in the section OUTPUT DESCRIPTION.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
   INTERACTIVE COMMANDS
  </h2>
  When running
@@ -572,6 +598,39 @@ command line including arguments.
  <dl compact="">
   <dt>
    <b>
+    e
+   </b>
+  </dt>
+  <dd>
+   Show GPU utilization.
+   <p>
+    Per process at least the following fields are shown:
+process-id,
+range of GPU numbers on which the process currently runs,
+GPU busy percentage on all GPUs,
+memory busy percentage (i.e. read and write accesses on memory) on all GPUs,
+memory occupation at the moment of the sample,
+average memory occupation during the sample, and
+GPU percentage.
+   </p>
+   <p>
+    When the
+    <b>
+     pmdanvidia
+    </b>
+    daemon does not run with root privileges, the GPU busy percentage and
+the memory busy percentage are not available on process level.
+In that case, the GPU percentage on process level reflects the
+GPU memory occupation instead of the GPU busy percentage (which
+is preferred).
+   </p>
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
     o
    </b>
   </dt>
@@ -707,6 +766,26 @@ chosen resource (default: cpu) and the Docker container id (CID).
   <dd>
    Sort the current list in the order of cpu consumption (default).
 The one-but-last column changes to ``CPU''.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    E
+   </b>
+  </dt>
+  <dd>
+   Sort the current list in the order of GPU utilization
+(preferred, but only applicable
+when the
+   <b>
+    pmdanvidia
+   </b>
+   daemon runs under root privileges) or the order of
+GPU memory occupation).
+The one-but-last column changes to ``GPU''.
   </dd>
  </dl>
  <p>
@@ -1259,7 +1338,7 @@ These values can be modified again in interactive mode.
    Redraw the screen.
   </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   PCP DATA STORAGE
@@ -1279,7 +1358,7 @@ as an archive folio (see
  </b>
  (1)).
  <br/>
- All processes/threads are stored in the raw file.
+ All information about processes and threads is stored in the archive.
  <br/>
  The interval (default: 10 seconds) and number of samples (default: infinite)
 can be passed as last arguments. Instead of the number of samples, the flag
@@ -1348,7 +1427,7 @@ in that case; with the flag
   </b>
   (end time) followed by a time argument of the form HH:MM,
 a certain time period within the raw file can be selected.
-  <a name="lbAH">
+  <a name="lbAI">
   </a>
  </p>
  <h2>
@@ -1386,7 +1465,7 @@ For large memory figures, another unit is chosen if the value does not fit
 (Mb instead of Kb, Gb instead of Mb, Tb instead of Gb, ...).
 For other values, a kind of exponent notation is used (value 123456789
 shown in a column of 5 positions gives 123e6).
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h2>
@@ -1437,7 +1516,7 @@ only a relevant subset is shown.
 for every individual processor (with `cpu' in lower case),
 sorted on activity. Inactive CPUs will not be shown by default.
 The lines showing the per-cpu occupation contain the cpu number in
-the last field.
+the field combined with the wait percentage.
    <p>
     Every line contains the percentage of cpu time spent in 
 kernel mode by all active processes (`sys'), 
@@ -1445,29 +1524,81 @@ the percentage of cpu time consumed in user mode (`user') for all
 active processes (including processes running with a nice value larger than
 zero), the percentage of cpu time spent for interrupt handling (`irq')
 including softirq, the percentage of unused cpu time while no processes
-were waiting for disk-I/O (`idle'), and
+were waiting for disk I/O (`idle'), and
 the percentage of unused cpu time while at least one process was waiting
-for disk-I/O (`wait').
+for disk I/O (`wait').
     <br/>
-    In case of per-cpu occupation, the last column shows the cpu number and
+    In case of per-cpu occupation, the cpu number and
 the wait percentage (`w') for that cpu.
 The number of lines showing the per-cpu occupation can be limited.
    </p>
    <p>
-    For virtual machines the steal-percentage is shown (`steal'), reflecting
+    For virtual machines, the steal-percentage (`steal') shows
 the percentage of cpu time stolen by other virtual machines
 running on the same hardware.
     <br/>
     For physical machines hosting one or more virtual machines,
-the guest-percentage is shown (`guest'), reflecting
+the guest-percentage (`guest') shows
 the percentage of cpu time used by the virtual machines. Notice that
-this percentage overlaps the user-percentage.
+this percentage overlaps the user-percentage!
    </p>
    <p>
-    In case of frequency-scaling, all previously mentioned CPU-percentages
+    When PMC performance monitoring counters are supported by the CPU
+and the kernel (and
+    <b>
+     pcp-atop
+    </b>
+    runs with root privileges), the number of instructions per
+CPU cycle (`ipc') is shown.
+The first sample always shows the value 'initial',
+because the counters are just activated at the moment that
+    <b>
+     pcp-atop
+    </b>
+    is started.
+    <br/>
+    When the
+    <i>
+     CPU busy percentage is high
+    </i>
+    and the IPC is less than 1.0,
+it is likely that the CPU is frequently waiting for memory access
+during instruction execution (larger CPU caches or faster memory might
+be helpful to improve performance).
+When the
+    <i>
+     CPU busy percentage is high
+    </i>
+    and the IPC is greater than 1.0,
+it is likely that the CPU is instruction-bound (more/faster cores
+might be helpful to improve performance).
+    <br/>
+    Furthermore, per CPU the effective number of cycles (`cycl') is shown.
+This value can reach the current CPU frequency if such CPU is 100% busy.
+When an idle CPU is halted, the number of effective cycles can
+be (considerably) lower than the current frequency.
+    <br/>
+    Notice that the
+    <i>
+     average
+    </i>
+    instructions per cycle and number of cycles is shown in the CPU line
+for all CPUs.
+    <br/>
+    See also:
+    <i>
+     <a href="http://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html">
+      http://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html
+     </a>
+    </i>
+   </p>
+   <p>
+   </p>
+   <p>
+    In case of frequency scaling, all previously mentioned CPU percentages
 are relative to the used scaling of the CPU during the interval.
 If a CPU has been active for e.g. 50% in user mode during the interval
-while the frequency-scaling of that CPU was 40%, only 20% of the full
+while the frequency scaling of that CPU was 40%, only 20% of the full
 capacity of the CPU has been used in user mode.
    </p>
    <p>
@@ -1497,6 +1628,43 @@ of serviced interrupts (`intr') and the number of available CPUs are shown.
    <p>
     If the screen-width does not allow all of these counters,
 only a relevant subset is shown.
+   </p>
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    GPU
+   </b>
+  </dt>
+  <dd>
+   GPU utilization (Nvidia).
+   <br/>
+   Read the section GPU STATISTICS GATHERING in this document to find the details
+about the activation of the
+   <b>
+    pmdanvidia
+   </b>
+   daemon.
+   <p>
+    In the first column of every line, the bus-id (last nine characters) and
+the GPU number are shown.
+The subsequent columns show the percentage of time that one or more kernels
+were executing on the GPU (`gpubusy'), the percentage of time that global
+(device) memory was being read or written (`membusy'), the occupation
+percentage of memory (`memocc'), the total memory (`total'), the memory
+being in use at the moment of the sample (`used'), the average memory
+being in use during the sample time (`usavg'), the number of processes
+being active on the GPU at the moment of the sample (`#proc'), and
+the type of GPU.
+   </p>
+   <p>
+    If the screen-width does not allow all of these counters,
+only a relevant subset is shown.
+    <br/>
+    The number of lines showing the GPUs can be limited.
    </p>
   </dd>
  </dl>
@@ -1572,6 +1740,26 @@ times that the kernel tries to reclaim pages due to an urgent need (`stall').
    Also the number of memory pages the system read from swap space (`swin')
 and the number of memory pages the system wrote to swap space (`swout')
 are shown.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    PSI
+   </b>
+  </dt>
+  <dd>
+   Pressure Stall Information.
+   <br/>
+   This line contains three percentages per category:
+average pressure percentage over the last 10, 60 and 300 seconds
+(separated by slashes).
+   <br/>
+   The categories are: CPU for 'some' (`cs'),
+memory for 'some' (`ms'), memory for 'full' (`mf'),
+I/O for 'some' (`is'), and I/O for 'full' (`if').
   </dd>
  </dl>
  <p>
@@ -1672,17 +1860,16 @@ and the number of authorization refreshes (`autref').
 NFS clients (`rpc'),
 the number of read RPC calls received (`cread`),
 the number of write RPC calls received (`cwrit'),
-the number of network requests handled via TCP (`nettcp'), 
-the number of network requests handled via UDP (`netudp'),
 the number of Megabytes/second returned to read requests by clients (`MBcr/s`),
 the number of Megabytes/second passed in write requests by clients (`MBcw/s`),
+the number of network requests handled via TCP (`nettcp'), 
+the number of network requests handled via UDP (`netudp'),
 the number of reply cache hits (`rchits'),
 the number of reply cache misses (`rcmiss') and
 the number of uncached requests (`rcnoca').
 Furthermore some error counters indicating the number of requests
 with a bad format (`badfmt') or a bad authorization (`badaut'), and a
 counter indicating the number of bad clients (`badcln').
-and the number of authorization refreshes (`autref').
   </dd>
  </dl>
  <p>
@@ -1764,7 +1951,41 @@ only a relevant subset is shown.
    </p>
   </dd>
  </dl>
- <a name="lbAJ">
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    IFB
+   </b>
+  </dt>
+  <dd>
+   Infiniband utilization.
+   <br/>
+   For every active Infiniband port one line is shown,
+sorted on activity.
+Such line shows the name of the port and its busy percentage
+in the first column.
+The busy percentage is determined by taking the
+highest of either the transmitted or the received bits during the interval,
+multiplying that value by the number of lanes and comparing it against the
+maximum port speed.
+   <br/>
+   Furthermore the number of received packets divided by the
+number of lanes (`pcki'),
+the number of transmitted packets divided by the number of lanes (`pcko'),
+the maximum line speed (`sp'),
+the effective amount of bits received per second (`si'),
+the effective amount of bits transmitted per second (`so'), and
+the number of lanes (`lanes').
+   <br/>
+   If the screen-width does not allow all of these counters,
+only a relevant subset is shown.
+   <br/>
+   The number of lines showing the Infiniband ports can be limited.
+  </dd>
+ </dl>
+ <a name="lbAK">
  </a>
  <h2>
   OUTPUT DESCRIPTION - PROCESS LEVEL
@@ -2016,6 +2237,62 @@ or the fatal signal number (second position of column `ST' is S or C).
  <dl compact="">
   <dt>
    <b>
+    GPU
+   </b>
+  </dt>
+  <dd>
+   When the
+   <b>
+    pmdanvidia
+   </b>
+   daemon does not run with root privileges, the GPU percentage
+reflects the GPU memory occupation percentage (memory of all GPUs is 100%).
+   <br/>
+   When the
+   <b>
+    pmdanvidia
+   </b>
+   daemon runs with root privileges, the GPU percentage
+reflects the GPU busy percentage.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    GPUBUSY
+   </b>
+  </dt>
+  <dd>
+   Busy percentage on all GPUs (one GPU is 100%).
+   <br/>
+   When the
+   <b>
+    pmdanvidia
+   </b>
+   daemon does not run with root privileges, this value is not available.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    GPUNUMS
+   </b>
+  </dt>
+  <dd>
+   Comma-separated list of GPUs used by the process 
+during the interval. When the comma-separated list exceeds
+the width of the column, a hexadecimal value is shown.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
     MAJFLT
    </b>
   </dt>
@@ -2035,6 +2312,49 @@ by creating/loading the requested memory page.
   <dd>
    The occupation percentage of this process related to the available capacity
 for this resource on system level.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    MEMAVG
+   </b>
+  </dt>
+  <dd>
+   Average memory occupation during the interval on all used GPUs.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    MEMBUSY
+   </b>
+  </dt>
+  <dd>
+   Busy percentage of memory on all GPUs (one GPU is 100%), i.e.
+the time needed for read and write accesses on memory.
+   <br/>
+   When the
+   <b>
+    pmdanvidia
+   </b>
+   daemon does not run with root privileges, this value is not available.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    MEMNOW
+   </b>
+  </dt>
+  <dd>
+   Memory occupation at the moment of the sample on all used GPUs.
   </dd>
  </dl>
  <p>
@@ -2635,7 +2955,7 @@ the process that removes/truncates the file shows
 the unflushed removed data as WCANCL.
   </dd>
  </dl>
- <a name="lbAK">
+ <a name="lbAL">
  </a>
  <h2>
   PARSEABLE OUTPUT
@@ -2649,13 +2969,12 @@ parseable output is produced for each sample.
 The labels that can be specified for system-level statistics
 correspond to the labels (first verb of each line)
 that can be found in the interactive output:
-"CPU", "cpu" "CPL" "MEM", "SWP", "PAG", "LVM", "MDD", "DSK", "NFM",
-"NFC", "NFS" and "NET".
+"CPU", "cpu", "CPL", "GPU", "MEM", "SWP", "PAG", "PSI", "LVM", "MDD",
+"DSK", "NFM", "NFC", "NFS", "NET" and "IFB".
  <br/>
  For process-level statistics special labels are introduced:
-"PRG" (general), "PRC" (cpu), "PRM" (memory), "PRD" (disk, only if
-"storage accounting" is active) and "PRN" (network, only if
-the kernel module 'netatop' has been installed).
+"PRG" (general), "PRC" (cpu), "PRE" (GPU), "PRM" (memory), "PRD"
+(disk, only if "storage accounting" is active).
  <br/>
  With the label "ALL", all system and process level statistics are shown.
  <p>
@@ -2744,7 +3063,8 @@ consumption for this CPU in irq mode (clock-ticks),
 consumption for this CPU in softirq mode (clock-ticks),
 consumption for this CPU in steal mode (clock-ticks),
 consumption for this CPU in guest mode (clock-ticks) overlapping user mode,
-frequency of this CPU and frequency percentage of this CPU.
+frequency of all CPUs, frequency percentage of all CPUs,
+instructions executed by all CPUs and cycles for all CPUs.
   </dd>
   <dt>
    <b>
@@ -2759,6 +3079,27 @@ load average for last five minutes,
 load average for last fifteen minutes,
 number of context-switches, and
 number of device interrupts.
+  </dd>
+  <dt>
+   <b>
+    GPU
+   </b>
+  </dt>
+  <dd>
+   Subsequent fields:
+GPU number, bus-id string, type of GPU string, 
+GPU busy percentage during last second (-1 if not available),
+memory busy percentage during last second (-1 if not available),
+total memory size (KiB), used memory (KiB) at this moment,
+number of samples taken during interval,
+cumulative GPU busy percentage during the interval (to be divided
+by the number of samples for the average busy percentage,
+-1 if not available),
+cumulative memory busy percentage during the interval (to be divided
+by the number of samples for the average busy percentage,
+-1 if not available), and
+cumulative memory occupation during the interval (to be divided
+by the number of samples for the average occupation).
   </dd>
   <dt>
    <b>
@@ -2810,6 +3151,25 @@ number of allocstalls,
 0 (future use),
 number of swapins, and 
 number of swapouts.
+  </dd>
+  <dt>
+   <b>
+    PSI
+   </b>
+  </dt>
+  <dd>
+   Subsequent fields:
+PSI statistics present on this system (n or y),
+CPU some avg10, CPU some avg60, CPU some avg300,
+CPU some accumulated microseconds during interval,
+memory some avg10, memory some avg60, memory some avg300,
+memory some accumulated microseconds during interval,
+memory full avg10, memory full avg60, memory full avg300,
+memory full accumulated microseconds during interval,
+I/O some avg10, I/O some avg60, I/O some avg300, 
+I/O some accumulated microseconds during interval,
+I/O full avg10, I/O full avg60, I/O full avg300, and
+I/O full accumulated microseconds during interval.
   </dd>
   <dt>
    <b>
@@ -2913,6 +3273,20 @@ duplex mode (0=half, 1=full).
   </dd>
   <dt>
    <b>
+    IFB
+   </b>
+  </dt>
+  <dd>
+   Subsequent fields:
+name of the InfiniBand interface, port number,
+number of lanes, maximum rate (Mbps), 
+number of bytes received,
+number of bytes transmitted,
+number of packets received, and
+number of packets transmitted.
+  </dd>
+  <dt>
+   <b>
     PRG
    </b>
   </dt>
@@ -2923,7 +3297,7 @@ duplex mode (0=half, 1=full).
 PID (unique ID of task), name (between brackets), state,
 real uid, real gid, TGID (group number of related tasks/threads),
 total number of threads,
-exit code, start time (epoch),
+exit code (in case of fatal signal: signal number + 256), start time (epoch),
 full command line (between brackets), PPID,
 number of threads in state 'running' (R),
 number of threads in state 'interruptible sleeping' (S),
@@ -2950,6 +3324,25 @@ CPU-consumption in system mode (clockticks),
 nice value, priority, realtime priority,
 scheduling policy, current CPU, sleep average,
 TGID (group number of related tasks/threads) and is_process (y/n).
+  </dd>
+  <dt>
+   <b>
+    PRE
+   </b>
+  </dt>
+  <dd>
+   For every process one line is shown.
+   <br/>
+   Subsequent fields:
+PID, name (between brackets), process state,
+GPU state (A for active, E for exited, N for no GPU user),
+number of GPUs used by this process,
+bitlist reflecting used GPUs,
+GPU busy percentage during interval,
+memory busy percentage during interval,
+memory occupation (KiB) at this moment 
+cumulative memory occupation (KiB) during interval, and
+number of samples taken during interval.
   </dd>
   <dt>
    <b>
@@ -3024,8 +3417,31 @@ number of raw packets received (obsolete, always 0),
 TGID (group number of related tasks/threads) and is_process (y/n).
   </dd>
  </dl>
- <a name="lbAL">
+ <a name="lbAM">
  </a>
+ <h2>
+  SIGNALS
+ </h2>
+ By sending the SIGUSR1 signal to
+ <b>
+  pcp-atop
+ </b>
+ a new sample will be forced, even if the current timer interval
+has not exceeded yet. The behavior is similar to pressing the `t` key
+in an interactive session.
+ <p>
+  By sending the SIGUSR2 signal to
+  <b>
+   pcp-atop
+  </b>
+  a final sample will be forced after which
+  <b>
+   pcp-atop
+  </b>
+  will terminate.
+  <a name="lbAN">
+  </a>
+ </p>
  <h2>
   EXAMPLES
  </h2>
@@ -3115,7 +3531,7 @@ interactively:
   </b>
  </p>
  <p>
-  <a name="lbAM">
+  <a name="lbAO">
   </a>
  </p>
  <h2>
@@ -3147,7 +3563,7 @@ See related man-page.
 See related man-page.
   </dd>
  </dl>
- <a name="lbAN">
+ <a name="lbAP">
  </a>
  <h2>
   NOTES
@@ -3165,11 +3581,18 @@ See related man-page.
 
 command from
  <i>
-  <a href="http://atoptool.nl">
-   http://atoptool.nl
+  <a href="https://atoptool.nl">
+   https://atoptool.nl
   </a>
  </i>
- and aims to be command line and output compatible with it
+ ,
+
+maintained by Gerlof Langeveld (
+ <a href="mailto:gerlof.langeveld@atoptool.nl">
+  gerlof.langeveld@atoptool.nl
+ </a>
+ ),
+and aims to be command line and output compatible with it
 as much as possible.
 Some features of that
  <b>
@@ -3185,26 +3608,45 @@ Some features of that
   <b>
    pcp-atop
   </b>
-  (such as reporting on the Apache HTTP daemon, and NFS client mounts)
-are only activated if the corresonding PCP metrics are available.
+  (such as reporting on the Apache HTTP daemon, Infiniband, NFS
+client mounts, hardware event counts and GPU statistics) are
+only activated if the corresonding PCP metrics are available.
 Refer to the documentation for
   <b>
    <a href="/man/man1/pmdaapache.1.html">
     pmdaapache
    </a>
   </b>
-  (1)
-
-and
+  (1),
+  <b>
+   <a href="/man/man1/pmdainfiniband.1.html">
+    pmdainfiniband
+   </a>
+  </b>
+  (1),
   <b>
    <a href="/man/man1/pmdanfsclient.1.html">
     pmdanfsclient
    </a>
   </b>
+  (1),
+  <b>
+   <a href="/man/man1/pmdanvidia.1.html">
+    pmdanvidia
+   </a>
+  </b>
+  (1)
+
+and
+  <b>
+   <a href="/man/man1/pmdaperfevent.1.html">
+    pmdaperfevent
+   </a>
+  </b>
   (1)
 
 for further details on activating these metrics.
-  <a name="lbAO">
+  <a name="lbAQ">
   </a>
  </p>
  <h2>
@@ -3229,8 +3671,20 @@ for further details on activating these metrics.
  </b>
  (1),
  <b>
+  <a href="/man/man1/pmdainfiniband.1.html">
+   pmdainfiniband
+  </a>
+ </b>
+ (1),
+ <b>
   <a href="/man/man1/pmdanfsclient.1.html">
    pmdanfsclient
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdanvidia.1.html">
+   pmdanvidia
   </a>
  </b>
  (1),
@@ -3311,69 +3765,83 @@ and
   </dd>
   <dt>
    <a href="#lbAF">
-    INTERACTIVE COMMANDS
+    GPU STATISTICS GATHERING
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    PCP DATA STORAGE
+    INTERACTIVE COMMANDS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    OUTPUT DESCRIPTION
+    PCP DATA STORAGE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    OUTPUT DESCRIPTION - SYSTEM LEVEL
+    OUTPUT DESCRIPTION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    OUTPUT DESCRIPTION - PROCESS LEVEL
+    OUTPUT DESCRIPTION - SYSTEM LEVEL
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
-    PARSEABLE OUTPUT
+    OUTPUT DESCRIPTION - PROCESS LEVEL
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAL">
-    EXAMPLES
+    PARSEABLE OUTPUT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAM">
-    FILES
+    SIGNALS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAN">
-    NOTES
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAO">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAP">
+    NOTES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAQ">
     SEE ALSO
    </a>
   </dt>
@@ -3459,7 +3927,7 @@ and
 <div class='row'>
 <div class='colspan2-2'>
 <p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2019 Red Hat
 </p>
 </div>
 </div>

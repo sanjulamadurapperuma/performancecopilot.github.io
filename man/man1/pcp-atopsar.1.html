@@ -507,6 +507,18 @@ the use of the flag '-R 6' shows a report with one sample for every hour.
  <dl compact="">
   <dt>
    <b>
+    -g
+   </b>
+  </dt>
+  <dd>
+   Report about GPU utilization (per GPU).
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
     -p
    </b>
   </dt>
@@ -549,6 +561,18 @@ hardware interrupts.
   </dt>
   <dd>
    Report about paging- and swapping-activity, and overcommitment.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -B
+   </b>
+  </dt>
+  <dd>
+   Report about Pressure Stall Information (PSI).
   </dd>
  </dl>
  <p>
@@ -796,6 +820,18 @@ hardware interrupts.
  <dl compact="">
   <dt>
    <b>
+    -h
+   </b>
+  </dt>
+  <dd>
+   Report about Infiniband utilization.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
     -O
    </b>
   </dt>
@@ -946,6 +982,72 @@ at least one of the processes in wait-state awaits completion of disk I/O.
   <dd>
    Percentage of unused cpu time because all processes are in a wait-state
 but not waiting for disk-I/O.
+  </dd>
+ </dl>
+ <p>
+  The output for the flag
+  <b>
+   -g
+  </b>
+  contains the following columns per GPU:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    busaddr
+   </b>
+  </dt>
+  <dd>
+   GPU number and bus-ID (separated by '/').
+  </dd>
+  <dt>
+   <b>
+    gpubusy
+   </b>
+  </dt>
+  <dd>
+   GPU busy percentage during interval.
+  </dd>
+  <dt>
+   <b>
+    membusy
+   </b>
+  </dt>
+  <dd>
+   GPU memory busy percentage during interval,
+i.e. time to issue read and write accesses on memory.
+  </dd>
+  <dt>
+   <b>
+    memocc
+   </b>
+  </dt>
+  <dd>
+   Percentage of memory occupation at this moment.
+  </dd>
+  <dt>
+   <b>
+    memtot
+   </b>
+  </dt>
+  <dd>
+   Total memory available.
+  </dd>
+  <dt>
+   <b>
+    memuse
+   </b>
+  </dt>
+  <dd>
+   Used GPU memory at this moment.
+  </dd>
+  <dt>
+   <b>
+    gputype
+   </b>
+  </dt>
+  <dd>
+   Type of GPU.
   </dd>
  </dl>
  <p>
@@ -1208,6 +1310,60 @@ private memory space for processes.
 plus 50% of memory size.
 The kernel only verifies whether the committed space exceeds the limit
 if strict overcommit handling is configured (vm.overcommit_memory is 2).
+  </dd>
+ </dl>
+ <p>
+  The output for the flag
+  <b>
+   -B
+  </b>
+  contains the Pressure Stall Information (PSI):
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    cs_10_60_300
+   </b>
+  </dt>
+  <dd>
+   Average pressure percentage over the last 10, 60 and 300 seconds for the
+category 'CPU some'.
+  </dd>
+  <dt>
+   <b>
+    ms_10_60_300
+   </b>
+  </dt>
+  <dd>
+   Average pressure percentage over the last 10, 60 and 300 seconds for the
+category 'memory some'.
+  </dd>
+  <dt>
+   <b>
+    mf_10_60_300
+   </b>
+  </dt>
+  <dd>
+   Average pressure percentage over the last 10, 60 and 300 seconds for the
+category 'memory full'.
+  </dd>
+  <dt>
+   <b>
+    is_10_60_300
+   </b>
+  </dt>
+  <dd>
+   Average pressure percentage over the last 10, 60 and 300 seconds for the
+category 'I/O some'.
+  </dd>
+  <dt>
+   <b>
+    if_10_60_300
+   </b>
+  </dt>
+  <dd>
+   Average pressure percentage over the last 10, 60 and 300 seconds for the
+category 'I/O full'.
   </dd>
  </dl>
  <p>
@@ -2451,6 +2607,87 @@ entity (tcpAttemptFails).
  <p>
   The output for the flag
   <b>
+   -h
+  </b>
+  provides information about utilization of Infiniband ports:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    controller
+   </b>
+  </dt>
+  <dd>
+   Name of controller.
+  </dd>
+  <dt>
+   <b>
+    port
+   </b>
+  </dt>
+  <dd>
+   Controller port.
+  </dd>
+  <dt>
+   <b>
+    busy
+   </b>
+  </dt>
+  <dd>
+   Busy percentage for this port.
+  </dd>
+  <dt>
+   <b>
+    ipack/s
+   </b>
+  </dt>
+  <dd>
+   Number of packets received from this port per second.
+  </dd>
+  <dt>
+   <b>
+    opack/s
+   </b>
+  </dt>
+  <dd>
+   Number of packets transmitted to this port per second.
+  </dd>
+  <dt>
+   <b>
+    igbps/s
+   </b>
+  </dt>
+  <dd>
+   Effective number of gigabits received per second.
+  </dd>
+  <dt>
+   <b>
+    ogbps/s
+   </b>
+  </dt>
+  <dd>
+   Effective number of gigabits transmitted per second.
+  </dd>
+  <dt>
+   <b>
+    maxgbps/s
+   </b>
+  </dt>
+  <dd>
+   Maximum rate as number of gigabits per second.
+  </dd>
+  <dt>
+   <b>
+    lanes
+   </b>
+  </dt>
+  <dd>
+   Number of lanes.
+  </dd>
+ </dl>
+ <p>
+  The output for the flag
+  <b>
    -O
   </b>
   provides information about the top-3 of processes with the highest
@@ -2617,7 +2854,7 @@ so a high percentage does not imply a high network load on system level.
   </dd>
  </dl>
  <p>
-  To see the memory occupation for June 5, 2012 between 10:00 and 12:30
+  To see the memory occupation for June 5, 2018 between 10:00 and 12:30
 (supposed that
   <b>
    pmlogger
@@ -2629,7 +2866,7 @@ so a high percentage does not imply a high network load on system level.
  <dl compact="">
   <dt>
    <b>
-    pcp-atopsar -m -r $PCP_LOG_DIR/pmlogger/acme.com/20120605 -b 10:00 -e 12:30
+    pcp-atopsar -m -r $PCP_LOG_DIR/pmlogger/acme.com/20180605 -b 10:00 -e 12:30
    </b>
   </dt>
   <dd>
@@ -2640,14 +2877,14 @@ so a high percentage does not imply a high network load on system level.
   </dd>
   <dt>
    <b>
-    pcp-atopsar -m -r 20120605 -b 10:00 -e 12:30
+    pcp-atopsar -m -r 20180605 -b 10:00 -e 12:30
    </b>
   </dt>
   <dd>
    <br/>
    <br/>
    <br/>
-   or, suppose it is June 8, 2012 at this moment
+   or, suppose it is June 8, 2018 at this moment
   </dd>
   <dt>
    <b>
@@ -2955,7 +3192,7 @@ and
 <div class='row'>
 <div class='colspan2-2'>
 <p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2019 Red Hat
 </p>
 </div>
 </div>

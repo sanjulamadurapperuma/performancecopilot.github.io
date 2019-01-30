@@ -741,7 +741,7 @@ dcb2a032a308b5717bf605ba8f8737e9c6e1ed19
    Convenience option to report all metadata for the given timeseries,
 equivalent to
    <b>
-    -dilmsS
+    -dilms
    </b>
    .
   </dd>
@@ -921,7 +921,13 @@ and the
  </h2>
  A source is a unique identifier (represented externally as a 40-byte
 hexadecimal SHA-1 hash) that represents both the live host and/or
-archives from which each timeseries originated can be reported with:
+archives from which each timeseries originated.
+The context for a source identifier (obtained with
+ <b>
+  -s
+ </b>
+ ) can be
+reported with:
  <dl compact="">
   <dt>
    <b>
@@ -935,13 +941,6 @@ archives from which each timeseries originated can be reported with:
   <dd>
    Print names for timeseries sources.
 These names are either hostnames or fully qualified archive paths.
-This option has a direct
-   <b>
-    <a href="/man/man1/pminfo.1.html">
-     pminfo
-    </a>
-   </b>
-   (1) equivalent.
   </dd>
  </dl>
  <p>
@@ -1578,7 +1577,7 @@ and
 <div class='row'>
 <div class='colspan2-2'>
 <p class='legal'>
-This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2018 Red Hat
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2019 Red Hat
 </p>
 </div>
 </div>
