@@ -887,14 +887,14 @@ filesys.free #'/dev/usr' /
 -&gt; alarm 4 hour "/usr filesystem (almost) full";
 </pre>
  <p>
-  The following rule requires a machine that supports the PCP environment metrics.
+  The following rule requires a machine that supports the lmsensors metrics.
 If the machine environment temperature rises more than 2 degrees over a
 10 minute interval, write an entry in the system log:
  </p>
  <p>
  </p>
  <pre>
-environ.temp @0 - environ.temp @1 &gt; 2
+lmsensors.coretemp_isa.temp1 @0 - lmsensors.coretemp_isa.temp1 @1 &gt; 2
 -&gt; alarm "temperature rising fast" &amp;
    syslog "machine room temperature rise alarm";
 </pre>

@@ -77,10 +77,10 @@
  ]
 [
  <b>
-  -p
+  -c
  </b>
  <i>
-  port
+  config
  </i>
  ]
 [
@@ -89,6 +89,14 @@
  </b>
  <i>
   host
+ </i>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  port
  </i>
  ]
 [
@@ -1010,33 +1018,52 @@ of the query language.
 metadata and sources options described above, are:
  <dl compact="">
   <dt>
-   <dt>
-    <b>
-     -h
-    </b>
-    <i>
-     host
-    </i>
-    ,
-    <b>
-     --host
-    </b>
-    =
-    <i>
-     host
-    </i>
-   </dt>
+   <b>
+    -c
+   </b>
+   <i>
+    config
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    config
+   </i>
   </dt>
   <dd>
-   <dd>
-    Connect Redis server at
-    <i>
-     host
-    </i>
-    ,
+   Specify the
+   <i>
+    config
+   </i>
+   file to use.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Connect Redis server at
+   <i>
+    host
+   </i>
+   ,
 
 rather than the one the localhost.
-   </dd>
   </dd>
   <dt>
    <b>
