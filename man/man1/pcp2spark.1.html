@@ -752,9 +752,9 @@ and
     -5
    </b>
    ,
-   <i>
+   <b>
     --ignore-unknown
-   </i>
+   </b>
   </dt>
   <dd>
    Silently ignore any metric name that cannot be resolved.
@@ -1326,8 +1326,13 @@ non-leaf nodes of the PMNS tree for reporting.
    Perform instance live filtering.
 This allows capturing all filtered instances even if processes
 are restarted at some point (unlike without live filtering).
-Doing live filtering over a huge amount of instances naturally
-comes with some overhead so a bit of user caution is advised.
+Performing live filtering over a huge amount of instances will add
+some internal overhead so a bit of user caution is advised.
+See also
+   <b>
+    -n
+   </b>
+   .
   </dd>
   <dt>
    <b>
@@ -1435,7 +1440,7 @@ See also
   </dt>
   <dd>
    Perform ranking before live filtering.
-By default instance live filter filtering (when requested, see
+By default instance live filtering (when requested, see
    <b>
     -j
    </b>
@@ -1479,9 +1484,9 @@ By default ranking (see
    )
 
 happens for each metric individually.
-With predicate filter reference metrics, ranking is done only for the
-specified metrics.
-When reporting, the rest of the metrics sharing the same
+With predicates, ranking is done only for the
+specified predicate metrics.
+When reporting, rest of the metrics sharing the same
    <i>
     instance domain
    </i>
@@ -1493,23 +1498,23 @@ When reporting, the rest of the metrics sharing the same
    </b>
    (1))
 
-as the predicates will include only the highest/lowest ranking
-instances of the corresponding predicates.
+as the predicate will include only the highest/lowest ranking
+instances of the corresponding predicate.
    <dl compact="">
     <dt>
     </dt>
     <dd>
      <p>
-      So for example, when the using
+      So for example, using
       <b>
        proc.memory.rss
       </b>
-      (resident size of process)
+      (resident memory size of process)
 as the
       <i>
        predicate
       </i>
-      and including
+      metric together with
       <b>
        proc.io.total_bytes
       </b>
@@ -1517,14 +1522,14 @@ as the
       <b>
        mem.util.used
       </b>
-      as metrics
-to be reported, only the processes using most/least memory (as per
+      as
+metrics to be reported, only the processes using most/least (as per
       <b>
        -J
       </b>
       )
 
-will be included when reporting total bytes written by processes.
+memory will be included when reporting total bytes written by processes.
 Since
       <b>
        mem.util.used

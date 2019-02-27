@@ -1568,6 +1568,23 @@ Lexical elements may be quoted (double quotes) as necessary.
   </dd>
  </dl>
  <p>
+  In addition to (or instead of) the access section in the
+  <b>
+   pmcd
+  </b>
+  configuration file, access control specifications are also
+read from a file having the same name as the
+  <b>
+   pmcd
+  </b>
+  configuration file, but with '.access' appended to the name.
+This optional file must not contain the
+  <b>
+   [access]
+  </b>
+  keyword.
+ </p>
+ <p>
   Leading and trailing whitespace may appear around and within the brackets and
 the case of the
   <b>
@@ -2493,6 +2510,14 @@ for details).
   </dt>
   <dd>
    default configuration file
+  </dd>
+  <dt>
+   <i>
+    $PCP_PMCDCONF_PATH.access
+   </i>
+  </dt>
+  <dd>
+   optional access control specification file
   </dd>
   <dt>
    <i>

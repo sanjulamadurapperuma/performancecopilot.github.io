@@ -67,6 +67,18 @@
  </b>
  ,
  <b>
+  pmdaSetData
+ </b>
+ ,
+ <b>
+  pmdaExtGetData
+ </b>
+ ,
+ <b>
+  pmdaExtSetData
+ </b>
+ ,
+ <b>
   pmdaSetFlags
  </b>
  ,
@@ -119,7 +131,8 @@
    nmetrics
   </i>
   );
-  <br/>
+ </p>
+ <p>
   <br/>
   void pmdaRehash(pmdaExt *
   <i>
@@ -134,7 +147,8 @@
    nmetrics
   </i>
   );
-  <br/>
+ </p>
+ <p>
   <br/>
   void pmdaSetFlags(pmdaInterface *
   <i>
@@ -165,6 +179,36 @@
   , int
   <i>
    flags
+  </i>
+  );
+ </p>
+ <p>
+  <br/>
+  void pmdaSetData(pmdaInterface *
+  <i>
+   dispatch
+  </i>
+  , void *
+  <i>
+   data
+  </i>
+  );
+  <br/>
+  <br/>
+  void pmdaExtSetData(pmdaExt *
+  <i>
+   pmda
+  </i>
+  , void *
+  <i>
+   data
+  </i>
+  );
+  <br/>
+  <br/>
+  void *pmdaExtGetData(pmdaExt *
+  <i>
+   pmda
   </i>
   );
  </p>
@@ -594,6 +638,37 @@ attributes).
   </a>
  </p>
  <h2>
+  PRIVATE DATA
+ </h2>
+ A facility for associating private PMDA data with the
+ <b>
+  pmdaExt
+ </b>
+ structure is available.
+This allows a PMDA to associate an arbitrary (and typically not
+global) pointer with the
+ <b>
+  pmdaExt
+ </b>
+ such that it can be later obtained during callbacks.
+The interfaces for setting this pointer are
+ <b>
+  pmdaSetData
+ </b>
+ and
+ <b>
+  pmdaExtSetData
+ </b>
+ ,
+
+and
+ <b>
+  pmdaExtGetData
+ </b>
+ for subsequently retrieving it.
+ <a name="lbAJ">
+ </a>
+ <h2>
   DIAGNOSTICS
  </h2>
  <b>
@@ -775,7 +850,7 @@ This is a non-fatal warning message - a fallback to linear searching
 will be automatically performed should this situation arise.
   </dd>
  </dl>
- <a name="lbAJ">
+ <a name="lbAK">
  </a>
  <h2>
   CAVEAT
@@ -821,7 +896,7 @@ to use
   .
  </p>
  <p>
-  <a name="lbAK">
+  <a name="lbAL">
   </a>
  </p>
  <h2>
@@ -961,20 +1036,27 @@ and
   </dd>
   <dt>
    <a href="#lbAI">
-    DIAGNOSTICS
+    PRIVATE DATA
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    CAVEAT
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
+    CAVEAT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
     SEE ALSO
    </a>
   </dt>

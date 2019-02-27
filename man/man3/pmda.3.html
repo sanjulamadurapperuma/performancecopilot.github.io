@@ -1284,6 +1284,46 @@ then call
   /lib/pmdaproc.sh
 
 file and the following section.
+ </p>
+ <p>
+  Optionally, a PMDA may provide an
+  <i>
+   Upgrade
+  </i>
+  script alongside
+  <i>
+   Install
+  </i>
+  and
+  <i>
+   Remove
+  </i>
+  .
+
+If present this script will be used by the
+  <b>
+   pmcd
+  </b>
+  startup process to ensure corrections to an installation
+have been made before starting the PMDA.
+Examples of such corrections include: updates to
+  <i>
+   pmcd.conf
+  </i>
+  when a PMDA script or binary has been renamed, when the
+PMDA supports a new format of its configuration file, or
+if there is some latent problem from an earlier install
+(e.g. some PMDAs may need to introduce use of the
+  <b>
+   notready
+  </b>
+  keyword in
+  <i>
+   pmcd.conf
+  </i>
+  ,
+
+as described below).
   <a name="lbAN">
   </a>
  </p>
