@@ -2245,6 +2245,65 @@ been exceeded.
   </a>
  </p>
  <h2>
+  AGENT FENCING
+ </h2>
+ Preventing sampling during the life of a PMDA is sometimes desirable, for
+example if that sampling impacts on sensitive phases of a scheduled job.
+A temporary ``fence'' can be raised to block all PMAPI client access to
+one or more agents in this situation.
+This functionality is provided by the built-in PMCD PMDA and the
+ <b>
+  pmstore (1)
+ </b>
+ command, as in
+ <p>
+ </p>
+ <pre>
+# pmstore -i nfsclient,kvm pmcd.agent.fenced 1
+
+</pre>
+ <p>
+  If the optional comma-separated list of agent names is omitted, all agents
+will be fenced.
+To resume normal operation, the ``fence'' can be lowered as follows
+ </p>
+ <p>
+ </p>
+ <pre>
+# pmstore -i nfsclient,kvm pmcd.agent.fenced 0
+
+</pre>
+ <p>
+  Lowering the fence for all PMDAs at once is performed using
+ </p>
+ <p>
+ </p>
+ <pre>
+# pmstore pmcd.agent.fenced 0
+
+</pre>
+ <p>
+  Elevated privileges are required to store to the
+  <i>
+   pmcd.agent.fenced
+  </i>
+  metric.
+For additional information, see the help text associated with this metric,
+which can be accessed using the fI-T
+  <b>
+   , --helptext
+  </b>
+  option to
+  <b>
+   <a href="/man/man1/pminfo.1.html">
+    pminfo
+   </a>
+  </b>
+  (1).
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
   RECONFIGURING PMCD
  </h2>
  If the configuration file has been changed or if an agent is not responding
@@ -2320,7 +2379,7 @@ then send
    pmcd
   </b>
   a SIGHUP, which will cause the agent to be restarted.
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h2>
@@ -2496,7 +2555,7 @@ or that the extended host specification syntax is used
   (1)
 
 for details).
-  <a name="lbAJ">
+  <a name="lbAK">
   </a>
  </p>
  <h2>
@@ -2630,7 +2689,7 @@ This database can be created and queried using the NSS
    group names, group identifiers and group members, used for access control specifications
   </dd>
  </dl>
- <a name="lbAK">
+ <a name="lbAL">
  </a>
  <h2>
   ENVIRONMENT
@@ -2727,7 +2786,7 @@ When set to a non-zero value,
   </b>
   will attempt to restart such PMDAS once every minute.
 When set to zero, it uses the original behaviour of just logging the failure.
-  <a name="lbAL">
+  <a name="lbAM">
   </a>
  </p>
  <h2>
@@ -2757,7 +2816,7 @@ as described in
   </a>
  </b>
  (5).
- <a name="lbAM">
+ <a name="lbAN">
  </a>
  <h2>
   DIAGNOSTICS
@@ -2807,7 +2866,7 @@ it down (after some timeout period) it will not be possible to run
    appl2
   </b>
   for tracing the configuration file scanner and parser.
-  <a name="lbAN">
+  <a name="lbAO">
   </a>
  </p>
  <h2>
@@ -2860,7 +2919,7 @@ trying to connect to
    pmcd
   </b>
   .
-  <a name="lbAO">
+  <a name="lbAP">
   </a>
  </p>
  <h2>
@@ -2999,55 +3058,62 @@ and
   </dd>
   <dt>
    <a href="#lbAH">
-    RECONFIGURING PMCD
+    AGENT FENCING
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    STARTING AND STOPPING PMCD
+    RECONFIGURING PMCD
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    FILES
+    STARTING AND STOPPING PMCD
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
-    ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAL">
-    PCP ENVIRONMENT
+    ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAM">
-    DIAGNOSTICS
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAN">
-    CAVEATS
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAO">
+    CAVEATS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAP">
     SEE ALSO
    </a>
   </dt>

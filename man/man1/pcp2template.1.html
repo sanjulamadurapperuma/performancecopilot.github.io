@@ -42,7 +42,7 @@
 <div class='manpage'>
 ﻿
  <h1>
-  PMREP
+  PCP2XXX
  </h1>
  Section: User Commands  (1)
  <br/>
@@ -59,20 +59,20 @@
   NAME
  </h2>
  <b>
-  pmrep
+  pcp2XXX
  </b>
- - performance metrics reporter
+ - pcp-to-XXX metrics exporter
  <a name="lbAC">
  </a>
  <h2>
   SYNOPSIS
  </h2>
  <b>
-  pmrep
+  pcp2XXX
  </b>
  [
  <b>
-  -12357CdgGHIjkLnprRuUvVxz?
+  -5CGHIjLnrRvVz?
  </b>
  ]
 [
@@ -81,14 +81,6 @@
  </b>
  <i>
   action
- </i>
- ]
-[
- <b>
-  -6
- </b>
- <i>
-  sort-metric
  </i>
  ]
 [
@@ -170,14 +162,6 @@
  ]
 [
  <b>
-  -E
- </b>
- <i>
-  lines
- </i>
- ]
-[
- <b>
   -f
  </b>
  <i>
@@ -226,26 +210,10 @@
  ]
 [
  <b>
-  -l
- </b>
- <i>
-  delimiter
- </i>
- ]
-[
- <b>
   -N
  </b>
  <i>
   predicate
- </i>
- ]
-[
- <b>
-  -o
- </b>
- <i>
-  output
  </i>
  ]
 [
@@ -314,26 +282,6 @@
  ]
 [
  <b>
-  -w
- </b>
- |
- <b>
-  -W
- </b>
- <i>
-  width
- </i>
- ]
-[
- <b>
-  -X
- </b>
- <i>
-  label
- </i>
- ]
-[
- <b>
   -y
  </b>
  |
@@ -364,316 +312,88 @@
   DESCRIPTION
  </h2>
  <b>
-  pmrep
+  pcp2XXX
  </b>
- is a customizable performance metrics reporting tool.
+ is a customizable performance metrics exporter tool from PCP to
+XXX.
 Any available performance metric, live or archived, system and/or
-application, can be selected for reporting using one of the output
-alternatives listed below together with applicable formatting options.
+application, can be selected for exporting using either command line
+arguments or a configuration file.
  <p>
   <b>
-   pmrep
+   pcp2XXX
   </b>
-  collects the selected metric values through the facilities of the
-Performance Co-Pilot (PCP), see
+  is a close relative of
   <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
+   <a href="/man/man1/pmrep.1.html">
+    pmrep
    </a>
   </b>
   (1).
 
-The metrics to be reported are specified on the command line,
-in a configuration file, or both.
-Metrics can be automatically converted and scaled using the PCP facilities,
-either by default or by per-metric scaling specifications.
-In addition to the existing metrics, derived metrics can be defined using
-the arithmetic expressions described in
+Please refer to
   <b>
-   <a href="/man/man3/pmregisterderived.3.html">
-    pmRegisterDerived
-   </a>
-  </b>
-  (3).
- </p>
- <p>
-  Unless directed to another host by the
-  <b>
-   -h
-  </b>
-  option,
-  <b>
-   pmrep
-  </b>
-  will contact the Performance Metrics Collector Daemon (PMCD, see
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1))
-
-on the local host.
- </p>
- <p>
-  The
-  <b>
-   -a
-  </b>
-  option causes
-  <b>
-   pmrep
-  </b>
-  to use the specified set of archive logs rather than connecting to a PMCD.
-The
-  <b>
-   -a
-  </b>
-  and
-  <b>
-   -h
-  </b>
-  options are mutually exclusive.
- </p>
- <p>
-  The
-  <b>
-   -L
-  </b>
-  option causes
-  <b>
-   pmrep
-  </b>
-  to use a local context to collect metrics from DSO PMDAs (Performance
-Metrics Domain Agents, ``plugins'') on the local host without PMCD.
-Only some metrics are available in this mode.
-The
-  <b>
-   -a
-  </b>
-  ,
-  <b>
-   -h
-  </b>
-  ,
-
-and
-  <b>
-   -L
-  </b>
-  options are mutually exclusive.
- </p>
- <p>
-  The metrics of interest are named in the
-  <i>
-   metricspec
-  </i>
-  argument(s).
-If a metricspec specifies a non-leaf node in the
-Performance Metrics Name Space (PMNS), then
-  <b>
-   pmrep
-  </b>
-  will recursively descend the PMNS and report on all leaf nodes (i.e.,
-metrics) for that metricspec.
-(Use for example
-  <b>
-   <a href="/man/man1/pminfo.1.html">
-    pminfo
+   <a href="/man/man1/pmrep.1.html">
+    pmrep
    </a>
   </b>
   (1)
 
-to list all the leaf nodes and their descriptions.)
- </p>
- <p>
-  A
+for the
   <i>
    metricspec
   </i>
-  has three different forms.
-First, on the command line it can start with a colon (``:'') to indicate a
-  <i>
-   metricset
-  </i>
-  to be read from a
+  description accepted on
   <b>
-   pmrep
+   pcp2XXX
   </b>
-  configuration file (see
+  command line and
   <b>
    <a href="/man/man5/pmrep.conf.5.html">
     pmrep.conf
    </a>
   </b>
-  (5))
+  (5)
 
-which can then consist of any number of metricspecs.
-Second, a
-  <i>
-   metricspec
-  </i>
-  starting with non-colon specifies a PMNS node as described above,
-optionally followed by metric formatting definitions.
-This so-called
-  <i>
-   compact form
-  </i>
-  of a metricspec is defined as follows:
- </p>
- <p>
- </p>
- <pre>
-metric[,label[,instances[,unit/scale[,type[,width[,precision[,limit]]]]]]]
-</pre>
- <p>
-  A valid PMNS node
-(
-  <i>
-   metric
-  </i>
-  )
-
-is mandatory.
-It can be followed by a text
-  <i>
-   label
-  </i>
-  used by supporting output targets (currently:
-  <i>
-   stdout
-  </i>
-  ,
-
-see below).
-The optional
-  <i>
-   instances
-  </i>
-  definition restricts
-  <i>
-   csv
-  </i>
-  and
-  <i>
-   stdout
-  </i>
-  reporting to the specified instances (so non-matching instances
-will be filtered).
-An optional
-  <i>
-   unit/scale
-  </i>
-  is applicable for dimension-compatible, non-string metrics.
-(See below for supported
-  <i>
-   unit/scale
-  </i>
-  specifications.)
-By default, cumulative counter metrics are converted to rates, an optional
-  <i>
-   type
-  </i>
-  can be set to
+for description of the
   <b>
-   raw
+   pcp2XXX.conf
   </b>
-  to disable this rate conversion.
-For supporting output targets (currently:
-  <i>
-   stdout
-  </i>
-  )
-
-a numeric
-  <i>
-   width
-  </i>
-  can be used to set the width of the output column for this metric.
-Too-wide numeric values for output will not be printed (apart from
-trailing decimals, numeric values will never be silently truncated).
-Too-wide strings will be truncated.
-Then, a metric-specific
-  <i>
-   precision
-  </i>
-  can be provided for numeric non-integer output values.
-Lastly, a metric-specific
-  <i>
-   limit
-  </i>
-  can be set for filtering numeric values per limit.
- </p>
- <p>
-  As a special case with metrics that are counters with time units
-(nanoseconds to hours), the
-  <i>
-   unit/scale
-  </i>
-  can be used to change the default reporting (for example,
-milliseconds / second) to normalize to the range zero to one
-by setting this to
+  configuration file overall syntax, this page describes
   <b>
-   sec
+   pcp2XXX
   </b>
-  (see also
-  <b>
-   -y
-  </b>
-  and
-  <b>
-   -Y
-  </b>
-  ).
- </p>
- <p>
-  The following
-  <i>
-   metricspec
-  </i>
-  requests the metric
-  <b>
-   kernel.all.sysfork
-  </b>
-  to be reported under the text label
-  <b>
-   forks
-  </b>
-  ,
-
-converting to the default rate count/s in an
-  <b>
-   8
-  </b>
-  wide column.
-Although the definitions in this
-  <i>
-   compact form
-  </i>
-  are optional, they must always be provided in the order specified above.
- </p>
- <p>
- </p>
- <pre>
-kernel.all.sysfork,forks,,,,8
-</pre>
- <p>
-  The third form of a metricspec,
-  <i>
-   verbose form
-  </i>
-  ,
-
-is described and valid only in
+  specific options and configuration file differences with
   <b>
    <a href="/man/man5/pmrep.conf.5.html">
     pmrep.conf
    </a>
   </b>
   (5).
+  <b>
+   <a href="/man/man1/pmrep.1.html">
+    pmrep
+   </a>
+  </b>
+  (1)
+
+also lists some usage examples of which most are applicable with
+  <b>
+   pcp2XXX
+  </b>
+  as well.
  </p>
  <p>
-  Derived metrics are specified like PMNS leaf node metrics.
+  Only the command line options listed on this page are supported,
+other options recognized by
+  <b>
+   <a href="/man/man1/pmrep.1.html">
+    pmrep
+   </a>
+  </b>
+  (1)
+
+are not supported.
  </p>
  <p>
   Options via environment values (see
@@ -690,6 +410,157 @@ environment variables (if any).
 Command line options override the corresponding configuration
 file options (if any).
   <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  CONFIGURATION FILE
+ </h2>
+ <b>
+  pcp2XXX
+ </b>
+ uses a configuration file with overall syntax described in
+ <b>
+  <a href="/man/man5/pmrep.conf.5.html">
+   pmrep.conf
+  </a>
+ </b>
+ (5).
+
+The following options are common with
+ <b>
+  pmrep.conf
+ </b>
+ :
+ <b>
+  version
+ </b>
+ ,
+ <b>
+  source
+ </b>
+ ,
+ <b>
+  speclocal
+ </b>
+ ,
+ <b>
+  derived
+ </b>
+ ,
+ <b>
+  header
+ </b>
+ ,
+ <b>
+  globals
+ </b>
+ ,
+ <b>
+  samples
+ </b>
+ ,
+ <b>
+  interval
+ </b>
+ ,
+ <b>
+  type
+ </b>
+ ,
+ <b>
+  type_prefer
+ </b>
+ ,
+ <b>
+  ignore_incompat
+ </b>
+ ,
+ <b>
+  names_change
+ </b>
+ ,
+ <b>
+  instances
+ </b>
+ ,
+ <b>
+  live_filter
+ </b>
+ ,
+ <b>
+  rank
+ </b>
+ ,
+ <b>
+  limit_filter
+ </b>
+ ,
+ <b>
+  limit_filter_force
+ </b>
+ ,
+ <b>
+  invert_filter
+ </b>
+ ,
+ <b>
+  predicate
+ </b>
+ ,
+ <b>
+  omit_flat
+ </b>
+ ,
+ <b>
+  precision
+ </b>
+ ,
+ <b>
+  precision_force
+ </b>
+ ,
+ <b>
+  count_scale
+ </b>
+ ,
+ <b>
+  count_scale_force
+ </b>
+ ,
+ <b>
+  space_scale
+ </b>
+ ,
+ <b>
+  space_scale_force
+ </b>
+ ,
+ <b>
+  time_scale
+ </b>
+ ,
+ <b>
+  time_scale_force
+ </b>
+ .
+
+The
+ <b>
+  output
+ </b>
+ option is recognized but ignored for
+ <b>
+  pmrep.conf
+ </b>
+ compatibility.
+ <a name="lbAF">
+ </a>
+ <h3>
+  pcp2XXX specific options
+ </h3>
+ <p>
+  None.
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -726,90 +597,6 @@ file options (if any).
   </dd>
   <dt>
    <b>
-    -1
-   </b>
-   ,
-   <b>
-    --dynamic-header
-   </b>
-  </dt>
-  <dd>
-   Print a new dynamically adjusted header every time changes in
-availability of metric and instance values occur.
-By default a static header that never changes is printed once.
-See also
-   <b>
-    -4
-   </b>
-   ,
-   <b>
-    -7
-   </b>
-   ,
-
-and
-   <b>
-    -E
-   </b>
-   .
-  </dd>
-  <dt>
-   <b>
-    -2
-   </b>
-   ,
-   <b>
-    --overall-rank
-   </b>
-  </dt>
-  <dd>
-   Perform overall ranking of instances in archive.
-By default ranking (see
-   <b>
-    -J
-   </b>
-   )
-
-and reporting happens on each interval.
-With this option all instances and values are ranked
-before a summary is reported.
-See
-   <b>
-    <a href="/man/man1/pmlogsummary.1.html">
-     pmlogsummary
-    </a>
-   </b>
-   (1)
-
-for further archive summary reporting alternatives,
-including averages and peak times for values.
-  </dd>
-  <dt>
-   <b>
-    -3
-   </b>
-   ,
-   <b>
-    --overall-rank-alt
-   </b>
-  </dt>
-  <dd>
-   Like
-   <b>
-    -2
-   </b>
-   but print metric instances in
-   <b>
-    pmrep
-   </b>
-   <i>
-    metricspec
-   </i>
-   format,
-to allow easily selecting the instances for further investigation.
-  </dd>
-  <dt>
-   <b>
     -4
    </b>
    <i>
@@ -833,7 +620,7 @@ to allow easily selecting the instances for further investigation.
 These events occur when a PMDA discovers new metrics sometime
 after starting up, and informs running client tools like
    <b>
-    pmrep
+    pcp2XXX
    </b>
    .
 
@@ -855,14 +642,6 @@ and
     abort
    </b>
    (exit the program if such an event happens).
-   <i>
-    update
-   </i>
-   implies
-   <b>
-    --dynamic-header
-   </b>
-   .
   </dd>
   <dt>
    <b>
@@ -876,72 +655,6 @@ and
   <dd>
    Silently ignore any metric name that cannot be resolved.
 At least one metric must be found for the tool to start.
-  </dd>
-  <dt>
-   <b>
-    -6
-   </b>
-   ,
-   <b>
-    --sort-metric
-   </b>
-   =
-   <i>
-    sort-metric
-   </i>
-  </dt>
-  <dd>
-   Specify a sort reference metric to sort output by values with
-   <b>
-    -X
-   </b>
-   .
-
-By default sorting order is descending, prepending the metric
-name with the minus sign (``-'') will change the order to be ascending.
-See also
-   <b>
-    -J
-   </b>
-   and
-   <b>
-    -N
-   </b>
-   .
-  </dd>
-  <dt>
-   <b>
-    -7
-   </b>
-   ,
-   <b>
-    --fixed-header
-   </b>
-  </dt>
-  <dd>
-   With
-   <b>
-    -X
-   </b>
-   print a fixed header once (unless using
-   <b>
-    -E
-   </b>
-   )
-including all metrics being reported.
-Unlike with the default (static) header, only instances with values
-available are reported.
-Unlike with the dynamic header, the header is not updated even if
-values for some metrics later become (un)available.
-See also
-   <b>
-    -1
-   </b>
-   and
-   <b>
-    -E
-   </b>
-   .
   </dd>
   <dt>
    <b>
@@ -1037,14 +750,9 @@ Co-Pilot (PCP) archive log files identified by the argument
    </i>
    ,
 
-which is a comma-separated list of names,
-each of which may be the base name of an archive or the name of
+which is a comma-separated list of names, each
+of which may be the base name of an archive or the name of
 a directory containing one or more archives.
-See also
-   <b>
-    -u
-   </b>
-   .
   </dd>
   <dt>
    <b>
@@ -1220,26 +928,32 @@ See also
    </i>
    file to use.
 The default is the first found of:
-   <b>
-    ./pmrep.conf
-   </b>
+   <i>
+    ./pcp2XXX.conf
+   </i>
    ,
-   <b>
-    $HOME/.pmrep.conf
-   </b>
-   ,
-   <b>
-    $HOME/pcp/pmrep.conf
-   </b>
-   ,
+   <i>
+   </i>
+   <tt>
+    $HOME
+   </tt>
+   /.pcp2XXX.conf,
+   <i>
+   </i>
+   <tt>
+    $HOME
+   </tt>
+   /pcp/pcp2XXX.conf,
 
 and
-   <b>
-    $PCP_SYSCONF_DIR/pmrep/pmrep.conf
-   </b>
-   .
+   <i>
+   </i>
+   <tt>
+    $PCP_SYSCONF_DIR
+   </tt>
+   /pcp2XXX.conf.
 
-See
+For details, see the above section and
    <b>
     <a href="/man/man5/pmrep.conf.5.html">
      pmrep.conf
@@ -1281,26 +995,6 @@ either local or remote (see
   <dd>
    Exit before reporting any values, but after parsing the configuration
 and metrics and printing possible headers.
-  </dd>
-  <dt>
-   <b>
-    -d
-   </b>
-   ,
-   <b>
-    --delay
-   </b>
-  </dt>
-  <dd>
-   When replaying from an archive, this option requests that the prevailing
-real-time delay be applied between samples (see
-   <b>
-    -t
-   </b>
-   )
-
-to effect a pause, rather than
-the default behaviour of replaying at full speed.
   </dd>
   <dt>
    <b>
@@ -1357,35 +1051,21 @@ and
   </dd>
   <dt>
    <b>
-    -E
+    -G
    </b>
-   <i>
-    lines
-   </i>
    ,
    <b>
-    --repeat-header
+    --no-globals
    </b>
-   =
-   <i>
-    lines
-   </i>
   </dt>
   <dd>
-   Repeat the header every
-   <i>
-    lines
-   </i>
-   of output.
-See also
+   Do not include global metrics in reporting (see
    <b>
-    -1
+    <a href="/man/man5/pmrep.conf.5.html">
+     pmrep.conf
+    </a>
    </b>
-   and
-   <b>
-    -7
-   </b>
-   .
+   (5)).
   </dd>
   <dt>
    <b>
@@ -1421,29 +1101,11 @@ The format will be used with Python's
    </b>
    (3).
 
-An empty
-   <i>
-    format
-   </i>
-   string (i.e., "") will remove the timestamps from the output.
-Defaults to
-   <b>
-    %H:%M:%S
-   </b>
-   when using the
-   <i>
-    stdout
-   </i>
-   output target.
-Defaults to
+The default is
    <b>
     %Y-%m-%d %H:%M:%S
    </b>
-   when using the
-   <i>
-    csv
-   </i>
-   output target.
+   .
   </dd>
   <dt>
    <b>
@@ -1467,43 +1129,6 @@ Defaults to
     outfile
    </i>
    .
-
-See
-   <b>
-    -o
-   </b>
-   .
-  </dd>
-  <dt>
-   <b>
-    -g
-   </b>
-   ,
-   <b>
-    --separate-header
-   </b>
-  </dt>
-  <dd>
-   Output the column number and complete metric information,
-one-per-line, before printing the metric values.
-  </dd>
-  <dt>
-   <b>
-    -G
-   </b>
-   ,
-   <b>
-    --no-globals
-   </b>
-  </dt>
-  <dd>
-   Do not include global metrics in reporting (see
-   <b>
-    <a href="/man/man5/pmrep.conf.5.html">
-     pmrep.conf
-    </a>
-   </b>
-   (5)).
   </dd>
   <dt>
    <b>
@@ -1577,14 +1202,7 @@ rather than from the default localhost.
    </b>
    ).
 
-By default all current instances are reported,
-except when writing an archive (see
-   <b>
-    -o
-   </b>
-   )
-
-when all instances, present and future, are reported.
+By default all instances, present and future, are reported.
 This is a global option that is used for all metrics unless a
 metric-specific instance definition is provided as part of a
    <i>
@@ -1598,72 +1216,15 @@ instances are still reported as usual, use
     -v
    </b>
    to change this.
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      The list may consist of one or more comma-separated instances.
-The instance name may be quoted with single (') or double (")
-quotes for those cases where the instance name contains commas
-or whitespace.
-Note that on the command line when specifying more than one instance,
-all the names must be quoted.
-     </p>
-     <p>
-      Multiple
-      <b>
-       -i
-      </b>
-      options are allowed as an alternative way of specifying more than
-one instance of interest.
-Regular expressions can also be used.
-     </p>
-     <p>
-      As an example, the following would report the same instances:
-      <b>
-      </b>
-     </p>
-     <p>
-     </p>
-     <pre>
-$ pmrep -i "'1 minute','5 minute'" kernel.all.load
-$ pmrep -i '"1 minute","5 minute"' kernel.all.load
-$ pmrep -i "'1 minute'" -i "'5 minute'" kernel.all.load
-$ pmrep kernel.all.load,,"'1 minute','5 minute'"
-$ pmrep kernel.all.load,,'"1 minute","5 minute"'
+Please refer to
+   <b>
+    <a href="/man/man1/pmrep.1.html">
+     pmrep
+    </a>
+   </b>
+   (1)
 
-</pre>
-     <p>
-     </p>
-     <p>
-      However, this would report only the 1-minute instance:
-      <b>
-      </b>
-     </p>
-     <p>
-     </p>
-     <pre>
-$ pmrep -i '"1 minute","5 minute"' kernel.all.load,,"1 minute"
-
-</pre>
-     <p>
-     </p>
-     <p>
-      But this would report all instances (due to per-metric override):
-      <b>
-      </b>
-     </p>
-     <p>
-     </p>
-     <pre>
-$ pmrep -i '"1 minute","5 minute"' 'kernel.all.load,,.*'
-
-</pre>
-     <p>
-     </p>
-    </dd>
-   </dl>
+for more details on this option.
   </dd>
   <dt>
    <b>
@@ -1680,7 +1241,7 @@ By default incompatible metrics (that is,
 their type is unsupported or they cannot be scaled as requested)
 will cause
    <b>
-    pmrep
+    pcp2XXX
    </b>
    to terminate with an error message.
 With this option all incompatible metrics are silently omitted
@@ -1704,10 +1265,6 @@ are restarted at some point (unlike without live filtering).
 Performing live filtering over a huge amount of instances will add
 some internal overhead so a bit of user caution is advised.
 See also
-   <b>
-    -1
-   </b>
-   and
    <b>
     -n
    </b>
@@ -1740,35 +1297,9 @@ A negative integer will include lowest valued instances in reporting.
 A value of zero performs no ranking.
 See also
    <b>
-    -2
-   </b>
-   ,
-   <b>
-    -6
-   </b>
-   and
-   <b>
     -8
    </b>
    .
-  </dd>
-  <dt>
-   <b>
-    -k
-   </b>
-   ,
-   <b>
-    --extended-csv
-   </b>
-  </dt>
-  <dd>
-   Write extended CSV output, similar to
-   <b>
-    <a href="http://man7.org/linux/man-pages/man1/sadf.1.html">
-     sadf
-    </a>
-   </b>
-   (1).
   </dd>
   <dt>
    <b>
@@ -1815,50 +1346,6 @@ More than one
     -K
    </b>
    option may be used.
-  </dd>
-  <dt>
-   <b>
-    -l
-   </b>
-   <i>
-    delimiter
-   </i>
-   ,
-   <b>
-    --delimiter
-   </b>
-   =
-   <i>
-    delimiter
-   </i>
-  </dt>
-  <dd>
-   Specify the
-   <i>
-    delimiter
-   </i>
-   that separates each column of
-   <i>
-    csv
-   </i>
-   or
-   <i>
-    stdout
-   </i>
-   output.
-The default for
-   <i>
-    stdout
-   </i>
-   is two spaces (``  '') and comma (``,'') for
-   <i>
-    csv
-   </i>
-   .
-
-In case of CSV output or stdout output with non-whitespace delimiter,
-any instances of the delimiter in string values will be replaced by
-the underscore (``_'') character.
   </dd>
   <dt>
    <b>
@@ -1992,95 +1479,6 @@ it will be reported as usual.
   </dd>
   <dt>
    <b>
-    -o
-   </b>
-   <i>
-    output
-   </i>
-   ,
-   <b>
-    --output
-   </b>
-   =
-   <i>
-    output
-   </i>
-  </dt>
-  <dd>
-   Use
-   <i>
-    output
-   </i>
-   target for reporting.
-The default target is
-   <i>
-    stdout
-   </i>
-   .
-
-The available target alternatives are:
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <dl compact="">
-      <dt>
-       <i>
-        archive
-       </i>
-      </dt>
-      <dd>
-       Record metrics into a PCP archive which can later be replayed with PCP
-tools, including
-       <b>
-        pmrep
-       </b>
-       itself.
-See
-       <b>
-        <a href="/man/man5/logarchive.5.html">
-         LOGARCHIVE
-        </a>
-       </b>
-       (5)
-
-and
-       <b>
-        <a href="/man/man1/pcpintro.1.html">
-         PCPIntro
-        </a>
-       </b>
-       (1)
-
-for details about PCP archive files.
-Requires
-       <b>
-        -F
-       </b>
-       .
-      </dd>
-      <dt>
-       <i>
-        csv
-       </i>
-      </dt>
-      <dd>
-       Print metrics in CSV format (subject to formatting options).
-      </dd>
-      <dt>
-       <i>
-        stdout
-       </i>
-      </dt>
-      <dd>
-       Print metrics to stdout (format subject to formatting options).
-      </dd>
-     </dl>
-    </dd>
-   </dl>
-  </dd>
-  <dt>
-   <b>
     -O
    </b>
    <i>
@@ -2126,19 +1524,6 @@ for a complete description of the syntax for
   </dd>
   <dt>
    <b>
-    -p
-   </b>
-   ,
-   <b>
-    --timestamps
-   </b>
-  </dt>
-  <dd>
-   Print timestamps.
-By default no timestamps are printed.
-  </dd>
-  <dt>
-   <b>
     -P
    </b>
    <i>
@@ -2159,12 +1544,6 @@ By default no timestamps are printed.
     precision
    </i>
    for numeric non-integer output values.
-If the value is too wide for its column width,
-   <i>
-    precision
-   </i>
-   is reduced one by one until the value fits,
-or not printed at all if it does not.
 The default is to use 3 decimal places (when applicable).
 This option will
    <i>
@@ -2273,7 +1652,6 @@ See also
   </dt>
   <dd>
    Output raw metric values, do not convert cumulative counters to rates.
-When writing archives, raw values are always used.
 This option
    <i>
     will
@@ -2332,7 +1710,7 @@ If
    </b>
    is not specified,
    <b>
-    pmrep
+    pcp2XXX
    </b>
    will sample and report continuously (in real time mode) or until the end
 of the set of PCP archives (in archive mode).
@@ -2420,11 +1798,7 @@ See also the
    <b>
     -T
    </b>
-   and
-   <b>
-    -u
-   </b>
-   options.
+   option.
   </dd>
   <dt>
    <b>
@@ -2470,7 +1844,7 @@ for a complete description of the syntax for
      <p>
       When used to define the runtime before
       <b>
-       pmrep
+       pcp2XXX
       </b>
       will exit,
 if no
@@ -2524,85 +1898,12 @@ and
       </i>
       determines the actual time
       <b>
-       pmrep
+       pcp2XXX
       </b>
       will run.
      </p>
     </dd>
    </dl>
-  </dd>
-  <dt>
-   <b>
-    -u
-   </b>
-   ,
-   <b>
-    --no-interpol
-   </b>
-  </dt>
-  <dd>
-   When reporting archived metrics, by default values are reported
-according to the selected sample interval (
-   <b>
-    -t
-   </b>
-   option), not according to the actual record interval in an archive.
-To this effect PCP interpolates the values to be reported based on the
-records in the archive.
-With the
-   <b>
-    -u
-   </b>
-   option uninterpolated reporting is enabled, every recorded value for the
-selected metrics is reported and the requested sample interval (
-   <b>
-    -t
-   </b>
-   )
-
-is ignored.
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      So for example, if a PCP archive contains recorded values for every 10
-seconds and the requested sample interval is 1 hour, by default
-      <b>
-       pmrep
-      </b>
-      will use an interpolation scheme to compute the values of the requested
-metrics from the values recorded in the proximity of these requested
-metrics and values for every 1 hour are reported.
-With
-      <b>
-       -u
-      </b>
-      every record every 10 seconds are reported as such (the reported values
-are still subject to rate conversion, use
-      <b>
-       -r
-      </b>
-      or
-      <b>
-       -R
-      </b>
-      to disable).
-     </p>
-    </dd>
-   </dl>
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-   ,
-   <b>
-    --no-unit-info
-   </b>
-  </dt>
-  <dd>
-   Omit unit information from headers.
   </dd>
   <dt>
    <b>
@@ -2640,132 +1941,27 @@ See
   </dd>
   <dt>
    <b>
-    -w
-   </b>
-   <i>
-    width
-   </i>
-   ,
-   <b>
-    --width
-   </b>
-   =
-   <i>
-    width
-   </i>
-  </dt>
-  <dd>
-   Set the
-   <i>
-    stdout
-   </i>
-   output column
-   <i>
-    width
-   </i>
-   .
-
-Strings will be truncated to this width.
-The default
-   <i>
-    width
-   </i>
-   is the shortest that can fit the metric text label, the forced minimum is 3.
-This option will
-   <i>
-    not
-   </i>
-   override possible per-metric specifications.
-  </dd>
-  <dt>
-   <b>
-    -W
-   </b>
-   <i>
-    width
-   </i>
-   ,
-   <b>
-    --width-force
-   </b>
-   =
-   <i>
-    width
-   </i>
-  </dt>
-  <dd>
-   Like
-   <b>
-    -w
-   </b>
-   but this option
-   <i>
-    will
-   </i>
-   override per-metric specifications.
-  </dd>
-  <dt>
-   <b>
     -x
    </b>
    ,
    <b>
-    --extended-header
+    --with-extended
    </b>
   </dt>
   <dd>
-   Print extended header.
+   Write extended information.
   </dd>
   <dt>
    <b>
     -X
    </b>
-   <i>
-    label
-   </i>
    ,
    <b>
-    --colxrow
+    --with-everything
    </b>
-   =
-   <i>
-    label
-   </i>
   </dt>
   <dd>
-   Swap columns and rows in
-   <i>
-    stdout
-   </i>
-   output, reporting one instance per
-line, using
-   <i>
-    label
-   </i>
-   as the text label for instance column (set to an
-empty string
-   <b>
-    ""
-   </b>
-   to enable swapping without a specific text label).
-This is convenient to allow easily using
-   <b>
-    <a href="/man/man1/grep.1.html">
-     grep
-    </a>
-   </b>
-   (1)
-
-to filter results or to more closely mimic other utilities.
-See also
-   <b>
-    -i
-   </b>
-   and
-   <b>
-    -6
-   </b>
-   .
+   Write everything known about metrics, including PCP internal IDs.
   </dd>
   <dt>
    <b>
@@ -2938,240 +2134,7 @@ UTC offsets are used (so something like -Z EST+5 will become UTC-5).
    Display usage message and exit.
   </dd>
  </dl>
- <a name="lbAF">
- </a>
- <h2>
-  EXAMPLES
- </h2>
- The following examples use the standard PCP facilities for collecting
-the metric values, no external utilities are needed.
-The referenced colon-starting
- <i>
-  metricsets
- </i>
- are part of the system
- <b>
-  pmrep.conf
- </b>
- file.
- <p>
-  Display network interface metrics on the local host:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep network.interface.total.bytes
-</pre>
-  </dd>
- </dl>
- <p>
-  Display all outgoing network metrics for the
-  <i>
-   wlan0
-  </i>
-  interface:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -i wlan0 -v network.interface.out
-</pre>
-  </dd>
- </dl>
- <p>
-  Display timestamped
-  <b>
-   <a href="/man/man8/vmstat.8.html">
-    vmstat
-   </a>
-  </b>
-  (8)
-
-like information using megabytes instead of kilobytes and also include
-the number of inodes used (tab completes available metrics and
-after a colon metricsets with bash and zsh):
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -p -B MB :vmstat vfs.inodes.count
-</pre>
-  </dd>
- </dl>
- <p>
-  Display per-device disk reads and writes from the host
-  <i>
-   server1
-  </i>
-  using two seconds interval and
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/sadf.1.html">
-    sadf
-   </a>
-  </b>
-  (1)
-
-like CSV output format:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -h server1 -t 2s -o csv -k disk.dev.read disk.dev.write
-</pre>
-  </dd>
- </dl>
- <p>
-  Display processes using at least 100MB of memory using
-dynamic headers:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -b MB --limit-filter 100 --dynamic-header proc.memory.rss
-</pre>
-  </dd>
- </dl>
- <p>
-  Display the predefined set of metrics from the default
-  <b>
-   <a href="/man/man5/pmrep.conf.5.html">
-    pmrep.conf
-   </a>
-  </b>
-  (5)
-
-containing information about I/O issued by current
-  <i>
-   firefox
-  </i>
-  process(es):
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -i '.*firefox.*' :proc-io
-</pre>
-  </dd>
- </dl>
- <p>
-  Display the three most CPU-using processes:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -1gUJ 3 proc.hog.cpu
-</pre>
-  </dd>
- </dl>
- <p>
-  Display
-  <b>
-   sar -w
-  </b>
-  and
-  <b>
-   sar -W
-  </b>
-  like information at the same time from the PCP archive
-  <i>
-   ./20150921.09.13
-  </i>
-  showing values recorded between 3 - 5 PM:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -a ./20150921.09.13 -S @15:00 -T @17:00 :sar-w :sar-W
-</pre>
-  </dd>
- </dl>
- <p>
-  Record most relevant CPU, memory, and I/O related information about
-every Java process on the system, present and future, to an archive
-  <i>
-   ./a
-  </i>
-  on one minute interval at every full minute in a background process:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep --daemonize -A 1m -t 1m -i '.*java.*' -j -o archive -F ./a \
-    :proc-info :proc-cpu :proc-mem :proc-io
-</pre>
-  </dd>
- </dl>
- <p>
-  Record all 389 Directory Server, XFS file system, and CPU/memory/disk
-metrics every five seconds for five minutes to a PCP archive
-  <i>
-   ./a
-  </i>
-  :
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -t 5s -T 5m -o archive -F ./a ds389 xfs kernel.all.cpu mem disk
-</pre>
-  </dd>
- </dl>
- <p>
-  Record process memory and I/O information for those processes
-which are the three most memory-consuming processes:
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <b>
-   </b>
-   <pre>
-$ pmrep -o archive -F ./a -J 3 -N proc.memory.rss proc.memory proc.io
-</pre>
-  </dd>
- </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   FILES
@@ -3179,12 +2142,12 @@ $ pmrep -o archive -F ./a -J 3 -N proc.memory.rss proc.memory proc.io
  <dl compact="">
   <dt>
    <i>
-    pmrep.conf
+    pcp2XXX.conf
    </i>
   </dt>
   <dd>
    <b>
-    pmrep
+    pcp2XXX
    </b>
    configuration file (see
    <b>
@@ -3192,23 +2155,8 @@ $ pmrep -o archive -F ./a -J 3 -N proc.memory.rss proc.memory proc.io
    </b>
    )
   </dd>
-  <dt>
-   <i>
-   </i>
-   <tt>
-    $PCP_SYSCONF_DIR
-   </tt>
-   /pmrep/pmrep.conf
-  </dt>
-  <dd>
-   system provided
-   <b>
-    pmrep
-   </b>
-   configuration file
-  </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -3245,7 +2193,7 @@ configuration file, as described in
    </a>
   </b>
   (3).
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h2>
@@ -3266,12 +2214,6 @@ configuration file, as described in
  <b>
   <a href="/man/man1/pcp.1.html">
    pcp
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pcp-atop.1.html">
-   pcp-atop
   </a>
  </b>
  (1),
@@ -3330,86 +2272,14 @@ configuration file, as described in
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmchart.1.html">
-   pmchart
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmcollectl.1.html">
-   pmcollectl
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmdiff.1.html">
-   pmdiff
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmdumplog.1.html">
-   pmdumplog
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmdumptext.1.html">
-   pmdumptext
-  </a>
- </b>
- (1),
- <b>
   <a href="/man/man1/pminfo.1.html">
    pminfo
   </a>
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmiostat.1.html">
-   pmiostat
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogextract.1.html">
-   pmlogextract
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogsummary.1.html">
-   pmlogsummary
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmprobe.1.html">
-   pmprobe
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmstat.1.html">
-   pmstat
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmval.1.html">
-   pmval
-  </a>
- </b>
- (1),
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/sadf.1.html">
-   sadf
-  </a>
- </b>
- (1),
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/sar.1.html">
-   sar
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
   </a>
  </b>
  (1),
@@ -3444,12 +2314,6 @@ configuration file, as described in
  </b>
  (3),
  <b>
-  <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
-   strftime
-  </a>
- </b>
- (3),
- <b>
   <a href="/man/man5/logarchive.5.html">
    LOGARCHIVE
   </a>
@@ -3472,21 +2336,15 @@ configuration file, as described in
    pmrep.conf
   </a>
  </b>
- (5),
+ (5)
+
+and
  <b>
   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
    environ
   </a>
  </b>
- (7)
-
-and
- <b>
-  <a href="/man/man8/vmstat.8.html">
-   vmstat
-  </a>
- </b>
- (8).
+ (7).
  <p>
  </p>
  <hr/>
@@ -3519,34 +2377,43 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
+    CONFIGURATION FILE
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAF">
+      pcp2XXX specific options
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAF">
-    EXAMPLES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAG">
+   <a href="#lbAH">
     FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAH">
+   <a href="#lbAI">
     PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAI">
+   <a href="#lbAJ">
     SEE ALSO
    </a>
   </dt>

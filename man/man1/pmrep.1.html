@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -1235CdgGHIjkLnprRuUvVxz?
+  -12357CdgGHIjkLnprRuUvVxz?
  </b>
  ]
 [
@@ -113,18 +113,18 @@
  ]
 [
  <b>
-  --archive-folio
- </b>
- <i>
-  folio
- </i>
- ]
-[
- <b>
   -A
  </b>
  <i>
   align
+ </i>
+ ]
+[
+ <b>
+  --archive-folio
+ </b>
+ <i>
+  folio
  </i>
  ]
 [
@@ -739,11 +739,17 @@ availability of metric and instance values occur.
 By default a static header that never changes is printed once.
 See also
    <b>
-    -E
-   </b>
-   and
-   <b>
     -4
+   </b>
+   ,
+   <b>
+    -7
+   </b>
+   ,
+
+and
+   <b>
+    -E
    </b>
    .
   </dd>
@@ -905,6 +911,40 @@ See also
   </dd>
   <dt>
    <b>
+    -7
+   </b>
+   ,
+   <b>
+    --fixed-header
+   </b>
+  </dt>
+  <dd>
+   With
+   <b>
+    -X
+   </b>
+   print a fixed header once (unless using
+   <b>
+    -E
+   </b>
+   )
+including all metrics being reported.
+Unlike with the default (static) header, only instances with values
+available are reported.
+Unlike with the dynamic header, the header is not updated even if
+values for some metrics later become (un)available.
+See also
+   <b>
+    -1
+   </b>
+   and
+   <b>
+    -E
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
     -8
    </b>
    <i>
@@ -1008,36 +1048,6 @@ See also
   </dd>
   <dt>
    <b>
-    --archive-folio
-   </b>
-   =
-   <i>
-    folio
-   </i>
-  </dt>
-  <dd>
-   Read metric source archives from the PCP archive
-   <i>
-    folio
-   </i>
-   created by tools like
-   <b>
-    <a href="/man/man1/pmchart.1.html">
-     pmchart
-    </a>
-   </b>
-   (1)
-
-or, less often, manually with
-   <b>
-    <a href="/man/man1/mkaf.1.html">
-     mkaf
-    </a>
-   </b>
-   (1).
-  </dd>
-  <dt>
-   <b>
     -A
    </b>
    <i>
@@ -1073,6 +1083,36 @@ for a complete description of the syntax for
     align
    </i>
    .
+  </dd>
+  <dt>
+   <b>
+    --archive-folio
+   </b>
+   =
+   <i>
+    folio
+   </i>
+  </dt>
+  <dd>
+   Read metric source archives from the PCP archive
+   <i>
+    folio
+   </i>
+   created by tools like
+   <b>
+    <a href="/man/man1/pmchart.1.html">
+     pmchart
+    </a>
+   </b>
+   (1)
+
+or, less often, manually with
+   <b>
+    <a href="/man/man1/mkaf.1.html">
+     mkaf
+    </a>
+   </b>
+   (1).
   </dd>
   <dt>
    <b>
@@ -1340,6 +1380,10 @@ and
 See also
    <b>
     -1
+   </b>
+   and
+   <b>
+    -7
    </b>
    .
   </dd>

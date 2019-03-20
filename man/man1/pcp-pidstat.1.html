@@ -161,23 +161,87 @@
   -?
  </b>
  ]
- <p>
-  <a name="lbAD">
-  </a>
- </p>
+ <a name="lbAD">
+ </a>
  <h2>
   DESCRIPTION
  </h2>
  <b>
   pcp-pidstat
  </b>
- command is used for monitoring individual tasks currently being managed by the Linux kernel. Using various options it helps user to see useful information related with the processes. This information can include percentage CPU, memory and stack usages, scheduling and priority information. By default pcp-pidstat reports live
-data for the local host but can also report for a remote host (--host) or from a previously captured PCP archive (-a).
+ command is used for monitoring individual tasks currently being managed
+by the Linux kernel.
+Using various options it helps user to see useful information related to
+the processes.
+This information includes percentage CPU, memory and stack usage,
+scheduling and priority.
+By default
  <b>
   pcp-pidstat
  </b>
- fetches the data to be analysed from PMCD unless provided -a option. (See below)
+ reports live data for the local host.
  <p>
+  When invoked via the
+  <b>
+   <a href="/man/man1/pcp.1.html">
+    pcp
+   </a>
+  </b>
+  (1)
+
+command, the
+  <b>
+   -h
+  </b>
+  /
+  <b>
+   --host
+  </b>
+  ,
+  <b>
+   -a
+  </b>
+  /
+  <b>
+   --archive
+  </b>
+  ,
+  <b>
+   -O
+  </b>
+  /
+  <b>
+   --origin
+  </b>
+  ,
+  <b>
+   -s
+  </b>
+  /
+  <b>
+   --samples
+  </b>
+  ,
+  <b>
+   -t
+  </b>
+  /
+  <b>
+   --interval
+  </b>
+  ,
+  <b>
+   -Z
+  </b>
+  /
+  <b>
+   --timezone
+  </b>
+  and several other
+  <i>
+   pcp options
+  </i>
+  become indirectly available.
   <a name="lbAE">
   </a>
  </p>
@@ -203,9 +267,9 @@ data for the local host but can also report for a remote host (--host) or from a
   </dt>
   <dd>
    Set the number of samples to be displayed.
-Since the first sample is used for the rate conversion of some of the metrics, the total number of samples reported are one less that N. Default is continous.
-   <p>
-   </p>
+Since the first sample is used for the rate conversion of some of the
+metrics, the total number of samples reported are one less that N.
+Default is continous.
   </dd>
   <dt>
    <b>
@@ -225,14 +289,10 @@ Since the first sample is used for the rate conversion of some of the metrics, t
   <dd>
    Set the interval between two samples.
 Default is one second.
-   <p>
-   </p>
   </dd>
  </dl>
  <p>
   General Options:
- </p>
- <p>
  </p>
  <dl compact="">
   <dt>
@@ -241,50 +301,8 @@ Default is one second.
    </b>
   </dt>
   <dd>
-   In  an  SMP environment, indicates that tasks CPU usage should be divided by the total number of processors.
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -a
-   </b>
-   FILE
-   <b>
-    ,
-   </b>
-   <b>
-    --archive=
-   </b>
-   <i>
-    FILE
-   </i>
-  </dt>
-  <dd>
-   Causes pcp-pidstat to use the specified archive than connecting to PMCD. The argument to -a is a comma-separated
-list of names, each of which may be the base name of an archive or the name of a directory containing one or more archives. Archives can be created using
-   <b>
-    <a href="/man/man1/pmlogger.1.html">
-     pmlogger
-    </a>
-   </b>
-   (1).
-   <p>
-   </p>
-  </dd>
-  <dt>
-   <b>
-    --host
-   </b>
-  </dt>
-  <dd>
-   Current performance metric values are retrieved from the nominated
-   <i>
-    host
-   </i>
-   machine.
-   <p>
-   </p>
+   In an SMP environment, indicates that tasks CPU usage should be divided
+by the total number of processors.
   </dd>
   <dt>
    <b>
@@ -292,7 +310,8 @@ list of names, each of which may be the base name of an archive or the name of a
    </b>
   </dt>
   <dd>
-   Report process states. The argument to -B is one of the following:
+   Report process states.
+The argument to -B is one of the following:
    <p>
     <b>
      detail
@@ -330,27 +349,7 @@ list of names, each of which may be the base name of an archive or the name of a
     </b>
     ]
     <br/>
-    A comma separated list of states which can be any or all of [
-    <b>
-     R
-    </b>
-    ,
-    <b>
-     S
-    </b>
-    ,
-    <b>
-     T
-    </b>
-    ,
-    <b>
-     Z
-    </b>
-    ,
-    <b>
-     D
-    </b>
-    ]. For example,
+    A comma separated list of process states.  For example,
     <b>
      -B R,S
     </b>
@@ -364,8 +363,6 @@ list of names, each of which may be the base name of an archive or the name of a
     </b>
     states and not report processes currently in any other states.
    </p>
-   <p>
-   </p>
   </dd>
   <dt>
    <b>
@@ -373,14 +370,26 @@ list of names, each of which may be the base name of an archive or the name of a
    </b>
   </dt>
   <dd>
-   Use the format string for formatting the timestamp. The format will be used with Python's datetime.strftime method which is mostly the same as that described
+   Use the format string for formatting the timestamp.
+The format will be used with the
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/python.1.html">
+     python
+    </a>
+   </b>
+   (1)
+
+datetime.strftime method which is similar to that described
 in
-   <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
-    strftime
-   </a>
-   (3). An empty format string(i.e,"") will remove the timestamps from the output. The default with stdout is %H:%M:%S.
-   <p>
-   </p>
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+     strftime
+    </a>
+   </b>
+   (3).
+
+An empty format string (i.e, "") will remove the timestamps from the output.
+The default with stdout is %H:%M:%S.
   </dd>
   <dt>
    <b>
@@ -388,7 +397,8 @@ in
    </b>
   </dt>
   <dd>
-   Report realtime priority and scheduling policy information.  The following values may be displayed:
+   Report realtime priority and scheduling policy information.
+The following values may be displayed:
    <p>
     UID
     <br/>
@@ -419,8 +429,6 @@ in
     <br/>
     The command name of the task.
    </p>
-   <p>
-   </p>
   </dd>
   <dt>
    <b>
@@ -428,7 +436,8 @@ in
    </b>
   </dt>
   <dd>
-   Report page faults and memory utilization. The following values may be displayed:
+   Report page faults and memory utilization.
+The following values may be displayed:
    <p>
     UID
     <br/>
@@ -467,7 +476,7 @@ in
    <p>
     %MEM
     <br/>
-    The tasks's currently used share of available physical memory.
+    The tasks currently used share of available physical memory.
    </p>
    <p>
     Command
@@ -483,7 +492,8 @@ in
    </b>
   </dt>
   <dd>
-   Report stack utilization.  The following values may be displayed:
+   Report stack utilization.
+The following values may be displayed:
    <p>
     UID
     <br/>
@@ -514,8 +524,6 @@ in
     <br/>
     The command name of the task.
    </p>
-   <p>
-   </p>
   </dd>
   <dt>
    <b>
@@ -523,9 +531,7 @@ in
    </b>
   </dt>
   <dd>
-   Display version and exit
-   <p>
-   </p>
+   Display version information and exit.
   </dd>
   <dt>
    <b>
@@ -537,8 +543,7 @@ in
    <b>
     pcp-pidstat
    </b>
-   reports the time of day according to the local timezone on the
-system where
+   reports the time of day according to the local timezone on the system where
    <b>
     pcp-pidstat
    </b>
@@ -562,8 +567,6 @@ The
     </a>
    </b>
    (7).
-   <p>
-   </p>
   </dd>
   <dt>
    <b>
@@ -572,23 +575,13 @@ The
   </dt>
   <dd>
    Change the reporting timezone to the local timezone at the host that is
-the source of the performance metrics, as identified via either the
-   <b>
-    -h
-   </b>
-   or
-   <b>
-    -a
-   </b>
-   options.
+the source of the performance metrics.
 When replaying a PCP archive that was captured in a foreign timezone, the
    <b>
     -z
    </b>
-   option would almost always be used (the default reporting timezone is the local timezone,
-which may not be the same as the timezone of the PCP archive).
-   <p>
-   </p>
+   option would almost always be used (the default reporting timezone is the
+local timezone, which may not be the same as the timezone of the PCP archive).
   </dd>
   <dt>
    <b>
@@ -597,8 +590,6 @@ which may not be the same as the timezone of the PCP archive).
   </dt>
   <dd>
    Display the process command name and all its arguments.
-   <p>
-   </p>
   </dd>
   <dt>
    <b>
@@ -610,15 +601,11 @@ which may not be the same as the timezone of the PCP archive).
    </b>
   </dt>
   <dd>
-   Display help and exit
-   <p>
-   </p>
+   Display usage message and exit.
   </dd>
  </dl>
  <p>
   Ouput Filter Options
- </p>
- <p>
  </p>
  <dl compact="">
   <dt>
@@ -641,9 +628,8 @@ which may not be the same as the timezone of the PCP archive).
    <i>
     NAME
    </i>
-   .  This string can be a regular expression.
-   <p>
-   </p>
+   .
+This string can be a regular expression.
   </dd>
   <dt>
    <b>
@@ -652,23 +638,24 @@ which may not be the same as the timezone of the PCP archive).
    <i>
     [USERNAME]
    </i>
-   ,
    <b>
-    --user-name
+    ,
    </b>
-   =
+   <b>
+    --user-name=
+   </b>
    <i>
     [USERNAME]
    </i>
   </dt>
   <dd>
-   Display  the real user name of the tasks being monitored instead of the UID.  If
+   Display  the real user name of the tasks being monitored instead of the UID.
+If
    <i>
     username
    </i>
-   is specified, then only tasks belonging to the specified user are displayed.
-   <p>
-   </p>
+   is specified, then only tasks belonging to the specified
+user are displayed.
   </dd>
   <dt>
    <b>
@@ -694,8 +681,6 @@ which may not be the same as the timezone of the PCP archive).
   </dt>
   <dd>
    Display only processes whose PID belongs to the given Pid List.
-   <p>
-   </p>
   </dd>
  </dl>
  <a name="lbAF">
@@ -716,8 +701,6 @@ which may not be the same as the timezone of the PCP archive).
 
 command and aims to be command line and output compatible with it.
  <p>
- </p>
- <p>
   <a name="lbAG">
   </a>
  </p>
@@ -734,8 +717,14 @@ command and aims to be command line and output compatible with it.
   <a href="/man/man1/pidstat.1.html">
    pidstat
   </a>
-  (1),
  </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/python.1.html">
+   python
+  </a>
+ </b>
+ (1),
  <b>
   <a href="/man/man1/pcpintro.1.html">
    PCPIntro
@@ -745,6 +734,12 @@ command and aims to be command line and output compatible with it.
  <b>
   <a href="/man/man3/pmparseinterval.3.html">
    pmParseInterval
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+   strftime
   </a>
  </b>
  (3)
