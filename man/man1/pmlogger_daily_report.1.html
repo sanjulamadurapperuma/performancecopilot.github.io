@@ -148,22 +148,13 @@
  </b>
  and the associated
  <b>
-  <a href="http://man7.org/linux/man-pages/man5/crontab.5.html">
-   crontab
+  <a href="/man/man1/systemd.1.html">
+   systemd
   </a>
  </b>
- (5)
+ (1)
 
-entry (depending on local platform, either
- <i>
-  $PCP_ETC_DIR/cron.d/pcp-pmlogger-daily-report
- </i>
- or
- <i>
-  $PCP_SYSCONF_DIR/pmlogger/crontab-daily-report
- </i>
- )
-
+services
 write daily performance summary reports, much like those produced by
  <b>
   <a href="http://man7.org/linux/man-pages/man1/sadc.1.html">
@@ -184,19 +175,16 @@ utility.
  <p>
   All of the command line arguments are optional and intended to be self
 explanatory.
-If no arguments are specified,
+The service is not enabled by default.
+If the service is enabled and no arguments are specified,
   <b>
    pmlogger_daily_report
   </b>
   will be run by
   <b>
-   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
-    cron
-   </a>
+   systemd
   </b>
-  (8)
-
-at 2am each morning and write a performance summary report named
+  at 2am each morning and write a performance summary report named
   <b>
    sar
   </b>
@@ -231,20 +219,6 @@ The report will be written to the
    directory
   </i>
   .
-
-Note the default
-  <b>
-   <a href="http://man7.org/linux/man-pages/man5/crontab.5.html">
-    crontab
-   </a>
-  </b>
-  (5)
-
-entry currently specifies
-  <b>
-   $PCP_LOG_DIR/sa
-  </b>
-  as the output directory; this may be changed in the future.
  </p>
  <p>
   If the
@@ -313,11 +287,6 @@ archive as the input).
    archivefile
   </b>
   and write the report to any output directory.
-As such, this tool can be configured by editing the crontab entry,
-  <b>
-   $PCP_ETC_DIR/cron.d/pcp-pmlogger-daily-report
-  </b>
-  and adding whatever command line options are required.
  </p>
  <p>
   If the
@@ -437,13 +406,13 @@ capture the required archives needed by
  </p>
  <p>
   In order to ensure that mail is not unintentionally sent when this
-script is run from
+script is run by
   <b>
-   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
-    cron
+   <a href="/man/man1/systemd.1.html">
+    systemd
    </a>
   </b>
-  (8)
+  (1),
 
 diagnostics are always sent to a log file.
 By default, this file is
@@ -464,15 +433,7 @@ renamed with a
 are generated to the log file.
  </p>
  <p>
-  The output from the
-  <b>
-   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
-    cron
-   </a>
-  </b>
-  (8)
-
-execution of the script may be extended using the
+  The output from the execution of the script may be extended using the
   <b>
    -V
   </b>
@@ -545,12 +506,6 @@ as described in
  </b>
  (1),
  <b>
-  <a href="http://man7.org/linux/man-pages/man5/crontab.5.html">
-   crontab
-  </a>
- </b>
- (5),
- <b>
   <a href="/man/man8/sa2.8.html">
    sa2
   </a>
@@ -559,11 +514,11 @@ as described in
 
 and
  <b>
-  <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
-   cron
+  <a href="/man/man1/systemd.1.html">
+   systemd
   </a>
  </b>
- (8).
+ (1).
  <p>
  </p>
  <hr/>
@@ -643,7 +598,7 @@ and
 <a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
 </li>
 <li>
-<a href='https://pcp.io/roadmap'>Roadmap</a>
+<a href='https://github.com/performancecopilot/pcp/projects/1'>Roadmap</a>
 </li>
 <li>
 <a href='/community.html'>Contributing</a>
