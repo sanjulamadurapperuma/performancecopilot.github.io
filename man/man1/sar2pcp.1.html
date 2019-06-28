@@ -218,9 +218,39 @@ A Python wrapper module is also available.
   </a>
  </p>
  <h2>
-  CAVEATS
+  NOTES
  </h2>
  <a name="ixAAB">
+ </a>
+ As of
+ <b>
+  sysstat
+ </b>
+ version 12.0.5,
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/sadc.1.html">
+   sadc
+  </a>
+ </b>
+ (1) has added functionality to
+directly write
+ <font size="-1">
+  PCP
+ </font>
+ archive files.  To produce archive files from sar run:
+ <p>
+ </p>
+ <pre>
+$ sadf -l -O pcparchive=ARCHIVE_NAME sar.dat -- -A
+</pre>
+ <p>
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  CAVEATS
+ </h2>
+ <a name="ixAAC">
  </a>
  When not using the
  <font size="-1">
@@ -375,7 +405,7 @@ different hardware, even different operating systems - it Just Works (
    TM
   </font>
   ).
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -405,7 +435,7 @@ as described in
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -522,20 +552,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    CAVEATS
+    NOTES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    CAVEATS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

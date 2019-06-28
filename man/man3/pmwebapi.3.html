@@ -62,177 +62,288 @@
   PMWEBAPI
  </b>
  - introduction to the Performance Metrics Web Application Programming Interface
- <p>
- </p>
- <p>
-  <a name="lbAC">
-  </a>
- </p>
+ <a name="lbAC">
+ </a>
  <h2>
-  OVERVIEW
+  HTTP SYNOPSIS
  </h2>
- <p>
-  The PMWEBAPI interface is a binding of a subset of the PMAPI to the
-web.  It uses HTTP as transport, REST as organizational style for
-request/parameter encoding (the GET and POST methods are
-interchangeable), and JSON as response encoding.  A context identifier
-is used as a persistent way to refer to PMAPI contexts across related
-web requests.  These context identifiers expire after a configurable
-period of disuse.
- </p>
- <p>
-  Errors generally result in HTTP-level error responses.
-An
-  <i>
-   Access-Control-Allow-Origin: *
-  </i>
-  header is added to all JSON responses.
- </p>
- <p>
-  <a name="lbAD">
-  </a>
- </p>
- <h2>
-  CONTEXT CREATION: pmNewContext
- </h2>
- <p>
-  To create a new web context identifier, a web client invokes:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/context?hostname=STRING
-   </b>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <b>
-    /pmapi/context?hostspec=STRING
-   </b>
-  </dt>
-  <dd>
-   Creates a PM_CONTEXT_HOST PMAPI context with the given host name and/or extended
-specification.  If the host specification contains a userid/password combination,
-then the corresponding PMAPI context operations will require HTTP Basic authentication
-credentials with matching userid/password.
-  </dd>
- </dl>
- <p>
-  In addition, the web client may add the parameter
-  <b>
-   &amp;polltimeout=MMMM
-  </b>
-  for a maximum interval (in seconds) between expected accesses to the
-given context.  This value is limited by pmwebd configuration, and is
-a courtesy to allow pmwebd to free up memory earlier in case of sudden
-web application shutdown.
- </p>
- <p>
-  If successful, the response from these requests is a JSON document of the form:
- </p>
- <p>
+ <b>
+  GET /metrics
   <br/>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-{ "context" : NNNNN }
-
-</pre>
-  </dd>
- </dl>
+  GET /series/...
+  <br/>
+  GET /pmapi/...
+ </b>
+ <a name="lbAD">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmwebapi.h">
+   pcp/pmwebapi.h
+  </a>
+  &gt;
+ </b>
  <p>
-  The number (a 32-bit unsigned decimal) is then used in all later
-operations.
+  ... assorted routines ...
+  <b>
+  </b>
  </p>
  <p>
+  cc ... -lpcp_web -lpcp
   <a name="lbAE">
   </a>
  </p>
  <h2>
-  CONTEXT CREATION: configurable permanent contexts
+  DESCRIPTION
  </h2>
+ The PMWEBAPI is a collection of interfaces providing
+Performance Co-Pilot services for web applications.
+It consists of APIs for web applications querying
+and analysing both live and historical performance
+data, as well as APIs used by web servers.
  <p>
-  In addition, permanent contexts may be created by pmwebd at
-initialization using its -h, -a, -L command line options, so that a
-set of fixed NNNNN numbers may be made available to web clients.
+  The usual HTTP URL-encoded optional parameter rules
+apply and PMWEBAPI REST requests always follow the
+convention:
  </p>
  <p>
+  <i>
+   /api/endpoint
+  </i>
+  ?
+  <i>
+   parameter1
+  </i>
+  =
+  <i>
+   value1
+  </i>
+  &amp;
+  <i>
+   parameter2
+  </i>
+  =
+  <i>
+   value2
+  </i>
+ </p>
+ <p>
+  Examples in all following sections use the
+  <b>
+   <a href="/man/man1/curl.1.html">
+    curl
+   </a>
+  </b>
+  (1)
+
+command line utility with a local
+  <b>
+   <a href="/man/man1/pmproxy.1.html">
+    pmproxy
+   </a>
+  </b>
+  (1)
+
+server listening on port 44322 (default port).
+The
+  <b>
+   <a href="/man/man1/pmjson.1.html">
+    pmjson
+   </a>
+  </b>
+  (1)
+
+utility is used to neatly format any JSON output,
+as opposed to the compact (minimal whitespace) form
+provided by default.
+The examples in the scalable time series section use
+historical data recorded by the
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+service, in conjunction with a local
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/redis-server.1.html">
+    redis-server
+   </a>
+  </b>
+  (1).
   <a name="lbAF">
   </a>
  </p>
  <h2>
-  PMAPI OPERATIONS
+  OPEN METRICS
  </h2>
- <p>
-  The general form of the requests is as follows:
-  <b>
-   /pmapi/NNNNN/OPERATION
-  </b>
-  where
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi
-   </b>
-  </dt>
-  <dd>
-   is the fixed prefix for all PMWEBAPI operations,
-  </dd>
-  <dt>
-   <b>
-    NNNNN
-   </b>
-  </dt>
-  <dd>
-   is a PMWEBAPI context number returned from a context-creation call, or
-assigned permanently at pmwebd startup, and
-  </dd>
-  <dt>
-   <b>
-    OPERATION?PARAM1=VALUE2&amp;PARAM2=VALUE2
-   </b>
-  </dt>
-  <dd>
-   identifies the operation and its URL-encoded parameters.  Some
-parameters may be optional.
-   <p>
-   </p>
-  </dd>
- </dl>
+ Exporting of live performance metrics in an Open Metrics
+compatible format (as described at
+ <i>
+  <a href="https://openmetrics.io">
+   https://openmetrics.io
+  </a>
+ </i>
+ and popularized by the
+ <i>
+  <a href="https://prometheus.io">
+   https://prometheus.io
+  </a>
+ </i>
+ project) is available.
  <a name="lbAG">
  </a>
  <h3>
-  METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
+  GET /metrics
  </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       names
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of metric names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       times
+      </td>
+      <td>
+       boolean
+      </td>
+      <td>
+       Append sample times (milliseconds since epoch)
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
  <p>
-  The general form of the requests is as follows:
+  Fetches current values and metadata for all metrics, or only
+metrics indicated by a comma-separated list of
+  <i>
+   names
+  </i>
+  .
  </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/NNNNN/_metric
-   </b>
-  </dt>
-  <dd>
-   Traverse the entire Performance Metrics Name Space (PMNS).
-  </dd>
-  <dt>
-   <b>
-    /pmapi/NNNNN/_metric?prefix=NAME
-   </b>
-  </dt>
-  <dd>
-   Traverse the subtree of PMNS with the prefix NAME.
-  </dd>
- </dl>
  <p>
-  The response is a JSON document that provides the metric metadata
-as an array.  For example:
+  For all numeric metrics with the given NAME prefixes, create
+an Open Metrics (Prometheus) text export format giving their
+current value and related metadata.
+ </p>
+ <p>
+  The response has plain text type rather than JSON commonly
+used elsewhere in the REST API.
+This format can be injested by many open source monitoring
+tools, including Prometheus and
+  <b>
+   <a href="/man/man1/pmdaprometheus.1.html">
+    pmdaprometheus
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The native PCP metric metadata (metric name, type, indom,
+semantics and units) is first output for each metric with
+  <b>
+   # PCP
+  </b>
+  prefix.
+The metadata reported is of the form described on
+  <b>
+   <a href="/man/man3/pmtypestr.3.html">
+    pmTypeStr
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmindomstr.3.html">
+    pmInDomStr
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmsemstr.3.html">
+    pmSemStr
+   </a>
+  </b>
+  (3)
+
+and
+  <b>
+   <a href="/man/man3/pmunitsstr.3.html">
+    pmUnitsStr
+   </a>
+  </b>
+  (3)
+
+respectively.
+If the
+  <b>
+   <a href="/man/man3/pmunitsstr.3.html">
+    pmUnitsStr
+   </a>
+  </b>
+  (3)
+
+units string is empty, then
+  <b>
+   none
+  </b>
+  is output.
+The units metadata string may contain spaces and extends to
+the end of the line.
+ </p>
+ <p>
+  PCP metric names are mapped so that the
+  <b>
+   .
+  </b>
+  separators
+are exchanged with
+  <b>
+   _
+  </b>
+  (':' in back-compatibility mode).
+The reported value types are determined from the PCP
+metric types and units/scales are converted to base
+seconds/bytes/count where appropriate, with a corresponding
+suffix added to the mapped metric name.
+Both metric labels and instances are represented as Prometheus
+labels, with external instance names being quoted and the
+flattened PCP metric hierarchy being presented with each value.
  </p>
  <p>
   <br/>
@@ -242,204 +353,148 @@ as an array.  For example:
   </dt>
   <dd>
    <pre>
-{ "metrics": [ 
-    { "name":"foo.bar", "pmID":PPPP, "indom":DDDD,
-      "type":"32", "sem":"instant", "units":"MHz",
-      "text-oneline":"foo bar", "text-help":"blah blah blah" },
-    { "name":"foo.bar2", ... }
-    ...
-  ] }
+$ curl -s <a href="http://localhost:44322/metrics?\">http://localhost:44322/metrics?\</a>
+        names=proc.nprocs,kernel.pernode.cpu.intr,filesys.blocksize
+
+# PCP proc.nprocs 3.8.99 u32 PM_INDOM_NULL instant none
+# HELP proc_nprocs instantaneous number of processes
+# TYPE proc_nprocs gauge
+proc_nprocs {hostname="app1"} 7
+
+# PCP kernel.pernode.cpu.intr 60.0.66 u64 60.19 counter millisec
+# HELP kernel_pernode_cpu_intr_seconds_total total interrupt CPU [...]
+# TYPE kernel_pernode_cpu_intr_seconds_total counter
+kernel_pernode_cpu_intr_seconds_total{hostname="app1",inst.name="node0",inst.id=0} 25603
+
+# PCP filesys.blocksize 60.5.9 u32 60.5 instant byte
+# HELP filesys_blocksize_bytes Size of each block on mounted file[...]
+# TYPE filesys_blocksize_bytes gauge
+filesys_blocksize_bytes{hostname="app1",inst.name="/dev/sda1",inst.id=1} 4096
+filesys_blocksize_bytes{hostname="app1",inst.name="/dev/sda2",inst.id=2} 4096
 
 </pre>
-  </dd>
- </dl>
- <p>
-  Most of the fields are self-explanatory.
- </p>
- <dl compact="">
-  <dt>
-   name
-  </dt>
-  <dd>
-   A name for the metric as defined in the PMNS.
-If the PMNS contains multiple names associated with the metric's
-Performance Metric Identifier (PMID),
-one of these will be returned via name, but there is no way to
-determine which of the duplicate names this will be.
-  </dd>
-  <dt>
-   PPPP
-  </dt>
-  <dd>
-   the PMID
-  </dd>
-  <dt>
-   DDDD
-  </dt>
-  <dd>
-   the instance domain
-  </dd>
-  <dt>
-   type
-  </dt>
-  <dd>
-   from pmTypeStr
-  </dd>
-  <dt>
-   units
-  </dt>
-  <dd>
-   from pmUnitsStr
-  </dd>
-  <dt>
-   sem
-  </dt>
-  <dd>
-   an abbreviation of the metric semantic:
-   <table>
-    <tr valign="top">
-     <td>
-      PM_SEM_COUNTER  "counter"
-     </td>
-     <td>
-      <br/>
-     </td>
-    </tr>
-    <tr valign="top">
-     <td>
-      PM_SEM_INSTANT  "instant"
-     </td>
-     <td>
-      <br/>
-     </td>
-    </tr>
-    <tr valign="top">
-     <td>
-      PM_SEM_DISCRETE "discrete"
-     </td>
-     <td>
-      <br/>
-     </td>
-    </tr>
-   </table>
-   <p>
-   </p>
   </dd>
  </dl>
  <a name="lbAH">
  </a>
- <h3>
-  METRIC VALUE: pmFetch
- </h3>
- <p>
-  The general form of the requests is as follows:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/NNNNN/_fetch?names=NAME1,NAME2
-   </b>
-  </dt>
-  <dd>
-   Fetch current values for given named metrics.
-  </dd>
-  <dt>
-   <b>
-    /pmapi/NNNNN/_fetch?pmids=PPPP1,PPPP2
-   </b>
-  </dt>
-  <dd>
-   Fetch current values for given PMIDs.
-  </dd>
- </dl>
- <p>
-  If any of the names/pmids are valid, the response is a JSON document that
-provides the values for all requested metrics, for all their instances.
- </p>
- <p>
-  <br/>
- </p>
- <dl compact="">
-  <dt>
-  </dt>
-  <dd>
-   <pre>
-{ "timestamp": { "s":SEC, "us":USEC },
-  "values": [
-        { "pmid":PPPP1, "name":"NAME1",
-          "instances:" [
-               { "instance":IIII1, "value":VALUE1 }
-               { "instance":IIII2, "value":VALUE2 }
-               ...
-          ] },
-        { "pmid":PPPP2, "name":"NAME2", ... }
-        ...
-  ] }
+ <h2>
+  SCALABLE TIME SERIES
+ </h2>
+ The fast, scalable time series query capabilities
+provided by the
+ <b>
+  <a href="/man/man1/pmseries.1.html">
+   pmseries
+  </a>
+ </b>
+ (1)
 
-</pre>
-  </dd>
- </dl>
+command are also available through a REST API.
+These queries provide access to performance data
+(metric metadata and values) from multiple hosts
+simultaneously, and in a fashion suited to efficient
+retrieval by any number of web applications.
  <p>
-  Most of the fields are self-explanatory.  Numeric metric types
-are represented as JSON integer or floating-point values.  Strings
-are passed verbatim, except that non-ASCII values are replaced
-with a Unicode 0xFFFD REPLACEMENT CHARACTER code.  Event type metrics
-are not currently supported.
- </p>
- <p>
+  All requests in this group can be accompanied by an optional
+  <i>
+   client
+  </i>
+  parameter.
+The value passed in the request will be sent back in the
+response - all responses will be in JSON object form in
+this case, with top level "client" and "result" fields.
   <a name="lbAI">
   </a>
  </p>
  <h3>
-  INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
+  GET
+  <i>
+   /series/query
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmseriesquery.3.html">
+    pmSeriesQuery
+   </a>
+  </b>
+  (3)
  </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       expr
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Query string in
+       <a href="/man/man1/pmseries.1.html">
+        pmseries
+       </a>
+       (1) format
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
  <p>
-  The general form of the requests is as follows:
+  Performs a time series query for either matching identifiers,
+or matching identifiers with series of time-stamped values.
  </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/NNNN/_indom?indom=DDDD
-   </b>
-  </dt>
-  <dd>
-   List instances of the given instance domain.
-  </dd>
-  <dt>
-   <b>
-    /pmapi/NNNN/_indom?name=NAME
-   </b>
-  </dt>
-  <dd>
-   List instances of the instance domain belonging to the named metric.
-  </dd>
- </dl>
  <p>
-  In addition, either query may be suffixed with:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    &amp;instance=IIII,JJJJ
-   </b>
-  </dt>
-  <dd>
-   Restrict listings to given instance code numbers.
-  </dd>
-  <dt>
-   <b>
-    &amp;iname=INAME1,INAME2
-   </b>
-  </dt>
-  <dd>
-   Restrict listings to given instance names.
-  </dd>
- </dl>
- <p>
+  The query is in the format described in
+  <b>
+   <a href="/man/man1/pmseries.1.html">
+    pmseries
+   </a>
+  </b>
+  (1)
+
+and is passed to the server via either the
+  <i>
+   expr
+  </i>
+  parameter (HTTP GET) or via the message body (HTTP POST).
  </p>
  <p>
-  The response is a JSON document that provides the metric metadata
-as an array.  For example:
+  When querying for time series matches only, no time window
+options are specified and matching series identifiers are
+returned in a JSON array.
  </p>
  <p>
   <br/>
@@ -449,118 +504,336 @@ as an array.  For example:
   </dt>
   <dd>
    <pre>
-{ "indom":DDDD,
-   "instances": [
-      { "instance":IIII, "name":"INAME" }
-      ...
-   ] }
+$ curl -s <a href="http://localhost:44322/series/query?\">http://localhost:44322/series/query?\</a>
+        expr=disk.dev.read* | pmjson
+[
+  "9d8c7fb51ce160eb82e3669aac74ba675dfa8900",
+  "ddff1bfe286a3b18cebcbadc1678a68a964fbe9d",
+  "605fc77742cd0317597291329561ac4e50c0dd12"
+]
 
 </pre>
   </dd>
  </dl>
  <p>
-  <a name="lbAJ">
-  </a>
+  When querying for time series values as well, a time
+window must be specified as part of the query string.
+The simplest form is to just request the most recent
+sample.
  </p>
- <h3>
-  INSTANCE PROFILE: pmAddProfile, pmDelProfile
- </h3>
  <p>
-  The general form of these requests is as follows:
+  <br/>
  </p>
  <dl compact="">
   <dt>
-   <b>
-    /pmapi/NNNN/_profile_reset?indom=DDDD
-   </b>
   </dt>
   <dd>
-   These are not currently supported.
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/query?\">http://localhost:44322/series/query?\</a>
+        expr=disk.dev.read*[samples:1] | pmjson
+[
+  {
+    "series": "9d8c7fb51ce160eb82e3669aac74ba675dfa8900",
+    "instance": "c3795d8b757506a2901c6b08b489ba56cae7f0d4",
+    "timestamp": 1547483646.2147431,
+    "value": "12499"
+  }, {
+    "series": "ddff1bfe286a3b18cebcbadc1678a68a964fbe9d",
+    "instance": "6b08b489ba56cae7f0d4c3795d8b757506a2901c",
+    "timestamp": 1547485701.7431218,
+    "value": "1118623"
+  }, {
+    "series": "605fc77742cd0317597291329561ac4e50c0dd12",
+    "instance": "c3795d8b757506a2901c6b08b489ba56cae7f0d4",
+    "timestamp": 1547483646.2147431,
+    "value": "71661"
+  }
+]
+
+</pre>
   </dd>
+ </dl>
+ <a name="lbAJ">
+ </a>
+ <h3>
+  GET
+  <i>
+   /series/values
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmseriesvalues.3.html">
+    pmSeriesValues
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       series
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of series identifiers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       samples
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Count of samples to return
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       interval
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Time between successive samples
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       start
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Sample window start time
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       finish
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Sample window end time
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       offset
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Sample window offset
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       align
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Sample time alignment
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       zone
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Time window timezone
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Performs values retrievals for one or more time series
+identifiers.
+The JSON response contains the same information as the
+  <b>
+   pmseries
+  </b>
+  -
+  <b>
+   q
+  </b>
+  /--
+  <b>
+   query
+  </b>
+  option using
+any of the time window parameters described on
+  <b>
+   <a href="/man/man1/pmseries.1.html">
+    pmseries
+   </a>
+  </b>
+  (1).
+
+If no time window parameters are specified, the single
+most recent value observed is retrieved.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
   <dt>
-   <b>
-    /pmapi/NNNN/_profile_add?indom=DDDD&amp;instance=IIII,JJJJ
-   </b>
   </dt>
   <dd>
-   These are not currently supported.
-  </dd>
-  <dt>
-   <b>
-    /pmapi/NNNN/_profile_add?indom=DDDD&amp;iname=IIII,JJJJ
-   </b>
-  </dt>
-  <dd>
-   These are not currently supported.
-  </dd>
-  <dt>
-   <b>
-    /pmapi/NNNN/_profile_del?indom=DDDD&amp;instance=JJJJ
-   </b>
-  </dt>
-  <dd>
-   These are not currently supported.
-  </dd>
-  <dt>
-   <b>
-    /pmapi/NNNN/_profile_del?indom=DDDD&amp;iname=INAME1,INAME2
-   </b>
-  </dt>
-  <dd>
-   These are not currently supported.
-   <p>
-   </p>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/values?\">http://localhost:44322/series/values?\</a>
+        series=605fc77742cd0317597291329561ac4e50c0dd12 | pmjson
+[
+  {
+    "series": "605fc77742cd0317597291329561ac4e50c0dd12",
+    "timestamp": 1317633022959.959241041,
+    "value": "71660"
+  }
+]
+
+</pre>
   </dd>
  </dl>
  <a name="lbAK">
  </a>
  <h3>
-  METRIC STORE: pmStore
+  GET
+  <i>
+   /series/descs
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmseriesdescs.3.html">
+    pmSeriesDescs
+   </a>
+  </b>
+  (3)
  </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       series
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of series identifiers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
  <p>
-  The general form of these requests is as follows:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/NNNN/_store?name=NAME&amp;value=VALUE
-   </b>
-  </dt>
-  <dd>
-   Store a new value for given named metrics.
-  </dd>
-  <dt>
-   <b>
-    /pmapi/NNNNN/_store?pmid=PPPP&amp;value=VALUE
-   </b>
-  </dt>
-  <dd>
-   Store a new value for given performance metric identifier (PMID).
-  </dd>
- </dl>
- <p>
-  In addition, either query may be suffixed with:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    &amp;instance=IIII,JJJJ
-   </b>
-  </dt>
-  <dd>
-   Restrict store to given instance code numbers.
-  </dd>
-  <dt>
-   <b>
-    &amp;iname=INAME1,INAME2
-   </b>
-  </dt>
-  <dd>
-   Restrict store to given instance names.
-  </dd>
- </dl>
- <p>
-  If successful, the response from these requests is a JSON document of the form:
+  Performs a descriptor lookup for one or more time series
+identifiers.
+The JSON response contains the same information as the
+  <b>
+   pmseries
+  </b>
+  -
+  <b>
+   d
+  </b>
+  /--
+  <b>
+   desc
+  </b>
+  option.
  </p>
  <p>
   <br/>
@@ -570,127 +843,272 @@ as an array.  For example:
   </dt>
   <dd>
    <pre>
-{ "success" : true }
+$ curl -s <a href="http://localhost:44322/series/descs?\">http://localhost:44322/series/descs?\</a>
+        series=605fc77742cd0317597291329561ac4e50c0dd12 | pmjson
+[
+  {
+    "series": "605fc77742cd0317597291329561ac4e50c0dd12",
+    "source": "f5ca7481da8c038325d15612bb1c6473ce1ef16f",
+    "pmid": "60.0.4",
+    "indom": "60.1",
+    "semantics": "counter",
+    "type": "u32",
+    "units": "count",
+  }
+]
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAL">
+ </a>
+ <h3>
+  GET
+  <i>
+   /series/labels
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmserieslabels.3.html">
+    pmSeriesLabels
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       series
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of series identifiers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       target
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Glob pattern string to match on all labels
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Performs a label set lookup for one or more time series
+identifiers.
+The JSON response contains the same information as the
+  <b>
+   pmseries
+  </b>
+  -
+  <b>
+   l
+  </b>
+  /--
+  <b>
+   labels
+  </b>
+  option.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/labels?\">http://localhost:44322/series/labels?\</a>
+        series=605fc77742cd0317597291329561ac4e50c0dd12 | pmjson
+[
+  {
+    "series": "605fc77742cd0317597291329561ac4e50c0dd12",
+    "labels": {
+      "agent": "linux",
+      "domainname": "acme.com",
+      "groupid": 1000,
+      "hostname": "<a href="http://www.acme.com">www.acme.com</a>",
+      "latitude": -25.28496,
+      "longitude": 152.87886,
+      "machineid": "295b16e3b6074cc8bdbda8bf96f6930a",
+      "platform": "dev",
+      "userid": 1000
+    }
+  }
+]
 
 </pre>
   </dd>
  </dl>
  <p>
-  <a name="lbAL">
-  </a>
+  Alternatively, with no
+  <i>
+   series
+  </i>
+  argument, this request will return the list of all known
+label names.
  </p>
- <h3>
-  DERIVED METRICS: pmRegisterDerived
- </h3>
  <p>
+  <br/>
  </p>
  <dl compact="">
   <dt>
-   <b>
-    /pmapi/NNNNN/_derive?name=NAME&amp;expr=EXPRESSION
-   </b>
   </dt>
   <dd>
-   These are not currently supported.
-   <p>
-   </p>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/labels">http://localhost:44322/series/labels</a> | pmjson
+[
+    "agent",
+    "appversion",
+    "domainname",
+    "groupid",
+    "hostname",
+    "jobid",
+    "latitude",
+    "longitude",
+    "machineid",
+    "platform",
+    "userid"
+]
+
+</pre>
   </dd>
  </dl>
  <a name="lbAM">
  </a>
  <h3>
-  CONTEXT COPY: pmDupContext
+  GET
+  <i>
+   /series/metrics
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmseriesmetrics.3.html">
+    pmSeriesMetrics
+   </a>
+  </b>
+  (3)
  </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       series
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of series identifiers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       target
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Glob pattern string to match on all names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
  <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/NNNNN/copy
-   </b>
-  </dt>
-  <dd>
-   These are not currently supported.
-   <p>
-   </p>
-  </dd>
- </dl>
- <a name="lbAN">
- </a>
- <h3>
-  CONTEXT CLOSE: pmDestroyContext
- </h3>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/NNNNN/destroy
-   </b>
-  </dt>
-  <dd>
-   This is not likely to be supported, as it is destructive and would offer
-a tempting target to brute-force attackers.  Instead, the pmwebd timeout
-is used to automatically free unused contexts.
-   <p>
-   </p>
-  </dd>
- </dl>
- <a name="lbAO">
- </a>
- <h3>
-  PROMETHEUS
- </h3>
- <p>
-  Prometheus exporting of live metrics from a preexisting PMWEBAPI context
-is available:
- </p>
- <p>
-  The general form of the requests is:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /pmapi/NNNNN/metrics?target=NAME1,NAME2,...
-   </b>
-  </dt>
-  <dd>
-   Fetch current values for given named metrics.
-  </dd>
- </dl>
- <p>
-  For all numeric metrics with the given NAME prefixes, create a
-prometheus text export format giving their current value and related
-metadata.  The response has text/plain type rather than JSON, and is
-designed to be ingested by a Prometheus server, or pcp's own
-pmdaprometheus.
- </p>
- <p>
-  The native PCP metric metadata (metric name, semantics and units) are first output with the
+  Performs a metric name lookup for one or more time series
+identifiers.
+The JSON response contains the same information as the
   <b>
-   # PCP
+   pmseries
   </b>
-  prefix.
-If the units string is empty, then
+  -
   <b>
-   none
+   m
   </b>
-  is output.
-The units metadata string may contain spaces and extends to the end of the line.
-Prometheus metric types are heuristically inferred from PCP
-metric types, and units/scales are converted to base
-seconds/bytes/count if possible, with a corresponding suffix added to
-the metric name.
-PCP metric names are mapped so that
+  /--
   <b>
-   .
+   metrics
   </b>
-  are exchanged with
-  <b>
-   :
-  </b>
-  .  Instance domain instances are represented as Prometheus labels
-with quoted instance names.
+  option.
  </p>
  <p>
   <br/>
@@ -700,48 +1118,1463 @@ with quoted instance names.
   </dt>
   <dd>
    <pre>
-# PCP proc.nprocs instant none
-# HELP proc:nprocs instantaneous number of processes
-# TYPE proc:nprocs gauge
-proc:nprocs 7
-
-# PCP kernel.pernode.cpu.intr counter millisec
-# HELP kernel:pernode:cpu:intr_seconds_total total interrupt CPU time from /proc/stat for each node
-# TYPE kernel:pernode:cpu:intr_seconds_total counter
-kernel:pernode:cpu:intr_seconds_total{instance="node0"} 25603.540000000001
-
-# PCP filesys.blocksize instant byte
-# HELP filesys:blocksize_bytes Size of each block on mounted filesystem (Bytes)
-# TYPE filesys:blocksize_bytes gauge
-filesys:blocksize_bytes{instance="/dev/mapper/docker-253:0-83713-\
-9a130460b46163fcf4443710db3159dea6bb5ec2aaca108515839a7a28c191ce"} 4096
-filesys:blocksize_bytes{instance="/dev/mapper/VolGroup00-root17"} 4096
+$ curl -s <a href="http://localhost:44322/series/metrics?\">http://localhost:44322/series/metrics?\</a>
+        series=605fc77742cd0317597291329561ac4e50c0dd12 | pmjson
+[
+  {
+    "series": "605fc77742cd0317597291329561ac4e50c0dd12",
+    "name": "disk.dev.read_bytes"
+  }
+]
 
 </pre>
   </dd>
  </dl>
  <p>
+  Alternatively, with no
+  <i>
+   series
+  </i>
+  argument, this request will return the list of all known
+metric names.
  </p>
  <p>
-  <a name="lbAP">
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/metrics">http://localhost:44322/series/metrics</a> | pmjson
+[
+    "disk.dev.read",
+    "disk.dev.read_bytes",
+    "disk.dev.read_merge",
+    "kernel.all.load",
+    "kernel.all.pswitch",
+    ...
+]
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAN">
+ </a>
+ <h3>
+  GET
+  <i>
+   /series/sources
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmseriessources.3.html">
+    pmSeriesSources
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       series
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of source identifiers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       target
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Glob pattern string to match on all sources
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Performs a lookup for one or more time series sources,
+returning an array of all PMAPI context names used to
+access the time series from that source.
+The JSON response contains the same information as the
+  <b>
+   pmseries
+  </b>
+  -
+  <b>
+   S
+  </b>
+  /--
+  <b>
+   source
+  </b>
+  option.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/sources?\">http://localhost:44322/series/sources?\</a>
+        source=2cd6a38f9339f2dd1f0b4775bda89a9e7244def6 | pmjson
+[
+  {
+    "source": "2cd6a38f9339f2dd1f0b4775bda89a9e7244def6",
+    "context": [
+      "/var/log/pcp/pmlogger/acme",
+      "<a href="http://www.acme.com">www.acme.com</a>"
+    ]
+  }
+]
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAO">
+ </a>
+ <h3>
+  GET
+  <i>
+   /series/instances
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmseriesinstances.3.html">
+    pmSeriesInstances
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       series
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of series identifiers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       target
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Glob pattern string to match on all instances
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Provide instance identifiers and names for one or more
+time series identifiers.
+The JSON response contains the same information as the
+  <b>
+   pmseries
+  </b>
+  -
+  <b>
+   i
+  </b>
+  /--
+  <b>
+   instance
+  </b>
+  option.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/instances?\">http://localhost:44322/series/instances?\</a>
+        series=605fc77742cd0317597291329561ac4e50c0dd12 | pmjson
+[
+  {
+    "series": "605fc77742cd0317597291329561ac4e50c0dd12",
+    "source": "97261ac7742cd4e50c0d03175913295d12605fc7",
+    "instance": "c3795d8b757506a2901c6b08b489ba56cae7f0d4"
+    "id": 1,
+    "name": "sda",
+  }, {
+    "series": "605fc77742cd0317597291329561ac4e50c0dd12",
+    "source": "97261ac7742cd4e50c0d03175913295d12605fc7",
+    "instance": "57506a2901c6b08b489ba56cae7f0d4c3795d8b7"
+    "id": 2,
+    "name": "sdb",
+  }
+]
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Alternatively, with no
+  <i>
+   series
+  </i>
+  argument, this request will return the list of all known
+instance names.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/instances">http://localhost:44322/series/instances</a> | pmjson
+[
+    "1 minute",
+    "5 minute",
+    "15 minute",
+    "cpu0",
+    "cpu1",
+    "cpu2",
+    "cpu3",
+    "node0",
+    "node1",
+    "sda",
+    "sdb",
+    ...
+]
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAP">
+ </a>
+ <h3>
+  GET
+  <i>
+   /series/load
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmseriesload.3.html">
+    pmSeriesLoad
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       expr
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Source load string in
+       <a href="/man/man1/pmseries.1.html">
+        pmseries
+       </a>
+       (1) format
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Load time series performance data from the specified source
+into the
+  <b>
+   redis-server
+  </b>
+  cache.
+This request is equivalent to the
+  <b>
+   pmseries
+  </b>
+  -
+  <b>
+   l
+  </b>
+  /--
+  <b>
+   load
+  </b>
+  option.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/load">http://localhost:44322/series/load</a>&amp;\
+        expr={source.name:"/var/log/pcp/pmlogger/acme"}
+{
+  "success": true
+}
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  <a name="lbAQ">
   </a>
  </p>
  <h2>
-  GRAPHITE
+  PMAPI HOST SERVICES
  </h2>
+ The live performance collection facilities available from
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1)
+
+can also be accessed through a REST API.
  <p>
-  When enabled, pmwebd can emulate a subset of the graphite web-api to
-allow web applications like graphite and grafana to extract data from
-all archives under the configured -A directory.  The graphite
-namespace is constructed from the PCP archives using a simple mapping
-that encodes the Cartesian product of archives, metrics, and
-instance-domain instances into dot-separated strings.  Some
-metacharacter-quoting is employed to encode general strings into
-components.  Only numeric PCP metrics are exposed; COUNTER semantic
-values are rate-converted.
+  All requests are performed on the web server host by default,
+unless either a
+  <i>
+   hostspec
+  </i>
+  or
+  <i>
+   context
+  </i>
+  parameter is provided.
+  <i>
+   hostname
+  </i>
+  can be used in place of
+  <i>
+   hostspec
+  </i>
+  .
  </p>
  <p>
+  Context identifiers are used as a persistent way to refer to
+PMAPI contexts across related web requests.
+These contexts expire after a configurable period of disuse,
+and are explicitly allocated using the
+  <i>
+   /pmapi/context
+  </i>
+  interface.
  </p>
+ <p>
+  The timeout interval is configurable at context creation time,
+and as such the
+  <i>
+   polltime
+  </i>
+  parameter can be used anywhere the
+  <i>
+   hostspec
+  </i>
+  is specified.
+It sets the context timeout in terms of length of inactive time.
+The unit for the timeout value is seconds.
+ </p>
+ <p>
+  To specify a specific existing context in any PMAPI web request,
+the endpoints can be accessed with either the
+  <i>
+   context
+  </i>
+  parameter or enbedded in the endpoint URL itself, such as
+  <b>
+   /pmapi/[number]/fetch
+  </b>
+  .
+  <a name="lbAR">
+  </a>
+ </p>
+ <h3>
+  GET
+  <i>
+   /pmapi/context
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmnewcontext.3.html">
+    pmNewContext
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       hostspec
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Host specification as described in
+       <a href="/man/man1/pcpintro.1.html">
+        PCPIntro
+       </a>
+       (1)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       polltimeout
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Seconds of inactivity before closing context
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  To create a context for live sampling, a web client can access any
+  <i>
+   /pmapi
+  </i>
+  URL (optionally using the
+  <i>
+   hostspec
+  </i>
+  or
+  <i>
+   context
+  </i>
+  parameter).
+If no context exists, a new one will be created for that web
+client, and its identifier returned for future accesses.
+ </p>
+ <p>
+  However,
+  <i>
+   /pmapi/context
+  </i>
+  is provided as a dedicated URL for applications wishing to
+explicitly create the contexts they use.
+ </p>
+ <p>
+  If successful, the server responds with a HTTP 200 (OK) code
+and JSON message body of the form:
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/context?\">http://localhost:44322/pmapi/context?\</a>
+        hostspec=<a href="http://www.acme.com">www.acme.com</a>&amp;polltime=500 | pmjson
+{
+  "context": 348734,
+  "source": "05af7f3eb840277fd3cfa91f90ef0067199743c",
+  "hostspec": "<a href="http://www.acme.com">www.acme.com</a>",
+  "labels": {
+    "domainname": "acme.com",
+    "groupid": 1000,
+    "hostname": "<a href="http://www.acme.com">www.acme.com</a>",
+    "machineid": "295b7623b6074cc8bdbda8bf96f6930a"
+    "platform": "dev",
+    "userid": 1000
+  }
+}
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  The context (a 32-bit unsigned decimal number) can then be
+used with all later requests.
+ </p>
+ <p>
+  In the case of a
+  <i>
+   hostspec
+  </i>
+  containing authentication information, such as a username,
+the server will follow the HTTP Basic Authentication protocol
+to ascertain necessary authentication details from the user,
+providing the client web application an opportunity to request
+these from the user.
+  <a name="lbAS">
+  </a>
+ </p>
+ <h3>
+  GET
+  <i>
+   /pmapi/metric
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmlookupdesc.3.html">
+    pmLookupDesc
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmlookuplabels.3.html">
+    pmLookupLabels
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmlookupname.3.html">
+    pmLookupName
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmlookuptext.3.html">
+    pmLookupText
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       name
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       An individual metric name
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       names
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of metric names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       pmid
+      </td>
+      <td>
+       pmID
+      </td>
+      <td>
+       Numeric or
+       <a href="/man/man3/pmidstr.3.html">
+        pmIDStr
+       </a>
+       (3) metric identifier
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       pmids
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated numeric or
+       <a href="/man/man3/pmidstr.3.html">
+        pmIDStr
+       </a>
+       (3) pmIDs
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       prefix
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Metric namespace component as in
+       <a href="/man/man5/pmns.5.html">
+        PMNS
+       </a>
+       (5)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       hostspec
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Host specification as described in
+       <a href="/man/man1/pcpintro.1.html">
+        PCPIntro
+       </a>
+       (1)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       context
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Web context identifier (optional like hostspec)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       polltimeout
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Seconds of inactivity before context closed
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  The
+  <i>
+   metric
+  </i>
+  endpoint provides detailed PMAPI metric metadata for one or
+more metrics.
+If no parameters are supplied, the response will be for all
+metrics found when traversing the entire Performance Metrics
+Name Space (PMNS).
+ </p>
+ <p>
+  The
+  <i>
+   prefix
+  </i>
+  parameter can be used to specify a subtree of the PMNS for
+traversal.
+Alternatively, a specific metric or comma-separated list of
+metrics can be specified using either
+  <i>
+   name
+  </i>
+  or
+  <i>
+   names
+  </i>
+ </p>
+ <p>
+  The server response is a JSON document that provides metric
+metadata as an array.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/metric?\">http://localhost:44322/pmapi/metric?\</a>
+        names=kernel.all.load,disk.all.read | pmjson
+{
+  "context": 348734,
+  "metrics": [
+    {
+      "name": "kernel.all.load",
+      "pmid": "60.2.0",
+      "indom": "60.2",
+      "type": "FLOAT",
+      "sem": "instant",
+      "units": "none",
+      "series": "d2b28c7f6dc0d69ffd21dba7ba955e78c37719b",
+      "source": "05af7f3eb840277fd3cfa91f90ef0067199743c",
+      "labels": {
+        "agent": "linux",
+        "domainname": "acme.com",
+        "groupid": 1000,
+        "hostname": "<a href="http://www.acme.com">www.acme.com</a>",
+        "platform": "dev",
+        "userid": 1000
+      },
+      "text-oneline": "1, 5 and 15 minute load average"
+    },
+    {
+      "name": "disk.all.read",
+      "pmid": "60.0.24",
+      "type": "U64",
+      "sem": "counter",
+      "units": "count",
+      "series": "d2b28c7f6dc0d69ffd21dba7ba955e78c37719b",
+      "source": "05af7f3eb840277fd3cfa91f90ef0067199743c",
+      "labels": {
+        "agent": "linux",
+        "domainname": "acme.com",
+        "groupid": 1000,
+        "hostname": "<a href="http://www.acme.com">www.acme.com</a>",
+        "platform": "dev",
+        "userid": 1000
+      },
+      "text-oneline": "total read operations, summed for all disks",
+      "text-help": "Cumulative number of disk read operations [...]"
+    }
+  ]
+}
+
+</pre>
+  </dd>
+ </dl>
+ Most of the fields are directly transcribed from the PMAPI calls
+for metric descriptors, labels and help text mentioned above and
+are exactly as would be observed using the
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1)
+
+command with the -
+ <b>
+  dlmstT
+ </b>
+ options.
+ <p>
+  The semantics, type and units fields are as returned by
+  <b>
+   <a href="/man/man3/pmtypestr.3.html">
+    pmTypeStr
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmunitsstr.3.html">
+    pmUnitsStr
+   </a>
+  </b>
+  (3)
+
+and
+  <b>
+   <a href="/man/man3/pmsemstr.3.html">
+    pmSemStr
+   </a>
+  </b>
+  (3).
+  <a name="lbAT">
+  </a>
+ </p>
+ <h3>
+  GET
+  <i>
+   /pmapi/fetch
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       delta
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Sampling interval in
+       <a href="/man/man3/pmparseinterval.3.html">
+        pmParseInterval
+       </a>
+       (3) form
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       name
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       An individual metric name
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       names
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of metric names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       pmid
+      </td>
+      <td>
+       pmID
+      </td>
+      <td>
+       Numeric or
+       <a href="/man/man3/pmidstr.3.html">
+        pmIDStr
+       </a>
+       (3) metric identifier
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       pmids
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated numeric or
+       <a href="/man/man3/pmidstr.3.html">
+        pmIDStr
+       </a>
+       (3) pmIDs
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       hostspec
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Host specification as described in
+       <a href="/man/man1/pcpintro.1.html">
+        PCPIntro
+       </a>
+       (1)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       context
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Web context identifier (optional like hostspec)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       polltimeout
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Seconds of inactivity before context closed
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  This request fetches (samples) current values for given metrics.
+ </p>
+ <p>
+  If any of the names or pmids provided are valid, the response is a JSON
+document that provides the values for all instances of the metrics, unless
+a instance profile has been set for the web context (see section on InDom
+profiles below).
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/fetch?\">http://localhost:44322/pmapi/fetch?\</a>
+        names=kernel.all.load,disk.all.read | pmjson
+{
+  "context": 348734,
+  "timestamp": 1547483646.2147431,
+  "values": [
+    {
+      "pmid": "60.2.0",
+      "name": "kernel.all.load",
+      "instances:" [
+        { "instance": 1, "value": 0.1 },
+        { "instance": 5, "value": 0.17 },
+        { "instance": 15, "value": 0.22 }
+      ]
+    },
+    {
+      "pmid":"60.0.24",
+      "name":"disk.all.read",
+      "instances:" [
+        { "instance": null, "value": 639231 }
+      ]
+    }
+  ]
+}
+
+</pre>
+  </dd>
+ </dl>
+ The response fields map directly to fields from the underlying
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3)
+
+sampling interface.
+ <p>
+  Numeric metric types are represented as JSON integer or floating-point
+values.
+Strings are passed verbatim, except that non-ASCII values are replaced
+with a Unicode 0xFFFD replacement character code.
+ </p>
+ <p>
+  In backward compatibility mode the timestamp is presented as a JSON
+map with second (sec) and microsecond (us) fields, instead of using
+the more compact floating point representation shown above.
+  <a name="lbAU">
+  </a>
+ </p>
+ <h3>
+  GET
+  <i>
+   /pmapi/indom
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmgetindom.3.html">
+    pmGetInDom
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmnameindom.3.html">
+    pmNameInDom
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmlookupindom.3.html">
+    pmLookupInDom
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       iname
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of instance names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       indom
+      </td>
+      <td>
+       pmInDom
+      </td>
+      <td>
+       Numeric or
+       <a href="/man/man3/pmindomstr.3.html">
+        pmInDomStr
+       </a>
+       (3) instance domain
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       instance
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Comma-separated list of instance numbers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       match
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Name pattern matching style (exact, glob or regex)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       name
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       An individual metric name
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       hostspec
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Host specification as described in
+       <a href="/man/man1/pcpintro.1.html">
+        PCPIntro
+       </a>
+       (1)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       context
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Web context identifier (optional like hostspec)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       polltimeout
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Seconds of inactivity before context closed
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  This request lists the current instances of an instance domain.
+The instance domain is either specified directly (in numeric or
+string form) or indirectly, by association with the specified
+metric.
+ </p>
+ <p>
+  The request can be further qualified with a comma-separated list
+of the instances to report on, either by name or number, using the
+  <i>
+   instance
+  </i>
+  and
+  <i>
+   iname
+  </i>
+  parameters.
+ </p>
+ <p>
+  In the case of instance name qualifiers, these will be matched by
+exact string comparison by default.
+Alternatively, the match parameter can be used to specify that
+regular expression or glob pattern matching should be used instead.
+ </p>
+ <p>
+  The response is a JSON document that provides the instance domain
+metadata as an array.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/indom?\">http://localhost:44322/pmapi/indom?\</a>
+        name=kernel.all.load | pmjson
+{
+  "context": 348734,
+  "indom": "60.2",
+  "labels": {
+    "domainname": "acme.com",
+    "groupid": 1000,
+    "hostname": "<a href="http://www.acme.com">www.acme.com</a>",
+    "machineid": "295b7623b6074cc8bdbda8bf96f6930a"
+    "platform": "dev",
+    "userid": 1000
+  },
+  "instances": [
+    {
+      "instance": 1,
+      "name": "1 minute"
+      "labels": { ... },
+    },
+    {
+      "instance": 5,
+      "name": "5 minute"
+      "labels": { ... },
+    },
+    {
+      "instance": 15,
+      "name": "15 minute"
+      "labels": { ...  },
+    }
+  ]
+}
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAV">
+ </a>
+ <h3>
+  GET
+  <i>
+   /pmapi/profile
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmaddprofile.3.html">
+    pmAddProfile
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmdelprofile.3.html">
+    pmDelProfile
+   </a>
+  </b>
+  (3)
+ </h3>
  <center>
   <table border="">
    <tr>
@@ -749,13 +2582,13 @@ values are rate-converted.
      <table>
       <tr valign="top">
        <td align="center">
-        position
+        Parameters
        </td>
        <td align="center">
-        number
+        Type
        </td>
        <td align="center">
-        purpose
+        Explanation
         <br/>
        </td>
       </tr>
@@ -765,52 +2598,111 @@ values are rate-converted.
        </td>
       </tr>
       <tr valign="top">
-       <td align="center">
-        1
-       </td>
-       <td align="center">
-        1
+       <td>
+        iname
        </td>
        <td>
-        encoded pathname of the archive .meta file (default),
+        string
+       </td>
+       <td>
+        Comma-separated list of instance names
         <br/>
        </td>
       </tr>
       <tr valign="top">
-       <td align="center">
-       </td>
-       <td align="center">
+       <td>
+        indom
        </td>
        <td>
-        or canonicalized archive hostname (
-        <i>
-         -J
-        </i>
-        mode)
+        pmInDom
+       </td>
+       <td>
+        Numeric or
+        <a href="/man/man3/pmindomstr.3.html">
+         pmInDomStr
+        </a>
+        (3) instance domain
         <br/>
        </td>
       </tr>
       <tr valign="top">
-       <td align="center">
-        2
-       </td>
-       <td align="center">
-        N
+       <td>
+        instance
        </td>
        <td>
-        the N components of the pcp metric name
+        number
+       </td>
+       <td>
+        Comma-separated list of instance numbers
         <br/>
        </td>
       </tr>
       <tr valign="top">
-       <td align="center">
-        N+2
-       </td>
-       <td align="center">
-        1
+       <td>
+        mode
        </td>
        <td>
-        instance name of the metric (if any)
+        string
+       </td>
+       <td>
+        One of "add", "del" or "clear" (mandatory).
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="3">
+        <hr/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        hostspec
+       </td>
+       <td>
+        string
+       </td>
+       <td>
+        Host specification as described in
+        <a href="/man/man1/pcpintro.1.html">
+         PCPIntro
+        </a>
+        (1)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        context
+       </td>
+       <td>
+        number
+       </td>
+       <td>
+        Web context identifier (optional like hostspec)
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        polltimeout
+       </td>
+       <td>
+        number
+       </td>
+       <td>
+        Seconds of inactivity before context closed
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        client
+       </td>
+       <td>
+        string
+       </td>
+       <td>
+        Request identifier sent back with response
         <br/>
        </td>
       </tr>
@@ -820,111 +2712,586 @@ values are rate-converted.
   </table>
  </center>
  <p>
-  Since glob wildcarding is supported within metric name components,
-using them in the first component (an encoding of the archive name) is
-a good way to identify machines, or to match multiple archives
-spanning times of interest.
+  Some PMAPI operations can be performed with an active instance
+domain profile which restricts (filters) the set of resulting
+instances returned, as described on
+  <b>
+   <a href="/man/man3/pmaddprofile.3.html">
+    pmAddProfile
+   </a>
+  </b>
+  (3).
  </p>
  <p>
-  We list here only the broadest outline of the supported calls.  pmwebd
-does not support every graphite web-api option, so many querystring
-parameters may be ignored.  Arithmetic/statistical functions on
-metrics are not supported.
- </p>
- <p>
+  <br/>
  </p>
  <dl compact="">
   <dt>
-   <b>
-    /graphite/render?format=json&amp;target=FOO&amp;from=TIME&amp;until=TIME
-   </b>
   </dt>
   <dd>
-   Return a series of values of the given metrics, between the two times, sampled every 60 seconds.
-  </dd>
-  <dt>
-   <b>
-    /graphite/rawdata?target=FOO.BAR&amp;from=TIME&amp;until=TIME
-   </b>
-  </dt>
-  <dd>
-   Same, with a slightly different result encoding.
-  </dd>
-  <dt>
-   <b>
-    /graphite/render?format=png&amp;target=FOO&amp;from=TIME&amp;until=TIME&amp;....
-   </b>
-  </dt>
-  <dd>
-   Same, but render the curves into a PNG image file.  Several color- and
-rendering-control-related parameters are supported.
-  </dd>
-  <dt>
-   <b>
-    /graphite/metrics/find?query=FOO.BAR.*
-   </b>
-  </dt>
-  <dd>
-   Provide incremental metric-tree traversal using wildcards.
-  </dd>
-  <dt>
-   <b>
-    /graphite/graphlot/findmetric?query=FOO+BAR
-   </b>
-  </dt>
-  <dd>
-   Search through metrics with space-separated regular expressions.
-  </dd>
-  <dt>
-   <b>
-    /graphite/browser/search?q=FOO+BAR
-   </b>
-  </dt>
-  <dd>
-   Same, with a slightly different result encoding.
-   <p>
-   </p>
-   <p>
-   </p>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/profile?\">http://localhost:44322/pmapi/profile?\</a>
+        mode=add,indom=60.2,iname=1%20minute 
+{ "context": 348734, "success": true }
+
+</pre>
   </dd>
  </dl>
- <a name="lbAQ">
+ <a name="lbAW">
  </a>
- <h2>
-  SEE ALSO
- </h2>
- <p>
+ <h3>
+  GET
+  <i>
+   /pmapi/store
+  </i>
+  -
   <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
+   <a href="/man/man3/pmstore.3.html">
+    pmStore
    </a>
   </b>
-  (1),
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       iname
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of instance names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       instance
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Comma-separated list of instance numbers
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       name
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       An individual metric name
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       value
+      </td>
+      <td>
+       (any)
+      </td>
+      <td>
+       New value for the given metric instance(s)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       hostspec
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Host specification as described in
+       <a href="/man/man1/pcpintro.1.html">
+        PCPIntro
+       </a>
+       (1)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       context
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Web context identifier (optional like hostspec)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       polltimeout
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Seconds of inactivity before context closed
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Some performance metrics allow their value to be modified,
+for example to re-initialize counters or to modify control
+variables.
+ </p>
+ <p>
+  This operation takes a single metric
+  <i>
+   name
+  </i>
+  to modify, and optionally
+specific
+  <i>
+   instance
+  </i>
+  s.
+
+The mandatory
+  <i>
+   value
+  </i>
+  will be interpreted according to the type of the metric
+being modified.
+ </p>
+ <p>
+  If successful, the response from these requests is a JSON document of the form:
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/store?\">http://localhost:44322/pmapi/store?\</a>
+        name=pmcd.control.timeout,value=10
+{
+  "context": 348734,
+  "success": true
+}
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAX">
+ </a>
+ <h3>
+  GET
+  <i>
+   /pmapi/derive
+  </i>
+  :
   <b>
-   <a href="/man/man3/pcpintro.3.html">
-    PCPIntro
+   <a href="/man/man3/pmregisterderived.3.html">
+    pmRegisterDerived
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       expr
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Derived metric expression
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       name
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       New derived metric name
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Create a new derived metric, as defined by the
+  <b>
+   <a href="/man/man3/pmregisterderived.3.html">
+    pmRegisterDerived
+   </a>
+  </b>
+  (3)
+
+metric interface.
+Derived metrics are not associated with any particular
+context and must be registered before creation (or reconnect)
+of any context wishing to use the new metric.
+ </p>
+ <p>
+  This interface is one of the few that allows a POST to be used
+in place of a GET.
+In this case the HTTP POST request body may be used to provide
+one or more derived metrics specification (all at once, across
+multiple lines, as a convenience).
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/derive?\">http://localhost:44322/pmapi/derive?\</a>
+        name=blkio.avgsz&amp;expr=disk.all.blktotal/disk.all.total | pmjson
+{
+  "success": true
+}
+
+$ curl -s <a href="http://localhost:44322/pmapi/fetch?\">http://localhost:44322/pmapi/fetch?\</a>
+        name=blkio.avgsz&amp;samples=2 | pmjson
+{
+  "context": 348734,
+  "timestamp": 1547483648.2147428,
+  "values": [
+    {
+      "pmid": "511.0.27",
+      "name": "blkio.avgsz",
+      "instances:" [
+        {
+          "instance": null,
+          "value": 9231
+        }
+      ]
+    }
+  ]
+}
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAY">
+ </a>
+ <h3>
+  GET
+  <i>
+   /pmapi/metrics
+  </i>
+  :
+  <b>
+   <a href="/man/man3/pmlookupdesc.3.html">
+    pmLookupDesc
    </a>
   </b>
   (3),
   <b>
-   <a href="/man/man1/pmwebd.1.html">
-    pmwebd
+   <a href="/man/man3/pmlookuplabels.3.html">
+    pmLookupLabels
    </a>
   </b>
-  (1),
+  (3),
   <b>
-   <a href="http://graphite.readthedocs.org/">
-    http://graphite.readthedocs.org/
-   </a>
-  </b>
-  and
-  <b>
-   <a href="/man/man3/pmapi.3.html">
-    PMAPI
+   <a href="/man/man3/pmfetch.3.html">
+    pmFetch
    </a>
   </b>
   (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       names
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of metric names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       times
+      </td>
+      <td>
+       boolean
+      </td>
+      <td>
+       Append sample times (milliseconds since epoch)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       context
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Web context identifier (optional like hostspec)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       hostspec
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Host specification as described in
+       <a href="/man/man1/pcpintro.1.html">
+        PCPIntro
+       </a>
+       (1)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       polltimeout
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Seconds of inactivity before context closed
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  This request is a subset of the style described in the
+``OPEN METRICS'' section, allowing a web context
+identifier to be passed as a parameter.
+It is otherwise very similar in terms of parameters
+and response handling, please refer to the earlier section
+for details.
+  <a name="lbAZ">
+  </a>
  </p>
+ <h2>
+  NOTES
+ </h2>
+ <p>
+  For the REST APIs, errors generally result in HTTP-level
+error responses.
+Wherever possible, any PMAPI error string will also be
+provided in a message along with the response.
+ </p>
+ <p>
+  All responses will be returned using HTTP 1.1 protocol and
+with chunked encoding being used to stream responses that
+are larger than a configured maximum size.
+Compression will be used on responses whenever the client
+indicates appropriate support.
+ </p>
+ <p>
+  An
+  <i>
+   Access-Control-Allow-Origin: *
+  </i>
+  header is added to all REST API responses.
+  <a name="lbBA">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/curl.1.html">
+   curl
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmjson.1.html">
+   pmjson
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmproxy.1.html">
+   pmproxy
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmseries.1.html">
+   pmseries
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/redis-server.1.html">
+   redis-server
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pcpintro.3.html">
+   PCPIntro
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3)
  <p>
  </p>
  <hr/>
@@ -943,91 +3310,35 @@ rendering-control-related parameters are supported.
   </dd>
   <dt>
    <a href="#lbAC">
-    OVERVIEW
+    HTTP SYNOPSIS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAD">
-    CONTEXT CREATION: pmNewContext
+    C SYNOPSIS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    CONTEXT CREATION: configurable permanent contexts
+    DESCRIPTION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PMAPI OPERATIONS
+    OPEN METRICS
    </a>
   </dt>
   <dd>
    <dl>
     <dt>
      <a href="#lbAG">
-      METRIC METADATA: pmLookupName, pmLookupDesc, pmLookupText, pmTraversePMNS_r
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAH">
-      METRIC VALUE: pmFetch
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAI">
-      INSTANCE DOMAINS METADATA: pmGetInDom, pmNameInDom, pmLookupInDom
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAJ">
-      INSTANCE PROFILE: pmAddProfile, pmDelProfile
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAK">
-      METRIC STORE: pmStore
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAL">
-      DERIVED METRICS: pmRegisterDerived
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAM">
-      CONTEXT COPY: pmDupContext
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAN">
-      CONTEXT CLOSE: pmDestroyContext
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAO">
-      PROMETHEUS
+      GET /metrics
      </a>
     </dt>
     <dd>
@@ -1035,14 +3346,304 @@ rendering-control-related parameters are supported.
    </dl>
   </dd>
   <dt>
-   <a href="#lbAP">
-    GRAPHITE
+   <a href="#lbAH">
+    SCALABLE TIME SERIES
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAI">
+      GET
+      <i>
+       /series/query
+      </i>
+      -
+      <b>
+       pmSeriesQuery
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAJ">
+      GET
+      <i>
+       /series/values
+      </i>
+      -
+      <b>
+       pmSeriesValues
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAK">
+      GET
+      <i>
+       /series/descs
+      </i>
+      -
+      <b>
+       pmSeriesDescs
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAL">
+      GET
+      <i>
+       /series/labels
+      </i>
+      -
+      <b>
+       pmSeriesLabels
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAM">
+      GET
+      <i>
+       /series/metrics
+      </i>
+      -
+      <b>
+       pmSeriesMetrics
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAN">
+      GET
+      <i>
+       /series/sources
+      </i>
+      -
+      <b>
+       pmSeriesSources
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAO">
+      GET
+      <i>
+       /series/instances
+      </i>
+      -
+      <b>
+       pmSeriesInstances
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAP">
+      GET
+      <i>
+       /series/load
+      </i>
+      -
+      <b>
+       pmSeriesLoad
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAQ">
+    PMAPI HOST SERVICES
+   </a>
+  </dt>
+  <dd>
+   <dl>
+    <dt>
+     <a href="#lbAR">
+      GET
+      <i>
+       /pmapi/context
+      </i>
+      -
+      <b>
+       pmNewContext
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAS">
+      GET
+      <i>
+       /pmapi/metric
+      </i>
+      -
+      <b>
+       pmLookupDesc
+      </b>
+      (3),
+      <b>
+       pmLookupLabels
+      </b>
+      (3),
+      <b>
+       pmLookupName
+      </b>
+      (3),
+      <b>
+       pmLookupText
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAT">
+      GET
+      <i>
+       /pmapi/fetch
+      </i>
+      -
+      <b>
+       pmFetch
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAU">
+      GET
+      <i>
+       /pmapi/indom
+      </i>
+      -
+      <b>
+       pmGetInDom
+      </b>
+      (3),
+      <b>
+       pmNameInDom
+      </b>
+      (3),
+      <b>
+       pmLookupInDom
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAV">
+      GET
+      <i>
+       /pmapi/profile
+      </i>
+      -
+      <b>
+       pmAddProfile
+      </b>
+      (3),
+      <b>
+       pmDelProfile
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAW">
+      GET
+      <i>
+       /pmapi/store
+      </i>
+      -
+      <b>
+       pmStore
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAX">
+      GET
+      <i>
+       /pmapi/derive
+      </i>
+      :
+      <b>
+       pmRegisterDerived
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAY">
+      GET
+      <i>
+       /pmapi/metrics
+      </i>
+      :
+      <b>
+       pmLookupDesc
+      </b>
+      (3),
+      <b>
+       pmLookupLabels
+      </b>
+      (3),
+      <b>
+       pmFetch
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAZ">
+    NOTES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAQ">
+   <a href="#lbBA">
     SEE ALSO
    </a>
   </dt>
