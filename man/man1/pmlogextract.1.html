@@ -73,7 +73,7 @@ and merge Performance Co-Pilot archives
  </b>
  [
  <b>
-  -dfmwz
+  -dfmwxz
  </b>
  ]
 [
@@ -559,6 +559,51 @@ to 3pm on each day.  When
    records to indicate the temporal
 discontinuity between the end of one time window and the start of
 the next.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -x
+   </b>
+  </dt>
+  <dd>
+   It is expected that the metadata
+(name, PMID, type, semantics and units)
+for each metric
+will be consistent across all of the
+   <i>
+    input
+   </i>
+   PCP archive log(s) in which that metric appears.
+In rare cases, e.g. in development, in QA and when a PMDA is upgraded, this may not be the case
+and
+   <b>
+    pmlogextract
+   </b>
+   will report the issue and abort without creating the
+   <i>
+    output
+   </i>
+   archive log.
+This is done so the problem can be fixed with
+   <b>
+    <a href="/man/man1/pmlogrewrite.1.html">
+     pmlogrewrite
+    </a>
+   </b>
+   (1)
+
+before retrying the merge.
+In unattended or QA environments it may be preferable to force the
+merge and omit the metrics with the mismatched metadata.
+The
+   <b>
+    -x
+   </b>
+   option does this.
   </dd>
  </dl>
  <p>

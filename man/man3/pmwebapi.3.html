@@ -910,7 +910,7 @@ $ curl -s <a href="http://localhost:44322/series/descs?\">http://localhost:44322
      </tr>
      <tr valign="top">
       <td>
-       target
+       match
       </td>
       <td>
        string
@@ -1067,7 +1067,7 @@ $ curl -s <a href="http://localhost:44322/series/labels">http://localhost:44322/
      </tr>
      <tr valign="top">
       <td>
-       target
+       match
       </td>
       <td>
        string
@@ -1209,7 +1209,7 @@ $ curl -s <a href="http://localhost:44322/series/metrics">http://localhost:44322
      </tr>
      <tr valign="top">
       <td>
-       target
+       match
       </td>
       <td>
        string
@@ -1326,7 +1326,7 @@ $ curl -s <a href="http://localhost:44322/series/sources?\">http://localhost:443
      </tr>
      <tr valign="top">
       <td>
-       target
+       match
       </td>
       <td>
        string
@@ -1917,7 +1917,7 @@ these from the user.
        number
       </td>
       <td>
-       Web context identifier (optional like hostspec)
+       Web context number (optional like hostspec)
        <br/>
       </td>
      </tr>
@@ -2213,7 +2213,7 @@ and
        number
       </td>
       <td>
-       Web context identifier (optional like hostspec)
+       Web context number (optional like hostspec)
        <br/>
       </td>
      </tr>
@@ -2315,6 +2315,177 @@ the more compact floating point representation shown above.
  <h3>
   GET
   <i>
+   /pmapi/children
+  </i>
+  -
+  <b>
+   <a href="/man/man3/pmgetchildren.3.html">
+    pmGetChildren
+   </a>
+  </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmgetchildrenstatus.3.html">
+    pmGetChildrenStatus
+   </a>
+  </b>
+  (3)
+ </h3>
+ <table border="">
+  <tr>
+   <td>
+    <table>
+     <tr valign="top">
+      <td align="center">
+       Parameters
+      </td>
+      <td align="center">
+       Type
+      </td>
+      <td align="center">
+       Explanation
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       prefix
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Metric namespace component as in
+       <a href="/man/man5/pmns.5.html">
+        PMNS
+       </a>
+       (5)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td colspan="3">
+       <hr/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       hostspec
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Host specification as described in
+       <a href="/man/man1/pcpintro.1.html">
+        PCPIntro
+       </a>
+       (1)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       context
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Web context number (optional like hostspec)
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       polltimeout
+      </td>
+      <td>
+       number
+      </td>
+      <td>
+       Seconds of inactivity before context closed
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       client
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Request identifier sent back with response
+       <br/>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <p>
+  The
+  <i>
+   children
+  </i>
+  endpoint provides iterative namespace traversal for a context.
+If no parameters are supplied, the response will describe the
+direct descendants of the Performance Metrics Name Space (PMNS) root.
+ </p>
+ <p>
+  The
+  <i>
+   prefix
+  </i>
+  parameter can be used to specify a subtree of the PMNS for
+traversal.
+ </p>
+ <p>
+  The server response is a JSON document that provides the set
+of leaf and non-leaf nodes below the given namespace node or
+root.
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/pmapi/children?prefix=mem">http://localhost:44322/pmapi/children?prefix=mem</a> | pmjson
+{
+  "context": 348734,
+  "name": "mem",
+  "leaf": [
+    "physmem",
+    "freemem"
+  ],
+  "nonleaf": [
+    "util",
+    "numa",
+    "vmstat",
+    "buddyinfo",
+    "slabinfo",
+    "zoneinfo",
+    "ksm"
+  ]
+}
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAV">
+ </a>
+ <h3>
+  GET
+  <i>
    /pmapi/indom
   </i>
   -
@@ -2406,7 +2577,7 @@ the more compact floating point representation shown above.
        string
       </td>
       <td>
-       Name pattern matching style (exact, glob or regex)
+       Pattern matching style (exact, glob or regex)
        <br/>
       </td>
      </tr>
@@ -2451,7 +2622,7 @@ the more compact floating point representation shown above.
        number
       </td>
       <td>
-       Web context identifier (optional like hostspec)
+       Web context number (optional like hostspec)
        <br/>
       </td>
      </tr>
@@ -2554,7 +2725,7 @@ $ curl -s <a href="http://localhost:44322/pmapi/indom?\">http://localhost:44322/
 </pre>
   </dd>
  </dl>
- <a name="lbAV">
+ <a name="lbAW">
  </a>
  <h3>
   GET
@@ -2639,13 +2810,25 @@ $ curl -s <a href="http://localhost:44322/pmapi/indom?\">http://localhost:44322/
       </tr>
       <tr valign="top">
        <td>
-        mode
+        expr
        </td>
        <td>
         string
        </td>
        <td>
-        One of "add", "del" or "clear" (mandatory).
+        One of "add" or "del" (mandatory).
+        <br/>
+       </td>
+      </tr>
+      <tr valign="top">
+       <td>
+        match
+       </td>
+       <td>
+        string
+       </td>
+       <td>
+        Pattern matching style (exact, glob or regex)
         <br/>
        </td>
       </tr>
@@ -2678,7 +2861,7 @@ $ curl -s <a href="http://localhost:44322/pmapi/indom?\">http://localhost:44322/
         number
        </td>
        <td>
-        Web context identifier (optional like hostspec)
+        Web context number (optional like hostspec)
         <br/>
        </td>
       </tr>
@@ -2731,13 +2914,13 @@ instances returned, as described on
   <dd>
    <pre>
 $ curl -s <a href="http://localhost:44322/pmapi/profile?\">http://localhost:44322/pmapi/profile?\</a>
-        mode=add,indom=60.2,iname=1%20minute 
+        expr=add,indom=60.2,iname=1%20minute 
 { "context": 348734, "success": true }
 
 </pre>
   </dd>
  </dl>
- <a name="lbAW">
+ <a name="lbAX">
  </a>
  <h3>
   GET
@@ -2850,7 +3033,7 @@ $ curl -s <a href="http://localhost:44322/pmapi/profile?\">http://localhost:4432
        number
       </td>
       <td>
-       Web context identifier (optional like hostspec)
+       Web context number optional like hostspec)
        <br/>
       </td>
      </tr>
@@ -2906,7 +3089,7 @@ being modified.
   <dd>
    <pre>
 $ curl -s <a href="http://localhost:44322/pmapi/store?\">http://localhost:44322/pmapi/store?\</a>
-        name=pmcd.control.timeout,value=10
+        name=pmcd.control.timeout&amp;value=10
 {
   "context": 348734,
   "success": true
@@ -2915,7 +3098,7 @@ $ curl -s <a href="http://localhost:44322/pmapi/store?\">http://localhost:44322/
 </pre>
   </dd>
  </dl>
- <a name="lbAX">
+ <a name="lbAY">
  </a>
  <h3>
   GET
@@ -3053,7 +3236,7 @@ $ curl -s <a href="http://localhost:44322/pmapi/fetch?\">http://localhost:44322/
 </pre>
   </dd>
  </dl>
- <a name="lbAY">
+ <a name="lbAZ">
  </a>
  <h3>
   GET
@@ -3138,7 +3321,7 @@ $ curl -s <a href="http://localhost:44322/pmapi/fetch?\">http://localhost:44322/
        number
       </td>
       <td>
-       Web context identifier (optional like hostspec)
+       Web context number (optional like hostspec)
        <br/>
       </td>
      </tr>
@@ -3193,7 +3376,7 @@ identifier to be passed as a parameter.
 It is otherwise very similar in terms of parameters
 and response handling, please refer to the earlier section
 for details.
-  <a name="lbAZ">
+  <a name="lbBA">
   </a>
  </p>
  <h2>
@@ -3218,7 +3401,7 @@ indicates appropriate support.
    Access-Control-Allow-Origin: *
   </i>
   header is added to all REST API responses.
-  <a name="lbBA">
+  <a name="lbBB">
   </a>
  </p>
  <h2>
@@ -3542,6 +3725,25 @@ and
      <a href="#lbAU">
       GET
       <i>
+       /pmapi/children
+      </i>
+      -
+      <b>
+       pmGetChildren
+      </b>
+      (3),
+      <b>
+       pmGetChildrenStatus
+      </b>
+      (3)
+     </a>
+    </dt>
+    <dd>
+    </dd>
+    <dt>
+     <a href="#lbAV">
+      GET
+      <i>
        /pmapi/indom
       </i>
       -
@@ -3562,7 +3764,7 @@ and
     <dd>
     </dd>
     <dt>
-     <a href="#lbAV">
+     <a href="#lbAW">
       GET
       <i>
        /pmapi/profile
@@ -3581,7 +3783,7 @@ and
     <dd>
     </dd>
     <dt>
-     <a href="#lbAW">
+     <a href="#lbAX">
       GET
       <i>
        /pmapi/store
@@ -3596,7 +3798,7 @@ and
     <dd>
     </dd>
     <dt>
-     <a href="#lbAX">
+     <a href="#lbAY">
       GET
       <i>
        /pmapi/derive
@@ -3611,7 +3813,7 @@ and
     <dd>
     </dd>
     <dt>
-     <a href="#lbAY">
+     <a href="#lbAZ">
       GET
       <i>
        /pmapi/metrics
@@ -3636,14 +3838,14 @@ and
    </dl>
   </dd>
   <dt>
-   <a href="#lbAZ">
+   <a href="#lbBA">
     NOTES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbBA">
+   <a href="#lbBB">
     SEE ALSO
    </a>
   </dt>
