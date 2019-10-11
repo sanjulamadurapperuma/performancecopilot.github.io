@@ -72,7 +72,7 @@
  </b>
  [
  <i>
-  -NV
+  -NV?
  </i>
  ]
  <i>
@@ -112,21 +112,6 @@ The new archive's basename is
    newname
   </i>
   .
- </p>
- <p>
-  The
-  <b>
-   -N
-  </b>
-  option performs a dry-run, checking and reporting what changes would
-be made without making any changes.
- </p>
- <p>
-  Additional reporting verbosity may be requested with the
-  <b>
-   -V
-  </b>
-  option.
  </p>
  <p>
   Because PCP archives are important records of system activity, special
@@ -182,6 +167,58 @@ the
   </a>
  </p>
  <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -N
+   </b>
+   ,
+   <b>
+    --showme
+   </b>
+  </dt>
+  <dd>
+   Perform a dry-run, checking and reporting what changes would
+be made without making any changes.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   Enable verbose mode.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All error and warning messages are intended to be easily understood and errors
+produce a non-zero exit status.
+ <a name="lbAG">
+ </a>
+ <h2>
   SEE ALSO
  </h2>
  <b>
@@ -198,13 +235,6 @@ and
   </a>
  </b>
  (1).
- <a name="lbAF">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All error and warning messages are intended to be easily understood and errors
-produce a non-zero exit status.
  <p>
  </p>
  <hr/>
@@ -237,7 +267,7 @@ produce a non-zero exit status.
   </dd>
   <dt>
    <a href="#lbAE">
-    SEE ALSO
+    OPTIONS
    </a>
   </dt>
   <dd>
@@ -245,6 +275,13 @@ produce a non-zero exit status.
   <dt>
    <a href="#lbAF">
     DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
    </a>
   </dt>
   <dd>

@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -z
+  -z?
  </b>
  ]
 [
@@ -85,14 +85,6 @@
  ]
 [
  <b>
-  -S
- </b>
- <i>
-  starttime
- </i>
- ]
-[
- <b>
   -s
  </b>
  <i>
@@ -101,10 +93,10 @@
  ]
 [
  <b>
-  -T
+  -S
  </b>
  <i>
-  endtime
+  starttime
  </i>
  ]
 [
@@ -113,6 +105,14 @@
  </b>
  <i>
   interval
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
  </i>
  ]
 [
@@ -161,7 +161,7 @@ identified by
  is a comma-separated list of names, each
 of which may be the base name of an archive or the name of a directory containing
 one or more archives.
-The 
+The
 data reduction involves statistical and temporal reduction of samples with
 an output sampling
 interval defined by the
@@ -205,18 +205,20 @@ a warning is issued if these metrics are found in
  <h2>
   OPTIONS
  </h2>
- The command line options for
- <b>
-  pmlogreduce
- </b>
- are as follows:
- <p>
- </p>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
     -A
    </b>
+   <i>
+    align
+   </i>
+   ,
+   <b>
+    --align
+   </b>
+   =
    <i>
     align
    </i>
@@ -231,40 +233,18 @@ to
    </b>
    (1).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -S
-   </b>
-   <i>
-    starttime
-   </i>
-  </dt>
-  <dd>
-   Define the start of a time window to restrict the samples retrieved
-from the
-   <i>
-    input
-   </i>
-   archives; refer to
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1).
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     -s
    </b>
+   <i>
+    samples
+   </i>
+   ,
+   <b>
+    --samples
+   </b>
+   =
    <i>
     samples
    </i>
@@ -299,7 +279,8 @@ or the end of the time window as specified by
    </b>
    ,
 
-whichever comes first.  The
+whichever comes first.
+The
    <b>
     -s
    </b>
@@ -309,14 +290,85 @@ whichever comes first.  The
    </b>
    option if it occurs sooner.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
+  </dt>
+  <dd>
+   Define the start of a time window to restrict the samples retrieved
+from the
+   <i>
+    input
+   </i>
+   archives; refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Consecutive samples in the
+   <i>
+    output
+   </i>
+   archive will appear with a time delta defined by
+   <i>
+    interval
+   </i>
+   ;
+
+refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1).
+
+Note the default value is 600 (seconds, i.e. 10 minutes).
+  </dd>
   <dt>
    <b>
     -T
    </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
    <i>
     endtime
    </i>
@@ -335,10 +387,6 @@ retrieved from the
    </b>
    (1).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     -v
@@ -389,47 +437,43 @@ this limit is reached.
     </dd>
    </dl>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
-    -t
+    -z
    </b>
-   <i>
-    interval
-   </i>
+   ,
+   <b>
+    --hostzone
+   </b>
   </dt>
   <dd>
-   Consecutive samples in the
+   Use the local timezone of the host from the
    <i>
-    output
+    input
    </i>
-   archive will appear with a time delta defined by
-   <i>
-    interval
-   </i>
-   ;
-
-refer to
+   archives when displaying the date and time, or interpreting the
    <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
+    -S
    </b>
-   (1).
-
-Note the default value is 600 (seconds, i.e. 10 minutes).
+   and
+   <b>
+    -T
+   </b>
+   options.
+The default is to initially use the timezone of the local host.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     -Z
    </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
    <i>
     timezone
    </i>
@@ -463,30 +507,17 @@ Note the default value is 600 (seconds, i.e. 10 minutes).
    </b>
    (7).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
-    -z
+    -?
+   </b>
+   ,
+   <b>
+    --help
    </b>
   </dt>
   <dd>
-   Use the local timezone of the host from the
-   <i>
-    input
-   </i>
-   archives when displaying the date and time, or interpreting the
-   <b>
-    -S
-   </b>
-   and
-   <b>
-    -T
-   </b>
-   options.
-The default is to initially use the timezone of the local host.
+   Display usage message and exit.
   </dd>
  </dl>
  <a name="lbAF">
@@ -494,9 +525,7 @@ The default is to initially use the timezone of the local host.
  <h2>
   DATA REDUCTION
  </h2>
- <p>
-  The statistical and temporal reduction follows the following rules:
- </p>
+ The statistical and temporal reduction follows the following rules:
  <dl compact="">
   <dt>
    1.
@@ -641,6 +670,68 @@ interpolation will
  <a name="lbAG">
  </a>
  <h2>
+  CAVEATS
+ </h2>
+ <p>
+  The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
+and pmcd.pmlogger.port), which are automatically recorded by
+  <b>
+   pmlogger
+  </b>
+  at the start of the archive, may not be present in the archive output by
+  <b>
+   pmlogreduce
+  </b>
+  .
+
+These metrics are only relevant while the archive is being created,
+and have no significance once recording has finished.
+  <a name="lbAH">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All error conditions detected by
+ <b>
+  pmlogreduce
+ </b>
+ are reported on
+ <i>
+  stderr
+ </i>
+ with textual (if sometimes terse) explanation.
+ <p>
+  Should the
+  <i>
+   input
+  </i>
+  archives be corrupted (this can happen
+if the
+  <b>
+   pmlogger
+  </b>
+  instance writing the archive suddenly dies), then
+  <b>
+   pmlogreduce
+  </b>
+  will detect and report the position of the corruption in the file,
+and any subsequent information from the
+  <i>
+   input
+  </i>
+  archives will not be processed.
+ </p>
+ <p>
+  If any error is detected,
+  <b>
+   pmlogreduce
+  </b>
+  will exit with a non-zero status.
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
   FILES
  </h2>
  For each of the
@@ -724,7 +815,7 @@ archive log.
    </dt>
   </dt>
  </dl>
- <a name="lbAH">
+ <a name="lbAJ">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -733,9 +824,10 @@ archive log.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -745,15 +837,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAI">
+ <a name="lbAK">
  </a>
  <h2>
   SEE ALSO
@@ -802,68 +893,6 @@ and
   </a>
  </b>
  (5).
- <a name="lbAJ">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All error conditions detected by
- <b>
-  pmlogreduce
- </b>
- are reported on
- <i>
-  stderr
- </i>
- with textual (if sometimes terse) explanation.
- <p>
-  Should the
-  <i>
-   input
-  </i>
-  archives be corrupted (this can happen
-if the
-  <b>
-   pmlogger
-  </b>
-  instance writing the archive suddenly dies), then
-  <b>
-   pmlogreduce
-  </b>
-  will detect and report the position of the corruption in the file,
-and any subsequent information from the
-  <i>
-   input
-  </i>
-  archives will not be processed.
- </p>
- <p>
-  If any error is detected,
-  <b>
-   pmlogreduce
-  </b>
-  will exit with a non-zero status.
-  <a name="lbAK">
-  </a>
- </p>
- <h2>
-  CAVEATS
- </h2>
- <p>
-  The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
-and pmcd.pmlogger.port), which are automatically recorded by
-  <b>
-   pmlogger
-  </b>
-  at the start of the archive, may not be present in the archive output by
-  <b>
-   pmlogreduce
-  </b>
-  .
-
-These metrics are only relevant while the archive is being created,
-and have no significance once recording has finished.
- </p>
  <p>
  </p>
  <hr/>
@@ -910,35 +939,35 @@ and have no significance once recording has finished.
   </dd>
   <dt>
    <a href="#lbAG">
-    FILES
+    CAVEATS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAI">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAJ">
     DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
+   <a href="#lbAI">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
    <a href="#lbAK">
-    CAVEATS
+    SEE ALSO
    </a>
   </dt>
   <dd>

@@ -114,17 +114,9 @@ either the
   <b>
    -a
   </b>
-  /
-  <b>
-   --all
-  </b>
   or
   <b>
    -p
-  </b>
-  /
-  <b>
-   --program
   </b>
   options).
 In the
@@ -161,10 +153,6 @@ directrory where file names are matched on
   <b>
    -n
   </b>
-  /
-  <b>
-   --dry-run
-  </b>
   option reports the list of process identifiers that would have been
 signalled, but no signals are actually sent.
  </p>
@@ -177,10 +165,6 @@ signalled, but no signals are actually sent.
 The list of supported signals is reported when using the
   <b>
    -l
-  </b>
-  /
-  <b>
-   --list
   </b>
   option.
  </p>
@@ -205,15 +189,103 @@ honoured by PCP tools, however, not all Windows utilities.
   </a>
  </p>
  <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+   ,
+   <b>
+    --all
+   </b>
+  </dt>
+  <dd>
+   Send signal to all named processes.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   ,
+   <b>
+    --list
+   </b>
+  </dt>
+  <dd>
+   List supported signals.
+  </dd>
+  <dt>
+   <b>
+    -n
+   </b>
+   ,
+   <b>
+    --dry-run
+   </b>
+  </dt>
+  <dd>
+   List processes that would be affected.
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   ,
+   <b>
+    --program
+   </b>
+  </dt>
+  <dd>
+   Extract programs from PCP runtime PID files.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    signal
+   </i>
+   ,
+   <b>
+    --signal
+   </b>
+   =
+   <i>
+    signal
+   </i>
+  </dt>
+  <dd>
+   Specify the signal to send, one of: HUP, USR1, TERM, KILL.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
   PCP ENVIRONMENT
  </h2>
  Environment variables with the prefix
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -223,15 +295,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   SEE ALSO
@@ -300,13 +371,20 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP ENVIRONMENT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

@@ -72,17 +72,7 @@
  </b>
  [
  <b>
-  -F
- </b>
- ]
-[
- <b>
-  -v
- </b>
- ]
-[
- <b>
-  -?
+  -fv?
  </b>
  ]
  <i>
@@ -96,10 +86,8 @@
  <i>
   archive
  </i>
- <p>
-  <a name="lbAD">
-  </a>
- </p>
+ <a name="lbAD">
+ </a>
  <h2>
   DESCRIPTION
  </h2>
@@ -141,17 +129,20 @@ The PCP
   file
  </i>
  are required arguments.
- <p>
-  The options to
-  <b>
-   collectl2pcp
-  </b>
-  are as follows.
- </p>
+ <a name="lbAE">
+ </a>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
-    -F
+    -f
+   </b>
+   ,
+   <b>
+    --force
    </b>
   </dt>
   <dd>
@@ -164,6 +155,10 @@ The PCP
   <dt>
    <b>
     -v
+   </b>
+   ,
+   <b>
+    --verbose
    </b>
   </dt>
   <dd>
@@ -178,6 +173,18 @@ This also reports a count of unsupported metric data in the
 
 input file(s),
 which is normally silently skipped.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
   </dd>
   <dt>
    <i>
@@ -219,7 +226,7 @@ it normally creates files with date based names that will sort chronologically
    will be sorted correctly).
   </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -228,9 +235,10 @@ it normally creates files with date based names that will sort chronologically
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -240,16 +248,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAF">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAG">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -260,14 +276,14 @@ as described in
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmcollectl.1.html">
-   pmcollectl
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
   </a>
  </b>
  (1),
  <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
+  <a href="/man/man1/pmcollectl.1.html">
+   pmcollectl
   </a>
  </b>
  (1),
@@ -293,7 +309,7 @@ as described in
 and
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5).
@@ -329,13 +345,20 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP ENVIRONMENT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

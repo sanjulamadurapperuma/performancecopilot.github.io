@@ -72,45 +72,50 @@
  </b>
  [
  <b>
-  -s
+  -d
  </b>
  <i>
-  start
+  outdir
  </i>
- ] [
+ ]
+[
  <b>
   -e
  </b>
  <i>
   end
  </i>
- ] [
+ ]
+[
  <b>
   -f
  </b>
  <i>
   outfile
  </i>
- ] [
- <b>
-  -d
- </b>
- <i>
-  outdir
- </i>
- ] [
- <b>
-  -Z
- </b>
- <i>
-  timezone
- </i>
- ] [
+ ]
+[
  <b>
   -h
  </b>
  <i>
   hostname
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  start
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
  </i>
  ]
  <i>
@@ -124,7 +129,7 @@
  <b>
   ganglia2pcp
  </b>
- is intended to read a set of ganglia files stored in the 
+ is intended to read a set of ganglia files stored in the
 rrd format
 and translate them into a Performance
 Co-Pilot (
@@ -138,8 +143,8 @@ Co-Pilot (
  .
  <p>
   The intent of this converter is to take all of the rrd files found in the input_dir
-and generate a single pcp archive file.  The mapping of ganglia metrics to pcp metrics
-is defined internally.
+and generate a single pcp archive file.
+The mapping of ganglia metrics to pcp metrics is defined internally.
  </p>
  <p>
   The resultant
@@ -199,7 +204,8 @@ These are
    .index
   </b>
   (a temporal index to improve efficiency of replay
-operations for the archive).  If any of these files exists already,
+operations for the archive).
+If any of these files exists already,
 then
   <b>
    sar2pcp
@@ -233,66 +239,102 @@ tools to import other types of performance data and create
   </font>
   archives.
 The RRDs Perl wrapper is used to parse the raw rrd format files.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  Options control the functioning of the converter.
- </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
-  <dt>
-   <b>
-    -s
-   </b>
-  </dt>
-  <dd>
-   The
-   <i>
-    start
-   </i>
-   argument specifies a start time in a format understood by str2time. The default
-start time is 24 prior to current time.
-  </dd>
-  <dt>
-   <b>
-    -e
-   </b>
-  </dt>
-  <dd>
-   The
-   <i>
-    end
-   </i>
-   argument specifies a end time in a format understood by str2time. The default
-start time is current time.
-  </dd>
-  <dt>
-   <b>
-    -f
-   </b>
-  </dt>
-  <dd>
-   The
-   <i>
-    outfile
-   </i>
-   argument specifies a output file name.  The default name is in the standard pmlogger format
-based on the start time, eg 20150201.00.10
-  </dd>
   <dt>
    <b>
     -d
    </b>
+   <i>
+    outdir
+   </i>
   </dt>
   <dd>
    The
    <i>
     outdir
    </i>
-   argument specifies a output to write to.  The default is the current directory
+   argument specifies a output to write to.
+The default is the current directory.
+  </dd>
+  <dt>
+   <b>
+    -e
+   </b>
+   <i>
+    end
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    end
+   </i>
+   argument specifies a end time in a format understood by str2time.
+The default start time is current time.
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+   <i>
+    outfile
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    outfile
+   </i>
+   argument specifies a output file name.
+The default name is in the standard pmlogger format based on the start time,
+e.g., 20150201.00.10.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    hostname
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    hostname
+   </i>
+   argument specifies a hostname to write to the archive.
+The default is taken from the directory name that the rrd files reside in.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    start
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    start
+   </i>
+   argument specifies a start time in a format understood by str2time.
+The default start time is 24 prior to current time.
   </dd>
   <dt>
    <b>
     -Z
    </b>
+   <i>
+    timezone
+   </i>
   </dt>
   <dd>
    The
@@ -304,13 +346,13 @@ based on the start time, eg 20150201.00.10
     PCP
    </font>
    archive (the
-default is to use the local timezone).  The timezone must have the
-format +HHMM (for hours and minutes East of
+default is to use the local timezone).
+The timezone must have the format +HHMM (for hours and minutes East of
    <font size="-1">
     UTC
    </font>
-   ) or -HHMM (for hours
-and minutes West of
+   )
+or -HHMM (for hours and minutes West of
    <font size="-1">
     UTC
    </font>
@@ -318,7 +360,8 @@ and minutes West of
    <font size="-1">
     UTC
    </font>
-   .  Note in particular that
+   .
+Note in particular that
    <b>
     neither
    </b>
@@ -343,21 +386,8 @@ and minutes West of
    is allowed.
 Example: timezone=``+1100''.
   </dd>
-  <dt>
-   <b>
-    -h
-   </b>
-  </dt>
-  <dd>
-   The
-   <i>
-    hostname
-   </i>
-   argument specifies a hostname to write to the archive. The default is taken from the directory
-name that the rrd files reside in.
-  </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -366,9 +396,10 @@ name that the rrd files reside in.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -378,15 +409,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   SEE ALSO
@@ -485,13 +515,20 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP ENVIRONMENT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

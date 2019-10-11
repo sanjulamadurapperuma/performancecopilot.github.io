@@ -320,7 +320,15 @@ options
   <i>
    pcp options
   </i>
-  become indirectly available.
+  become indirectly available, see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for their descriptions.
  </p>
  <p>
   Some generic flags can be specified to influence the behaviour of the
@@ -884,6 +892,272 @@ an interval).
   </dd>
  </dl>
  <a name="lbAE">
+ </a>
+ <h2>
+  PCP ATOPSAR OPTIONS
+ </h2>
+ The following additional PCP command line long options are also available:
+ <dl compact="">
+  <dt>
+   <b>
+    --align
+   </b>
+   =
+   <i>
+    align
+   </i>
+  </dt>
+  <dd>
+   Force the initial sample to be
+aligned on the boundary of a natural time unit
+   <i>
+    align
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    align
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
+  </dt>
+  <dd>
+   Performance metric values are retrieved from the set of Performance
+Co-Pilot (PCP) archive log files identified by the argument
+   <i>
+    archive
+   </i>
+   ,
+
+which is a comma-separated list of names,
+each of which may be the base name of an archive or the name of
+a directory containing one or more archives.
+  </dd>
+  <dt>
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, the report will be restricted to those
+records logged before or at
+   <i>
+    endtime
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    endtime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Fetch performance metrics from
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+on
+   <i>
+    host
+   </i>
+   ,
+
+rather than from the default localhost.
+  </dd>
+  <dt>
+   <b>
+    --hostzone
+   </b>
+  </dt>
+  <dd>
+   Use the local timezone of the host that is the source of the
+performance metrics, as identified by either the
+   <b>
+    --host
+   </b>
+   or the
+   <b>
+    --archive
+   </b>
+   options.
+The default is to use the timezone of the local host.
+  </dd>
+  <dt>
+   <b>
+    --hotproc
+   </b>
+  </dt>
+  <dd>
+   Use the
+   <b>
+    <a href="/man/man1/pmdaproc.1.html">
+     pmdaproc
+    </a>
+   </b>
+   (1)
+
+hotproc metrics.
+  </dd>
+  <dt>
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Set the reporting
+   <i>
+    interval
+   </i>
+   to something other than the default 1 second.
+The
+   <i>
+    interval
+   </i>
+   argument follows the syntax described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1),
+
+and in the simplest form may be an unsigned integer
+(the implied units in this case are seconds).
+  </dd>
+  <dt>
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    samples
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    samples
+   </i>
+   option defines the number of samples to be retrieved and reported.
+  </dd>
+  <dt>
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, the report will be restricted to those
+records logged at or after
+   <i>
+    starttime
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    starttime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   Use
+   <i>
+    timezone
+   </i>
+   for the date and time.
+   <i>
+    Timezone
+   </i>
+   is in the format of the environment variable
+   <b>
+    TZ
+   </b>
+   as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+  <dt>
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
  </a>
  <h2>
   OUTPUT DESCRIPTION
@@ -2831,7 +3105,7 @@ number of transfers issued by all processes,
 so a high percentage does not imply a high network load on system level.
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   EXAMPLES
@@ -2953,7 +3227,7 @@ as last character):
   </dd>
  </dl>
  <p>
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -3005,8 +3279,46 @@ See related man-page.
    is the hostname of the machine being logged.
   </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAI">
  </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAJ">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -3086,27 +3398,41 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    OUTPUT DESCRIPTION
+    PCP ATOPSAR OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    EXAMPLES
+    OUTPUT DESCRIPTION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    FILES
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
     SEE ALSO
    </a>
   </dt>

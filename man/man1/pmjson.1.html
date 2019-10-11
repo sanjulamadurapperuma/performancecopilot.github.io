@@ -72,31 +72,23 @@
  </b>
  [
  <b>
-  -mpqy
+  -mpqyV?
  </b>
  ]
 [
  <b>
   -i
  </b>
- |
- <b>
-  --in
- </b>
  <i>
-  FILE
+  infile
  </i>
  ]
 [
  <b>
   -o
  </b>
- |
- <b>
-  --out
- </b>
  <i>
-  FILE
+  outfile
  </i>
  ]
  <a name="lbAD">
@@ -111,22 +103,33 @@
 text used in the Performance Co-Pilot (PCP toolkit).
 It can produce minimal and human readable output formats
 when it is supplied with valid JSON input.
- <p>
-  The available command line options are as follows:
- </p>
+ <a name="lbAE">
+ </a>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
-    -i|--in
+    -i
    </b>
    <i>
-    FILE
+    infile
+   </i>
+   ,
+   <b>
+    --in
+   </b>
+   =
+   <i>
+    infile
    </i>
   </dt>
   <dd>
    JSON formatted input
    <i>
-    FILE
+    infile
    </i>
    - path to a file from which input should be read.
 If this option is omitted, then
@@ -137,16 +140,37 @@ If this option is omitted, then
   </dd>
   <dt>
    <b>
-    -o|--out
+    -m
+   </b>
+   ,
+   <b>
+    --minimal
+   </b>
+  </dt>
+  <dd>
+   Produce JSON output with all superflous whitespace removed
+from the resulting JSON string.
+  </dd>
+  <dt>
+   <b>
+    -o
    </b>
    <i>
-    FILE
+    outfile
+   </i>
+   ,
+   <b>
+    --out
+   </b>
+   =
+   <i>
+    outfile
    </i>
   </dt>
   <dd>
    Formatted output is written to the named
    <i>
-    FILE
+    outfile
    </i>
    .
 
@@ -158,16 +182,11 @@ If this option is omitted, then
   </dd>
   <dt>
    <b>
-    -m|--minimal
+    -p
    </b>
-  </dt>
-  <dd>
-   Produce JSON output with all superflous whitespace removed
-from the resulting JSON string.
-  </dd>
-  <dt>
+   ,
    <b>
-    -p|--pretty
+    --pretty
    </b>
   </dt>
   <dd>
@@ -175,7 +194,11 @@ from the resulting JSON string.
   </dd>
   <dt>
    <b>
-    -q|--quiet
+    -q
+   </b>
+   ,
+   <b>
+    --quiet
    </b>
   </dt>
   <dd>
@@ -183,15 +206,43 @@ from the resulting JSON string.
   </dd>
   <dt>
    <b>
-    -y|--yaml
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -y
+   </b>
+   ,
+   <b>
+    --yaml
    </b>
   </dt>
   <dd>
    Produce YAML-like output, a human-readable format with less
 syntactic sugar than JSON.
   </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -200,9 +251,10 @@ syntactic sugar than JSON.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -212,15 +264,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   SEE ALSO
@@ -277,13 +328,20 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP ENVIRONMENT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

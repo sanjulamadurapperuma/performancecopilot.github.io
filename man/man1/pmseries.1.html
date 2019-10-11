@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -adFiIlLmMnqsSV
+  -adFiIlLmMnqsStV?
  </b>
  ]
 [
@@ -105,6 +105,14 @@
  </b>
  <i>
   port
+ </i>
+ ]
+[
+ <b>
+  -Z
+ </b>
+ <i>
+  timezone
  </i>
  ]
 [
@@ -148,17 +156,9 @@ however the
   <b>
    -h
   </b>
-  /
-  <b>
-   --host
-  </b>
   and
   <b>
    -p
-  </b>
-  /
-  <b>
-   --port
   </b>
   options can be used to
 specify an alternate Redis instance.
@@ -186,10 +186,6 @@ will automatically perform this function when it is
 started with the
   <b>
    -t
-  </b>
-  /
-  <b>
-   --timeseries
   </b>
   option.
 In time, this option will become enabled by default.
@@ -313,10 +309,6 @@ identifiers (in 40 hex digit form)
 the
   <b>
    -a
-  </b>
-  /
-  <b>
-   --all
   </b>
   option for details.
 Otherwise, the parameters will be treated as a timeseries
@@ -786,8 +778,9 @@ This option has a direct
     -g
    </b>
    <i>
-    pattern,
+    pattern
    </i>
+   ,
    <b>
     --glob
    </b>
@@ -1174,6 +1167,19 @@ This is the default action.
   </dd>
   <dt>
    <b>
+    -t
+   </b>
+   ,
+   <b>
+    --times
+   </b>
+  </dt>
+  <dd>
+   Report time stamps numerically (in milliseconds) instead of
+the default human readable form.
+  </dd>
+  <dt>
+   <b>
     -V
    </b>
    ,
@@ -1183,6 +1189,43 @@ This is the default action.
   </dt>
   <dd>
    Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   Use
+   <i>
+    timezone
+   </i>
+   for the date and time.
+   <i>
+    Timezone
+   </i>
+   is in the format of the environment variable
+   <b>
+    TZ
+   </b>
+   as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
   </dd>
   <dt>
    <b>
@@ -1282,9 +1325,10 @@ eb713a9cf472f775aa59ae90c43cd7f960f7870f
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1294,16 +1338,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAV">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAV">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -1403,6 +1455,12 @@ as described in
   </a>
  </b>
  (5),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+   environ
+  </a>
+ </b>
+ (7),
  <b>
   <a href="http://man7.org/linux/man-pages/man7/glob.7.html">
    glob

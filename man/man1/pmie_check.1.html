@@ -76,7 +76,7 @@
  </b>
  [
  <b>
-  -CNsV
+  -CNsTV?
  </b>
  ]
 [
@@ -101,7 +101,7 @@
  </b>
  [
  <b>
-  -NV
+  -NV?
  </b>
  ]
 [
@@ -188,8 +188,8 @@ inference engine,
    pmie_daily
   </b>
   is intended to be run once per day, preferably in the early morning, as
-soon after midnight as practicable.  Its task is to rotate the log files
-for the running
+soon after midnight as practicable.
+Its task is to rotate the log files for the running
   <b>
    pmie
   </b>
@@ -208,7 +208,12 @@ This period is 14 days by default, but may be changed using the
   <b>
    -k
   </b>
-  option. Two special values are recognized for the period (
+  /
+  <b>
+   --discard
+  </b>
+  option.
+Two special values are recognized for the period (
   <i>
    discard
   </i>
@@ -231,7 +236,8 @@ namely
   </i>
   ),
 
-to conserve disk space.  This is particularly useful for large numbers of
+to conserve disk space.
+This is particularly useful for large numbers of
   <b>
    pmie
   </b>
@@ -244,6 +250,10 @@ to conserve disk space.  This is particularly useful for large numbers of
 The
   <b>
    -x
+  </b>
+  /
+  <b>
+   --compress-after
   </b>
   option specifies the number of days after which to compress archive data
 files, and the
@@ -262,10 +272,15 @@ Use of the
   <b>
    -Y
   </b>
+  /
+  <b>
+   --regex
+  </b>
   option allows a regular expression to be specified causing files in
 the set of files matched for compression to be omitted - this allows
 only the data file to be compressed, and also prevents the program from
-attempting to compress it more than once.  The default
+attempting to compress it more than once.
+The default
   <i>
    regex
   </i>
@@ -286,6 +301,10 @@ filtered using the
   Use of the
   <b>
    -m
+  </b>
+  /
+  <b>
+   --mail
   </b>
   option causes
   <b>
@@ -317,6 +336,10 @@ Use of the
   <b>
    -s
   </b>
+  /
+  <b>
+   --stop
+  </b>
   option provides the reverse functionality, allowing the set of
   <b>
    pmie
@@ -347,13 +370,18 @@ and uses that to determine whether to start processes.
   <b>
    pmie
   </b>
-  instances to be managed.  The default control file is
+  instances to be managed.
+The default control file is
   <b>
    $PCP_PMIECONTROL_PATH
   </b>
   but an alternate may be specified using the
   <b>
    -c
+  </b>
+  /
+  <b>
+   --control
   </b>
   option.
 If the directory
@@ -371,6 +399,10 @@ If the directory
 from the
   <b>
    -c
+  </b>
+  /
+  <b>
+   --control
   </b>
   option) exists, then the contents of any additional control files therein
 will be appended to the main control file (which must exist).
@@ -531,9 +563,13 @@ When generating
    </b>
    configuration files, the primary clause indicates that
    <b>
-    pmieconf (1)
+    <a href="/man/man1/pmieconf.1.html">
+     pmieconf
+    </a>
    </b>
-   should enable all rules in the primary group, in addition to all other
+   (1)
+
+should enable all rules in the primary group, in addition to all other
 default rules.
   </dd>
   <dt>
@@ -582,7 +618,7 @@ to connect to a
    <b>
     pmie
    </b>
-   activity log file.  
+   activity log file.
 A useful convention is that
    <b>
     pmie
@@ -743,6 +779,10 @@ are generated to the new log file.
   <b>
    -V
   </b>
+  /
+  <b>
+   --verbose
+  </b>
   option to the scripts which will enable verbose tracing of their activity.
 By default the scripts generate no output unless some error or warning
 condition is encountered.
@@ -751,6 +791,10 @@ condition is encountered.
   The
   <b>
    -N
+  </b>
+  /
+  <b>
+   --showme
   </b>
   option enables a ``show me'' mode, where the actions are echoed,
 but not executed, in the style of ``make -n''.
@@ -761,6 +805,10 @@ Using
   in conjunction with
   <b>
    -V
+  </b>
+  /
+  <b>
+   --verbose
   </b>
   maximizes the diagnostic capabilities for debugging.
   <a name="lbAE">
@@ -904,20 +952,20 @@ and friends
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
- <b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
   /etc/pcp.conf
- </b>
+ </i>
  contains the local values for these variables.
 The
  <b>
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf

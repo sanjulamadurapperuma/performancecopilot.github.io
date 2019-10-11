@@ -79,10 +79,125 @@
   dstat
  </b>
  [
+ <b>
+  -acdfghilmnpqrstvVy?
+ </b>
+ ]
+[
+ <b>
+  -C
+ </b>
  <i>
-  dstat options
+  cpus
  </i>
- ] [
+ ]
+[
+ <b>
+  -D
+ </b>
+ <i>
+  disks
+ </i>
+ ]
+[
+ <b>
+  -I
+ </b>
+ <i>
+  interrupts
+ </i>
+ ]
+[
+ <b>
+  -N
+ </b>
+ <i>
+  interfaces
+ </i>
+ ]
+[
+ <b>
+  -o
+ </b>
+ <i>
+  output-file
+ </i>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  swap-devices
+ </i>
+ ]
+[
+ <b>
+  --bits
+ </b>
+ ]
+[
+ <b>
+  --bw
+ </b>
+ ]
+[
+ <b>
+  --color
+ </b>
+ ]
+[
+ <b>
+  --float
+ </b>
+ ]
+[
+ <b>
+  --integer
+ </b>
+ ]
+[
+ <b>
+  --nocolor
+ </b>
+ ]
+[
+ <b>
+  --noheaders
+ </b>
+ ]
+[
+ <b>
+  --noupdate
+ </b>
+ ]
+[
+ <b>
+  --list
+ </b>
+ ]
+[
+ <b>
+  --pidfile
+ </b>
+ <i>
+  pid-file
+ </i>
+ ]
+[
+ <b>
+  --
+ </b>
+ <i>
+  plugin
+ </i>
+ ]
+[
+ <b>
+  --all-plugins
+ </b>
+ ]
+[
  <i>
   delay
  </i>
@@ -876,118 +991,6 @@ issued to the device to be served
   </dd>
   <dt>
    <b>
-    --top-bio
-   </b>
-  </dt>
-  <dd>
-   show most expensive block I/O process
-  </dd>
-  <dt>
-   <b>
-    --top-bio-adv
-   </b>
-  </dt>
-  <dd>
-   show most expensive block I/O process (incl. PID and other stats)
-  </dd>
-  <dt>
-   <b>
-    --top-childwait
-   </b>
-  </dt>
-  <dd>
-   show process waiting for child the most
-  </dd>
-  <dt>
-   <b>
-    --top-cpu
-   </b>
-  </dt>
-  <dd>
-   show most expensive CPU process
-  </dd>
-  <dt>
-   <b>
-    --top-cpu-adv
-   </b>
-  </dt>
-  <dd>
-   show most expensive CPU process (incl. PID and other stats)
-  </dd>
-  <dt>
-   <b>
-    --top-cputime
-   </b>
-  </dt>
-  <dd>
-   show process using the most CPU time (in milliseconds)
-  </dd>
-  <dt>
-   <b>
-    --top-cputime-avg
-   </b>
-  </dt>
-  <dd>
-   show process with the highest average timeslice (in milliseconds)
-  </dd>
-  <dt>
-   <b>
-    --top-int
-    <dd>
-     show most frequent interrupt
-    </dd>
-   </b>
-   <dt>
-    <b>
-     --top-io
-     <dd>
-      show most expensive I/O process
-     </dd>
-    </b>
-    <dt>
-     <b>
-      --top-io-adv
-     </b>
-    </dt>
-   </dt>
-  </dt>
-  <dd>
-   show most expensive I/O process (incl. PID and other stats)
-  </dd>
-  <dt>
-   <b>
-    --top-latency
-   </b>
-  </dt>
-  <dd>
-   show process with highest total latency (in milliseconds)
-  </dd>
-  <dt>
-   <b>
-    --top-latency-avg
-   </b>
-  </dt>
-  <dd>
-   show process with the highest average latency (in milliseconds)
-  </dd>
-  <dt>
-   <b>
-    --top-mem
-   </b>
-  </dt>
-  <dd>
-   show process using the most memory
-  </dd>
-  <dt>
-   <b>
-    --top-oom
-   </b>
-  </dt>
-  <dd>
-   show process that will be killed by the out-of-memory (OOM) killer the first
-  </dd>
-  <dt>
-   <b>
     -f
    </b>
    ,
@@ -1119,6 +1122,7 @@ issued to the device to be served
    <b>
     --output
    </b>
+   =
    <i>
     file
    </i>
@@ -1130,11 +1134,32 @@ issued to the device to be served
    </i>
    .
   </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   <i>
+    file
+   </i>
+   ,
+   <b>
+    --pidfile
+   </b>
+   =
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   write the process identifier to a given
+   <i>
+    file
+   </i>
+   .
+  </dd>
  </dl>
- <p>
-  <a name="lbAF">
-  </a>
- </p>
+ <a name="lbAF">
+ </a>
  <h2>
   OPTIONAL METRICS PLUGINS
  </h2>
@@ -1663,6 +1688,33 @@ $ pcp --host <a href="http://www.acme.com">www.acme.com</a> dstat --time --cpu-a
  <a name="lbAK">
  </a>
  <h2>
+  ENVIRONMENT
+ </h2>
+ Internal plugins behaviour can be changed through environment variables.
+ <dl compact="">
+  <dt>
+   <i>
+    DSTAT_TIMEFMT
+   </i>
+  </dt>
+  <dd>
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+     strftime
+    </a>
+   </b>
+   (3)
+
+format string for reporting time (see
+   <b>
+    --time
+   </b>
+   )
+  </dd>
+ </dl>
+ <a name="lbAL">
+ </a>
+ <h2>
   PCP ENVIRONMENT
  </h2>
  Environment variables with the prefix
@@ -1697,36 +1749,9 @@ configuration file, as described in
    </a>
   </b>
   (3).
-  <a name="lbAL">
+  <a name="lbAM">
   </a>
  </p>
- <h2>
-  ENVIRONMENT VARIABLES
- </h2>
- Internal plugins behaviour can be changed through environment variables.
- <dl compact="">
-  <dt>
-   <i>
-    DSTAT_TIMEFMT
-   </i>
-  </dt>
-  <dd>
-   <b>
-    <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
-     strftime
-    </a>
-   </b>
-   (3)
-
-format string for reporting time (see
-   <b>
-    --time
-   </b>
-   )
-  </dd>
- </dl>
- <a name="lbAM">
- </a>
  <h2>
   AUTHORS
  </h2>
@@ -1950,14 +1975,14 @@ and
   </dd>
   <dt>
    <a href="#lbAK">
-    PCP ENVIRONMENT
+    ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAL">
-    ENVIRONMENT VARIABLES
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>

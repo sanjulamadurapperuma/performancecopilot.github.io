@@ -58,14 +58,25 @@
  <h2>
   NAME
  </h2>
- pcp-mpstat - Report CPU and Interrupt related statistics.
+ <b>
+  pcp-mpstat
+ </b>
+ - Report CPU and interrupt related statistics.
  <a name="lbAC">
  </a>
  <h2>
   SYNOPSIS
  </h2>
  <b>
-  pcp mpstat [ -A ] [ -u ] [ -V ] [ -I {
+  pcp
+ </b>
+ [
+ <i>
+  pcp options
+ </i>
+ ]
+ <b>
+  mpstat [ -A ] [ -u ] [ -V ] [ -I {
  </b>
  <b>
   SUM | CPU | SCPU | ALL } ] [ -P {
@@ -92,36 +103,111 @@
   archive
  </i>
  <b>
-  ]
+  ] [ -? ]
  </b>
  <a name="lbAD">
  </a>
  <h2>
   DESCRIPTION
  </h2>
- The
  <b>
-  pcp mpstat
+  pcp-mpstat
  </b>
  command writes to standard output activities for each available processor,
-processor 0 being the first one. If no activity/option has been selected, then the
-default report is the CPU utilization
+processor 0 being the first one.
+If no activity/option has been selected, then the
+default report is the CPU utilization (
  <b>
-  [ -u ]
+  -u
  </b>
- report.
+ ) report.
  <p>
   The
   <i>
    interval
   </i>
-  parameter specifies the amount of time in seconds between each report. Default is one second.
+  parameter specifies the amount of time in seconds between each report.
+The default is one second.
 The value of
   <i>
    count
   </i>
   parameter determines the number of samples to be displayed.
-Default is continous.
+The default is continous.
+ </p>
+ <p>
+  When invoked via the
+  <b>
+   <a href="/man/man1/pcp.1.html">
+    pcp
+   </a>
+  </b>
+  (1)
+
+command, the
+  <b>
+   -h
+  </b>
+  /
+  <b>
+   --host
+  </b>
+  ,
+  <b>
+   -a
+  </b>
+  /
+  <b>
+   --archive
+  </b>
+  ,
+  <b>
+   -O
+  </b>
+  /
+  <b>
+   --origin
+  </b>
+  ,
+  <b>
+   -s
+  </b>
+  /
+  <b>
+   --samples
+  </b>
+  ,
+  <b>
+   -t
+  </b>
+  /
+  <b>
+   --interval
+  </b>
+  ,
+  <b>
+   -Z
+  </b>
+  /
+  <b>
+   --timezone
+  </b>
+  and several other
+  <b>
+   pcp
+  </b>
+  <i>
+   options
+  </i>
+  become indirectly available, see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for their descriptions.
   <a name="lbAE">
   </a>
  </p>
@@ -151,7 +237,7 @@ Default is continous.
    </b>
    keyword, the
    <b>
-    pcp mpstat
+    pcp-mpstat
    </b>
    command reports the total number of interrupts per processor.
 The following values are displayed:
@@ -170,7 +256,8 @@ The following values are displayed:
     <dt>
     </dt>
     <dd>
-     Processor number. The keyword
+     Processor number.
+The keyword
      <i>
       all
      </i>
@@ -197,7 +284,8 @@ the CPU or CPUs.
      CPU
     </b>
     keyword, the number of each individual interrupt received per
-second by the CPU or CPUs is displayed. Interrupts are those under the kernel.percpu.interrupts metric tree.
+second by the CPU or CPUs is displayed.
+Interrupts are those under the kernel.percpu.interrupts metric tree.
    </p>
    <p>
     With the
@@ -205,9 +293,8 @@ second by the CPU or CPUs is displayed. Interrupts are those under the kernel.pe
      SCPU
     </b>
     keyword, the number of each individual software interrupt received per
-second by the CPU or CPUs is displayed. Software interrupts are those under
-    <br/>
-    the kernel.percpu.softirqs tree
+second by the CPU or CPUs is displayed.
+Software interrupts are those under the kernel.percpu.softirqs tree
    </p>
    <p>
     The
@@ -228,7 +315,9 @@ therefore all the interrupts statistics are displayed.
    <i>
     cpu1 and cpu2
    </i>
-   are the processor numbers. A list of required processor numbers can be provided. Note that processor 0 is the first processor.
+   are the processor numbers.
+A list of required processor numbers can be provided.
+Note that processor 0 is the first processor.
    <p>
     The
     <b>
@@ -246,7 +335,8 @@ online processor, whereas the
    -u
   </dt>
   <dd>
-   Report CPU utilization. The following values are displayed:
+   Report CPU utilization.
+The following values are displayed:
    <p>
     <b>
      CPU
@@ -260,7 +350,8 @@ online processor, whereas the
       <dt>
       </dt>
       <dd>
-       Processor number. The keyword
+       Processor number.
+The keyword
        <i>
         ALL
        </i>
@@ -304,7 +395,8 @@ executing at the user level with nice priority.
       </dt>
       <dd>
        Show the percentage of CPU utilization that occurred while
-executing at the system level (kernel). Note that this does not
+executing at the system level (kernel).
+Note that this does not
 include time spent servicing hardware and software interrupts.
       </dd>
      </dl>
@@ -409,25 +501,13 @@ is a disabled (offline) processor.
    </p>
   </dd>
   <dt>
-   -a  FILE , --archive = FILE
-  </dt>
-  <dd>
-   Causes pcp-mpstat to use the specified archive than connecting to PMCD. The argument to -a is a comma-separated
-list of names, each of which may be the base name of an archive or the name of a directory containing one or more archives. Archives can be created using
-   <b>
-    <a href="/man/man1/pmlogger.1.html">
-     pmlogger
-    </a>
-   </b>
-   (1).
-   <p>
-   </p>
-  </dd>
-  <dt>
    -s  N , --samples = N
   </dt>
   <dd>
-   Set the number of samples to be displayed. Since the first sample is used for the rate conversion of some of the metrics, the total number of samples reported are one less that N. Default is continous.
+   Set the number of samples to be displayed.
+Since the first sample is used for the rate conversion of some of the metrics,
+the total number of samples reported are one less that N.
+Default is continous.
    <p>
    </p>
   </dd>
@@ -435,17 +515,42 @@ list of names, each of which may be the base name of an archive or the name of a
    -t DELTA , --interval = DELTA
   </dt>
   <dd>
-   Set the interval between two samples. Default is one second.
+   Set the interval between two samples.
+The default is one second.
    <p>
    </p>
   </dd>
   <dt>
-   -V
+   -a  FILE , --archive = FILE
+  </dt>
+  <dd>
+   Causes
+   <b>
+    pcp-mpstat
+   </b>
+   to use the specified archive than connecting to PMCD.
+The argument to
+   <b>
+    -a
+   </b>
+   is a comma-separated list of names, each of which may
+be the base name of an archive or the name of a directory containing one or more archives.
+   <p>
+   </p>
+  </dd>
+  <dt>
+   -V , --version
   </dt>
   <dd>
    Print version number then exit.
    <p>
    </p>
+  </dd>
+  <dt>
+   -? , --help
+  </dt>
+  <dd>
+   Print usage message then exit.
   </dd>
  </dl>
  <a name="lbAF">
@@ -454,7 +559,7 @@ list of names, each of which may be the base name of an archive or the name of a
   EXAMPLES
  </h2>
  <b>
-  pcp mpstat -t 2 -s 5
+  pcp-mpstat -t 2 -s 5
  </b>
  <dl compact="">
   <dt>
@@ -506,9 +611,51 @@ command and aims to be command line and output compatible with it.
  <b>
   LC_TIME
  </b>
- environment variables can be used to override the default date display format for pcp-mpstat.
+ environment variables can be used to override the default date display format for
+ <b>
+  pcp-mpstat
+ </b>
+ .
  <a name="lbAI">
  </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAJ">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -610,6 +757,13 @@ and
   </dd>
   <dt>
    <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
     SEE ALSO
    </a>
   </dt>

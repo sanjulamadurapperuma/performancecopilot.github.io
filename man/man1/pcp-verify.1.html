@@ -68,41 +68,27 @@
   SYNOPSIS
  </h2>
  <b>
-  pcp
+  pcp verify
  </b>
  [
+ <b>
+  -a
+ </b>
  <i>
-  pcp options
+  archive
  </i>
  ]
+[
  <b>
-  verify
+  -h
  </b>
- [
- <b>
-  -c
- </b>
- /
- <b>
-  --containers
- </b>
+ <i>
+  host
+ </i>
  ]
 [
  <b>
-  -s
- </b>
- /
- <b>
-  --secure
- </b>
- ]
-[
- <b>
-  -v
- </b>
- /
- <b>
-  --verbose
+  -csvV?
  </b>
  ]
  <a name="lbAD">
@@ -121,56 +107,130 @@ whether it is configured correctly for certain modes of operation.
    pcp-verify
   </b>
   checks that PMCD is running and no agents are in a failed state.
-These checks can be extended and refined using the command line.
+These checks can be extended and refined using the command line options.
   <a name="lbAE">
   </a>
  </p>
  <h2>
   OPTIONS
  </h2>
- Additional options are available for changing the verification performed by
- <b>
-  pcp-verify
- </b>
- .
- <p>
-  <b>
-   -c
-  </b>
-  /
-  <b>
-   --containers
-  </b>
-  verifies the collector installation for monitoring containers.
- </p>
- <p>
-  <b>
-   -s
-  </b>
-  /
-  <b>
-   --secure
-  </b>
-  verifies that the required components for encrypted communication
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
+  </dt>
+  <dd>
+   Use the
+   <i>
+    archive
+   </i>
+   for verification.
+  </dd>
+  <dt>
+   <b>
+    -c
+   </b>
+   ,
+   <b>
+    --containers
+   </b>
+  </dt>
+  <dd>
+   Verify the collector installation for monitoring containers.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Connect to the PMCD on
+   <i>
+    host
+   </i>
+   for verification.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   ,
+   <b>
+    --secure
+   </b>
+  </dt>
+  <dd>
+   Verify that the required components for encrypted communication
 are in place.
- </p>
- <p>
-  <b>
-   -v
-  </b>
-  /
-  <b>
-   --verbose
-  </b>
-  increase the verbosity, and report on each check as it is made.
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   Increase the verbosity, and report on each check as it is made.
 In the absence of any issues found,
-  <b>
-   pcp-verify
-  </b>
-  operates silently.
-  <a name="lbAF">
-  </a>
- </p>
+   <b>
+    pcp-verify
+   </b>
+   operates silently.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   DIAGNOSTICS
  </h2>
@@ -181,6 +241,44 @@ In the absence of any issues found,
 otherwise it is silent and returns zero.
  <a name="lbAG">
  </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -244,6 +342,13 @@ and
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

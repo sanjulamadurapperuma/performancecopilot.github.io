@@ -72,59 +72,60 @@
  </b>
  [
  <b>
-  -d
+  -dv
  </b>
- ] [
+ ]
+[
  <b>
   -D
  </b>
  <i>
   domain
  </i>
- ] [
- <b>
-  -s
- </b>
- <i>
-  stdpmid
- </i>
- ] [
- <b>
-  -t
- </b>
- <i>
-  topdir
- </i>
- ] [
+ ]
+[
  <b>
   -n
  </b>
  <i>
   pmns
  </i>
- ] [
+ ]
+[
  <b>
   -o
  </b>
  <i>
   dir
  </i>
- ] [
- <b>
-  -v
- </b>
  ]
+[
  <b>
-  -i
+  -s
  </b>
  <i>
-  IAM
+  stdpmid
  </i>
+ ]
+[
+ <b>
+  -t
+ </b>
+ <i>
+  topdir
+ </i>
+ ]
  <b>
   -c
  </b>
  <i>
   config
+ </i>
+ <b>
+  -i
+ </b>
+ <i>
+  IAM
  </i>
  <a name="lbAD">
  </a>
@@ -132,7 +133,7 @@
   DESCRIPTION
  </h2>
  <b>
-  Genpmda
+  genpmda
  </b>
  is a rapid application development tool for creating new
 Performance Metrics Domain Agents, see
@@ -149,13 +150,13 @@ without needing to understand the low level details of how PMDAs are
 constructed.
  <p>
   <b>
-   Genpmda
+   genpmda
   </b>
   reads a config file containing an augmented
 Performance Metrics Name Space, see
   <b>
    <a href="/man/man5/pmns.5.html">
-    pmns
+    PMNS
    </a>
   </b>
   (5),
@@ -214,7 +215,7 @@ written manually.
    </i>
   </dt>
   <dd>
-   pmda name
+   PMDA name
    <i>
     IAM
    </i>
@@ -249,43 +250,6 @@ written manually.
   </dd>
   <dt>
    <b>
-    -t
-   </b>
-   <i>
-    topdir
-   </i>
-  </dt>
-  <dd>
-   use
-   <i>
-    topdir
-   </i>
-   in generated GNUmakefile, default
-   <b>
-    ../../..
-   </b>
-  </dd>
-  <dt>
-   <b>
-    -n
-   </b>
-   <i>
-    pmns
-   </i>
-  </dt>
-  <dd>
-   use
-   <i>
-    pmns
-   </i>
-   as root of the namespace (default matches
-   <b>
-    -i
-   </b>
-   flag)
-  </dd>
-  <dt>
-   <b>
     -D
    </b>
    <i>
@@ -313,22 +277,22 @@ written manually.
   </dd>
   <dt>
    <b>
-    -s
+    -n
    </b>
    <i>
-    stdpmid
+    pmns
    </i>
   </dt>
   <dd>
-   path to
+   use
    <i>
-    stdpmid
+    pmns
    </i>
-   (default
+   as root of the namespace (default matches
    <b>
-    ../../pmns/stdpmid
+    -i
    </b>
-   )
+   flag)
   </dd>
   <dt>
    <b>
@@ -350,6 +314,43 @@ written manually.
   </dd>
   <dt>
    <b>
+    -s
+   </b>
+   <i>
+    stdpmid
+   </i>
+  </dt>
+  <dd>
+   path to
+   <i>
+    stdpmid
+   </i>
+   (default
+   <b>
+    ../../pmns/stdpmid
+   </b>
+   )
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    topdir
+   </i>
+  </dt>
+  <dd>
+   use
+   <i>
+    topdir
+   </i>
+   in generated GNUmakefile, default
+   <b>
+    ../../..
+   </b>
+  </dd>
+  <dt>
+   <b>
     -v
    </b>
   </dt>
@@ -364,7 +365,7 @@ written manually.
  <p>
   Example:
   <br/>
-  Generate an "example" pmda using domain 99:
+  Generate an "example" PMDA using domain 99:
   <br/>
   <br/>
   <b>
@@ -413,15 +414,22 @@ example.metric {
   </a>
  </p>
  <h2>
+  DIAGNOSTICS
+ </h2>
+ Many, but all are intended to be easily understood.
+ <a name="lbAG">
+ </a>
+ <h2>
   PCP ENVIRONMENT
  </h2>
  Environment variables with the prefix
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -431,59 +439,50 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
  </h2>
- <p>
-  <b>
-   <a href="/man/man3/pmda.3.html">
-    PMDA
-   </a>
-  </b>
-  (3),
-  <b>
-   <a href="/man/man5/pmns.5.html">
-    pmns
-   </a>
-  </b>
-  (5),
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1),
-  <b>
-   <a href="/man/man5/pcp.conf.5.html">
-    pcp.conf
-   </a>
-  </b>
-  (5)
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmda.3.html">
+   PMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5)
 
 and
-  <b>
-   <a href="/man/man5/pcp.env.5.html">
-    pcp.env
-   </a>
-  </b>
-  (5).
-  <a name="lbAH">
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   PMNS
   </a>
- </p>
- <h2>
-  DIAGNOSTICS
- </h2>
- Many, but all are intended to be easily understood.
+ </b>
+ (5).
  <p>
  </p>
  <hr/>
@@ -523,21 +522,21 @@ and
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    SEE ALSO
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    DIAGNOSTICS
+    SEE ALSO
    </a>
   </dt>
   <dd>

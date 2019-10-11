@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -q
+  -qr?
  </b>
  ]
 [
@@ -93,11 +93,6 @@
  ]
 [
  <b>
-  -r
- </b>
- ]
-[
- <b>
   -t
  </b>
  <i>
@@ -114,75 +109,171 @@
  </b>
  searches for instances of the specified PCP service being advertised on the
 network and prints a list of URLs corresponding to the services discovered.
- <p>
-  By default
-  <b>
-   pmfind
-  </b>
-  will search for all supported PCP services, however a specific PCP
-  <i>
-   service
-  </i>
-  to discover can be specified using the
-  <b>
-   -s
-  </b>
-  (or
-  <b>
-   --service
-  </b>
-  )
-
-option.
+ <a name="lbAE">
+ </a>
+ <h2>
+  OPTIONS
+ </h2>
+ <b>
+  -m
+ </b>
+ <i>
+  mechanism
+ </i>
+ ,
+ <b>
+  --mechanism
+ </b>
+ =
+ <i>
+  mechanism
+ </i>
+ This option sets the
+ <i>
+  mechanism
+ </i>
+ that
+ <b>
+  pmfind
+ </b>
+ uses when performing service discovery.
+By default, or if the keyword
+ <i>
+  all
+ </i>
+ is specified, every available mechanism will be used (iteratively).
+See the ``MECHANISMS'' section for a description of each available
+discovery mechanism.
+ <dl compact="">
+  <dt>
+   <b>
+    -q
+   </b>
+   ,
+   <b>
+    --quiet
+   </b>
+  </dt>
+  <dd>
+   This option suppresses all output on the standard output stream.
+  </dd>
+  <dt>
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    --resolve
+   </b>
+  </dt>
+  <dd>
+   Requests that DNS name resolution be attempted for the addresses of
+any discovered services.
+The default is to display the network addresses of any discovered services.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    service
+   </i>
+   ,
+   <b>
+    --service
+   </b>
+   =
+   <i>
+    service
+   </i>
+  </dt>
+  <dd>
+   By default
+   <b>
+    pmfind
+   </b>
+   will search for all supported PCP services, however a specific PCP
+   <i>
+    service
+   </i>
+   to discover can be specified using the
+   <b>
+    -s
+   </b>
+   option.
 Supported services are
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1),
-  <b>
-   <a href="/man/man1/pmproxy.1.html">
-    pmproxy
-   </a>
-  </b>
-  (1)
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1),
 
 and
-  <b>
-   <a href="/man/man3/pmwebapi.3.html">
-    pmwebapi
-   </a>
-  </b>
-  (3)
-  <b>
-   .
-  </b>
- </p>
- <p>
-  The
-  <b>
-   -m
-  </b>
-  (or
-  <b>
-   --mechanism
-  </b>
-  )
-
-option sets the
-  <i>
-   mechanism
-  </i>
-  that
-  <b>
-   pmfind
-  </b>
-  uses when performing service discovery.
-By default, or if the keyword "all" is specified, every available
-mechanism will be used (iteratively).
-Supported mechanisms are:
- </p>
+   <b>
+    <a href="/man/man1/pmproxy.1.html">
+     pmproxy
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <dt>
+    <b>
+     -t
+    </b>
+    <i>
+     seconds
+    </i>
+    ,
+    <b>
+     --timeout
+    </b>
+    =
+    <i>
+     seconds
+    </i>
+   </dt>
+  </dt>
+  <dd>
+   <dd>
+    Sets the maximum amount of time in
+    <i>
+     seconds
+    </i>
+    that
+    <b>
+     pmfind
+    </b>
+    will take before interrupting the service discovery.
+The
+    <i>
+     time
+    </i>
+    argument is a floating point number representing the number of seconds
+before timing out.
+The default is to take as much time as is needed to complete the process.
+   </dd>
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  MECHANISMS
+ </h2>
+ Supported mechanisms for service discovery are:
  <dl compact="">
   <dt>
    <b>
@@ -203,16 +294,19 @@ An optional suffix
     ",timeout=N"
    </b>
    may be added to limit the amount of
-time waiting for the avahi-daemon. N is a floating point number
-specifying the number of seconds to wait.
+time waiting for the avahi-daemon.
+   <b>
+    N
+   </b>
+   is a floating point number specifying the number of seconds to wait.
 The default is 0.5 seconds.
 This timeout may also be specified by setting the environment variable
    <b>
     AVAHI_DISCOVERY_TIMEOUT
    </b>
    to the desired number of seconds.
-If both are specified, then
-the value specified in the environment variable takes precedence.
+If both are specified, then the value specified in the environment variable
+takes precedence.
   </dd>
   <dt>
    <b>
@@ -221,9 +315,14 @@ the value specified in the environment variable takes precedence.
   </dt>
   <dd>
    Actively probes the given subnet for the requested PCP service(s).
-&lt;net-address&gt; is an inet or ipv6
-network address and &lt;mask-bits&gt; is the number of bits used to define the
-subnet.
+   <b>
+    &lt;net-address&gt;
+   </b>
+   is an Inet or IPv6 network address and
+   <b>
+    &lt;mask-bits&gt;
+   </b>
+   is the number of bits used to define the subnet.
 For example, 192.168.1.0/24 defines an 8 bit subnet consisting of the
 addresses 192.168.1.0 through 192.168.1.255.
 An optional suffix
@@ -298,53 +397,32 @@ N is a floating point number specifying the number of seconds to wait.
 The default is 0.02 seconds (20 milliseconds).
   </dd>
  </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
+  SIGNALS
+ </h2>
+ <b>
+  pmfind
+ </b>
+ will interrupt the service discovery process when one of the following
+signals is received: SIGHUP, SIGPIPE, SIGINT, SIGTERM, SIGXFSZ, SIGXCPU.
+ <b>
+  pmfind
+ </b>
+ will report any results which were discovered up to point of the interruption.
+ <a name="lbAH">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ The value of the exit status from the command is zero when services were
+successfully located, one if no services were found, and two if an error
+occurred.
  <p>
-  The
-  <b>
-   -r
-  </b>
-  (or
-  <b>
-   --resolve
-  </b>
-  )
-
-option requests that DNS name resolution be attempted for the addresses of
-any discovered services.
-The default is to display the network addresses of any discovered services.
- </p>
- <p>
-  The
-  <b>
-   -t
-  </b>
-  (or
-  <b>
-   --timeout
-  </b>
-  )
-
-option sets the maximum amount of time that
-  <b>
-   pmfind
-  </b>
-  will take before interrupting the service discovery. The argument is a floating
-point number representing the number of seconds before timing out. The default
-is to take as much time as is needed to complete the process.
- </p>
- <p>
-  The
-  <b>
-   -q
-  </b>
-  (or
-  <b>
-   --quiet
-  </b>
-  )
-
-option suppresses all output on the standard output stream.
-  <a name="lbAE">
+  In the event of an error a message will be generated on standard error
+that is intended to be self-explanatory.
+  <a name="lbAI">
   </a>
  </p>
  <h2>
@@ -360,7 +438,7 @@ option suppresses all output on the standard output stream.
    default path to address discovery scripts
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAJ">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -369,9 +447,10 @@ option suppresses all output on the standard output stream.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -381,41 +460,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- The value of the exit status from the command is zero when services were
-successfully located, one if no services were found, and two if an error
-occurred.
- <p>
-  In the event of an error, a message will be generated on standard error
-that is intended to be self-explanatory.
-  <a name="lbAH">
-  </a>
- </p>
- <h2>
-  SIGNALS
- </h2>
- <b>
-  pmfind
- </b>
- will interrupt the service discovery process when one of the following
-signals is received: SIGHUP, SIGPIPE, SIGINT, SIGTERM, SIGXFSZ, SIGXCPU.
- <b>
-  pmfind
- </b>
- will report any results which were discovered up to point of the interruption.
- <a name="lbAI">
+ <a name="lbAK">
  </a>
  <h2>
   SEE ALSO
@@ -508,34 +560,48 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    MECHANISMS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
     SIGNALS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
+   <a href="#lbAH">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
    <a href="#lbAI">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
     SEE ALSO
    </a>
   </dt>

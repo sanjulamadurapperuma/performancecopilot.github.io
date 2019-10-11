@@ -72,6 +72,11 @@
  </b>
  [
  <b>
+  -?
+ </b>
+ ]
+[
+ <b>
   -n
  </b>
  <i>
@@ -97,7 +102,8 @@ performs the same function as
  <b>
   pmnsadd
  </b>
- and is faster, more robust and more flexible. It is therefore recommended that
+ and is faster, more robust and more flexible.
+It is therefore recommended that
  <b>
   <a href="/man/man1/pmnsmerge.1.html">
    pmnsmerge
@@ -153,7 +159,7 @@ to the file containing the default PMNS.
 arguments and conform to the syntax for PMNS specifications, see
   <b>
    <a href="/man/man5/pmns.5.html">
-    pmns
+    PMNS
    </a>
   </b>
   (5).
@@ -258,7 +264,47 @@ unchanged.
   </a>
  </p>
  <h2>
-  CAVEAT
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -n
+   </b>
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   Load an alternative Performance Metrics Name Space
+(
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5))
+
+from the file
+   <i>
+    pmnsfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CAVEATS
  </h2>
  Once the writing of the new
  <i>
@@ -266,7 +312,7 @@ unchanged.
  </i>
  file has begun, the signals SIGINT, SIGHUP and SIGTERM will be ignored
 to protect the integrity of the new files.
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   FILES
@@ -278,14 +324,14 @@ to protect the integrity of the new files.
    </i>
   </dt>
   <dd>
-   the default PMNS, when then environment variable
+   the default PMNS, when the environment variable
    <b>
     PMNS_DEFAULT
    </b>
    is unset
   </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -294,9 +340,10 @@ to protect the integrity of the new files.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -306,15 +353,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   SEE ALSO
@@ -347,7 +393,7 @@ as described in
 and
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5).
@@ -383,27 +429,34 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    CAVEAT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    FILES
+    CAVEATS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

@@ -84,26 +84,9 @@
  </b>
  [
  <b>
-  -i
+  -iRV?
  </b>
- /
- <b>
-  --iops
- </b>
- ]
-[
- <b>
-  -R
- </b>
- /
- <b>
-  --repeat
- </b>
- <i>
-  N
- </i>
- ]
-[
+ ] [
  <i>
   device
  </i>
@@ -131,69 +114,6 @@ writes for each cache device.
   (Device Mapper cache).
  </p>
  <p>
-  When invoked via the
-  <b>
-   <a href="/man/man1/pcp.1.html">
-    pcp
-   </a>
-  </b>
-  (1)
-
-command, the
-  <b>
-   -h
-  </b>
-  /
-  <b>
-   --host
-  </b>
-  ,
-  <b>
-   -a
-  </b>
-  /
-  <b>
-   --archive
-  </b>
-  ,
-  <b>
-   -O
-  </b>
-  /
-  <b>
-   --origin
-  </b>
-  ,
-  <b>
-   -s
-  </b>
-  /
-  <b>
-   --samples
-  </b>
-  ,
-  <b>
-   -t
-  </b>
-  /
-  <b>
-   --interval
-  </b>
-  ,
-  <b>
-   -Z
-  </b>
-  /
-  <b>
-   --timezone
-  </b>
-  and several other
-  <i>
-   pcp options
-  </i>
-  become indirectly available.
- </p>
- <p>
   By default,
   <b>
    pcp-dmcache
@@ -206,32 +126,163 @@ but this can be restricted to specific devices on the command line.
  <h2>
   OPTIONS
  </h2>
- Additional options are available for changing the output displayed by
+ When invoked via the
  <b>
-  pcp-dmcache
+  <a href="/man/man1/pcp.1.html">
+   pcp
+  </a>
  </b>
- .
+ (1)
+
+command, the
+ <b>
+  -h
+ </b>
+ /
+ <b>
+  --host
+ </b>
+ ,
+ <b>
+  -a
+ </b>
+ /
+ <b>
+  --archive
+ </b>
+ ,
+ <b>
+  -O
+ </b>
+ /
+ <b>
+  --origin
+ </b>
+ ,
+ <b>
+  -s
+ </b>
+ /
+ <b>
+  --samples
+ </b>
+ ,
+ <b>
+  -t
+ </b>
+ /
+ <b>
+  --interval
+ </b>
+ ,
+ <b>
+  -Z
+ </b>
+ /
+ <b>
+  --timezone
+ </b>
+ and several other
+ <i>
+  pcp options
+ </i>
+ become indirectly available.
  <p>
+  Additional options are available for changing the output displayed by
   <b>
-   -i
+   pcp-dmcache
   </b>
-  /
-  <b>
-   --iops
-  </b>
-  displays total read and write operations instead of the default cache hit ratio.
+  .
  </p>
- <p>
-  <b>
-   -R
-  </b>
-  /
-  <b>
-   --repeat
-  </b>
-  changes the frequency at which the column heading is displayed.
+ <dl compact="">
+  <dt>
+   <b>
+    -i
+   </b>
+   ,
+   <b>
+    --iops
+   </b>
+  </dt>
+  <dd>
+   displays total read and write operations instead of the default cache hit ratio.
+  </dd>
+  <dt>
+   <b>
+    -R
+   </b>
+   ,
+   <b>
+    --repeat
+   </b>
+  </dt>
+  <dd>
+   changes the frequency at which the column heading is displayed.
 By default, a header is displayed after every tenth sample.
-  <a name="lbAF">
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -308,6 +359,13 @@ and
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

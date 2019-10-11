@@ -74,21 +74,24 @@
  <b>
   -v
  </b>
- ] [
+ ]
+[
  <b>
   -S
  </b>
  <i>
   start
  </i>
- ] [
+ ]
+[
  <b>
   -t
  </b>
  <i>
   interval
  </i>
- ] [
+ ]
+[
  <b>
   -Z
  </b>
@@ -211,7 +214,8 @@ These are
    .index
   </b>
   (a temporal index to improve efficiency of replay
-operations for the archive).  If any of these files exists already,
+operations for the archive).
+If any of these files exists already,
 then
   <b>
    iostat2pcp
@@ -255,7 +259,8 @@ set is the second one in the
   <b>
    -t
   </b>
-  flag, so each output sample is prefixed with a timestamp.  Even better
+  flag, so each output sample is prefixed with a timestamp.
+Even better
 is
   <b>
    -t
@@ -308,8 +313,8 @@ the locale that is in a format
   <i>
    iostat2pcp
   </i>
-  cannot parse.  The formats
-for the timestamp that
+  cannot parse.
+The formats for the timestamp that
   <i>
    iostat2pcp
   </i>
@@ -362,7 +367,7 @@ de_BE, de_LU and en_DK.utf8).
    </b>
    settings for English
 locales outside North America, e.g. en_AU, en_GB, en_IE, en_NZ,
-en_SG and en_ZA, and all the Spanish locales, e.g.  es_ES, es_MX and es_AR).
+en_SG and en_ZA, and all the Spanish locales, e.g. es_ES, es_MX and es_AR).
   </dd>
  </dl>
  <p>
@@ -398,8 +403,8 @@ assumed
   <font size="-1">
    DD/MM
   </font>
-  format.  This is another reason to recommend setting
-$
+  format.
+This is another reason to recommend setting $
   <b>
    S_TIME_FORMAT=ISO
   </b>
@@ -421,7 +426,8 @@ try and deduce the sample interval if basic Disk data (
     iostat
    </a>
   </i>
-  (1)) is found.  If this fails, then the
+  (1)) is found.
+If this fails, then the
   <b>
    -t
   </b>
@@ -459,17 +465,18 @@ This option is ignored if timestamps are found in the input stream.
   <b>
    -Z
   </b>
-  option may be used to specify a timezone.  It must have the
-format +HHMM (for hours and minutes East of
+  option may be used to specify a timezone.
+It must have the format +HHMM (for hours and minutes East of
   <font size="-1">
    UTC
   </font>
-  ) or -HHMM (for hours
-and minutes West of
+  )
+or -HHMM (for hours and minutes West of
   <font size="-1">
    UTC
   </font>
-  ).  Note in particular that
+  ).
+Note in particular that
   <b>
    neither
   </b>
@@ -537,7 +544,68 @@ tools to import other types of performance data and create
   </a>
  </p>
  <h2>
-  CAVEAT
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    start
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    start
+   </i>
+   time for the first sample.
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Specify the sample
+   <i>
+    interval
+   </i>
+   in seconds.
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   Print verbose output.
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    timezone
+   </i>
+   to use, see above.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CAVEATS
  </h2>
  <a name="ixAAE">
  </a>
@@ -621,7 +689,7 @@ report format from
   </b>
   (1); this is a demand-driven limitation rather
 than a technical limitation.
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -631,9 +699,10 @@ than a technical limitation.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -643,15 +712,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -744,20 +812,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    CAVEAT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    CAVEATS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

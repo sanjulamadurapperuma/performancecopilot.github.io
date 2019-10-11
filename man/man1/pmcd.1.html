@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -AfQSv
+  -AfQSv?
  </b>
  ]
 [
@@ -186,18 +186,18 @@
  ]
 [
  <b>
-  -T
- </b>
- <i>
-  traceflag
- </i>
- ]
-[
- <b>
   -t
  </b>
  <i>
   timeout
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  traceflag
  </i>
  ]
 [
@@ -255,9 +255,10 @@ information from the machine that
    pmcd
   </b>
   delegates most of this request servicing to
-a collection of Performance Metrics Domain Agents 
+a collection of Performance Metrics Domain Agents
 (or just agents), where each agent is responsible for a particular group of
-metrics, known as the domain of the agent.  For example the
+metrics, known as the domain of the agent.
+For instance, the
   <b>
    postgresql
   </b>
@@ -292,12 +293,37 @@ The configuration section below describes how connections to
 agents are specified.
  </p>
  <p>
-  The options to
+  Note that if a PDU exchange with an agent times out, the agent has
+violated the requirement that it delivers metrics with little or no delay.
+This is deemed a
+protocol failure and the agent is disconnected from
   <b>
    pmcd
   </b>
-  are as follows.
+  .
+
+Any subsequent requests for information from the agent will fail with a status
+indicating that there is no agent to provide it.
  </p>
+ <p>
+  It is possible to specify access control to
+  <b>
+   pmcd
+  </b>
+  based on users, groups and hosts.
+This allows one to prevent users, groups of users, and certain hosts from
+accessing the metrics provided by
+  <b>
+   pmcd
+  </b>
+  and is described in more detail in the access control section below.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
@@ -318,6 +344,14 @@ These mechanisms are disabled with this option.
    <b>
     -c
    </b>
+   <i>
+    config
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
    <i>
     config
    </i>
@@ -351,6 +385,14 @@ The format of this configuration file is described below.
    <b>
     -C
    </b>
+   <i>
+    dirname
+   </i>
+   ,
+   <b>
+    --certdb
+   </b>
+   =
    <i>
     dirname
    </i>
@@ -389,6 +431,10 @@ manual page and the online PCP tutorials.
    <b>
     -f
    </b>
+   ,
+   <b>
+    --foreground
+   </b>
   </dt>
   <dd>
    By default
@@ -411,6 +457,14 @@ agents.
    <i>
     hostname
    </i>
+   ,
+   <b>
+    --hostname
+   </b>
+   =
+   <i>
+    hostname
+   </i>
   </dt>
   <dd>
    This option can be used to set the hostname that
@@ -427,7 +481,7 @@ This is used by client tools like
    (1)
 
 when reporting on the (possibly remote) host.
-If this option is not set, the pmcd.hostname metric will match that 
+If this option is not set, the pmcd.hostname metric will match that
 returned by
    <b>
     <a href="/man/man1/pmhostname.1.html">
@@ -446,10 +500,19 @@ evaluated.
    <i>
     ipaddress
    </i>
+   ,
+   <b>
+    --interface
+   </b>
+   =
+   <i>
+    ipaddress
+   </i>
   </dt>
   <dd>
    This option is usually only used on hosts with more than one network
-interface.  If no
+interface.
+If no
    <b>
     -i
    </b>
@@ -467,17 +530,20 @@ accepted on.
    <i>
     ipaddress
    </i>
-   should be in the standard dotted form (e.g. 100.23.45.6).  The
+   should be in the standard dotted form (e.g. 100.23.45.6).
+The
    <b>
     -i
    </b>
    option may be used multiple times to define a list of IP addresses.
-Connections made to any other IP addresses the host has will be refused.  This
-can be used to limit connections to one network interface if the host is a
-network gateway.  It is also useful if the host takes over the IP address of
-another host that has failed.  In such a situation only the standard IP
-addresses of the host should be given (not the ones inherited from the failed
-host).  This allows PCP applications to determine that a host has failed,
+Connections made to any other IP addresses the host has will be refused.
+This can be used to limit connections to one network interface if the host
+is a network gateway.
+It is also useful if the host takes over the IP address of
+another host that has failed.
+In such a situation only the standard IP addresses of the host should be
+given (not the ones inherited from the failed host).
+This allows PCP applications to determine that a host has failed,
 rather than connecting to the host that has assumed the identity of the failed
 host.
   </dd>
@@ -485,6 +551,14 @@ host.
    <b>
     -l
    </b>
+   <i>
+    logfile
+   </i>
+   ,
+   <b>
+    --log
+   </b>
+   =
    <i>
     logfile
    </i>
@@ -532,7 +606,8 @@ received by
    </b>
    from monitoring clients are restricted to a
 maximum size of 65536 bytes by default to defend against Denial of
-Service attacks.  The
+Service attacks.
+The
    <b>
     -L
    </b>
@@ -549,13 +624,23 @@ Service attacks.  The
    <i>
     certname
    </i>
+   ,
+   <b>
+    --certname
+   </b>
+   =
+   <i>
+    certname
+   </i>
   </dt>
   <dd>
    By default, pmcd will try to use a certificate called
    <b>
-    PCP Collector certificate .
+    PCP Collector certificate
    </b>
-   The
+   .
+
+The
    <b>
     -M
    </b>
@@ -565,6 +650,14 @@ Service attacks.  The
    <b>
     -n
    </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
    <i>
     pmnsfile
    </i>
@@ -598,6 +691,14 @@ from the file
    <i>
     pmnsfile
    </i>
+   ,
+   <b>
+    --uniqnames
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
   </dt>
   <dd>
    Same function as
@@ -615,7 +716,7 @@ duplicate Performance Metric Identifiers (PMIDs) in
    <b>
     -n
    </b>
-   they are not allowed with
+   but they are not allowed with
    <b>
     -N
    </b>
@@ -625,6 +726,14 @@ duplicate Performance Metric Identifiers (PMIDs) in
    <b>
     -P
    </b>
+   <i>
+    passfile
+   </i>
+   ,
+   <b>
+    --passfile
+   </b>
+   =
    <i>
     passfile
    </i>
@@ -666,11 +775,16 @@ but the
     -q
    </b>
    option allows an alternative timeout interval (which must be greater than
-zero) to be specified.  The unit of time is seconds.
+zero) to be specified.
+The unit of time is seconds.
   </dd>
   <dt>
    <b>
     -Q
+   </b>
+   ,
+   <b>
+    --remotecert
    </b>
   </dt>
   <dd>
@@ -678,7 +792,36 @@ zero) to be specified.  The unit of time is seconds.
   </dd>
   <dt>
    <b>
+    -s
+   </b>
+   <i>
+    sockname
+   </i>
+   ,
+   <b>
+    --socket
+   </b>
+   =
+   <i>
+    sockname
+   </i>
+  </dt>
+  <dd>
+   Specify the path to a local unix domain socket (for platforms supporting this
+socket family only).
+The default value is
+   <i>
+    $PCP_RUN_DIR/pmcd.socket
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -S
+   </b>
+   ,
+   <b>
+    --allcert
    </b>
   </dt>
   <dd>
@@ -692,23 +835,6 @@ whether the
     -S
    </b>
    flag is specified or not.
-  </dd>
-  <dt>
-   <b>
-    -s
-   </b>
-   <i>
-    sockname
-   </i>
-  </dt>
-  <dd>
-   Specify the path to a local unix domain socket (for platforms supporting this
-socket family only).
-The default value is
-   <i>
-    $PCP_RUN_DIR/pmcd.socket
-   </i>
-   .
   </dd>
   <dt>
    <b>
@@ -776,6 +902,14 @@ into the metric
    <i>
     traceflag
    </i>
+   ,
+   <b>
+    --trace
+   </b>
+   =
+   <i>
+    traceflag
+   </i>
   </dt>
   <dd>
    To assist with error diagnosis for agents and/or clients of
@@ -827,8 +961,8 @@ The value of
      <p>
       By default, event tracing is buffered using
 a circular buffer that is over-written as new
-events are recorded.  The default
-buffer size holds the last 20 events, although this number
+events are recorded.
+The default buffer size holds the last 20 events, although this number
 may be over-ridden by using
       <b>
        <a href="/man/man1/pmstore.1.html">
@@ -913,6 +1047,14 @@ or when any value is stored into the metric
    <i>
     username
    </i>
+   ,
+   <b>
+    --username
+   </b>
+   =
+   <i>
+    USER
+   </i>
   </dt>
   <dd>
    User account under which to run
@@ -927,6 +1069,10 @@ but in older versions the superuser account ("root") was used by default.
   <dt>
    <b>
     -v
+   </b>
+   ,
+   <b>
+    --verify
    </b>
   </dt>
   <dd>
@@ -957,8 +1103,8 @@ indicating verification success or failure.
    <b>
     pmcd
    </b>
-   may encounter a fatal error which prevents it from starting.  By default, the
-output describing this error is sent to
+   may encounter a fatal error which prevents it from starting.
+By default, the output describing this error is sent to
    <b>
     /dev/tty
    </b>
@@ -968,35 +1114,21 @@ output describing this error is sent to
    </i>
    .
   </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
  </dl>
- <p>
-  If a PDU exchange with an agent times out, the agent has violated the
-requirement that it delivers metrics with little or no delay.
-This is deemed a
-protocol failure and the agent is disconnected from
-  <b>
-   pmcd
-  </b>
-  .
-
-Any subsequent requests for information from the agent will fail with a status
-indicating that there is no agent to provide it.
- </p>
- <p>
-  It is possible to specify access control to
-  <b>
-   pmcd
-  </b>
-  based on users, groups and hosts.
-This allows one to prevent users, groups of users, and certain hosts from
-accessing the metrics provided by
-  <b>
-   pmcd
-  </b>
-  and is described in more detail in the Section on ACCESS CONTROL below.
-  <a name="lbAE">
-  </a>
- </p>
+ <a name="lbAF">
+ </a>
  <h2>
   CONFIGURATION
  </h2>
@@ -1056,7 +1188,7 @@ in double quotes or preceded by a backslash is treated literally rather than as
 a comment delimiter.
 Lexical elements and separators are described further in
 the following sections.
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -1164,7 +1296,8 @@ one of the
    <i>
     simabi
    </i>
-   versions will be applicable).  The
+   versions will be applicable).
+The
    <i>
     simabi
    </i>
@@ -1208,8 +1341,8 @@ command may be used to determine the
     PMCD_PATH
    </b>
    defines a colon (:) separated list of directories to search
-when trying to locate the agent DSO.  The default
-search path is
+when trying to locate the agent DSO.
+The default search path is
    <b>
     $PCP_SHARE_DIR/lib:/usr/pcp/lib
    </b>
@@ -1461,11 +1594,13 @@ requests from
    <b>
     pmcd
    </b>
-   . The agent will explicitly notify the
+   .
+The agent will explicitly notify the
    <b>
     pmcd
    </b>
-   when it is ready to process the requests by sending a
+   when it is ready to
+process the requests by sending a
    <b>
     PM_ERR_PMDAREADY
    </b>
@@ -1536,7 +1671,7 @@ the
 to instantiate the agent.
   </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   ACCESS CONTROL CONFIGURATION
@@ -1642,7 +1777,8 @@ for further information.
    </b>
    to be used to store metric values in agents that permit store operations.
 This may be the actual value of the metric (e.g. resetting a counter to
-zero).  Alternatively, it may be a value used by the PMDA to introduce a
+zero).
+Alternatively, it may be a value used by the PMDA to introduce a
 change to some aspect of monitoring of that metric (e.g. server side event
 filtering) - possibly even only for the active client tool performing the
 store operation, and not others.
@@ -1695,17 +1831,19 @@ routines.
  </p>
  <p>
   Hosts may be identified by name, IP address, IPv6 address or by the special host
-specifications ``"unix:"'' or ``"local:"''. ``"unix:"'' refers to
+specifications ``"unix:"'' or ``"local:"''.
+``"unix:"'' refers to
   <b>
    pmcd's
   </b>
-  unix domain socket, on supported platforms. ``"local:"'' is equivalent to
-specifying ``"unix:"'' and ``localhost``.
+  unix domain socket, on supported platforms.
+``"local:"'' is equivalent to specifying ``"unix:"'' and ``localhost``.
  </p>
  <p>
   Wildcards may also be specified by ending the host identifier with the
 single wildcard character ``*'' as the last-given component of an
-address. The wildcard ``".*"'' refers to all inet (IPv4) addresses.
+address.
+The wildcard ``".*"'' refers to all inet (IPv4) addresses.
 The wildcard ``":*"'' refers to all IPv6 addresses.
 If an IPv6 wildcard contains a ``::''
 component, then the final ``*'' refers to the final 16 bits of the address only, otherwise it
@@ -2241,7 +2379,7 @@ However,
   reconfiguration (see the next section) re-evaluates all the connection counts
 and will cause client connections to be dropped where connection limits have
 been exceeded.
-  <a name="lbAH">
+  <a name="lbAI">
   </a>
  </p>
  <h2>
@@ -2253,9 +2391,13 @@ A temporary ``fence'' can be raised to block all PMAPI client access to
 one or more agents in this situation.
 This functionality is provided by the built-in PMCD PMDA and the
  <b>
-  pmstore (1)
+  <a href="/man/man1/pmstore.1.html">
+   pmstore
+  </a>
  </b>
- command, as in
+ (1)
+
+command, as in
  <p>
  </p>
  <pre>
@@ -2289,7 +2431,10 @@ To resume normal operation, the ``fence'' can be lowered as follows
   </i>
   metric.
 For additional information, see the help text associated with this metric,
-which can be accessed using the fI-T
+which can be accessed using the
+  <i>
+   -T
+  </i>
   <b>
    , --helptext
   </b>
@@ -2300,7 +2445,7 @@ which can be accessed using the fI-T
    </a>
   </b>
   (1).
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h2>
@@ -2379,7 +2524,7 @@ then send
    pmcd
   </b>
   a SIGHUP, which will cause the agent to be restarted.
-  <a name="lbAJ">
+  <a name="lbAK">
   </a>
  </p>
  <h2>
@@ -2512,8 +2657,8 @@ may be used to specify alternative port number(s) when
    pmcd
   </b>
   is started; in each case, the specification is a comma-separated list
-of one or more numerical port numbers.  Should both methods be used
-or multiple
+of one or more numerical port numbers.
+Should both methods be used or multiple
   <b>
    -p
   </b>
@@ -2555,269 +2700,62 @@ or that the extended host specification syntax is used
   (1)
 
 for details).
-  <a name="lbAK">
+  <a name="lbAL">
   </a>
  </p>
  <h2>
-  FILES
+  CAVEATS
  </h2>
- <dl compact="">
-  <dt>
-   <i>
-    $PCP_PMCDCONF_PATH
-   </i>
-  </dt>
-  <dd>
-   default configuration file
-  </dd>
-  <dt>
-   <i>
-    $PCP_PMCDCONF_PATH.access
-   </i>
-  </dt>
-  <dd>
-   optional access control specification file
-  </dd>
-  <dt>
-   <i>
-    $PCP_PMCDOPTIONS_PATH
-   </i>
-  </dt>
-  <dd>
-   command line options to
-   <b>
-    pmcd
-   </b>
-   when launched from
-   <b>
-    $PCP_RC_DIR/pmcd
-   </b>
-   All the command line option lines should start with a hyphen as
-the first character.
-  </dd>
-  <dt>
-   <b>
-    $PCP_SYSCONFIG_DIR/pmcd
-   </b>
-  </dt>
-  <dd>
-   additional environment variables that will be set when
-   <b>
-    pmcd
-   </b>
-   executes.
-Only settings of the form "PMCD_VARIABLE=value" will be honoured.
-  </dd>
-  <dt>
-   <b>
-    $PCP_SYSCONF_DIR/labels
-   </b>
-  </dt>
-  <dd>
-   directory of files containing the global metric labels that will be
-set for every client context created by
-   <b>
-    pmcd
-   </b>
-   .
-
-File names starting with a ``.'' are ignored, and files ending in
-``.json'' are ``JSONB'' formatted name:value pairs.
-The merged set can be queried via the
-   <b>
-    pmcd.labels
-   </b>
-   metric.
-Context labels are applied universally to all values.
-  </dd>
-  <dt>
-   <b>
-    ./pmcd.log
-   </b>
-  </dt>
-  <dd>
-   (or
-   <b>
-    $PCP_LOG_DIR/pmcd/pmcd.log
-   </b>
-   when started automatically)
-   <br/>
-   All messages and diagnostics are directed here.
-  </dd>
-  <dt>
-   <b>
-    $PCP_RUN_DIR/pmcd.pid
-   </b>
-  </dt>
-  <dd>
-   contains an ascii decimal representation of the process ID of
-   <b>
-    pmcd
-   </b>
-   ,
-
-when it's running.
-  </dd>
-  <dt>
-   <b>
-    /etc/pki/nssdb
-   </b>
-  </dt>
-  <dd>
-   default Network Security Services (NSS) certificate database
-directory, used for optional Secure Socket Layer connections.
-This database can be created and queried using the NSS
-   <b>
-    certutil
-   </b>
-   tool, amongst others.
-  </dd>
-  <dt>
-   <b>
-    /etc/passwd
-   </b>
-  </dt>
-  <dd>
-   user names, user identifiers and primary group identifiers, used for access control specifications
-  </dd>
-  <dt>
-   <b>
-    /etc/groups
-   </b>
-  </dt>
-  <dd>
-   group names, group identifiers and group members, used for access control specifications
-  </dd>
- </dl>
- <a name="lbAL">
- </a>
- <h2>
-  ENVIRONMENT
- </h2>
- In addition to the PCP environment variables described in the
  <b>
-  PCP ENVIRONMENT
+  pmcd
  </b>
- section below, the
- <b>
-  PMCD_PORT
- </b>
- variable is also recognised
-as the TCP/IP port for incoming connections
-(default
- <i>
-  44321
- </i>
- ),
-
-and the
- <b>
-  PMCD_SOCKET
- </b>
- variable is also recognised
-as the path to be used for the Unix domain socket.
+ does not explicitly terminate its children (agents), it only
+closes their pipes.
+If an agent never checks for a closed pipe it may not terminate.
  <p>
-  If set to the value 1, the
-  <b>
-   PMCD_LOCAL
-  </b>
-  environment variable will cause
-  <b>
-   pmcd
-  </b>
-  to run in a localhost-only mode of operation, where it binds only
-to the loopback interface.
-The
-  <i>
-   pmcd.feature.local
-  </i>
-  metric can be queried to determine if
-  <b>
-   pmcd
-  </b>
-  is running in this mode.
+  The configuration file parser will only read lines of less than 1200
+characters.
+This is intended to prevent accidents with binary files.
  </p>
  <p>
-  The
+  The timeouts controlled by the
   <b>
-   PMCD_MAXPENDING
+   -t
   </b>
-  variable can be set to indicate the maximum length to which the queue
-of pending client connections may grow.
- </p>
- <p>
-  The
-  <b>
-   PMCD_ROOT_AGENT
-  </b>
-  variable controls whether or not
+  option apply to IPC between
   <b>
    pmcd
   </b>
-  or
+  and the PMDAs it spawns.
+This is independent of settings of the environment variables
   <b>
-   pmdaroot
+   PMCD_CONNECT_TIMEOUT
   </b>
-  (when available), start subsequent pmdas.  When set to a non-zero value,
+  and
   <b>
-   pmcd
+   PMCD_REQUEST_TIMEOUT
   </b>
-  will opt to have
+  (see
   <b>
-   pmdaroot
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
   </b>
-  start, and stop, PMDAs.
- </p>
- <p>
-  The
-  <b>
-   PMCD_RESTART_AGENTS
-  </b>
-  variable determines the behaviour of
-  <b>
-   pmcd
-  </b>
-  in the presence of child PMDAs that have been observed to exit (this is a
-typical response in the presence of very large, usually domain-induced,
-PDU latencies).
-When set to a non-zero value,
+  (1))
+
+which may be used respectively to control timeouts for client applications
+trying to connect to
   <b>
    pmcd
   </b>
-  will attempt to restart such PMDAS once every minute.
-When set to zero, it uses the original behaviour of just logging the failure.
+  and trying to receive information from
+  <b>
+   pmcd
+  </b>
+  .
   <a name="lbAM">
   </a>
  </p>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
- <b>
-  /etc/pcp.conf
- </b>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file,
-as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <a name="lbAN">
- </a>
  <h2>
   DIAGNOSTICS
  </h2>
@@ -2866,60 +2804,286 @@ it down (after some timeout period) it will not be possible to run
    appl2
   </b>
   for tracing the configuration file scanner and parser.
-  <a name="lbAO">
+  <a name="lbAN">
   </a>
  </p>
  <h2>
-  CAVEATS
+  FILES
  </h2>
+ <dl compact="">
+  <dt>
+   <i>
+    $PCP_PMCDCONF_PATH
+   </i>
+  </dt>
+  <dd>
+   default configuration file
+  </dd>
+  <dt>
+   <i>
+    $PCP_PMCDCONF_PATH.access
+   </i>
+  </dt>
+  <dd>
+   optional access control specification file
+  </dd>
+  <dt>
+   <i>
+    $PCP_PMCDOPTIONS_PATH
+   </i>
+  </dt>
+  <dd>
+   command line options to
+   <b>
+    pmcd
+   </b>
+   when launched from
+   <i>
+    $PCP_RC_DIR/pmcd
+   </i>
+   All the command line option lines should start with a hyphen as
+the first character.
+  </dd>
+  <dt>
+   <i>
+    $PCP_SYSCONFIG_DIR/pmcd
+   </i>
+  </dt>
+  <dd>
+   additional environment variables that will be set when
+   <b>
+    pmcd
+   </b>
+   executes.
+Only settings of the form "PMCD_VARIABLE=value" will be honoured.
+  </dd>
+  <dt>
+   <i>
+    $PCP_SYSCONF_DIR/labels
+   </i>
+  </dt>
+  <dd>
+   directory of files containing the global metric labels that will be
+set for every client context created by
+   <b>
+    pmcd
+   </b>
+   .
+
+File names starting with a ``.'' are ignored, and files ending in
+``.json'' are ``JSONB'' formatted name:value pairs.
+The merged set can be queried via the
+   <b>
+    pmcd.labels
+   </b>
+   metric.
+Context labels are applied universally to all values.
+  </dd>
+  <dt>
+   <i>
+    ./pmcd.log
+   </i>
+  </dt>
+  <dd>
+   (or
+   <i>
+    $PCP_LOG_DIR/pmcd/pmcd.log
+   </i>
+   when started automatically)
+   <br/>
+   All messages and diagnostics are directed here.
+  </dd>
+  <dt>
+   <i>
+    $PCP_RUN_DIR/pmcd.pid
+   </i>
+  </dt>
+  <dd>
+   contains an ascii decimal representation of the process ID of
+   <b>
+    pmcd
+   </b>
+   ,
+
+when it's running.
+  </dd>
+  <dt>
+   <i>
+    /etc/pki/nssdb
+   </i>
+  </dt>
+  <dd>
+   default Network Security Services (NSS) certificate database
+directory, used for optional Secure Socket Layer connections.
+This database can be created and queried using the NSS
+   <b>
+    certutil
+   </b>
+   tool, amongst others.
+  </dd>
+  <dt>
+   <i>
+    /etc/passwd
+   </i>
+  </dt>
+  <dd>
+   user names, user identifiers and primary group identifiers, used for access control specifications
+  </dd>
+  <dt>
+   <i>
+    /etc/groups
+   </i>
+  </dt>
+  <dd>
+   group names, group identifiers and group members, used for access control specifications
+  </dd>
+ </dl>
+ <a name="lbAO">
+ </a>
+ <h2>
+  ENVIRONMENT
+ </h2>
+ The following variables are set in
  <b>
-  pmcd
+  $PCP_SYSCONFIG_DIR/pmcd
  </b>
- does not explicitly terminate its children (agents), it only
-closes their pipes.
-If an agent never checks for a closed pipe it may not terminate.
+ <i>
+  .
+ </i>
  <p>
-  The configuration file parser will only read lines of less than 1200
-characters.
-This is intended to prevent accidents with binary files.
+  In addition to the PCP environment variables described in the
+  <b>
+   PCP ENVIRONMENT
+  </b>
+  section below, the
+  <b>
+   PMCD_PORT
+  </b>
+  variable is also recognised
+as the TCP/IP port for incoming connections
+(default
+  <i>
+   44321
+  </i>
+  ),
+
+and the
+  <b>
+   PMCD_SOCKET
+  </b>
+  variable is also recognised
+as the path to be used for the Unix domain socket.
  </p>
  <p>
-  The timeouts controlled by the
+  If set to the value 1, the
   <b>
-   -t
+   PMCD_LOCAL
   </b>
-  option apply to IPC between
+  environment variable will cause
   <b>
    pmcd
   </b>
-  and the PMDAs it spawns.  This is independent of settings of the
-environment variables
+  to run in a localhost-only mode of operation, where it binds only
+to the loopback interface.
+The
+  <i>
+   pmcd.feature.local
+  </i>
+  metric can be queried to determine if
   <b>
-   PMCD_CONNECT_TIMEOUT
+   pmcd
   </b>
-  and
+  is running in this mode.
+ </p>
+ <p>
+  The
   <b>
-   PMCD_REQUEST_TIMEOUT
+   PMCD_MAXPENDING
   </b>
-  (see
+  variable can be set to indicate the maximum length to which the queue
+of pending client connections may grow.
+ </p>
+ <p>
+  The
   <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
+   PMCD_ROOT_AGENT
+  </b>
+  variable controls whether or not
+  <b>
+   pmcd
+  </b>
+  or
+  <b>
+   pmdaroot
+  </b>
+  (when available), start subsequent pmdas.
+When set to a non-zero value,
+  <b>
+   pmcd
+  </b>
+  will opt to have
+  <b>
+   pmdaroot
+  </b>
+  start, and stop, PMDAs.
+ </p>
+ <p>
+  The
+  <b>
+   PMCD_RESTART_AGENTS
+  </b>
+  variable determines the behaviour of
+  <b>
+   pmcd
+  </b>
+  in the presence of child PMDAs that have been observed to exit (this is a
+typical response in the presence of very large, usually domain-induced,
+PDU latencies).
+When set to a non-zero value,
+  <b>
+   pmcd
+  </b>
+  will attempt to restart such PMDAS once every minute.
+When set to zero, it uses the original behaviour of just logging the failure.
+  <a name="lbAP">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
    </a>
   </b>
-  (1))
-
-which may be used respectively to control timeouts for client applications
-trying to connect to
-  <b>
-   pmcd
-  </b>
-  and trying to receive information from
-  <b>
-   pmcd
-  </b>
-  .
-  <a name="lbAP">
+  (3).
+  <a name="lbAQ">
   </a>
  </p>
  <h2>
@@ -2997,11 +3161,17 @@ trying to connect to
   </a>
  </b>
  (5),
-
-and
  <b>
   <a href="/man/man5/pcp.env.5.html">
    pcp.env
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   PMNS
   </a>
  </b>
  (5).
@@ -3037,83 +3207,90 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    CONFIGURATION
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    AGENT CONFIGURATION
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    ACCESS CONTROL CONFIGURATION
+    AGENT CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    AGENT FENCING
+    ACCESS CONTROL CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    RECONFIGURING PMCD
+    AGENT FENCING
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    STARTING AND STOPPING PMCD
+    RECONFIGURING PMCD
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
-    FILES
+    STARTING AND STOPPING PMCD
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAL">
-    ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAM">
-    PCP ENVIRONMENT
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAN">
-    DIAGNOSTICS
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAO">
     CAVEATS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
+   <a href="#lbAM">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAN">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAO">
+    ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
    <a href="#lbAP">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAQ">
     SEE ALSO
    </a>
   </dt>

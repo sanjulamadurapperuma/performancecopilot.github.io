@@ -42,7 +42,7 @@
 <div class='manpage'>
 ﻿
  <h1>
-  PMDAPROMETHEUS
+  PMDAOPENMETRICS
  </h1>
  Section: User Commands  (1)
  <br/>
@@ -59,16 +59,16 @@
   NAME
  </h2>
  <b>
-  pmdaprometheus
+  pmdaopenmetrics
  </b>
- - Prometheus PMDA
+ - OpenMetrics PMDA
  <a name="lbAC">
  </a>
  <h2>
   SYNOPSIS
  </h2>
  <b>
-  $PCP_PMDAS_DIR/prometheus/pmdaprometheus
+  $PCP_PMDAS_DIR/openmetrics/pmdaopenmetrics
  </b>
  [
  <b>
@@ -134,10 +134,10 @@
   DESCRIPTION
  </h2>
  <b>
-  pmdaprometheus
+  pmdaopenmetrics
  </b>
  is a Performance Metrics Domain Agent (PMDA) which
-creates PCP metrics from Prometheus endpoints, which provide HTTP based
+creates PCP metrics from OpenMetrics endpoints, which provide HTTP based
 access to application metrics.
 The default
  <i>
@@ -145,7 +145,7 @@ The default
  </i>
  directory is
  <b>
-  $PCP_PMDAS_DIR/prometheus/config.d/
+  $PCP_PMDAS_DIR/openmetrics/config.d/
  </b>
  ,
 
@@ -184,7 +184,7 @@ configuration files (URLs and/or scripts).
   option is given, additional diagnostic messages will be written to the PMDA log file,
 which is
   <b>
-   $PCP_LOG_DIR/pmcd/prometheus.log
+   $PCP_LOG_DIR/pmcd/openmetrics.log
   </b>
   by default (see also
   <b>
@@ -194,12 +194,12 @@ which is
 
 In addition, the metric
   <b>
-   prometheus.control.debug
+   openmetrics.control.debug
   </b>
   controls the same debug flag and can be set with the following command:
   <br/>
   <b>
-   pmstore prometheus.control.debug
+   pmstore openmetrics.control.debug
   </b>
   <i>
    value
@@ -246,7 +246,7 @@ The
   </i>
   number should be used for
   <b>
-   pmdaprometheus
+   pmdaopenmetrics
   </b>
   PMDA on all hosts.
 See also the
@@ -256,7 +256,7 @@ See also the
   option, which allows the root of the dynamic namespace
 to be changed from the default
   <b>
-   prometheus
+   openmetrics
   </b>
   .
  </p>
@@ -272,7 +272,7 @@ to be changed from the default
   as the destination for PMDA messages
 instead of the default,
   <b>
-   $PCP_LOG_DIR/pmcd/prometheus.log
+   $PCP_LOG_DIR/pmcd/openmetrics.log
   </b>
   .
 
@@ -331,14 +331,14 @@ This redirection is normally most useful in a containerized environment, or when
   </i>
   from the default,
   <b>
-   prometheus
+   openmetrics
   </b>
   .
 
 In conjunction with other command line options,
 this allows
   <b>
-   pmdaprometheus
+   pmdaopenmetrics
   </b>
   to be deployed as a different PMDA with distinct metrics namespace
 and metrics domain on the same host system.
@@ -361,11 +361,11 @@ e.g. the default log file name and the default configuration directory.
  </h2>
  As it runs,
  <b>
-  pmdaprometheus
+  pmdaopenmetrics
  </b>
  periodically recursively scans the
  <b>
-  $PCP_PMDAS_DIR/prometheus/config.d
+  $PCP_PMDAS_DIR/openmetrics/config.d
  </b>
  directory (or the directory specified with the
  <b>
@@ -413,9 +413,9 @@ It is
  suffix found in the config directory or sub-directory contains
 one complete HTTP or HTTPS URL at which
  <b>
-  pmdaprometheus
+  pmdaopenmetrics
  </b>
- can reach a Prometheus endpoint.
+ can reach a OpenMetrics endpoint.
 Local file access is also supported with a conventional
  <i>
   <a href="file://somepath/somefile">
@@ -426,7 +426,7 @@ Local file access is also supported with a conventional
  <i>
   somepath/somefile
  </i>
- should contain prometheus formatted metric data.
+ should contain openmetrics formatted metric data.
  <p>
   The first line of a
   <i>
@@ -601,20 +601,20 @@ defines a new metric, with the new (or changed) instance naming.
  </h2>
  Executable scripts present in the
  <i>
-  $PCP_PMDAS_DIR/prometheus/config.d
+  $PCP_PMDAS_DIR/openmetrics/config.d
  </i>
  directory or sub-directories will be executed and the
  <b>
   stdout
  </b>
- stream containing prometheus formatted metric data will be parsed as though it had come from a URL or file. 
+ stream containing openmetrics formatted metric data will be parsed as though it had come from a URL or file. 
 The
  <b>
   stderr
  </b>
  stream from a script will be sent to the PMDA log file, which by default can be found in
  <b>
-  $(PCP_LOG_DIR)/pmcd/prometheus.log
+  $(PCP_LOG_DIR)/pmcd/openmetrics.log
  </b>
  .
  <p>
@@ -650,7 +650,7 @@ awk '{
 }' /proc/loadavg
 </pre>
  <p>
-  This script produces the following Prometheus-formatted metric
+  This script produces the following OpenMetrics-formatted metric
 data when run:
  </p>
  <pre>
@@ -664,11 +664,11 @@ loadavg {interval="15-minute"} 0.54
  <p>
   If the above script was saved and made executable in a file named
   <i>
-   $PCP_PMDAS_DIR/prometheus/config.d/local/system.sh
+   $PCP_PMDAS_DIR/openmetrics/config.d/local/system.sh
   </i>
   then this would result in a new PCP metric named
   <b>
-   prometheus.local.system.loadavg
+   openmetrics.local.system.loadavg
   </b>
   which would have three instances for the current load average values:
   <b>
@@ -706,10 +706,10 @@ not
   </b>
   .
 
-For full details of the prometheus exposition formats, see
+For full details of the openmetrics exposition formats, see
   <i>
-   <a href="https://prometheus.io/docs/instrumenting/exposition_formats">
-    https://prometheus.io/docs/instrumenting/exposition_formats
+   <a href="https://openmetrics.io/docs/instrumenting/exposition_formats">
+    https://openmetrics.io/docs/instrumenting/exposition_formats
    </a>
   </i>
   .
@@ -727,7 +727,7 @@ For full details of the prometheus exposition formats, see
 
 will be exported as PCP metrics with the
  <i>
-  prometheus.JOB
+  openmetrics.JOB
  </i>
  metric name prefix.
 Therefore, the JOB name must be a valid non-leaf name for PCP PMNS
@@ -752,11 +752,11 @@ there are no overlapping definitions, e.g. metrics returned by
 config directory will also result in hierarchical metric names.
 For example, a config file named
   <b>
-   $PCP_PMDAS_DIR/prometheus/config.d/mysource/latency/get.url
+   $PCP_PMDAS_DIR/openmetrics/config.d/mysource/latency/get.url
   </b>
   will result in metrics being created (by fetching that source URL) below
   <b>
-   prometheus.mysource.latency.get
+   openmetrics.mysource.latency.get
   </b>
   in the PCP namespace.
 Scripts found in subdirectories of the config directory similarly result
@@ -771,13 +771,13 @@ in hierarchical PCP metric names.
 the configuration directory without having to restart the PMDA.
 These changes are detected automatically and the PCP metric names below
  <b>
-  prometheus
+  openmetrics
  </b>
  in the PMNS will be updated accordingly, i.e. new metrics will be
 dynamically added and/or existing metrics removed.
 In addition,
  <b>
-  pmdaprometheus
+  pmdaopenmetrics
  </b>
  honors the PMCD_NAMES_CHANGE
  <b>
@@ -790,7 +790,7 @@ In addition,
 protocol that was introduced in PCP version 4.0.
 In particular, if
  <b>
-  prometheus
+  openmetrics
  </b>
  metrics are being logged by a PCP version 4.0 or later
  <b>
@@ -803,7 +803,7 @@ In particular, if
 new metrics that appear as a result of changes in the PMDA configuration
 directory will automatically start to be logged, provided the root of the
  <b>
-  prometheus
+  openmetrics
  </b>
  PMDA namespace is configured for logging in the
  <b>
@@ -827,8 +827,8 @@ An example of such a
  <pre>
 
 log mandatory on 2 second {
-        # log all metrics below the root of the prometheus namespace
-        prometheus
+        # log all metrics below the root of the openmetrics namespace
+        openmetrics
 }
 </pre>
  <a name="lbAJ">
@@ -839,7 +839,7 @@ log mandatory on 2 second {
  The PMDA maintains special control metrics, as described below.
 Apart from
  <b>
-  prometheus.control.debug
+  openmetrics.control.debug
  </b>
  ,
 
@@ -850,7 +850,7 @@ but the instance domain will be empty and a fetch will return no values.
  <dl compact="">
   <dt>
    <b>
-    prometheus.control.calls
+    openmetrics.control.calls
    </b>
   </dt>
   <dd>
@@ -859,7 +859,7 @@ or executed (if it's a script), since the PMDA started.
   </dd>
   <dt>
    <b>
-    prometheus.control.fetch_time
+    openmetrics.control.fetch_time
    </b>
   </dt>
   <dd>
@@ -868,7 +868,7 @@ excluding the time to parse the document.
   </dd>
   <dt>
    <b>
-    prometheus.control.parse_time
+    openmetrics.control.parse_time
    </b>
   </dt>
   <dd>
@@ -897,7 +897,7 @@ average fetch and parsing latency (respectfully), during the sampling interval.
  <p>
   The
   <b>
-   prometheus.control.debug
+   openmetrics.control.debug
   </b>
   metric has a singular value, defaulting to
   <b>
@@ -921,7 +921,7 @@ additional debug messages will be written to the PMDA log file.
   LIMITATIONS
  </h2>
  <b>
-  pmdaprometheus
+  pmdaopenmetrics
  </b>
  and
  <b>
@@ -934,10 +934,10 @@ metrics (1024) within each source, and instances for each metric (4194304).
  <h2>
   INSTALLATION
  </h2>
- Install the Prometheus PMDA by using the Install script as root:
+ Install the OpenMetrics PMDA by using the Install script as root:
  <p>
   <br/>
-  # cd $PCP_PMDAS_DIR/prometheus
+  # cd $PCP_PMDAS_DIR/openmetrics
   <br/>
   <br/>
   # ./Install
@@ -947,14 +947,14 @@ metrics (1024) within each source, and instances for each metric (4194304).
  </p>
  <p>
   <br/>
-  # cd $PCP_PMDAS_DIR/prometheus
+  # cd $PCP_PMDAS_DIR/openmetrics
   <br/>
   <br/>
   # ./Remove
  </p>
  <p>
   <b>
-   pmdaprometheus
+   pmdaopenmetrics
   </b>
   is launched by
   <b>
@@ -988,49 +988,49 @@ be detected and managed on subsequent requests to the PMDA.
  <dl compact="">
   <dt>
    <b>
-    $PCP_PMDAS_DIR/prometheus/Install
+    $PCP_PMDAS_DIR/openmetrics/Install
    </b>
   </dt>
   <dd>
    installation script for the
    <b>
-    pmdaprometheus
+    pmdaopenmetrics
    </b>
    agent
   </dd>
   <dt>
    <b>
-    $PCP_PMDAS_DIR/prometheus/Remove
+    $PCP_PMDAS_DIR/openmetrics/Remove
    </b>
   </dt>
   <dd>
    undo installation script for the
    <b>
-    pmdaprometheus
+    pmdaopenmetrics
    </b>
    agent
   </dd>
   <dt>
    <b>
-    $PCP_PMDAS_DIR/prometheus/config.d/
+    $PCP_PMDAS_DIR/openmetrics/config.d/
    </b>
   </dt>
   <dd>
    contains URLs and scripts used by the
    <b>
-    pmdaprometheus
+    pmdaopenmetrics
    </b>
-   agent as sources of prometheus metric data.
+   agent as sources of openmetrics metric data.
   </dd>
   <dt>
    <b>
-    $PCP_LOG_DIR/pmcd/prometheus.log
+    $PCP_LOG_DIR/pmcd/openmetrics.log
    </b>
   </dt>
   <dd>
    default log file for error messages from
    <b>
-    pmdaprometheus
+    pmdaopenmetrics
    </b>
   </dd>
   <dt>
@@ -1118,8 +1118,8 @@ configuration file, as described in
 
 and
  <i>
-  <a href="https://prometheus.io/docs/instrumenting/exposition_formats">
-   https://prometheus.io/docs/instrumenting/exposition_formats
+  <a href="https://openmetrics.io/docs/instrumenting/exposition_formats">
+   https://openmetrics.io/docs/instrumenting/exposition_formats
   </a>
  </i>
  .

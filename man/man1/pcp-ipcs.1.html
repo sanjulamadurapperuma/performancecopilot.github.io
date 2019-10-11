@@ -68,32 +68,25 @@
   SYNOPSIS
  </h2>
  <b>
-  pcp-ipcs
+  pcp
+ </b>
+ [
+ <i>
+  pcp options
+ </i>
+ ]
+ <b>
+  ipcs
  </b>
  [
  <b>
-  resource-option
+  -luV?
  </b>
  ] [
- <b>
-  output-format
- </b>
- ]
- <br/>
- <b>
-  pcp-ipcs
- </b>
- [
- <b>
-  resource-option
- </b>
- ]
- <b>
-  -i
- </b>
  <i>
-  id
+  output-format
  </i>
+ ]
  <a name="lbAD">
  </a>
  <h2>
@@ -104,43 +97,59 @@
  </b>
  provides information on the inter-process communication facilities
 for which the calling process has read access.
- <a name="lbAE">
- </a>
+ <p>
+  When invoked via the
+  <b>
+   <a href="/man/man1/pcp.1.html">
+    pcp
+   </a>
+  </b>
+  (1)
+
+command, the
+  <b>
+   -h
+  </b>
+  /
+  <b>
+   --host
+  </b>
+  ,
+  <b>
+   -a
+  </b>
+  /
+  <b>
+   --archive
+  </b>
+  ,
+  <b>
+   -O
+  </b>
+  /
+  <b>
+   --origin
+  </b>
+  ,
+  <b>
+   -Z
+  </b>
+  /
+  <b>
+   --timezone
+  </b>
+  and several other
+  <i>
+   pcp options
+  </i>
+  become indirectly available.
+  <a name="lbAE">
+  </a>
+ </p>
  <h2>
   OPTIONS
  </h2>
  <dl compact="">
-  <dt>
-   <b>
-    -i
-   </b>
-   ,
-   <b>
-    --id
-   </b>
-   <i>
-    id
-   </i>
-  </dt>
-  <dd>
-   Print details only on the resource identified by
-   <i>
-    id
-   </i>
-   .
-  </dd>
-  <dt>
-   <b>
-    -h
-   </b>
-   ,
-   <b>
-    --help
-   </b>
-  </dt>
-  <dd>
-   Display a help text and exit.
-  </dd>
   <dt>
    <b>
     -V
@@ -153,81 +162,25 @@ for which the calling process has read access.
   <dd>
    Display version information and exit.
   </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display the usage message and exit.
+  </dd>
  </dl>
  <a name="lbAF">
  </a>
  <h3>
-  Resource options
- </h3>
- <dl compact="">
-  <dt>
-   <b>
-    -q
-   </b>
-   ,
-   <b>
-    --queues
-   </b>
-  </dt>
-  <dd>
-   Write information about active message queues.
-  </dd>
-  <dt>
-   <b>
-    -m
-   </b>
-   ,
-   <b>
-    --shmems
-   </b>
-  </dt>
-  <dd>
-   Write information about active shared memory segments.
-  </dd>
-  <dt>
-   <b>
-    -s
-   </b>
-   ,
-   <b>
-    --semaphores
-   </b>
-  </dt>
-  <dd>
-   Write information about active semaphore sets.
-  </dd>
-  <dt>
-   <b>
-    -a
-   </b>
-   ,
-   <b>
-    --all
-   </b>
-  </dt>
-  <dd>
-   Write information about all three resources (default).
-  </dd>
- </dl>
- <a name="lbAG">
- </a>
- <h3>
   Output formats
  </h3>
- Of these options only one takes effect: the last one specified.
  <dl compact="">
-  <dt>
-   <b>
-    -c
-   </b>
-   ,
-   <b>
-    --creator
-   </b>
-  </dt>
-  <dd>
-   Show creator and owner.
-  </dd>
   <dt>
    <b>
     -l
@@ -242,51 +195,6 @@ for which the calling process has read access.
   </dd>
   <dt>
    <b>
-    -p
-   </b>
-   ,
-   <b>
-    --pid
-   </b>
-  </dt>
-  <dd>
-   Show PIDs of creator and last operator.
-  </dd>
-  <dt>
-   <b>
-    -t
-   </b>
-   ,
-   <b>
-    --time
-   </b>
-  </dt>
-  <dd>
-   Write time information.  The time of the last control operation that changed
-the access permissions for all facilities, the time of the last
-   <i>
-    msgsnd()
-   </i>
-   and
-   <i>
-    msgrcv()
-   </i>
-   operations on message queues, the time of the last
-   <i>
-    shmat()
-   </i>
-   and
-   <i>
-    shmdt()
-   </i>
-   operations on shared memory, and the time of the last
-   <i>
-    semop()
-   </i>
-   operation on semaphores.
-  </dd>
-  <dt>
-   <b>
     -u
    </b>
    ,
@@ -298,56 +206,70 @@ the access permissions for all facilities, the time of the last
    Show status summary.
   </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAG">
  </a>
- <h3>
-  Representation
- </h3>
- These affect only the
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
  <b>
-  -l
+  PCP_
  </b>
- (
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
  <b>
-  --limits
+  $PCP_CONF
  </b>
- ) option.
- <dl compact="">
-  <dt>
-   <b>
-    -b
-   </b>
-   ,
-   <b>
-    --bytes
-   </b>
-  </dt>
-  <dd>
-   Print sizes in bytes.
-  </dd>
-  <dt>
-   <b>
-    --human
-   </b>
-  </dt>
-  <dd>
-   Print sizes in human-readable format.
-  </dd>
- </dl>
- <a name="lbAI">
- </a>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
  <b>
-  <a href="/man/man1/ipcrm.1.html">
-   ipcrm
+  <a href="/man/man1/pcp.1.html">
+   pcp
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
   </a>
  </b>
  (1),
  <b>
   <a href="/man/man1/ipcmk.1.html">
    ipcmk
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/ipcrm.1.html">
+   ipcrm
   </a>
  </b>
  (1),
@@ -387,61 +309,14 @@ the access permissions for all facilities, the time of the last
   </a>
  </b>
  (2),
+
+and
  <b>
   <a href="/man/man2/shmget.2.html">
    shmget
   </a>
  </b>
- (2)
- <a name="lbAJ">
- </a>
- <h2>
-  CONFORMING TO
- </h2>
- The Linux pcp-ipcs utility is not fully compatible to the POSIX pcp-ipcs utility.
-The Linux version does not support the POSIX
- <b>
-  -a
- </b>
- ,
- <b>
-  -b
- </b>
- and
- <b>
-  -o
- </b>
- options, but does support the
- <b>
-  -l
- </b>
- and
- <b>
-  -u
- </b>
- options not defined by POSIX.  A portable application shall not use the
- <b>
-  -a
- </b>
- ,
- <b>
-  -b
- </b>
- ,
- <b>
-  -o
- </b>
- ,
- <b>
-  -l
- </b>
- ,
-
-and
- <b>
-  -u
- </b>
- options.
+ (2).
  <p>
  </p>
  <hr/>
@@ -481,21 +356,7 @@ and
    <dl>
     <dt>
      <a href="#lbAF">
-      Resource options
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAG">
       Output formats
-     </a>
-    </dt>
-    <dd>
-    </dd>
-    <dt>
-     <a href="#lbAH">
-      Representation
      </a>
     </dt>
     <dd>
@@ -503,15 +364,15 @@ and
    </dl>
   </dd>
   <dt>
-   <a href="#lbAI">
-    SEE ALSO
+   <a href="#lbAG">
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
-   <a href="#lbAJ">
-    CONFORMING TO
+   <a href="#lbAH">
+    SEE ALSO
    </a>
   </dt>
   <dd>

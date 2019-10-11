@@ -72,6 +72,11 @@
  </b>
  [
  <b>
+  -?
+ </b>
+ ]
+[
+ <b>
   -d
  </b>
  <i>
@@ -213,7 +218,96 @@ and output lines will be prefixed by a timestamp.
   </a>
  </p>
  <h2>
-  EXAMPLE
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -d
+   </b>
+   <i>
+    char
+   </i>
+   ,
+   <b>
+    --delimiter
+   </b>
+   =
+   <i>
+    char
+   </i>
+  </dt>
+  <dd>
+   Use
+   <i>
+    char
+   </i>
+   as output delimiter.
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   <i>
+    N
+   </i>
+   ,
+   <b>
+    --precision
+   </b>
+   =
+   <i>
+    N
+   </i>
+  </dt>
+  <dd>
+   Use
+   <i>
+    n
+   </i>
+   as output floating point precision.
+  </dd>
+  <dt>
+   <b>
+    -w
+   </b>
+   <i>
+    N
+   </i>
+   ,
+   <b>
+    --width
+   </b>
+   =
+   <i>
+    N
+   </i>
+  </dt>
+  <dd>
+   Use
+   <i>
+    n
+   </i>
+   as output column width.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  EXAMPLES
  </h2>
  <p>
   Given this
@@ -274,7 +368,7 @@ $ pmie -v -t 5 &lt;config | pmie2col -w 8
 
 </pre>
  <p>
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -284,9 +378,10 @@ $ pmie -v -t 5 &lt;config | pmie2col -w 8
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -296,15 +391,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -355,20 +449,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLE
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

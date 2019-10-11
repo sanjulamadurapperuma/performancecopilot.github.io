@@ -147,9 +147,10 @@ such as
   </i>
   to restrict the results using Kubernetes pod labels.
 The default configuration file is
-  <i>
+  <b>
    $PCP_SYSCONF_DIR/discover/pcp-kube-pods.conf
-  </i>
+  </b>
+  .
  </p>
  <p>
   If no local
@@ -159,6 +160,23 @@ The default configuration file is
   command is found, nothing is reported and an exit code
 indicating success is returned.
   <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All diagnostics produced are provided by the
+ <b>
+  kubectl
+ </b>
+ command.
+ <p>
+  The
+  <b>
+   kubectl
+  </b>
+  exit status is propogated unchanged.
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -198,7 +216,7 @@ indicating success is returned.
    existence of this file causes the script to report nothing
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -207,9 +225,10 @@ indicating success is returned.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -219,15 +238,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -270,23 +288,6 @@ and
   </a>
  </b>
  (5).
- <a name="lbAH">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All diagnostics produced are provided by the
- <b>
-  kubectl
- </b>
- command.
- <p>
-  The
-  <b>
-   kubectl
-  </b>
-  exit status is propogated unchanged.
- </p>
  <p>
  </p>
  <hr/>
@@ -319,28 +320,28 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    SEE ALSO
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    DIAGNOSTICS
+    SEE ALSO
    </a>
   </dt>
   <dd>

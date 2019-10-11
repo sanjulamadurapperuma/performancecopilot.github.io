@@ -1031,13 +1031,11 @@ See also
   </dt>
   <dd>
    Performance metric values are retrieved from the set of Performance
-Co-Pilot (PCP) archive log files identified by the argument
+Co-Pilot (PCP) archive log files identified by the
    <i>
     archive
    </i>
-   ,
-
-which is a comma-separated list of names,
+   argument, which is a comma-separated list of names,
 each of which may be the base name of an archive or the name of
 a directory containing one or more archives.
 See also
@@ -1220,23 +1218,23 @@ See also
    </i>
    file to use.
 The default is the first found of:
-   <b>
+   <i>
     ./pmrep.conf
-   </b>
+   </i>
    ,
-   <b>
+   <i>
     $HOME/.pmrep.conf
-   </b>
+   </i>
    ,
-   <b>
+   <i>
     $HOME/pcp/pmrep.conf
-   </b>
+   </i>
    ,
 
 and
-   <b>
+   <i>
     $PCP_SYSCONF_DIR/pmrep/pmrep.conf
-   </b>
+   </i>
    .
 
 See
@@ -2317,11 +2315,11 @@ This option
    </i>
   </dt>
   <dd>
-   The argument
+   The
    <i>
     samples
    </i>
-   defines the number of samples to be retrieved and reported.
+   argument defines the number of samples to be retrieved and reported.
 If
    <i>
     samples
@@ -2397,11 +2395,11 @@ for a complete description of the syntax for
    </i>
   </dt>
   <dd>
-   The default update
+   Set the reporting
    <i>
     interval
    </i>
-   may be set to something other than the default 1 second.
+   to something other than the default 1 second.
 The
    <i>
     interval
@@ -3221,9 +3219,9 @@ $ pmrep -o archive -F ./a -J 3 -N proc.memory.rss proc.memory proc.io
 the file and directory names used by PCP.
 On each installation, the
 file
- <b>
+ <i>
   /etc/pcp.conf
- </b>
+ </i>
  contains the local values for these variables.
 The
  <b>
@@ -3463,7 +3461,7 @@ configuration file, as described in
  (5),
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5),

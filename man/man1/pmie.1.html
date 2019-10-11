@@ -72,16 +72,8 @@
  </b>
  [
  <b>
-  -bCdefHqVvWxz
+  -bCdefHPqvVWxXz?
  </b>
- ]
-[
- <b>
-  -A
- </b>
- <i>
-  align
- </i>
  ]
 [
  <b>
@@ -89,6 +81,14 @@
  </b>
  <i>
   archive
+ </i>
+ ]
+[
+ <b>
+  -A
+ </b>
+ <i>
+  align
  </i>
  ]
 [
@@ -149,18 +149,18 @@
  ]
 [
  <b>
-  -T
- </b>
- <i>
-  endtime
- </i>
- ]
-[
- <b>
   -t
  </b>
  <i>
   interval
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
  </i>
  ]
 [
@@ -193,7 +193,8 @@
   pmie
  </b>
  accepts a collection of arithmetic, logical, and rule expressions to be
-evaluated at specified frequencies.  The base data for the expressions
+evaluated at specified frequencies.
+The base data for the expressions
 consists of performance metrics values delivered in real-time
 from any host
 running the Performance Metrics Collection Daemon (PMCD), or using historical
@@ -203,8 +204,9 @@ data from Performance Co-Pilot (PCP) archive logs.
   <b>
    pmie
   </b>
-  can execute actions (popup alarms, write system log messages, and launch 
-programs) in response to specified conditions.  Such actions are
+  can execute actions (popup alarms, write system log messages, and launch
+programs) in response to specified conditions.
+Such actions are
 extremely useful in detecting, monitoring and correcting performance
 related problems.
  </p>
@@ -214,507 +216,14 @@ configuration files specified by one or more
   <i>
    filename
   </i>
-  arguments.  In the absence of any
+  arguments.
+In the absence of any
   <i>
    filename
   </i>
   ,
 
 expressions are read from standard input.
- </p>
- <p>
-  A description of the command line options specific to
-  <b>
-   pmie
-  </b>
-  follows:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -a
-   </b>
-  </dt>
-  <dd>
-   <i>
-    archive
-   </i>
-   which is a comma-separated list of names, each
-of which may be the base name of an archive or the name of a directory containing
-one or more archives written by
-   <b>
-    <a href="/man/man1/pmlogger.1.html">
-     pmlogger
-    </a>
-   </b>
-   (1).
-
-Multiple instances of the
-   <b>
-    -a
-   </b>
-   flag may appear on the command line to specify a list of sets of archives.
-In this case, it is required that only one set of archives be present for any
-one host.
-Also, any explicit host names occurring in a
-   <b>
-    pmie
-   </b>
-   expression must match the host name recorded in one of the archive labels.
-In the case of multiple sets of archives, timestamps recorded in the archives are
-used to ensure temporal consistency.
-  </dd>
-  <dt>
-   <b>
-    -b
-   </b>
-  </dt>
-  <dd>
-   Output will be line buffered and standard output is attached to standard
-error.  This is most useful for background execution in conjunction with
-the
-   <b>
-    -l
-   </b>
-   option.
-The
-   <b>
-    -b
-   </b>
-   option is always used for
-   <b>
-    pmie
-   </b>
-   instances launched from
-   <b>
-    <a href="/man/man1/pmie_check.1.html">
-     pmie_check
-    </a>
-   </b>
-   (1).
-  </dd>
-  <dt>
-   <b>
-    -C
-   </b>
-  </dt>
-  <dd>
-   Parse the configuration file(s) and exit before performing any evaluations.
-Any errors in the configuration file are reported.
-  </dd>
-  <dt>
-   <b>
-    -c
-   </b>
-  </dt>
-  <dd>
-   An alternative to specifying
-   <i>
-    filename
-   </i>
-   at the end of the command line.
-  </dd>
-  <dt>
-   <b>
-    -d
-   </b>
-  </dt>
-  <dd>
-   Normally
-   <b>
-    pmie
-   </b>
-   would be launched as a non-interactive process to monitor and manage the
-performance of one or more hosts.
-Given the
-   <b>
-    -d
-   </b>
-   flag however, execution is interactive and the user is presented
-with a menu of options.
-Interactive mode is useful mainly for debugging new expressions.
-  </dd>
-  <dt>
-   <b>
-    -e
-   </b>
-  </dt>
-  <dd>
-   When used with
-   <b>
-    -V
-   </b>
-   ,
-   <b>
-    -v
-   </b>
-   or
-   <b>
-    -W
-   </b>
-   ,
-
-this option
-forces timestamps to be reported with each expression.  The timestamps
-are in
-   <b>
-    <a href="http://man7.org/linux/man-pages/man3/ctime.3.html">
-     ctime
-    </a>
-   </b>
-   (3)
-
-format, enclosed in parenthesis and appear after the expression name and before the
-expression value, e.g.
-   <pre>
-        expr_1 (Tue Feb  6 19:55:10 2001): 12
-</pre>
-  </dd>
-  <dt>
-   <b>
-    -f
-   </b>
-  </dt>
-  <dd>
-   If the
-   <b>
-    -l
-   </b>
-   option is specified and there is no
-   <b>
-    -a
-   </b>
-   option (ie. real-time monitoring) then
-   <b>
-    pmie
-   </b>
-   is run as a daemon in the background
-(in all other cases foreground is the default).
-The
-   <b>
-    -f
-   </b>
-   option forces
-   <b>
-    pmie
-   </b>
-   to be run in the foreground, independent of any other options.
-  </dd>
-  <dt>
-   <b>
-    -h
-   </b>
-  </dt>
-  <dd>
-   By default performance data is fetched from the local host (in real-time mode)
-or the host for the first named set of archives on the command line
-(in archive mode).  The
-   <i>
-    host
-   </i>
-   argument overrides this default.
-It does not override hosts explicitly named in the expressions
-being evaluated.  The
-   <i>
-    host
-   </i>
-   argument is interpreted as a
-connection specification for
-   <i>
-    pmNewContext
-   </i>
-   , and is later
-mapped to the remote pmcd's self-reported host name for
-reporting purposes.  See also the %h vs. %c substitutions in rule action
-strings below.
-  </dd>
-  <dt>
-   <b>
-    -l
-   </b>
-  </dt>
-  <dd>
-   Standard error is sent to
-   <i>
-    logfile
-   </i>
-   .
-  </dd>
-  <dt>
-   <b>
-    -j
-   </b>
-  </dt>
-  <dd>
-   An alternative STOMP protocol configuration is loaded from
-   <i>
-    stompfile
-   </i>
-   .
-
-If this option is not used, and the
-   <i>
-    stomp
-   </i>
-   action is used in any rule, the default location
-   <i>
-    $PCP_SYSCONF_DIR/pmie/config/stomp
-   </i>
-   will be used.
-  </dd>
-  <dt>
-   <b>
-    -n
-   </b>
-  </dt>
-  <dd>
-   An alternative Performance Metrics Name Space (PMNS) is loaded from the file
-   <i>
-    pmnsfile
-   </i>
-   .
-  </dd>
-  <dt>
-   <b>
-    -P
-   </b>
-  </dt>
-  <dd>
-   Identifies this as the primary
-   <b>
-    pmie
-   </b>
-   instance for a host.
-See the ``AUTOMATIC RESTART'' section below for further details.
-  </dd>
-  <dt>
-   <b>
-    -q
-   </b>
-  </dt>
-  <dd>
-   Suppresses diagnostic messages that would be printed to standard
-output by default, especially the "evaluator exiting" message as
-this can confuse scripts.
-  </dd>
-  <dt>
-   <b>
-    -t
-   </b>
-  </dt>
-  <dd>
-   The
-   <i>
-    interval
-   </i>
-   argument follows the syntax described in
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1),
-
-and in the simplest form may be an unsigned integer (the implied
-units in this case are seconds).
-The value is used to determine the sample interval for
-expressions that do not explicitly set their sample interval using
-the
-   <b>
-    pmie
-   </b>
-   variable
-   <tt>
-    delta
-   </tt>
-   described below.
-The default is 10.0 seconds.
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-   <i>
-    username
-   </i>
-  </dt>
-  <dd>
-   User account under which to run
-   <b>
-    pmie
-   </b>
-   .
-
-The default is the current user account for interactive use.
-When run as a daemon, the unprivileged "pcp" account is used
-in current versions of PCP, but in older versions the superuser
-account ("root") was used by default.
-  </dd>
-  <dt>
-   <b>
-    -v
-   </b>
-  </dt>
-  <dd>
-   Unless one of the verbose options
-   <b>
-    -V
-   </b>
-   ,
-   <b>
-    -v
-   </b>
-   or
-   <b>
-    -W
-   </b>
-   appears on the command line, expressions are
-evaluated silently, the only output is as a result of any actions
-being executed.  In the verbose mode, specified using the
-   <b>
-    -v
-   </b>
-   flag, the value of each expression is printed as it is
-evaluated.  
-The values are in canonical units;
-bytes in the dimension of ``space'', seconds in the dimension of ``time''
-and events in the dimension of ``count''.
-See
-   <b>
-    <a href="/man/man3/pmlookupdesc.3.html">
-     pmLookupDesc
-    </a>
-   </b>
-   (3)
-
-for details of the supported dimension and scaling mechanisms
-for performance metrics.
-The verbose mode is useful in monitoring the value of given
-expressions, evaluating derived performance metrics,
-passing these values on to other tools for further processing
-and in debugging new expressions.
-  </dd>
-  <dt>
-   <b>
-    -V
-   </b>
-  </dt>
-  <dd>
-   This option has the same effect as the
-   <b>
-    -v
-   </b>
-   option, except that the name of the host and instance
-(if applicable) are printed as well as expression values.
-  </dd>
-  <dt>
-   <b>
-    -W
-   </b>
-  </dt>
-  <dd>
-   This option has the same effect as the
-   <b>
-    -V
-   </b>
-   option described above, except that for boolean expressions,
-only those names and values that make the expression true are printed.
-These are the same names and values accessible to rule actions as the
-%h, %i, %c and %v bindings, as described below.
-  </dd>
-  <dt>
-   <b>
-    -x
-   </b>
-  </dt>
-  <dd>
-   Execute in domain agent mode.  This mode is used within the Performance
-Co-Pilot product to derive values for summary metrics, see
-   <b>
-    <a href="/man/man1/pmdasummary.1.html">
-     pmdasummary
-    </a>
-   </b>
-   (1).
-
-Only restricted functionality
-is available in this mode
-(expressions with actions may
-   <b>
-    not
-   </b>
-   be used).
-  </dd>
-  <dt>
-   <b>
-    -Z
-   </b>
-  </dt>
-  <dd>
-   Change the reporting timezone to
-   <i>
-    timezone
-   </i>
-   in the format of the environment variable
-   <b>
-    TZ
-   </b>
-   as described in
-   <b>
-    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-     environ
-    </a>
-   </b>
-   (7).
-  </dd>
-  <dt>
-   <b>
-    -z
-   </b>
-  </dt>
-  <dd>
-   Change the reporting timezone to the timezone of the host that is the source
-of the performance metrics, as identified via either the
-   <b>
-    -h
-   </b>
-   option or the first named set of archives (as described above for the
-   <b>
-    -a
-   </b>
-   option).
-  </dd>
- </dl>
- <p>
-  The
-  <b>
-   -S
-  </b>
-  ,
-  <b>
-   -T
-  </b>
-  ,
-  <b>
-   -O
-  </b>
-  ,
-
-and
-  <b>
-   -A
-  </b>
-  options may be used to define a time window to restrict the
-samples retrieved, set an initial origin within the time window,
-or specify a ``natural'' alignment of the sample times; refer to
-  <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
-   </a>
-  </b>
-  (1)
-
-for a complete description of these options.
  </p>
  <p>
   Output from
@@ -754,6 +263,758 @@ problems during expression evaluation.
  <a name="lbAE">
  </a>
  <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
+  </dt>
+  <dd>
+   <i>
+    archive
+   </i>
+   which is a comma-separated list of names, each
+of which may be the base name of an archive or the name of a directory containing
+one or more archives written by
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1).
+
+Multiple instances of the
+   <b>
+    -a
+   </b>
+   flag may appear on the command line to specify a list of sets of archives.
+In this case, it is required that only one set of archives be present for any
+one host.
+Also, any explicit host names occurring in a
+   <b>
+    pmie
+   </b>
+   expression must match the host name recorded in one of the archive labels.
+In the case of multiple sets of archives, timestamps recorded in the archives are
+used to ensure temporal consistency.
+  </dd>
+  <dt>
+   <b>
+    -A
+   </b>
+   <i>
+    align
+   </i>
+   ,
+   <b>
+    --align
+   </b>
+   =
+   <i>
+    align
+   </i>
+  </dt>
+  <dd>
+   Force the initial time window to be
+aligned on the boundary of a natural time unit
+   <i>
+    align
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    align
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -b
+   </b>
+   ,
+   <b>
+    --buffer
+   </b>
+  </dt>
+  <dd>
+   Output will be line buffered and standard output is attached to standard
+error.
+This is most useful for background execution in conjunction with the
+   <b>
+    -l
+   </b>
+   option.
+The
+   <b>
+    -b
+   </b>
+   option is always used for
+   <b>
+    pmie
+   </b>
+   instances launched from
+   <b>
+    <a href="/man/man1/pmie_check.1.html">
+     pmie_check
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    config
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    config
+   </i>
+  </dt>
+  <dd>
+   An alternative to specifying
+   <i>
+    filename
+   </i>
+   at the end of the command line.
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+   ,
+   <b>
+    --check
+   </b>
+  </dt>
+  <dd>
+   Parse the configuration file(s) and exit before performing any evaluations.
+Any errors in the configuration file are reported.
+  </dd>
+  <dt>
+   <b>
+    -d
+   </b>
+   ,
+   <b>
+    --interact
+   </b>
+  </dt>
+  <dd>
+   Normally
+   <b>
+    pmie
+   </b>
+   would be launched as a non-interactive process to monitor and manage the
+performance of one or more hosts.
+Given the
+   <b>
+    -d
+   </b>
+   flag however, execution is interactive and the user is presented
+with a menu of options.
+Interactive mode is useful mainly for debugging new expressions.
+  </dd>
+  <dt>
+   <b>
+    -e
+   </b>
+   ,
+   <b>
+    --timestamp
+   </b>
+  </dt>
+  <dd>
+   When used with
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    -v
+   </b>
+   or
+   <b>
+    -W
+   </b>
+   ,
+
+this option
+forces timestamps to be reported with each expression.
+The timestamps are in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/ctime.3.html">
+     ctime
+    </a>
+   </b>
+   (3)
+
+format, enclosed in parenthesis and appear after the expression name and before the
+expression value, e.g.
+   <pre>
+        expr_1 (Tue Feb  6 19:55:10 2001): 12
+</pre>
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+   ,
+   <b>
+    --foreground
+   </b>
+  </dt>
+  <dd>
+   If the
+   <b>
+    -l
+   </b>
+   option is specified and there is no
+   <b>
+    -a
+   </b>
+   option (ie. real-time monitoring) then
+   <b>
+    pmie
+   </b>
+   is run as a daemon in the background
+(in all other cases foreground is the default).
+The
+   <b>
+    -f
+   </b>
+   option forces
+   <b>
+    pmie
+   </b>
+   to be run in the foreground, independent of any other options.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   By default performance data is fetched from the local host (in real-time mode)
+or the host for the first named set of archives on the command line
+(in archive mode).
+The
+   <i>
+    host
+   </i>
+   argument overrides this default.
+It does not override hosts explicitly named in the expressions
+being evaluated.
+The
+   <i>
+    host
+   </i>
+   argument is interpreted as a
+connection specification for
+   <i>
+    pmNewContext
+   </i>
+   , and is later
+mapped to the remote pmcd's self-reported host name for
+reporting purposes.
+See also the %h vs. %c substitutions in rule action strings below.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   <i>
+    logfile
+   </i>
+   ,
+   <b>
+    --logfile
+   </b>
+   =
+   <i>
+    logfile
+   </i>
+  </dt>
+  <dd>
+   Standard error is sent to
+   <i>
+    logfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -j
+   </b>
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   An alternative STOMP protocol configuration is loaded from
+   <i>
+    stompfile
+   </i>
+   .
+
+If this option is not used, and the
+   <i>
+    stomp
+   </i>
+   action is used in any rule, the default location
+   <i>
+    $PCP_SYSCONF_DIR/pmie/config/stomp
+   </i>
+   will be used.
+  </dd>
+  <dt>
+   <b>
+    -n
+   </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   An alternative Performance Metrics Name Space (PMNS) is loaded from the file
+   <i>
+    pmnsfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -O
+   </b>
+   <i>
+    origin
+   </i>
+   ,
+   <b>
+    --origin
+   </b>
+   =
+   <i>
+    origin
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    origin
+   </i>
+   of the time window.
+See
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for complete description of this option.
+  </dd>
+  <dt>
+   <b>
+    -P
+   </b>
+   ,
+   <b>
+    --primary
+   </b>
+  </dt>
+  <dd>
+   Identifies this as the primary
+   <b>
+    pmie
+   </b>
+   instance for a host.
+See the ``AUTOMATIC RESTART'' section below for further details.
+  </dd>
+  <dt>
+   <b>
+    -q
+   </b>
+   ,
+   <b>
+    --quiet
+   </b>
+  </dt>
+  <dd>
+   Suppresses diagnostic messages that would be printed to standard
+output by default, especially the "evaluator exiting" message as
+this can confuse scripts.
+  </dd>
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    starttime
+   </i>
+   of the time window.
+See
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for complete description of this option.
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    interval
+   </i>
+   argument follows the syntax described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1),
+
+and in the simplest form may be an unsigned integer (the implied
+units in this case are seconds).
+The value is used to determine the sample interval for
+expressions that do not explicitly set their sample interval using
+the
+   <b>
+    pmie
+   </b>
+   variable
+   <tt>
+    delta
+   </tt>
+   described below.
+The default is 10.0 seconds.
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    endtime
+   </i>
+   of the time window.
+See
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for complete description of this option.
+  </dd>
+  <dt>
+   <b>
+    -U
+   </b>
+   <i>
+    username
+   </i>
+   ,
+   <b>
+    --username
+   </b>
+   =
+   <i>
+    username
+   </i>
+  </dt>
+  <dd>
+   User account under which to run
+   <b>
+    pmie
+   </b>
+   .
+
+The default is the current user account for interactive use.
+When run as a daemon, the unprivileged "pcp" account is used
+in current versions of PCP, but in older versions the superuser
+account ("root") was used by default.
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+  </dt>
+  <dd>
+   Unless one of the verbose options
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    -v
+   </b>
+   or
+   <b>
+    -W
+   </b>
+   appears on the command line, expressions are
+evaluated silently, the only output is as a result of any actions
+being executed.
+In the verbose mode, specified using the
+   <b>
+    -v
+   </b>
+   flag, the value of each expression is printed as it is
+evaluated.
+The values are in canonical units;
+bytes in the dimension of ``space'', seconds in the dimension of ``time''
+and events in the dimension of ``count''.
+See
+   <b>
+    <a href="/man/man3/pmlookupdesc.3.html">
+     pmLookupDesc
+    </a>
+   </b>
+   (3)
+
+for details of the supported dimension and scaling mechanisms
+for performance metrics.
+The verbose mode is useful in monitoring the value of given
+expressions, evaluating derived performance metrics,
+passing these values on to other tools for further processing
+and in debugging new expressions.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   This option has the same effect as the
+   <b>
+    -v
+   </b>
+   option, except that the name of the host and instance
+(if applicable) are printed as well as expression values.
+  </dd>
+  <dt>
+   <b>
+    -W
+   </b>
+  </dt>
+  <dd>
+   This option has the same effect as the
+   <b>
+    -V
+   </b>
+   option described above, except that for boolean expressions,
+only those names and values that make the expression true are printed.
+These are the same names and values accessible to rule actions as the
+%h, %i, %c and %v bindings, as described below.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   ,
+   <b>
+    --secret-agent
+   </b>
+  </dt>
+  <dd>
+   Execute in domain agent mode.
+This mode is used within the Performance
+Co-Pilot product to derive values for summary metrics, see
+   <b>
+    <a href="/man/man1/pmdasummary.1.html">
+     pmdasummary
+    </a>
+   </b>
+   (1).
+
+Only restricted functionality
+is available in this mode
+(expressions with actions may
+   <b>
+    not
+   </b>
+   be used).
+  </dd>
+  <dt>
+   <b>
+    -X
+   </b>
+   ,
+   <b>
+    --secret-applet
+   </b>
+  </dt>
+  <dd>
+   Run in secret applet mode (thin client).
+  </dd>
+  <dt>
+   <b>
+    -z
+   </b>
+   ,
+   <b>
+    --hostzone
+   </b>
+  </dt>
+  <dd>
+   Change the reporting timezone to the timezone of the host that is the source
+of the performance metrics, as identified via either the
+   <b>
+    -h
+   </b>
+   option or the first named set of archives (as described above for the
+   <b>
+    -a
+   </b>
+   option).
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   Change the reporting timezone to
+   <i>
+    timezone
+   </i>
+   in the format of the environment variable
+   <b>
+    TZ
+   </b>
+   as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
   EXAMPLES
  </h2>
  The following example expressions demonstrate some of the capabilities
@@ -774,7 +1035,8 @@ of the inference engine.
 
 delta
 
-controls expression evaluation frequency.  Specify that subsequent expressions
+controls expression evaluation frequency.
+Specify that subsequent expressions
 be evaluated once a second, until further notice:
  </p>
  <p>
@@ -968,7 +1230,7 @@ mypmda.errors &gt; 1 &amp;&amp; instant mypmda.errors &lt; 100
 -&gt; print "high error rate: %v";
 </pre>
  <p>
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -1000,7 +1262,7 @@ tool provides a facility for generating a
   <b>
    pmie
   </b>
-  rules. 
+  rules.
 The supplied set of rules covers
 a wide range of performance scenarios.
  </p>
@@ -1014,7 +1276,7 @@ a wide range of performance scenarios.
    pmie
   </b>
   .
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -1044,7 +1306,7 @@ is encouraged to enhance readability and remove ambiguity.
 (see
   <b>
    <a href="/man/man5/pmns.5.html">
-    pmns
+    PMNS
    </a>
   </b>
   (5))
@@ -1068,7 +1330,8 @@ result of enumeration in the dimensions of
   .
 
 Special qualifiers may appear after a performance metric name to
-define the enumeration in each dimension.  For example,
+define the enumeration in each dimension.
+For example,
  </p>
  <p>
   kernel.percpu.cpu.user :foo :bar #cpu0 @0..2
@@ -1094,7 +1357,7 @@ for the default source of PCP performance metrics.
  </p>
  <p>
   Host and instance names that do not follow the rules for variables
-in programming languages, ie. alphabetic optionally followed by 
+in programming languages, ie. alphabetic optionally followed by
 alphanumerics, should be enclosed in single quotes.
  </p>
  <p>
@@ -1231,7 +1494,7 @@ and actions to be performed when the condition is found to be true.
  <p>
   All operators are supported for numeric-valued operands and expressions.
 For string-valued
-operands, namely literal string constants enclosed in double quotes or 
+operands, namely literal string constants enclosed in double quotes or
 metrics with a data type of string (
   <b>
    PM_TYPE_STRING
@@ -1373,7 +1636,8 @@ a logical expression of lower dimension.
  <p>
   The following instantial operators may be used to filter or limit a
 set-valued logical expression, based on regular expression matching
-of instance names.  The logical expression must be a set involving
+of instance names.
+The logical expression must be a set involving
 the dimension of instances, and the regular expression is of the
 form used by
   <b>
@@ -1421,7 +1685,8 @@ or the Extended Regular Expressions of
        <td>
         For each value of the logical expression that is ``true'', the
 result is ``true'' if the associated instance name matches the
-regular expression.  Otherwise the result is ``false''.
+regular expression.
+Otherwise the result is ``false''.
         <br/>
        </td>
       </tr>
@@ -1822,7 +2087,7 @@ the debugging mode (specify the
    -W
   </b>
   command line option in particular) during rule development.
-  <a name="lbAH">
+  <a name="lbAI">
   </a>
  </p>
  <h2>
@@ -1873,7 +2138,12 @@ logic) when combining values that include unknown:
        </td>
       </tr>
       <tr valign="top">
-       <td>
+       <td align="center">
+        true
+       </td>
+      </tr>
+      <tr valign="top">
+       <td colspan="5" rowspan="2" valign="center">
         <hr/>
        </td>
       </tr>
@@ -1882,36 +2152,15 @@ logic) when combining values that include unknown:
         true
        </td>
        <td align="center">
-        false
+        true
        </td>
        <td align="center">
-        unknown
-       </td>
-      </tr>
-      <tr valign="top">
-       <td colspan="5">
-        <hr/>
+        false
        </td>
       </tr>
       <tr valign="top">
        <td align="center" rowspan="2" valign="center">
-        A
        </td>
-       <td align="center">
-        true
-       </td>
-       <td align="center">
-        true
-       </td>
-       <td align="center">
-        false
-       </td>
-       <td align="center">
-        unknown
-        <br/>
-       </td>
-      </tr>
-      <tr valign="top">
        <td>
         <hr/>
        </td>
@@ -2146,7 +2395,7 @@ logic) when combining values that include unknown:
    </tr>
   </table>
  </center>
- <a name="lbAI">
+ <a name="lbAJ">
  </a>
  <h2>
   RULESETS
@@ -2178,15 +2427,15 @@ with the unknown clause will be executed.
 is either not specified or not
 executed and an otherwise clause has been specified,
 then the action associated with the otherwise clause will be executed.
-  <a name="lbAJ">
+  <a name="lbAK">
   </a>
  </p>
  <h2>
   SCALE FACTORS
  </h2>
  Scale factors may be appended to arithmetic expressions and force
-linear scaling of the value to canonical units.  Simple scale factors
-are constructed from the keywords:
+linear scaling of the value to canonical units.
+Simple scale factors are constructed from the keywords:
 nanosecond, nanosec, nsec,
 microsecond, microsec, usec,
 millisecond, millisec, msec,
@@ -2198,7 +2447,7 @@ and the operator
   /
  </tt>
  , for example ``Kbytes / hour''.
- <a name="lbAK">
+ <a name="lbAL">
  </a>
  <h2>
   MACROS
@@ -2221,7 +2470,7 @@ and the operator
   </i>
   follows the normal rules
 for variables
-in programming languages, ie. alphabetic optionally followed by 
+in programming languages, ie. alphabetic optionally followed by
 alphanumerics.
   <i>
    constexpr
@@ -2300,7 +2549,7 @@ reporting time zone (see description of
    -z
   </b>
   command line options above).
-  <a name="lbAL">
+  <a name="lbAM">
   </a>
  </p>
  <h2>
@@ -2422,7 +2671,7 @@ to which it connects (if any), so the
    -P
   </b>
   options are mutually exclusive.
-  <a name="lbAM">
+  <a name="lbAN">
   </a>
  </p>
  <h2>
@@ -2565,9 +2814,27 @@ has been severed, the
    stomp
   </i>
   action will return a non-zero error value.
-  <a name="lbAN">
+  <a name="lbAO">
   </a>
  </p>
+ <h2>
+  BUGS
+ </h2>
+ The lexical scanner and parser will attempt to recover after an
+error in the input expressions.
+Parsing resumes after skipping input up to
+the next semi-colon (;), however during this skipping
+process the scanner is ignorant of comments and strings, so an
+embedded semi-colon may cause parsing to resume at an unexpected
+place.
+This behavior is largely benign, as until the initial
+syntax error is corrected,
+ <b>
+  pmie
+ </b>
+ will not attempt any expression evaluation.
+ <a name="lbAP">
+ </a>
  <h2>
   FILES
  </h2>
@@ -2631,24 +2898,7 @@ forms the basis of the pmcd.pmie performance metrics
 for details
   </dd>
  </dl>
- <a name="lbAO">
- </a>
- <h2>
-  BUGS
- </h2>
- The lexical scanner and parser will attempt to recover after an
-error in the input expressions.
-Parsing resumes after skipping input up to
-the next semi-colon (;), however during this skipping
-process the scanner is ignorant of comments and strings, so an
-embedded semi-colon may cause parsing to resume at an unexpected
-place.  This behavior is largely benign, as until the initial
-syntax error is corrected,
- <b>
-  pmie
- </b>
- will not attempt any expression evaluation.
- <a name="lbAP">
+ <a name="lbAQ">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -2721,7 +2971,7 @@ This is typically set to
   (1),
 
 a cross-platform dialog box.
-  <a name="lbAQ">
+  <a name="lbAR">
   </a>
  </p>
  <h2>
@@ -2733,7 +2983,7 @@ a cross-platform dialog box.
   </a>
  </b>
  (1).
- <a name="lbAR">
+ <a name="lbAS">
  </a>
  <h2>
   WINDOWS SEE ALSO
@@ -2744,7 +2994,7 @@ a cross-platform dialog box.
   </a>
  </b>
  (1).
- <a name="lbAS">
+ <a name="lbAT">
  </a>
  <h2>
   SEE ALSO
@@ -2814,16 +3064,22 @@ a cross-platform dialog box.
    pcp.conf
   </a>
  </b>
- (5)
-
-and
+ (5),
  <b>
   <a href="/man/man5/pcp.env.5.html">
    pcp.env
   </a>
  </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   PMNS
+  </a>
+ </b>
  (5).
- <a name="lbAT">
+ <a name="lbAU">
  </a>
  <h2>
   USER GUIDE
@@ -2874,70 +3130,70 @@ This is available online from:
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    QUICK START
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    EXPRESSION SYNTAX
+    QUICK START
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    BOOLEAN EXPRESSIONS
+    EXPRESSION SYNTAX
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    RULESETS
+    BOOLEAN EXPRESSIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    SCALE FACTORS
+    RULESETS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
-    MACROS
+    SCALE FACTORS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAL">
-    AUTOMATIC RESTART
+    MACROS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAM">
-    EVENT MONITORING
+    AUTOMATIC RESTART
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAN">
-    FILES
+    EVENT MONITORING
    </a>
   </dt>
   <dd>
@@ -2951,34 +3207,41 @@ This is available online from:
   </dd>
   <dt>
    <a href="#lbAP">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAQ">
-    UNIX SEE ALSO
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAR">
-    WINDOWS SEE ALSO
+    UNIX SEE ALSO
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAS">
-    SEE ALSO
+    WINDOWS SEE ALSO
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAT">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAU">
     USER GUIDE
    </a>
   </dt>

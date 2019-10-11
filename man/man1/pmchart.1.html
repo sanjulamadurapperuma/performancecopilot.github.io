@@ -74,16 +74,8 @@
  </b>
  [
  <b>
-  -CVWz
+  -CLVWz?
  </b>
- ]
-[
- <b>
-  -A
- </b>
- <i>
-  align
- </i>
  ]
 [
  <b>
@@ -91,6 +83,14 @@
  </b>
  <i>
   archive
+ </i>
+ ]
+[
+ <b>
+  -A
+ </b>
+ <i>
+  align
  </i>
  ]
 [
@@ -175,18 +175,18 @@
  ]
 [
  <b>
-  -T
- </b>
- <i>
-  endtime
- </i>
- ]
-[
- <b>
   -t
  </b>
  <i>
   interval
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
  </i>
  ]
 [
@@ -233,7 +233,8 @@ on the unified time axis (X-axis), and through the use of multiple
 interface Tabs.
  <p>
   Metric values can be sourced from one or more live hosts
-(simultaneously).  Alternatively, one or more sets of PCP archives
+(simultaneously).
+Alternatively, one or more sets of PCP archives
 can be used as a source of historical data.
 See
   <b>
@@ -287,26 +288,41 @@ utility for time control, refer to the
    pmtime
   </b>
   manual page for further details of its operation.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  Options which control the default source, timing and layout of the
-  <b>
-   pmchart
-  </b>
-  window are as follows:
- </p>
+ <h2>
+  OPTIONS
+ </h2>
+ Options which control the default source, timing and layout of the
+ <b>
+  pmchart
+ </b>
+ window are as follows:
  <dl compact="">
   <dt>
    <b>
     -a
    </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
   </dt>
   <dd>
    Performance metric values are retrieved from the set of Performance Co-Pilot
-(PCP) archive logs identified by this option, by default. The argument is
-a comma-separated list of names, each of which may be the base name of an
-archive or the name of a directory containing one or more archives. The
-resulting set of archives will be the source of the performance metrics.
+(PCP) archive logs identified by this option, by default.
+The argument is a comma-separated list of names, each of which may be the
+base name of an archive or the name of a directory containing one or more
+archives.
+The resulting set of archives will be the source of the performance metrics.
 The initial Tab created will be an archive mode Tab.
 Multiple
    <b>
@@ -323,8 +339,57 @@ if this option is used.
   </dd>
   <dt>
    <b>
+    -A
+   </b>
+   <i>
+    align
+   </i>
+   ,
+   <b>
+    --align
+   </b>
+   =
+   <i>
+    align
+   </i>
+  </dt>
+  <dd>
+   Force the initial sample to be
+aligned on the boundary of a natural time unit
+   <i>
+    align
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    align
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -c
    </b>
+   <i>
+    configfile
+   </i>
+   ,
+   <b>
+    --view
+   </b>
+   =
+   <i>
+    configfile
+   </i>
   </dt>
   <dd>
    <i>
@@ -340,7 +405,11 @@ default Tab with the default source of metrics.
   </dd>
   <dt>
    <b>
-    -C
+    -c
+   </b>
+   ,
+   <b>
+    --check
    </b>
   </dt>
   <dd>
@@ -374,6 +443,17 @@ to check the semantics of metrics.
    <b>
     -f
    </b>
+   <i>
+    family
+   </i>
+   ,
+   <b>
+    --font-family
+   </b>
+   =
+   <i>
+    family
+   </i>
   </dt>
   <dd>
    Specify the default font
@@ -395,6 +475,17 @@ platform.
    <b>
     -F
    </b>
+   <i>
+    point
+   </i>
+   ,
+   <b>
+    --font-size
+   </b>
+   =
+   <i>
+    point
+   </i>
   </dt>
   <dd>
    Specify the default font
@@ -410,6 +501,17 @@ This setting does not affect the rest of the user interface.
    <b>
     -g
    </b>
+   <i>
+    geometry
+   </i>
+   ,
+   <b>
+    --geometry
+   </b>
+   =
+   <i>
+    geometry
+   </i>
   </dt>
   <dd>
    Generate image with the specified
@@ -448,6 +550,17 @@ When NOT using the
    <b>
     -h
    </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
   </dt>
   <dd>
    Current performance metric values are retrieved from the nominated
@@ -470,8 +583,83 @@ if this option is used.
   </dd>
   <dt>
    <b>
+    -K
+   </b>
+   <i>
+    spec
+   </i>
+   ,
+   <b>
+    --spec-local
+   </b>
+   =
+   <i>
+    spec
+   </i>
+  </dt>
+  <dd>
+   When fetching metrics from a local context (see
+   <b>
+    -L
+   </b>
+   ),
+
+the
+   <b>
+    -K
+   </b>
+   option may be used to control the DSO PMDAs that should be made accessible.
+The
+   <i>
+    spec
+   </i>
+   argument conforms to the syntax described in
+   <b>
+    <a href="/man/man3/pmspeclocalpmda.3.html">
+     pmSpecLocalPMDA
+    </a>
+   </b>
+   (3).
+
+More than one
+   <b>
+    -K
+   </b>
+   option may be used.
+  </dd>
+  <dt>
+   <b>
+    -L
+   </b>
+   ,
+   <b>
+    --local-PMDA
+   </b>
+  </dt>
+  <dd>
+   Use a local context to collect metrics from DSO PMDAs on the local host
+without PMCD.
+See also
+   <b>
+    -K
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
     -o
    </b>
+   <i>
+    outfile
+   </i>
+   ,
+   <b>
+    --output
+   </b>
+   =
+   <i>
+    outfile
+   </i>
   </dt>
   <dd>
    Generate an image file named
@@ -496,8 +684,64 @@ tif, tiff, xbm, and xpm.
   </dd>
   <dt>
    <b>
+    -O
+   </b>
+   <i>
+    origin
+   </i>
+   ,
+   <b>
+    --origin
+   </b>
+   =
+   <i>
+    origin
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, start reporting at
+   <i>
+    origin
+   </i>
+   within the time window (see
+   <b>
+    -S
+   </b>
+   and
+   <b>
+    -T
+   </b>
+   ).
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    origin
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -p
    </b>
+   <i>
+    port
+   </i>
+   ,
+   <b>
+    --port
+   </b>
+   =
+   <i>
+    port
+   </i>
   </dt>
   <dd>
    <i>
@@ -513,6 +757,17 @@ tif, tiff, xbm, and xpm.
    <b>
     -s
    </b>
+   <i>
+    samples
+   </i>
+   ,
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    samples
+   </i>
   </dt>
   <dd>
    Specifies the number of
@@ -526,8 +781,57 @@ dialog.
   </dd>
   <dt>
    <b>
+    -S
+   </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, the report will be restricted to those
+records logged at or after
+   <i>
+    starttime
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    starttime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -t
    </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
   </dt>
   <dd>
    Sets the inital update
@@ -552,11 +856,60 @@ units in this case are seconds).
   </dd>
   <dt>
    <b>
-    -v
+    -T
    </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
   </dt>
   <dd>
-   Sets the inital visible
+   When reporting archived metrics, the report will be restricted to those
+records logged before or at
+   <i>
+    endtime
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    endtime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+   <i>
+    samples
+   </i>
+   ,
+   <b>
+    --visible
+   </b>
+   =
+   <i>
+    samples
+   </i>
+  </dt>
+  <dd>
+   Sets the initial visible
    <i>
     samples
    </i>
@@ -572,6 +925,10 @@ of samples retained (the
    <b>
     -V
    </b>
+   ,
+   <b>
+    --version
+   </b>
   </dt>
   <dd>
    Display pmchart version number and exit
@@ -580,44 +937,18 @@ of samples retained (the
    <b>
     -W
    </b>
+   , fB--white
   </dt>
   <dd>
    Export images using an opaque(white) background
   </dd>
   <dt>
    <b>
-    -Z
-   </b>
-  </dt>
-  <dd>
-   By default,
-   <b>
-    pmtime
-   </b>
-   reports the time of day according to the local timezone on the system
-where
-   <b>
-    pmchart is run.
-   </b>
-   The
-   <b>
-    -Z
-   </b>
-   option changes the timezone to
-   <i>
-    timezone
-   </i>
-   in the format of the environment variable TZ as described in
-   <b>
-    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-     environ
-    </a>
-   </b>
-   (7).
-  </dd>
-  <dt>
-   <b>
     -z
+   </b>
+   ,
+   <b>
+    --hostzone
    </b>
   </dt>
   <dd>
@@ -663,9 +994,54 @@ to
   (1)
 
 for a complete description of these options.
-  <a name="lbAE">
-  </a>
  </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   By default,
+   <b>
+    pmtime
+   </b>
+   reports the time of day according to the local timezone on the system
+where
+   <b>
+    pmchart
+   </b>
+   is run.
+The
+   <b>
+    -Z
+   </b>
+   option changes the timezone to
+   <i>
+    timezone
+   </i>
+   in the format of the environment variable TZ as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   VIEWS
  </h2>
@@ -726,7 +1102,7 @@ User views are stored in
   <i>
    $HOME/.pcp/pmchart.
   </i>
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -774,7 +1150,7 @@ A Tab can be dismissed using the
    File→Close Tab
   </i>
   menu, which removes the current Tab and any charts it contained.
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -803,7 +1179,7 @@ grayscale/color, landscape/portrait, scaling to different paper sizes,
 etc),
 and in addition allows printing to the intermediate printer formats
 of PostScript and Portable Document Format (PDF).
-  <a name="lbAH">
+  <a name="lbAI">
   </a>
  </p>
  <h2>
@@ -921,7 +1297,7 @@ and
   (1)
 
 for an extensive description of the capabilities of these tools.
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h2>
@@ -932,7 +1308,8 @@ for an extensive description of the capabilities of these tools.
    pmchart
   </b>
   loads predefined chart configurations (or "views") from external
-files that conform to the following rules.  In the descriptions below
+files that conform to the following rules.
+In the descriptions below
 keywords (shown in bold) may appear in upper, lower or
 mixed case, elements shown in
   <tt>
@@ -1053,9 +1430,10 @@ The
    is usually enclosed in quotes (") and if it
 contains the sequence "%h" this will be replaced by the short form
 of the hostname for the default source of metrics at the time
-this chart was loaded.  Alternatively, "%H" can be used to insert
-the full host name.  If the hostname appears to be an inet or IPv6
-address, no shortening will be attempted; it will be used as-is in
+this chart was loaded.
+Alternatively, "%H" can be used to insert the full host name.
+If the hostname appears to be an inet or IPv6 address,
+no shortening will be attempted; it will be used as-is in
 both replacement cases.
 After the view is loaded, the title visibility and setting
 can be manipulated using the
@@ -1117,7 +1495,8 @@ plotted.
       </tt>
       is one of the keywords on or off and the
 legend clause controls the presence or absence of the plot
-legend below the graph area.  The default is for the legend to be shown.
+legend below the graph area.
+The default is for the legend to be shown.
 After the view is loaded, the legend visibility
 can be toggled using the
       <i>
@@ -1256,8 +1635,8 @@ e.g. red or steelblue, see also the output from
        pmchart
       </b>
       should use the next in a pallet of colors that it uses cyclically
-for each chart.  This is the default if the color clause
-is omitted.
+for each chart.
+This is the default if the color clause is omitted.
      </p>
      <p>
       The
@@ -1362,7 +1741,8 @@ uses extended regular expression notation in the style of
        &lt;pat&gt;
       </tt>
       extend from the first non-white space character to the
-end of the input line.  For
+end of the input line.
+For
       <b>
        pmchart
       </b>
@@ -1377,7 +1757,8 @@ space, or enclosed in quotes (").
   </dt>
   <dd>
    The optional tab directive can be used to create views with
-multiple charts which span multiple Tabs.  The syntax is as follows:
+multiple charts which span multiple Tabs.
+The syntax is as follows:
    <pre>
 tab &lt;label&gt; [host &lt;host&gt;] [points &lt;points&gt; [samples &lt;samples&gt;]]
 
@@ -1397,7 +1778,7 @@ another tab keyword is encountered.
    </dl>
   </dd>
  </dl>
- <a name="lbAJ">
+ <a name="lbAK">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -1406,9 +1787,10 @@ another tab keyword is encountered.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1418,8 +1800,7 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
@@ -1433,9 +1814,11 @@ as described in
   </b>
   setting is explicitly and unconditionally overridden by
   <b>
-   pmchart.
+   pmchart
   </b>
-  This is set to the
+  .
+
+This is set to the
   <b>
    <a href="/man/man1/pmconfirm.1.html">
     pmconfirm
@@ -1450,7 +1833,7 @@ rest of the
    pmchart
   </b>
   application.
-  <a name="lbAK">
+  <a name="lbAL">
   </a>
  </p>
  <h2>
@@ -1526,7 +1909,7 @@ rest of the
 and
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5).
@@ -1562,48 +1945,55 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    VIEWS
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    TABS
+    VIEWS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    IMAGES and PRINTING
+    TABS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    RECORDING
+    IMAGES and PRINTING
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    CONFIGURATION FILE SYNTAX
+    RECORDING
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    PCP ENVIRONMENT
+    CONFIGURATION FILE SYNTAX
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
     SEE ALSO
    </a>
   </dt>

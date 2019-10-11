@@ -72,21 +72,7 @@
  </b>
  [
  <b>
-  -a
- </b>
- |
- <b>
-  -l
- </b>
- ]
-[
- <b>
-  -L
- </b>
- ]
-[
- <b>
-  -s
+  -alLs?
  </b>
  ]
 [
@@ -105,26 +91,85 @@
  displays the values for some or all configuration parameters 
 of the local Performance Co-Pilot toolkit installation.
  <p>
-  The
-  <b>
-   -L
-  </b>
-  option may be used to change the default reporting mode so that
-the capabilities of the PCP library are reported, rather than the
-PCP environment.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  An output format suitable for sourcing in shell scripts can be
-obtained using the
-  <b>
-   -s
-  </b>
-  option, which ensures configuration information is quoted and
+ <h2>
+  OPTIONS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+   ,
+   <b>
+    --all
+   </b>
+  </dt>
+  <dd>
+   Reports all configuration parameters in the default format.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   ,
+   <b>
+    --list
+   </b>
+  </dt>
+  <dd>
+   Synonym for the
+   <b>
+    -a
+   </b>
+   option, reports the same (default) format.
+  </dd>
+  <dt>
+   <b>
+    -L
+   </b>
+   ,
+   <b>
+    --library
+   </b>
+  </dt>
+  <dd>
+   This option changes the default reporting mode so that the
+capabilities of the PCP library are reported, rather than the
+PCP environment.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   ,
+   <b>
+    --shell
+   </b>
+  </dt>
+  <dd>
+   An output format suitable for sourcing in shell scripts
+which ensures configuration information is quoted and
 preceded by an export statement.
 When not reporting the library capabilities, this mode will
 produce a statement that does not override an existing setting
 in the environment for PCP configuration variables.
- </p>
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
  <p>
   In the default operating mode,
   <b>
@@ -137,7 +182,7 @@ in the environment for PCP configuration variables.
   environment variable to setup scripts running under the Windows
 operating system, where the filesystem hierarchy differs greatly
 to the of Linux/UNIX-based operating systems.
-  <a name="lbAE">
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -147,9 +192,10 @@ to the of Linux/UNIX-based operating systems.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -159,15 +205,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   SEE ALSO
@@ -224,13 +269,20 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP ENVIRONMENT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

@@ -80,16 +80,18 @@
  </b>
  [
  <b>
-  -bkmgroltV
+  -bkmgroltV?
  </b>
- ] [
+ ]
+[
  <b>
   -c
  </b>
  <i>
   count
  </i>
- ] [
+ ]
+[
  <b>
   -s
  </b>
@@ -166,144 +168,224 @@ command, the
    --timezone
   </b>
   and several other
+  <b>
+   pcp
+  </b>
   <i>
-   pcp options
+   options
   </i>
-  become indirectly available.
+  become indirectly available, see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for their descriptions.
   <a name="lbAE">
   </a>
  </p>
- <h3>
-  Options
- </h3>
- The
- <b>
-  -b
- </b>
- /
- <b>
-  --bytes
- </b>
- switch displays the amount of memory in bytes; the
- <b>
-  -k
- </b>
- /
- <b>
-  --kilobytes
- </b>
- switch (set by default) displays it in kilobytes;
-the
- <b>
-  -m
- </b>
- /
- <b>
-  --megabytes
- </b>
- switch displays it in megabytes; the
- <b>
-  -r
- </b>
- /
- <b>
-  --terabytes
- </b>
- switch displays it in terabytes.
- <p>
-  The
-  <b>
-   -t
-  </b>
-  /
-  <b>
-   --total
-  </b>
-  switch displays a line containing the totals.
- </p>
- <p>
-  The
-  <b>
-   -o
-  </b>
-  switch disables the display of a "buffer adjusted" line.
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -b
+   </b>
+   ,
+   <b>
+    --bytes
+   </b>
+  </dt>
+  <dd>
+   Display the amount of memory in bytes.
+  </dd>
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    count
+   </i>
+   ,
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    count
+   </i>
+  </dt>
+  <dd>
+   Terminate the display after
+   <i>
+    count
+   </i>
+   iterations.
+See also
+   <b>
+    -s
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -g
+   </b>
+   ,
+   <b>
+    --gigabytes
+   </b>
+  </dt>
+  <dd>
+   Display the amount of memory in gigabytes.
+  </dd>
+  <dt>
+   <b>
+    -k
+   </b>
+   ,
+   <b>
+    --kilobytes
+   </b>
+  </dt>
+  <dd>
+   Display the amount of memory in kilobytes.
+This is the default.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+  </dt>
+  <dd>
+   Display detailed low and high memory statistics.
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+   ,
+   <b>
+    --megabytes
+   </b>
+  </dt>
+  <dd>
+   Display the amount of memory in megabytes.
+  </dd>
+  <dt>
+   <b>
+    -o
+   </b>
+  </dt>
+  <dd>
+   Disable the display of a "buffer adjusted" line.
 If the
-  <b>
-   -o
-  </b>
-  option is not specified,
-  <b>
-   free
-  </b>
-  subtracts buffer memory
+   <b>
+    -o
+   </b>
+   option is not specified,
+   <b>
+    free
+   </b>
+   subtracts buffer memory
 from the used memory and adds it to the free memory reported.
- </p>
- <p>
-  The
-  <b>
-   -s
-  </b>
-  /
-  <b>
-   --interval
-  </b>
-  switch activates continuous polling
-  <i>
-   delay
-  </i>
-  seconds apart.
+  </dd>
+  <dt>
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    --terabytes
+   </b>
+  </dt>
+  <dd>
+   Display the amount of memory in terabytes.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    delay
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    delay
+   </i>
+  </dt>
+  <dd>
+   Activate continuous polling
+   <i>
+    delay
+   </i>
+   seconds apart.
 You may specify any floating point number for
-  <i>
-   delay
-  </i>
-  , or indeed any valid
-  <b>
-   <a href="/man/man3/pmparseinterval.3.html">
-    pmParseInterval
-   </a>
-  </b>
-  (3)
+   <i>
+    delay
+   </i>
+   , or indeed any valid
+   <b>
+    <a href="/man/man3/pmparseinterval.3.html">
+     pmParseInterval
+    </a>
+   </b>
+   (3)
 
 specification, which includes microsecond resolution delay times.
 This can be used in conjunction with the
-  <b>
-   -c
-  </b>
-  /
-  <b>
-   --samples
-  </b>
-  option
-to terminate the display after
-  <i>
-   count
-  </i>
-  iterations.
- </p>
- <p>
-  The
-  <b>
-   -l
-  </b>
-  switch shows detailed low and high memory statistics.
- </p>
- <p>
-  The current version of
-  <b>
-   pcp-free
-  </b>
-  can be queried using the
-  <b>
-   -V
-  </b>
-  /
-  <b>
-   --version
-  </b>
-  option.
-  <a name="lbAF">
-  </a>
- </p>
+   <b>
+    -c
+   </b>
+   option.
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   ,
+   <b>
+    --total
+   </b>
+  </dt>
+  <dd>
+   Display a line containing the totals.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   NOTES
  </h2>
@@ -322,6 +404,44 @@ command and aims to be command line and output compatible with it.
  <p>
   The shared memory column should be ignored; it is obsolete.
   <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -388,15 +508,13 @@ and
    </a>
   </dt>
   <dd>
-   <dl>
-    <dt>
-     <a href="#lbAE">
-      Options
-     </a>
-    </dt>
-    <dd>
-    </dd>
-   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    OPTIONS
+   </a>
+  </dt>
+  <dd>
   </dd>
   <dt>
    <a href="#lbAF">
@@ -407,6 +525,13 @@ and
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

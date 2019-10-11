@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -fFIiLVvz
+  -fFIiLVvz?
  </b>
  ]
 [
@@ -132,6 +132,24 @@
  </i>
  ]
 [
+ <b>
+  --container
+ </b>
+ =
+ <i>
+  name
+ </i>
+ ]
+[
+ <b>
+  --derived
+ </b>
+ =
+ <i>
+  file
+ </i>
+ ]
+[
  <i>
   metricname
  </i>
@@ -159,7 +177,7 @@ If
   is a non-leaf node in the Performance Metrics Name Space (
   <b>
    <a href="/man/man5/pmns.5.html">
-    pmns
+    PMNS
    </a>
   </b>
   (5)),
@@ -217,19 +235,22 @@ protocols, but may be decoded using
   (1))
 
 and followed by a textual description of the error.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  Unless directed to another host by the
-  <b>
-   -h
-  </b>
-  option,
-  <b>
-   pmprobe
-  </b>
-  will contact the Performance Metrics Collector Daemon
+ <h2>
+  OPTIONS
+ </h2>
+ Unless directed to another host by the
+ <b>
+  -h
+ </b>
+ option,
+ <b>
+  pmprobe
+ </b>
+ will contact the Performance Metrics Collector Daemon
 (PMCD) on the local host.
- </p>
  <p>
   The
   <b>
@@ -240,92 +261,6 @@ and followed by a textual description of the error.
    pmprobe
   </b>
   to use the specified set of archives rather than connecting to a PMCD.
-The argument is a comma-separated list of names, each
-of which may be the base name of an archive or the name of a directory containing
-one or more archives.
-The
-  <b>
-   -a
-  </b>
-  and
-  <b>
-   -h
-  </b>
-  options are mutually exclusive.
- </p>
- <p>
-  The
-  <b>
-   -b
-  </b>
-  /
-  <b>
-   --batch
-  </b>
-  option may be used to define the maximum size of
-the group of metrics to be fetched in a single request for the
-  <b>
-   -v/--values
-  </b>
-  option.
-This batching is also applied to the
-  <b>
-   <a href="/man/man3/pmlookupname.3.html">
-    pmLookupName
-   </a>
-  </b>
-  (3)
-
-request that
-  <b>
-   pmprobe
-  </b>
-  calls with the list of leaf metric names, to avoid exceeding the maximum PDU length
-supported by
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-for client requests.
-This can be important for
-  <b>
-   <a href="/man/man1/pmlogconf.1.html">
-    pmlogconf
-   </a>
-  </b>
-  (1),
-
-which uses
-  <b>
-   pmprobe
-  </b>
-  to enumerate the set of metrics to be logged by
-  <b>
-   <a href="/man/man1/pmlogger.1.html">
-    pmlogger
-   </a>
-  </b>
-  (1).
-
-The default value for
-  <i>
-   batchsize
-  </i>
-  is 128.
-This option is useful to avoid limitations on PDU request sizes
-and also to stagger fetches, which may otherwise timeout if
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
-or a PMDA is slow to respond, particularly if a large
-number of metrics are probed.
  </p>
  <p>
   The
@@ -337,7 +272,8 @@ number of metrics are probed.
    pmprobe
   </b>
   to use a local context to collect metrics from PMDAs on the local host
-without PMCD.  Only some metrics are available in this mode.
+without PMCD.
+Only some metrics are available in this mode.
 The
   <b>
    -a
@@ -353,30 +289,121 @@ The
   options are mutually exclusive.
  </p>
  <p>
-  Normally
-  <b>
-   pmprobe
-  </b>
-  operates on the distributed Performance Metrics Name Space (PMNS),
-however, if the
-  <b>
-   -n
-  </b>
-  option is specified an alternative local PMNS file is loaded
-from the file
-  <i>
-   pmnsfile
-  </i>
-  .
- </p>
- <p>
-  Other options control the output of additional information when
-one or more values is available.
+  The available command line options are:
  </p>
  <dl compact="">
   <dt>
    <b>
+    -a
+   </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
+  </dt>
+  <dd>
+   Performance metric values are retrieved from the set of Performance
+Co-Pilot (PCP) archive log files identified by the
+   <i>
+    archive
+   </i>
+   argument, which is a comma-separated list of names,
+each of which may be the base name of an archive or the name of
+a directory containing one or more archives.
+  </dd>
+  <dt>
+   <b>
+    -b
+   </b>
+   ,
+   <b>
+    --batch
+   </b>
+  </dt>
+  <dd>
+   This option may be used to define the maximum number of metrics
+to be fetched in a single request for the
+   <b>
+    -v
+   </b>
+   option and
+any
+   <b>
+    <a href="/man/man3/pmlookupname.3.html">
+     pmLookupName
+    </a>
+   </b>
+   (3)
+
+request that
+   <b>
+    pmprobe
+   </b>
+   calls with a list of leaf metric names.
+The default value for
+   <i>
+    batchsize
+   </i>
+   is 128.
+This option is useful to avoid limitations on PDU request sizes
+and also to stagger fetches, which may otherwise timeout if
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+or a PMDA is slow to respond, particularly if a large
+number of metrics are probed.
+  </dd>
+  <dt>
+   <b>
+    -n
+   </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   Normally
+   <b>
+    pmprobe
+   </b>
+   operates on the distributed Performance Metrics Name Space (PMNS),
+however, if the
+   <b>
+    -n
+   </b>
+   option is specified an alternative local PMNS file is loaded
+from the file
+   <i>
+    pmnsfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -f
+   </b>
+   ,
+   <b>
+    --force
    </b>
   </dt>
   <dd>
@@ -389,9 +416,10 @@ one or more values is available.
     -I
    </b>
    the set of instances reported will be all of those known at the
-source of the performance data.  By default the set of reported
-instances are those for which values are currently available, which
-may be smaller than the set reported with
+source of the performance data.
+By default the set of reported
+instances are those for which values are currently available,
+which may be smaller than the set reported with
    <b>
     -f
    </b>
@@ -401,9 +429,14 @@ may be smaller than the set reported with
    <b>
     -I
    </b>
+   ,
+   <b>
+    --external
+   </b>
   </dt>
   <dd>
-   Report the external identifiers for each instance.  The literal string
+   Report the external identifiers for each instance.
+The literal string
    <b>
     PM_IN_NULL
    </b>
@@ -413,11 +446,15 @@ may be smaller than the set reported with
    <b>
     -i
    </b>
+   ,
+   <b>
+    --internal
+   </b>
   </dt>
   <dd>
-   Report the internal identifiers for each instance.  The values are
-in decimal and prefixed by ``?''.  As a special case, the literal
-string
+   Report the internal identifiers for each instance.
+The values are in decimal and prefixed by ``?''.
+As a special case, the literal string
    <b>
     PM_IN_NULL
    </b>
@@ -427,18 +464,26 @@ string
    <b>
     -K
    </b>
+   <i>
+    spec
+   </i>
+   ,
+   <b>
+    --spec-local
+   </b>
+   =
+   <i>
+    spec
+   </i>
   </dt>
   <dd>
    When using the
    <b>
-    -L
+    -L/
    </b>
-   option to fetch metrics from a local context, the
-   <b>
-    -K
-   </b>
-   option may be used to control the DSO PMDAs that should be
-made accessible.  The
+   option to fetch metrics from a local context,
+this option controls the DSO PMDAs that should be made accessible.
+The
    <i>
     spec
    </i>
@@ -460,19 +505,30 @@ More than one
    <b>
     -O
    </b>
+   <i>
+    time
+   </i>
+   ,
+   <b>
+    --origin
+   </b>
+   =
+   <i>
+    time
+   </i>
   </dt>
   <dd>
-   When used in conjunction with an archive source of metrics and
-the
+   When used in conjunction with an archive source of metrics and the
+options
    <b>
-    -v
+    -f/
    </b>
-   option the
+   , the
    <i>
     time
    </i>
    argument defines a time origin at which the metrics should be
-fetched from the archive(s).
+fetched from the set of archives.
 Refer to
    <b>
     <a href="/man/man1/pcpintro.1.html">
@@ -490,6 +546,10 @@ for a complete description of this option, and the syntax for the
   <dt>
    <b>
     -v
+   </b>
+   ,
+   <b>
+    --values
    </b>
   </dt>
   <dd>
@@ -509,33 +569,114 @@ displayed; see also the
     -O
    </b>
    option.
+The
+   <b>
+    -v
+   </b>
+   option is mutually exclusive with either the
+   <b>
+    -I
+   </b>
+   or
+   <b>
+    -i
+   </b>
+   options.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   This option provides a cryptic summary of the number of messages
+sent and received across the PMAPI interface.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+  <dt>
+   <b>
+    --container
+   </b>
+   =
+   <i>
+    container
+   </i>
+  </dt>
+  <dd>
+   Specify an individual
+   <i>
+    container
+   </i>
+   to be queried.
+  </dd>
+  <dt>
+   <b>
+    --derived
+   </b>
+   =
+   <i>
+    dmfile
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    dmfile
+   </i>
+   argument specifies a file that contains derived metric definitions
+in the format described for
+   <b>
+    <a href="/man/man3/pmloadderivedconfig.3.html">
+     pmLoadDerivedConfig
+    </a>
+   </b>
+   (3).
+
+This option provides a way to load derived metric definitions that
+is an alternative to the more generic use of the
+   <b>
+    PCP_DERIVED_CONFIG
+   </b>
+   environment variable as described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1).
+
+Using the
+   <b>
+    --derived
+   </b>
+   option and the
+   <b>
+    PCP_DERIVED_CONFIG
+   </b>
+   environment variable to specify the
+   <b>
+    same
+   </b>
+   configuration is a bad idea, so choose one or the other method.
   </dd>
  </dl>
- <p>
-  The
-  <b>
-   -v
-  </b>
-  option is mutually exclusive with either the
-  <b>
-   -I
-  </b>
-  or
-  <b>
-   -i
-  </b>
-  options.
- </p>
- <p>
-  The
-  <b>
-   -V
-  </b>
-  option provides a cryptic summary of the number of messages sent
-and received across the PMAPI interface.
-  <a name="lbAE">
-  </a>
- </p>
+ <a name="lbAF">
+ </a>
  <h2>
   EXAMPLES
  </h2>
@@ -551,20 +692,20 @@ disk.dev.active 2
 disk.dev.response 2
 
 $ pmprobe -I disk.dev.read disk.dev.write disk.all.total
-disk.dev.read 2 "dks0d1" "dks0d2"
-disk.dev.write 2 "dks0d1" "dks0d2"
+disk.dev.read 2 "sda" "sdb"
+disk.dev.write 2 "sda" "sdb"
 disk.all.total 1 PM_IN_NULL
 
 $ pmprobe -v pmcd.numagents pmcd.version pmcd.control.timeout
 pmcd.numagents 1 9
-pmcd.version 1 "2.0 beta-1"
+pmcd.version 1 "5.0.0"
 pmcd.control.timeout 1 5
 
 $ pmprobe -v disk.dev.total disk.all.total
 disk.dev.total -1012 Unknown metric name
 disk.all.total 1 4992466
 </pre>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   FILES
@@ -582,7 +723,7 @@ disk.all.total 1 4992466
    default PMNS specification files
   </dd>
  </dl>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -591,9 +732,10 @@ disk.all.total 1 4992466
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -603,16 +745,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAH">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAI">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -653,6 +803,12 @@ as described in
  </b>
  (3),
  <b>
+  <a href="/man/man3/pmgetoptions.3.html">
+   pmGetOptions
+  </a>
+ </b>
+ (3),
+ <b>
   <a href="/man/man3/pmspeclocalpmda.3.html">
    pmSpecLocalPMDA
   </a>
@@ -674,7 +830,7 @@ as described in
 and
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5).
@@ -710,27 +866,34 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    FILES
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

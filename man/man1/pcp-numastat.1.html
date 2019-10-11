@@ -80,7 +80,7 @@
  </b>
  [
  <b>
-  -V
+  -Vw?
  </b>
  ]
  <a name="lbAD">
@@ -112,70 +112,109 @@ retrieved using the following command:
  <pre>
 # pminfo -dt mem.numa.alloc
 </pre>
- <p>
-  When invoked via the
-  <b>
-   <a href="/man/man1/pcp.1.html">
-    pcp
-   </a>
-  </b>
-  (1)
+ <a name="lbAE">
+ </a>
+ <h2>
+  OPTIONS
+ </h2>
+ When invoked via the
+ <b>
+  <a href="/man/man1/pcp.1.html">
+   pcp
+  </a>
+ </b>
+ (1)
 
 command, the
-  <b>
-   -h
-  </b>
-  /
-  <b>
-   --host
-  </b>
-  ,
-  <b>
-   -a
-  </b>
-  /
-  <b>
-   --archive
-  </b>
-  ,
-  <b>
-   -O
-  </b>
-  /
-  <b>
-   --origin
-  </b>
-  ,
-  <b>
-   -Z
-  </b>
-  /
-  <b>
-   --timezone
-  </b>
-  and several other
-  <i>
-   pcp options
-  </i>
-  become indirectly available.
- </p>
+ <b>
+  -h
+ </b>
+ /
+ <b>
+  --host
+ </b>
+ ,
+ <b>
+  -a
+ </b>
+ /
+ <b>
+  --archive
+ </b>
+ ,
+ <b>
+  -O
+ </b>
+ /
+ <b>
+  --origin
+ </b>
+ ,
+ <b>
+  -Z
+ </b>
+ /
+ <b>
+  --timezone
+ </b>
+ and several other
+ <i>
+  pcp options
+ </i>
+ become indirectly available.
  <p>
-  The current version of
-  <b>
-   pcp-numastat
-  </b>
-  can be queried using the
-  <b>
-   -V
-  </b>
-  /
-  <b>
-   --version
-  </b>
-  option.
-  <a name="lbAE">
-  </a>
  </p>
+ <dl compact="">
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display the current version of the command.
+  </dd>
+  <dt>
+   <b>
+    -w
+   </b>
+   <i>
+    width
+   </i>
+   ,
+   <b>
+    --width
+   </b>
+   =
+   <i>
+    width
+   </i>
+  </dt>
+  <dd>
+   Limit display to
+   <i>
+    width
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   NOTES
  </h2>
@@ -191,8 +230,46 @@ command, the
  (1)
 
 command and produces exactly the same output.
- <a name="lbAF">
+ <a name="lbAG">
  </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -248,13 +325,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    NOTES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    NOTES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

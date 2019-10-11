@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PCPCOMPAT
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  PCPCompat
+ </b>
+ ,
+ <b>
+  pcp-collectl
+ </b>
+ ,
+ <b>
+  pmwebd
+ </b>
+ - backward-compatibility in the Performance Co-Pilot (PCP)
+ <a name="lbAC">
+ </a>
+ <h2>
+  INTRODUCTION
+ </h2>
+ The Performance Co-Pilot (PCP) is a toolkit designed for monitoring
+and managing system-level performance.
+These services are distributed and scalable
+to accommodate the most complex system configurations and performance
+problems.
+ <p>
+  In order to achieve these goals effectively, protocol and on-disk
+compatibility is provided between different versions of PCP.
+It is feasible (and indeed encouraged) to use current PCP tools to
+interrogate any remote, down-rev or up-rev
+  <b>
+   <a href="/man/man1/pmcd.1.html">
+    pmcd
+   </a>
+  </b>
+  (1)
+
+and also to replay any historical PCP archive (the PCP testsuite
+includes PCP archives created over 20 years ago!).
+ </p>
+ <p>
+  From time to time the PCP developers deprecate and remove PCP utilities,
+replacing them with new versions of utilities providing comparable features.
+This page describes replacement utilities for historical PCP tools.
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  PCP-COLLECTL
+ </h2>
+ The
+ <b>
+  pcp-collectl
+ </b>
+ utility has been superceded by
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1)
+
+from PCP v5 onward.
+ <p>
+  The equivalent of
+  <b>
+   pcp-collectl
+  </b>
+  subsystem reporting is achieved as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    pmrep :collectl-sc
+   </b>
+  </dt>
+  <dd>
+   Processor subsystem view.
+  </dd>
+  <dt>
+   <b>
+    pmrep :collectl-sm
+   </b>
+  </dt>
+  <dd>
+   Memory subsystem view.
+  </dd>
+  <dt>
+   <b>
+    pmrep :collectl-sd
+   </b>
+  </dt>
+  <dd>
+   Aggregate disks view.
+  </dd>
+  <dt>
+   <b>
+    pmrep :collectl-sD
+   </b>
+  </dt>
+  <dd>
+   Per-disk-device view.
+  </dd>
+  <dt>
+   <b>
+    pmrep :collectl-dm-sD
+   </b>
+  </dt>
+  <dd>
+   Device mapper view.
+  </dd>
+  <dt>
+   <b>
+    pmrep :collectl-sn
+   </b>
+  </dt>
+  <dd>
+   Network subsystem view.
+  </dd>
+ </dl>
+ <a name="lbAE">
+ </a>
+ <h2>
+  PCP-WEBAPPS
+ </h2>
+ The standalone web applications packaged with older PCP versions
+have been superceded by
+ <b>
+  <a href="/man/man1/grafana-server.1.html">
+   grafana-server
+  </a>
+ </b>
+ (1)
+
+with the
+ <b>
+  grafana-pcp
+ </b>
+ plugin
+ <p>
+  This plugin provides an implementation of the Vector application,
+as well as data sources for
+  <b>
+   <a href="/man/man1/pmdabpftrace.1.html">
+    pmdabpftrace
+   </a>
+  </b>
+  (1) (
+  <b>
+   <a href="/man/man8/bpftrace.8.html">
+    bpftrace
+   </a>
+  </b>
+  (8)
+
+scripts) and
+  <b>
+   <a href="/man/man1/pmseries.1.html">
+    pmseries
+   </a>
+  </b>
+  (1)
+
+(fast, scalable Redis-based time series analysis).
+  <a name="lbAF">
+  </a>
+ </p>
+ <h2>
+  PMWEBD
+ </h2>
+ The
+ <b>
+  pmwebd
+ </b>
+ daemon has been superceded by
+ <b>
+  <a href="/man/man1/pmproxy.1.html">
+   pmproxy
+  </a>
+ </b>
+ (1)
+
+from PCP v5 onward.
+ <p>
+  By default,
+  <b>
+   pmproxy
+  </b>
+  will now listen on both its original port (44322) and the PCP
+web API port (44323) when the time series support is built.
+ </p>
+ <p>
+  <b>
+   pmproxy
+  </b>
+  provides a compatible implementation of the live
+  <b>
+   <a href="/man/man3/pmwebapi.3.html">
+    PMWEBAPI
+   </a>
+  </b>
+  (3)
+
+interfaces used traditionally by the Vector web application
+(see the ``PCP-WEBAPPS'' section).
+It also provides extensions to the original
+  <b>
+   pmwebd
+  </b>
+  REST APIs (such as derived metrics, namespace lookups and instance
+domain profiles), support for the HTTPS protocol, and fast, scalable
+time series querying using the
+  <b>
+   <a href="/man/man1/pmseries.1.html">
+    pmseries
+   </a>
+  </b>
+  (1)
+
+REST API and
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/redis-server.1.html">
+    redis-server
+   </a>
+  </b>
+  (1).
+ </p>
+ <p>
+  The partial Graphite API emulation provided by
+  <b>
+   pmwebd
+  </b>
+  has not been re-implemented - applications wishing to use similar
+services could use the scalable time series REST APIs described on
+  <b>
+   <a href="/man/man3/pmwebapi.3.html">
+    PMWEBAPI
+   </a>
+  </b>
+  (3).
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcp.1.html">
+   pcp
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmproxy.1.html">
+   pmproxy
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmseries.1.html">
+   pmseries
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdabpftrace.1.html">
+   pmdabpftrace
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/redis-server.1.html">
+   redis-server
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/grafana-server.1.html">
+   grafana-server
+  </a>
+ </b>
+ (1)
+
+and
+ <b>
+  <a href="/man/man3/pmwebapi.3.html">
+   PMWEBAPI
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    INTRODUCTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    PCP-COLLECTL
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    PCP-WEBAPPS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    PMWEBD
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://github.com/performancecopilot/pcp/projects/1'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2019 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

@@ -80,11 +80,7 @@
  </b>
  [
  <b>
-  -V
- </b>
- /[
- <b>
-  --version
+  -V?
  </b>
  ]
  <a name="lbAD">
@@ -146,24 +142,41 @@ command, the
    pcp options
   </i>
   become indirectly available.
- </p>
- <p>
-  The current version of
-  <b>
-   pcp-uptime
-  </b>
-  can be queried using the
-  <b>
-   -V
-  </b>
-  /
-  <b>
-   --version
-  </b>
-  option.
   <a name="lbAE">
   </a>
  </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   NOTES
  </h2>
@@ -179,8 +192,46 @@ command, the
  (1)
 
 command and aims to be command line and output compatible with it.
- <a name="lbAF">
+ <a name="lbAG">
  </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -242,13 +293,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    NOTES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    NOTES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

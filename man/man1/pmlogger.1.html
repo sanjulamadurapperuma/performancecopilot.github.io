@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -CLoPruy
+  -CLoPruy?
  </b>
  ]
 [
@@ -80,7 +80,7 @@
   -c
  </b>
  <i>
-  configfile
+  conffile
  </i>
  ]
 [
@@ -215,7 +215,8 @@ that may be ``played back'' by other Performance Co-Pilot (see
  </b>
  (1))
 
-tools.  These logs form the basis of the VCR paradigm and retrospective
+tools.
+These logs form the basis of the VCR paradigm and retrospective
 performance analysis services common to the PCP toolkit.
  <p>
   The mandatory argument
@@ -256,14 +257,14 @@ currently supported for
 values to be logged.
  </p>
  <p>
-  To support the required flexibility and control over what is logged and 
+  To support the required flexibility and control over what is logged and
 when,
   <b>
    pmlogger
   </b>
-  maintains an independent two level logging state for each instance 
+  maintains an independent two level logging state for each instance
 of each performance metric.
-At the first (mandatory) level, logging is 
+At the first (mandatory) level, logging is
 allowed to be
   <b>
    on
@@ -278,7 +279,7 @@ allowed to be
   </b>
   .
 
-In the latter case, the second (advisory) level logging is allowed 
+In the latter case, the second (advisory) level logging is allowed
 to be
   <b>
    on
@@ -290,13 +291,14 @@ to be
   .
  </p>
  <p>
-  The 
-mandatory level allows universal specification that some metrics must be 
+  The
+mandatory level allows universal specification that some metrics must be
 logged, or must
   <b>
    not
   </b>
-  be logged.  The default state for all instances of all metrics when
+  be logged.
+The default state for all instances of all metrics when
   <b>
    pmlogger
   </b>
@@ -319,9 +321,9 @@ to interrogate and change the logging state once
  </p>
  <p>
   If a metric's state is mandatory (on or off) and a request is made to change it
-to mandatory maybe, the new state is mandatory maybe and advisory off.  If a
-metric's state is already advisory (on or off) and a request is made to change
-it to mandatory maybe, the current state is retained.
+to mandatory maybe, the new state is mandatory maybe and advisory off.
+If a metric's state is already advisory (on or off) and a request is made to
+change it to mandatory maybe, the current state is retained.
  </p>
  <p>
   It is not possible for
@@ -329,14 +331,17 @@ it to mandatory maybe, the current state is retained.
    pmlogger
   </b>
   to log specific instances of a metric and all instances of the same metric
-concurrently.  If specific instances are being logged and a request to log all
+concurrently.
+If specific instances are being logged and a request to log all
 instances is made, then all instances of the metric will be logged according to
-the new request, superseding any prior logging request for the metric.  A
-request to log all instances of a metric will supersede any previous request to
-log all instances.  A request to log specific instances of a metric when all
-instances are already being logged is refused.  To do this one must turn off
-logging for all instances of the metric first.  In each case, the validity of
-the request is checked first; for example a request to change a metric's
+the new request, superseding any prior logging request for the metric.
+A request to log all instances of a metric will supersede any previous request to
+log all instances.
+A request to log specific instances of a metric when all
+instances are already being logged is refused.
+To do this one must turn off logging for all instances of the metric first.
+In each case, the validity of the request is checked first;
+for example a request to change a metric's
 logging state to advisory on when it is currently mandatory off is never
 permitted (it is necessary to change the state to mandatory maybe first).
  </p>
@@ -429,7 +434,8 @@ and
   <b>
    -P
   </b>
-  option.  There may be at most one ``primary''
+  option.
+There may be at most one ``primary''
   <b>
    pmlogger
   </b>
@@ -488,7 +494,8 @@ When operating using a local context, the
    -K
   </b>
   option may be used to control the DSO PMDAs that should be
-made accessible.  The
+made accessible.
+The
   <i>
    spec
   </i>
@@ -512,7 +519,8 @@ More than one
    pmlogger
   </b>
   will exit immediately if the configuration
-file causes no metric logging to be scheduled.  The
+file causes no metric logging to be scheduled.
+The
   <b>
    -L
   </b>
@@ -536,8 +544,9 @@ dynamic re-configuration and state change via
    -L
   </b>
   option being used if all the metrics to be logged are logged
-as once only metrics. When the once only metrics have been
-logged, a warning message will be generated stating
+as once only metrics.
+When the once only metrics have been logged,
+a warning message will be generated stating
 that the event queue is empty and no more events will be scheduled.
  </p>
  <p>
@@ -572,7 +581,7 @@ written to standard error instead.
    pmlogger
   </b>
   to terminate after a certain size in records, bytes or time units
-has been accumulated. 
+has been accumulated.
 If
   <i>
    endsize
@@ -692,9 +701,9 @@ for the
  </p>
  <pre>
 Some examples of different formats:
-<b>-s 100 </b>
+<b>-s 100</b>
 <b>-s 100bytes</b>
-<b>-s 100K </b>
+<b>-s 100K</b>
 <b>-s 100Mb</b>
 <b>-s 10Gbyte</b>
 <b>-s 10mins</b>
@@ -768,12 +777,12 @@ or sending
   <b>
    pmlogger
   </b>
-  a SIGHUP signal (see below). Note, if a scheduled volume
-switch is in operation due to the
+  a SIGHUP signal (see below).
+Note, if a scheduled volume switch is in operation due to the
   <b>
    -v
   </b>
-  option, then its counters will be reset after an 
+  option, then its counters will be reset after an
 asynchronous switch.
  </p>
  <p>
@@ -802,8 +811,9 @@ however if the
   option is specified an alternative local PMNS is loaded
 from the file
   <i>
-   pmnsfile.
+   pmnsfile
   </i>
+  .
  </p>
  <p>
   Under normal circumstances,
@@ -838,8 +848,8 @@ host is used.
  </p>
  <pre>
 Some examples of different formats:
-<b>-T 10mins </b>
-<b>-T '@ 11:30' </b>
+<b>-T 10mins</b>
+<b>-T '@ 11:30'</b>
 </pre>
  From this it can be seen that
  <b>
@@ -876,7 +886,8 @@ In this case the
    pmlogger
   </b>
   receives a SIGHUP signal, the current volume of the log is closed, and
-a new volume is opened.  This mechanism (or the alternative mechanism
+a new volume is opened.
+This mechanism (or the alternative mechanism
 via
   <b>
    <a href="/man/man1/pmlc.1.html">
@@ -970,7 +981,8 @@ control requests on the file descriptor
   <i>
    fd
   </i>
-  .  This option is only
+  .
+This option is only
 expected to be used internally by PCP applications that support ``live
 record mode''.
  </p>
@@ -1036,7 +1048,8 @@ This mirrors the
   <b>
    pmlogger
   </b>
-  process. Without this option, the value returned from the logged
+  process.
+Without this option, the value returned from the logged
   <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
@@ -1077,12 +1090,13 @@ Any errors in the configuration file are reported.
  <b>
   -c
  </b>
- option.  If it is not, configuration specifications are read from standard
+ option.
+If it is not, configuration specifications are read from standard
 input.
  <p>
   If
   <i>
-   configfile
+   conffile
   </i>
   does not exist, then a search is made in the directory
   <i>
@@ -1244,8 +1258,8 @@ or simply ``
     Internal limitations require the
 interval
 to be smaller than (approximately)
-74 hours.  An
-interval
+74 hours.
+An interval
 value of zero is a synonym for
     <b>
      once
@@ -1305,7 +1319,7 @@ followed by a set of instance names.
 The metric name follows the standard PCP naming conventions, see
    <b>
     <a href="/man/man5/pmns.5.html">
-     pmns
+     PMNS
     </a>
    </b>
    (5),
@@ -1314,7 +1328,7 @@ and if the metric name
 is a non-leaf node in the PMNS (see
    <b>
     <a href="/man/man5/pmns.5.html">
-     pmns
+     PMNS
     </a>
    </b>
    (5)),
@@ -1585,7 +1599,7 @@ An
  <p>
   The configuration (either from standard input or
   <i>
-   configfile
+   conffile
   </i>
   )
 
@@ -1616,7 +1630,7 @@ processing (
   </b>
   ),
 
-a common location to search for include files 
+a common location to search for include files
 (
   <i>
    $PCP_VAR_DIR/config/pmlogger
@@ -1683,6 +1697,482 @@ and conditional inclusion of lines
   </a>
  </p>
  <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    conffile
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    conffile
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    conffile
+   </i>
+   file to use.
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+   ,
+   <b>
+    --check
+   </b>
+  </dt>
+  <dd>
+   Parse configuration and exit.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Fetch performance metrics from
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+on
+   <i>
+    host
+   </i>
+   ,
+
+rather than from the default localhost.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   <i>
+    logfile
+   </i>
+   ,
+   <b>
+    --log
+   </b>
+   =
+   <i>
+    logfile
+   </i>
+  </dt>
+  <dd>
+   Write all diagnostics to
+   <b>
+    logfile
+   </b>
+   instead of the default
+   <i>
+    pmlogger.log
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -L
+   </b>
+   ,
+   <b>
+    --linger
+   </b>
+  </dt>
+  <dd>
+   Run even if not the primary logger instance and nothing to log.
+  </dd>
+  <dt>
+   <b>
+    -K
+   </b>
+   <i>
+    spec
+   </i>
+   ,
+   <b>
+    --spec-local
+   </b>
+   =
+   <i>
+    spec
+   </i>
+  </dt>
+  <dd>
+   When fetching metrics from a local context (see
+   <b>
+    -o
+   </b>
+   ),
+
+the
+   <b>
+    -K
+   </b>
+   option may be used to control the DSO PMDAs that should be made accessible.
+The
+   <i>
+    spec
+   </i>
+   argument conforms to the syntax described in
+   <b>
+    <a href="/man/man3/pmspeclocalpmda.3.html">
+     pmSpecLocalPMDA
+    </a>
+   </b>
+   (3).
+
+More than one
+   <b>
+    -K
+   </b>
+   option may be used.
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+   <i>
+    note
+   </i>
+   ,
+   <b>
+    --note
+   </b>
+   =
+   <i>
+    note
+   </i>
+  </dt>
+  <dd>
+   Append
+   <i>
+    note
+   </i>
+   to the port map file for this instance.
+  </dd>
+  <dt>
+   <b>
+    -o
+   </b>
+   ,
+   <b>
+    --local-PMDA
+   </b>
+  </dt>
+  <dd>
+   Use a local context to collect metrics from DSO PMDAs on the local host
+without PMCD.
+See also
+   <b>
+    -K
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -n
+   </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   Load an alternative Performance Metrics Name Space
+(
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5))
+
+from the file
+   <i>
+    pmnsfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   <i>
+    PID
+   </i>
+   ,
+   <b>
+    --PID
+   </b>
+   =
+   <i>
+    PID
+   </i>
+  </dt>
+  <dd>
+   Log specified metrics for the lifetime of the pid
+   <i>
+    PID
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -P
+   </b>
+   ,
+   <b>
+    --primary
+   </b>
+  </dt>
+  <dd>
+   Run as primary logger instance.
+See above for more detailed description of this.
+  </dd>
+  <dt>
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    --report
+   </b>
+  </dt>
+  <dd>
+   Report record sizes and archive growth rate.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    endsize
+   </i>
+   ,
+   <b>
+    --size
+   </b>
+   =
+   <i>
+    endsize
+   </i>
+  </dt>
+  <dd>
+   Terminate after log size exceeds
+   <i>
+    endsize
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Specify the logging
+   <i>
+    interval
+   </i>
+   .
+
+The default value is 60 seconds.
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    endtime
+   </i>
+   when to end logging.
+  </dd>
+  <dt>
+   <b>
+    -u
+   </b>
+  </dt>
+  <dd>
+   Use unbuffered output.
+This is the default (so this option does nothing).
+  </dd>
+  <dt>
+   <b>
+    -U
+   </b>
+   <i>
+    username
+   </i>
+   ,
+   <b>
+    --username
+   </b>
+   =
+   <i>
+    username
+   </i>
+  </dt>
+  <dd>
+   When in daemon mode, run as user
+   <i>
+    username
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+   <i>
+    volsize
+   </i>
+   ,
+   <b>
+    --volsize
+   </b>
+   =
+   <i>
+    volsize
+   </i>
+  </dt>
+  <dd>
+   Switch log volumes after reaching log volume size
+   <i>
+    volsize
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   <i>
+    version
+   </i>
+   ,
+   <b>
+    --version
+   </b>
+   =
+   <i>
+    version
+   </i>
+  </dt>
+  <dd>
+   Specify log archive
+   <i>
+    version
+   </i>
+   .
+
+The default and the only accepted value is 2.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   <i>
+    fd
+   </i>
+  </dt>
+  <dd>
+   Allow asynchronous control requests on the file descriptor
+   <i>
+    fd
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -y
+   </b>
+  </dt>
+  <dd>
+   Use local timezone instead of the timezone from the
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+host.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
   EXAMPLES
  </h2>
  For each PCP utility, there is a sample
@@ -1739,8 +2229,49 @@ log mandatory on %disk_detail_freq {
 disallow * : all except enquire;
 allow localhost : mandatory, advisory;
 </pre>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ The archive logs are sufficiently precious that
+ <b>
+  pmlogger
+ </b>
+ will not truncate an existing physical file.
+A message of the form
+ <br/>
+ ...: "foo.index" already exists, not over-written
+ <br/>
+ ...: File exists
+
+indicates this situation has arisen.
+You must explicitly remove
+the files and launch
+ <b>
+  pmlogger
+ </b>
+ again.
+ <p>
+  There may be at most one primary
+  <b>
+   pmlogger
+  </b>
+  instance per monitored host; attempting to bend this rule produces the error:
+  <br/>
+  pmlogger: there is already a primary pmlogger running
+ </p>
+ <p>
+  Various other messages relating to the creation and/or deletion of
+files in
+  <i>
+   $PCP_TMP_DIR/pmlogger
+  </i>
+  suggest a permission problem on this directory, or some feral
+files have appeared therein.
+  <a name="lbAI">
+  </a>
+ </p>
  <h2>
   FILES
  </h2>
@@ -1785,9 +2316,11 @@ allow localhost : mandatory, advisory;
 archive log
      </dd>
      <dt>
-      $PCP_TMP_DIR/pmlogger
      </dt>
     </b>
+    <i>
+     $PCP_TMP_DIR/pmlogger
+    </i>
    </dt>
   </dt>
   <dd>
@@ -1812,9 +2345,9 @@ process id of the
    (1))
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmlogger/config.default
-   </b>
+   </i>
   </dt>
   <dd>
    default configuration file for the primary logger instance
@@ -1824,9 +2357,9 @@ launched from
    </b>
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmlogger/config.
-   </b>
+   </i>
    *
   </dt>
   <dd>
@@ -1835,25 +2368,22 @@ be subsequently replayed with the PCP visualization and monitoring
 tools
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmlogger/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;
    </i>
   </dt>
   <dd>
    Default directory for PCP archive files for performance
 metric values collected from the host
    <i>
-    hostname
+    &lt;hostname&gt;
    </i>
    .
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_SYSCONFIG_DIR/pmlogger
-   </b>
+   </i>
   </dt>
   <dd>
    additional environment variables that will be set when the primary
@@ -1870,15 +2400,9 @@ Only settings of the form "PMLOGGER_VARIABLE=value" will be honoured.
   </dt>
   <dd>
    (or
-   <b>
-    $PCP_LOG_DIR/pmlogger/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/pmlogger.log
    </i>
-   <b>
-    /pmlogger.log
-   </b>
    when started automatically by either
    <b>
     $PCP_RC_DIR/pmlogger
@@ -1902,7 +2426,7 @@ monitoring scripts such as
    all messages and diagnostics are directed here
   </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAJ">
  </a>
  <h2>
   ENVIRONMENT
@@ -1962,7 +2486,7 @@ of pending
 Both the command line and directives in the configuration file will
 override this value.
 It is an integer in units of seconds.
-  <a name="lbAI">
+  <a name="lbAK">
   </a>
  </p>
  <h2>
@@ -1972,9 +2496,10 @@ It is an integer in units of seconds.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1984,15 +2509,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAJ">
+ <a name="lbAL">
  </a>
  <h2>
   SEE ALSO
@@ -2059,7 +2583,7 @@ as described in
  (5),
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5)
@@ -2071,45 +2595,6 @@ and
   </a>
  </b>
  (8).
- <a name="lbAK">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- The archive logs are sufficiently precious that
- <b>
-  pmlogger
- </b>
- will not truncate an existing physical file.  A message of the form
- <br/>
- ...: "foo.index" already exists, not over-written
- <br/>
- ...: File exists
-
-indicates this situation has arisen.  You must explicitly remove
-the files and launch
- <b>
-  pmlogger
- </b>
- again.
- <p>
-  There may be at most one primary
-  <b>
-   pmlogger
-  </b>
-  instance per monitored host; attempting to bend this rule produces the error:
-  <br/>
-  pmlogger: there is already a primary pmlogger running
- </p>
- <p>
-  Various other messages relating to the creation and/or deletion of
-files in
-  <i>
-   $PCP_TMP_DIR/pmlogger
-  </i>
-  suggest a permission problem on this directory, or some feral
-files have appeared therein.
- </p>
  <p>
  </p>
  <hr/>
@@ -2149,42 +2634,49 @@ files have appeared therein.
   </dd>
   <dt>
    <a href="#lbAF">
-    EXAMPLES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    FILES
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    ENVIRONMENT
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    SEE ALSO
+    ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
-    DIAGNOSTICS
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
+    SEE ALSO
    </a>
   </dt>
   <dd>

@@ -80,7 +80,29 @@
   <b>
    atop
   </b>
-  [-g|-m|-d|-n|-u|-p|-s|-c|-v|-o|-y] [-C|-M|-D|-N|-A] [-afFG1xR] [-L linelen] [-Plabel[,label]...] [
+  [
+  <b>
+   -aAcCdDfFgGmMnNopRsuvxy1
+  </b>
+  ] [
+  <b>
+   -L
+  </b>
+  <i>
+   linelen
+  </i>
+  ] [
+  <b>
+   -P
+  </b>
+  <i>
+   label
+  </i>
+  [,
+  <i>
+   label
+  </i>
+  ]...] [
   <i>
    interval
   </i>
@@ -91,17 +113,27 @@
   ]]
  </p>
  <p>
-  Writing and reading raw logfiles:
+  Writing and reading PCP archive folios:
  </p>
  <p>
   <b>
    pcp atop
   </b>
-  -w
+  <b>
+   -w
+  </b>
   <i>
-   rawfile
+   folio
   </i>
-  [-a] [-S] [
+  [
+  <b>
+   -a
+  </b>
+  ] [
+  <b>
+   -S
+  </b>
+  ] [
   <i>
    interval
   </i>
@@ -114,19 +146,50 @@
   <b>
    pcp atop
   </b>
-  -r [
+  <b>
+   -r
+  </b>
+  [
   <i>
-   rawfile
+   folio
   </i>
-  ] [-b
+  ] [
+  <b>
+   -AcCdDfFgGmMnNopRsuvxy1
+  </b>
+  ] [
+  <b>
+   -b
+  </b>
   <i>
    hh:mm
   </i>
-  ] [-e
+  ] [
+  <b>
+   -e
+  </b>
   <i>
    hh:mm
   </i>
-  ] [-g|-m|-d|-n|-u|-p|-s|-c|-v|-o|-y] [-C|-M|-D|-N|-A] [-fFG1xR] [-L linelen] [-Plabel[,label]...]
+  ] [
+  <b>
+   -L
+  </b>
+  <i>
+   linelen
+  </i>
+  ] [
+  <b>
+   -P
+  </b>
+  <i>
+   label
+  </i>
+  [,
+  <i>
+   label
+  </i>
+  ]...]
   <a name="lbAD">
   </a>
  </p>
@@ -138,13 +201,14 @@
   pcp-atop
  </b>
  is an interactive monitor to view various aspects of load on a system.
-It shows the occupation of the most critical hardware resources 
+It shows the occupation of the most critical hardware resources
 (from a performance point of view) on system level, i.e. cpu, memory, disk
 and network.
  <br/>
  It also shows which processes are responsible for the indicated
 load with respect to cpu and memory load on process level.
-Disk load is shown per process if "storage accounting" is active in the kernel.
+Disk load is shown per process if "storage accounting" is active
+in the kernel.
  <p>
   Every
   <i>
@@ -256,9 +320,10 @@ of the default proc metrics from
    pcp-atop
   </b>
   is started, it checks whether the standard output channel is connected to a
-screen, or to a file/pipe. In the first case it produces screen control 
-codes (via the ncurses library) and behaves interactively; in the second case
-it produces flat ASCII-output.
+screen, or to a file/pipe.
+In the first case it produces screen control
+codes (via the ncurses library) and behaves interactively;
+in the second case it produces flat ASCII-output.
  </p>
  <p>
   In interactive mode, the output of
@@ -268,11 +333,11 @@ it produces flat ASCII-output.
   scales dynamically to the current dimensions of the screen/window.
   <br/>
   If the window is resized horizontally, columns will be added or removed
-automatically. For this purpose, every column has a particular weight. The
-columns with the highest weights that fit within the current width will
+automatically. For this purpose, every column has a particular weight.
+The columns with the highest weights that fit within the current width will
 be shown.
   <br/>
-  If the window is resized vertically, lines of the process/thread list 
+  If the window is resized vertically, lines of the process/thread list
 will be added or removed automatically.
  </p>
  <p>
@@ -285,13 +350,14 @@ However it is also possible to specify such key as
   <b>
    flag
   </b>
-  on the command line. In that case
+  on the command line.
+In that case
   <b>
    pcp-atop
   </b>
-  switches to the indicated mode on beforehand; this mode can 
-be modified again interactively. Specifying such key as flag is especially
-useful when running
+  switches to the indicated mode on beforehand; this mode can
+be modified again interactively.
+Specifying such key as flag is especially useful when running
   <b>
    pcp-atop
   </b>
@@ -315,10 +381,11 @@ mode (see section INTERACTIVE COMMANDS).
   pcp-atop
  </b>
  uses colors to indicate that a critical occupation percentage has
-been (almost) reached. 
+been (almost) reached.
 A critical occupation percentage means that is likely that this load
 causes a noticeable negative performance influence for applications using
-this resource. The critical percentage depends on the type of resource:
+this resource.
+The critical percentage depends on the type of resource:
 e.g. the performance influence of a disk with a busy percentage of 80%
 might be more noticeable for applications/user than a CPU with a busy
 percentage of 90%.
@@ -389,7 +456,13 @@ it is not critical from a performance point-of-view.
  </dl>
  <p>
   These default values can be modified in the configuration file
-(see separate man-page of pcp-atoprc).
+(see separate man-page of
+  <b>
+   <a href="/man/man5/pcp-atoprc.5.html">
+    pcp-atoprc
+   </a>
+  </b>
+  (5)).
  </p>
  <p>
   When a resource exceeds its critical occupation percentage, the concerning
@@ -397,15 +470,32 @@ values in the screen line are colored red by default.
   <br/>
   When a resource exceeded (default) 80% of its critical percentage
 (so it is almost critical), the concerning values in the screen line
-are colored cyan by default. This `almost critical percentage' (one value
+are colored cyan by default.
+This `almost critical percentage' (one value
 for all resources) can be modified in the configuration file
-(see separate man-page of pcp-atoprc).
+(see separate man-page of
+  <b>
+   <a href="/man/man5/pcp-atoprc.5.html">
+    pcp-atoprc
+   </a>
+  </b>
+  (5)).
   <br/>
   The default colors red and cyan can be modified in the configuration file
-as well (see separate man-page of pcp-atoprc).
+as well (see separate man-page of
+  <b>
+   <a href="/man/man5/pcp-atoprc.5.html">
+    pcp-atoprc
+   </a>
+  </b>
+  (5)).
  </p>
  <p>
-  With the key 'x' (or flag -x), the use of colors can be suppressed.
+  With the key 'x' (or flag
+  <b>
+   -x
+  </b>
+  ), the use of colors can be suppressed.
   <a name="lbAF">
   </a>
  </p>
@@ -422,11 +512,11 @@ as well (see separate man-page of pcp-atoprc).
 
 which is a separate data collection daemon process.
 It gathers cumulative utilization counters of every Nvidia GPU
-in the system, as well as utilization counters of every 
+in the system, as well as utilization counters of every
 process that uses a GPU.
 When
  <b>
-  atop
+  pcp-atop
  </b>
  notices that the daemon is active, it reads these GPU utilization
 counters with every interval.
@@ -443,7 +533,8 @@ counters with every interval.
   pcp-atop
  </b>
  interactively (no output redirection), keys can be pressed to control the
-output. In general, lower case keys can be used to show other information for
+output.
+In general, lower case keys can be used to show other information for
 the active processes and upper case keys can be used to influence the
 sort order of the active process/thread list.
  <p>
@@ -495,7 +586,7 @@ chosen resource (default: cpu) and the process name.
     Per process the following fields are shown in case of a window-width
 of 80 positions:
 process-id, minor and major
-memory faults, size of virtual shared text, total virtual 
+memory faults, size of virtual shared text, total virtual
 process size, total resident process size, virtual and resident growth during
 last interval, memory occupation percentage and process name.
    </p>
@@ -645,9 +736,13 @@ is preferred).
     <br/>
     Refer to the man-page of
     <b>
-     pcp-atoprc
+     <a href="/man/man5/pcp-atoprc.5.html">
+      pcp-atoprc
+     </a>
     </b>
-    for a detailed description.
+    (5)
+
+for a detailed description.
    </p>
   </dd>
  </dl>
@@ -666,8 +761,8 @@ is preferred).
     <br/>
     For multi-threaded processes, one line represents the process
 while additional lines show the activity
-per individual thread (in a different color). Depending on
-the option 'a' (all or active toggle), all threads are shown
+per individual thread (in a different color).
+Depending on the option 'a' (all or active toggle), all threads are shown
 or only the threads that were active during the last interval.
     <br/>
     Whether this key is active or not can be seen in the header line.
@@ -720,8 +815,6 @@ the current virtual and resident memory space consumed by active processes
     <br/>
     When "storage accounting" is active in the kernel,
 the accumulated read and write throughput on disk is shown.
-When the kernel module `netatop' has been installed,
-the number of received and sent network packets are shown.
     <br/>
     The last columns contain the accumulated occupation percentage for the
 chosen resource (default: cpu) and the program name.
@@ -747,8 +840,6 @@ the current virtual and resident memory space consumed by active processes
     <br/>
     When "storage accounting" is active in the kernel,
 the accumulated read and write throughput on disk is shown.
-When the kernel module `netatop' has been installed,
-the number of received and sent network packets are shown.
     <br/>
     The last columns contain the accumulated occupation percentage for the
 chosen resource (default: cpu) and the Docker container id (CID).
@@ -798,7 +889,8 @@ The one-but-last column changes to ``GPU''.
   </dt>
   <dd>
    Sort the current list in the order of resident memory consumption.
-The one-but-last column changes to ``MEM''. In case of sorting on memory,
+The one-but-last column changes to ``MEM''.
+In case of sorting on memory,
 the full process list will be shown (not only the active processes).
   </dd>
  </dl>
@@ -850,8 +942,6 @@ the section COLORS.
 another sorting-order is explicitly selected again.
    <br/>
    A sorting-order for disk is only possible when "storage accounting" is active.
-A sorting-order for network is only possible when the kernel module `netatop'
-is loaded.
   </dd>
  </dl>
  <p>
@@ -920,14 +1010,18 @@ analyzing the resident memory consumption of processes.
   </dt>
   <dd>
    The pause key can be used to freeze the current situation in order to
-investigate the output on the screen. While
+investigate the output on the screen.
+While
    <b>
     pcp-atop
    </b>
    is paused, the keys described above can be pressed to show other
 information about the current list of processes.
 Whenever the pause key is pressed again,
-pcp-atop will continue with a next sample.
+   <b>
+    pcp-atop
+   </b>
+   will continue with the next sample.
   </dd>
  </dl>
  <p>
@@ -939,8 +1033,10 @@ pcp-atop will continue with a next sample.
    </b>
   </dt>
   <dd>
-   Modify the interval timer (default: 10 seconds). If an interval timer of 0 is
-entered, the interval timer is switched off. In that case a new sample can
+   Modify the interval timer (default: 10 seconds).
+If an interval timer of 0 is
+entered, the interval timer is switched off.
+In that case a new sample can
 only be triggered manually by pressing the key 't'.
   </dd>
  </dl>
@@ -953,9 +1049,11 @@ only be triggered manually by pressing the key 't'.
    </b>
   </dt>
   <dd>
-   Trigger a new sample manually. This key can be pressed if the current sample
-should be finished before the timer has exceeded, or if no timer is set at all
-(interval timer defined as 0). In the latter case
+   Trigger a new sample manually.
+This key can be pressed if the current sample
+should be finished before the timer has exceeded,
+or if no timer is set at all (interval timer defined as 0).
+In the latter case
    <b>
     pcp-atop
    </b>
@@ -963,8 +1061,8 @@ should be finished before the timer has exceeded, or if no timer is set at all
 particular application transaction, without knowing on beforehand how many
 seconds this transaction will last.
    <p>
-    When viewing the contents of a raw file, this key can be used to show the
-next sample from the file.
+    When viewing the contents of an archive folio, this key can be used to
+show the next sample from the folio.
    </p>
   </dd>
  </dl>
@@ -977,8 +1075,8 @@ next sample from the file.
    </b>
   </dt>
   <dd>
-   When viewing the contents of a raw file, this key can be used to show the
-previous sample from the file.
+   When viewing the contents of an archive folio, this key can be used to
+show the previous sample from the folio.
   </dd>
  </dl>
  <p>
@@ -990,8 +1088,8 @@ previous sample from the file.
    </b>
   </dt>
   <dd>
-   When viewing the contents of a raw file, this key can be used to branch
-to a certain timestamp within the file (either forward or backward).
+   When viewing the contents of an archive folio, this key can be used to
+move to a certain timestamp within the file (either forward or backward).
   </dd>
  </dl>
  <p>
@@ -1006,7 +1104,7 @@ to a certain timestamp within the file (either forward or backward).
    Reset all counters to zero to see the system and process activity since
 boot again.
    <p>
-    When viewing the contents of a raw file, this key can be used to rewind
+    When viewing the contents of an archive, this key can be used to rewind
 to the beginning of the file again.
    </p>
   </dd>
@@ -1116,8 +1214,8 @@ all (active) processes will be shown again.
   </dt>
   <dd>
    Specify search strings for specific logical volume names,
-specific disk names and specific network interface names. All
-search strings are interpreted as a regular expressions.
+specific disk names and specific network interface names.
+All search strings are interpreted as a regular expressions.
 From now on, only those system resources are shown that match
 the concerning regular expression.
 If the Enter-key is pressed without specifying a search string, all (active)
@@ -1156,7 +1254,8 @@ showing/accumulating all processes.
     pcp-atop
    </b>
    shows/accumulates the processes that are alive and the processes
-that are exited during the last interval. With this key (toggle),
+that are exited during the last interval.
+With this key (toggle),
 showing/accumulating the processes that are exited can be suppressed.
    <br/>
    Whether this key is active or not can be seen in the header line.
@@ -1361,7 +1460,8 @@ as an archive folio (see
  All information about processes and threads is stored in the archive.
  <br/>
  The interval (default: 10 seconds) and number of samples (default: infinite)
-can be passed as last arguments. Instead of the number of samples, the flag
+can be passed as last arguments.
+Instead of the number of samples, the flag
  <b>
   -S
  </b>
@@ -1371,11 +1471,12 @@ can be passed as last arguments. Instead of the number of samples, the flag
  </b>
  should finish anyhow before midnight.
  <p>
-  A PCP archive can be read and visualized again with the flag
+  A PCP archive can be read and visualized again with the
   <b>
-   -r .
+   -r
   </b>
-  The argument is a comma-separated list of names, each
+  option.
+The argument is a comma-separated list of names, each
 of which may be the base name of an archive or the name of a directory containing
 one or more archives.
 If no argument is specified, the file
@@ -1410,7 +1511,8 @@ the begin of the file.
   <b>
    pcp-atop
   </b>
-  prints all samples in plain ASCII. The default line length is 80 characters
+  prints all samples in plain ASCII.
+The default line length is 80 characters
 in that case; with the flag
   <b>
    -L
@@ -1426,7 +1528,7 @@ in that case; with the flag
    -e
   </b>
   (end time) followed by a time argument of the form HH:MM,
-a certain time period within the raw file can be selected.
+a certain time period within the archive can be selected.
   <a name="lbAI">
   </a>
  </p>
@@ -1443,13 +1545,15 @@ so do not rely on these figures.
   <b>
    pcp-atop
   </b>
-  first shows the lines related to system level activity. If a particular 
+  first shows the lines related to system level activity. If a particular
 system resource has not been used during the interval, the entire line
-related to this resource is suppressed. So the number of system level lines
-may vary for each sample.
+related to this resource is suppressed.
+So the number of system level lines may vary for each sample.
   <br/>
-  After that a list is shown of processes which have been active during the last
-interval. This list is by default sorted on cpu consumption, but this order
+  After that a list is shown of processes which have been active
+during the last
+interval.
+This list is by default sorted on cpu consumption, but this order
 can be changed by the keys which are previously described.
  </p>
  <p>
@@ -1483,7 +1587,7 @@ shown in a column of 5 positions gives 123e6).
   <dd>
    Process and thread level totals.
    <br/>
-   This line contains the total cpu time consumed 
+   This line contains the total cpu time consumed
 in system mode (`sys') and in user mode (`user'),
 the total number of processes present at this moment (`#proc'),
 the total number of threads present at this moment in state `running' (`#trun'),
@@ -1514,12 +1618,13 @@ only a relevant subset is shown.
    <br/>
    In case of a multi-processor system, an additional line is shown
 for every individual processor (with `cpu' in lower case),
-sorted on activity. Inactive CPUs will not be shown by default.
+sorted on activity.
+Inactive CPUs will not be shown by default.
 The lines showing the per-cpu occupation contain the cpu number in
 the field combined with the wait percentage.
    <p>
-    Every line contains the percentage of cpu time spent in 
-kernel mode by all active processes (`sys'), 
+    Every line contains the percentage of cpu time spent in
+kernel mode by all active processes (`sys'),
 the percentage of cpu time consumed in user mode (`user') for all
 active processes (including processes running with a nice value larger than
 zero), the percentage of cpu time spent for interrupt handling (`irq')
@@ -1539,16 +1644,20 @@ running on the same hardware.
     <br/>
     For physical machines hosting one or more virtual machines,
 the guest-percentage (`guest') shows
-the percentage of cpu time used by the virtual machines. Notice that
-this percentage overlaps the user-percentage!
+the percentage of cpu time used by the virtual machines.
+Notice that this percentage overlaps the user-percentage!
    </p>
    <p>
     When PMC performance monitoring counters are supported by the CPU
 and the kernel (and
     <b>
-     pcp-atop
+     <a href="/man/man1/pmdaperfevent.1.html">
+      pmdaperfevent
+     </a>
     </b>
-    runs with root privileges), the number of instructions per
+    (1)
+
+runs with root privileges), the number of instructions per
 CPU cycle (`ipc') is shown.
 The first sample always shows the value 'initial',
 because the counters are just activated at the moment that
@@ -1591,8 +1700,6 @@ for all CPUs.
       http://www.brendangregg.com/blog/2017-05-09/cpu-utilization-is-wrong.html
      </a>
     </i>
-   </p>
-   <p>
    </p>
    <p>
     In case of frequency scaling, all previously mentioned CPU percentages
@@ -1713,11 +1820,12 @@ only a relevant subset is shown.
    This line contains the total amount of swap space on disk (`tot') and
 the amount of free swap space (`free').
    <br/>
-   Furthermore the committed virtual memory space (`vmcom') and the maximum 
+   Furthermore the committed virtual memory space (`vmcom') and the maximum
 limit of the committed space (`vmlim', which is by default swap size
 plus 50% of memory size) is shown.
 The committed space is the reserved virtual space for all allocations of
-private memory space for processes. The kernel only verifies whether the
+private memory space for processes.
+The kernel only verifies whether the
 committed space exceeds the limit if strict overcommit handling is
 configured (vm.overcommit_memory is 2).
   </dd>
@@ -1778,10 +1886,10 @@ Such line shows the name (e.g. VolGroup00-lvtmp for a logical volume or
 sda for a hard disk), the busy percentage i.e. the portion of time that the
 unit was busy handling requests (`busy'), the number of read requests issued
 (`read'), the number of write requests issued (`write'),
-the number of KiBytes per read (`KiB/r'), 
-the number of KiBytes per write (`KiB/w'), 
-the number of MiBytes per second throughput for reads (`MBr/s'), 
-the number of MiBytes per second throughput for writes (`MBw/s'), 
+the number of KiBytes per read (`KiB/r'),
+the number of KiBytes per write (`KiB/w'),
+the number of MiBytes per second throughput for reads (`MBr/s'),
+the number of MiBytes per second throughput for writes (`MBw/s'),
 the average queue depth (`avq')
 and the average number of milliseconds needed by a request (`avio')
 for seek, latency and data transfer.
@@ -1814,7 +1922,7 @@ shown any more for that class.
   <dd>
    Network Filesystem (NFS) mount at the client side.
    <br/>
-   For each NFS-mounted filesystem, a line is shown that contains 
+   For each NFS-mounted filesystem, a line is shown that contains
 the mounted server directory, the name of the server (`srv'),
 the total number of bytes physically read from the server (`read') and
 the total number of bytes physically written to the server (`write').
@@ -1838,7 +1946,7 @@ the number of bytes written via memory mapped I/O pages (`mwrit').
   <dd>
    Network Filesystem (NFS) client side counters.
    <br/>
-   This line contains the number of RPC calls issues by local processes 
+   This line contains the number of RPC calls issues by local processes
 (`rpc'), the number of read RPC calls (`read`) and
 write RPC calls (`rpwrite') issued to the NFS server,
 the number of RPC calls being retransmitted (`retxmit')
@@ -1856,13 +1964,13 @@ and the number of authorization refreshes (`autref').
   <dd>
    Network Filesystem (NFS) server side counters.
    <br/>
-   This line contains the number of RPC calls received from 
+   This line contains the number of RPC calls received from
 NFS clients (`rpc'),
 the number of read RPC calls received (`cread`),
 the number of write RPC calls received (`cwrit'),
 the number of Megabytes/second returned to read requests by clients (`MBcr/s`),
 the number of Megabytes/second passed in write requests by clients (`MBcw/s`),
-the number of network requests handled via TCP (`nettcp'), 
+the number of network requests handled via TCP (`nettcp'),
 the number of network requests handled via UDP (`netudp'),
 the number of reply cache hits (`rchits'),
 the number of reply cache misses (`rcmiss') and
@@ -1991,9 +2099,10 @@ only a relevant subset is shown.
   OUTPUT DESCRIPTION - PROCESS LEVEL
  </h2>
  Following the system level information, the processes are shown from which the
-resource utilization has changed during the last interval. These processes
-might have used cpu time or issued disk or network requests. However a process
-is also shown if part of it has been paged out due to lack of memory (while
+resource utilization has changed during the last interval.
+These processes might have used cpu time or issued disk or network requests.
+However a process is also shown if part of it has been
+paged out due to lack of memory (while
 the process itself was in sleep state).
  <p>
   Per process the following fields may be shown (in alphabetical order),
@@ -2050,7 +2159,7 @@ the standard process accounting record.
   </dt>
   <dd>
    The name of the process.
-This name can be surrounded by "less/greater than" 
+This name can be surrounded by "less/greater than"
 signs (`&lt;name&gt;') which means that the process has finished during the last
 interval.
    <br/>
@@ -2068,7 +2177,7 @@ the total number of pages of the process/thread list are shown.
   </dt>
   <dd>
    The full command line of the process (including arguments). If the length of
-the command line exceeds the length of the screen line, the arrow 
+the command line exceeds the length of the screen line, the arrow
 keys -&gt; and &lt;- can be used for horizontal scroll.
    <br/>
    Behind the verb `COMMAND-LINE' in the header line, the current page number
@@ -2154,8 +2263,8 @@ in the kernel.
    </b>
   </dt>
   <dd>
-   Date that the process has been finished. If the process is still running,
-this field shows `active'.
+   Date that the process has been finished.
+If the process is still running, this field shows `active'.
   </dd>
  </dl>
  <p>
@@ -2167,8 +2276,8 @@ this field shows `active'.
    </b>
   </dt>
   <dd>
-   Time that the process has been finished. If the process is still running,
-this field shows `active'.
+   Time that the process has been finished.
+If the process is still running, this field shows `active'.
   </dd>
  </dl>
  <p>
@@ -2283,8 +2392,9 @@ reflects the GPU busy percentage.
    </b>
   </dt>
   <dd>
-   Comma-separated list of GPUs used by the process 
-during the interval. When the comma-separated list exceeds
+   Comma-separated list of GPUs used by the process
+during the interval.
+When the comma-separated list exceeds
 the width of the column, a hexadecimal value is shown.
   </dd>
  </dl>
@@ -2375,22 +2485,6 @@ by reclaiming the requested memory page from the free list of pages.
  <dl compact="">
   <dt>
    <b>
-    NET
-   </b>
-  </dt>
-  <dd>
-   The occupation percentage of this process related to the total load that
-is produced by all processes (i.e. consumed network bandwidth
-of all processes during the last interval).
-   <br/>
-   This information will only be shown when kernel module `netatop' is loaded.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
     NICE
    </b>
   </dt>
@@ -2461,7 +2555,8 @@ refer to realtime processes.
   </dt>
   <dd>
    The process' priority ranges from 0 (highest priority) to 139 (lowest
-priority). Priority 0 to 99 are used for realtime processes (fixed
+priority).
+Priority 0 to 99 are used for realtime processes (fixed
 priority independent of their behavior) and priority 100 to 139 for
 timesharing processes (variable priority depending on their recent
 CPU consumption and the nice value).
@@ -2478,21 +2573,25 @@ CPU consumption and the nice value).
   <dd>
    The proportional memory size of this process (or user).
    <br/>
-   Every process shares resident memory with other processes. E.g. when a
+   Every process shares resident memory with other processes.
+E.g. when a
 particular program is started several times, the code pages (text) are
-only loaded once in memory and shared by all incarnations. Also the code
+only loaded once in memory and shared by all incarnations.
+Also the code
 of shared libraries is shared by all processes using that shared library,
 as well as shared memory and memory-mapped files.
 For the PSIZE calculation of a process, the resident memory of a process
 that is shared with other processes is divided by the number of sharers.
 This means, that every process is accounted for a proportional part of
-that memory. Accumulating the PSIZE values of all processes in the
+that memory.
+Accumulating the PSIZE values of all processes in the
 system gives a reliable impression of the total resident memory consumed
 by all processes.
    <br/>
    Since gathering of all values that are needed to calculate the PSIZE is a
 relatively time-consuming task, the 'R' key (or '-R' flag) should
-be active. Gathering these values also requires superuser privileges
+be active.
+Gathering these values also requires superuser privileges
 (otherwise '?K' is shown in the output).
   </dd>
  </dl>
@@ -2538,10 +2637,11 @@ cron, bash or init, that are not really issued by them.
   </dt>
   <dd>
    The amount of resident memory that the process has grown during the last
-interval. A resident growth can be caused by touching memory pages which
-were not physically created/loaded before (load-on-demand). 
+interval.
+A resident growth can be caused by touching memory pages which
+were not physically created/loaded before (load-on-demand).
 Note that a resident growth can also be negative e.g. when part of the process
-is paged out due to lack of memory or when the process frees dynamically 
+is paged out due to lack of memory or when the process frees dynamically
 allocated memory.
 For a process which started during the last interval, the resident growth
 reflects the total resident size of the process at that moment.
@@ -2600,7 +2700,7 @@ or ranges from 1 (lowest) till 99 (highest) for a realtime process
   <dd>
    The current state of the (main) thread: `R' for running
 (currently processing or in the runqueue), `S' for sleeping interruptible
-(wait for an event to occur), 
+(wait for an event to occur),
 `D' for sleeping non-interruptible, `Z' for zombie (waiting to be synchronized
 with its parent process), `T' for stopped (suspended or traced), `W' for
 swapping, and `E' (exit) for processes which have finished during the last
@@ -2651,14 +2751,14 @@ in the column `EXC'.
     <i>
      S
     </i>
-    means that the process has been terminated unvoluntarily 
+    means that the process has been terminated unvoluntarily
 by a signal; the signal number is displayed in the in the column `EXC'.
     <br/>
     The value
     <i>
      C
     </i>
-    means that the process has been terminated unvoluntarily 
+    means that the process has been terminated unvoluntarily
 by a signal, producing a core dump in its current directory;
 the signal number is displayed in the column `EXC'.
    </p>
@@ -2740,15 +2840,6 @@ All related threads are contained in a thread group, represented by
     pcp-atop
    </b>
    as one line or as a separate line when the 'y' key (or -y flag) is active.
-   <p>
-    On Linux 2.4 systems it is hardly possible to determine
-which threads (i.e. processes) are related to the same thread group.
-Every thread is represented by
-    <b>
-     pcp-atop
-    </b>
-    as a separate line.
-   </p>
   </dd>
  </dl>
  <p>
@@ -2762,7 +2853,8 @@ Every thread is represented by
   <dd>
    Thread-id.
 All threads within a process run with the same PID but with a
-different TID. This value is shown for individual threads in
+different TID.
+This value is shown for individual threads in
 multi-threaded processes (when using the key 'y').
   </dd>
  </dl>
@@ -2840,8 +2932,10 @@ own program text.
   </dt>
   <dd>
    The amount of virtual memory that the process has grown during the last
-interval. A virtual growth can be caused by e.g. issueing a malloc()
-or attaching a shared memory segment. Note that a virtual growth can also
+interval.
+A virtual growth can be caused by e.g. issueing a malloc()
+or attaching a shared memory segment.
+Note that a virtual growth can also
 be negative by e.g. issueing a free() or detaching a shared memory segment.
 For a process which started during the last interval, the virtual growth
 reflects the total virtual size of the process at that moment.
@@ -2926,8 +3020,8 @@ by this process.
 disk cache is not accounted for).
 This counter is maintained for the application process that writes its
 data to the cache (assuming that this data is physically transferred
-to disk later on). Notice that disk I/O needed for swapping is
-not taken into account.
+to disk later on).
+Notice that disk I/O needed for swapping is not taken into account.
    <br/>
    Unfortunately, the kernel aggregates the
 data tranfer of a process to the data transfer of its parent process when
@@ -3087,7 +3181,7 @@ number of device interrupts.
   </dt>
   <dd>
    Subsequent fields:
-GPU number, bus-id string, type of GPU string, 
+GPU number, bus-id string, type of GPU string,
 GPU busy percentage during last second (-1 if not available),
 memory busy percentage during last second (-1 if not available),
 total memory size (KiB), used memory (KiB) at this moment,
@@ -3149,7 +3243,7 @@ page size for this machine (in bytes),
 number of page scans,
 number of allocstalls,
 0 (future use),
-number of swapins, and 
+number of swapins, and
 number of swapouts.
   </dd>
   <dt>
@@ -3166,7 +3260,7 @@ memory some avg10, memory some avg60, memory some avg300,
 memory some accumulated microseconds during interval,
 memory full avg10, memory full avg60, memory full avg300,
 memory full accumulated microseconds during interval,
-I/O some avg10, I/O some avg60, I/O some avg300, 
+I/O some avg10, I/O some avg60, I/O some avg300,
 I/O some accumulated microseconds during interval,
 I/O full avg10, I/O full avg60, I/O full avg300, and
 I/O full accumulated microseconds during interval.
@@ -3279,7 +3373,7 @@ duplex mode (0=half, 1=full).
   <dd>
    Subsequent fields:
 name of the InfiniBand interface, port number,
-number of lanes, maximum rate (Mbps), 
+number of lanes, maximum rate (Mbps),
 number of bytes received,
 number of bytes transmitted,
 number of packets received, and
@@ -3340,7 +3434,7 @@ number of GPUs used by this process,
 bitlist reflecting used GPUs,
 GPU busy percentage during interval,
 memory busy percentage during interval,
-memory occupation (KiB) at this moment 
+memory occupation (KiB) at this moment
 cumulative memory occupation (KiB) during interval, and
 number of samples taken during interval.
   </dd>
@@ -3383,7 +3477,7 @@ obsoleted kernel patch installed ('n'),
 standard io statistics used ('y' or 'n'),
 number of reads on disk,
 cumulative number of sectors read,
-number of writes on disk, 
+number of writes on disk,
 cumulative number of sectors written,
 cancelled number of written sectors,
 TGID (group number of related tasks/threads) and is_process (y/n).
@@ -3427,7 +3521,8 @@ TGID (group number of related tasks/threads) and is_process (y/n).
   pcp-atop
  </b>
  a new sample will be forced, even if the current timer interval
-has not exceeded yet. The behavior is similar to pressing the `t` key
+has not exceeded yet.
+The behavior is similar to pressing the `t` key
 in an interactive session.
  <p>
   By sending the SIGUSR2 signal to
@@ -3501,7 +3596,7 @@ folio with an interval of ten minutes during an hour:
  </p>
  <p>
   <b>
-   pcp atop -PCPU,DSK -r /tmp/pcp-atop.raw
+   pcp atop -PCPU,DSK -r /tmp/pcp-atop.folio
   </b>
  </p>
  <p>
@@ -3534,37 +3629,6 @@ interactively:
   <a name="lbAO">
   </a>
  </p>
- <h2>
-  FILES
- </h2>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    /etc/atoprc
-   </b>
-  </dt>
-  <dd>
-   Configuration file containing system-wide default values.
-See related man-page.
-  </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    ~/.atoprc
-   </b>
-  </dt>
-  <dd>
-   Configuration file containing personal default values.
-See related man-page.
-  </dd>
- </dl>
- <a name="lbAP">
- </a>
  <h2>
   NOTES
  </h2>
@@ -3646,7 +3710,76 @@ and
   (1)
 
 for further details on activating these metrics.
-  <a name="lbAQ">
+  <a name="lbAP">
+  </a>
+ </p>
+ <h2>
+  FILES
+ </h2>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    /etc/atoprc
+   </b>
+  </dt>
+  <dd>
+   Configuration file containing system-wide default values.
+See related man-page.
+  </dd>
+ </dl>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    ~/.atoprc
+   </b>
+  </dt>
+  <dd>
+   Configuration file containing personal default values.
+See related man-page.
+  </dd>
+ </dl>
+ <a name="lbAQ">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAR">
   </a>
  </p>
  <h2>
@@ -3828,20 +3961,27 @@ and
   </dd>
   <dt>
    <a href="#lbAO">
-    FILES
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAP">
     NOTES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
+   <a href="#lbAP">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
    <a href="#lbAQ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAR">
     SEE ALSO
    </a>
   </dt>

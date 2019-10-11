@@ -200,7 +200,7 @@ macro naming rules, and each
   is expected to be a valid performance metrics name (see
   <b>
    <a href="/man/man5/pmns.5.html">
-    pmns
+    PMNS
    </a>
   </b>
   (5)
@@ -220,7 +220,8 @@ comment lines, i.e. with a `
   </b>
   ' as the first non-blank character of a
 line, and these are translated on output to either single line or multi-line C
-comments in the K&amp;R style.  For example, the input:
+comments in the K&amp;R style.
+For example, the input:
  </p>
  <p>
  </p>
@@ -271,7 +272,7 @@ char *foo[] = {
  <a name="lbAE">
  </a>
  <h2>
-  EXAMPLE
+  EXAMPLES
  </h2>
  For brevity we have removed the error handling code, and assumed the chosen
 metrics do not have multiple values.
@@ -347,7 +348,7 @@ Subsystem (PMCS) as follows:
     pmLookupName(numpmid, mystats, pmidlist);
     pmFetch(numpmid, pmidlist, &amp;resp);
 
-    printf("%d CPUs: %d usr   %d sys   %d   idle, 
+    printf("%d CPUs: %d usr   %d sys   %d   idle,
            resp-&gt;vset[NCPU]-&gt;vlist[0].value.lval,
            resp-&gt;vset[USER]-&gt;vlist[0].value.lval,
            resp-&gt;vset[SYS]-&gt;vlist[0].value.lval,
@@ -356,7 +357,8 @@ Subsystem (PMCS) as follows:
  <p>
   Some calls to ensure portability have been removed from the code above for the
 sake of clarity - the example above should not be used as a template for
-programming.  In particular, the raw values of the metrics were used when
+programming.
+In particular, the raw values of the metrics were used when
   <b>
    <a href="/man/man3/pmlookupdesc.3.html">
     pmLookupDesc
@@ -385,11 +387,8 @@ PCP demos, e.g.
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_VAR_DIR/pmns/
-   </b>
    <i>
-    *
+    $PCP_VAR_DIR/pmns/*
    </i>
   </dt>
   <dd>
@@ -405,9 +404,10 @@ PCP demos, e.g.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -417,8 +417,7 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
@@ -476,7 +475,7 @@ as described in
 and
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5).
@@ -512,7 +511,7 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLE
+    EXAMPLES
    </a>
   </dt>
   <dd>

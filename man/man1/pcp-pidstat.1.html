@@ -70,62 +70,108 @@
  <b>
   pcp
  </b>
+ [
+ <i>
+  pcp options
+ </i>
+ ]
  <b>
   pidstat
  </b>
  [
- <b>
-  -s
- </b>
- N]
-[
- <b>
-  -t
- </b>
- DELTA]
-[
  <b>
   -I
  </b>
  ]
 [
  <b>
-  -a
- </b>
- FILE]
-[
- <b>
-  -f
- </b>
- FORMAT]
-[
- <b>
-  -G
- </b>
- NAME]
-[
- <b>
-  -U
- </b>
- [USERNAME]]
-[
- <b>
-  -p
- </b>
- PID1,PID2..]
-[
- <b>
-  -R
- </b>
- /
- <b>
-  -r/-k
+  -l
  </b>
  ]
 [
  <b>
+  -R
+ </b>
+ ]
+[
+ <b>
+  -r
+ </b>
+ ]
+[
+ <b>
+  -k
+ </b>
+ ]
+[
+ <b>
+  -U
+ </b>
+ [
+ <i>
+  username
+ </i>
+ ]]
+[
+ <b>
   -V
  </b>
+ ]
+[
+ <b>
+  -G
+ </b>
+ <i>
+  processname
+ </i>
+ ]
+[
+ <b>
+  -p
+ </b>
+ <i>
+  pid1,pid2..
+ </i>
+ ]
+[
+ <b>
+  -t
+ </b>
+ <i>
+  interval
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  count
+ </i>
+ ]
+[
+ <b>
+  -a
+ </b>
+ <i>
+  archive
+ </i>
+ ]
+[
+ <b>
+  -B
+ </b>
+ <i>
+  state
+ </i>
+ ]
+[
+ <b>
+  -f
+ </b>
+ <i>
+  format
+ </i>
  ]
 [
  <b>
@@ -134,29 +180,13 @@
  <i>
   timezone
  </i>
- <b>
-  --timezone=
- </b>
- <i>
-  TZ
- </i>
  ]
 [
  <b>
   -z
  </b>
- <b>
-  --hostzone
- </b>
  ]
 [
- <b>
-  -l
- </b>
- <i>
-  ]
-[
- </i>
  <b>
   -?
  </b>
@@ -166,14 +196,14 @@
  <h2>
   DESCRIPTION
  </h2>
+ The
  <b>
   pcp-pidstat
  </b>
- command is used for monitoring individual tasks currently being managed
-by the Linux kernel.
+ command is used for monitoring individual tasks running on the system.
 Using various options it helps user to see useful information related to
 the processes.
-This information includes percentage CPU, memory and stack usage,
+This information includes CPU percentage, memory and stack usage,
 scheduling and priority.
 By default
  <b>
@@ -238,62 +268,27 @@ command, the
    --timezone
   </b>
   and several other
+  <b>
+   pcp
+  </b>
   <i>
-   pcp options
+   options
   </i>
-  become indirectly available.
+  become indirectly available, see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for their descriptions.
   <a name="lbAE">
   </a>
  </p>
  <h2>
   OPTIONS
  </h2>
- Output control options:
- <dl compact="">
-  <dt>
-   <b>
-    -s
-   </b>
-   N
-   <b>
-    ,
-   </b>
-   <b>
-    --samples=
-   </b>
-   <i>
-    N
-   </i>
-  </dt>
-  <dd>
-   Set the number of samples to be displayed.
-Since the first sample is used for the rate conversion of some of the
-metrics, the total number of samples reported are one less that N.
-Default is continous.
-  </dd>
-  <dt>
-   <b>
-    -t
-   </b>
-   DELTA
-   <b>
-    ,
-   </b>
-   <b>
-    --interval=
-   </b>
-   <i>
-    DELTA
-   </i>
-  </dt>
-  <dd>
-   Set the interval between two samples.
-Default is one second.
-  </dd>
- </dl>
- <p>
-  General Options:
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -306,90 +301,11 @@ by the total number of processors.
   </dd>
   <dt>
    <b>
-    -B
+    -l
    </b>
   </dt>
   <dd>
-   Report process states.
-The argument to -B is one of the following:
-   <p>
-    <b>
-     detail
-    </b>
-    <br/>
-    Show total time processes have spent in each of the 5 different states
-   </p>
-   <p>
-    <b>
-     all
-    </b>
-    <br/>
-    Show total time processes spent in their current state
-   </p>
-   <p>
-    [
-    <b>
-     R
-    </b>
-    ,
-    <b>
-     S
-    </b>
-    ,
-    <b>
-     T
-    </b>
-    ,
-    <b>
-     D
-    </b>
-    ,
-    <b>
-     Z
-    </b>
-    ]
-    <br/>
-    A comma separated list of process states.  For example,
-    <b>
-     -B R,S
-    </b>
-    will report processes currently in either
-    <b>
-     R
-    </b>
-    or
-    <b>
-     S
-    </b>
-    states and not report processes currently in any other states.
-   </p>
-  </dd>
-  <dt>
-   <b>
-    -f
-   </b>
-  </dt>
-  <dd>
-   Use the format string for formatting the timestamp.
-The format will be used with the
-   <b>
-    <a href="http://man7.org/linux/man-pages/man1/python.1.html">
-     python
-    </a>
-   </b>
-   (1)
-
-datetime.strftime method which is similar to that described
-in
-   <b>
-    <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
-     strftime
-    </a>
-   </b>
-   (3).
-
-An empty format string (i.e, "") will remove the timestamps from the output.
-The default with stdout is %H:%M:%S.
+   Display the process command name and all its arguments.
   </dd>
   <dt>
    <b>
@@ -483,8 +399,6 @@ The following values may be displayed:
     <br/>
     The command name of the task.
    </p>
-   <p>
-   </p>
   </dd>
   <dt>
    <b>
@@ -527,16 +441,257 @@ The following values may be displayed:
   </dd>
   <dt>
    <b>
+    -U
+   </b>
+   [
+   <i>
+    username
+   </i>
+   ],
+   <b>
+    --user-name
+   </b>
+   <i>
+    [=username]
+   </i>
+  </dt>
+  <dd>
+   Display the real user name of the tasks being monitored instead of the UID.
+If
+   <i>
+    username
+   </i>
+   is specified, then only tasks belonging to the specified
+user are displayed.
+  </dd>
+  <dt>
+   <b>
     -V
    </b>
   </dt>
   <dd>
-   Display version information and exit.
+   Print version number then exit.
+  </dd>
+  <dt>
+   <b>
+    -G
+   </b>
+   <i>
+    processname
+   </i>
+   <b>
+    ,
+   </b>
+   <b>
+    --process-name=
+   </b>
+   <i>
+    processname
+   </i>
+  </dt>
+  <dd>
+   Display only processes whose command name includes the string
+   <i>
+    processname
+   </i>
+   .
+This string can be a regular expression.
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   <i>
+    pid1,pid2..
+   </i>
+   <b>
+    ,
+   </b>
+   <b>
+    --pid-list=
+   </b>
+   <i>
+    pid1,pid2..
+   </i>
+  </dt>
+  <dd>
+   Display only processes with the listed PIDs.
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    interval
+   </i>
+   <b>
+    ,
+   </b>
+   <b>
+    --interval=
+   </b>
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Set the interval between two samples.
+The default is one second.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    count
+   </i>
+   <b>
+    ,
+   </b>
+   <b>
+    --samples=
+   </b>
+   <i>
+    count
+   </i>
+  </dt>
+  <dd>
+   Set the number of samples to be displayed.
+Since the first sample is used for the rate conversion of some of the
+metrics, the total number of samples reported are one less than
+   <i>
+    count
+   </i>
+   .
+The default is continous.
+  </dd>
+  <dt>
+   <b>
+    -a
+   </b>
+   <i>
+    archive
+   </i>
+   <b>
+    , --archive=
+   </b>
+   <i>
+    archive
+   </i>
+  </dt>
+  <dd>
+   Causes
+   <b>
+    pcp-pidstat
+   </b>
+   to use the specified archive than connecting to PMCD.
+The argument to
+   <b>
+    -a
+   </b>
+   is a comma-separated list of names, each of which may
+be the base name of an archive or the name of a directory containing one or more archives.
+  </dd>
+  <dt>
+   <b>
+    -B
+   </b>
+  </dt>
+  <dd>
+   Report process states.
+The argument to -B is one of the following:
+   <p>
+    <b>
+     detail
+    </b>
+    <br/>
+    Show total time processes have spent in each of the 5 different states
+   </p>
+   <p>
+    <b>
+     all
+    </b>
+    <br/>
+    Show total time processes spent in their current state
+   </p>
+   <p>
+    [
+    <b>
+     R
+    </b>
+    ,
+    <b>
+     S
+    </b>
+    ,
+    <b>
+     T
+    </b>
+    ,
+    <b>
+     D
+    </b>
+    ,
+    <b>
+     Z
+    </b>
+    ]
+    <br/>
+    A comma separated list of process states.  For example,
+    <b>
+     -B R,S
+    </b>
+    will report processes currently in either
+    <b>
+     R
+    </b>
+    or
+    <b>
+     S
+    </b>
+    states and not report processes currently in any other states.
+   </p>
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+  </dt>
+  <dd>
+   Use the format string for formatting the timestamp.
+The format will be used with the
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/python.1.html">
+     python
+    </a>
+   </b>
+   (1)
+
+datetime.strftime method which is similar to that described
+in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+     strftime
+    </a>
+   </b>
+   (3).
+
+An empty format string (i.e, "") will remove the timestamps from the output.
+The default with stdout is %H:%M:%S.
   </dd>
   <dt>
    <b>
     -Z
    </b>
+   <i>
+    timezone
+   </i>
+   <b>
+    , --timezone=
+   </b>
+   <i>
+    timezone
+   </i>
   </dt>
   <dd>
    By default,
@@ -572,6 +727,10 @@ The
    <b>
     -z
    </b>
+   ,
+   <b>
+    --hostzone
+   </b>
   </dt>
   <dd>
    Change the reporting timezone to the local timezone at the host that is
@@ -585,14 +744,6 @@ local timezone, which may not be the same as the timezone of the PCP archive).
   </dd>
   <dt>
    <b>
-    -l
-   </b>
-  </dt>
-  <dd>
-   Display the process command name and all its arguments.
-  </dd>
-  <dt>
-   <b>
     -?
    </b>
    ,
@@ -602,85 +753,6 @@ local timezone, which may not be the same as the timezone of the PCP archive).
   </dt>
   <dd>
    Display usage message and exit.
-  </dd>
- </dl>
- <p>
-  Ouput Filter Options
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -G
-   </b>
-   NAME
-   <b>
-    ,
-   </b>
-   <b>
-    --process-name=
-   </b>
-   <i>
-    NAME
-   </i>
-  </dt>
-  <dd>
-   Display only processes whose command name includes the string
-   <i>
-    NAME
-   </i>
-   .
-This string can be a regular expression.
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-   <i>
-    [USERNAME]
-   </i>
-   <b>
-    ,
-   </b>
-   <b>
-    --user-name=
-   </b>
-   <i>
-    [USERNAME]
-   </i>
-  </dt>
-  <dd>
-   Display  the real user name of the tasks being monitored instead of the UID.
-If
-   <i>
-    username
-   </i>
-   is specified, then only tasks belonging to the specified
-user are displayed.
-  </dd>
-  <dt>
-   <b>
-    -p
-   </b>
-   <i>
-    PID1,PID2
-   </i>
-   <b>
-    ..
-   </b>
-   ,
-   <b>
-    --pid-list
-   </b>
-   =
-   <i>
-    PID1,PID2
-   </i>
-   <b>
-    ..
-   </b>
-  </dt>
-  <dd>
-   Display only processes whose PID belongs to the given Pid List.
   </dd>
  </dl>
  <a name="lbAF">
@@ -700,8 +772,44 @@ user are displayed.
  (1)
 
 command and aims to be command line and output compatible with it.
+ <a name="lbAG">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
  <p>
-  <a name="lbAG">
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -797,6 +905,13 @@ and
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

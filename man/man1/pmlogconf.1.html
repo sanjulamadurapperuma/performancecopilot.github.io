@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -cqrv
+  -cqrv?
  </b>
  ]
 [
@@ -88,7 +88,7 @@
   -h
  </b>
  <i>
-  hostname
+  host
  </i>
  ]
  <i>
@@ -870,6 +870,130 @@ on
   </a>
  </p>
  <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+  </dt>
+  <dd>
+   Enable non-interactive, auto-create mode.
+  </dd>
+  <dt>
+   <b>
+    -d
+   </b>
+   <i>
+    groupdir
+   </i>
+   ,
+   <b>
+    --groups
+   </b>
+   =
+   <i>
+    groupdir
+   </i>
+  </dt>
+  <dd>
+   Specify the path to the
+   <i>
+    groupsdir
+   </i>
+   directory.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Performance metrics source is
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+on
+   <i>
+    host
+   </i>
+   ,
+
+rather than on the default localhost.
+  </dd>
+  <dt>
+   <b>
+    -q
+   </b>
+   ,
+   <b>
+    --quiet
+   </b>
+  </dt>
+  <dd>
+   Quiet mode, suppress logging interval dialog.
+  </dd>
+  <dt>
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    --reprobe
+   </b>
+  </dt>
+  <dd>
+   Reconsider every group for inclusion in the
+   <i>
+    configfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -v
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   Enable verbose mode.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
+ <h2>
   EXAMPLE
  </h2>
  The following group file demonstrates all of the supported
@@ -886,7 +1010,7 @@ probe   sample.secret.foo.one values ? include : exclude
         sample.secret.foo.bar   # non-leaf in the PMNS
         sample.colour [ red green ]
 </pre>
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   MIGRATION
@@ -909,7 +1033,7 @@ supports a slightly different format for
   pmlogconf
  </b>
  it will be converted to the new format.
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -963,7 +1087,7 @@ as described in
   configuration files.
 It uses a default timeout value of 10 seconds for this, in the
 absence of an environment setting.
-  <a name="lbAI">
+  <a name="lbAJ">
   </a>
  </p>
  <h2>
@@ -1034,27 +1158,34 @@ and
   </dd>
   <dt>
    <a href="#lbAF">
-    EXAMPLE
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    MIGRATION
+    EXAMPLE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    PCP ENVIRONMENT
+    MIGRATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
     SEE ALSO
    </a>
   </dt>

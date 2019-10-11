@@ -90,113 +90,126 @@ with PCP BCC PMDA modules with reasonable effort.
   </a>
  </p>
  <h2>
-  INSTALLATION
+  CONFIGURATION
  </h2>
  <b>
   pmdabcc
  </b>
- reads a mandatory ini-style configuration file
+ reads a mandatory ini-style configuration file:
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <dl compact="">
-      <dt>
-       •
-      </dt>
-      <dd>
-       <i>
-       </i>
-       <tt>
-        $PCP_PMDAS_DIR
-       </tt>
-       /bcc/bcc.conf
-      </dd>
-     </dl>
-    </dd>
-   </dl>
+  </dd>
+  <dt>
+  </dt>
+  <dd>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bcc/bcc.conf
   </dd>
  </dl>
  <p>
-  This file contains in its
+  This file must contain a
   <b>
    [pmda]
   </b>
-  section values
-for the following PMDA options:
+  section.
+The following PMDA options are available
+(their default values are shown in parenthesis),
+options marked with asterisk (
+  <b>
+   *
+  </b>
+  )
+can be overridden in module-specific configuration sections:
  </p>
  <dl compact="">
   <dt>
+   <b>
+    modules
+   </b>
+   (unset)
   </dt>
   <dd>
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <dl compact="">
-      <dt>
-       •
-      </dt>
-      <dd>
-       modules
-      </dd>
-      <dt>
-       •
-      </dt>
-      <dd>
-       prefix
-      </dd>
-      <dt>
-       •
-      </dt>
-      <dd>
-       process_refresh
-      </dd>
-      <dt>
-       •
-      </dt>
-      <dd>
-       module_failure_fatal
-      </dd>
-     </dl>
-    </dd>
-   </dl>
+   The
+   <b>
+    pmdabcc
+   </b>
+   PMDA reads module-specific configuration for each
+module listed in the comma-separated list of
+   <b>
+    modules
+   </b>
+   (mandatory).
+  </dd>
+  <dt>
+   <b>
+    prefix
+   </b>
+   (
+   <i>
+    bcc.
+   </i>
+   ) *
+  </dt>
+  <dd>
+   By default, all metrics from the modules will appear under the
+   <i>
+    bcc
+   </i>
+   Performance Metrics Name Space (PMNS) tree,
+   <b>
+    prefix
+   </b>
+   (optional) can be
+used to change this generic prefix.
+  </dd>
+  <dt>
+   <b>
+    process_refresh
+   </b>
+   (
+   <i>
+    0
+   </i>
+   )
+  </dt>
+  <dd>
+   See below.
+  </dd>
+  <dt>
+   <b>
+    module_failure_fatal
+   </b>
+   (
+   <i>
+    True
+   </i>
+   )
+  </dt>
+  <dd>
+   A boolean value for
+   <b>
+    module_failure_fatal
+   </b>
+   (optional) controls whether
+a module failing to compile should cause the whole PMDA to abort (this
+is the default) or to start up with possibly remaining functional modules.
+Module configuration errors and internal errors (such as failing to
+register the provided PMNS metrics, see
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5))
+will always cause the PMDA to fail.
   </dd>
  </dl>
- <p>
-  <b>
-   pmdabcc
-  </b>
-  reads module-specific configuration for each module listed in
-the comma-separated list of
-  <b>
-   modules
-  </b>
-  (mandatory).
-By default, all metrics from the modules will appear under the
-  <i>
-   bcc
-  </i>
-  Performance Metrics Name Space (PMNS) tree,
-  <b>
-   prefix
-  </b>
-  (optional) can be
-used to change this generic prefix.
-A boolean value for
-  <b>
-   module_failure_fatal
-  </b>
-  (optional) controls whether
-a module failing to compile should cause the whole PMDA to abort (this is
-the default) or to start up with any possibly functional modules.
-Module configuration errors and internal errors (such as failing to
-register the provided PMNS metrics) will always cause the PMDA to fail.
- </p>
  <p>
   Of particular note, the
   <b>
@@ -235,68 +248,53 @@ information is installed (and if no PIDs matching the filter are anymore
 present, the BPF program will be detach to avoid any needless overhead).
  </p>
  <p>
-  For each listed module a corresponding
+  For each
+  <i>
+   module
+  </i>
+  listed in
   <b>
-   [module]
+   modules
   </b>
-  section must be
-defined containing at least the following options:
+  a corresponding
+  <i>
+   [module]
+  </i>
+  section must be defined containing at least the following options:
  </p>
  <dl compact="">
   <dt>
+   <b>
+    module
+   </b>
   </dt>
   <dd>
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <dl compact="">
-      <dt>
-       •
-      </dt>
-      <dd>
-       module
-      </dd>
-      <dt>
-       •
-      </dt>
-      <dd>
-       cluster
-      </dd>
-     </dl>
-    </dd>
-   </dl>
+   Defines the actual Python module file name to be loaded during
+PMDA startup under the
+   <i>
+    modules
+   </i>
+   subdirectory of the PCP BCC PMDA
+installation.
+  </dd>
+  <dt>
+   <b>
+    cluster
+   </b>
+  </dt>
+  <dd>
+   Specifies the unique cluster ID (see
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5)) for the metrics
+provided by the module under the PMNS path.
   </dd>
  </dl>
  <p>
-  <b>
-   module
-  </b>
-  defines the actual Python module file name to be loaded during
-PMDA startup under the
-  <i>
-   modules
-  </i>
-  subdirectory of the PCP BCC PMDA
-installation.
-  <b>
-   cluster
-  </b>
-  specifies the cluster ID (see
-  <b>
-   <a href="/man/man5/pmns.5.html">
-    PMNS
-   </a>
-  </b>
-  (5)) for the metrics
-provided by the module under the PMNS path.
-Optionally,
-  <b>
-   prefix
-  </b>
-  can be defined to override the generic value
-described above.
-All modules accept but not necessarily use the boolean
+  All modules accept but not necessarily use the boolean
   <b>
    debug
   </b>
@@ -307,10 +305,13 @@ All modules accept but not necessarily use the boolean
 refer to the default configuration file for their supported options.
  </p>
  <p>
-  Once the needed setup is ready, you can install the PMDA to load the
-configured modules and the BPF programs they utilize.
-To install, do the following as root:
+  <a name="lbAE">
+  </a>
  </p>
+ <h2>
+  INSTALLATION
+ </h2>
+ To install, the following must be done as root:
  <p>
  </p>
  <dl compact="">
@@ -326,7 +327,7 @@ To install, do the following as root:
   </dd>
  </dl>
  <p>
-  To uninstall, do the following as root:
+  To uninstall, the following must be done as root:
  </p>
  <p>
  </p>
@@ -352,16 +353,24 @@ To install, do the following as root:
     pmcd
    </a>
   </b>
-  (1) and should never be executed
-directly.
-The Install and Remove scripts notify
+  (1) and should never be
+executed directly.
+The
+  <b>
+   Install
+  </b>
+  and
+  <b>
+   Remove
+  </b>
+  scripts notify
   <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
   </b>
-  (1) when the agent is
-installed or removed.
+  (1) when
+the agent is installed or removed.
  </p>
  <p>
   In case
@@ -370,7 +379,7 @@ installed or removed.
   </b>
   is set to
   <b>
-   false
+   False
   </b>
   , the PMDA
 installation will be considered successful even if some or even all
@@ -392,7 +401,7 @@ For instance, the
   </b>
   module will not provide any values unless
 there are processes generating TCP traffic on the system.
-  <a name="lbAE">
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -475,7 +484,7 @@ there are processes generating TCP traffic on the system.
    agent
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -488,9 +497,9 @@ there are processes generating TCP traffic on the system.
 the file and directory names used by PCP.
 On each installation, the
 file
- <b>
+ <i>
   /etc/pcp.conf
- </b>
+ </i>
  contains the local values for these variables.
 The
  <b>
@@ -504,7 +513,7 @@ configuration file, as described in
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -560,27 +569,34 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    INSTALLATION
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    INSTALLATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

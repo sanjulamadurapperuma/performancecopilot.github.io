@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -efi
+  -efi?
  </b>
  ]
 [
@@ -171,7 +171,8 @@ executed by
    dbpmda
   </b>
   on startup, before the user is prompted to enter further commands
-interactively.  While processing the
+interactively.
+While processing the
   <i>
    .dbpmdarc
   </i>
@@ -188,7 +189,7 @@ reset at the end of the
   <b>
    -e
   </b>
-  command line arguments below).
+  command line options below).
  </p>
  <p>
   The
@@ -213,101 +214,6 @@ reset at the end of the
 then this will be used to read commands when input is from a tty
 device, so history and command line editing are available.
  </p>
- <p>
-  <b>
-   dbpmda
-  </b>
-  accepts the following command line arguments:
- </p>
- <dl compact="">
-  <dt>
-   <b>
-    -e
-   </b>
-  </dt>
-  <dd>
-   Echo the input to
-   <b>
-    stdout
-   </b>
-   .
-
-This is useful when the input is redirected from a file.
-  </dd>
-  <dt>
-   <b>
-    -i
-   </b>
-  </dt>
-  <dd>
-   Emulate interactive behavior and prompt for new commands, even if standard
-input is not a tty device.
-  </dd>
-  <dt>
-   <b>
-    -n
-   </b>
-   <i>
-    pmnsfile
-   </i>
-  </dt>
-  <dd>
-   Normally
-   <b>
-    dbpmda
-   </b>
-   operates on the distributed Performance Metrics Name Space (PMNS), however if
-the
-   <b>
-    -n
-   </b>
-   option is specified an alternative local PMNS is loaded from the file
-   <i>
-    pmnsfile
-   </i>
-   .
-  </dd>
-  <dt>
-   <b>
-    -q
-   </b>
-   <i>
-    timeout
-   </i>
-  </dt>
-  <dd>
-   The pmcd to agent version exchange protocol (new in PCP 2.0 - introduced to
-provide backward compatibility) uses this timeout to specify how long
-   <b>
-    dbpmda
-   </b>
-   should wait before assuming that no version response is coming from an agent.
-If this timeout is reached, the agent is assumed to be an agent which does
-not understand the PCP 2.0 protocol.
-The default timeout interval is three seconds,
-but the
-   <b>
-    -q
-   </b>
-   option allows an alternative timeout interval (which must be greater than
-zero) to be specified.  The unit of time is seconds.
-  </dd>
-  <dt>
-   <b>
-    -U
-   </b>
-   <i>
-    username
-   </i>
-  </dt>
-  <dd>
-   User account under which to run
-   <b>
-    dbpmda
-   </b>
-   .
-  </dd>
- </dl>
  <p>
   As there are no timeout constraints on a PMDA while using
   <b>
@@ -338,7 +244,163 @@ can be used on the PMDA process once it has been attached to
   </a>
  </p>
  <h2>
-  EXAMPLE
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -e
+   </b>
+   ,
+   <b>
+    --echo-input
+   </b>
+  </dt>
+  <dd>
+   Echo the input to
+   <b>
+    stdout
+   </b>
+   .
+
+This is useful when the input is redirected from a file.
+  </dd>
+  <dt>
+   <b>
+    -f
+   </b>
+   ,
+   <b>
+    --norc
+   </b>
+  </dt>
+  <dd>
+   Do not process the
+   <b>
+    .dbpmdarc
+   </b>
+   file.
+  </dd>
+  <dt>
+   <b>
+    -i
+   </b>
+   ,
+   <b>
+    --interactive
+   </b>
+  </dt>
+  <dd>
+   Emulate interactive behavior and prompt for new commands, even if standard
+input is not a tty device.
+  </dd>
+  <dt>
+   <b>
+    -n
+   </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   Load an alternative Performance Metrics Name Space
+(
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5))
+
+from the file
+   <i>
+    pmnsfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -q
+   </b>
+   <i>
+    timeout
+   </i>
+   ,
+   <b>
+    --creds-timeout
+   </b>
+   =
+   <i>
+    timeout
+   </i>
+  </dt>
+  <dd>
+   The pmcd to agent version exchange protocol (new in PCP 2.0 - introduced to
+provide backward compatibility) uses this timeout to specify how long
+   <b>
+    dbpmda
+   </b>
+   should wait before assuming that no version response is coming from an agent.
+If this timeout is reached, the agent is assumed to be an agent which does
+not understand the PCP 2.0 protocol.
+The default timeout interval is three seconds,
+but the
+   <b>
+    -q
+   </b>
+   option allows an alternative timeout interval (which must be greater than
+zero) to be specified.
+The unit of time is seconds.
+  </dd>
+  <dt>
+   <b>
+    -U
+   </b>
+   <i>
+    username
+   </i>
+   ,
+   <b>
+    --username
+   </b>
+   =
+   <i>
+    username
+   </i>
+  </dt>
+  <dd>
+   User account under which to run
+   <b>
+    dbpmda
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  EXAMPLES
  </h2>
  Below is a
  <b>
@@ -348,7 +410,8 @@ can be used on the PMDA process once it has been attached to
  <i>
   simple
  </i>
- PMDA. A
+ PMDA.
+A
  <b>
   .dbpmdarc
  </b>
@@ -410,10 +473,12 @@ Dump Instance Profile state=INCLUDE, 0 profiles
   <b>
    instance
   </b>
-  commands can be used.  Metrics may be identified either by name, or using the 
-``dotted'' notation to specify the domain, cluster and item fields of a 
-PMID.  Instance domains must be identified using a ``dotted'' notation to
-specify the domain and serial fields. The syntax for most commands will be 
+  commands can be used.
+Metrics may be identified either by name, or using the
+``dotted'' notation to specify the domain, cluster and item fields of a PMID.
+Instance domains must be identified using a ``dotted'' notation to
+specify the domain and serial fields.
+The syntax for most commands will be
 displayed if the command is given without any arguments:
  </p>
  <p>
@@ -541,7 +606,7 @@ profile indom# [ all | none ]
 profile indom# [ add | delete ] number
 
 For the instance domain specified, the profile may be changed to
-include 'all' instances, no instances, add an instance or delete 
+include 'all' instances, no instances, add an instance or delete
 an instance.
 
 dbpmda&gt; profile 253.0 none
@@ -587,7 +652,7 @@ dbpmda&gt; quit
   <i>
    filename
   </i>
-  ) opens an xterm window which tails the specified log file.  
+  ) opens an xterm window which tails the specified log file.
 This window must be closed by the user when no longer required.
  </p>
  <p>
@@ -602,7 +667,7 @@ This window must be closed by the user when no longer required.
   and takes a single integer argument.
  </p>
  <p>
-  The introduction of dynamic subtrees in the 
+  The introduction of dynamic subtrees in the
 PMNS and PMDA_INTERFACE_4 in
   <i>
    libpcp_pmda
@@ -611,8 +676,8 @@ PMNS and PMDA_INTERFACE_4 in
   <b>
    dbpmda
   </b>
-  to exercise the associated dynamic PMNS services.  The examples below are based
-on the
+  to exercise the associated dynamic PMNS services.
+The examples below are based on the
   <i>
    sample
   </i>
@@ -742,7 +807,7 @@ Success
 dbpmda&gt; attr 11 "0"
 Attribute: userid=0
 Success
-dbpmda&gt; 
+dbpmda&gt;
 </pre>
  <p>
   The
@@ -776,7 +841,7 @@ value pair sent to it in its
   Note that authentication checks have already been performed by PMCD
 by the time a PMDA is presented with these attributes, so no further
 verification is necessary by the PMDA.
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -816,10 +881,10 @@ to attach to daemon PMDAs.
    dbpmda
   </b>
   makes no attempt to detect the termination of the daemon PMDA process, so it is
-possible for a PMDA to exit unexpectedly without any notification. However,
-any further communication attempts with the PMDA will result in errors which
+possible for a PMDA to exit unexpectedly without any notification.
+However, any further communication attempts with the PMDA will result in errors which
 will indicate that the PMDA is no longer responding.
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -835,7 +900,7 @@ will indicate that the PMDA is no longer responding.
    List of commands to do on startup.
   </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -844,9 +909,10 @@ will indicate that the PMDA is no longer responding.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -856,16 +922,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAI">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAJ">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -916,12 +990,18 @@ as described in
    pcp.conf
   </a>
  </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
  (5)
 
 and
  <b>
-  <a href="/man/man5/pcp.env.5.html">
-   pcp.env
+  <a href="/man/man5/pmns.5.html">
+   PMNS
   </a>
  </b>
  (5).
@@ -957,34 +1037,41 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLE
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    CAVEATS
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    FILES
+    CAVEATS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
     SEE ALSO
    </a>
   </dt>

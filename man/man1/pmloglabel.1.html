@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -Llsv
+  -lLsv
  </b>
  ]
 [
@@ -159,16 +159,29 @@ Together,
   Note that if the temporal index is found to be corrupt, the "*.index" file
 can be safely moved aside and the archive will still be accessible, however
 retrievals may take longer without the index.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  The options control the specific information to be reported, or the
-specific fields to be modified:
- </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
     -h
    </b>
+   <i>
+    hostname
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    hostname
+   </i>
   </dt>
   <dd>
    Modify the logged
@@ -180,6 +193,10 @@ specific fields to be modified:
   <dt>
    <b>
     -l
+   </b>
+   ,
+   <b>
+    --label
    </b>
   </dt>
   <dd>
@@ -206,6 +223,17 @@ process identifier from the archive label.
    <b>
     -p
    </b>
+   <i>
+    pid
+   </i>
+   ,
+   <b>
+    --pid
+   </b>
+   =
+   <i>
+    pid
+   </i>
   </dt>
   <dd>
    Set the process identifier stored in the archive label to
@@ -229,14 +257,30 @@ for all files in the archive.
    <b>
     -v
    </b>
+   ,
+   <b>
+    --verbose
+   </b>
   </dt>
   <dd>
-   Verbose mode.  Additional progress information is produced at each step.
+   Verbose mode.
+Additional progress information is produced at each step.
   </dd>
   <dt>
    <b>
     -V
    </b>
+   <i>
+    version
+   </i>
+   ,
+   <b>
+    --version
+   </b>
+   =
+   <i>
+    version
+   </i>
   </dt>
   <dd>
    Stamp the
@@ -250,6 +294,17 @@ for all files in the archive.
    <b>
     -Z
    </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
   </dt>
   <dd>
    Changes the timezone in the archive labels to
@@ -269,10 +324,8 @@ for all files in the archive.
    (7).
   </dd>
  </dl>
- <p>
-  <a name="lbAE">
-  </a>
- </p>
+ <a name="lbAF">
+ </a>
  <h2>
   EXAMPLES
  </h2>
@@ -298,7 +351,7 @@ Performance metrics from host fw1
   commencing Fri Jan 25 00:10:09.341 2008
   ending     Sat Jan 26 00:09:54.344 2008
 </pre>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   EXIT STATUS
@@ -312,30 +365,27 @@ If corruption is detected and still exists at the end,
 the exit status will be 2.
 If requested to write out the archive labels, and some aspect of that
 write out fails, then the exit status will be 3.
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   FILES
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmlogger/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;
    </i>
   </dt>
   <dd>
    Default directory for PCP archives containing performance
 metric values collected from the host
    <i>
-    hostname
+    &lt;hostname&gt;
    </i>
    .
   </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -344,9 +394,10 @@ metric values collected from the host
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -356,15 +407,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAI">
+ <a name="lbAJ">
  </a>
  <h2>
   SEE ALSO
@@ -457,34 +507,41 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    EXIT STATUS
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    FILES
+    EXIT STATUS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
     SEE ALSO
    </a>
   </dt>

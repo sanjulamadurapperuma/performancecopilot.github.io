@@ -68,11 +68,19 @@
   SYNOPSIS
  </h2>
  <b>
-  pcp shping
+  pcp
+ </b>
+ [
+ <i>
+  pcp options
+ </i>
+ ]
+ <b>
+  shping
  </b>
  [
  <b>
-  -cl
+  -cl?
  </b>
  ]
  <i>
@@ -172,46 +180,109 @@ command, the
   <b>
    --timezone
   </b>
-  and several other options become indirectly available.
+  and several other
+  <b>
+   pcp
+  </b>
+  <i>
+   options
+  </i>
+  become indirectly available, see
+  <b>
+   <a href="/man/man1/pcpintro.1.html">
+    PCPIntro
+   </a>
+  </b>
+  (1)
+
+for their descriptions.
   <a name="lbAE">
   </a>
  </p>
- <h3>
-  Options
- </h3>
- The
- <b>
-  -c
- </b>
- /
- <b>
-  --status
- </b>
- switch displays a summary of the current
-shell-ping collector - information about service refresh interval, the
-current command timeout setting, count of refreshes, and the full command
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+   ,
+   <b>
+    --status
+   </b>
+  </dt>
+  <dd>
+   Display a summary of the current shell-ping collector, including
+information about service refresh interval, the current command
+timeout setting, count of refreshes, and the full command
 line associated with each
+   <i>
+    tag
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   ,
+   <b>
+    --tags
+   </b>
+  </dt>
+  <dd>
+   Displays the valid
+   <i>
+    tag
+   </i>
+   s.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
-  tag
+  /etc/pcp.conf
  </i>
- .
- <p>
-  The
-  <b>
-   -l
-  </b>
-  /
-  <b>
-   --tags
-  </b>
-  switch displays the valid
-  <i>
-   tag
-  </i>
-  s.
-  <a name="lbAF">
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
   </a>
- </p>
+ </b>
+ (5).
+ <a name="lbAG">
+ </a>
  <h2>
   SEE ALSO
  </h2>
@@ -264,18 +335,23 @@ and
    </a>
   </dt>
   <dd>
-   <dl>
-    <dt>
-     <a href="#lbAE">
-      Options
-     </a>
-    </dt>
-    <dd>
-    </dd>
-   </dl>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    OPTIONS
+   </a>
+  </dt>
+  <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

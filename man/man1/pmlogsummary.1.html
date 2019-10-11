@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -abfFHiIlmMNsvxyz
+  -abfFHiIlmMNsvVxyz?
  </b>
  ]
 [
@@ -140,8 +140,8 @@
   pmlogsummary
  </b>
  prints statistical information about metrics of numeric type contained within
-the files of a set of Performance Co-Pilot (PCP) archive logs.  The default output prints
-time averages for both counter and non-counter metrics.
+the files of a set of Performance Co-Pilot (PCP) archive logs.
+The default output prints time averages for both counter and non-counter metrics.
 The set of archive logs is identified by
  <i>
   archive
@@ -171,7 +171,7 @@ If
   is a non-leaf node in the Performance Metrics Name Space (
   <b>
    <a href="/man/man5/pmns.5.html">
-    pmns
+    PMNS
    </a>
   </b>
   (5)),
@@ -188,61 +188,28 @@ If no
   argument is given, the root of the namespace is used.
  </p>
  <p>
-  Normally
-  <b>
-   pmlogsummary
-  </b>
-  operates on the default
-  <b>
-   <a href="/man/man5/pmns.5.html">
-    pmns
-   </a>
-  </b>
-  (5),
-
-however if the
-  <b>
-   -n
-  </b>
-  option is specified an alternative namespace is loaded
-from the file
-  <i>
-   pmnsfile
-  </i>
-  .
- </p>
- <p>
-  The command line options
-  <b>
-   -S
-  </b>
-  and
-  <b>
-   -T
-  </b>
-  can be used to specify a time window over which metrics should be summarized.
-These options are common to most Performance Co-Pilot tools and are fully
-described in
-  <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
-   </a>
-  </b>
-  (1).
- </p>
- <p>
-  The remaining options control the specific information to be reported.
-Metrics with counter semantics are converted to rates before being
+  Metrics with counter semantics are converted to rates before being
 evaluated.
+  <a name="lbAE">
+  </a>
  </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
     -a
    </b>
+   ,
+   <b>
+    --all
+   </b>
   </dt>
   <dd>
-   Print all information.  This is equivalent to
+   Print all information.
+This is equivalent to
    <b>
     -blmMy
    </b>
@@ -260,6 +227,17 @@ evaluated.
    <b>
     -B
    </b>
+   <i>
+    nbins
+   </i>
+   ,
+   <b>
+    --bins
+   </b>
+   =
+   <i>
+    nbins
+   </i>
   </dt>
   <dd>
    Print the approximate distribution of values, using histogram bins such
@@ -280,7 +258,8 @@ distribution of values is reported).
   </dt>
   <dd>
    Spreadsheet format - the tab character is used to delimit each field
-printed.  This option is intended to allow
+printed.
+This option is intended to allow
    <b>
     pmlogsummary
    </b>
@@ -293,7 +272,8 @@ printed.  This option is intended to allow
   </dt>
   <dd>
    Spreadsheet format - the comma character is used to delimit each field
-printed.  This option is intended to allow
+printed.
+This option is intended to allow
    <b>
     pmlogsummary
    </b>
@@ -304,13 +284,49 @@ support the Comma Separated Value (.csv) format.
    <b>
     -H
    </b>
+   ,
+   <b>
+    --header
+   </b>
   </dt>
   <dd>
    Print a one-line header at the start showing what each field represents.
   </dd>
   <dt>
    <b>
+    -i
+   </b>
+   ,
+   <b>
+    --mintime
+   </b>
+  </dt>
+  <dd>
+   Also print the time at which the minimum value was logged.
+The format of this
+timestamp is described in the ``OUTPUT FORMAT'' section below.
+  </dd>
+  <dt>
+   <b>
+    -I
+   </b>
+   ,
+   <b>
+    --maxtime
+   </b>
+  </dt>
+  <dd>
+   Also print the time at which the maximum value was logged.
+The format of this
+timestamp is described in the ``OUTPUT FORMAT'' section below.
+  </dd>
+  <dt>
+   <b>
     -l
+   </b>
+   ,
+   <b>
+    --label
    </b>
   </dt>
   <dd>
@@ -320,25 +336,11 @@ and the host from which the performance metrics values were collected.
   </dd>
   <dt>
    <b>
-    -i
-   </b>
-  </dt>
-  <dd>
-   Also print the time at which the minimum value was logged.  The format of this
-timestamp is described in the ``OUTPUT FORMAT'' section below.
-  </dd>
-  <dt>
-   <b>
-    -I
-   </b>
-  </dt>
-  <dd>
-   Also print the time at which the maximum value was logged.  The format of this
-timestamp is described in the ``OUTPUT FORMAT'' section below.
-  </dd>
-  <dt>
-   <b>
     -m
+   </b>
+   ,
+   <b>
+    --minimum
    </b>
   </dt>
   <dd>
@@ -348,17 +350,45 @@ timestamp is described in the ``OUTPUT FORMAT'' section below.
    <b>
     -M
    </b>
+   ,
+   <b>
+    --maximum
+   </b>
   </dt>
   <dd>
    Also print the maximum logged value for each metric.
   </dd>
   <dt>
    <b>
-    -s
+    -n
    </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
   </dt>
   <dd>
-   Print (only) the sum of all logged values for each metric.
+   Load an alternative Performance Metrics Name Space
+(
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5))
+
+from the file
+   <i>
+    pmnsfile
+   </i>
+   .
   </dd>
   <dt>
    <b>
@@ -372,6 +402,17 @@ timestamp is described in the ``OUTPUT FORMAT'' section below.
    <b>
     -p
    </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision
+   </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Print all floating point numbers with
@@ -382,11 +423,111 @@ timestamp is described in the ``OUTPUT FORMAT'' section below.
   </dd>
   <dt>
    <b>
+    -s
+   </b>
+   ,
+   <b>
+    --sum
+   </b>
+  </dt>
+  <dd>
+   Print (only) the sum of all logged values for each metric.
+  </dd>
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
+  </dt>
+  <dd>
+   Set the
+   <i>
+    starttime
+   </i>
+   of the time window.
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    starttime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
+  </dt>
+  <dd>
+   Set the
+   <i>
+    endtime
+   </i>
+   of the time window.
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    endtime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -v
+   </b>
+   ,
+   <b>
+    --verbose
    </b>
   </dt>
   <dd>
    Report (verbosely) on warnings resulting from individual archive fetches.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
   </dd>
   <dt>
    <b>
@@ -400,52 +541,86 @@ timestamp is described in the ``OUTPUT FORMAT'' section below.
    <b>
     -y
    </b>
+   ,
+   <b>
+    --samples
+   </b>
   </dt>
   <dd>
    Also print the number of samples encountered in the set of archives for each metric.
   </dd>
- </dl>
- <p>
-  By default,
-  <b>
-   pmlogsummary
-  </b>
-  reports the time of day according to the local timezone on the
-system where
-  <b>
-   pmlogsummary
-  </b>
-  is run.
-The
-  <b>
-   -Z
-  </b>
-  option changes the timezone to
-  <i>
-   timezone
-  </i>
-  in the format of the environment variable
-  <b>
-   TZ
-  </b>
-  as described in
-  <b>
-   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-    environ
-   </a>
-  </b>
-  (7).
-
-The
-  <b>
-   -z
-  </b>
-  option changes the timezone to the local timezone at the
+  <dt>
+   <b>
+    -z
+   </b>
+   ,
+   <b>
+    --hostzone
+   </b>
+  </dt>
+  <dd>
+   Change the timezone to the local timezone at the
 host that is the source of the performance metrics, as specified in
 the label record of the archive log.
-  <a name="lbAE">
-  </a>
- </p>
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   By default,
+   <b>
+    pmlogsummary
+   </b>
+   reports the time of day according to the local timezone on the
+system where
+   <b>
+    pmlogsummary
+   </b>
+   is run.
+Change the timezone to
+   <i>
+    timezone
+   </i>
+   in the format of the environment variable
+   <b>
+    TZ
+   </b>
+   as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   OUTPUT FORMAT
  </h2>
@@ -454,8 +629,10 @@ the label record of the archive log.
   pmlogsummary
  </b>
  output format is spartan as it is intended to be post-processed with
-standard tools.  This means that there is no annotation associated with each
-output field which would make processing harder.  The intention is that
+standard tools.
+This means that there is no annotation associated with each
+output field which would make processing harder.
+The intention is that
  <b>
   pmlogsummary
  </b>
@@ -515,8 +692,8 @@ to seconds before being rate converted and used in the
   <b>
    pmlogsummary
   </b>
-  calculations.  The values calculated for these metrics are also printed
-in seconds.
+  calculations.
+The values calculated for these metrics are also printed in seconds.
  </p>
  <p>
   The units will be displayed in the format described by
@@ -549,7 +726,7 @@ a more precise format is used (time is displayed with millisecond
 precision, but without the date).
  </p>
  <p>
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -568,8 +745,9 @@ but the
   <b>
    -x
   </b>
-  option can be used to specify that counters be averaged using 
-the stochastic method instead.  When calculating a time average,
+  option can be used to specify that counters be averaged using
+the stochastic method instead.
+When calculating a time average,
 the sum of the product of each sample value multiplied by the time difference
 between each sample, is divided by the total time over which
 that metric was logged.
@@ -579,7 +757,7 @@ that metric was logged.
 printed with the metric name prefixed by an asterisk (*).
  </p>
  <p>
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -749,41 +927,43 @@ follows:
    </tr>
   </table>
  </center>
- <a name="lbAH">
+ <a name="lbAI">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-
+explanatory.
+ <a name="lbAJ">
  </a>
  <h2>
   FILES
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_VAR_DIR/pmns/
-   </b>
    <i>
-    *
+    $PCP_VAR_DIR/pmns/
    </i>
+   *
   </dt>
   <dd>
    default PMNS specification files
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmlogger/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;
    </i>
   </dt>
   <dd>
    Default directory for PCP archives containing performance
 metric values collected from the host
    <i>
-    hostname
+    &lt;hostname&gt;
    </i>
    .
   </dd>
  </dl>
- <a name="lbAI">
+ <a name="lbAK">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -792,9 +972,10 @@ metric values collected from the host
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -804,15 +985,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAJ">
+ <a name="lbAL">
  </a>
  <h2>
   SEE ALSO
@@ -875,17 +1055,10 @@ as described in
 and
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5).
- <a name="lbAK">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All are generated on standard error and are intended to be self-
-explanatory.
  <p>
  </p>
  <hr/>
@@ -918,49 +1091,56 @@ explanatory.
   </dd>
   <dt>
    <a href="#lbAE">
-    OUTPUT FORMAT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    NOTES
+    OUTPUT FORMAT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    EXAMPLE
+    NOTES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    FILES
+    EXAMPLE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    PCP ENVIRONMENT
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    SEE ALSO
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
-    DIAGNOSTICS
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAL">
+    SEE ALSO
    </a>
   </dt>
   <dd>

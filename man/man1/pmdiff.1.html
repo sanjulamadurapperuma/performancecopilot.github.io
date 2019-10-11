@@ -72,77 +72,12 @@
  </b>
  [
  <b>
-  -d
+  -dzV?
  </b>
- /
- <b>
-  --keep
- </b>
- ]
-[
- <b>
-  -z
- </b>
- /
- <b>
-  --hostzone
- </b>
- ]
-[
- <b>
-  -p
- </b>
- /
- <b>
-  --precision
- </b>
- <i>
-  precision
- </i>
- ]
-[
- <b>
-  -q
- </b>
- /
- <b>
-  --threshold
- </b>
- <i>
-  thres
- </i>
- ]
-[
- <b>
-  -S
- </b>
- /
- <b>
-  --start
- </b>
- <i>
-  starttime
- </i>
- ]
-[
- <b>
-  -T
- </b>
- /
- <b>
-  --finish
- </b>
- <i>
-  endtime
- </i>
  ]
 [
  <b>
   -B
- </b>
- /
- <b>
-  --begin
  </b>
  <i>
   starttime
@@ -152,9 +87,37 @@
  <b>
   -E
  </b>
- /
+ <i>
+  endtime
+ </i>
+ ]
+[
  <b>
-  --end
+  -p
+ </b>
+ <i>
+  precision
+ </i>
+ ]
+[
+ <b>
+  -q
+ </b>
+ <i>
+  thres
+ </i>
+ ]
+[
+ <b>
+  -S
+ </b>
+ <i>
+  starttime
+ </i>
+ ]
+[
+ <b>
+  -T
  </b>
  <i>
   endtime
@@ -178,6 +141,14 @@
  ]
 [
  <b>
+  -Z
+ </b>
+ <i>
+  timezone
+ </i>
+ ]
+[
+ <b>
   --skip-excluded
  </b>
  ]
@@ -185,18 +156,6 @@
  <b>
   --skip-missing
  </b>
- ]
-[
- <b>
-  -Z
- </b>
- /
- <b>
-  --timezone
- </b>
- <i>
-  timezone
- </i>
  ]
  <i>
   archive1
@@ -355,19 +314,89 @@ other, a diagnostic will be displayed listing each missing metric
 and the archive set from which it was missing.
  </p>
  <p>
-  The remaining options control the specific information to be reported.
-Metrics with counter semantics are converted to rates before being
+  Metrics with counter semantics are converted to rates before being
 evaluated.
+  <a name="lbAE">
+  </a>
  </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
+  <dt>
+   <b>
+    -d
+   </b>
+   ,
+   <b>
+    --keep
+   </b>
+  </dt>
+  <dd>
+   Debug mode, keep intermediate files.
+  </dd>
+  <dt>
+   <b>
+    -B
+   </b>
+   <i>
+    time
+   </i>
+   ,
+   <b>
+    --begin
+   </b>
+   =
+   <i>
+    time
+   </i>
+  </dt>
+  <dd>
+   Start
+   <i>
+    time
+   </i>
+   for the second time window.
+  </dd>
+  <dt>
+   <b>
+    -E
+   </b>
+   <i>
+    time
+   </i>
+   ,
+   <b>
+    --end
+   </b>
+   =
+   <i>
+    time
+   </i>
+  </dt>
+  <dd>
+   End
+   <i>
+    time
+   </i>
+   for the second time window.
+  </dd>
   <dt>
    <b>
     -p
    </b>
-   /
+   <i>
+    precision
+   </i>
+   ,
    <b>
     --precision
    </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Print all floating point numbers with
@@ -375,6 +404,193 @@ evaluated.
     precision
    </i>
    digits after the decimal place.
+  </dd>
+  <dt>
+   <b>
+    -q
+   </b>
+   <i>
+    threshold
+   </i>
+   ,
+   <b>
+    --threshold
+   </b>
+   =
+   <i>
+    threshold
+   </i>
+  </dt>
+  <dd>
+   Change the
+   <i>
+    threshold
+   </i>
+   for interesting metrics,
+see above for more details.
+  </dd>
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    time
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    time
+   </i>
+  </dt>
+  <dd>
+   Start
+   <i>
+    time
+   </i>
+   of the first time window.
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    time
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    time
+   </i>
+  </dt>
+  <dd>
+   End
+   <i>
+    time
+   </i>
+   of the first time window.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   <i>
+    metric
+   </i>
+  </dt>
+  <dd>
+   Compare each
+   <i>
+    metric
+   </i>
+   in each archive set in
+the time windows specified to a given
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
+     egrep
+    </a>
+   </b>
+   (1)
+
+pattern, excluding those that match from the report output.
+  </dd>
+  <dt>
+   <b>
+    -X
+   </b>
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   Allows a
+   <i>
+    file
+   </i>
+   to be specified which containing
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
+     egrep
+    </a>
+   </b>
+   (1)
+
+patterns which are applied to the metric names to optionally exclude
+some from the report.
+  </dd>
+  <dt>
+   <b>
+    -z
+   </b>
+   ,
+   <b>
+    --hostzone
+   </b>
+  </dt>
+  <dd>
+   Use the local timezone from the given archive set.
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   Changes the timezone in the archive labels to
+   <i>
+    timezone
+   </i>
+   in the format of the environment variable
+   <b>
+    TZ
+   </b>
+   as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
   </dd>
   <dt>
    <b>
@@ -398,93 +614,16 @@ evaluated.
 the other.
 This option suppresses that reporting.
   </dd>
-  <dt>
-   <b>
-    -x
-   </b>
-  </dt>
-  <dd>
-   Compare each metric in each archive set in the time windows specified
-to a given
-   <b>
-    <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
-     egrep
-    </a>
-   </b>
-   (1)
-
-pattern, excluding those that match from the report output.
-  </dd>
-  <dt>
-   <b>
-    -X
-   </b>
-  </dt>
-  <dd>
-   Allows a
-   <i>
-    file
-   </i>
-   to be specified which containing
-   <b>
-    <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
-     egrep
-    </a>
-   </b>
-   (1)
-
-patterns which are applied to the metric names to optionally exclude
-some from the report.
-  </dd>
-  <dt>
-   <b>
-    -z
-   </b>
-  </dt>
-  <dd>
-   Use the local timezone from the given archive set.
-  </dd>
-  <dt>
-   <b>
-    -Z
-   </b>
-   /
-   <b>
-    --timezone
-   </b>
-  </dt>
-  <dd>
-   Changes the timezone in the archive labels to
-   <i>
-    timezone
-   </i>
-   in the format of the environment variable
-   <b>
-    TZ
-   </b>
-   as described in
-   <b>
-    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-     environ
-    </a>
-   </b>
-   (7).
-  </dd>
  </dl>
- <p>
-  <a name="lbAE">
-  </a>
- </p>
+ <a name="lbAF">
+ </a>
  <h2>
   FILES
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmlogger/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;
    </i>
   </dt>
   <dd>
@@ -496,7 +635,7 @@ metric values collected from the host
    .
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -505,9 +644,10 @@ metric values collected from the host
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -517,15 +657,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -600,20 +739,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

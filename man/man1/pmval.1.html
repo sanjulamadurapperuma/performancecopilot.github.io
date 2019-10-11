@@ -76,16 +76,8 @@
  </b>
  [
  <b>
-  -dgLrvz
+  -dgLrvVz?
  </b>
- ]
-[
- <b>
-  -A
- </b>
- <i>
-  align
- </i>
  ]
 [
  <b>
@@ -93,6 +85,14 @@
  </b>
  <i>
   archive
+ </i>
+ ]
+[
+ <b>
+  -A
+ </b>
+ <i>
+  align
  </i>
  ]
 [
@@ -153,14 +153,6 @@
  ]
 [
  <b>
-  -S
- </b>
- <i>
-  starttime
- </i>
- ]
-[
- <b>
   -s
  </b>
  <i>
@@ -169,10 +161,10 @@
  ]
 [
  <b>
-  -T
+  -S
  </b>
  <i>
-  endtime
+  starttime
  </i>
  ]
 [
@@ -181,6 +173,14 @@
  </b>
  <i>
   interval
+ </i>
+ ]
+[
+ <b>
+  -T
+ </b>
+ <i>
+  endtime
  </i>
  ]
 [
@@ -213,6 +213,24 @@
  </b>
  <i>
   timezone
+ </i>
+ ]
+[
+ <b>
+  --container
+ </b>
+ =
+ <i>
+  name
+ </i>
+ ]
+[
+ <b>
+  --derived
+ </b>
+ =
+ <i>
+  file
  </i>
  ]
  <i>
@@ -303,7 +321,8 @@ causes
    pmval
   </b>
   to use a local context to collect metrics from PMDAs on the local host
-without PMCD.  Only some metrics are available in this mode.
+without PMCD.
+Only some metrics are available in this mode.
  </p>
  <p>
   When processing a set of archives,
@@ -388,24 +407,53 @@ or specify a ``natural'' alignment of the sample times; refer to
 for a complete description of these options.
  </p>
  <p>
-  The other options which control the source, timing and layout of the information
-reported by
+  The output from
   <b>
    pmval
   </b>
-  are as follows:
+  is directed to standard output.
+The following symbols may occasionally appear, in place of a metric value, in
+  <b>
+   pmval
+  </b>
+  output:  A question mark symbol (?) indicates that a value is no
+longer available for that metric instance.
+An exclamation mark (!)
+indicates that a 64-bit counter wrapped during the sample.
+  <a name="lbAE">
+  </a>
  </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
     -a
    </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
   </dt>
   <dd>
-   Performance metric values are retrieved from the set of Performance Co-Pilot (PCP)
-archive logs identified. The argument is a comma-separated list of names, each
-of which may be the base name of an archive or the name of a directory containing
-one or more archives. See also
+   Performance metric values are retrieved from the set of Performance
+Co-Pilot (PCP) archive log files identified by the
+   <i>
+    archive
+   </i>
+   argument, which is a comma-separated list of names,
+each of which may be the base name of an archive or the name of
+a directory containing one or more archives.
+See also
    <b>
     -U
    </b>
@@ -413,50 +461,113 @@ one or more archives. See also
   </dd>
   <dt>
    <b>
+    -A
+   </b>
+   <i>
+    align
+   </i>
+   ,
+   <b>
+    --align
+   </b>
+   =
+   <i>
+    align
+   </i>
+  </dt>
+  <dd>
+   Force the initial sample to be
+aligned on the boundary of a natural time unit
+   <i>
+    align
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    align
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -d
+   </b>
+   ,
+   <b>
+    --delay
    </b>
   </dt>
   <dd>
-   When replaying from a set of archives,
-this option requests that the prevailing real-time delay be applied between
-samples (see
+   When replaying from an archive, this option requests that the prevailing
+real-time delay be applied between samples (see
    <b>
     -t
    </b>
    )
 
-to effect a pause, rather than the default behaviour of replaying at full speed.
+to effect a pause, rather than
+the default behaviour of replaying at full speed.
   </dd>
   <dt>
    <b>
     -f
    </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision
+   </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Numbers are reported in ``fixed point'' notation, rather than the default
-scientific notation.  Each number will be up to the column width determined by
+scientific notation, using
+   <i>
+    precision
+   </i>
+   digits for precision.
+Each number will be up to the column width determined by
 the default heuristics, else the
    <b>
     -w
    </b>
    option if specified, and include
    <i>
-    N
+    precision
    </i>
-   digits after the decimal point.  So, the options
+   digits after the decimal point.
+So, the options
    <b>
     -f 3 -w 8
    </b>
    would produce numbers of the form 9999.999.
 A value of zero for
    <i>
-    N
+    precision
    </i>
    omits the decimal point and any fractional digits.
   </dd>
   <dt>
    <b>
     -g
+   </b>
+   ,
+   <b>
+    --guimode
    </b>
   </dt>
   <dd>
@@ -486,26 +597,61 @@ graphical user interface.
    <b>
     -h
    </b>
-  </dt>
-  <dd>
-   Current performance metric values are retrieved from the nominated
    <i>
     host
    </i>
-   machine.
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Fetch performance metrics from
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+on
+   <i>
+    host
+   </i>
+   ,
+
+rather than from the default localhost.
   </dd>
   <dt>
    <b>
     -i
    </b>
-  </dt>
-  <dd>
    <i>
     instances
    </i>
-   is a list of one or more
-instance names for the nominated performance metric - just these
-instances will be retrieved and reported
+   ,
+   <b>
+    --instances
+   </b>
+   =
+   <i>
+    instances
+   </i>
+  </dt>
+  <dd>
+   Specify a list of one or more names of
+   <i>
+    instances
+   </i>
+   for the nominated performance metric - just these
+   <i>
+    instances
+   </i>
+   will be retrieved and reported
 (the default is to report all instances).
 The list must be a single argument, with
 elements of the list separated by commas and/or white space.
@@ -550,15 +696,31 @@ $ pmval 'localhost:kernel.all.load["1 minute","5 minute"]'
    <b>
     -K
    </b>
+   <i>
+    spec
+   </i>
+   ,
+   <b>
+    --spec-local
+   </b>
+   =
+   <i>
+    spec
+   </i>
   </dt>
   <dd>
-   When
-fetching metrics from a local context, the
+   When fetching metrics from a local context (see
+   <b>
+    -L
+   </b>
+   ),
+
+the
    <b>
     -K
    </b>
-   option may be used to control the DSO PMDAs that should be
-made accessible.  The
+   option may be used to control the DSO PMDAs that should be made accessible.
+The
    <i>
     spec
    </i>
@@ -578,29 +740,114 @@ More than one
   </dd>
   <dt>
    <b>
-    -n
+    -L
+   </b>
+   ,
+   <b>
+    --local-PMDA
    </b>
   </dt>
   <dd>
-   Normally
+   Use a local context to collect metrics from DSO PMDAs on the local host
+without PMCD.
+See also
    <b>
-    pmval
+    -K
    </b>
-   operates on the default Performance Metrics Name Space (PMNS), however
-if the
+   .
+  </dd>
+  <dt>
    <b>
     -n
    </b>
-   option is specified an alternative namespace is loaded
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   Load an alternative Performance Metrics Name Space
+(
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5))
+
 from the file
    <i>
-    pmnsfile.
+    pmnsfile
    </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -O
+   </b>
+   <i>
+    origin
+   </i>
+   ,
+   <b>
+    --origin
+   </b>
+   =
+   <i>
+    origin
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, start reporting at
+   <i>
+    origin
+   </i>
+   within the time window (see
+   <b>
+    -S
+   </b>
+   and
+   <b>
+    -T
+   </b>
+   ).
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    origin
+   </i>
+   .
   </dd>
   <dt>
    <b>
     -p
    </b>
+   <i>
+    port
+   </i>
+   ,
+   <b>
+    --guiport
+   </b>
+   =
+   <i>
+    port
+   </i>
   </dt>
   <dd>
    Attach
@@ -638,25 +885,42 @@ when they launch
    <b>
     -r
    </b>
+   ,
+   <b>
+    --raw
+   </b>
   </dt>
   <dd>
-   Print raw values for cumulative counter metrics.  Normally cumulative counter
-metrics are converted to rates.  For example, disk transfers are reported
+   Print raw values for cumulative counter metrics.
+Normally cumulative counter metrics are converted to rates.
+For example, disk transfers are reported
 as number of disk transfers per second during the preceding sample interval,
 rather than the raw value of number of disk transfers since the machine was
-booted.  If you specify this option, the raw metric values are printed.
+booted.
+If you specify this option, the raw metric values are printed.
   </dd>
   <dt>
    <b>
     -s
    </b>
-  </dt>
-  <dd>
-   The argument
    <i>
     samples
    </i>
-   defines the number of samples to be retrieved and reported.
+   ,
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    samples
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    samples
+   </i>
+   argument defines the number of samples to be retrieved and reported.
 If
    <i>
     samples
@@ -674,16 +938,64 @@ of the set of PCP archives (in archive mode).
   </dd>
   <dt>
    <b>
-    -t
+    -S
    </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
   </dt>
   <dd>
-   The default update
+   When reporting archived metrics, the report will be restricted to those
+records logged at or after
+   <i>
+    starttime
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    starttime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
    <i>
     interval
    </i>
-   may be set to something other than the
-default 1 second.
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Set the reporting
+   <i>
+    interval
+   </i>
+   to something other than the default 1 second.
 The
    <i>
     interval
@@ -696,17 +1008,71 @@ The
    </b>
    (1),
 
-and in the simplest form may be an unsigned integer (the implied
-units in this case are seconds).
+and in the simplest form may be an unsigned integer
+(the implied units in this case are seconds).
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, the report will be restricted to those
+records logged before or at
+   <i>
+    endtime
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    endtime
+   </i>
+   .
   </dd>
   <dt>
    <b>
     -U
    </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --nointerp
+   </b>
+   =
+   <i>
+    archive
+   </i>
   </dt>
   <dd>
-   Performance metric values are retrieved from the set of Performance Co-Pilot (PCP)
-archive logs identified. The argument is a comma-separated list of names, each
+   Performance metric values are retrieved from the Performance Co-Pilot (PCP)
+   <i>
+    archive
+   </i>
+   .
+
+The argument is a comma-separated list of names, each
 of which may be the base name of an archive or the name of a directory containing
 one or more archives.
 However, unlike
@@ -719,7 +1085,8 @@ interval (
    <b>
     -t
    </b>
-   option) is ignored. See also
+   option) is ignored.
+See also
    <b>
     -a
    </b>
@@ -744,8 +1111,43 @@ interval (
   </dd>
   <dt>
    <b>
+    -v
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   Enable verbose mode.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --version
+   </b>
+  </dt>
+  <dd>
+   Display version number and exit.
+  </dd>
+  <dt>
+   <b>
     -w
    </b>
+   <i>
+    width
+   </i>
+   ,
+   <b>
+    --width
+   </b>
+   =
+   <i>
+    width
+   </i>
   </dt>
   <dd>
    Set the width of each column of output to be
@@ -760,6 +1162,17 @@ enough to accommodate the largest value of the type being printed.
    <b>
     -x
    </b>
+   <i>
+    pattern
+   </i>
+   ,
+   <b>
+    --filter
+   </b>
+   =
+   <i>
+    pattern
+   </i>
   </dt>
   <dd>
    The given
@@ -802,7 +1215,8 @@ access would be able to access the event stream).
       </b>
       (3)
 
-it should be a non-empty string.  Use . (dot) for a "match all"
+it should be a non-empty string.
+Use . (dot) for a "match all"
       <i>
        pattern
       </i>
@@ -813,29 +1227,56 @@ it should be a non-empty string.  Use . (dot) for a "match all"
   </dd>
   <dt>
    <b>
-    -Z
+    -z
+   </b>
+   ,
+   <b>
+    --hostzone
    </b>
   </dt>
   <dd>
-   By default,
+   Use the local timezone of the host that is the source of the
+performance metrics, as identified by either the
    <b>
-    pmval
+    -h
    </b>
-   reports the time of day according to the local timezone on the
-system where
+   or the
    <b>
-    pmval
+    -a
    </b>
-   is run.
-The
+   or the
+   <b>
+    -U
+   </b>
+   options.
+The default is to use the timezone of the local host.
+  </dd>
+  <dt>
    <b>
     -Z
    </b>
-   option changes the timezone to
    <i>
     timezone
    </i>
-   in the format of the environment variable
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   Use
+   <i>
+    timezone
+   </i>
+   for the date and time.
+   <i>
+    Timezone
+   </i>
+   is in the format of the environment variable
    <b>
     TZ
    </b>
@@ -849,191 +1290,50 @@ The
   </dd>
   <dt>
    <b>
-    -z
+    -?
+   </b>
+   ,
+   <b>
+    --help
    </b>
   </dt>
   <dd>
-   Change the reporting timezone to the local timezone at the host that is
-the source of the performance metrics, as identified via either the
-   <i>
-    metricname
-   </i>
-   or the
-   <b>
-    -h
-   </b>
-   or
-   <b>
-    -a
-   </b>
-   or
-   <b>
-    -U
-   </b>
-   options.
+   Display usage message and exit.
   </dd>
- </dl>
- <p>
-  The following symbols may occasionally appear, in place of a metric value, in
-  <b>
-   pmval
-  </b>
-  output:  A question mark symbol (?) indicates that a value is no
-longer available for that metric instance.  An exclamation mark (!)
-indicates that a 64-bit counter wrapped during the sample.
- </p>
- <p>
-  The output from
-  <b>
-   pmval
-  </b>
-  is directed to standard output.
-  <a name="lbAE">
-  </a>
- </p>
- <h2>
-  FILES
- </h2>
- <dl compact="">
   <dt>
    <b>
-    $PCP_VAR_DIR/pmns/
+    --container
    </b>
+   =
    <i>
-    *
+    container
    </i>
   </dt>
   <dd>
-   default PMNS specification files
+   Specify an individual
+   <i>
+    container
+   </i>
+   to be queried.
+  </dd>
+  <dt>
+   <b>
+    --derived
+   </b>
+   =
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   Load derived metric definitions from
+   <i>
+    file
+   </i>
+   .
   </dd>
  </dl>
  <a name="lbAF">
- </a>
- <h2>
-  PCP ENVIRONMENT
- </h2>
- Environment variables with the prefix
- <b>
-  PCP_
- </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
- <i>
-  /etc/pcp.conf
- </i>
- contains the local values for these variables.
-The
- <b>
-  $PCP_CONF
- </b>
- variable may be used to specify an alternative
-configuration file,
-as described in
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5).
- <a name="lbAG">
- </a>
- <h2>
-  SEE ALSO
- </h2>
- <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmcd.1.html">
-   pmcd
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmchart.1.html">
-   pmchart
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmdumplog.1.html">
-   pmdumplog
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmdumptext.1.html">
-   pmdumptext
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pminfo.1.html">
-   pminfo
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogger.1.html">
-   pmlogger
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmrep.1.html">
-   pmrep
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmtime.1.html">
-   pmtime
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man3/pmapi.3.html">
-   PMAPI
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmstore.3.html">
-   pmStore
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man3/pmspeclocalpmda.3.html">
-   pmSpecLocalPMDA
-  </a>
- </b>
- (3),
- <b>
-  <a href="/man/man5/pcp.conf.5.html">
-   pcp.conf
-  </a>
- </b>
- (5)
-
-and
- <b>
-  <a href="/man/man5/pcp.env.5.html">
-   pcp.env
-  </a>
- </b>
- (5).
- <a name="lbAH">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All are generated on standard error and are intended to be self-explanatory.
- <a name="lbAI">
  </a>
  <h2>
   CAVEATS
@@ -1045,7 +1345,8 @@ and
  attempts to display non-integer numeric values in a way that does not distort the
 inherent precision (rarely more than 4 significant
 digits), and tries to maintain a tabular format in
-the output.  These goals are sometimes in conflict.
+the output.
+These goals are sometimes in conflict.
  <p>
   In the absence of the
   <b>
@@ -1175,6 +1476,147 @@ which
    </tr>
   </table>
  </center>
+ <a name="lbAG">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-explanatory.
+ <a name="lbAH">
+ </a>
+ <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+ <i>
+  /etc/pcp.conf
+ </i>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5).
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAI">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumplog.1.html">
+   pmdumplog
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmdumptext.1.html">
+   pmdumptext
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmtime.1.html">
+   pmtime
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmstore.3.html">
+   pmStore
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmspeclocalpmda.3.html">
+   pmSpecLocalPMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </b>
+ (5),
+ <b>
+  <a href="/man/man5/pcp.env.5.html">
+   pcp.env
+  </a>
+ </b>
+ (5)
+
+and
+ <b>
+  <a href="/man/man5/pmns.5.html">
+   PMNS
+  </a>
+ </b>
+ (5).
  <p>
  </p>
  <hr/>
@@ -1207,35 +1649,35 @@ which
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    CAVEATS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    SEE ALSO
-   </a>
-  </dt>
-  <dd>
-  </dd>
-  <dt>
-   <a href="#lbAH">
     DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
+   <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
    <a href="#lbAI">
-    CAVEATS
+    SEE ALSO
    </a>
   </dt>
   <dd>

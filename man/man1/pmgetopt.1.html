@@ -72,11 +72,12 @@
  </b>
  [
  <b>
-  -c
+  -u?
  </b>
- |
+ ]
+[
  <b>
-  --config
+  -c
  </b>
  <i>
   file
@@ -86,22 +87,9 @@
  <b>
   -p
  </b>
- |
- <b>
-  --progname
- </b>
  <i>
   name
  </i>
- ]
-[
- <b>
-  -u
- </b>
- |
- <b>
-  --usage
- </b>
  ]
 [
  <b>
@@ -136,23 +124,34 @@ It is also used to generate usage messages for those scripts.
   itself are passed in, and terminated using the -- mechanism.
 Thereafter, all of the parameters passed into the shell script
 should be passed (usually this is simply the "$@" variable).
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  The options specific to
-  <b>
-   pmgetopt
-  </b>
-  are as follows:
- </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The options specific to
+ <b>
+  pmgetopt
+ </b>
+ are as follows:
  <dl compact="">
   <dt>
    <b>
     -c
    </b>
+   =
+   <i>
+    file
+   </i>
    ,
    <b>
     --config
    </b>
+   =
+   <i>
+    file
+   </i>
   </dt>
   <dd>
    A configuration
@@ -174,10 +173,18 @@ If this option is omitted, then
    <b>
     -p
    </b>
+   =
+   <i>
+    name
+   </i>
    ,
    <b>
     --progname
    </b>
+   =
+   <i>
+    name
+   </i>
   </dt>
   <dd>
    When parsing the calling shell scripts parameters, error and usage
@@ -205,6 +212,22 @@ messages will contain the given program
 present as its own can be generated using the
 option.
   </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display the usage message for
+   <b>
+    pmgetopt
+   </b>
+   itself and exit.
+  </dd>
  </dl>
  <p>
   <b>
@@ -222,9 +245,9 @@ If arguments are presented that do not match the configuration,
 a request for a usage message (-?) will be generated for the
 calling script to respond to.
 Any non-option parameters will be echoed back to the calling
-script preceded by the double-hyphen delimiter.  Thus a script
-should stop handling options when this delimiter is detected,
-and begin the handling of any non-option arguments.
+script preceded by the double-hyphen delimiter.
+Thus a script should stop handling options when this delimiter
+is detected, and begin the handling of any non-option arguments.
  </p>
  <p>
   Unlike with the shell built-in
@@ -246,7 +269,7 @@ shell built-in
    shift
   </i>
   commands to ensure option processing occurs correctly.
-  <a name="lbAE">
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -328,7 +351,7 @@ accepts an argument, both short and long option forms, and so on).
 argument to any option, for both short and long forms.
 Any non-standard option must be accompanied by a non-empty description
 of that argument.
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -406,7 +429,7 @@ and
   (1)
 
 scripts provide good reference examples.
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -416,9 +439,10 @@ scripts provide good reference examples.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -428,15 +452,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   SEE ALSO
@@ -505,27 +528,34 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    CONFIGURATION
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    EXAMPLES
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    PCP ENVIRONMENT
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

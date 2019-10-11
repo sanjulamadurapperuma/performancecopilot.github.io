@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -dfFIlLmMstTvxz
+  -dfFIlLmMstTvxz?
  </b>
  ]
 [
@@ -149,6 +149,11 @@
  </i>
  ]
 [
+ <b>
+  --container
+ </b>
+ ]
+[
  <i>
   metricname
  </i>
@@ -171,65 +176,6 @@
  </b>
  displays various types of information about performance metrics
 available through the facilities of the Performance Co-Pilot (PCP).
- <p>
-  Normally
-  <b>
-   pminfo
-  </b>
-  operates on the distributed Performance Metrics Name Space (PMNS),
-however if the
-  <b>
-   -n
-  </b>
-  /
-  <b>
-   --namespace
-  </b>
-  option is
-specified an alternative local PMNS is loaded from the file
-  <i>
-   pmnsfile.
-  </i>
-  The
-  <b>
-   -N
-  </b>
-  /
-  <b>
-   --uniqnames
-  </b>
-  option supports the same function
-as
-  <b>
-   -n
-  </b>
-  /
-  <b>
-   --namespace
-  </b>
-  , except for the handling of
-duplicate names for the same Performance Metric Identifier (PMID) in
-  <i>
-   pmnsfile
-  </i>
-  - duplicate names are allowed with
-  <b>
-   -n
-  </b>
-  /
-  <b>
-   --namespace
-  </b>
-  but they are not allowed with
-  <b>
-   -N
-  </b>
-  /
-  <b>
-   --uniqnames
-  </b>
-  .
- </p>
  <p>
   The metrics of interest are named in the
   <i>
@@ -256,8 +202,8 @@ If no
   <i>
    metricname
   </i>
-  argument is in numeric dotted notation,
-it is interpreted as either a 3-dotted
+  argument is in numeric dotted notation, it is interpreted as
+either a 3-dotted
   <i>
    pmid
   </i>
@@ -278,63 +224,43 @@ In the
   case, the instance domain is reported directly.
 This latter mode can be used to report the instance domain
 ``one line'' and long form help text summaries.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  Unless directed to another host by the
-  <b>
-   -h
-  </b>
-  /
-  <b>
-   --host
-  </b>
-  option, by default
-  <b>
-   pminfo
-  </b>
-  will contact the Performance Metrics Collector Daemon
+ <h2>
+  OPTIONS
+ </h2>
+ Unless directed to another host by the
+ <b>
+  -h
+ </b>
+ option, by default
+ <b>
+  pminfo
+ </b>
+ will contact the Performance Metrics Collector Daemon
 (PMCD) on the local host.
 The connection to a PMCD is only required if
-  <b>
-   pminfo
-  </b>
-  requires distributed PMNS information, and/or meta-data
+ <b>
+  pminfo
+ </b>
+ requires distributed PMNS information, and/or meta-data
 describing metrics, and/or metric values, and/or help text.
- </p>
  <p>
   The
   <b>
    -a
-  </b>
-  /
-  <b>
-   --archive
   </b>
   option causes
   <b>
    pminfo
   </b>
   to use the specified set of archives rather than connecting to a PMCD.
-The argument to
-  <b>
-   -a
-  </b>
-  /
-  <b>
-   --archive
-  </b>
-  is a comma-separated list
-of names, each of which may be the base name of an archive or the
-name of a directory containing one or more archives.
  </p>
  <p>
   The
   <b>
    -L
-  </b>
-  /
-  <b>
-   --local-PMDA
   </b>
   option causes
   <b>
@@ -347,60 +273,70 @@ Only some metrics are available in this mode.
  <p>
   The
   <b>
-   -a
-  </b>
-  /
-  <b>
-   --archive
-  </b>
-  ,
-  <b>
-   -h
-  </b>
-  /
-  <b>
-   --host
+   -a, -h
   </b>
   and
   <b>
    -L
   </b>
-  /
-  <b>
-   --local-PMDA
-  </b>
   options are mutually exclusive.
  </p>
  <p>
-  The
-  <b>
-   -b
-  </b>
-  /
-  <b>
-   --batch
-  </b>
-  option may be used to define the
-maximum size of the group of metrics to be fetched in a single
-request for the
-  <b>
-   -f/--fetch
-  </b>
-  and
-  <b>
-   -v/--verify
-  </b>
-  options.
-The default value for
-  <i>
-   batchsize
-  </i>
-  is 128.
- </p>
- <p>
-  Other options control the specific information to be reported.
+  The available command line options are:
  </p>
  <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
+  </dt>
+  <dd>
+   Performance metric values are retrieved from the set of Performance
+Co-Pilot (PCP) archive log files identified by the
+   <i>
+    archive
+   </i>
+   argument, which is a comma-separated list of names,
+each of which may be the base name of an archive or the name of
+a directory containing one or more archives.
+  </dd>
+  <dt>
+   <b>
+    -b
+   </b>
+   ,
+   <b>
+    --batch
+   </b>
+  </dt>
+  <dd>
+   This option may be used to define the maximum number of metrics
+to be fetched in a single request for the
+   <b>
+    -f
+   </b>
+   and
+   <b>
+    -v
+   </b>
+   options.
+The default value for
+   <i>
+    batchsize
+   </i>
+   is 128.
+  </dd>
   <dt>
    <b>
     -c
@@ -435,12 +371,8 @@ The
    <b>
     -c
    </b>
-   /
-   <b>
-    --derived
-   </b>
-   option provides a way to load derived metric definitions
-that is an alternative to the more generic use of the
+   option provides a way to load derived metric
+definitions that is an alternative to the more generic use of the
    <b>
     PCP_DERIVED_CONFIG
    </b>
@@ -455,10 +387,6 @@ that is an alternative to the more generic use of the
 Using the
    <b>
     -c
-   </b>
-   /
-   <b>
-    --derived
    </b>
    option and the
    <b>
@@ -494,15 +422,11 @@ scale and associated instance domain.
   </dt>
   <dd>
    Fetch and print values for all instances.
-When fetching from a set of archives, only
-those instances present in the first archive record for a metric will be
-displayed; see also the
+When fetching from a set of archives, only those instances present in the
+first archive record for a metric will be displayed;
+see also the
    <b>
     -O
-   </b>
-   /
-   <b>
-    --origin
    </b>
    option, else use
    <b>
@@ -531,6 +455,39 @@ which may be a better tool for examining archives.
    but try harder to fetch instances for metrics which have non-enumerable
 instance domains (e.g. metrics in the ``proc'' subtree of the default
 PMNS on some platforms).
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Fetch performance metrics from
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+on
+   <i>
+    host
+   </i>
+   ,
+
+rather than from the default localhost.
   </dd>
   <dt>
    <b>
@@ -563,11 +520,10 @@ PMNS on some platforms).
   <dd>
    When using the
    <b>
-    -L/--local-PMDA
+    -L/
    </b>
-   option to fetch metrics from
-a local context, this option controls the DSO PMDAs that should be made
-accessible.
+   option to fetch metrics from a local context,
+this option controls the DSO PMDAs that should be made accessible.
 The
    <i>
     spec
@@ -583,10 +539,6 @@ The
 More than one
    <b>
     -K
-   </b>
-   /
-   <b>
-    --spec-local
    </b>
    option may be used.
   </dd>
@@ -635,6 +587,81 @@ Labels are optional metric metadata described in detail in
   </dd>
   <dt>
    <b>
+    -n
+   </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   Normally
+   <b>
+    pminfo
+   </b>
+   operates on the distributed Performance Metrics Name Space (PMNS),
+however if the
+   <b>
+    -n
+   </b>
+   option is specified an alternative local
+PMNS is loaded from the file
+   <i>
+    pmnsfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -N
+   </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --uniqnames
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   The
+   <b>
+    -N
+   </b>
+   option supports the same function as
+   <b>
+    -n
+   </b>
+   , except
+for the handling of duplicate names for the same Performance Metric
+Identifier (PMID) in
+   <i>
+    pmnsfile
+   </i>
+   - duplicate names are allowed with
+   <b>
+    -n
+   </b>
+   but they are not
+allowed with
+   <b>
+    -N
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
     -O
    </b>
    <i>
@@ -653,7 +680,7 @@ Labels are optional metric metadata described in detail in
    When used in conjunction with an archive source of metrics and the
 options
    <b>
-    -f/--fetch
+    -f/
    </b>
    , the
    <i>
@@ -709,7 +736,7 @@ See also
 
 and the
    <b>
-    -l/--labels
+    -l
    </b>
    option.
   </dd>
@@ -831,8 +858,36 @@ processed that is of type PM_TYPE_EVENT or PM_TYPE_HIGHRES_EVENT, then
 the event records will be unpacked and the details of each event record
 reported.
   </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+  <dt>
+   <b>
+    --container
+   </b>
+   =
+   <i>
+    container
+   </i>
+  </dt>
+  <dd>
+   Specify an individual
+   <i>
+    container
+   </i>
+   to be queried.
+  </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   FILES
@@ -850,7 +905,7 @@ reported.
    default local PMNS specification files
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -859,9 +914,10 @@ reported.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -871,16 +927,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -933,6 +997,12 @@ as described in
  </b>
  (3),
  <b>
+  <a href="/man/man3/pmgetoptions.3.html">
+   pmGetOptions
+  </a>
+ </b>
+ (3),
+ <b>
   <a href="/man/man3/pmlookuplabels.3.html">
    pmLookupLabels
   </a>
@@ -966,7 +1036,7 @@ as described in
 and
  <b>
   <a href="/man/man5/pmns.5.html">
-   pmns
+   PMNS
   </a>
  </b>
  (5).
@@ -1002,20 +1072,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

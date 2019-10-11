@@ -61,42 +61,27 @@
  <b>
   pcp-tapestat
  </b>
- - performance metrics i/o tape statistics tool
+ - report tape I/O statistics
  <a name="lbAC">
  </a>
  <h2>
   SYNOPSIS
  </h2>
  <b>
-  pcp-tapestat
+  pcp
+ </b>
+ [
+ <i>
+  pcp options
+ </i>
+ ]
+ <b>
+  tapestat
  </b>
  [
  <b>
-  -A
+  -u
  </b>
- <i>
-  align
- </i>
- <b>
-  --align=
- </b>
- <i>
-  TIME
- </i>
- ]
-[
- <b>
-  -a
- </b>
- <i>
-  archive
- </i>
- <b>
-  --archive=
- </b>
- <i>
-  FILE
- </i>
  ]
 [
  <b>
@@ -104,96 +89,6 @@
  </b>
  <i>
   method
- </i>
- <b>
-  --aggregate=
- </b>
- <i>
-  method
- </i>
- ]
-[
- <b>
-  -h
- </b>
- <i>
-  host
- </i>
- <b>
-  --host=
- </b>
- <i>
-  HOST
- </i>
- ]
-[
- <b>
-  -O
- </b>
- <i>
-  offset
- </i>
- <b>
-  --origin=
- </b>
- <i>
-  TIME
- </i>
- ]
-[
- <b>
-  -S
- </b>
- <i>
-  starttime
- </i>
- <b>
-  --start=
- </b>
- <i>
-  TIME
- </i>
- ]
-[
- <b>
-  -s
- </b>
- <i>
-  samples
- </i>
- <b>
-  --samples=
- </b>
- <i>
-  N
- </i>
- ]
-[
- <b>
-  -T
- </b>
- <i>
-  endtime
- </i>
- <b>
-  --finish=
- </b>
- <i>
-  TIME
- </i>
- ]
-[
- <b>
-  -t
- </b>
- <i>
-  interval
- </i>
- <b>
-  --interval=
- </b>
- <i>
-  DELTA
  </i>
  ]
 [
@@ -203,12 +98,6 @@
  <i>
   precision
  </i>
- <b>
-  --precision=
- </b>
- <i>
-  N
- </i>
  ]
 [
  <b>
@@ -217,50 +106,6 @@
  <i>
   pattern
  </i>
- <b>
-  --regex=
- </b>
- <i>
-  pattern
- </i>
- ]
-[
- <b>
-  -u
- </b>
- <b>
-  --no-interpolate
- </b>
- ]
-[
- <b>
-  -Z
- </b>
- <i>
-  timezone
- </i>
- <b>
-  --timezone=
- </b>
- <i>
-  TZ
- </i>
- ]
-[
- <b>
-  -z
- </b>
- <b>
-  --hostzone
- </b>
- ]
-[
- <b>
-  -?
- </b>
- <b>
-  --help
- </b>
  ]
 [
  <b>
@@ -275,40 +120,69 @@
  <b>
   pcp-tapestat
  </b>
- reports I/O statistics for tape devices 
-By default
- <b>
-  pcp-tapestat
- </b>
- reports live data for the local host but can also report for a remote host (
- <b>
-  -h
- </b>
- ) or from a previously captured PCP archive (
- <b>
-  -a
- </b>
- ).
+ reports I/O statistics for tape devices.
  <p>
-  The
+  When invoked via the
   <b>
-   -S
+   <a href="/man/man1/pcp.1.html">
+    pcp
+   </a>
+  </b>
+  (1)
+
+command, the
+  <b>
+   -a
+  </b>
+  /
+  <b>
+   --archive
   </b>
   ,
   <b>
-   -T
+   -h
+  </b>
+  /
+  <b>
+   --host
   </b>
   ,
   <b>
    -O
   </b>
-  and
+  /
   <b>
-   -A
+   --origin
   </b>
-  options may be used to define a time window to restrict the
-samples retrieved, set an initial origin within the time window,
-or specify a ``natural'' alignment of the sample times; refer to
+  ,
+  <b>
+   -s
+  </b>
+  /
+  <b>
+   --samples
+  </b>
+  ,
+  <b>
+   -t
+  </b>
+  /
+  <b>
+   --interval
+  </b>
+  ,
+  <b>
+   -Z
+  </b>
+  /
+  <b>
+   --timezone
+  </b>
+  and several other
+  <i>
+   pcp options
+  </i>
+  become indirectly available; refer to
   <b>
    <a href="/man/man1/pcpintro.1.html">
     PCPIntro
@@ -317,44 +191,38 @@ or specify a ``natural'' alignment of the sample times; refer to
   (1)
 
 for a complete description of these options.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  The other options which control the source, timing and layout of the information
+ <h2>
+  OPTIONS
+ </h2>
+ The options which control the timing and layout of the information
 reported by
-  <b>
-   pcp-tapestat
-  </b>
-  are as follows:
- </p>
+ <b>
+  pcp-tapestat
+ </b>
+ are as follows:
  <dl compact="">
-  <dt>
-   <b>
-    -a
-   </b>
-  </dt>
-  <dd>
-   Performance metric values are retrieved from the Performance Co-Pilot (PCP)
-archive log files identified by the argument
-   <i>
-    archive
-   </i>
-   ,
-
-which is a comma-separated list of
-names, each of which may be the base name of an archive or the name of a
-directory containing one or more archives. See also
-   <b>
-    -u
-   </b>
-   .
-  </dd>
   <dt>
    <b>
     -G
    </b>
+   <i>
+    method
+   </i>
+   ,
+   <b>
+    --aggregate
+   </b>
+   =
+   <i>
+    method
+   </i>
   </dt>
   <dd>
-   Specifies that statistics for device names matching the regular expression specified with the
+   Specifies that statistics for device names matching the regular
+expression specified with the
    <b>
     -R
    </b>
@@ -367,7 +235,8 @@ directory containing one or more archives. See also
    </i>
    .
 
-Note this is aggregation based on matching device names (not temporal aggregation).
+Note this is aggregation based on matching device names (not
+temporal aggregation).
 When
    <b>
     -G
@@ -445,7 +314,8 @@ If
    <b>
     avg
    </b>
-   then the statistics are summed and then averaged by dividing by the number of matching device names.
+   then the statistics are summed and then averaged by dividing by the
+number of matching device names.
 If
    <i>
     method
@@ -460,131 +330,32 @@ If
    </b>
    ,
 
-the minimum or maximum statistics for matching devices are reported, respectfully.
-  </dd>
-  <dt>
-   <b>
-    -h
-   </b>
-  </dt>
-  <dd>
-   Current performance metric values are retrieved from the nominated
-   <i>
-    host
-   </i>
-   machine.
-  </dd>
-  <dt>
-   <b>
-    -s
-   </b>
-  </dt>
-  <dd>
-   The argument
-   <i>
-    samples
-   </i>
-   defines the number of samples to be retrieved and reported.
-If
-   <i>
-    samples
-   </i>
-   is 0 or
-   <b>
-    -s
-   </b>
-   is not specified,
-   <b>
-    pcp-tapestat
-   </b>
-   will sample and report continuously (in real time mode) or until the end
-of the set of PCP archives (in archive mode).
-  </dd>
-  <dt>
-   <b>
-    -t
-   </b>
-  </dt>
-  <dd>
-   The default update
-   <i>
-    interval
-   </i>
-   may be set to something other than the
-default 1 second.
-The
-   <i>
-    interval
-   </i>
-   argument follows the syntax described in
-   <b>
-    <a href="/man/man1/pcpintro.1.html">
-     PCPIntro
-    </a>
-   </b>
-   (1),
-
-and in the simplest form may be an unsigned integer (the implied
-units in this case are seconds).
-The
-   <b>
-    -t
-   </b>
-   option is particularly useful when replaying large sets of
-archives (
-   <b>
-    -a
-   </b>
-   option) that span several hours or even days.
-In this case specifying a large
-   <i>
-    interval
-   </i>
-   (e.g. 1h for 1 hour)
-will reduce the volume of data reported and the tape i/o statistics will be averaged (interpolated) over
-the reporting interval (unless the
-   <b>
-    -u
-   </b>
-   option is specified, see below).
-  </dd>
-  <dt>
-   <b>
-    -R
-   </b>
-  </dt>
-  <dd>
-   This restricts the report to device names matching
-   <i>
-    regex
-   </i>
-   .
-
-The
-   <i>
-    regex
-   </i>
-   pattern is searched as a perl style regular expression, and will match any portion of a device name.
-e.g. '^st[0-9]+' will match all device names starting with 'st' followed by one or more numbers.
-e.g. '^st(0|1)$' will only match 'st0' and 'st1'.
-e.g. 'st0$' will match 'st0' but not 'st1'.
-See also the
-   <b>
-    -G
-   </b>
-   option for aggregation options.
+the minimum or maximum statistics for matching devices are reported,
+respectively.
   </dd>
   <dt>
    <b>
     -P
    </b>
-  </dt>
-  <dd>
-   This indicates the number of decimals to print. The default precision
    <i>
     N
    </i>
-   may be set to something other than the default 2 decimals.
+   ,
+   <b>
+    --precision
+   </b>
+   =
+   <i>
+    N
+   </i>
+  </dt>
+  <dd>
+   This indicates the precision (number of decimal places) to report.
+The default precision
+   <i>
+    N
+   </i>
+   may be set to something other than the default (2).
 Note that the
    <b>
     avgrq-sz
@@ -598,27 +369,70 @@ Note that the
     N
    </i>
    +1 decimals of precision.
-These fields typically have values less than 1.0.
+These fields typically have values less than 1.
+  </dd>
+  <dt>
+   <b>
+    -R
+   </b>
+   <i>
+    pattern
+   </i>
+   ,
+   <b>
+    --regex
+   </b>
+   =
+   <i>
+    pattern
+   </i>
+  </dt>
+  <dd>
+   This restricts the report to device names matching a regular expression
+   <i>
+    pattern
+   </i>
+   .
+
+The given
+   <i>
+    pattern
+   </i>
+   is searched as a perl style regular expression, and will match any
+portion of a device name.
+e.g. '^st[0-9]+' will match all device names starting with 'st'
+followed by one or more numbers.
+e.g. '^st(0|1)$' will only match 'st0' and 'st1'.
+e.g. 'st0$' will match 'st0' but not 'st1'.
+See also the
+   <b>
+    -G
+   </b>
+   option for aggregation options.
   </dd>
   <dt>
    <b>
     -u
    </b>
+   ,
+   <b>
+    --no-interpolation
+   </b>
   </dt>
   <dd>
    When replaying a set of archives, by default values are reported
-according to the selected sample interval (
+according to the requested sample interval (
    <b>
     -t
    </b>
-   option), not according to the actual record intervals in the set of archives.
-To this effect PCP interpolates the values to be reported based on the
-records in the set of archives, and is particularly useful when the
+   option), not according to the actual interval recorded in the archive(s).
+Without this option PCP interpolates the values to be reported based on the
+records in the set of archives, which is particularly useful when the
    <b>
     -t
    </b>
-   option is used to replay a set of archives with a longer sampling interval than
-the underlying interval the set of archives was originally recorded with.
+   option is used to replay a set of archives with a longer sampling interval
+than that with which the archive(s) was originally recorded with.
 With the
    <b>
     -u
@@ -640,11 +454,18 @@ In addition,
    <b>
     -u
    </b>
-   only makes sense when replaying a set of archives, see
+   only makes sense when replaying archives, see the
    <b>
     -a
    </b>
-   above,
+   option on
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1),
+
 and so if
    <b>
     -u
@@ -657,70 +478,15 @@ and so if
   </dd>
   <dt>
    <b>
-    -Z
-   </b>
-  </dt>
-  <dd>
-   By default,
-   <b>
-    pcp-tapestat
-   </b>
-   reports the time of day according to the local timezone on the
-system where
-   <b>
-    pcp-tapestat
-   </b>
-   is run.
-The
-   <b>
-    -Z
-   </b>
-   option changes the timezone to
-   <i>
-    timezone
-   </i>
-   in the format of the environment variable
-   <b>
-    TZ
-   </b>
-   as described in
-   <b>
-    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-     environ
-    </a>
-   </b>
-   (7).
-  </dd>
-  <dt>
-   <b>
-    -z
-   </b>
-  </dt>
-  <dd>
-   Change the reporting timezone to the local timezone at the host that is
-the source of the performance metrics, as identified via either the
-   <b>
-    -h
-   </b>
-   or
-   <b>
-    -a
-   </b>
-   options.
-When replaying a PCP archive that was captured in a foreign timezone, the
-   <b>
-    -z
-   </b>
-   option would almost always be used (the default reporting timezone is the local timezone,
-which may not be the same as the timezone of the PCP archive).
-  </dd>
-  <dt>
-   <b>
     -x
    </b>
+   <i>
+    comma-separated-options
+   </i>
   </dt>
   <dd>
-   Specifies a comma separated list of one or more extended reporting options as follows:
+   Specifies a comma-separated list of one or more extended reporting
+options as follows:
    <br/>
    <b>
     t
@@ -744,7 +510,7 @@ which may not be the same as the timezone of the PCP archive).
    - Do not display statistics for idle devices.
   </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   REPORT
@@ -753,7 +519,7 @@ which may not be the same as the timezone of the PCP archive).
  <b>
   pcp-tapestat
  </b>
- report have the following interpretation :
+ report have the following interpretation:
  <dl compact="">
   <dt>
    <b>
@@ -765,7 +531,8 @@ which may not be the same as the timezone of the PCP archive).
    <b>
     -x t
    </b>
-   option is specified, this column is the timestamp in
+   option is specified, this column is the timestamp
+in
    <b>
     <a href="http://man7.org/linux/man-pages/man3/ctime.3.html">
      ctime
@@ -779,7 +546,7 @@ which may not be the same as the timezone of the PCP archive).
    </b>
   </dt>
   <dd>
-   Specifies the tape device name
+   Specifies the tape device name.
 When
    <b>
     -G
@@ -800,7 +567,8 @@ When
    </b>
   </dt>
   <dd>
-   The number of reads issued expressed as the number per second averaged over the interval.
+   The number of reads issued expressed as the number per second averaged
+over the interval.
   </dd>
   <dt>
    <b>
@@ -808,7 +576,8 @@ When
    </b>
   </dt>
   <dd>
-   The number of writes issued expressed as the number per second averaged over the interval.
+   The number of writes issued expressed as the number per second averaged
+over the interval.
   </dd>
   <dt>
    <b>
@@ -816,7 +585,8 @@ When
    </b>
   </dt>
   <dd>
-   The amount of data read expressed in kilobytes per second averaged over the interval.
+   The amount of data read expressed in kilobytes per second averaged
+over the interval.
   </dd>
   <dt>
    <b>
@@ -824,7 +594,8 @@ When
    </b>
   </dt>
   <dd>
-   The amount of data written expressed in kilobytes per second averaged over the interval.
+   The amount of data written expressed in kilobytes per second averaged
+over the interval.
   </dd>
   <dt>
    <b>
@@ -832,8 +603,10 @@ When
    </b>
   </dt>
   <dd>
-   Read percentage wait - The percentage of time over the interval spent waiting for read requests to complete. 
-The time is measured from when the request is dispatched to the SCSI mid-layer until it signals that it completed.
+   Read percentage wait - the percentage of time over the interval spent
+waiting for read requests to complete.
+The time is measured from when the request is dispatched to the SCSI
+mid-layer until it signals that it completed.
   </dd>
   <dt>
    <b>
@@ -841,8 +614,10 @@ The time is measured from when the request is dispatched to the SCSI mid-layer u
    </b>
   </dt>
   <dd>
-   Write percentage wait - The percentage of time over the interval spent waiting for write requests to complete. 
-The time is measured from when the request is dispatched to the SCSI mid-layer until it signals that it completed.
+   Write percentage wait - the percentage of time over the interval spent
+waiting for write requests to complete.
+The time is measured from when the request is dispatched to the SCSI
+mid-layer until it signals that it completed.
   </dd>
   <dt>
    <b>
@@ -850,8 +625,8 @@ The time is measured from when the request is dispatched to the SCSI mid-layer u
    </b>
   </dt>
   <dd>
-   Overall percentage wait  - The percentage of time over the interval spent waiting for any I/O request to 
-complete (read, write, and other).
+   Overall percentage wait - the percentage of time over the interval
+spent waiting for any I/O request to complete (read, write, and other).
   </dd>
   <dt>
    <b>
@@ -867,31 +642,22 @@ complete (read, write, and other).
    </b>
   </dt>
   <dd>
-   The  number of I/Os, expressed as the number per second averaged over the interval, that were included as "other". 
-Other I/O includes ioctl calls made to the tape driver and implicit operations performed by the tape driver such as 
-rewind on close (for tape devices that implement rewind on close). 
-It does not include any I/O performed using methods outside of the tape driver (e.g. via sg ioctls).
-  </dd>
- </dl>
- <a name="lbAF">
- </a>
- <h2>
-  FILES
- </h2>
- <dl compact="">
-  <dt>
-   <b>
-    $PCP_VAR_DIR/pmns/
-   </b>
-   <i>
-    *
-   </i>
-  </dt>
-  <dd>
-   default PMNS specification files
+   The  number of I/Os, expressed as the number per second averaged
+over the interval, that were included as "other".
+Other I/O includes ioctl calls made to the tape driver and implicit
+operations performed by the tape driver such as
+rewind on close (for tape devices that implement rewind on close).
+It does not include any I/O performed using methods outside of the
+tape driver (e.g. via sg ioctls).
   </dd>
  </dl>
  <a name="lbAG">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-explanatory.
+ <a name="lbAH">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -900,9 +666,10 @@ It does not include any I/O performed using methods outside of the tape driver (
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -912,16 +679,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAH">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAI">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -969,12 +744,6 @@ and
   </a>
  </b>
  (5).
- <a name="lbAI">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All are generated on standard error and are intended to be self-explanatory.
  <p>
  </p>
  <hr/>
@@ -1007,35 +776,35 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    REPORT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    FILES
+    REPORT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    PCP ENVIRONMENT
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    SEE ALSO
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    DIAGNOSTICS
+    SEE ALSO
    </a>
   </dt>
   <dd>

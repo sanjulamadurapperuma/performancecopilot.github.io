@@ -336,7 +336,7 @@ visual feedback to the user.
    <b>
     -c
    </b>
-   or
+   ,
    <b>
     -center
    </b>
@@ -682,6 +682,22 @@ The corresponding resource is
    </b>
    .
   </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    -h
+   </b>
+   ,
+   <b>
+    -help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
  </dl>
  <a name="lbAE">
  </a>
@@ -721,8 +737,11 @@ terminal with an ssh session connected to the requested host.
  <b>
   pmquery
  </b>
- is an excellent choice of utility for the "PCP_XCONFIRM_PROG"
-Performance Co-Pilot configuration parameter (refer to
+ is an excellent choice of utility for the
+ <b>
+  PCP_XCONFIRM_PROG
+ </b>
+ Performance Co-Pilot configuration parameter (refer to
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
@@ -732,7 +751,11 @@ Performance Co-Pilot configuration parameter (refer to
 
 for details).
  <p>
-  Note that PCP_XCONFIRM_PROG will be automatically set to
+  Note that
+  <b>
+   PCP_XCONFIRM_PROG
+  </b>
+  will be automatically set to
   <b>
    pmquery
   </b>
@@ -742,7 +765,11 @@ for details).
   </b>
   ,
 
-unless PCP_XCONFIRM_PROG is already set in the environment.
+unless
+  <b>
+   PCP_XCONFIRM_PROG
+  </b>
+  is already set in the environment.
   <a name="lbAG">
   </a>
  </p>
@@ -783,6 +810,8 @@ zero on success.
   </a>
  </b>
  (1),
+
+and
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf

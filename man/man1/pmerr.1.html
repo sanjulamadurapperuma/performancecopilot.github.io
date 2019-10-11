@@ -70,6 +70,11 @@
  <b>
   pmerr
  </b>
+ [
+ <b>
+  -?
+ </b>
+ ]
  <i>
   code
  </i>
@@ -111,17 +116,41 @@ by either ``0x'' or ``0X''.
   </i>
   is a positive number, a warning message is produced, and the
 negated value is used.
- </p>
- <p>
-  The alternative use of the
-  <b>
-   -l
-  </b>
-  option causes all known error codes to be listed, along with their
-symbolic names and error text.
   <a name="lbAE">
   </a>
  </p>
+ <h2>
+  OPTIONS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    -l
+   </b>
+   ,
+   <b>
+    --list
+   </b>
+  </dt>
+  <dd>
+   This alternative invocation causes all known error codes to be
+listed, along with their symbolic names and error text.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
  <h2>
   PCP ENVIRONMENT
  </h2>
@@ -129,9 +158,10 @@ symbolic names and error text.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -141,15 +171,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   SEE ALSO
@@ -212,13 +241,20 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP ENVIRONMENT
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>
