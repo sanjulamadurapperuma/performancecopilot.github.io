@@ -70,92 +70,145 @@
  <b>
   pmdapostgresql
  </b>
- is a Performance Co-Pilot
- <font size="-1">
-  PMDA
- </font>
- which extracts
-live performance data from a running PostgreSQL database server.
+ is a Performance Co-Pilot (PCP) Performance Metrics
+Domain Agent (PMDA) which extracts live performance data from a running
+PostgreSQL database server.
  <p>
-  Many of the staticstics available from a PostgreSQL server may not
+  Many of the statistics available from a PostgreSQL server may not
 be enabled by default.
-Refer to the online documentation at
-  <i>
-   <a href="https://www.postgresql.org/docs/current/static/monitoring-stats.html">
-    https://www.postgresql.org/docs/current/static/monitoring-stats.html
-   </a>
-  </i>
-  which describes each of the available parameters related to statistics
+Refer to the online documentation
+
+
+which describes each of the available parameters related to statistics
 collection and how to enable them.
   <a name="lbAD">
   </a>
  </p>
  <h2>
-  INSTALLATION
+  CONFIGURATION
  </h2>
  <b>
   pmdapostgresql
  </b>
- uses a configuration file from
- <tt>
-  $PCP_PMDAS_DIR
- </tt>
- /postgresql/postgresql.conf
+ reads a mandatory ini-style configuration file:
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+  </dt>
+  <dd>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /postgresql/postgresql.conf
+  </dd>
+ </dl>
  <p>
   This file currently contains only one section
   <b>
    [authentication]
   </b>
-  which specifies values for the following default settings:
+  which specifies values for the following settings
+(their default values are shown in parenthesis):
  </p>
  <dl compact="">
   <dt>
-   •
+   <b>
+    host
+   </b>
+   (
+   <i>
+    local
+   </i>
+   )
   </dt>
   <dd>
-   host - hostname, [default: 'local']
+   Hostname to connect to.
   </dd>
   <dt>
-   •
+   <b>
+    port
+   </b>
+   (
+   <i>
+    5432
+   </i>
+   )
   </dt>
   <dd>
-   port - port number, [default: '5432']
+   Port number to use.
   </dd>
   <dt>
-   •
+   <b>
+    dbname
+   </b>
+   (
+   <i>
+    postgres
+   </i>
+   )
   </dt>
   <dd>
-   dbname - database name, [default: 'postgres']
+   Database name.
   </dd>
   <dt>
-   •
+   <b>
+    username
+   </b>
+   (
+   <i>
+    postgres
+   </i>
+   )
   </dt>
   <dd>
-   username - username to run as and to connect to the database [default: 'postgres']
+   Username to run as and to connect to the database.
   </dd>
   <dt>
-   •
+   <b>
+    password
+   </b>
+   (
+   <i>
+    password
+   </i>
+   )
   </dt>
   <dd>
-   password - password to connect to the database [default: 'password']
+   Password to connect to the database.
   </dd>
   <dt>
-   •
+   <b>
+    osuser
+   </b>
+   (unset)
   </dt>
   <dd>
-   osuser - operating system user the PMDA runs as [default: not set]
+   Operating system user the PMDA runs as.
   </dd>
  </dl>
  <p>
-  The defaults (as above) will result in the PMDA running as the
-current user, using a UNIX domain socket connection to the PostgreSQL server on the localhost.
-If
+  The defaults (as above) will result in the PMDA running as the current
+user, using a UNIX domain socket connection to the PostgreSQL server on
+the localhost.
+ </p>
+ <p>
+  If
   <b>
    osuser
   </b>
-  is not specified in the configuration file, the PMDA will run as the current user.
-A host specification of "local" will use a UNIX domain socket, which uses peer authentication,
-see comments in the
+  is not specified in the configuration file, the PMDA will run as the
+current user.
+A host specification of
+  <i>
+   local
+  </i>
+  will use a UNIX domain socket, which
+uses peer authentication, see comments in the
   <b>
    pg_hba.conf
   </b>
@@ -171,64 +224,92 @@ In this case, the
   .
  </p>
  <p>
-  It is generally not necessary to alter the default configuration file for monitoring
-the local PostgreSQL server instance with a default server configuration.
-Note the port number is required even for a UNIX domain
-connection because it's used as the socket filename by the server.
+  It is generally not necessary to alter the default configuration file
+for monitoring the local PostgreSQL server instance with a default
+server configuration.
+Note that the port number is required even for a UNIX domain connection
+because it's used as the socket filename by the server.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  INSTALLATION
+ </h2>
+ To install, the following must be done as root:
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/postgresql
+# ./Install
+</pre>
+  </dd>
+ </dl>
+ <p>
+  To uninstall, the following must be done as root:
  </p>
  <p>
-  Once this is setup, you can access the names and values for the
-postgresql performance metrics by doing the following as root:
  </p>
- <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/postgresql
-  <br/>
-  <br/>
-  # ./Install
- </p>
- <p>
-  To uninstall, do the following as root:
- </p>
- <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/postgresql
-  <br/>
-  <br/>
-  # ./Remove
- </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/postgresql
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   <b>
    pmdapostgresql
   </b>
   is launched by
-  <i>
+  <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </i>
-  (1) and should never be executed 
-directly. The Install and Remove scripts notify
-  <i>
+  </b>
+  (1) and should never be
+executed directly.
+The
+  <b>
+   Install
+  </b>
+  and
+  <b>
+   Remove
+  </b>
+  scripts notify
+  <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </i>
-  (1) when the 
-agent is installed or removed.
+  </b>
+  (1) when
+the agent is installed or removed.
  </p>
  <p>
   <b>
    pmdapostgresql
   </b>
-  will automatically attempt to reconnect to the PostgreSQL server
-if it's connection is lost - e.g. if the PostgreSQL service is restarted.
-  <a name="lbAE">
+  will automatically attempt to reconnect to the
+PostgreSQL server if its connection is lost - e.g. if the PostgreSQL
+service is restarted.
+  <a name="lbAF">
   </a>
  </p>
  <h2>
   SUPPORTED VERSIONS
  </h2>
+ This version of
  <b>
   pmdapostgresql
  </b>
@@ -242,27 +323,34 @@ Later versions will probably also work correctly because the PMDA
 probes the various performance tables on start-up to determine the
 column ordering.
 It also tolerates missing or renamed tables and/or columns.
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   FILES
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/postgresql/pmdapostgresql.conf
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /postgresql/pmdapostgresql.conf
   </dt>
   <dd>
-   configuration file for
+   configuration file for the
    <b>
     pmdapostgresql
    </b>
+   agent
   </dd>
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/postgresql/Install
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /postgresql/Install
   </dt>
   <dd>
    installation script for the
@@ -272,9 +360,12 @@ It also tolerates missing or renamed tables and/or columns.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/postgresql/Remove
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /postgresql/Remove
   </dt>
   <dd>
    undo installation script for the
@@ -284,19 +375,23 @@ It also tolerates missing or renamed tables and/or columns.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/postgresql.log
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_LOG_DIR
+   </tt>
+   /pmcd/postgresql.log
   </dt>
   <dd>
-   default log file for error messages from
+   default log file for messages from the
    <b>
     pmdapostgresql
    </b>
+   agent
   </dd>
  </dl>
  <p>
-  Note the usual/default value for
+  Note that the usual/default value for
   <b>
    $PCP_PMDAS_DIR
   </b>
@@ -313,7 +408,7 @@ It also tolerates missing or renamed tables and/or columns.
    /var/log/pcp
   </b>
   but these settings are platform dependent.
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -324,29 +419,26 @@ It also tolerates missing or renamed tables and/or columns.
   PCP_
  </b>
  are used to parameterize
-the file and directory names used by
- <b>
-  PCP
- </b>
- . On each installation, the
+the file and directory names used by PCP.
+On each installation, the
 file
- <b>
+ <i>
   /etc/pcp.conf
- </b>
- contains the local values for these variables. 
+ </i>
+ contains the local values for these variables.
 The
  <b>
   $PCP_CONF
  </b>
- variable may be used to specify an alternative 
+ variable may be used to specify an alternative
 configuration file, as described in
- <i>
+ <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
- </i>
+ </b>
  (5).
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   SEE ALSO
@@ -359,17 +451,12 @@ configuration file, as described in
  (1),
  <b>
   <a href="/man/man1/pmcd.1.html">
-   PMCD
+   pmcd
   </a>
  </b>
  (1)
 
 and
- <b>
-  <a href="https://www.postgresql.org/docs/current/static/monitoring-stats.html">
-   https://www.postgresql.org/docs/current/static/monitoring-stats.html
-  </a>
- </b>
  <p>
  </p>
  <hr/>
@@ -395,34 +482,41 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    INSTALLATION
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    SUPPORTED VERSIONS
+    INSTALLATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    FILES
+    SUPPORTED VERSIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

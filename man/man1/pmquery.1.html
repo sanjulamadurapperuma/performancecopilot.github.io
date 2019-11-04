@@ -285,16 +285,16 @@ but wherever possible the original semantics remain.
   <b>
    -t
   </b>
-  argument specified (or a file when the
+  option specified (or a file when the
   <b>
    -file
   </b>
-  argument is used),
+  option is used),
 and a button for each
   <b>
    -b
   </b>
-  argument specified.
+  option specified.
 When one of the buttons is pressed, the label of that button is written to
   <b>
    pmquery's
@@ -325,12 +325,15 @@ In this
   </b>
   mode, any text entered will be output when the default button is pressed.
 A default text can be entered using the same mechanisms as the other tools.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  Command line options are available to specify font style, frame style,
+ <h2>
+  OPTIONS
+ </h2>
+ Command line options are available to specify font style, frame style,
 modality and one of several different icons to be presented for tailored
 visual feedback to the user.
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -376,7 +379,7 @@ If no
    <b>
     -b
    </b>
-   arguments are present, the default is a button with the label Continue.
+   options are present, the default is a button with the label Continue.
 The exit status associated with
    <i>
     button-name
@@ -416,7 +419,7 @@ The exit status associated with
    <i>
     button
    </i>
-   argument.
+   option.
 Each
    <i>
     button
@@ -623,7 +626,7 @@ It is the default behaviour for
    </i>
   </dt>
   <dd>
-   This provides xconfirm with an X-compatible geometry string specification.
+   This provides the tool with an X-compatible geometry string specification.
 This option is only available when using the X Window System.
   </dd>
   <dt>
@@ -699,7 +702,7 @@ The corresponding resource is
    Display usage message and exit.
   </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   EXAMPLES
@@ -729,7 +732,7 @@ terminal with an ssh session connected to the requested host.
  [ "$host" = "Cancel" -o -z "$host" ] &amp;&amp; exit
  gnome-terminal -e "ssh $host"
 </pre>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   ENVIRONMENT
@@ -770,7 +773,7 @@ unless
    PCP_XCONFIRM_PROG
   </b>
   is already set in the environment.
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -787,7 +790,7 @@ Unless
  </i>
  option has not been used, the return code will be
 zero on success.
- <a name="lbAH">
+ <a name="lbAI">
  </a>
  <h2>
   SEE ALSO
@@ -797,19 +800,7 @@ zero on success.
    pmchart
   </a>
  </b>
- (1),
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/xconfirm.1.html">
-   xconfirm
-  </a>
- </b>
- (1),
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/xmessage.1.html">
-   xmessage
-  </a>
- </b>
- (1),
+ (1)
 
 and
  <b>
@@ -850,27 +841,34 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    ENVIRONMENT
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    EXIT STATUS
+    ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
+    EXIT STATUS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

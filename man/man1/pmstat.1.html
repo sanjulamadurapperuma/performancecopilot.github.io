@@ -97,16 +97,8 @@
   </b>
   [
   <b>
-   -gLlPxz
+   -gLlPxz?
   </b>
-  ]
-[
-  <b>
-   -A
-  </b>
-  <i>
-   align
-  </i>
   ]
 [
   <b>
@@ -114,6 +106,14 @@
   </b>
   <i>
    archive
+  </i>
+  ]
+[
+  <b>
+   -A
+  </b>
+  <i>
+   align
   </i>
   ]
 [
@@ -158,14 +158,6 @@
   ]
 [
   <b>
-   -S
-  </b>
-  <i>
-   starttime
-  </i>
-  ]
-[
-  <b>
    -s
   </b>
   <i>
@@ -174,10 +166,10 @@
   ]
 [
   <b>
-   -T
+   -S
   </b>
   <i>
-   endtime
+   starttime
   </i>
   ]
 [
@@ -186,6 +178,14 @@
   </b>
   <i>
    interval
+  </i>
+  ]
+[
+  <b>
+   -T
+  </b>
+  <i>
+   endtime
   </i>
   ]
 [
@@ -254,38 +254,13 @@ each line contain one host name, with
   flags (for retrospective monitoring from sets of archives).
  </p>
  <p>
-  The
-  <b>
-   -t
-  </b>
-  option may be used to change the default reporting
-  <i>
-   interval
-  </i>
-  .
-
-The
-  <i>
-   interval
-  </i>
-  argument follows the syntax described in
-  <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
-   </a>
-  </b>
-  (1),
-
-and in the simplest form may be an unsigned integer (the implied
-units in this case are seconds).
- </p>
- <p>
   By default,
   <b>
    pmstat
   </b>
   fetches metrics by connecting to the Performance Metrics Collector
-Daemon (PMCD) on the local host.  If the
+Daemon (PMCD) on the local host.
+If the
   <b>
    -L
   </b>
@@ -386,48 +361,6 @@ a host name, and nominating a host precludes using an archive, so the options
   are mutually exclusive.
  </p>
  <p>
-  Normally
-  <b>
-   pmstat
-  </b>
-  operates on the default Performance Metrics Name Space (PMNS), however
-if the
-  <b>
-   -n
-  </b>
-  option is specified an alternative namespace is loaded
-from the file
-  <i>
-   pmnsfile
-  </i>
-  .
- </p>
- <p>
-  If the
-  <b>
-   -s
-  </b>
-  the option is specified,
-  <i>
-   samples
-  </i>
-  defines the number of samples to be retrieved and reported.
-If
-  <i>
-   samples
-  </i>
-  is 0 or
-  <b>
-   -s
-  </b>
-  is not specified,
-  <b>
-   pmstat
-  </b>
-  will sample and report continuously - this is the default behavior.
- </p>
- <p>
-  When processing a set of archives,
   <b>
    pmstat
   </b>
@@ -472,7 +405,11 @@ instance, or
   </b>
   (1)
 
-instance via the IPC channel identified by the port argument.
+instance via the IPC channel identified by the
+  <i>
+   port
+  </i>
+  argument.
  </p>
  <p>
   The
@@ -502,35 +439,606 @@ or specify a ``natural'' alignment of the sample times; refer to
   (1)
 
 for a complete description of these options.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  The
-  <b>
-   -l
-  </b>
-  option prints the last 7 characters of a hostname in summaries involving
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -a
+   </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
+  </dt>
+  <dd>
+   Performance metric values are retrieved from the set of Performance
+Co-Pilot (PCP) archive log files identified by the
+   <i>
+    archive
+   </i>
+   argument, which is a comma-separated list of names,
+each of which may be the base name of an archive or the name of
+a directory containing one or more archives.
+  </dd>
+  <dt>
+   <b>
+    -A
+   </b>
+   <i>
+    align
+   </i>
+   ,
+   <b>
+    --align
+   </b>
+   =
+   <i>
+    align
+   </i>
+  </dt>
+  <dd>
+   Force the initial sample to be
+aligned on the boundary of a natural time unit
+   <i>
+    align
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    align
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -g
+   </b>
+   ,
+   <b>
+    --guimode
+   </b>
+  </dt>
+  <dd>
+   Start
+   <b>
+    pmstat
+   </b>
+   as the slave of a new
+   <b>
+    <a href="/man/man1/pmtime.1.html">
+     pmtime
+    </a>
+   </b>
+   (1)
+
+process for replay of archived performance data using the
+   <b>
+    <a href="/man/man1/pmtime.1.html">
+     pmtime
+    </a>
+   </b>
+   (1)
+
+graphical user interface.
+  </dd>
+  <dt>
+   <b>
+    -h
+   </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
+  </dt>
+  <dd>
+   Fetch performance metrics from
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+on
+   <i>
+    host
+   </i>
+   ,
+
+rather than from the default localhost.
+  </dd>
+  <dt>
+   <b>
+    -H
+   </b>
+   <i>
+    path
+   </i>
+   ,
+   <b>
+    --hostsfile
+   </b>
+   =
+   <i>
+    path
+   </i>
+  </dt>
+  <dd>
+   Specify the
+   <i>
+    path
+   </i>
+   to a file containing a set of hostnames where
+   <b>
+    <a href="/man/man1/pmcd.1.html">
+     pmcd
+    </a>
+   </b>
+   (1)
+
+is running ,
+rather than using the default localhost.
+  </dd>
+  <dt>
+   <b>
+    -K
+   </b>
+   <i>
+    spec
+   </i>
+   ,
+   <b>
+    --spec-local
+   </b>
+   =
+   <i>
+    spec
+   </i>
+  </dt>
+  <dd>
+   When fetching metrics from a local context (see
+   <b>
+    -L
+   </b>
+   ),
+
+the
+   <b>
+    -K
+   </b>
+   option may be used to control the DSO PMDAs that should be made accessible.
+The
+   <i>
+    spec
+   </i>
+   argument conforms to the syntax described in
+   <b>
+    <a href="/man/man3/pmspeclocalpmda.3.html">
+     pmSpecLocalPMDA
+    </a>
+   </b>
+   (3).
+
+More than one
+   <b>
+    -K
+   </b>
+   option may be used.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   ,
+   <i>
+    --suffix
+   </i>
+  </dt>
+  <dd>
+   Prints the last 7 characters of a hostname in summaries involving
 more than one host (when more than one
-  <b>
-   -h
-  </b>
-  option has been specified on the command line).
- </p>
- <p>
-  The
-  <b>
-   -x
-  </b>
-  option (extended CPU metrics) causes two additional CPU metrics to be
+   <b>
+    -h
+   </b>
+   option has been specified on the command line).
+  </dd>
+  <dt>
+   <b>
+    -L
+   </b>
+   ,
+   <b>
+    --local-PMDA
+   </b>
+  </dt>
+  <dd>
+   Use a local context to collect metrics from DSO PMDAs on the local host
+without PMCD.
+See also
+   <b>
+    -K
+   </b>
+   .
+  </dd>
+  <dt>
+   <b>
+    -n
+   </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
+  </dt>
+  <dd>
+   Load an alternative Performance Metrics Name Space
+(
+   <b>
+    <a href="/man/man5/pmns.5.html">
+     PMNS
+    </a>
+   </b>
+   (5))
+
+from the file
+   <i>
+    pmnsfile
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -O
+   </b>
+   <i>
+    origin
+   </i>
+   ,
+   <b>
+    --origin
+   </b>
+   =
+   <i>
+    origin
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, start reporting at
+   <i>
+    origin
+   </i>
+   within the time window (see
+   <b>
+    -S
+   </b>
+   and
+   <b>
+    -T
+   </b>
+   ).
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    origin
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   <i>
+    port
+   </i>
+   ,
+   <b>
+    --guiport
+   </b>
+   =
+   <i>
+    port
+   </i>
+  </dt>
+  <dd>
+   Attach
+   <b>
+    pmstat
+   </b>
+   to an existing
+   <b>
+    <a href="/man/man1/pmtime.1.html">
+     pmtime
+    </a>
+   </b>
+   (1)
+
+time control process instance via the IPC channel identified by the
+   <i>
+    port
+   </i>
+   argument.
+This option is normally only used by other tools, e.g.
+   <b>
+    <a href="/man/man1/pmchart.1.html">
+     pmchart
+    </a>
+   </b>
+   (1),
+
+when they launch
+   <b>
+    pmstat
+   </b>
+   with synchronized time control.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    samples
+   </i>
+   ,
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    samples
+   </i>
+  </dt>
+  <dd>
+   The
+   <i>
+    samples
+   </i>
+   option defines the number of samples to be retrieved and reported.
+If
+   <i>
+    samples
+   </i>
+   is 0 or
+   <b>
+    -s
+   </b>
+   is not specified,
+   <b>
+    pmstat
+   </b>
+   will sample and report continuously - this is the default behavior.
+  </dd>
+  <dt>
+   <b>
+    -S
+   </b>
+   <i>
+    starttime
+   </i>
+   ,
+   <b>
+    --start
+   </b>
+   =
+   <i>
+    starttime
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, the report will be restricted to those
+records logged at or after
+   <i>
+    starttime
+   </i>
+   .
+
+Refer to
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1)
+
+for a complete description of the syntax for
+   <i>
+    starttime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Set the reporting
+   <i>
+    interval
+   </i>
+   to something other than the default 1 second.
+The
+   <i>
+    interval
+   </i>
+   argument follows the syntax described in
+   <b>
+    <a href="/man/man1/pcpintro.1.html">
+     PCPIntro
+    </a>
+   </b>
+   (1),
+
+and in the simplest form may be an unsigned integer
+(the implied units in this case are seconds).
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   <i>
+    endtime
+   </i>
+   ,
+   <b>
+    --finish
+   </b>
+   =
+   <i>
+    endtime
+   </i>
+  </dt>
+  <dd>
+   When reporting archived metrics, the report will be restricted to those
+records logged before or at
+   <i>
+    endtime
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   ,
+   <i>
+    --xcpu
+   </i>
+  </dt>
+  <dd>
+   The extended CPU metrics option, causes two additional CPU metrics to be
 reported, namely wait for I/O ("wa") and virtualisation steal time ("st").
- </p>
- <p>
-  The output from
-  <b>
-   pmstat
-  </b>
-  is directed to standard output, and the columns
+  </dd>
+  <dt>
+   <b>
+    -z
+   </b>
+   ,
+   <b>
+    --hostzone
+   </b>
+  </dt>
+  <dd>
+   Change the reporting timezone to the local timezone at the host
+that is the source of the performance metrics, as identified via
+either the
+   <b>
+    -h
+   </b>
+   or
+   <b>
+    -a
+   </b>
+   options.
+  </dd>
+  <dt>
+   <b>
+    -Z
+   </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
+  </dt>
+  <dd>
+   By default,
+   <b>
+    pmtime
+   </b>
+   reports the time of day according to the local timezone on the system
+where
+   <b>
+    pmstat
+   </b>
+   is run.
+The
+   <b>
+    -Z
+   </b>
+   option changes the timezone to
+   <i>
+    timezone
+   </i>
+   in the format of the environment variable TZ as described in
+   <b>
+    <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
+     environ
+    </a>
+   </b>
+   (7).
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  OUTPUT
+ </h2>
+ The output from
+ <b>
+  pmstat
+ </b>
+ is directed to standard output, and the columns
 in the report are interpreted as follows:
- </p>
  <p>
  </p>
  <dl compact="">
@@ -609,7 +1117,8 @@ or Gbytes
   </dt>
   <dd>
    The metrics in this area of the kernel instrumentation are of
-varying value.  We try to report the average number of
+varying value.
+We try to report the average number of
    <b>
     pages
    </b>
@@ -788,56 +1297,15 @@ system and interrupt processing code (
  <p>
   If any values for the associated performance metrics are unavailable,
 the value appears as ``?'' in the output.
- </p>
- <p>
-  By default,
-  <b>
-   pmstat
-  </b>
-  reports the time of day according to the local timezone on the
-system where
-  <b>
-   pmstat
-  </b>
-  is run.
-The
-  <b>
-   -Z
-  </b>
-  option changes the timezone to
-  <i>
-   timezone
-  </i>
-  in the format of the environment variable
-  <b>
-   TZ
-  </b>
-  as described in
-  <b>
-   <a href="http://man7.org/linux/man-pages/man7/environ.7.html">
-    environ
-   </a>
-  </b>
-  (7).
-
-The
-  <b>
-   -z
-  </b>
-  option changes the timezone to the local timezone at the
-host that is the source of the performance metrics, as identified via
-either the
-  <b>
-   -h
-  </b>
-  or
-  <b>
-   -a
-  </b>
-  options.
-  <a name="lbAE">
+  <a name="lbAG">
   </a>
  </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All are generated on standard error and are intended to be self-explanatory.
+ <a name="lbAH">
+ </a>
  <h2>
   FILES
  </h2>
@@ -872,7 +1340,7 @@ configuration for creating an archive suitable for replay with
    </b>
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAI">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -901,7 +1369,7 @@ as described in
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAJ">
  </a>
  <h2>
   SEE ALSO
@@ -956,12 +1424,6 @@ and
   </a>
  </b>
  (5).
- <a name="lbAH">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All are generated on standard error, and are intended to be self-explanatory.
  <p>
  </p>
  <hr/>
@@ -994,28 +1456,42 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    OUTPUT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    SEE ALSO
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    DIAGNOSTICS
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    SEE ALSO
    </a>
   </dt>
   <dd>

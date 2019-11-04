@@ -180,7 +180,8 @@ These are
    .index
   </b>
   (a temporal index to improve efficiency of replay
-operations for the archive).  If any of these files exists already,
+operations for the archive).
+If any of these files exists already,
 then
   <b>
    sar2pcp
@@ -220,8 +221,6 @@ A Python wrapper module is also available.
  <h2>
   NOTES
  </h2>
- <a name="ixAAB">
- </a>
  As of
  <b>
   sysstat
@@ -237,7 +236,8 @@ directly write
  <font size="-1">
   PCP
  </font>
- archive files.  To produce archive files from sar run:
+ archive files.
+To produce archive files from sar run:
  <p>
  </p>
  <pre>
@@ -250,8 +250,6 @@ $ sadf -l -O pcparchive=ARCHIVE_NAME sar.dat -- -A
  <h2>
   CAVEATS
  </h2>
- <a name="ixAAC">
- </a>
  When not using the
  <font size="-1">
   XML
@@ -326,8 +324,8 @@ version of
   <b>
    sadc
   </b>
-  that originally generated the binary files.  Simply
-assuming a newer installed version will work is unfortunately far too
+  that originally generated the binary files.
+Simply assuming a newer installed version will work is unfortunately far too
 optimistic, and nor should one assume that binary data from different
 platforms (e.g. different endianness) will work - these issues are due
 to limitations in
@@ -385,7 +383,8 @@ any valid
   <font size="-1">
    PCP
   </font>
-  archive.  Any version of
+  archive.
+Any version of
   <font size="-1">
    PCP
   </font>
@@ -415,9 +414,10 @@ different hardware, even different operating systems - it Just Works (
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -427,16 +427,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAH">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>

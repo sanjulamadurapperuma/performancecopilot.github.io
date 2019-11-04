@@ -42,7 +42,7 @@
 <div class='manpage'>
 ﻿
  <h1>
-  PMDAnetcheck
+  PMDANETCHECK
  </h1>
  Section: User Commands  (1)
  <br/>
@@ -70,9 +70,10 @@
  <b>
   pmdanetcheck
  </b>
- is a Performance Metrics Domain Agent (PMDA) which does
-basic network checks on the local host by using simple Python modules and,
-in some cases, external utilities such as
+ is a Performance Co-Pilot (PCP) Performance Metrics
+Domain Agent (PMDA) which does basic network checks on the local host by
+using simple Python modules and, in some cases, external utilities such
+as
  <b>
   <a href="/man/man1/ping.1.html">
    ping
@@ -315,14 +316,18 @@ Each
    [module]
   </i>
   section can contain at least the following options
-(their default values shown are in parenthesis):
+(their default values are shown in parenthesis):
  </p>
  <dl compact="">
   <dt>
    <b>
     timeout
    </b>
-   (1)
+   (
+   <i>
+    1
+   </i>
+   )
   </dt>
   <dd>
    Force a hard
@@ -572,8 +577,27 @@ the value is
    agent
   </dd>
  </dl>
- <a name="lbAG">
- </a>
+ <p>
+  Note that the usual/default value for
+  <b>
+   $PCP_PMDAS_DIR
+  </b>
+  is
+  <b>
+   /var/lib/pcp/pmdas
+  </b>
+  and the default for
+  <b>
+   $PCP_LOG_DIR
+  </b>
+  is
+  <b>
+   /var/log/pcp
+  </b>
+  but these settings are platform dependent.
+  <a name="lbAG">
+  </a>
+ </p>
  <h2>
   PCP ENVIRONMENT
  </h2>

@@ -70,13 +70,161 @@
  <b>
   pmdabpftrace
  </b>
- is a Performance Co-Pilot
- <font size="-1">
-  PMDA
- </font>
- which exports
-metrics from bpftrace scripts.
+ is a Performance Co-Pilot (PCP) Performance Metrics
+Domain Agent (PMDA) which exports metrics from
+ <b>
+  <a href="/man/man8/bpftrace.8.html">
+   bpftrace
+  </a>
+ </b>
+ (8)
+
+scripts.
  <a name="lbAD">
+ </a>
+ <h2>
+  CONFIGURATION
+ </h2>
+ <b>
+  pmdabpftrace
+ </b>
+ reads an optional ini-style configuration file:
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+  </dt>
+  <dd>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bpftrace/bpftrace.conf
+  </dd>
+ </dl>
+ <p>
+  This file may contain
+  <b>
+   [authentication]
+  </b>
+  and
+  <b>
+   [bpftrace]
+  </b>
+  sections.
+Please refer to
+
+
+on how to setup authentication which is
+  <b>
+   highly recommended
+  </b>
+  as otherwise anyone could run any
+  <b>
+   <a href="/man/man8/bpftrace.8.html">
+    bpftrace
+   </a>
+  </b>
+  (8)
+
+script as
+  <b>
+   root
+  </b>
+  .
+ </p>
+ <p>
+  <b>
+   [authentication]
+  </b>
+  section specifies values for the following settings
+(their default values are shown in parenthesis):
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    enabled
+   </b>
+   (
+   <i>
+    True
+   </i>
+   )
+  </dt>
+  <dd>
+   A boolean value to specify whether authention is required or not.
+Please see the note above on authention setup.
+  </dd>
+  <dt>
+   <b>
+    allowed_users
+   </b>
+   (
+   <i>
+    root
+   </i>
+   )
+  </dt>
+  <dd>
+   A comma-separated list of usernames which are allowed to register
+   <b>
+    <a href="/man/man8/bpftrace.8.html">
+     bpftrace
+    </a>
+   </b>
+   (8)
+
+scripts.
+  </dd>
+ </dl>
+ <p>
+  <b>
+   [bpftrace]
+  </b>
+  section specifies values for the following settings
+(their default values are shown in parenthesis):
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    bpftrace_path
+   </b>
+   (
+   <i>
+    bpftrace
+   </i>
+   )
+  </dt>
+  <dd>
+   Path to the
+   <b>
+    <a href="/man/man8/bpftrace.8.html">
+     bpftrace
+    </a>
+   </b>
+   (8)
+
+executable.
+  </dd>
+  <dt>
+   <b>
+    script_expiry_time
+   </b>
+   (
+   <i>
+    60
+   </i>
+   )
+  </dt>
+  <dd>
+   Unnamed scripts are removed after this period of time (in seconds)
+in case there has been no requests for their values.
+  </dd>
+ </dl>
+ <a name="lbAE">
  </a>
  <h2>
   INSTALLATION
@@ -141,7 +289,7 @@ The
   </b>
   (1) when
 the agent is installed or removed.
-  <a name="lbAE">
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -149,9 +297,12 @@ the agent is installed or removed.
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/bpftrace/bpftrace.conf
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bpftrace/bpftrace.conf
   </dt>
   <dd>
    configuration file for the
@@ -161,9 +312,12 @@ the agent is installed or removed.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/bpftrace/Install
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bpftrace/Install
   </dt>
   <dd>
    installation script for the
@@ -173,9 +327,12 @@ the agent is installed or removed.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/bpftrace/Remove
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /bpftrace/Remove
   </dt>
   <dd>
    undo installation script for the
@@ -185,12 +342,15 @@ the agent is installed or removed.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/bpftrace.log
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_LOG_DIR
+   </tt>
+   /pmcd/bpftrace.log
   </dt>
   <dd>
-   default log file for error messages from the
+   default log file for messages from the
    <b>
     pmdabpftrace
    </b>
@@ -198,7 +358,7 @@ the agent is installed or removed.
   </dd>
  </dl>
  <p>
-  Note the usual/default value for
+  Note that the usual/default value for
   <b>
    $PCP_PMDAS_DIR
   </b>
@@ -215,7 +375,7 @@ the agent is installed or removed.
    /var/log/pcp
   </b>
   but these settings are platform dependent.
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -226,15 +386,12 @@ the agent is installed or removed.
   PCP_
  </b>
  are used to parameterize
-the file and directory names used by
- <b>
-  PCP
- </b>
- . On each installation, the
+the file and directory names used by PCP.
+On each installation, the
 file
- <b>
+ <i>
   /etc/pcp.conf
- </b>
+ </i>
  contains the local values for these variables.
 The
  <b>
@@ -242,13 +399,13 @@ The
  </b>
  variable may be used to specify an alternative
 configuration file, as described in
- <i>
+ <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
- </i>
+ </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -298,27 +455,34 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    INSTALLATION
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    INSTALLATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

@@ -72,8 +72,16 @@
  </b>
  [
  <b>
-  -CFGHilmMNoruXz
+  -CFGHilmMNoruXz?
  </b>
+ ]
+[
+ <b>
+  -a
+ </b>
+ <i>
+  archive
+ </i>
  ]
 [
  <b>
@@ -83,24 +91,6 @@
   align
  </i>
  ]
-[
- <b>
-  -a
- </b>
- <i>
-  archive
- </i>
- [
- <b>
-  ,
- </b>
- <i>
-  archive
- </i>
- <b>
-  ,
- </b>
- ...]]
 [
  <b>
   -c
@@ -251,14 +241,7 @@ prefixed by a timestamp.
   <b>
    pmdumptext
   </b>
-  will contact
-  <b>
-   <a href="/man/man1/pmcd.1.html">
-    pmcd
-   </a>
-  </b>
-  (1)
-
+  will contact the Performance Metrics Collector Daemon (PMCD)
 on the local host to obtain the required information.
  </p>
  <p>
@@ -269,7 +252,8 @@ on the local host to obtain the required information.
   <b>
    -i
   </b>
-  option which displays the values in equal width columns.  Without this option,
+  option which displays the values in equal width columns.
+Without this option,
 no attempt is made to line up any values allowing the output to be easily
 parsed by other applications.
  </p>
@@ -318,10 +302,11 @@ width format, respectively.
   .
 
 A metric consists of an optional source (host or archive), the metric name,
-and an optional instance list immediately after the name.  A colon is used to 
-separate a host name from the metric, and a forward slash (``/'') to 
-separate an archive name from the metric.  Instances are enclosed in square 
-brackets and a comma is used between each instance if more than one is stated.
+and an optional instance list immediately after the name.
+A colon is used to separate a host name from the metric,
+and a forward slash (``/'') to separate an archive name from the metric.
+Instances are enclosed in square brackets and a comma is used between each
+instance if more than one is stated.
 For example, some legal metrics are:
  </p>
  <p>
@@ -350,8 +335,9 @@ A normalization value may optionally follow a metric name in a
   </i>
   .
 
-The metric value will be scaled by this value.  For example, if the file
-system ``/dev/root'' has a capacity of 1965437 bytes, then the percentage of
+The metric value will be scaled by this value.
+For example, if the file system ``/dev/root'' has a capacity
+of 1965437 bytes, then the percentage of
 the file system that is used could be dumped with this
   <i>
    config
@@ -371,8 +357,8 @@ filesys.used[/dev/root] 19654.37
   specified as command line arguments.
  </p>
  <p>
-  A metric name is not required to be a leaf node in the Performance Metrics Name
-Space (PMNS), except when one or more instances are specified.
+  A metric name is not required to be a leaf node in the Performance Metrics
+Name Space (PMNS), except when one or more instances are specified.
 For example, to dump all file system metrics, only
   <i>
    filesys
@@ -413,7 +399,8 @@ For example, to dump all file system metrics, only
   -T
  </b>
  control the alignment, offset, start and end time when visualizing metrics
-from archives.  These options are common to most Performance Co-Pilot tools
+from archives.
+These options are common to most Performance Co-Pilot tools
 and are fully described in
  <b>
   <a href="/man/man1/pcpintro.1.html">
@@ -424,16 +411,25 @@ and are fully described in
  <p>
   The other available options are:
  </p>
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
     -a
    </b>
+   <i>
+    archive
+   </i>
+   ,
+   <b>
+    --archive
+   </b>
+   =
+   <i>
+    archive
+   </i>
   </dt>
   <dd>
-   Specify a set of
+   Specifies the historical
    <i>
     archive
    </i>
@@ -441,8 +437,9 @@ and are fully described in
    <i>
     archive
    </i>
-   is the name of a directory containing archives,
-or the basename of an archive, previously created by
+   is the full path to an individual archive file, or the
+name of a directory containing archives,
+or the basename of an archive - all previously created by
    <b>
     <a href="/man/man1/pmlogger.1.html">
      pmlogger
@@ -456,38 +453,25 @@ Multiple sets of archives (separated by commas or in different
    </b>
    options)
 from different hosts may be given, but only one set of archives per host is
-permitted.  Any metrics that are not associated with a specific host or archive
+permitted.
+Any metrics that are not associated with a specific host or archive
 will use the first archive as their source.
-  </dd>
-  <dt>
-   <b>
-    -C
-   </b>
-  </dt>
-  <dd>
-   Exit before dumping any values, but after parsing the metrics.  Metrics,
-instances, normals and units are listed if
-   <b>
-    -m
-   </b>
-   ,
-   <b>
-    -l
-   </b>
-   ,
-   <b>
-    -N
-   </b>
-   and/or
-   <b>
-    -u
-   </b>
-   are specified.
   </dd>
   <dt>
    <b>
     -c
    </b>
+   <i>
+    config
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    config
+   </i>
   </dt>
   <dd>
    If no
@@ -509,37 +493,85 @@ Unlike the command line
    </i>
    ,
 
-each metric may be followed by a normalization value.  Empty lines and
-lines that begin with ``#'' are ignored.
+each metric may be followed by a normalization value.
+Empty lines and lines that begin with ``#'' are ignored.
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+   ,
+   <b>
+    --check
+   </b>
+  </dt>
+  <dd>
+   Exit before dumping any values, but after parsing the metrics.
+Metrics, instances, normals and units are listed if
+   <b>
+    -m
+   </b>
+   ,
+   <b>
+    -l
+   </b>
+   ,
+   <b>
+    -N
+   </b>
+   and/or
+   <b>
+    -u
+   </b>
+   are specified.
   </dd>
   <dt>
    <b>
     -d
    </b>
+   <i>
+    delimiter
+   </i>
+   ,
+   <b>
+    --delimiter
+   </b>
+   =
+   <i>
+    delimiter
+   </i>
   </dt>
   <dd>
    Specify the
    <i>
     delimiter
    </i>
-   that separates each column of output.  The
+   that separates each column of output.
+The
    <i>
     delimiter
    </i>
    may only be a single character.
-  </dd>
-  <dt>
    <b>
     -f
    </b>
-  </dt>
-  <dd>
+   <i>
+    format
+   </i>
+   ,
+   <b>
+    --time-format
+   </b>
+   =
+   <i>
+    format
+   </i>
    Use the
    <i>
     format
    </i>
-   string for formatting the timestamp with each set of values.  The syntax of
-this string is the same as that described in
+   string for formatting the timestamp with each set of values.
+The syntax of this string is the same as that described in
    <b>
     <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
      strftime
@@ -557,10 +589,14 @@ An empty
    <b>
     -F
    </b>
+   ,
+   <b>
+    --fixed
+   </b>
   </dt>
   <dd>
-   Output the values in a fixed width format of 6 characters.  Positive
-numbers are represented as
+   Output the values in a fixed width format of 6 characters.
+Positive numbers are represented as
    <i>
     dd
    </i>
@@ -571,7 +607,8 @@ numbers are represented as
    <b>
     u
    </b>
-   and negative numbers as
+   and
+negative numbers as
    <b>
     [
    </b>
@@ -589,7 +626,8 @@ numbers are represented as
    <b>
     u
    </b>
-   .  The postfix multiplier may have the values
+   .
+The postfix multiplier may have the values
    <b>
     K
    </b>
@@ -616,6 +654,10 @@ are bytes.
    <b>
     -G
    </b>
+   ,
+   <b>
+    --scientific
+   </b>
   </dt>
   <dd>
    Output the values using the shortest of a scientific format or a decimal
@@ -625,6 +667,17 @@ notation.
    <b>
     -h
    </b>
+   <i>
+    host
+   </i>
+   ,
+   <b>
+    --host
+   </b>
+   =
+   <i>
+    host
+   </i>
   </dt>
   <dd>
    Fetch performance metrics from
@@ -647,9 +700,14 @@ rather than the default localhost.
    <b>
     -H
    </b>
+   ,
+   <b>
+    --headers
+   </b>
   </dt>
   <dd>
-   Show all headers before dumping any metric values.  This is equivalent to
+   Show all headers before dumping any metric values.
+This is equivalent to
    <b>
     -lmNu
    </b>
@@ -659,6 +717,10 @@ rather than the default localhost.
    <b>
     -i
    </b>
+   ,
+   <b>
+    --interactive
+   </b>
   </dt>
   <dd>
    Output the data in fixed width columns using fixed width values (see
@@ -667,11 +729,13 @@ rather than the default localhost.
    </b>
    )
 
-so that it is human-readable.  This option may not be used with
+so that it is human-readable.
+This option may not be used with
    <b>
     -P
    </b>
-   as fixed point values are not fixed width.  This option will also affect the
+   as fixed point values are not fixed width.
+This option will also affect the
 output of
    <b>
     -m
@@ -686,10 +750,16 @@ output of
    <b>
     -l
    </b>
+   ,
+   <b>
+    --source
+   </b>
   </dt>
   <dd>
-   Show the source of the metrics.  In interactive mode, the host of the metrics
-is shown.  In non-interactive mode, this option shows the source of
+   Show the source of the metrics.
+In interactive mode, the host of the metrics
+is shown.
+In non-interactive mode, this option shows the source of
 the metrics with the metric name even if
    <b>
     -m
@@ -700,9 +770,14 @@ the metrics with the metric name even if
    <b>
     -m
    </b>
+   ,
+   <b>
+    --metrics
+   </b>
   </dt>
   <dd>
-   Output the metric names before the metric values.  The source and units of 
+   Output the metric names before the metric values.
+The source and units of 
 the metrics may also be dumped with the
    <b>
     -l
@@ -712,7 +787,8 @@ the metrics may also be dumped with the
     -u
    </b>
    options 
-respectively.  If in interactive mode, the metrics names may be truncated,
+respectively.
+If in interactive mode, the metrics names may be truncated,
 and the instance names, where relevant, are also truncated on the follow
 line.
   </dd>
@@ -733,6 +809,17 @@ If the
    <b>
     -n
    </b>
+   <i>
+    pmnsfile
+   </i>
+   ,
+   <b>
+    --namespace
+   </b>
+   =
+   <i>
+    pmnsfile
+   </i>
   </dt>
   <dd>
    Load an alternative local PMNS from the file
@@ -744,6 +831,10 @@ If the
   <dt>
    <b>
     -o
+   </b>
+   ,
+   <b>
+    --offset
    </b>
   </dt>
   <dd>
@@ -769,28 +860,45 @@ the start of the set of archives or the beginning of the execution of
   </dd>
   <dt>
    <b>
-    -P
+    -p
    </b>
+   <i>
+    precision
+   </i>
+   ,
+   <b>
+    --precision
+   </b>
+   =
+   <i>
+    precision
+   </i>
   </dt>
   <dd>
    Set the
    <i>
     precision
    </i>
-   of the values.  This option may not be used with
+   of the values.
+This option may not be used with
    <b>
     -F
    </b>
-   as the precision is constant.  The default precision is 3.
+   as the precision is constant.
+The default precision is 3.
   </dd>
   <dt>
    <b>
     -r
    </b>
+   ,
+   <b>
+    --raw
+   </b>
   </dt>
   <dd>
-   Output the raw metric values, do not convert counters to rates.  This option
-also causes
+   Output the raw metric values, do not convert counters to rates.
+This option also causes
    <b>
     pmdumptext
    </b>
@@ -800,13 +908,25 @@ also causes
    <b>
     -R
    </b>
+   <i>
+    lines
+   </i>
+   ,
+   <b>
+    --repeat
+   </b>
+   =
+   <i>
+    lines
+   </i>
   </dt>
   <dd>
    Repeat the header every
    <i>
     lines
    </i>
-   of output.  This option is useful in interactive mode when using a
+   of output.
+This option is useful in interactive mode when using a
 graphical window to avoid the header scrolling beyond the window's buffer,
 and to realign the header if the window is resized.
   </dd>
@@ -814,6 +934,17 @@ and to realign the header if the window is resized.
    <b>
     -s
    </b>
+   <i>
+    samples
+   </i>
+   ,
+   <b>
+    --samples
+   </b>
+   =
+   <i>
+    samples
+   </i>
   </dt>
   <dd>
    <b>
@@ -825,13 +956,24 @@ and to realign the header if the window is resized.
    <b>
     -t
    </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --interval
+   </b>
+   =
+   <i>
+    interval
+   </i>
   </dt>
   <dd>
    The
    <i>
     interval
    </i>
-   argument follows the syntax described in
+   option follows the syntax described in
    <b>
     <a href="/man/man1/pcpintro.1.html">
      PCPIntro
@@ -841,16 +983,20 @@ and to realign the header if the window is resized.
 
 and in the simplest form may be an unsigned integer (the implied
 units in this case are seconds).
-The default interval is 1.0 seconds.
+The default interval is 1 second.
   </dd>
   <dt>
    <b>
     -u
    </b>
+   ,
+   <b>
+    --units
+   </b>
   </dt>
   <dd>
-   Output the units of the metrics before the first values, but after the metric
-names if
+   Output the units of the metrics before the first values, but after the
+metric names if
    <b>
     -m
    </b>
@@ -860,6 +1006,17 @@ names if
    <b>
     -U
    </b>
+   <i>
+    string
+   </i>
+   ,
+   <b>
+    --unavailable
+   </b>
+   =
+   <i>
+    string
+   </i>
   </dt>
   <dd>
    Change the output when values are unavailable to
@@ -874,9 +1031,20 @@ The default string is ``?''.
    <b>
     -w
    </b>
+   <i>
+    width
+   </i>
+   ,
+   <b>
+    --widthfR=
+   </b>
+   <i>
+    width
+   </i>
   </dt>
   <dd>
-   Set the column width of the output.  Strings will be truncated to this width,
+   Set the column width of the output.
+Strings will be truncated to this width,
 and maybe postfixed by ``...'' if the
    <i>
     width
@@ -887,18 +1055,22 @@ and maybe postfixed by ``...'' if the
    <b>
     -X
    </b>
+   ,
+   <b>
+    --extended
+   </b>
   </dt>
   <dd>
    Output the column number and complete metric names, one-per-line,
 both before dumping the first set of values and again each time the
 header is repeated.
-  </dd>
-  <dt>
    <b>
     -z
    </b>
-  </dt>
-  <dd>
+   ,
+   <b>
+    --hostzone
+   </b>
    Use the local timezone of the host that is the source of the 
 performance metrics, as identified by either the
    <b>
@@ -915,13 +1087,24 @@ The default is to use the timezone of the local host.
    <b>
     -Z
    </b>
+   <i>
+    timezone
+   </i>
+   ,
+   <b>
+    --timezone
+   </b>
+   =
+   <i>
+    timezone
+   </i>
   </dt>
   <dd>
    Use
    <i>
     timezone
    </i>
-   when displaying the date and time.
+   for the date and time.
    <i>
     Timezone
    </i>
@@ -937,6 +1120,18 @@ The default is to use the timezone of the local host.
    </b>
    (7).
   </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
  </dl>
  <a name="lbAF">
  </a>
@@ -946,8 +1141,8 @@ The default is to use the timezone of the local host.
  <b>
   pmdumptext
  </b>
- supports the dumping of metrics from multiple hosts or set of archives.  The metrics
-listed on the command line or in the
+ supports the dumping of metrics from multiple hosts or set of archives.
+The metrics listed on the command line or in the
  <i>
   config
  </i>
@@ -961,9 +1156,10 @@ are specified on the command line
   </b>
   )
 
-and/or in the configuration file.  Firstly, there may be only one set of
-archives for any one host.  Secondly, the hosts of any metrics with host sources
-must correspond to the host of a set of archives, either on the command line or
+and/or in the configuration file.
+Firstly, there may be only one set of archives for any one host.
+Secondly, the hosts of any metrics with host sources must correspond
+to the host of a set of archives, either on the command line or
 previously as the source of another metric.
  </p>
  <p>
@@ -983,7 +1179,8 @@ previously as the source of another metric.
   UNIT CONVERSION
  </h2>
  All metrics that have the semantics of counters are automatically converted to
-rates over the sample time interval.  In interactive mode,
+rates over the sample time interval.
+In interactive mode,
  <b>
   pmdumptext
  </b>
@@ -994,17 +1191,17 @@ comprehend:
    o
   </dt>
   <dd>
-   All metrics with space units (bytes to terabytes) are scaled to bytes.  Note
-that 1024 bytes with be represented as 1.02K, not 1.00K.
+   All metrics with space units (bytes to terabytes) are scaled to bytes.
+Note that 1024 bytes with be represented as 1.02K, not 1.00K.
   </dd>
   <dt>
    o
   </dt>
   <dd>
    Metrics that are counters with time units (nanoseconds to hours) represent time
-utilization over the sample interval.  The unit strings of such metrics is
-changed to ``Time Utilization'' or abbreviated to ``util'' and the values
-are normalized to the range zero to one.
+utilization over the sample interval.
+The unit strings of such metrics is changed to ``Time Utilization'' or
+abbreviated to ``util'' and the values are normalized to the range zero to one.
   </dd>
  </dl>
  <a name="lbAH">
@@ -1070,9 +1267,10 @@ $ pminfo -a archive | pmdumptext -t 30s -m -a archive &gt; outfile
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1082,31 +1280,27 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAK">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAK">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
- <b>
-  <a href="/man/man1/pmchart.1.html">
-   pmchart
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmtime.1.html">
-   pmtime
-  </a>
- </b>
- (1),
  <b>
   <a href="/man/man1/pcpintro.1.html">
    PCPIntro
@@ -1120,26 +1314,20 @@ as described in
  </b>
  (1),
  <b>
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
+  </a>
+ </b>
+ (1),
+ <b>
   <a href="/man/man1/pmlogger.1.html">
    pmlogger
   </a>
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmlogextract.1.html">
-   pmlogextract
-  </a>
- </b>
- (1),
- <b>
   <a href="/man/man1/pmrep.1.html">
    pmrep
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmval.1.html">
-   pmval
   </a>
  </b>
  (1),

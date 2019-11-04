@@ -74,7 +74,7 @@
  </b>
  [
  <b>
-  -Prs
+  -Prs?
  </b>
  ]
 [
@@ -473,7 +473,8 @@ replaced by the macro value, otherwise the word is unchanged.
  <p>
   There is generally one output line for each input line, although the line
 may be empty if the text has been stripped due to the handling of
-comments or conditional directives.  When there is a change in the input
+comments or conditional directives.
+When there is a change in the input
 stream, an additional output line is generated of the form:
  </p>
  <p>
@@ -494,28 +495,78 @@ stream, an additional output line is generated of the form:
    filename
   </i>
   .
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  The
-  <b>
-   -P
-  </b>
-  argument suppresses the generation of these linemarker lines.
- </p>
- <p>
-  The
-  <b>
-   -s
-  </b>
-  argument changes the expected input style from C-like to shell-like
-(where # is a comment prefix).  This forces the following changes
-in
-  <b>
-   pmcpp
-  </b>
-  behaviour:
- </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
+  <dt>
+   <b>
+    -D
+   </b>
+   <i>
+    name[=value]
+   </i>
+   ,
+   <b>
+    --define
+   </b>
+   =
+   <i>
+    name[=value]
+   </i>
+  </dt>
+  <dd>
+   Defines a macro with an optional value, as described earlier.
+  </dd>
+  <dt>
+   <b>
+    -I
+   </b>
+   <i>
+    dir
+   </i>
+   ,
+   <b>
+    --include
+   </b>
+   =
+   <i>
+    dir
+   </i>
+  </dt>
+  <dd>
+   An additional directory to search for include files.
+  </dd>
+  <dt>
+   <b>
+    -P
+   </b>
+  </dt>
+  <dd>
+   Suppresses the generation of the linemarker lines, described above.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   ,
+   <b>
+    --shell
+   </b>
+  </dt>
+  <dd>
+   Changes the expected input style from C-like to shell-like
+(where # is a comment prefix).
+This forces the following changes in
+   <b>
+    pmcpp
+   </b>
+   behaviour:
+  </dd>
   <dt>
    •
   </dt>
@@ -542,64 +593,70 @@ so
   <dd>
    No comment stripping is performed.
   </dd>
- </dl>
- <p>
-  To provide finer control of macro expansion, the
-  <b>
-   -r
-  </b>
-  option restricts macro substitution to words that match the patterns
-  <b>
-   #
-  </b>
-  name
+  <dt>
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    --restrict
+   </b>
+  </dt>
+  <dd>
+   Provide finer control of macro expansion - this
+option restricts macro substitution to words that match the patterns
+   <b>
+    #
+   </b>
+   name
 
 or
-  <b>
-   #{
-  </b>
-  name
-  <b>
-   }
-  </b>
-  or if
-  <b>
-   -s
-  </b>
-  is specified, then
-  <b>
-   %
-  </b>
-  name
+   <b>
+    #{
+   </b>
+   name
+   <b>
+    }
+   </b>
+   or if
+   <b>
+    -s
+   </b>
+   is specified, then
+   <b>
+    %
+   </b>
+   name
 
 or
-  <b>
-   %{
-  </b>
-  name
-  <b>
-   }
-  </b>
-  .
+   <b>
+    %{
+   </b>
+   name
+   <b>
+    }
+   </b>
+   .
 
 In this mode, the macro
-  <i>
-   name
-  </i>
-  alone in the input stream will never be expanded, however in control
+   <i>
+    name
+   </i>
+   alone in the input stream will never be expanded, however in control
 lines (like
-  <b>
-   #ifdef
-  </b>
-  )
+   <b>
+    #ifdef
+   </b>
+   )
 
 the macro
-  <i>
-   name
-  </i>
-  should appear alone with out the prefix character or the
+   <i>
+    name
+   </i>
+   should appear alone with out the prefix character or the
 curly braces (refer to the EXAMPLES below).
- </p>
+  </dd>
+ </dl>
  <p>
   Important
   <b>
@@ -709,7 +766,7 @@ and
    .
   </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   EXAMPLES
@@ -1139,7 +1196,7 @@ and
    </td>
   </tr>
  </table>
- <a name="lbAF">
+ <a name="lbAG">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -1148,9 +1205,10 @@ and
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1160,16 +1218,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAG">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAH">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -1243,20 +1309,27 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

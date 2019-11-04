@@ -70,9 +70,10 @@
  <b>
   pmdabcc
  </b>
- is a Performance Metrics Domain Agent (PMDA) which extracts
-live performance data from extended BPF (Berkeley Packet Filter) in-kernel
-programs by using BCC (BPF Compiler Collection) Python frontend.
+ is a Performance Co-Pilot (PCP) Performance Metrics Domain
+Agent (PMDA) which extracts live performance data from extended BPF
+(Berkeley Packet Filter) in-kernel programs by using BCC (BPF Compiler
+Collection) Python frontend.
  <p>
   <b>
    pmdabcc
@@ -484,8 +485,27 @@ there are processes generating TCP traffic on the system.
    agent
   </dd>
  </dl>
- <a name="lbAG">
- </a>
+ <p>
+  Note that the usual/default value for
+  <b>
+   $PCP_PMDAS_DIR
+  </b>
+  is
+  <b>
+   /var/lib/pcp/pmdas
+  </b>
+  and the default for
+  <b>
+   $PCP_LOG_DIR
+  </b>
+  is
+  <b>
+   /var/log/pcp
+  </b>
+  but these settings are platform dependent.
+  <a name="lbAG">
+  </a>
+ </p>
  <h2>
   PCP ENVIRONMENT
  </h2>

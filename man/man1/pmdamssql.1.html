@@ -70,57 +70,73 @@
  <b>
   pmdamssql
  </b>
- is a Performance Co-Pilot
- <font size="-1">
-  PMDA
- </font>
- which extracts
-live performance data from a running Microsoft SQL Server database server.
+ is a Performance Co-Pilot (PCP) Performance Metrics
+Domain Agent (PMDA) which extracts live performance data from a running
+Microsoft SQL Server database server.
  <a name="lbAD">
  </a>
  <h2>
-  INSTALLATION
+  CONFIGURATION
  </h2>
  Firstly,
  <b>
   pmdamssql
  </b>
  requires installation of these support packages:
- <p>
- </p>
  <dl compact="">
   <dt>
-   •
+   <b>
+    mssql-server
+   </b>
   </dt>
   <dd>
-   mssql-server -
-the primary Microsoft SQL Server database package
+   The primary Microsoft SQL Server database package.
   </dd>
   <dt>
-   •
+   <b>
+    msodbcsql17
+   </b>
+   or (
+   <b>
+    msodbcsql
+   </b>
+   )
   </dt>
   <dd>
-   msodbcsql17 or (msodbcsql) -
-latest Microsoft SQL Server ODBC bindings
+   Latest Microsoft SQL Server ODBC bindings.
   </dd>
   <dt>
-   •
+   <b>
+    pyodbc
+   </b>
   </dt>
   <dd>
-   pyodbc -
-general python ODBC module with Microsoft SQL Server support enabled
+   General Python ODBC module with Microsoft SQL Server support enabled.
   </dd>
  </dl>
  <p>
+  Next,
   <b>
    pmdamssql
   </b>
-  uses a configuration file from
-  <tt>
-   $PCP_PMDAS_DIR
-  </tt>
-  /mssql/mssql.conf
+  reads an optional ini-style configuration file:
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+  </dt>
+  <dd>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /mssql/mssql.conf
+  </dd>
+ </dl>
  <p>
   This file currently allows for two sections, one for configuring the
 library that connects to SQL server, the other for authenticating with
@@ -130,96 +146,154 @@ SQL server.
   <b>
    [connection]
   </b>
-  specifies values for the following settings:
+  section specifies values for the following settings
+(their default values are shown in parenthesis):
  </p>
  <dl compact="">
   <dt>
-   •
+   <b>
+    driver
+   </b>
+   (
+   <i>
+    {ODBC Driver 17 for SQL Server}
+   </i>
+   )
   </dt>
   <dd>
-   driver - ODBC driver string, [default: '{ODBC Driver 17 for SQL Server}']
+   ODBC driver string.
   </dd>
   <dt>
-   •
+   <b>
+    server
+   </b>
+   (
+   <i>
+    tcp:localhost
+   </i>
+   )
   </dt>
   <dd>
-   server - socket connection string, [default: 'tcp:localhost']
+   SQL Server socket connection string.
   </dd>
   <dt>
-   •
+   <b>
+    timeout
+   </b>
+   (
+   <i>
+    2
+   </i>
+   )
   </dt>
   <dd>
-   timeout - connection timeout setting, in seconds [default: 2]
+   Connection timeout setting, in seconds.
   </dd>
  </dl>
  <p>
   <b>
    [authentication]
   </b>
-  specifies values for the following settings:
+  section specifies values for the following settings
+(their default values are shown in parenthesis):
  </p>
  <dl compact="">
   <dt>
-   •
+   <b>
+    username
+   </b>
+   (
+   <i>
+    sa
+   </i>
+   )
   </dt>
   <dd>
-   username - username to connect to the database [default: 'sa']
+   Username to connect to the database.
   </dd>
   <dt>
-   •
+   <b>
+    password
+   </b>
+   (unset)
   </dt>
   <dd>
-   password - password to connect to the database [default: not set]
+   Password to connect to the database.
+  </dd>
+ </dl>
+ <a name="lbAE">
+ </a>
+ <h2>
+  INSTALLATION
+ </h2>
+ To install, the following must be done as root:
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/mssql
+# ./Install
+</pre>
   </dd>
  </dl>
  <p>
-  Once this file is setup, you can access the names and values for the
-mssql performance metrics by doing the following as root:
+  To uninstall, the following must be done as root:
  </p>
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/mssql
-  <br/>
-  <br/>
-  # ./Install
  </p>
- <p>
-  To uninstall, do the following as root:
- </p>
- <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/mssql
-  <br/>
-  <br/>
-  # ./Remove
- </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/mssql
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   <b>
    pmdamssql
   </b>
   is launched by
-  <i>
+  <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </i>
-  (1) and should never be executed 
-directly. The Install and Remove scripts notify
-  <i>
+  </b>
+  (1) and should never be
+executed directly.
+The
+  <b>
+   Install
+  </b>
+  and
+  <b>
+   Remove
+  </b>
+  scripts notify
+  <b>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </i>
-  (1) when the 
-agent is installed or removed.
+  </b>
+  (1) when
+the agent is installed or removed.
  </p>
  <p>
   <b>
    pmdamssql
   </b>
   will automatically attempt to reconnect to the SQL Server
-if it's connection is lost - e.g. if the SQL Server service is restarted.
-  <a name="lbAE">
+if its connection is lost - e.g. if the SQL Server service is restarted.
+  <a name="lbAF">
   </a>
  </p>
  <h2>
@@ -227,20 +301,27 @@ if it's connection is lost - e.g. if the SQL Server service is restarted.
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/mssql/mssql.conf
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /mssql/mssql.conf
   </dt>
   <dd>
-   configuration file for
+   configuration file for the
    <b>
     pmdamssql
    </b>
+   agent
   </dd>
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/mssql/Install
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /mssql/Install
   </dt>
   <dd>
    installation script for the
@@ -250,9 +331,12 @@ if it's connection is lost - e.g. if the SQL Server service is restarted.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_PMDAS_DIR/mssql/Remove
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_PMDAS_DIR
+   </tt>
+   /mssql/Remove
   </dt>
   <dd>
    undo installation script for the
@@ -262,19 +346,23 @@ if it's connection is lost - e.g. if the SQL Server service is restarted.
    agent
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmcd/mssql.log
-   </b>
+   <i>
+   </i>
+   <tt>
+    $PCP_LOG_DIR
+   </tt>
+   /pmcd/mssql.log
   </dt>
   <dd>
-   default log file for error messages from
+   default log file for messages from the
    <b>
     pmdamssql
    </b>
+   agent
   </dd>
  </dl>
  <p>
-  Note the usual/default value for
+  Note that the usual/default value for
   <b>
    $PCP_PMDAS_DIR
   </b>
@@ -291,7 +379,7 @@ if it's connection is lost - e.g. if the SQL Server service is restarted.
    /var/log/pcp
   </b>
   but these settings are platform dependent.
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -302,29 +390,26 @@ if it's connection is lost - e.g. if the SQL Server service is restarted.
   PCP_
  </b>
  are used to parameterize
-the file and directory names used by
- <b>
-  PCP
- </b>
- . On each installation, the
+the file and directory names used by PCP.
+On each installation, the
 file
- <b>
+ <i>
   /etc/pcp.conf
- </b>
- contains the local values for these variables. 
+ </i>
+ contains the local values for these variables.
 The
  <b>
   $PCP_CONF
  </b>
- variable may be used to specify an alternative 
+ variable may be used to specify an alternative
 configuration file, as described in
- <i>
+ <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
- </i>
+ </b>
  (5).
- <a name="lbAG">
+ <a name="lbAH">
  </a>
  <h2>
   SEE ALSO
@@ -368,27 +453,34 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    INSTALLATION
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    INSTALLATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>
