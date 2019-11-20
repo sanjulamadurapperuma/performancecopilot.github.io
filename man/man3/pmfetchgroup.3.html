@@ -1360,7 +1360,7 @@ int main()
     int sts, i;
     char *diskunits = getenv("PCP_DISK_UNITS");
     struct timeval t;
-    
+
     sts = pmCreateFetchGroup(&amp;fg, PM_CONTEXT_HOST, "local:");
     pcpassert(sts);
     sts = pmExtendFetchGroup_item(fg, "kernel.all.load", "1 minute",
@@ -1376,7 +1376,7 @@ int main()
     pcpassert(sts);
     sts = pmExtendFetchGroup_timestamp(fg, &amp;t);
     pcpassert(sts);
-    
+
     for (i=0; i &lt; 10; i++) {
         unsigned int j;
         char stamp[28];

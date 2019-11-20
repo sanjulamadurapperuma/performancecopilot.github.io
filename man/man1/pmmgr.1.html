@@ -61,7 +61,7 @@
  <b>
   pmmgr
  </b>
- - pcp daemon manager
+ - PCP daemon manager
  <a name="lbAC">
  </a>
  <h2>
@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -v
+  -v?
  </b>
  ]
 [
@@ -99,6 +99,14 @@
   log-file
  </i>
  ]
+[
+ <b>
+  -U
+ </b>
+ <i>
+  username
+ </i>
+ ]
  <a name="lbAD">
  </a>
  <h2>
@@ -108,30 +116,54 @@
   pmmgr
  </b>
  manages a collection of PCP daemons for a set of discovered local and
-remote hosts running the Performance Metrics Collection Daemon (PMCD),
+remote hosts running the Performance Metrics Collection Daemon (PMCD,
+see
+ <b>
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
+ </b>
+ (1)),
+
 according to zero or more configuration directories.
 It keeps a matching set of
  <b>
-  pmie
+  <a href="/man/man1/pmie.1.html">
+   pmie
+  </a>
  </b>
- ,
+ (1),
  <b>
-  pmlogger
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
  </b>
- ,
+ (1),
  <b>
-  pmrep
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
  </b>
- and other daemons running, and their archives/logs merged/rotated.
+ (1)
+
+and other daemons running, and their archives/logs merged/rotated.
 It provides an alternative to the default
  <b>
-  pmlogger_daily
+  <a href="/man/man1/pmlogger_daily.1.html">
+   pmlogger_daily
+  </a>
  </b>
- and
+ (1)
+
+and
  <b>
-  pmie_daily
+  <a href="/man/man1/pmie_daily.1.html">
+   pmie_daily
+  </a>
  </b>
- scripts that administer
+ (1)
+
+scripts that administer
  <b>
   pmlogger
  </b>
@@ -171,7 +203,8 @@ When signaled, it will stop its running daemons before exiting.
  <b>
   pmcd
  </b>
- search.  This list is assembled from several configuration files,
+ search.
+This list is assembled from several configuration files,
 and may include explicitly listed specifications, hosts discovered through
 several different mechanisms, and/or individual containers running within them.
 Once the list is assembled,
@@ -187,7 +220,8 @@ running
  <b>
   pmcd
  </b>
- instance, and to extract a hostid.  The hostid is treated as a
+ instance, and to extract a hostid.
+The hostid is treated as a
 unique identifier for the instance, so that redundant connection paths to the
 same server can be filtered out.
 Once the final list of live
@@ -199,34 +233,42 @@ Once the final list of live
   pmmgr
  </b>
  ensures that
-any requested pcp client daemons are started (or restarted) for them.
+any requested PCP client daemons are started (or restarted) for them.
 If any
  <b>
   pmcd
  </b>
- instances disappear from the list, its pcp client daemons are stopped.
+ instances disappear from the list, its PCP client daemons are stopped.
 This entire cycle repeats every poll interval.
  <a name="lbAF">
  </a>
  <h2>
   OPTIONS
  </h2>
- A description of the command line options specific to
- <b>
-  pmmgr
- </b>
- follows:
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
     -c
    </b>
-  </dt>
-  <dd>
    <i>
     directory
    </i>
-   adds a given configuration directory to
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    directory
+   </i>
+  </dt>
+  <dd>
+   Adds a given configuration
+   <i>
+    directory
+   </i>
+   to
    <b>
     pmmgr
    </b>
@@ -249,17 +291,60 @@ The default directory is
   </dd>
   <dt>
    <b>
-    -p
+    -l
    </b>
+   <i>
+    logfile
+   </i>
+   ,
+   <b>
+    --log
+   </b>
+   =
+   <i>
+    logfile
+   </i>
   </dt>
   <dd>
+   Redirect standard output and error to the given
    <i>
-    polling-interval
+    logfile
    </i>
-   sets the host-discovery polling interval to the given number of seconds.
-The default is 60.  Daemons for a particular target host will be restarted
-no more frequently than this interval.  There may be a short-lived thread
-inside
+   ,
+
+which is created anew.
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+   <i>
+    interval
+   </i>
+   ,
+   <b>
+    --poll
+   </b>
+   =
+   <i>
+    interval
+   </i>
+  </dt>
+  <dd>
+   Set the host-discovery polling
+   <i>
+    interval
+   </i>
+   to the given number of seconds.
+The default is
+   <b>
+    60
+   </b>
+   .
+
+Daemons for a particular target host will be restarted
+no more frequently than this interval.
+There may be a short-lived thread inside
    <b>
     pmmgr
    </b>
@@ -267,14 +352,31 @@ inside
   </dd>
   <dt>
    <b>
-    -l
+    -U
    </b>
+   <i>
+    username
+   </i>
+   ,
+   <b>
+    --username
+   </b>
+   =
+   <i>
+    username
+   </i>
   </dt>
   <dd>
+   Switch from the root to user
    <i>
-    log-file
+    username
    </i>
-   redirects standard output and error to the given log file, which is created anew
+   on startup.
+The default is
+   <b>
+    pcp
+   </b>
+   .
   </dd>
   <dt>
    <b>
@@ -282,7 +384,15 @@ inside
    </b>
   </dt>
   <dd>
-   adds more verbose tracing to standard output.
+   Enable verbose mode.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
   </dd>
  </dl>
  <a name="lbAG">
@@ -308,12 +418,15 @@ should be run with.
  uses a small number of files in a configuration directory,
 instead of lines in a single text file.
 The individual files carry zero or more lines of 100% pure configuration
-text, and no comments.  (If desired, a configuration may be commented
+text, and no comments.
+(If desired, a configuration may be commented
 upon within other files, such as a free-form README.)
  <p>
   Some of the configuration files are forked into pairs: per-hostid and
-common.  This permits numerous almost-identical-configuration targets
-to be managed from the same configuration directory.  For these files,
+common.
+This permits numerous almost-identical-configuration targets
+to be managed from the same configuration directory.
+For these files,
 marked with
   <b>
    *
@@ -351,8 +464,8 @@ order to form the complete configuration item.
   <i>
    pmie
   </i>
-  .  For
-single-line configuration items, the first file &amp; line found will
+  .
+For single-line configuration items, the first file &amp; line found will
 "win"; for multi-line configuration items, they all "win".
   <a name="lbAI">
   </a>
@@ -370,10 +483,12 @@ for
   pmcd
  </b>
  instances, how to uniquely identify them, and where state
-such as log files should be kept for each.  Ideally, a persistent and
+such as log files should be kept for each.
+Ideally, a persistent and
 unique hostid string is computed for each potential target pmcd from
-specified metric values.  This hostid is also used as a subdirectory
-name for locating daemon data.  The rare empty hostid is mapped to "-".
+specified metric values.
+This hostid is also used as a subdirectory name for locating daemon data.
+The rare empty hostid is mapped to "-".
  <dl compact="">
   <dt>
    <i>
@@ -386,14 +501,17 @@ should be used as multiple distinct hostids for the same target
    <b>
     pmcd
    </b>
-   .  Treatment of the distinct hostids may be customized using
+   .
+Treatment of the distinct hostids may be customized using
 per-hostid configuration files.
 Specifying values in this file overrides the
    <i>
     hostid-metrics
    </i>
-   file specified below.  It should be noted that using this option will cause
-all target pmcds to be assigned the same set of hostids.  Thus, this is
+   file specified below.
+It should be noted that using this option will cause
+all target pmcds to be assigned the same set of hostids.
+Thus, this is
 useful in monitoring single hosts or if each monitored host has its own
 configuration directory.
   </dd>
@@ -433,13 +551,10 @@ The default is the single metric
    </b>
    ,
 
-which is sufficient if all the hosts discovered have unique
-   <a href="http://man7.org/linux/man-pages/man2/hostname.2.html">
-    hostname
-   </a>
-   (2).  If
-they don't, you should add other pcp metric specifications to set them apart
-at your site.  The more you add, the longer the hostid string, but the more
+which is sufficient if all the hosts discovered have unique hostname.
+If they don't, you should add other pcp metric specifications to set them
+apart at your site.
+The more you add, the longer the hostid string, but the more
 likely that accidental duplication is prevented.
   </dd>
  </dl>
@@ -471,6 +586,7 @@ This argues against using metrics whose values vary from boot to boot.
   <i>
    kernel.uname.nodename
   </i>
+  .
  </p>
  <dl compact="">
   <dt>
@@ -487,7 +603,8 @@ subdirectories are to be created by
    .
 
 If it is not a full path, it
-is implicitly relative to the configuration directory itself.  The default is
+is implicitly relative to the configuration directory itself.
+The default is
    <b>
     $PCP_LOG_DIR/pmmgr/
    </b>
@@ -504,11 +621,11 @@ is implicitly relative to the configuration directory itself.  The default is
     pmcd
    </b>
    host specifications, as described on the
-   <i>
+   <b>
     <a href="/man/man1/pcpintro.1.html">
-     PCPintro
+     PCPIntro
     </a>
-   </i>
+   </b>
    (1)
 
 manual page.
@@ -529,14 +646,17 @@ The default is to target pmcd at
     pmDiscoverServices
    </i>
    PMAPI call, each of which may map onto a fluctuating set of local or remote
-pmcd servers.  Each poll interval,
+pmcd servers.
+Each poll interval,
    <b>
     pmmgr
    </b>
    will attempt to rerun discovery with
-all of the given specifications.  Again, it is not a problem if more than one
+all of the given specifications.
+Again, it is not a problem if more than one
 specification matches the same actual pmcd: one confirmed access path is
-arbitrarily selected.  The default is to do
+arbitrarily selected.
+The default is to do
    <b>
     no discovery
    </b>
@@ -547,7 +667,8 @@ Consider including
     avahi,timeout=5
    </i>
    to rely in pmcd self-announcements on the local network (searching for up to
-five seconds each time).  Consider including
+five seconds each time).
+Consider including
    <i>
     probe=192.168.1.0/24
    </i>
@@ -563,8 +684,8 @@ five seconds each time).  Consider including
    <b>
     pmmgr
    </b>
-   will scan each host that is found for
-running containers.  For each running container, it will create
+   will scan each host that is found for running containers.
+For each running container, it will create
 independent subtargets for running requested daemons.
 The hostid string for these subtargets is the host's hostid
 string, followed by a double-hyphen, then the full unique container
@@ -578,14 +699,16 @@ instance-name string.
   <dd>
    This file contains a limit on the number of concurrent threads
 that analyze potential target pmcds for their hostids and/or
-containers.  The default is
+containers.
+The default is
    <b>
     a few dozen threads per CPU core
    </b>
    ,
 
-if known.  Set this to zero if remote pmcds should be analyzed
-sequentially.  A small number of threads is not a good idea if any
+if known.
+Set this to zero if remote pmcds should be analyzed sequentially.
+A small number of threads is not a good idea if any
 potential target pmcds are unreachable, since $PMCD_CONNECT_TIMEOUT
 may be several seconds long each.
   </dd>
@@ -598,7 +721,7 @@ may be several seconds long each.
    This file may contain a time interval specification as per the
    <b>
     <a href="/man/man1/pcpintro.1.html">
-     PCPintro
+     PCPIntro
     </a>
    </b>
    (1)
@@ -629,12 +752,10 @@ This value should be longer than the longest interval that
    </b>
    intervals).
 The default value is
-   <i>
+   <b>
     90days
-   </i>
+   </b>
    .
-   <p>
-   </p>
   </dd>
  </dl>
  <a name="lbAJ">
@@ -646,7 +767,8 @@ The default value is
  <b>
   pmlogger
  </b>
- daemon for each host.  This may include generating its configuration,
+ daemon for each host.
+This may include generating its configuration,
 and managing its archives.
  <dl compact="">
   <dt>
@@ -670,12 +792,36 @@ for the
    <b>
     pmlogger
    </b>
-   daemon.  (
+   daemon.
+(
    <b>
     pmmgr
    </b>
-   already adds -h, -H, -f, -r, -l, and perhaps -c.)
-The default is to maintain
+   already adds
+   <b>
+    -h
+   </b>
+   ,
+   <b>
+    -H
+   </b>
+   ,
+   <b>
+    -f
+   </b>
+   ,
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    -l
+   </b>
+   , and perhaps -c
+   <b>
+    .)
+   </b>
+   The default is to maintain
    <b>
     no pmlogger
    </b>
@@ -691,7 +837,14 @@ The default is to maintain
    <b>
     pmlogger
    </b>
-   generated archives. The default is "%Y%m%d.%H%M%S". Expected to be in
+   generated archives.
+The default is
+   <b>
+    %Y%m%d.%H%M%S
+   </b>
+   .
+
+Expected to be in
    <b>
     <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
      strftime
@@ -734,12 +887,24 @@ options for the
    's
 
 generated output file will be stored under
-the log-directory/hostid subdirectory.  (
+the log-directory/hostid subdirectory.
+(
    <b>
     pmmgr
    </b>
-   already adds -c, -r, and -h.)
-The default is
+   already adds
+   <b>
+    -c
+   </b>
+   ,
+   <b>
+    -r
+   </b>
+   , and -h
+   <b>
+    .)
+   </b>
+   The default is
    <b>
     no pmlogconf
    </b>
@@ -749,7 +914,11 @@ so instead, the
    <b>
     pmlogger
    </b>
-   file above should probably contain a -c option, to
+   file above should probably contain a
+   <b>
+    -c
+   </b>
+   option, to
 specify a fixed
    <b>
     pmlogger
@@ -769,7 +938,8 @@ specify a fixed
  configurations can collect tens of megabytes of data
 per day (possibly split into multiple archives), per target host.
 If your disk space is less than infinite, or archive-splitting unwieldy,
-this should be managed.  In the default, unmanaged case, the system
+this should be managed.
+In the default, unmanaged case, the system
 administrator is responsible for managing the individual
  <i>
   archive-*
@@ -787,7 +957,8 @@ each representing different performance and usability tradeoffs.
  </h3>
  This style of archive log management regularly creates a single merged
 archive from prior archives for each target host, in effect lopping
-off old data and appending the new.  A single merged archive can be
+off old data and appending the new.
+A single merged archive can be
 relatively large (defaults to approximately 100-400 MB per host), and
 puts a corresponding I/O load on storage, but is most convenient for a
 detailed long-timeframe analysis.
@@ -819,12 +990,13 @@ written-to by
     pmlogextract
    </b>
    to periodically merge together preexisting log archives for each
-target pmcd into a single large one.  Then, the preexisting log
+target pmcd into a single large one.
+Then, the preexisting log
 archives are deleted (including any prior merged ones).
 This configuration file may contain a time interval specification as per the
    <b>
     <a href="/man/man1/pcpintro.1.html">
-     PCPintro
+     PCPIntro
     </a>
    </b>
    (1)
@@ -893,7 +1065,11 @@ The default is
    .
 
 To store corrupt archives indefinitely, set this to a large
-quantity like "99999weeks".
+quantity like
+   <b>
+    99999weeks
+   </b>
+   .
   </dd>
   <dt>
    <i>
@@ -910,7 +1086,9 @@ quantity like "99999weeks".
     pmlogrewrite -i
    </b>
    (plus any other options listed in this file) on each input archive before
-merging it.  This will naturally require more disk I/O.  The default is
+merging it.
+This will naturally require more disk I/O.
+The default is
    <b>
     no rewriting
    </b>
@@ -932,18 +1110,22 @@ The period will also be passed to
     pmlogextract
    </b>
    as a negative parameter to
-   <i>
+   <b>
     -S
-   </i>
+   </b>
    .
 The default is
-   <i>
+   <b>
     14days
-   </i>
+   </b>
    .
 
 To store archives indefinitely, set this to a large quantity
-like "99999weeks".
+like
+   <b>
+    99999weeks
+   </b>
+   .
   </dd>
   <dt>
    <i>
@@ -964,10 +1146,10 @@ expire past the
    <b>
     reduced-*
    </b>
-   ).  If the
-file contains space-separated options, they are passed onto
-pmlogreduce.  (By default, pmlogreduce down-samples to a
-600-second interval.)
+   ).
+If the file contains space-separated options, they are passed onto
+pmlogreduce.
+(By default, pmlogreduce down-samples to a 600-second interval.)
   </dd>
   <dt>
    <i>
@@ -995,7 +1177,11 @@ The default is
    .
 
 To store reduced archives indefinitely, set this to a large
-quantity like "99999weeks".
+quantity like
+   <b>
+    99999weeks
+   </b>
+   .
   </dd>
   <dt>
    <i>
@@ -1008,8 +1194,8 @@ quantity like "99999weeks".
     pmmgr
    </b>
    will track the disk space available
-where pmlogger archives are kept.  If that partition fills up
-past the configured percentage,
+where pmlogger archives are kept.
+If that partition fills up past the configured percentage,
    <b>
     pmmgr
    </b>
@@ -1018,11 +1204,13 @@ past the configured percentage,
     disk-full-retention
    </i>
    variable.
-   <p>
-    Values must be greater than zero, and expressed either a value
-between 0 and 1, or decimal value between 1 and 100.
-   </p>
   </dd>
+ </dl>
+ <p>
+  Values must be greater than zero, and expressed either a value
+between 0 and 1, or decimal value between 1 and 100.
+ </p>
+ <dl compact="">
   <dt>
    <i>
     disk-full-retention
@@ -1033,9 +1221,9 @@ between 0 and 1, or decimal value between 1 and 100.
    <i>
     disk-full-threshold
    </i>
-   has been surpassed.  A lower percentage will cull logs more quickly (in
-favour of preserving disk space), while a higher percentage will opt to
-retain more pcp archives.
+   has been surpassed.
+A lower percentage will cull logs more quickly (in favour of preserving
+disk space), while a higher percentage will opt to retain more pcp archives.
    <center>
     <table border="">
      <tr>
@@ -1301,12 +1489,28 @@ for the
    <b>
     pmie
    </b>
-   daemon.  (
+   daemon.
+(
    <b>
     pmmgr
    </b>
-   already adds -h, -f, -l, and perhaps -c.)
-The default is to maintain
+   already adds
+   <b>
+    -h
+   </b>
+   ,
+   <b>
+    -f
+   </b>
+   ,
+   <b>
+    -l
+   </b>
+   , and perhaps -c
+   <b>
+    .)
+   </b>
+   The default is to maintain
    <b>
     no pmie
    </b>
@@ -1344,12 +1548,24 @@ The file contains one line of space-separated additional options for the
    -
 
 generated output file will be stored under
-the log-directory/hostid subdirectory.  (
+the log-directory/hostid subdirectory.
+(
    <b>
     pmmgr
    </b>
-   already adds -F, -c, and -f.)
-The default is
+   already adds
+   <b>
+    -F
+   </b>
+   ,
+   <b>
+    -c
+   </b>
+   , and -f
+   <b>
+    .)
+   </b>
+   The default is
    <b>
     no pmieconf
    </b>
@@ -1359,7 +1575,11 @@ so instead, the
    <i>
     pmie
    </i>
-   file above should probably contain a -c option, to
+   file above should probably contain a
+   <b>
+    -c
+   </b>
+   option, to
 specify a fixed
    <b>
     pmie configuration.
@@ -1376,23 +1596,35 @@ specify a fixed
  </b>
  may be used to invoke arbitrary PCP client programs for each target
  <b>
-  pmcd
+  <a href="/man/man1/pmcd.1.html">
+   pmcd
+  </a>
  </b>
- .
+ (1).
 
 This can enable automated invocation of reporting or relaying tools, such as
  <b>
-  pmrep
+  <a href="/man/man1/pmrep.1.html">
+   pmrep
+  </a>
  </b>
- ,
+ (1),
  <b>
-  pcp2graphite
+  <a href="/man/man1/pcp2graphite.1.html">
+   pcp2graphite
+  </a>
  </b>
- or
+ (1)
+
+or
  <b>
-  pcp2influxdb
+  <a href="/man/man1/pcp2influxdb.1.html">
+   pcp2influxdb
+  </a>
  </b>
- without needing a specialized system service.
+ (1)
+
+without needing a specialized system service.
  <dl compact="">
   <dt>
    <i>
@@ -1401,12 +1633,20 @@ This can enable automated invocation of reporting or relaying tools, such as
   </dt>
   <dd>
    If this file exists, then for each line in this file, a new background process will
-be invoked.  (It is restarted if it exits.)  The line specifies the beginning of the
-command line (including the program name);
+be invoked.
+(It is restarted if it exits.)
+The line specifies the beginning of the command line (including the program name);
    <b>
     pmmgr
    </b>
-   appends a -h HOSTSPEC, and arranges
+   appends a
+   <b>
+    -h
+   </b>
+   <i>
+    HOSTSPEC
+   </i>
+   , and arranges
 to collect the standard output and standard error into separate
    <b>
     monitor-NN.out
@@ -1415,7 +1655,8 @@ to collect the standard output and standard error into separate
    <b>
     monitor-NN.err
    </b>
-   files under the log directory.  Errors messages in the latter are transcribed
+   files under the log directory.
+Errors messages in the latter are transcribed
 to
    <b>
     pmmgr
@@ -1432,17 +1673,17 @@ own logs.
  </h2>
  <dl compact="">
   <dt>
-   <b>
+   <i>
     $PCP_SYSCONF_DIR/pmmgr/
-   </b>
+   </i>
   </dt>
   <dd>
    default configuration directory
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_LOG_DIR/pmmgr/
-   </b>
+   </i>
   </dt>
   <dd>
    default logging directory
@@ -1457,9 +1698,10 @@ own logs.
  <b>
   PCP_
  </b>
- are used to parametrize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1469,8 +1711,7 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
@@ -1519,14 +1760,20 @@ as described in
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmieconf.1.html">
-   pmieconf
+  <a href="/man/man1/pmlogreduce.1.html">
+   pmlogreduce
   </a>
  </b>
  (1),
  <b>
   <a href="/man/man1/pmie.1.html">
    pmie
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmieconf.1.html">
+   pmieconf
   </a>
  </b>
  (1),
@@ -1551,12 +1798,6 @@ as described in
  <b>
   <a href="/man/man1/pcp2influxdb.1.html">
    pcp2influxdb
-  </a>
- </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogreduce.1.html">
-   pmlogreduce
   </a>
  </b>
  (1),

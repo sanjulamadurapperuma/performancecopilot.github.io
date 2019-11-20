@@ -235,22 +235,19 @@ protocols, but may be decoded using
   (1))
 
 and followed by a textual description of the error.
-  <a name="lbAE">
-  </a>
  </p>
- <h2>
-  OPTIONS
- </h2>
- Unless directed to another host by the
- <b>
-  -h
- </b>
- option,
- <b>
-  pmprobe
- </b>
- will contact the Performance Metrics Collector Daemon
+ <p>
+  Unless directed to another host by the
+  <b>
+   -h
+  </b>
+  option,
+  <b>
+   pmprobe
+  </b>
+  will contact the Performance Metrics Collector Daemon
 (PMCD) on the local host.
+ </p>
  <p>
   The
   <b>
@@ -274,7 +271,9 @@ and followed by a textual description of the error.
   to use a local context to collect metrics from PMDAs on the local host
 without PMCD.
 Only some metrics are available in this mode.
-The
+ </p>
+ <p>
+  The
   <b>
    -a
   </b>
@@ -287,10 +286,13 @@ The
    -L
   </b>
   options are mutually exclusive.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  The available command line options are:
- </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
@@ -712,11 +714,8 @@ disk.all.total 1 4992466
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_VAR_DIR/pmns/
-   </b>
    <i>
-    *
+    $PCP_VAR_DIR/pmns/*
    </i>
   </dt>
   <dd>

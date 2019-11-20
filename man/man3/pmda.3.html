@@ -93,7 +93,7 @@
  <h2>
   DESCRIPTION
  </h2>
- To assist in the development of Performance Metric Domain Agents 
+ To assist in the development of Performance Metric Domain Agents
 (
  <b>
   PMDA
@@ -110,18 +110,18 @@ Application Programming Interface (
  </b>
  (3))
 
-library.  These procedures are designed to enable a programmer to quickly 
-build a 
+library.  These procedures are designed to enable a programmer to quickly
+build a
 PMDA
-which can then be tested and refined.  However, this also 
-implies that a 
+which can then be tested and refined.  However, this also
+implies that a
 PMDA
-has a particular structure which may not be suitable for 
+has a particular structure which may not be suitable for
 all PMDA implementations.
  <p>
   Once you are familiar with the PCP and
 PMDA
-frameworks, you can quickly implement a new 
+frameworks, you can quickly implement a new
 PMDA
 with only a few data structures and functions.  This is covered in far greater
 detail in the
@@ -162,7 +162,7 @@ values.
   COMMUNICATING WITH PMCD
  </h2>
  Two approaches may be used for connecting a
-PMDA 
+PMDA
 to a
  <b>
   <a href="/man/man1/pmcd.1.html">
@@ -430,7 +430,7 @@ and
   /usr/include/pcp/pmda.h
  </i>
  which provide a framework for declaring the metrics and instances supported by
-the 
+the
 PMDA.
  <p>
   Every instance requires a unique integer identifier and a unique name, as defined by
@@ -471,8 +471,8 @@ instance descriptions.  This is defined in the structure
  </p>
  <pre>
 /*
- * Instance domain description: unique instance id, 
- * number of instances in this domain, and the list of 
+ * Instance domain description: unique instance id,
+ * number of instances in this domain, and the list of
  * instances (not null terminated).
  */
 
@@ -578,7 +578,7 @@ within the PMDA.
   </b>
   (3)
 
-does not need to be created 
+does not need to be created
 if one wants to write one's own Fetch and Instance functions.
 See
   <b>
@@ -714,8 +714,8 @@ modifying only the file
   </i>
   metrics are defined in separate clusters to the other metrics which allows a
 PMDA
-to support more than 1024 metrics, as well as grouping similar metrics 
-together.  Therefore, the item numbers for a new cluster may be identical to 
+to support more than 1024 metrics, as well as grouping similar metrics
+together.  Therefore, the item numbers for a new cluster may be identical to
 the item numbers in other clusters.  The
   <b>
    simple PMDA
@@ -789,7 +789,7 @@ root { simple }
 
 which contains its
 Performance Metric Identifier (PMID),
-data type specification, instance domain, semantics 
+data type specification, instance domain, semantics
 and units (see
  <b>
   <a href="/man/man3/pmlookupdesc.3.html">
@@ -807,7 +807,7 @@ A handle is also provided for application specific information in the
  </p>
  <pre>
 /*
- * Metric description: handle for extending description, 
+ * Metric description: handle for extending description,
  * and the description.
  */
 
@@ -828,12 +828,12 @@ typedef struct {
  <pre>
 static pmdaMetric metrictab[] = {
 /* numfetch */
-    { (void *)0, 
-      { PMDA_PMID(0,0), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT, 
+    { (void *)0,
+      { PMDA_PMID(0,0), PM_TYPE_U32, PM_INDOM_NULL, PM_SEM_INSTANT,
         { 0,0,0,0,0,0} }, },
 /* color */
-    { (void *)0, 
-      { PMDA_PMID(0,1), PM_TYPE_32, COLOR_INDOM, PM_SEM_INSTANT, 
+    { (void *)0,
+      { PMDA_PMID(0,1), PM_TYPE_32, COLOR_INDOM, PM_SEM_INSTANT,
         { 0,0,0,0,0,0} }, },
 /* time.user */
     { (void*)0,
@@ -887,7 +887,7 @@ As with instance domains, the
   (3)
 
 at run-time, however, the default domain is assumed to be defined by the
-PMDA 
+PMDA
 in the macro
   <b>
    MYDOMAIN
@@ -903,7 +903,7 @@ in the macro
   </b>
   (3)
 
-does not need to be created 
+does not need to be created
 if one wants to write one's own Fetch and Descriptor functions.
 See
   <b>
@@ -920,7 +920,7 @@ for more details.
  <h2>
   DSO PMDA
  </h2>
- A 
+ A
 PMDA
 that is run as a DSO is opened by
  <b>
@@ -959,7 +959,7 @@ This function is passed a pointer to a
  <i>
   not
  </i>
- the default 
+ the default
 PMDA
 support library callbacks must be specified in the
  <b>
@@ -1004,7 +1004,7 @@ as can be seen in
   <b>
    _isDSO
   </b>
-  is used to determine if the 
+  is used to determine if the
 PMDA
 is a daemon or a DSO so that the correct initialization
 routine,
@@ -1030,7 +1030,7 @@ is called.
  <h2>
   DAEMON PMDA
  </h2>
- A 
+ A
 PMDA
 that is run as a daemon is forked and executed by
  <b>
@@ -2042,7 +2042,7 @@ internally within the procedures of
   </i>
   /lib/pmdaproc.sh
 
-but can also be used as the prefix for temporary files needed by 
+but can also be used as the prefix for temporary files needed by
 a PMDA's
   <i>
    Install
@@ -2092,7 +2092,7 @@ other temporary file name prefixes nor use
  <h2>
   DIAGNOSTICS
  </h2>
- Any 
+ Any
 PMDA
 which uses this library can set
  <b>
@@ -2120,7 +2120,7 @@ debugging control option
  <b>
   (3))
  </b>
- to 
+ to
 to enable the display of debugging information which may be useful during
 development
 (see
@@ -2252,7 +2252,7 @@ and
   </b>
   (3)
 
-API in the PCP 2.0 release, as described in the product release notes, 
+API in the PCP 2.0 release, as described in the product release notes,
 PMDAs built using PCP 2.0 must specify
   <b>
    PMDA_INTERFACE_2
@@ -2302,7 +2302,7 @@ are contained in the
    </i>
   </dt>
   <dd>
-   Header file for the 
+   Header file for the
 PMDA
 support library.
   </dd>
@@ -2312,8 +2312,8 @@ support library.
    </i>
   </dt>
   <dd>
-   Dynamic library containing 
-PMDA 
+   Dynamic library containing
+PMDA
 support library routines.
   </dd>
   <dt>

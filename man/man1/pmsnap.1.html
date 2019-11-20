@@ -74,8 +74,16 @@
  </b>
  [
  <b>
-  -NV
+  -NV?
  </b>
+ ]
+[
+ <b>
+  -c
+ </b>
+ <i>
+  configs
+ </i>
  ]
 [
  <b>
@@ -87,10 +95,10 @@
  ]
 [
  <b>
-  -c
+  -f
  </b>
  <i>
-  configs
+  format
  </i>
  ]
 [
@@ -109,15 +117,6 @@
   dir
  </i>
  ]
-[
- <b>
-  -t
- </b>
- <i>
-  type
- </i>
- ]
- <br/>
  <a name="lbAD">
  </a>
  <h2>
@@ -164,17 +163,13 @@ and
  </i>
  ,
 
-and may be incorporated into the content offered by the local Web server.
-The
- <b>
-  -V
- </b>
- option enables verbose tracing of the actions.
+and may be incorporated into the content offered by the local web server.
 By default
  <b>
   pmsnap
  </b>
- generates no output unless some error or warning condition is encountered.
+ generates no textual output unless some error or warning condition is
+encountered.
  <p>
   <b>
    pmsnap
@@ -348,7 +343,7 @@ Note that if
     pmlogger
    </b>
    has only been recently started (within about the last 15 minutes),
-snap-shot images may not be produced and no error
+snapshot images may not be produced and no error
 messages will be issued - the reason is that
    <b>
     pmchart
@@ -410,16 +405,87 @@ snapshot images with text and other content appropriate to the local
 environment.
   </dd>
  </dl>
- <a name="lbAE">
- </a>
+ <p>
+  A sample HTML page, suitable for the Summary snapshot may be found in
+  <b>
+   $PCP_VAR_DIR/config/pmsnap/Summary.html
+  </b>
+  .
+ </p>
+ <p>
+  Although
+  <b>
+   pmsnap
+  </b>
+  attempts to flush
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/stdio.3.html">
+    stdio
+   </a>
+  </b>
+  (3)
+
+output buffers in the relevant
+  <b>
+   pmlogger
+  </b>
+  processes before generating snapshots images,
+this may fail for assorted reasons and no error message will be given.
+ </p>
+ <p>
+  <b>
+   pmsnap
+  </b>
+  should not be invoked immediately after
+  <b>
+   pmlogger_daily
+  </b>
+  has rolled the logs because the new archive logs will be too short
+to obtain meaningful results.
+Note however that
+  <b>
+   pmsnap
+  </b>
+  will not report errors from
+  <b>
+   pmchart
+  </b>
+  about not being able to comply with the
+  <b>
+   -A
+  </b>
+  option on very short archives.
+In these cases no error will be reported
+and no output images will be produced.
+  <a name="lbAE">
+  </a>
+ </p>
  <h2>
   OPTIONS
  </h2>
- <b>
-  pmsnap
- </b>
- accepts the following command line options;
+ The available command line options are:
  <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    config-pattern
+   </i>
+  </dt>
+  <dd>
+   Only process lines in the control file
+which match the
+   <i>
+    config-pattern
+   </i>
+   regular expression
+in the
+   <b>
+    Config
+   </b>
+   column.
+  </dd>
   <dt>
    <b>
     -C
@@ -445,24 +511,19 @@ environment.
   </dd>
   <dt>
    <b>
-    -c
+    -f
    </b>
    <i>
-    config-pattern
+    format
    </i>
   </dt>
   <dd>
-   Only process lines in the control file
-which match the
-   <i>
-    config-pattern
-   </i>
-   regular expression
-in the
+   Set output image format.
+The defaults format is
    <b>
-    Config
+    png
    </b>
-   column.
+   .
   </dd>
   <dt>
    <b>
@@ -491,6 +552,24 @@ in the
     Name
    </b>
    column.
+  </dd>
+  <dt>
+   <b>
+    -N
+   </b>
+  </dt>
+  <dd>
+   Enable a ``show me'' mode, where the actions are echoed,
+but not executed, in the style of ``make -n''.
+Using
+   <b>
+    -N
+   </b>
+   in conjunction with
+   <b>
+    -V
+   </b>
+   maximizes the diagnostic capabilities for debugging.
   </dd>
   <dt>
    <b>
@@ -535,24 +614,23 @@ Note that
    must be a writable directory path
 and may be on an NFS or CIFS file system.
   </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+  </dt>
+  <dd>
+   Enable verbose mode.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
  </dl>
- <p>
-  The
-  <b>
-   -N
-  </b>
-  option enables a ``show me'' mode, where the actions are echoed,
-but not executed, in the style of ``make -n''.
-Using
-  <b>
-   -N
-  </b>
-  in conjunction with
-  <b>
-   -V
-  </b>
-  maximizes the diagnostic capabilities for debugging.
- </p>
  <p>
   When either
   <b>
@@ -580,59 +658,6 @@ These arguments allow multiple entries for
   </b>
   so that different performance summary images can be generated
 at different times or with different frequencies.
- </p>
- <p>
-  A sample HTML page, suitable for the Summary snapshot may be found in
-  <b>
-   $PCP_VAR_DIR/config/pmsnap/Summary.html
-  </b>
-  .
- </p>
- <p>
-  Although
-  <b>
-   pmsnap
-  </b>
-  attempts to flush
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/stdio.3.html">
-    stdio
-   </a>
-  </b>
-  (3)
-
-output buffers in the relevant
-  <b>
-   pmlogger
-  </b>
-  processes before generating snap-shots images,
-this may fail for assorted reasons and no error message will be given.
- </p>
- <p>
-  <b>
-   pmsnap
-  </b>
-  should not be invoked immediately after
-  <b>
-   pmlogger_daily
-  </b>
-  has rolled the logs because the new archive logs will be too short
-to obtain meaningful results.
-Note however that
-  <b>
-   pmsnap
-  </b>
-  will not report errors from
-  <b>
-   pmchart
-  </b>
-  about not being able to comply with the
-  <b>
-   -A
-  </b>
-  option on very short archives.
-In these cases no error will be reported
-and no output images will be produced.
   <a name="lbAF">
   </a>
  </p>
@@ -641,9 +666,9 @@ and no output images will be produced.
  </h2>
  <dl compact="">
   <dt>
-   <b>
+   <i>
     $PCP_PMSNAPCONTROL_PATH
-   </b>
+   </i>
   </dt>
   <dd>
    <b>
@@ -652,9 +677,9 @@ and no output images will be produced.
    control file
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmsnap/Summary
-   </b>
+   </i>
   </dt>
   <dd>
    summary view for
@@ -663,23 +688,17 @@ and no output images will be produced.
    </b>
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmsnap/Summary.html
-   </b>
+   </i>
   </dt>
   <dd>
    sample HTML page for summary snapshot
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmlogger/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/Latest
    </i>
-   <b>
-    /Latest
-   </b>
   </dt>
   <dd>
    PCP archive folio for the host
@@ -694,9 +713,9 @@ as generated by
    </b>
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmlogger/crontab
-   </b>
+   </i>
   </dt>
   <dd>
    example
@@ -730,14 +749,14 @@ as generated by
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmchart.1.html">
-   pmchart
+  <a href="/man/man1/pmafm.1.html">
+   pmafm
   </a>
  </b>
  (1),
  <b>
-  <a href="/man/man1/pmafm.1.html">
-   pmafm
+  <a href="/man/man1/pmchart.1.html">
+   pmchart
   </a>
  </b>
  (1),
@@ -752,24 +771,12 @@ as generated by
    pmlogger
   </a>
  </b>
- (1),
- <b>
-  <a href="/man/man1/pmlogger_daily.1.html">
-   pmlogger_daily
-  </a>
- </b>
- (1),
- <b>
-  <a href="http://man7.org/linux/man-pages/man1/x.1.html">
-   X
-  </a>
- </b>
- (1),
+ (1)
 
 and
  <b>
-  <a href="http://man7.org/linux/man-pages/man1/xvfb.1.html">
-   Xvfb
+  <a href="/man/man1/pmlogger_daily.1.html">
+   pmlogger_daily
   </a>
  </b>
  (1).

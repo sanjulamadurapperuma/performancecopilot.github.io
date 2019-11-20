@@ -124,13 +124,13 @@
    </ul>
   </li>
   <li>
-   <a href="#derived">
-    Derived Metrics
+   <a href="#pmie">
+    Performance Metrics Inference
    </a>
   </li>
   <li>
-   <a href="#pmie">
-    Performance Metrics Inference
+   <a href="#pmseries">
+    Fast, Scalable Time Series Querying
    </a>
   </li>
   <li>
@@ -149,6 +149,11 @@
      </a>
     </li>
    </ul>
+  </li>
+  <li>
+   <a href="#derived">
+    Derived Metrics
+   </a>
   </li>
   <li>
    <a href="#custom">
@@ -1282,86 +1287,9 @@ Performance Co-Pilot configuration on smash:
    Performance Co-Pilot Programmer's Guide PDF
   </a>
   for more information about application instrumentation.
-  <a name="derived">
+  <a name="pmie">
   </a>
  </p>
- <h1>
-  Derived Metrics
- </h1>
- <p>
-  PCP provides a wide range of performance metrics but still in some cases the readily available metrics may not exactly provide what is needed. Derived metrics (see
-  <a href="/man/man3/pmloadderivedconfig.3.html">
-   pmLoadDerivedConfig(3)
-  </a>
-  ) may be used to extend the available metrics with new (derived) metrics by using simple arithmetic expressions (see
-  <a href="/man/man3/pmregisterderived.3.html">
-   pmRegisterDerived(3)
-  </a>
-  ).
- </p>
- <p>
-  The following example illustrates how to define corresponding metrics which are displayed by
-  <kbd>
-   sar -d
-  </kbd>
-  but are not provided by default by PCP:
- </p>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Create a file containing definitions of derived metrics and point PCP_DERIVED_CONFIG to it when running PCP utilities:
-    <b>
-     <br/>
-     $ cat ./pcp-deriv-metrics.conf
-     <br/>
-     disk.dev.avqsz = disk.dev.read_rawactive + disk.dev.write_rawactive
-     <br/>
-     disk.dev.avrqsz = 2 * rate(disk.dev.total_bytes) / rate(disk.dev.total)
-     <br/>
-     disk.dev.await = 1000 * (rate(disk.dev.read_rawactive) + rate(disk.dev.write_rawactive)) / rate(disk.dev.total)
-     <br/>
-     $ export PCP_DERIVED_CONFIG=./pcp-deriv-metrics.conf
-     <br/>
-     $
-     <a href="/man/man1/pmval.1.html">
-      pmval
-     </a>
-     -t 2sec -f 3 disk.dev.avqsz
-     <br/>
-     $
-     <a href="/man/man1/pmval.1.html">
-      pmval
-     </a>
-     -t 2sec -f 3 disk.dev.avrqsz -h acme.com
-     <br/>
-     $
-     <a href="/man/man1/pmval.1.html">
-      pmval
-     </a>
-     -t 2sec -f 3 disk.dev.await -a acme.com/20140902
-    </b>
-   </td>
-  </tr>
- </table>
- <table border="0" cellpadding="10" cellspacing="20" width="100%">
-  <tr>
-   <td width="70%">
-    <br/>
-    Define a derived metric on the command line and monitor it with standard metrics:
-    <b>
-     <br/>
-     $
-     <a href="/man/man1/pmrep.1.html">
-      pmrep
-     </a>
-     -t 2sec -p -b MB -e "mem.util.allcache = mem.util.bufmem + mem.util.cached + mem.util.slab" mem.util.free mem.util.allcache mem.util.used
-    </b>
-   </td>
-  </tr>
- </table>
- <a name="pmie">
- </a>
  <h1>
   Performance Metrics Inference
  </h1>
@@ -1456,8 +1384,65 @@ Performance Co-Pilot configuration on smash:
    </td>
   </tr>
  </table>
- <a name="web">
+ <a name="pmseries">
  </a>
+ <h1>
+  Fast, Scalable Time Series Querying
+ </h1>
+ <p>
+  Performance Metrics Series (
+  <a href="/man/man1/pmseries.1.html">
+   pmseries(1)
+  </a>
+  ) works with local pmlogger and
+  <a href="http://redis.io">
+   Redis
+  </a>
+  servers to allow fast, scalable performance queries spanning multiple hosts.
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    To enable and start PMIE:
+    <br/>
+    <b>
+     <br/>
+     # systemctl enable pmlogger pmproxy redis
+     <br/>
+     # systemctl start pmlogger pmproxy redis
+    </b>
+   </td>
+  </tr>
+ </table>
+ <p>
+  Redis can be run standalone or in large, highly available setups.
+It is also provided as a scalable service by many cloud vendors.
+ </p>
+ <p>
+  The metrics indexing process is designed to spread data across
+multiple Redis nodes for improved query performance, so adding more
+nodes can significantly improve performance.
+ </p>
+ <p>
+  Examples of the
+  <a href="/man/man1/pmseries.1.html">
+   pmseries
+  </a>
+  query language can be found on the man page.
+These queries can be executed from the command line utility, or from
+the
+  <a href="https://github.com/performancecopilot/grafana-pcp">
+   grafana-pcp
+  </a>
+  plugin for Grafana (see the
+  <a href="#web">
+   PCP Web Services
+  </a>
+  section below).
+  <a name="web">
+  </a>
+ </p>
  <h1>
   PCP Web Services
  </h1>
@@ -1499,15 +1484,111 @@ Performance Co-Pilot configuration on smash:
   </a>
   is the recommended web interface for accessing PCP performance metrics over HTTP.
  </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    To install the PCP REST APIs service:
+    <br/>
+    <b>
+     <br/>
+     # systemctl enable grafana-server
+     <br/>
+     # systemctl start grafana-server
+    </b>
+   </td>
+  </tr>
+ </table>
  <p>
-  After installing the PCP REST API services as described above, install the grafana-pcp package and then just point a browser toward
+  After installing the PCP REST API services as described above, install the
+  <a href="https://github.com/performancecopilot/grafana-pcp">
+   grafana-pcp
+  </a>
+  package and then point a browser toward
   <a href="http://localhost:3000">
    http://localhost:3000
   </a>
   .
-  <a name="custom">
+  <a name="derived">
   </a>
  </p>
+ <h1>
+  Derived Metrics
+ </h1>
+ <p>
+  PCP provides a wide range of performance metrics but still in some cases the readily available metrics may not exactly provide what is needed. Derived metrics (see
+  <a href="/man/man3/pmloadderivedconfig.3.html">
+   pmLoadDerivedConfig(3)
+  </a>
+  ) may be used to extend the available metrics with new (derived) metrics by using simple arithmetic expressions (see
+  <a href="/man/man3/pmregisterderived.3.html">
+   pmRegisterDerived(3)
+  </a>
+  ).
+ </p>
+ <p>
+  The following example illustrates how to define corresponding metrics which are displayed by
+  <kbd>
+   sar -d
+  </kbd>
+  but are not provided by default by PCP:
+ </p>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    Create a file containing definitions of derived metrics and point PCP_DERIVED_CONFIG to it when running PCP utilities:
+    <b>
+     <br/>
+     $ cat ./pcp-deriv-metrics.conf
+     <br/>
+     disk.dev.avqsz = disk.dev.read_rawactive + disk.dev.write_rawactive
+     <br/>
+     disk.dev.avrqsz = 2 * rate(disk.dev.total_bytes) / rate(disk.dev.total)
+     <br/>
+     disk.dev.await = 1000 * (rate(disk.dev.read_rawactive) + rate(disk.dev.write_rawactive)) / rate(disk.dev.total)
+     <br/>
+     $ export PCP_DERIVED_CONFIG=./pcp-deriv-metrics.conf
+     <br/>
+     $
+     <a href="/man/man1/pmval.1.html">
+      pmval
+     </a>
+     -t 2sec -f 3 disk.dev.avqsz
+     <br/>
+     $
+     <a href="/man/man1/pmval.1.html">
+      pmval
+     </a>
+     -t 2sec -f 3 disk.dev.avrqsz -h acme.com
+     <br/>
+     $
+     <a href="/man/man1/pmval.1.html">
+      pmval
+     </a>
+     -t 2sec -f 3 disk.dev.await -a acme.com/20140902
+    </b>
+   </td>
+  </tr>
+ </table>
+ <table border="0" cellpadding="10" cellspacing="20" width="100%">
+  <tr>
+   <td width="70%">
+    <br/>
+    Define a derived metric on the command line and monitor it with standard metrics:
+    <b>
+     <br/>
+     $
+     <a href="/man/man1/pmrep.1.html">
+      pmrep
+     </a>
+     -t 2sec -p -b MB -e "mem.util.allcache = mem.util.bufmem + mem.util.cached + mem.util.slab" mem.util.free mem.util.allcache mem.util.used
+    </b>
+   </td>
+  </tr>
+ </table>
+ <a name="custom">
+ </a>
  <h1>
   Customizing and Extending PCP
  </h1>

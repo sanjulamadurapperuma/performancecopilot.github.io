@@ -171,7 +171,7 @@ create a customized regime of administration and management for the
 Performance Co-Pilot (see
  <b>
   <a href="/man/man1/pcpintro.1.html">
-   PCPintro
+   PCPIntro
   </a>
  </b>
  (1))
@@ -183,6 +183,17 @@ inference engine,
   </a>
  </b>
  (1).
+ <p>
+  <b>
+   pmie_check
+  </b>
+  may be run at any time of the day and verifies that a desired set of
+  <b>
+   pmie
+  </b>
+  processes is running.
+If not, it (re-)starts any missing inference engine processes.
+ </p>
  <p>
   <b>
    pmie_daily
@@ -204,227 +215,451 @@ After some period, old
    pmie
   </b>
   log files are discarded.
-This period is 14 days by default, but may be changed using the
-  <b>
-   -k
-  </b>
-  /
-  <b>
-   --discard
-  </b>
-  option.
-Two special values are recognized for the period (
-  <i>
-   discard
-  </i>
-  ),
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    control
+   </i>
+   ,
+   <b>
+    --control
+   </b>
+   =
+   <i>
+    control
+   </i>
+  </dt>
+  <dd>
+   Both
+   <b>
+    pmie_check
+   </b>
+   and
+   <b>
+    pmie_daily
+   </b>
+   are controlled by PCP inference engine control file(s) that specify the
+   <b>
+    pmie
+   </b>
+   instances to be managed.
+The default
+   <i>
+    control
+   </i>
+   file is
+   <b>
+    $PCP_PMIECONTROL_PATH
+   </b>
+   but an alternate may be specified using the
+   <b>
+    -c
+   </b>
+   option.
+If the directory
+   <b>
+    $PCP_PMLOGGERCONTROL_PATH
+   </b>
+   .d
+
+(or
+   <i>
+    control
+   </i>
+   .d
+
+from the
+   <b>
+    -c
+   </b>
+   option) exists, then the contents of any additional
+   <i>
+    control
+   </i>
+   files therein will be appended to the main control file (which must exist).
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+  </dt>
+  <dd>
+   This option causes
+   <b>
+    pmie_check
+   </b>
+   to query the system service runlevel information for
+   <b>
+    pmie
+   </b>
+   ,
+
+and use that to determine whether to start processes or not.
+  </dd>
+  <dt>
+   <b>
+    -k
+   </b>
+   <i>
+    period
+   </i>
+   ,
+   <b>
+    --discard
+   </b>
+   =
+   <i>
+    period
+   </i>
+  </dt>
+  <dd>
+   The log retention
+   <i>
+    period
+   </i>
+   is 14 days by default, but this may be
+changed using this option.
+Two special values are recognized for the discard
+   <i>
+    period
+   </i>
+   ,
 
 namely
-  <b>
-   0
-  </b>
-  to keep no log files beyond the current one, and
-  <b>
-   forever
-  </b>
-  to prevent any log files being discarded.
- </p>
- <p>
-  Log files can optionally be compressed after some period (
-  <i>
-   compress
-  </i>
-  ),
+   <b>
+    0
+   </b>
+   to keep no log files beyond the current one, and
+   <b>
+    forever
+   </b>
+   to prevent any log files being discarded.
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   <i>
+    file
+   </i>
+   ,
+   <b>
+    --logfile
+   </b>
+   =
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   In order to ensure that mail is not unintentionally sent when these
+scripts are run from
+   <b>
+    <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
+     cron
+    </a>
+   </b>
+   (8)
 
-to conserve disk space.
+diagnostics are always sent to log files.
+By default, these files are
+   <b>
+    $PCP_LOG_DIR/pmie/pmie_daily.log
+   </b>
+   and
+   <b>
+    $PCP_LOG_DIR/pmie/pmie_check.log
+   </b>
+   but this can be changed using the
+   <b>
+    -l
+   </b>
+   option.
+If this log
+   <i>
+    file
+   </i>
+   already exists when the script starts, it will be renamed with a
+   <i>
+    .prev
+   </i>
+   suffix (overwriting any log file saved earlier) before diagnostics
+are generated to the new log file.
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+   <i>
+    addresses
+   </i>
+   ,
+   <b>
+    --mail
+   </b>
+   =
+   <i>
+    addresses
+   </i>
+  </dt>
+  <dd>
+   Use of this option causes
+   <b>
+    pmie_daily
+   </b>
+   to construct a summary of the log files generated for all monitored hosts
+in the last 24 hours (lines matching `` OK '' are culled), and e-mail that
+summary to the set of space-separated
+   <i>
+    addresses
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
+    -N
+   </b>
+   ,
+   <b>
+    --showme
+   </b>
+  </dt>
+  <dd>
+   This option enables a ``show me'' mode, where the programs actions are
+echoed, but not executed, in the style of ``make -n''.
+Using
+   <b>
+    -N
+   </b>
+   in conjunction with
+   <b>
+    -V
+   </b>
+   maximizes the diagnostic capabilities for debugging.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   ,
+   <b>
+    --stop
+   </b>
+  </dt>
+  <dd>
+   Use of this option provides the reverse
+   <b>
+    pmie_check
+   </b>
+   functionality, allowing the set of
+   <b>
+    pmie
+   </b>
+   processes to be cleanly shutdown.
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   ,
+   <b>
+    --terse
+   </b>
+  </dt>
+  <dd>
+   This option to
+   <b>
+    pmie_check
+   </b>
+   produces less verbose output than the default.
+This is most suitable for a
+   <i>
+    pmie
+   </i>
+   ``farm'' where many instances of
+   <i>
+    pmie
+   </i>
+   are expected to be running.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   The output from the
+   <b>
+    cron
+   </b>
+   execution of the scripts may be extended using the
+   <b>
+    -V
+   </b>
+   option to the scripts which will enable verbose tracing of their activity.
+By default the scripts generate no output unless some error or warning
+condition is encountered.
+Using
+   <b>
+    -N
+   </b>
+   in conjunction with
+   <b>
+    -V
+   </b>
+   maximizes the diagnostic capabilities for debugging.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   <i>
+    period
+   </i>
+   ,
+   <b>
+    --compress-after
+   </b>
+   =
+   <i>
+    period
+   </i>
+  </dt>
+  <dd>
+   Log files can optionally be compressed after some
+   <i>
+    period
+   </i>
+   to conserve disk space.
 This is particularly useful for large numbers of
-  <b>
-   pmie
-  </b>
-  processes under the control of
-  <b>
-   pmie_check
-  </b>
-  .
+   <b>
+    pmie
+   </b>
+   processes under the control of
+   <b>
+    pmie_check
+   </b>
+   .
 
 The
-  <b>
-   -x
-  </b>
-  /
-  <b>
-   --compress-after
-  </b>
-  option specifies the number of days after which to compress archive data
-files, and the
-  <b>
-   -X
-  </b>
-  option specifies the program to use for compression - by default this is
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/xz.1.html">
-    xz
-   </a>
-  </b>
-  (1).
-
-Use of the
-  <b>
-   -Y
-  </b>
-  /
-  <b>
-   --regex
-  </b>
-  option allows a regular expression to be specified causing files in
+   <b>
+    -x
+   </b>
+   option specifies the number of days after which to compress archive data
+files.
+  </dd>
+  <dt>
+   <b>
+    -X
+   </b>
+   <i>
+    program
+   </i>
+   ,
+   <b>
+    --compressor
+   </b>
+   =
+   <i>
+    program
+   </i>
+  </dt>
+  <dd>
+   This option specifies the program to use for compression - by default
+this is
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/xz.1.html">
+     xz
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <b>
+    -Y
+   </b>
+   <i>
+    regex
+   </i>
+   ,
+   <b>
+    --regex
+   </b>
+   =
+   <i>
+    regex
+   </i>
+  </dt>
+  <dd>
+   This option allows a regular expression to be specified causing files in
 the set of files matched for compression to be omitted - this allows
 only the data file to be compressed, and also prevents the program from
 attempting to compress it more than once.
 The default
-  <i>
-   regex
-  </i>
-  is ".(meta|index|Z|gz|bz2|zip|xz|lzma|lzo|lz4)$" - such files are
+   <i>
+    regex
+   </i>
+   is ".(meta|index|Z|gz|bz2|zip|xz|lzma|lzo|lz4)$" - such files are
 filtered using the
-  <b>
-   -v
-  </b>
-  option to
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
-    egrep
-   </a>
-  </b>
-  (1).
- </p>
- <p>
-  Use of the
-  <b>
-   -m
-  </b>
-  /
-  <b>
-   --mail
-  </b>
-  option causes
-  <b>
-   pmie_daily
-  </b>
-  to construct a summary of the log files generated for all monitored hosts
-in the last 24 hours (lines matching `` OK '' are culled), and e-mail that
-summary to the set of space-separated
-  <i>
-   addresses
-  </i>
-  .
- </p>
- <p>
-  <b>
-   pmie_check
-  </b>
-  may be run at any time, and is intended to check that the desired set
-of
-  <b>
-   <a href="/man/man1/pmie.1.html">
-    pmie
-   </a>
-  </b>
-  (1)
-
-processes are running, and if not to re-launch any failed inference engines.
-Use of the
-  <b>
-   -s
-  </b>
-  /
-  <b>
-   --stop
-  </b>
-  option provides the reverse functionality, allowing the set of
-  <b>
-   pmie
-  </b>
-  processes to be cleanly shutdown.
-Use of the
-  <b>
-   -C
-  </b>
-  option queries the system service runlevel information for
-  <b>
-   pmie
-  </b>
-  ,
-
-and uses that to determine whether to start processes.
- </p>
- <p>
-  Both
-  <b>
-   pmie_check
-  </b>
-  and
-  <b>
-   pmie_daily
-  </b>
-  are controlled by PCP inference engine control file(s) that specify the
-  <b>
-   pmie
-  </b>
-  instances to be managed.
-The default control file is
-  <b>
-   $PCP_PMIECONTROL_PATH
-  </b>
-  but an alternate may be specified using the
-  <b>
-   -c
-  </b>
-  /
-  <b>
-   --control
-  </b>
-  option.
-If the directory
-  <b>
-   $PCP_PMLOGGERCONTROL_PATH
-  </b>
-  .d
-
-(or
-  <i>
-   control
-  </i>
-  .d
-
-from the
-  <b>
-   -c
-  </b>
-  /
-  <b>
-   --control
-  </b>
-  option) exists, then the contents of any additional control files therein
-will be appended to the main control file (which must exist).
- </p>
- <p>
-  <b>
-   Warning
-  </b>
-  :
+   <b>
+    -v
+   </b>
+   option to
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
+     egrep
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CONFIGURATION
+ </h2>
+ <b>
+  Warning
+ </b>
+ :
 
 The
-  <b>
-   $PCP_PMIECONTROL_PATH
-  </b>
-  and
-  <b>
-   $PCP_PMIECONTROL_PATH
-  </b>
-  .d
+ <b>
+  $PCP_PMIECONTROL_PATH
+ </b>
+ and
+ <b>
+  $PCP_PMIECONTROL_PATH
+ </b>
+ .d
 
 files must not be writable by any user other than root.
- </p>
  <p>
   The control file(s) should be customized according to the following rules
 that define for the current version (1.1)
@@ -738,90 +973,34 @@ and shown below.
 # every 30 minutes, check pmie instances are running
 28,58   *       *       *       *       $PCP_BINADM_DIR/pmie_check
 </pre>
- <p>
-  In order to ensure that mail is not unintentionally sent when these
-scripts are run from
-  <b>
-   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
-    cron
-   </a>
-  </b>
-  (8)
-
-diagnostics are always sent to log files.
-By default, these files are
-  <b>
-   $PCP_LOG_DIR/pmie/pmie_daily.log
-  </b>
-  and
-  <b>
-   $PCP_LOG_DIR/pmie/pmie_check.log
-  </b>
-  but this can be changed using the
-  <b>
-   -l
-  </b>
-  option.
-If this log file already exists when the script starts, it will be
-renamed with a
-  <i>
-   .prev
-  </i>
-  suffix (overwriting any log file saved earlier) before diagnostics
-are generated to the new log file.
- </p>
- <p>
-  The output from the
-  <b>
-   cron
-  </b>
-  execution of the scripts may be extended using the
-  <b>
-   -V
-  </b>
-  /
-  <b>
-   --verbose
-  </b>
-  option to the scripts which will enable verbose tracing of their activity.
-By default the scripts generate no output unless some error or warning
-condition is encountered.
- </p>
- <p>
-  The
-  <b>
-   -N
-  </b>
-  /
-  <b>
-   --showme
-  </b>
-  option enables a ``show me'' mode, where the actions are echoed,
-but not executed, in the style of ``make -n''.
-Using
-  <b>
-   -N
-  </b>
-  in conjunction with
-  <b>
-   -V
-  </b>
-  /
-  <b>
-   --verbose
-  </b>
-  maximizes the diagnostic capabilities for debugging.
-  <a name="lbAE">
+ When using
+ <b>
+  <a href="/man/man1/systemd.1.html">
+   systemd
   </a>
- </p>
+ </b>
+ (1)
+
+on Linux,
+no
+ <b>
+  crontab
+ </b>
+ entries are needed as the timer mechanism provided by
+ <b>
+  systemd
+ </b>
+ is used instead.
+ <a name="lbAG">
+ </a>
  <h2>
   FILES
  </h2>
  <dl compact="">
   <dt>
-   <b>
+   <i>
     $PCP_PMIECONTROL_PATH
-   </b>
+   </i>
   </dt>
   <dd>
    the default PCP inference engine control file
@@ -834,10 +1013,9 @@ Using
 this file must not be writable by any user other than root.
   </dd>
   <dt>
-   <b>
-    $PCP_PMIECONTROL_PATH
-   </b>
-   .d
+   <i>
+    $PCP_PMIECONTROL_PATH.d
+   </i>
   </dt>
   <dd>
    optional directory containing additional PCP inference engine control files,
@@ -851,9 +1029,9 @@ typically one per host
 this files herein must not be writable by any user other than root.
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_SYSCONF_DIR/pmie/crontab
-   </b>
+   </i>
   </dt>
   <dd>
    sample crontab for automated script execution by $PCP_USER (or root) -
@@ -864,9 +1042,9 @@ exists only if the platform does not support the
    mechanism.
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmie/config.default
-   </b>
+   </i>
   </dt>
   <dd>
    default
@@ -883,11 +1061,8 @@ generated automatically by
    (1).
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmie/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmie/&lt;hostname&gt;
    </i>
   </dt>
   <dd>
@@ -897,15 +1072,9 @@ generated automatically by
    </i>
   </dd>
   <dt>
-   <b>
-    $PCP_LOG_DIR/pmie/
-   </b>
    <i>
-    hostname
+    $PCP_LOG_DIR/pmie/&lt;hostname&gt;/lock
    </i>
-   <b>
-    /lock
-   </b>
   </dt>
   <dd>
    transient lock file to guarantee mutual exclusion during
@@ -927,9 +1096,9 @@ generated automatically by
    are running
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_LOG_DIR/NOTICES
-   </b>
+   </i>
   </dt>
   <dd>
    PCP ``notices'' file used by
@@ -943,7 +1112,7 @@ generated automatically by
 and friends
   </dd>
  </dl>
- <a name="lbAF">
+ <a name="lbAH">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -972,7 +1141,7 @@ configuration file, as described in
   </a>
  </b>
  (5).
- <a name="lbAG">
+ <a name="lbAI">
  </a>
  <h2>
   SEE ALSO
@@ -985,7 +1154,7 @@ configuration file, as described in
  (1),
  <b>
   <a href="/man/man1/pcpintro.1.html">
-   PCPintro
+   PCPIntro
   </a>
  </b>
  (1),
@@ -998,6 +1167,12 @@ configuration file, as described in
  <b>
   <a href="/man/man1/pmieconf.1.html">
    pmieconf
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/systemd.1.html">
+   systemd
   </a>
  </b>
  (1),
@@ -1047,20 +1222,34 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    FILES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PCP ENVIRONMENT
+    CONFIGURATION
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    FILES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAI">
     SEE ALSO
    </a>
   </dt>

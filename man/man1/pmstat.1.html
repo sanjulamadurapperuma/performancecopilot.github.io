@@ -1311,20 +1311,17 @@ the value appears as ``?'' in the output.
  </h2>
  <dl compact="">
   <dt>
-   <b>
-    $PCP_VAR_DIR/pmns/
-   </b>
    <i>
-    *
+    $PCP_VAR_DIR/pmns/*
    </i>
   </dt>
   <dd>
    default PMNS specification files
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmlogger/config.pmstat
-   </b>
+   </i>
   </dt>
   <dd>
    <b>
@@ -1349,9 +1346,10 @@ configuration for creating an archive suitable for replay with
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1361,16 +1359,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAJ">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAJ">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>

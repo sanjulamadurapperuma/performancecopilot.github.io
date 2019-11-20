@@ -371,7 +371,7 @@ semantics from any number of hosts or archives may be visualized.
   <b>
    pmview
   </b>
-  examines the semantics of the metrics and where sensible, converts metric 
+  examines the semantics of the metrics and where sensible, converts metric
 values to a rate before scaling.
   <a name="lbAE">
   </a>
@@ -510,7 +510,7 @@ rather than the default localhost.  Implies that
    <b>
     pmview
    </b>
-   will run in live mode, so no archives can be specified on the command line or 
+   will run in live mode, so no archives can be specified on the command line or
 in the configuration file.  Only one
    <b>
     -h
@@ -817,14 +817,14 @@ thumb wheels and buttons that can be used to adjust the visualization of the
  <i>
   Roty
  </i>
- thumb wheels allow the user to rotate the scene about the x and y axes, 
+ thumb wheels allow the user to rotate the scene about the x and y axes,
 respectively.  The
  <i>
   dolly
  </i>
  thumb wheel moves the virtual camera closer and further from the scene allowing
-the user to examine specific parts in detail or view the entire scene.  On the 
-right edge of the viewer are eight buttons which affect the way the user can 
+the user to examine specific parts in detail or view the entire scene.  On the
+right edge of the viewer are eight buttons which affect the way the user can
 interact with the scene.
  <dl compact="">
   <dt>
@@ -903,7 +903,7 @@ over an object has the same effect.
   </dd>
  </dl>
  <p>
-  Pressing the right mouse button within the scene window will bring up a menu 
+  Pressing the right mouse button within the scene window will bring up a menu
 of options which affect how the 3D scene is drawn.  The options include
 drawing the blocks as wire frames, and turning on stereo viewing.
   <a name="lbAH">
@@ -912,8 +912,8 @@ drawing the blocks as wire frames, and turning on stereo viewing.
  <h2>
   METRIC SELECTION
  </h2>
- When the pointer cursor is active, more information about the 3D scene can 
-be obtained.  Text describing the metric represented by the block under the 
+ When the pointer cursor is active, more information about the 3D scene can
+be obtained.  Text describing the metric represented by the block under the
 cursor will be displayed in the top text box of the
  <b>
   pmview
@@ -1034,7 +1034,7 @@ current scene.  The current selections do not affect the set of metrics that
 are recorded.
    </p>
    <p>
-    While recording is in progress, a red dot will appear in the time controls 
+    While recording is in progress, a red dot will appear in the time controls
 button in the top left-hand corner of the
     <b>
      pmview
@@ -1135,7 +1135,7 @@ uses several
      hinv
     </i>
     metrics to determine the size and layout of some objects.  As these metrics are
-also needed when replaying the generated archive with the front-end script, 
+also needed when replaying the generated archive with the front-end script,
 a complete
     <b>
      <a href="/man/man1/pmlogger.1.html">
@@ -1144,7 +1144,7 @@ a complete
     </b>
     (1)
 
-config can be specified 
+config can be specified
 (
     <b>
      -R
@@ -1263,7 +1263,7 @@ that have been launched by other instances of
    </b>
    (1).
 
-Therefore, this menu item may appear to have no affect if the time controls 
+Therefore, this menu item may appear to have no affect if the time controls
 are already visible.
   </dd>
   <dt>
@@ -1299,8 +1299,8 @@ time control will be immediately displayed.
    (5)).
 
 The menu contains tools that may be launched based on the sources and names of
-the selected metrics in the scene.  For example, if the selected metrics are 
-from three different hosts, then three copies of a tool may be launched, 
+the selected metrics in the scene.  For example, if the selected metrics are
+from three different hosts, then three copies of a tool may be launched,
 one for each host.  The behavior of a launch depends on the selected metrics
 and the tools being launched.
    <p>
@@ -1321,7 +1321,7 @@ and the tools being launched.
     (5)
 
 metrics specification format.  This provides a description of the selected
-metrics (or if there are no selections, all the metrics) in the scene without 
+metrics (or if there are no selections, all the metrics) in the scene without
 any geometry information.
    </p>
    <p>
@@ -1343,7 +1343,7 @@ Other tools which have a fixed view for one host (eg
     (1)),
 
 may be
-launched multiple times, once for each host in the selected metric list.  If 
+launched multiple times, once for each host in the selected metric list.  If
 the launched tools have time controls, they will share the
 time controls with the launching
     <b>
@@ -1407,7 +1407,7 @@ is shown in a button in the top-left corner of the
  <b>
   pmview
  </b>
- window.  Pressing this button will display the time control and is identical 
+ window.  Pressing this button will display the time control and is identical
 in behavior to
  <b>
   Options/Show Time Control
@@ -1418,11 +1418,11 @@ in behavior to
  <h2>
   SCALE CONTROLS
  </h2>
- Above the examiner window is a thumb wheel and an editable text box which 
-allow the user to apply a multiplier to all values represented in the scene.  
+ Above the examiner window is a thumb wheel and an editable text box which
+allow the user to apply a multiplier to all values represented in the scene.
 Spinning the wheel to the right and/or increasing the text value for the scale
 will increase the height of the bars.  Spinning the wheel to the left and/or
-lowering the text value will decrease the height of the bars.  The button to 
+lowering the text value will decrease the height of the bars.  The button to
 the right of the thumb wheel will reset the scale so that the bars appear at
 the original height for their current value.
  <a name="lbAL">
@@ -1451,7 +1451,7 @@ fetched metrics.  The time will change with the time controller (see
  <i>
   PMVIEW_FONT
  </i>
- environment variable which can be set to the base name of a Type1 font 
+ environment variable which can be set to the base name of a Type1 font
 file in the default Inventor fonts directory.
  <a name="lbAN">
  </a>
@@ -1460,42 +1460,42 @@ file in the default Inventor fonts directory.
  </h2>
  <dl compact="">
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/pmns/*
-   </b>
+   </i>
   </dt>
   <dd>
    default PMNS specification files
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_VAR_DIR/config/pmlaunch/pmlaunchrc
-   </b>
+   </i>
   </dt>
   <dd>
    menu specification file - provides a mapping between menu item and
 launched program
   </dd>
   <dt>
-   <b>
+   <i>
     $HOME/.pcp/pmlaunch/pmlaunchrc
-   </b>
+   </i>
   </dt>
   <dd>
    individual users menu specification
   </dd>
   <dt>
-   <b>
+   <i>
     /usr/lib/X11/app-defaults/PmView
-   </b>
+   </i>
   </dt>
   <dd>
    application resources
   </dd>
   <dt>
-   <b>
+   <i>
     /usr/lib/images/PmView.icon
-   </b>
+   </i>
   </dt>
   <dd>
    icon for
@@ -1504,9 +1504,9 @@ launched program
    </b>
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_SHARE_DIR/lib/pmview-args
-   </b>
+   </i>
   </dt>
   <dd>
    shell procedures for parsing
@@ -1516,9 +1516,9 @@ launched program
    command line options in front end scripts
   </dd>
   <dt>
-   <b>
+   <i>
     /usr/lib/DPS/outline/base/
-   </b>
+   </i>
   </dt>
   <dd>
    directory where Inventor normally looks for the outlines of Type1 fonts.
@@ -1533,9 +1533,10 @@ launched program
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -1545,8 +1546,7 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf

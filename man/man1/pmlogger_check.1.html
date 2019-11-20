@@ -76,7 +76,7 @@
  </b>
  [
  <b>
-  -CNsTV
+  -CNsTV?
  </b>
  ]
 [
@@ -101,7 +101,7 @@
  </b>
  [
  <b>
-  -KMNoprRV
+  -KMNoprRV?
  </b>
  ]
 [
@@ -186,7 +186,7 @@ create a customized regime of administration and management for
 Performance Co-Pilot (see
  <b>
   <a href="/man/man1/pcpintro.1.html">
-   PCPintro
+   PCPIntro
   </a>
  </b>
  (1))
@@ -194,231 +194,28 @@ Performance Co-Pilot (see
 archive log files.
  <p>
   <b>
+   pmlogger_check
+  </b>
+  may be run at any time of the day and is intended to check that a desired set
+of
+  <b>
+   <a href="/man/man1/pmlogger.1.html">
+    pmlogger
+   </a>
+  </b>
+  (1)
+
+processes are running.
+If not, it (re-)starts any missing logger processes.
+ </p>
+ <p>
+  <b>
    pmlogger_daily
   </b>
   is intended to be run once per day, preferably in the early morning, as
 soon after midnight as practicable.
-Its task is to aggregate, rotate and perform general housekeeping one or more sets of PCP archives.
- </p>
- <p>
-  After some period, old PCP archives are discarded.
-This period is 14 days by default, but may be changed using the
-  <b>
-   -k
-  </b>
-  option.
-Some special values are recognized for the period (
-  <i>
-   discard
-  </i>
-  ),
-
-namely
-  <b>
-   0
-  </b>
-  to keep no archives beyond the current one, and
-  <b>
-   forever
-  </b>
-  or
-  <b>
-   never
-  </b>
-  to prevent any archives being discarded.
-Note that the semantics of
-  <i>
-   discard
-  </i>
-  are that it is measured from the time of last modification of each
-archive, and not from the current day.
-This has subtle implications for compression (see below) - the
-compression process results in the creation of new archive files
-which have new modification times.
-In this case, the
-  <i>
-   discard
-  </i>
-  period (re)starts from the time of compression.
- </p>
- <p>
-  Archive data files can optionally be compressed after some period
-to conserve disk space.
-This is particularly useful for large numbers of
-  <b>
-   pmlogger
-  </b>
-  processes under the control of
-  <b>
-   pmlogger_check
-  </b>
-  .
-
-If
-  <b>
-   transparent_decompress
-  </b>
-  is enabled when
-  <i>
-   libpcp
-  </i>
-  was built
-(can be checked with
-  <b>
-   pmconfig
-  </b>
-  <b>
-   -L
-  </b>
-  ),
-
-then the default behaviour is compression ``as soon as possible''
-otherwise the default behaviour is to
-  <b>
-   not
-  </b>
-  compress files (which matches the historical default behaviour
-in earlier PCP releases).
- </p>
- <p>
-  The
-  <b>
-   -x
-  </b>
-  option controls compression and
-  <i>
-   compress
-  </i>
-  specifies the number of days after which to compress archive data
-files and metadata files.
-If
-  <i>
-   compress
-  </i>
-  is
-  <b>
-   0
-  </b>
-  then compression will be applied as soon as possible.
-If
-  <i>
-   compress
-  </i>
-  is
-  <b>
-   never
-  </b>
-  or
-  <b>
-   forever
-  </b>
-  then no compression will be done.
-The environment variable
-  <b>
-   PCP_COMPRESSAFTER
-  </b>
-  may be used as an alternative mechanism to define
-  <i>
-   compress
-  </i>
-  .
-
-If both
-  <b>
-   PCP_COMPRESSAFTER
-  </b>
-  and
-  <b>
-   -x
-  </b>
-  specify different values for
-  <i>
-   compress
-  </i>
-  then the environment variable value is used and a warning is issued.
- </p>
- <p>
-  The
-  <b>
-   -X
-  </b>
-  option specifies the program to use for compression - by default this is
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/xz.1.html">
-    xz
-   </a>
-  </b>
-  (1).
-
-The environment variable
-  <b>
-   PCP_COMPRESS
-  </b>
-  may be used as an alternative mechanism to define
-  <i>
-   program
-  </i>
-  .
-
-If both
-  <b>
-   PCP_COMPRESS
-  </b>
-  and
-  <b>
-   -X
-  </b>
-  specify different compression programs
-then the environment variable value is used and a warning is issued.
- </p>
- <p>
-  Use of the
-  <b>
-   -Y
-  </b>
-  option allows a regular expression to be specified causing files in
-the set of files matched for compression to be omitted - this allows
-only the data file to be compressed, and also prevents the program from
-attempting to compress it more than once.  The default
-  <i>
-   regex
-  </i>
-  is ".(index|Z|gz|bz2|zip|xz|lzma|lzo|lz4)$" - such files are
-filtered using the
-  <b>
-   -v
-  </b>
-  option to
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
-    egrep
-   </a>
-  </b>
-  (1).
-
-The environment variable
-  <b>
-   PCP_COMPRESSREGEX
-  </b>
-  may be used as an alternative mechanism to define
-  <i>
-   regex
-  </i>
-  .
-
-If both
-  <b>
-   PCP_COMPRESSREGEX
-  </b>
-  and
-  <b>
-   -Y
-  </b>
-  specify different values for
-  <i>
-   regex
-  </i>
-  then the environment variable value is used and a warning is issued.
+Its task is to aggregate, rotate and perform general housekeeping one or
+more sets of PCP archives.
  </p>
  <p>
   To accommodate the evolution of PMDAs and changes in production
@@ -480,57 +277,6 @@ exist, else rewriting rules from
   if that directory exists, else no rewriting is attempted.
  </p>
  <p>
-  The
-  <b>
-   -r
-  </b>
-  command line option acts as an over-ride and
-prevents all archive rewriting with
-  <b>
-   <a href="/man/man1/pmlogrewrite.1.html">
-    pmlogrewrite
-   </a>
-  </b>
-  (1)
-
-independent of the presence of any rewriting rule files or directories.
- </p>
- <p>
-  Sometimes PMDA changes require
-  <i>
-   all
-  </i>
-  archives to be rewritten,
-not just the ones involved
-in any current merging.
-This is required for example after a PCP upgrade where a new version of an
-existing PMDA has revised metadata.
-The
-  <b>
-   -R
-  </b>
-  command line forces this universal-style of rewriting.
- </p>
- <p>
-  The
-  <b>
-   -R
-  </b>
-  option to
-  <b>
-   pmlogger_daily
-  </b>
-  is mutually exclusive with both the
-  <b>
-   -r
-  </b>
-  and
-  <b>
-   -M
-  </b>
-  options.
- </p>
- <p>
   As an alternate mechanism, if the file
   <b>
    $PCP_LOG_DIR/pmlogger/.NeedRewrite
@@ -548,456 +294,964 @@ The
    $PCP_LOG_DIR/pmlogger/.NeedRewrite
   </b>
   will be removed once all the rewriting has been done.
+  <a name="lbAE">
+  </a>
  </p>
- <p>
-  By default all possible archives will be merged.  The
-  <b>
-   -o
-  </b>
-  option reinstates the old behaviour in which only yesterday's archives
-will be considered as merge candidates.
- </p>
- <p>
-  In the special case where only a single input archive
-needs to be merged,
-  <b>
-   <a href="/man/man1/pmlogmv.1.html">
-    pmlogmv
-   </a>
-  </b>
-  (1)
-
-is used to rename the archive, otherwise
-  <b>
-   <a href="/man/man1/pmlogger_merge.1.html">
-    pmlogger_merge
-   </a>
-  </b>
-  (1)
-
-is used to merge all of the archives for a single host and a single day into a new
-PCP archive and the individual archives are removed.
- </p>
- <p>
-  The
-  <b>
-   -M
-  </b>
-  option may be used to disable archive merging (or renaming) and rewriting
-(
-  <b>
-   -M
-  </b>
-  implies
-  <b>
-   -r
-  </b>
-  ).
-
-This is most useful in cases where the archives are being incrementally
-copied to a remote repository, e.g. using
-  <b>
-   <a href="http://man7.org/linux/man-pages/man1/rsync.1.html">
-    rsync
-   </a>
-  </b>
-  (1).
-
-Merging, renaming and rewriting all risk an increase in the synchronization
-load, especially immediately after
-  <b>
-   pmlogger_daily
-  </b>
-  has run, so
-  <b>
-   -M
-  </b>
-  may be useful in these cases.
- </p>
- <p>
-  To assist with debugging or diagnosing intermittent failures the
-  <b>
-   -t
-  </b>
-  option may be used.  This will turn on very verbose tracing (
-  <b>
-   -VV
-  </b>
-  )
-
-and capture the trace output in a file named
-  <b>
-   $PCP_LOG_DIR/pmlogger/daily.
-  </b>
-  <i>
-   datestamp
-  </i>
-  <b>
-   .trace,
-  </b>
-  where
-  <i>
-   datestamp
-  </i>
-  is the time
-  <b>
-   pmlogger_daily
-  </b>
-  was run in the format YYYYMMDD.HH.MM.
-In addition, the
-  <i>
-   want
-  </i>
-  argument will ensure that trace files created with
-  <b>
-   -t
-  </b>
-  will be kept for
-  <i>
-   want
-  </i>
-  days and then discarded.
- </p>
- <p>
-  In addition, if the
-PCP ``notices'' file (
-  <b>
-   $PCP_LOG_DIR/NOTICES
-  </b>
-  )
-
-is larger than 20480 bytes,
-  <b>
-   pmlogger_daily
-  </b>
-  will rename the file with a ``.old'' suffix, and start
-a new ``notices'' file.
-The rotate threshold may be changed from 20480 to
-  <i>
-   size
-  </i>
-  bytes using the
-  <b>
-   -s
-  </b>
-  option.
- </p>
- <p>
-  Use of the
-  <b>
-   -m
-  </b>
-  option causes
-  <b>
-   pmlogger_daily
-  </b>
-  to construct a summary of the ``notices'' file entries which were
-generated in the last 24 hours, and e-mail that summary to the set of
-space-separated
-  <i>
-   addresses
-  </i>
-  .
-
-This daily summary is stored in the file
-  <b>
-   $PCP_LOG_DIR/NOTICES.daily
-  </b>
-  ,
-
-which will be empty when no new ``notices'' entries were made in the previous
-24 hour period.
- </p>
- <p>
-  If the
-  <b>
-   -K
-  </b>
-  option is specified for
-  <b>
-   pmlogger_daily
-  </b>
-  then only the compression tasks are attempted, so no
-  <b>
-   <a href="/man/man1/pmlogger.1.html">
+ <h2>
+  OPTIONS
+ </h2>
+ <dl compact="">
+  <dt>
+   <b>
+    -c
+   </b>
+   <i>
+    control
+   </i>
+   ,
+   <b>
+    --control
+   </b>
+   =
+   <i>
+    control
+   </i>
+  </dt>
+  <dd>
+   Both
+   <b>
+    pmlogger_check
+   </b>
+   and
+   <b>
+    pmlogger_daily
+   </b>
+   are controlled by PCP logger control file(s)
+that specifies the
+   <b>
     pmlogger
-   </a>
-  </b>
-  (1)
+   </b>
+   instances to be managed.
+The default
+   <i>
+    control
+   </i>
+   file is
+   <b>
+    $PCP_PMLOGGERCONTROL_PATH
+   </b>
+   ,
 
-rotation, no culling, no rewriting, etc.
+but an alternate may be specified using the
+   <b>
+    -c
+   </b>
+   option.
+If the directory
+   <b>
+    $PCP_PMLOGGERCONTROL_PATH
+   </b>
+   .d
+
+(or
+   <i>
+    control
+   </i>
+   .d
+
+from the
+   <b>
+    -c
+   </b>
+   option) exists, then the contents of any additional
+   <i>
+    control
+   </i>
+   files therein will be appended to the main control file (which must exist).
+  </dd>
+  <dt>
+   <b>
+    -C
+   </b>
+  </dt>
+  <dd>
+   This option causes
+   <b>
+    pmlogger_check
+   </b>
+   to query the system service runlevel information for
+   <b>
+    pmie
+   </b>
+   ,
+
+and use that to determine whether to start processes or not.
+  </dd>
+  <dt>
+   <b>
+    -k
+   </b>
+   <i>
+    period
+   </i>
+   ,
+   <b>
+    --discard
+   </b>
+   =
+   <i>
+    period
+   </i>
+  </dt>
+  <dd>
+   After some period, old PCP archives are discarded.
+This period is 14 days by default, but may be changed using
+this option.
+Some special values are recognized for the
+   <i>
+    period
+   </i>
+   ,
+
+namely
+   <b>
+    0
+   </b>
+   to keep no archives beyond the current one, and
+   <b>
+    forever
+   </b>
+   or
+   <b>
+    never
+   </b>
+   to prevent any archives being discarded.
+Note that the semantics of
+   <i>
+    discard
+   </i>
+   are that it is measured from the time of last modification of each
+archive, and not from the current day.
+This has subtle implications for compression (see below) - the
+compression process results in the creation of new archive files
+which have new modification times.
+In this case, the
+   <i>
+    discard
+   </i>
+   period (re)starts from the time of compression.
+  </dd>
+  <dt>
+   <b>
+    -K
+   </b>
+  </dt>
+  <dd>
+   When this option is specified for
+   <b>
+    pmlogger_daily
+   </b>
+   then only the compression tasks are attempted, so no
+   <b>
+    pmlogger
+   </b>
+   rotation, no culling, no rewriting, etc.
 When
-  <b>
-   -K
-  </b>
-  is used and a
-  <i>
-   compress
-  </i>
-  value of
-  <b>
-   0
-  </b>
-  is in effect
+   <b>
+    -K
+   </b>
+   is used and a
+   <i>
+    compress
+   </i>
+   value of
+   <b>
+    0
+   </b>
+   is in effect
 (from
-  <b>
-   -x
-  </b>
-  on the command line or
-  <b>
-   PCP_COMPRESSAFTER
-  </b>
-  in the environment or via the
-  <i>
-   control
-  </i>
-  file)
+   <b>
+    -x
+   </b>
+   on the command line or
+   <b>
+    PCP_COMPRESSAFTER
+   </b>
+   in the environment or via the
+   <i>
+    control
+   </i>
+   file)
 this is intended for environments where compression
 of archives is desired before the scheduled daily processing
 happens.
 To achieve this, once
-  <b>
-   pmlogger_check
-  </b>
-  has completed regular processing, it calls
-  <b>
-   pmlogger_daily
-  </b>
-  with just the
-  <b>
-   -K
-  </b>
-  option.
+   <b>
+    pmlogger_check
+   </b>
+   has completed regular processing, it calls
+   <b>
+    pmlogger_daily
+   </b>
+   with just the
+   <b>
+    -K
+   </b>
+   option.
 Provided
-  <b>
-   PCP_COMPRESSAFTER
-  </b>
-  is set to
-  <b>
-   0
-  </b>
-  along with any other required compression options to match the
+   <b>
+    PCP_COMPRESSAFTER
+   </b>
+   is set to
+   <b>
+    0
+   </b>
+   along with any other required compression options to match the
 scheduled invocation of
-  <b>
-   pmlogger_daily
-  </b>
-  ,
+   <b>
+    pmlogger_daily
+   </b>
+   ,
 
 then this will compress all volumes except the ones being currently
 written by
-  <b>
-   <a href="/man/man1/pmlogger.1.html">
-    pmlogger
-   </a>
-  </b>
-  (1).
- </p>
- <p>
-  If the
-  <b>
-   -p
-  </b>
-  option is specified for
-  <b>
-   pmlogger_daily
-  </b>
-  then the status of the daily processing is polled and if the
-daily
-  <b>
-   <a href="/man/man1/pmlogger.1.html">
-    pmlogger
-   </a>
-  </b>
-  (1)
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <b>
+    -l
+   </b>
+   <i>
+    file
+   </i>
+   ,
+   <b>
+    --logfile
+   </b>
+   =
+   <i>
+    file
+   </i>
+  </dt>
+  <dd>
+   In order to ensure that mail is not unintentionally sent when these
+scripts are run from
+   <b>
+    <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
+     cron
+    </a>
+   </b>
+   (8)
+
+diagnostics are always sent to log files.
+By default, this file is
+   <b>
+    $PCP_LOG_DIR/pmlogger/pmlogger_check.log
+   </b>
+   or
+   <b>
+    $PCP_LOG_DIR/pmlogger/pmlogger_daily.log
+   </b>
+   but this can be changed using the
+   <b>
+    -l
+   </b>
+   option.
+If this log
+   <i>
+    file
+   </i>
+   already exists when the script starts, it will be
+renamed with a
+   <i>
+    .prev
+   </i>
+   suffix (overwriting any log file saved earlier) before diagnostics
+are generated to the log file.
+The
+   <b>
+    -l
+   </b>
+   and
+   <b>
+    -t
+   </b>
+   options cannot be used together.
+  </dd>
+  <dt>
+   <b>
+    -m
+   </b>
+   <i>
+    addresses
+   </i>
+   ,
+   <b>
+    --mail
+   </b>
+   =
+   <i>
+    addresses
+   </i>
+  </dt>
+  <dd>
+   Use of this option causes
+   <b>
+    pmlogger_daily
+   </b>
+   to construct a summary of the ``notices'' file entries which were
+generated in the last 24 hours, and e-mail that summary to the set of
+space-separated
+   <i>
+    addresses
+   </i>
+   .
+
+This daily summary is stored in the file
+   <b>
+    $PCP_LOG_DIR/NOTICES.daily
+   </b>
+   ,
+
+which will be empty when no new ``notices'' entries were made in the
+previous 24 hour period.
+  </dd>
+  <dt>
+   <b>
+    -M
+   </b>
+  </dt>
+  <dd>
+   This option may be used to disable archive merging (or renaming) and rewriting
+(
+   <b>
+    -M
+   </b>
+   implies
+   <b>
+    -r
+   </b>
+   ).
+
+This is most useful in cases where the archives are being incrementally
+copied to a remote repository, e.g. using
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/rsync.1.html">
+     rsync
+    </a>
+   </b>
+   (1).
+
+Merging, renaming and rewriting all risk an increase in the synchronization
+load, especially immediately after
+   <b>
+    pmlogger_daily
+   </b>
+   has run, so
+   <b>
+    -M
+   </b>
+   may be useful in these cases.
+  </dd>
+  <dt>
+   <b>
+    -N
+   </b>
+   ,
+   <b>
+    --showme
+   </b>
+  </dt>
+  <dd>
+   This option enables a ``show me'' mode, where the programs actions are
+echoed, but not executed, in the style of ``make -n''.
+Using
+   <b>
+    -N
+   </b>
+   in conjunction with
+   <b>
+    -V
+   </b>
+   maximizes the diagnostic capabilities for debugging.
+  </dd>
+  <dt>
+   <b>
+    -o
+   </b>
+  </dt>
+  <dd>
+   By default all possible archives will be merged.
+This option reinstates the old behaviour in which only yesterday's archives
+will be considered as merge candidates.
+In the special case where only a single input archive
+needs to be merged,
+   <b>
+    <a href="/man/man1/pmlogmv.1.html">
+     pmlogmv
+    </a>
+   </b>
+   (1)
+
+is used to rename the archive, otherwise
+   <b>
+    <a href="/man/man1/pmlogger_merge.1.html">
+     pmlogger_merge
+    </a>
+   </b>
+   (1)
+
+is used to merge all of the archives for a single host and a single day into a new
+PCP archive and the individual archives are removed.
+  </dd>
+  <dt>
+   <b>
+    -p
+   </b>
+  </dt>
+  <dd>
+   If this option is specified for
+   <b>
+    pmlogger_daily
+   </b>
+   then the status of the daily processing is polled and if the daily
+   <b>
+    <a href="/man/man1/pmlogger.1.html">
+     pmlogger
+    </a>
+   </b>
+   (1)
 
 rotation, culling, rewriting, compressing, etc.
 has not been done in the last 24 hours then it is done now.
 The intent is to have
-  <b>
-   pmlogger_daily
-  </b>
-  called regularly with the
-  <b>
-   -p
-  </b>
-  option (at 30 mins past the hour, every hour in the default
-  <b>
-   <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
-    cron
-   </a>
-  </b>
-  (8)
+   <b>
+    pmlogger_daily
+   </b>
+   called regularly with the
+   <b>
+    -p
+   </b>
+   option (at 30 mins past the hour, every hour in the default
+   <b>
+    <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
+     cron
+    </a>
+   </b>
+   (8)
 
 set up) to ensure daily processing happens as soon as possible if
 it was missed at the regularly scheduled time (which is 00:10
 by default), e.g. if the system was down or suspended at that
 time.
- </p>
- <p>
-  With the
-  <b>
-   -p
-  </b>
-  option,
-  <b>
-   pmlogger_daily
-  </b>
-  simply exits if the previous day's processing has already been
+With this option
+   <b>
+    pmlogger_daily
+   </b>
+   simply exits if the previous day's processing has already been
 done.
- </p>
- <p>
-  The
-  <b>
-   -K
-  </b>
-  and
-  <b>
-   -p
-  </b>
-  options to
-  <b>
-   pmlogger_daily
-  </b>
-  are mutually exclusive.
- </p>
- <p>
-  The script
-  <b>
-   $PCP_BINADM_DIR/pmlogger_daily
-  </b>
-  could be copied and modified to implement a site-specific procedure for
-end-of-week and/or end-of-month management for a set of PCP archives.
- </p>
- <p>
-  <b>
-   pmlogger_check
-  </b>
-  may be run at any time, and is intended to check that the desired set
-of
-  <b>
-   <a href="/man/man1/pmlogger.1.html">
+The
+   <b>
+    -K
+   </b>
+   and
+   <b>
+    -p
+   </b>
+   options to
+   <b>
+    pmlogger_daily
+   </b>
+   are mutually exclusive.
+  </dd>
+  <dt>
+   <b>
+    -r
+   </b>
+   ,
+   <b>
+    --norewrite
+   </b>
+  </dt>
+  <dd>
+   This command line option acts as an override and prevents all archive
+rewriting with
+   <b>
+    <a href="/man/man1/pmlogrewrite.1.html">
+     pmlogrewrite
+    </a>
+   </b>
+   (1)
+
+independent of the presence of any rewriting rule files or directories.
+  </dd>
+  <dt>
+   <b>
+    -R
+   </b>
+   ,
+   <b>
+    --rewriteall
+   </b>
+  </dt>
+  <dd>
+   Sometimes PMDA changes require
+   <i>
+    all
+   </i>
+   archives to be rewritten,
+not just the ones involved
+in any current merging.
+This is required for example after a PCP upgrade where a new version of an
+existing PMDA has revised metadata.
+The
+   <b>
+    -R
+   </b>
+   command line forces this universal-style of rewriting.
+The
+   <b>
+    -R
+   </b>
+   option to
+   <b>
+    pmlogger_daily
+   </b>
+   is mutually exclusive with both the
+   <b>
+    -r
+   </b>
+   and
+   <b>
+    -M
+   </b>
+   options.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    size
+   </i>
+   ,
+   <b>
+    --rotate
+   </b>
+   =
+   <i>
+    size
+   </i>
+  </dt>
+  <dd>
+   If the PCP ``notices'' file (
+   <b>
+    $PCP_LOG_DIR/NOTICES
+   </b>
+   )
+
+is larger than 20480 bytes,
+   <b>
+    pmlogger_daily
+   </b>
+   will rename the file with a ``.old'' suffix, and start
+a new ``notices'' file.
+The rotate threshold may be changed from 20480 to
+   <i>
+    size
+   </i>
+   bytes using the
+   <b>
+    -s
+   </b>
+   option.
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   ,
+   <b>
+    --stop
+   </b>
+  </dt>
+  <dd>
+   Use of this option provides the reverse
+   <b>
+    pmlogger_check
+   </b>
+   functionality, allowing the set of
+   <b>
     pmlogger
-   </a>
-  </b>
-  (1)
+   </b>
+   processes to be cleanly shutdown.
+  </dd>
+  <dt>
+   <b>
+    -t
+   </b>
+   <i>
+    period
+   </i>
+  </dt>
+  <dd>
+   To assist with debugging or diagnosing intermittent failures the
+   <b>
+    -t
+   </b>
+   option may be used.
+This will turn on very verbose tracing (
+   <b>
+    -VV
+   </b>
+   )
 
-processes are running, and if not to re-launch any failed loggers.
-Use of the
-  <b>
-   -s
-  </b>
-  option provides the reverse functionality, allowing the set of
-  <b>
-   pmlogger
-  </b>
-  processes to be cleanly shutdown.
-Use of the
-  <b>
-   -C
-  </b>
-  option queries the system service runlevel information for
-  <b>
-   pmlogger
-  </b>
-  ,
+and capture the trace output in a file named
+   <b>
+    $PCP_LOG_DIR/pmlogger/daily.
+   </b>
+   <i>
+    datestamp
+   </i>
+   <b>
+    .trace,
+   </b>
+   where
+   <i>
+    datestamp
+   </i>
+   is the time
+   <b>
+    pmlogger_daily
+   </b>
+   was run in the format YYYYMMDD.HH.MM.
+In addition, the
+   <i>
+    period
+   </i>
+   argument will ensure that trace files created with
+   <b>
+    -t
+   </b>
+   will be kept for
+   <i>
+    period
+   </i>
+   days and then discarded.
+  </dd>
+  <dt>
+   <b>
+    -T
+   </b>
+   ,
+   <b>
+    --terse
+   </b>
+  </dt>
+  <dd>
+   This option to
+   <b>
+    pmlogger_check
+   </b>
+   produces less verbose output than the default.
+This is most suitable for a
+   <i>
+    pmlogger
+   </i>
+   ``farm'' where many instances of
+   <i>
+    pmlogger
+   </i>
+   are expected to be running.
+  </dd>
+  <dt>
+   <b>
+    -V
+   </b>
+   ,
+   <b>
+    --verbose
+   </b>
+  </dt>
+  <dd>
+   The output from the
+   <b>
+    cron
+   </b>
+   execution of the scripts may be extended using the
+   <b>
+    -V
+   </b>
+   option to the scripts which will enable verbose tracing of their activity.
+By default the scripts generate no output unless some error or warning
+condition is encountered.
+Using
+   <b>
+    -N
+   </b>
+   in conjunction with
+   <b>
+    -V
+   </b>
+   maximizes the diagnostic capabilities for debugging.
+  </dd>
+  <dt>
+   <b>
+    -x
+   </b>
+   <i>
+    period
+   </i>
+   ,
+   <b>
+    --compress-after
+   </b>
+   =
+   <i>
+    period
+   </i>
+  </dt>
+  <dd>
+   Archive data files can optionally be compressed after some period
+to conserve disk space.
+This is particularly useful for large numbers of
+   <b>
+    pmlogger
+   </b>
+   processes under the control of
+   <b>
+    pmlogger_check
+   </b>
+   .
 
-and uses that to determine whether to start processes.
- </p>
- <p>
-  The
-  <b>
-   -T
-  </b>
-  option provides a terser form of output for
-  <b>
-   pmlogger_check
-  </b>
-  that is most suitable for a
-  <i>
-   pmlogger
-  </i>
-  ``farm'' where many instances of
-  <i>
-   pmlogger
-  </i>
-  are expected to be running.
- </p>
- <p>
-  Using
-  <b>
-   -N
-  </b>
-  option invokes the scripts in a ``show me'' or ``dry run'' mode where the
-tasks that would be performed are reported, but no changes are made.
-This is typically used for debugging in combination with one (verbose)
-or two (very verbose)
-  <b>
-   -V
-  </b>
-  options.
- </p>
- <p>
-  Both
-  <b>
-   pmlogger_daily
-  </b>
-  and
-  <b>
-   pmlogger_check
-  </b>
-  are controlled by PCP logger control file(s)
-that specifies the
-  <b>
-   pmlogger
-  </b>
-  instances to be managed.  The default control file is
-  <b>
-   $PCP_PMLOGGERCONTROL_PATH
-  </b>
-  ,
+If
+   <b>
+    transparent_decompress
+   </b>
+   is enabled when
+   <i>
+    libpcp
+   </i>
+   was built
+(can be checked with the
+   <b>
+    <a href="/man/man1/pmconfig.1.html">
+     pmconfig
+    </a>
+   </b>
+   (1)
+   <b>
+    -L
+   </b>
+   option),
 
-but an alternate may be specified using the
-  <b>
-   -c
-  </b>
-  option.
-If the directory
-  <b>
-   $PCP_PMLOGGERCONTROL_PATH
-  </b>
-  .d
+then the default behaviour is compression ``as soon as possible''.
+Otherwise the default behaviour is to
+   <b>
+    not
+   </b>
+   compress files (which matches the historical default behaviour in
+earlier PCP releases).
+The
+   <b>
+    -x
+   </b>
+   option specifies the number of days after which to compress archive data
+and metadata files.
+If
+   <i>
+    compress
+   </i>
+   is
+   <b>
+    0
+   </b>
+   then compression will be applied as soon as possible.
+If
+   <i>
+    compress
+   </i>
+   is
+   <b>
+    never
+   </b>
+   or
+   <b>
+    forever
+   </b>
+   then no compression will be done.
+The environment variable
+   <b>
+    PCP_COMPRESSAFTER
+   </b>
+   may be used as an alternative mechanism to define
+   <i>
+    compress
+   </i>
+   .
 
-(or
-  <i>
-   control
-  </i>
-  .d
+If both
+   <b>
+    PCP_COMPRESSAFTER
+   </b>
+   and
+   <b>
+    -x
+   </b>
+   specify different values for
+   <i>
+    compress
+   </i>
+   then the environment variable value is used and a warning is issued.
+  </dd>
+  <dt>
+   <b>
+    -X
+   </b>
+   <i>
+    program
+   </i>
+   ,
+   <b>
+    --compressor
+   </b>
+   =
+   <i>
+    program
+   </i>
+  </dt>
+  <dd>
+   This option specifies the program to use for compression - by default
+this is
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/xz.1.html">
+     xz
+    </a>
+   </b>
+   (1).
 
-from the
-  <b>
-   -c
-  </b>
-  option) exists, then the contents of any additional control files therein
-will be appended to the main control file (which must exist).
- </p>
- <p>
-  <b>
-   Warning
-  </b>
-  :
+The environment variable
+   <b>
+    PCP_COMPRESS
+   </b>
+   may be used as an alternative mechanism to define
+   <i>
+    program
+   </i>
+   .
+
+If both
+   <b>
+    PCP_COMPRESS
+   </b>
+   and
+   <b>
+    -X
+   </b>
+   specify different compression programs
+then the environment variable value is used and a warning is issued.
+  </dd>
+  <dt>
+   <b>
+    -Y
+   </b>
+   <i>
+    regex
+   </i>
+   ,
+   <b>
+    --regex
+   </b>
+   =
+   <i>
+    regex
+   </i>
+  </dt>
+  <dd>
+   This option allows a regular expression to be specified causing files in
+the set of files matched for compression to be omitted - this allows
+only the data file to be compressed, and also prevents the program from
+attempting to compress it more than once.
+The default
+   <i>
+    regex
+   </i>
+   is ".(index|Z|gz|bz2|zip|xz|lzma|lzo|lz4)$" - such files are
+filtered using the
+   <b>
+    -v
+   </b>
+   option to
+   <b>
+    <a href="http://man7.org/linux/man-pages/man1/egrep.1.html">
+     egrep
+    </a>
+   </b>
+   (1).
+
+The environment variable
+   <b>
+    PCP_COMPRESSREGEX
+   </b>
+   may be used as an alternative mechanism to define
+   <i>
+    regex
+   </i>
+   .
+
+If both
+   <b>
+    PCP_COMPRESSREGEX
+   </b>
+   and
+   <b>
+    -Y
+   </b>
+   specify different values for
+   <i>
+    regex
+   </i>
+   then the environment variable value is used and a warning is issued.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
+  </dd>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  CONFIGURATION
+ </h2>
+ <b>
+  Warning
+ </b>
+ :
 
 The
-  <b>
-   $PCP_PMLOGGERCONTROL_PATH
-  </b>
-  and
-  <b>
-   $PCP_PMLOGGERCONTROL_PATH
-  </b>
-  .d
+ <b>
+  $PCP_PMLOGGERCONTROL_PATH
+ </b>
+ and
+ <b>
+  $PCP_PMLOGGERCONTROL_PATH
+ </b>
+ .d
 
 files must not be writable by any user other than root.
- </p>
  <p>
   The control file(s) should be customized according to the following rules
 that define for the current version (1.1)
@@ -1375,61 +1629,25 @@ and shown below.
 25,55   *       *       *       *       $PCP_BINADM_DIR/pmlogger_check
 </pre>
      <p>
-      In order to ensure that mail is not unintentionally sent when these
-scripts are run from
+      When using
       <b>
-       <a href="http://man7.org/linux/man-pages/man8/cron.8.html">
-        cron
+       <a href="/man/man1/systemd.1.html">
+        systemd
        </a>
       </b>
-      (8)
+      (1)
 
-diagnostics are always sent to a log file.
-By default, this file is
+on Linux,
+no
       <b>
-       $PCP_LOG_DIR/pmlogger/pmlogger_daily.log
+       crontab
       </b>
-      or
+      entries are needed as the timer mechanism provided by
       <b>
-       $PCP_LOG_DIR/pmlogger/pmlogger_check.log
+       systemd
       </b>
-      but this can be changed using the
-      <b>
-       -l
-      </b>
-      option.
-If this log file already exists when the script starts, it will be
-renamed with a
-      <i>
-       .prev
-      </i>
-      suffix (overwriting any log file saved earlier) before diagnostics
-are generated to the log file.
-The
-      <b>
-       -l
-      </b>
-      and
-      <b>
-       -t
-      </b>
-      options cannot be used together.
-     </p>
-     <p>
-      The output from the
-      <b>
-       cron
-      </b>
-      execution of the scripts may be extended using the
-      <b>
-       -V
-      </b>
-      option to the scripts which will enable verbose tracing of their activity.
-By default the scripts generate no output unless some error or warning
-condition is encountered.
-     </p>
-     <p>
-      <a name="lbAE">
+      is used instead.
+      <a name="lbAG">
       </a>
      </p>
      <h2>
@@ -1437,9 +1655,9 @@ condition is encountered.
      </h2>
      <dl compact="">
       <dt>
-       <b>
+       <i>
         $PCP_PMLOGGERCONTROL_PATH
-       </b>
+       </i>
       </dt>
       <dd>
        the PCP logger control file
@@ -1452,10 +1670,9 @@ condition is encountered.
 this file must not be writable by any user other than root.
       </dd>
       <dt>
-       <b>
-        $PCP_PMLOGGERCONTROL_PATH
-       </b>
-       .d
+       <i>
+        $PCP_PMLOGGERCONTROL_PATH.d
+       </i>
       </dt>
       <dd>
        optional directory containing additional PCP logger control files,
@@ -1469,18 +1686,18 @@ typically one per host
 the files herein must not be writable by any user other than root.
       </dd>
       <dt>
-       <b>
+       <i>
         $PCP_SYSCONF_DIR/pmlogger/crontab
-       </b>
+       </i>
       </dt>
       <dd>
        sample crontab for automated script execution by $PCP_USER (or root).
 Exists only if the platform does not support the /etc/cron.d mechanism.
       </dd>
       <dt>
-       <b>
+       <i>
         $PCP_VAR_DIR/config/pmlogger/config.default
-       </b>
+       </i>
       </dt>
       <dd>
        default
@@ -1497,11 +1714,8 @@ generated automatically by
        (1).
       </dd>
       <dt>
-       <b>
-        $PCP_LOG_DIR/pmlogger/
-       </b>
        <i>
-        hostname
+        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;
        </i>
       </dt>
       <dd>
@@ -1511,15 +1725,9 @@ generated automatically by
        </i>
       </dd>
       <dt>
-       <b>
-        $PCP_LOG_DIR/pmlogger/
-       </b>
        <i>
-        hostname
+        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/lock
        </i>
-       <b>
-        /lock
-       </b>
       </dt>
       <dd>
        transient lock file to guarantee mutual exclusion during
@@ -1541,15 +1749,9 @@ generated automatically by
        are running
       </dd>
       <dt>
-       <b>
-        $PCP_LOG_DIR/pmlogger/
-       </b>
        <i>
-        hostname
+        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/Latest
        </i>
-       <b>
-        /Latest
-       </b>
       </dt>
       <dd>
        PCP archive folio created by
@@ -1567,9 +1769,9 @@ the host
        </i>
       </dd>
       <dt>
-       <b>
+       <i>
         $PCP_LOG_DIR/NOTICES
-       </b>
+       </i>
       </dt>
       <dd>
        PCP ``notices'' file used by
@@ -1583,9 +1785,9 @@ the host
 and friends
       </dd>
       <dt>
-       <b>
+       <i>
         $PCP_LOG_DIR/pmlogger/pmlogger_check.log
-       </b>
+       </i>
       </dt>
       <dd>
        if the previous execution of
@@ -1596,9 +1798,9 @@ and friends
 The normal case is no output in which case the file does not exist.
       </dd>
       <dt>
-       <b>
+       <i>
         $PCP_LOG_DIR/pmlogger/pmlogger_daily.log
-       </b>
+       </i>
       </dt>
       <dd>
        if the previous execution of
@@ -1609,15 +1811,9 @@ The normal case is no output in which case the file does not exist.
 The normal case is no output in which case the file does not exist.
       </dd>
       <dt>
-       <b>
-        $PCP_LOG_DIR/pmlogger/
-       </b>
        <i>
-        hostname
+        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/SaveLogs
        </i>
-       <b>
-        /SaveLogs
-       </b>
       </dt>
       <dd>
        if this directory exists,
@@ -1686,9 +1882,9 @@ the uid of the user ``pcp'',
        typically needs to be owned by the user ``pcp''.
       </dd>
       <dt>
-       <b>
+       <i>
         $PCP_LOG_DIR/pmlogger/.NeedRewrite
-       </b>
+       </i>
       </dt>
       <dd>
        if this file exists, then this is treated as equivalent to using
@@ -1699,7 +1895,7 @@ the uid of the user ``pcp'',
 has been done.
       </dd>
      </dl>
-     <a name="lbAF">
+     <a name="lbAH">
      </a>
      <h2>
       PCP ENVIRONMENT
@@ -1708,20 +1904,20 @@ has been done.
      <b>
       PCP_
      </b>
-     are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
-     <b>
+     are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
+     <i>
       /etc/pcp.conf
-     </b>
+     </i>
      contains the local values for these variables.
 The
      <b>
       $PCP_CONF
      </b>
      variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
      <b>
       <a href="/man/man5/pcp.conf.5.html">
        pcp.conf
@@ -1758,7 +1954,7 @@ is started from
       <b>
        pmlogger_check.
       </b>
-      If the PMDA configuration is stable, this is not necessary, 
+      If the PMDA configuration is stable, this is not necessary,
 and setting
       <b>
        $PMLOGGER_CHECK_SKIP_LOGCONF
@@ -1768,7 +1964,7 @@ and setting
        yes
       </b>
       disables the regeneration and checking.
-      <a name="lbAG">
+      <a name="lbAI">
       </a>
      </p>
      <h2>
@@ -1847,6 +2043,12 @@ and setting
      </b>
      (1),
      <b>
+      <a href="/man/man1/systemd.1.html">
+       systemd
+      </a>
+     </b>
+     (1),
+     <b>
       <a href="http://man7.org/linux/man-pages/man1/xz.1.html">
        xz
       </a>
@@ -1892,20 +2094,34 @@ and
       </dd>
       <dt>
        <a href="#lbAE">
-        FILES
+        OPTIONS
        </a>
       </dt>
       <dd>
       </dd>
       <dt>
        <a href="#lbAF">
-        PCP ENVIRONMENT
+        CONFIGURATION
        </a>
       </dt>
       <dd>
       </dd>
       <dt>
        <a href="#lbAG">
+        FILES
+       </a>
+      </dt>
+      <dd>
+      </dd>
+      <dt>
+       <a href="#lbAH">
+        PCP ENVIRONMENT
+       </a>
+      </dt>
+      <dd>
+      </dd>
+      <dt>
+       <a href="#lbAI">
         SEE ALSO
        </a>
       </dt>

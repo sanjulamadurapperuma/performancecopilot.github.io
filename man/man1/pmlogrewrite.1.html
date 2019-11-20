@@ -74,7 +74,7 @@
  </b>
  [
  <b>
-  -Cdiqsvw
+  -Cdiqsvw?
  </b>
  ]
 [
@@ -257,15 +257,51 @@ may be a useful tool in these cases.
  <h2>
   OPTIONS
  </h2>
- The command line options for
- <b>
-  pmlogrewrite
- </b>
- are as follows:
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
+    -c
+   </b>
+   <i>
+    config
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
+   <i>
+    config
+   </i>
+  </dt>
+  <dd>
+   If
+   <i>
+    config
+   </i>
+   is a file or symbolic link,
+read and parse rewriting rules from there.
+If
+   <i>
+    config
+   </i>
+   is a directory, then all of the files or symbolic links in that
+directory (excluding those beginning with a period ``.'') will
+be used to provide the rewriting rules.
+Multiple
+   <b>
+    -c
+   </b>
+   options are allowed.
+  </dd>
+  <dt>
+   <b>
     -C
+   </b>
+   ,
+   <b>
+    --check
    </b>
   </dt>
   <dd>
@@ -294,44 +330,22 @@ When
   </dd>
   <dt>
    <b>
-    -c
-   </b>
-   <i>
-    config
-   </i>
-  </dt>
-  <dd>
-   If
-   <i>
-    config
-   </i>
-   is a file or symbolic link,
-read and parse rewriting rules from there.
-If
-   <i>
-    config
-   </i>
-   is a directory, then all of the files or symbolic links in that
-directory (excluding those beginning with a period ``.'') will
-be used to provide the rewriting rules.
-Multiple
-   <b>
-    -c
-   </b>
-   options are allowed.
-  </dd>
-  <dt>
-   <b>
     -d
    </b>
+   ,
+   <b>
+    --desperate
+   </b>
   </dt>
   <dd>
-   Desperate mode.  Normally if a fatal error occurs, all trace of
+   Desperate mode.
+Normally if a fatal error occurs, all trace of
 the partially written PCP archive
    <i>
     outlog
    </i>
-   is removed.  With the
+   is removed.
+With the
    <b>
     -d
    </b>
@@ -375,6 +389,10 @@ if any errors (not warnings) are encountered,
    <b>
     -q
    </b>
+   ,
+   <b>
+    --quick
+   </b>
   </dt>
   <dd>
    Quick mode, where if there are no rewriting actions to be
@@ -397,6 +415,10 @@ the configuration file(s) and
   <dt>
    <b>
     -s
+   </b>
+   ,
+   <b>
+    --scale
    </b>
   </dt>
   <dd>
@@ -427,11 +449,13 @@ values in
     inlog
    </i>
    are correct, or (b) the metadata is changing so the values need
-to change as well.  The default
+to change as well.
+The default
    <b>
     pmlogrewrite
    </b>
-   behaviour matches case (a).  If case (b) applies, then use the
+   behaviour matches case (a).
+If case (b) applies, then use the
    <b>
     -s
    </b>
@@ -452,27 +476,37 @@ clause of the metric rewriting rule described below.
    <b>
     -v
    </b>
+   ,
+   <b>
+    --verbose
+   </b>
   </dt>
   <dd>
-   Increase verbosity of diagnostic output.
+   Enable verbose mode.
   </dd>
   <dt>
    <b>
     -w
    </b>
+   ,
+   <b>
+    --warning
+   </b>
   </dt>
   <dd>
-   Emit warnings.  Normally
+   Emit warnings.
+Normally
    <b>
     pmlogrewrite
    </b>
    remains silent for any warning that is not fatal and
 it is expected that for a particular archive, some (or indeed, all)
-of the rewriting specifications may not apply.  For example, changes to
+of the rewriting specifications may not apply.
+For example, changes to
 a PMDA may be captured in a set of rewriting rules, but a single archive
 may not contain all of the modified metrics nor all of the modified
-instance domains and/or instances.  Because these cases are expected,
-they do not prevent
+instance domains and/or instances.
+Because these cases are expected, they do not prevent
    <b>
     pmlogrewrite
    </b>
@@ -493,6 +527,14 @@ The
     -w
    </b>
    flag forces warnings to be emitted for all of these cases.
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
   </dd>
  </dl>
  <p>
@@ -533,7 +575,8 @@ are all equivalent in rewriting rules.
  </p>
  <p>
   The character ``#'' introduces
-a comment and the remainder of the line is ignored.  Otherwise the
+a comment and the remainder of the line is ignored.
+Otherwise the
 input is relatively free format with optional white space (spaces, tabs or
 newlines) between lexical items in the rules.
  </p>
@@ -621,10 +664,12 @@ where
        delta
       </i>
       is an optional sign ``+'' (the default) or ``-'', an optional number of
-hours followed by a colon ``:'', an optional number of minutes followed by a 
+hours followed by a colon ``:'', an optional number of minutes followed by a
 colon ``:'', a number of seconds, an optional fraction of seconds following
-a period ``.''.  The simplest example would be ``30'' to increase the
-timestamps by 30 seconds.  A more complex example would be ``-23:59:59.999''
+a period ``.''.
+The simplest example would be ``30'' to increase the
+timestamps by 30 seconds.
+A more complex example would be ``-23:59:59.999''
 to move the timestamps backwards by one millisecond less than one day.
      </p>
     </dd>
@@ -977,7 +1022,8 @@ mapping rules are applied to the copied
       <i>
        newserial
       </i>
-      instance domain.  This is
+      instance domain.
+This is
 useful when a PMDA is split and the same instance domain needs to
 be replicated for domain
       <i>
@@ -1433,8 +1479,8 @@ same metadata or result values more than once, e.g. more than one
 
 INDOM
 
-clause for the same instance domain.  The one exception is the possible
-interaction between the
+clause for the same instance domain.
+The one exception is the possible interaction between the
 
 INDOM
 
@@ -1506,7 +1552,8 @@ NULL[
      <p>
       The metric (which must have been
 previously defined over an instance domain) is being modified to
-be a singular metric.  This involves a metadata change and collapsing
+be a singular metric.
+This involves a metadata change and collapsing
 all results for this metric so that multiple values become one value.
      </p>
      <p>
@@ -1847,11 +1894,12 @@ RESCALE
       <i>
        newunits
       </i>
-      is six values separated by commas.  The first 3 values describe the
+      is six values separated by commas.
+The first 3 values describe the
 dimension of the metric along the dimensions of space, time and count; these
-are integer values, usually 0, 1 or -1.  The remaining 3 values describe
-the scale of the metric's values in the dimensions of space, time and
-count.
+are integer values, usually 0, 1 or -1.
+The remaining 3 values describe
+the scale of the metric's values in the dimensions of space, time and count.
 Space scale values should be 0 (if the space dimension is 0), else
 the XXX part of the name of one of the
       <b>
@@ -1936,7 +1984,8 @@ may be used to chose value rescaling as per the
    <p>
     When changing the domain number for a metric or instance domain,
 the new domain number will usually match an existing PMDA's domain
-number.  If this is not the case, then the new domain number
+number.
+If this is not the case, then the new domain number
 should not be randomly chosen; consult
     <b>
      $PCP_VAR_DIR/pmns/stdpmid
@@ -2048,7 +2097,8 @@ ONELINE.
    textcontent
   </i>
   further restricts the selected text records to
-those containing the specified content. Characters such as double quotes
+those containing the specified content.
+Characters such as double quotes
 may be escaped by preceding them with a backslash ``\''.
  </p>
  <p>
@@ -2393,7 +2443,8 @@ for a discussion of this issue.
   </i>
   " may be optionally specified
 in double quotes in order to select labels with the given name and/or
-given value. These may individually be omitted or specified as
+given value.
+These may individually be omitted or specified as
 asterisks ``*'' to indicate that labels with all names and/or values are
 selected.
  </p>
@@ -2474,7 +2525,8 @@ INSTANCES
       <i>
        labelid
       </i>
-      ). If "
+      ).
+If "
       <i>
        label-name
       </i>
@@ -2484,11 +2536,12 @@ INSTANCES
        label-value
       </i>
       " were specified, then they are ignored
-with a warning. If
+with a warning.
+If
       <i>
        instance
       </i>
-      is not specified for an 
+      is not specified for an
 
 INSTANCES
       <i>
@@ -2822,7 +2875,8 @@ indom 60.2 {
  <p>
   If we decide to split the ``proc'' metrics out of the Linux PMDA, this
 will involve changing the domain number for the PMID of these metrics
-and the associated instance domains.  The rules below would rewrite an
+and the associated instance domains.
+The rules below would rewrite an
 old archive to match the changes after the PMDA split.
  </p>
  <dl compact="">
@@ -2846,7 +2900,8 @@ indom 60.9 { indom -&gt; 123.0 }
  <p>
   If the metric foo.count_em was exported as a native ``long'' then it
 could be a 32-bit integer on some platforms and a 64-bit integer on
-other platforms.  Subsequent investigations show the value is in
+other platforms.
+Subsequent investigations show the value is in
 fact unsigned, so the following rules could be used.
  </p>
  <dl compact="">
@@ -2863,6 +2918,40 @@ metric foo.count_em {
  </dl>
  <a name="lbAH">
  </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ All error conditions detected by
+ <b>
+  pmlogrewrite
+ </b>
+ are reported on
+ <i>
+  stderr
+ </i>
+ with textual (if sometimes terse) explanation.
+ <p>
+  Should the input archive log be corrupted (this can happen
+if the
+  <b>
+   pmlogger
+  </b>
+  instance writing the log suddenly dies), then
+  <b>
+   pmlogrewrite
+  </b>
+  will detect and report the position of the corruption in the file,
+and any subsequent information from that archive log will not be processed.
+ </p>
+ <p>
+  If any error is detected,
+  <b>
+   pmlogrewrite
+  </b>
+  will exit with a non-zero status.
+  <a name="lbAI">
+  </a>
+ </p>
  <h2>
   FILES
  </h2>
@@ -2919,7 +3008,7 @@ archive log.
    </dt>
   </dt>
  </dl>
- <a name="lbAI">
+ <a name="lbAJ">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -2928,9 +3017,10 @@ archive log.
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -2940,16 +3030,24 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAJ">
- </a>
+ <p>
+  For environment variables affecting PCP tools, see
+  <b>
+   <a href="/man/man3/pmgetoptions.3.html">
+    pmGetOptions
+   </a>
+  </b>
+  (3).
+  <a name="lbAK">
+  </a>
+ </p>
  <h2>
   SEE ALSO
  </h2>
@@ -2959,12 +3057,6 @@ as described in
   </a>
  </b>
  (1),
- <b>
-  <a href="/man/man3/pmdainstance.3.html">
-   pmdaInstance
-  </a>
- </b>
- (3),
  <b>
   <a href="/man/man1/pmdumplog.1.html">
    pmdumplog
@@ -2996,6 +3088,12 @@ as described in
  </b>
  (1),
  <b>
+  <a href="/man/man3/pmdainstance.3.html">
+   pmdaInstance
+  </a>
+ </b>
+ (3),
+ <b>
   <a href="/man/man3/pmlookupdesc.3.html">
    pmLookupDesc
   </a>
@@ -3021,40 +3119,6 @@ and
   </a>
  </b>
  (5).
- <a name="lbAK">
- </a>
- <h2>
-  DIAGNOSTICS
- </h2>
- All error conditions detected by
- <b>
-  pmlogrewrite
- </b>
- are reported on
- <i>
-  stderr
- </i>
- with textual (if sometimes terse) explanation.
- <p>
-  Should the input archive log be corrupted (this can happen
-if the
-  <b>
-   pmlogger
-  </b>
-  instance writing the log suddenly dies), then
-  <b>
-   pmlogrewrite
-  </b>
-  will detect and report the position of the corruption in the file,
-and any subsequent information from that archive log will not be processed.
- </p>
- <p>
-  If any error is detected,
-  <b>
-   pmlogrewrite
-  </b>
-  will exit with a non-zero status.
- </p>
  <p>
  </p>
  <hr/>
@@ -3108,28 +3172,28 @@ and any subsequent information from that archive log will not be processed.
   </dd>
   <dt>
    <a href="#lbAH">
-    FILES
+    DIAGNOSTICS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAJ">
-    SEE ALSO
+    PCP ENVIRONMENT
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAK">
-    DIAGNOSTICS
+    SEE ALSO
    </a>
   </dt>
   <dd>

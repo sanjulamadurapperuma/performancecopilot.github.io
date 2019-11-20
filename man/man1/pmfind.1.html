@@ -114,37 +114,42 @@ network and prints a list of URLs corresponding to the services discovered.
  <h2>
   OPTIONS
  </h2>
- <b>
-  -m
- </b>
- <i>
-  mechanism
- </i>
- ,
- <b>
-  --mechanism
- </b>
- =
- <i>
-  mechanism
- </i>
- This option sets the
- <i>
-  mechanism
- </i>
- that
- <b>
-  pmfind
- </b>
- uses when performing service discovery.
+ The available command line options are:
+ <dl compact="">
+  <dt>
+   <b>
+    -m
+   </b>
+   <i>
+    mechanism
+   </i>
+   ,
+   <b>
+    --mechanism
+   </b>
+   =
+   <i>
+    mechanism
+   </i>
+  </dt>
+  <dd>
+   This option sets the
+   <i>
+    mechanism
+   </i>
+   that
+   <b>
+    pmfind
+   </b>
+   uses when performing service discovery.
 By default, or if the keyword
- <i>
-  all
- </i>
- is specified, every available mechanism will be used (iteratively).
+   <i>
+    all
+   </i>
+   is specified, every available mechanism will be used (iteratively).
 See the ``MECHANISMS'' section for a description of each available
 discovery mechanism.
- <dl compact="">
+  </dd>
   <dt>
    <b>
     -q
@@ -430,9 +435,9 @@ that is intended to be self-explanatory.
  </h2>
  <dl compact="">
   <dt>
-   <b>
+   <i>
     $PCP_BINADM_DIR/discover
-   </b>
+   </i>
   </dt>
   <dd>
    default path to address discovery scripts

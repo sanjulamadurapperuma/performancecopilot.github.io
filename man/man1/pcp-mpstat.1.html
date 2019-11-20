@@ -134,86 +134,88 @@ The value of
   </i>
   parameter determines the number of samples to be displayed.
 The default is continous.
- </p>
- <p>
-  When invoked via the
-  <b>
-   <a href="/man/man1/pcp.1.html">
-    pcp
-   </a>
-  </b>
-  (1)
-
-command, the
-  <b>
-   -h
-  </b>
-  /
-  <b>
-   --host
-  </b>
-  ,
-  <b>
-   -a
-  </b>
-  /
-  <b>
-   --archive
-  </b>
-  ,
-  <b>
-   -O
-  </b>
-  /
-  <b>
-   --origin
-  </b>
-  ,
-  <b>
-   -s
-  </b>
-  /
-  <b>
-   --samples
-  </b>
-  ,
-  <b>
-   -t
-  </b>
-  /
-  <b>
-   --interval
-  </b>
-  ,
-  <b>
-   -Z
-  </b>
-  /
-  <b>
-   --timezone
-  </b>
-  and several other
-  <b>
-   pcp
-  </b>
-  <i>
-   options
-  </i>
-  become indirectly available, see
-  <b>
-   <a href="/man/man1/pcpintro.1.html">
-    PCPIntro
-   </a>
-  </b>
-  (1)
-
-for their descriptions.
   <a name="lbAE">
   </a>
  </p>
  <h2>
   OPTIONS
  </h2>
+ When invoked via the
+ <b>
+  <a href="/man/man1/pcp.1.html">
+   pcp
+  </a>
+ </b>
+ (1)
+
+command, the
+ <b>
+  -h
+ </b>
+ /
+ <b>
+  --host
+ </b>
+ ,
+ <b>
+  -a
+ </b>
+ /
+ <b>
+  --archive
+ </b>
+ ,
+ <b>
+  -O
+ </b>
+ /
+ <b>
+  --origin
+ </b>
+ ,
+ <b>
+  -s
+ </b>
+ /
+ <b>
+  --samples
+ </b>
+ ,
+ <b>
+  -t
+ </b>
+ /
+ <b>
+  --interval
+ </b>
+ ,
+ <b>
+  -Z
+ </b>
+ /
+ <b>
+  --timezone
+ </b>
+ and several other
+ <i>
+  pcp options
+ </i>
+ become indirectly available; refer to
+ <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1)
+
+for a complete description of these options.
+ <p>
+  The additional command line options available for
+  <b>
+   pcp-mpstat
+  </b>
+  are:
+ </p>
  <dl compact="">
   <dt>
    -A
@@ -660,6 +662,12 @@ configuration file, as described in
   SEE ALSO
  </h2>
  <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
   <a href="/man/man1/pcp.1.html">
    pcp
   </a>
@@ -672,17 +680,11 @@ configuration file, as described in
   (1),
  </b>
  <b>
-  <a href="/man/man1/pcpintro.1.html">
-   PCPIntro
-  </a>
- </b>
- (1),
- <b>
   <a href="/man/man3/pmparseinterval.3.html">
    pmParseInterval
   </a>
  </b>
- (3)
+ (3),
  <b>
   <a href="/man/man3/pmtraversepmns.3.html">
    pmTraversePMNS

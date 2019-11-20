@@ -306,11 +306,7 @@ where
  <h2>
   OPTIONS
  </h2>
- The options to
- <b>
-  pmproxy
- </b>
- are as follows:
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
@@ -929,6 +925,12 @@ Alternatively, it can be a single
   </b>
   host that will be queried using the "CLUSTER INFO" command to
 automatically configure multiple backing hosts, described at
+  <b>
+   <a href="https://redis.io/topics/cluster-spec">
+    https://redis.io/topics/cluster-spec
+   </a>
+  </b>
+  .
   <a name="lbAG">
   </a>
  </p>
@@ -987,7 +989,12 @@ it and then starting it again.
    timeseries
   </b>
   enabled) registered at
-
+  <b>
+   <a href="https://www.iana.org/">
+    https://www.iana.org/
+   </a>
+  </b>
+  .
 
 Either the environment
 variable
@@ -1107,9 +1114,9 @@ it down (after some timeout period) it will not be possible to run
  </h2>
  <dl compact="">
   <dt>
-   <b>
+   <i>
     PCP_PMPROXYOPTIONS_PATH
-   </b>
+   </i>
   </dt>
   <dd>
    command line options for
@@ -1124,9 +1131,9 @@ it down (after some timeout period) it will not be possible to run
 the first character.
   </dd>
   <dt>
-   <b>
+   <i>
     $PCP_SYSCONFIG_DIR/pmproxy
-   </b>
+   </i>
   </dt>
   <dd>
    additional environment variables that will be set when
@@ -1137,9 +1144,9 @@ the first character.
 Only settings of the form "PMPROXY_VARIABLE=value" will be honoured.
   </dd>
   <dt>
-   <b>
+   <i>
     ./pmproxy.log
-   </b>
+   </i>
   </dt>
   <dd>
    (or
@@ -1151,9 +1158,9 @@ Only settings of the form "PMPROXY_VARIABLE=value" will be honoured.
    All messages and diagnostics are directed here
   </dd>
   <dt>
-   <b>
+   <i>
     /etc/pki/tls
-   </b>
+   </i>
   </dt>
   <dd>
    default OpenSSL certificate database directory, used for optional
@@ -1169,9 +1176,9 @@ These certificates can be created and queried using the
    tool, amongst others.
   </dd>
   <dt>
-   <b>
+   <i>
     /etc/pki/nssdb
-   </b>
+   </i>
   </dt>
   <dd>
    default Network Sercity Services (NSS) database directory, used for optional

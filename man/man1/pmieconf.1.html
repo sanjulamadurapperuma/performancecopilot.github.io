@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -cFv
+  -cFv?
  </b>
  ]
 [
@@ -136,13 +136,12 @@ and the output
   pmie
  </b>
  .
- <p>
-  A brief description of the
-  <b>
-   pmieconf
-  </b>
-  command line options follows:
- </p>
+ <a name="lbAE">
+ </a>
+ <h2>
+  OPTIONS
+ </h2>
+ The available command line options are:
  <dl compact="">
   <dt>
    <b>
@@ -162,6 +161,14 @@ It is not appropriate when using the tool interactively.
    <b>
     -f
    </b>
+   <i>
+    file
+   </i>
+   ,
+   <b>
+    --config
+   </b>
+   =
    <i>
     file
    </i>
@@ -218,6 +225,14 @@ user, the file
    <i>
     rulepath
    </i>
+   ,
+   <b>
+    --rules
+   </b>
+   =
+   <i>
+    rulepath
+   </i>
   </dt>
   <dd>
    Allows the source of generalized
@@ -257,12 +272,29 @@ Use of this option overrides the
    <b>
     -v
    </b>
+   ,
+   <b>
+    --verbose
+   </b>
   </dt>
   <dd>
-   Verbose mode.  Additional information associated with each rule and its
-associated variables will be displayed.  This is the complete list of
+   Enable verbose mode.
+associated variables will be displayed.
+This is the complete list of
 variables which affects any given rule (by default, global variables are
 not displayed with the rule).
+  </dd>
+  <dt>
+   <b>
+    -?
+   </b>
+   ,
+   <b>
+    --help
+   </b>
+  </dt>
+  <dd>
+   Display usage message and exit.
   </dd>
  </dl>
  <p>
@@ -297,17 +329,20 @@ are presented on the command line,
   s
 
 interactively.
+  <a name="lbAF">
+  </a>
  </p>
- <p>
-  The
-  <b>
-   pmieconf
-  </b>
-  <i>
-   command
-  </i>
-  language is described here:
- </p>
+ <h2>
+  COMMAND LANGUAGE
+ </h2>
+ The
+ <b>
+  pmieconf
+ </b>
+ <i>
+  command
+ </i>
+ language is described here:
  <dl compact="">
   <dt>
    <b>
@@ -323,8 +358,10 @@ interactively.
    <b>
     pmieconf
    </b>
-   commands.  With one argument, a description of one or more of the generalized
-rules is displayed.  With two arguments, a description of a specific variable
+   commands.
+With one argument, a description of one or more of the generalized
+rules is displayed.
+With two arguments, a description of a specific variable
 relating to one or more of the generalized rules is displayed.
   </dd>
   <dt>
@@ -400,8 +437,8 @@ within the rule group.
    </b>
   </dt>
   <dd>
-   Enables the specified rule or group of rules.  An enabled rule is one which
-will be included in the
+   Enables the specified rule or group of rules.
+An enabled rule is one which will be included in the
    <b>
     pmie
    </b>
@@ -428,8 +465,8 @@ manner conforming to the
    </b>
   </dt>
   <dd>
-   Disables the specified rule or group of rules.  If the rule was previously
-enabled, it will be removed from the
+   Disables the specified rule or group of rules.
+If the rule was previously enabled, it will be removed from the
    <b>
     pmie
    </b>
@@ -577,7 +614,7 @@ for rules in the "memory" group which are to be evaluated once per minute.
    &lt;group&gt;
   </b>
   .
-  <a name="lbAE">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -641,7 +678,7 @@ rule:
  <pre>
   pmieconf&gt; l cpu.syscall predicate
     rule: cpu.syscall  [High aggregate system call rate]
-      predicate = 
+      predicate =
               some_host (
                   ( kernel.all.syscall $hosts$ )
                     &gt; $threshold$ count/sec * hinv.ncpu $hosts$
@@ -654,36 +691,17 @@ rule:
             threshold = 7000
 </pre>
  <p>
-  <a name="lbAF">
+  <a name="lbAH">
   </a>
  </p>
- <h2>
-  ENVIRONMENT
- </h2>
- The environment variable
- <b>
-  PMIECONF_PATH
- </b>
- has a similar function to the
- <b>
-  -r
- </b>
- option described above, and if set will be used provided no
- <b>
-  -r
- </b>
- option is presented.
- <a name="lbAG">
- </a>
  <h2>
   FILES
  </h2>
  <dl compact="">
   <dt>
    <i>
-    $PCP_VAR_DIR/config/pmieconf/
+    $PCP_VAR_DIR/config/pmieconf/*/*
    </i>
-   */*
   </dt>
   <dd>
    generalized system resource monitoring rules
@@ -705,7 +723,25 @@ rule:
    default user settings for system resource monitoring rules
   </dd>
  </dl>
- <a name="lbAH">
+ <a name="lbAI">
+ </a>
+ <h2>
+  ENVIRONMENT
+ </h2>
+ The environment variable
+ <b>
+  PMIECONF_PATH
+ </b>
+ has a similar function to the
+ <b>
+  -r
+ </b>
+ option described above, and if set will be used provided no
+ <b>
+  -r
+ </b>
+ option is presented.
+ <a name="lbAJ">
  </a>
  <h2>
   PCP ENVIRONMENT
@@ -714,9 +750,10 @@ rule:
  <b>
   PCP_
  </b>
- are used to parameterize the file and directory names
-used by PCP.
-On each installation, the file
+ are used to parameterize
+the file and directory names used by PCP.
+On each installation, the
+file
  <i>
   /etc/pcp.conf
  </i>
@@ -726,15 +763,14 @@ The
   $PCP_CONF
  </b>
  variable may be used to specify an alternative
-configuration file,
-as described in
+configuration file, as described in
  <b>
   <a href="/man/man5/pcp.conf.5.html">
    pcp.conf
   </a>
  </b>
  (5).
- <a name="lbAI">
+ <a name="lbAK">
  </a>
  <h2>
   SEE ALSO
@@ -797,34 +833,48 @@ and
   </dd>
   <dt>
    <a href="#lbAE">
-    EXAMPLES
+    OPTIONS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    ENVIRONMENT
+    COMMAND LANGUAGE
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
-    FILES
+    EXAMPLES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAH">
-    PCP ENVIRONMENT
+    FILES
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAI">
+    ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAJ">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAK">
     SEE ALSO
    </a>
   </dt>

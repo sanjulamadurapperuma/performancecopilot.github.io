@@ -89,6 +89,43 @@ separate PCP netcheck PMDA Python modules running Python code
 or external programs.
 Existing Python modules and programs should be possible to be utilized
 with PCP netcheck PMDA modules with minimal effort.
+ </p>
+ <p>
+  Note that on SELinux enabled systems for
+  <b>
+   pmdanetcheck
+  </b>
+  to be able to
+use the
+  <b>
+   <a href="/man/man1/ping.1.html">
+    ping
+   </a>
+  </b>
+  (1)
+
+command the
+  <b>
+   pcp
+  </b>
+  group must be able to create ICMP Echo sockets;
+please make sure the group id for
+  <b>
+   pcp
+  </b>
+  is included in the range at
+  <i>
+   /proc/sys/net/ipv4/ping_group_range
+  </i>
+  and refer to
+  <b>
+   <a href="/man/man7/icmp.7.html">
+    icmp
+   </a>
+  </b>
+  (7)
+
+for more details on this.
   <a name="lbAD">
   </a>
  </p>
@@ -678,6 +715,12 @@ configuration file, as described in
   </a>
  </b>
  (5),
+ <b>
+  <a href="/man/man7/icmp.7.html">
+   icmp
+  </a>
+ </b>
+ (7)
 
 and
  <b>
