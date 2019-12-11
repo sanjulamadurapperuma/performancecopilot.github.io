@@ -870,6 +870,12 @@ $ curl -s <a href="http://localhost:44322/series/descs?\">http://localhost:44322
     pmSeriesLabels
    </a>
   </b>
+  (3),
+  <b>
+   <a href="/man/man3/pmserieslabelvalues.3.html">
+    pmSeriesLabelValues
+   </a>
+  </b>
   (3)
  </h3>
  <table border="">
@@ -919,6 +925,30 @@ $ curl -s <a href="http://localhost:44322/series/descs?\">http://localhost:44322
      </tr>
      <tr valign="top">
       <td>
+       name
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Find all known label values for given name
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
+       names
+      </td>
+      <td>
+       string
+      </td>
+      <td>
+       Comma-separated list of label names
+       <br/>
+      </td>
+     </tr>
+     <tr valign="top">
+      <td>
        client
       </td>
       <td>
@@ -934,9 +964,29 @@ $ curl -s <a href="http://localhost:44322/series/descs?\">http://localhost:44322
   </tr>
  </table>
  <p>
-  Performs a label set lookup for one or more time series
-identifiers.
-The JSON response contains the same information as the
+  This command operates in one of three modes.
+It can perform a label set lookup for one or more time
+series identifiers, when given the
+  <i>
+   series
+  </i>
+  parameter).
+It can produce a list of all known label names, in the
+absense of
+  <i>
+   name
+  </i>
+  ,
+  <i>
+   names
+  </i>
+  or
+  <i>
+   series
+  </i>
+  parameters.
+The JSON responses for these modes contains the same information
+as the
   <b>
    pmseries
   </b>
@@ -947,6 +997,33 @@ The JSON response contains the same information as the
   /--
   <b>
    labels
+  </b>
+  option.
+ </p>
+ <p>
+  Alternatively, it can produce a list of all known label
+values for a given label
+  <i>
+   name
+  </i>
+  or
+  <i>
+   names
+  </i>
+  .
+
+The JSON response for this mode contains the same information
+as the
+  <b>
+   pmseries
+  </b>
+  -
+  <b>
+   v
+  </b>
+  /--
+  <b>
+   values
   </b>
   option.
  </p>
@@ -983,10 +1060,17 @@ $ curl -s <a href="http://localhost:44322/series/labels?\">http://localhost:4432
  <p>
   Alternatively, with no
   <i>
+   name
+  </i>
+  ,
+  <i>
+   names
+  </i>
+  or
+  <i>
    series
   </i>
-  argument, this request will return the list of all known
-label names.
+  parameters, return the list of all known label names.
  </p>
  <p>
   <br/>
@@ -1010,6 +1094,35 @@ $ curl -s <a href="http://localhost:44322/series/labels">http://localhost:44322/
     "platform",
     "userid"
 ]
+
+</pre>
+  </dd>
+ </dl>
+ <p>
+  Use the
+  <i>
+   name
+  </i>
+  or
+  <i>
+   names
+  </i>
+  parameters to find all possible label values for the given name(s).
+ </p>
+ <p>
+  <br/>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ curl -s <a href="http://localhost:44322/series/labels?\">http://localhost:44322/series/labels?\</a>
+        names=hostname,domainname | pmjson
+{
+    "hostname": [ "app", "nas" ],
+    "domainname": [ "acme.com" ]
+}
 
 </pre>
   </dd>
@@ -3592,6 +3705,10 @@ and
       -
       <b>
        pmSeriesLabels
+      </b>
+      (3),
+      <b>
+       pmSeriesLabelValues
       </b>
       (3)
      </a>

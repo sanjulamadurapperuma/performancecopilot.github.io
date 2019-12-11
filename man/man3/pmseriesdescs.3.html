@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMSERIESSETUP
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmSeriesDescs
+ </b>
+ ,
+ <b>
+  pmSeriesLabels
+ </b>
+ ,
+ <b>
+  pmSeriesLabelValues
+ </b>
+ ,
+ <b>
+  pmSeriesInstances
+ </b>
+ ,
+ <b>
+  pmSeriesMetrics
+ </b>
+ ,
+ <b>
+  pmSeriesSources
+ </b>
+ - fast, scalable time series metadata
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmwebapi.h">
+   pcp/pmwebapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  int pmSeriesDescs(pmSeriesSettings *
+  <i>
+   sp
+  </i>
+  , int
+  <i>
+   count
+  </i>
+  , sds *
+  <i>
+   series
+  </i>
+  , void *
+  <i>
+   arg
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesLabels(pmSeriesSettings *
+  <i>
+   sp
+  </i>
+  , int
+  <i>
+   count
+  </i>
+  , sds *
+  <i>
+   series
+  </i>
+  , void *
+  <i>
+   arg
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesLabelValues(pmSeriesSettings *
+  <i>
+   sp
+  </i>
+  , int
+  <i>
+   count
+  </i>
+  , sds *
+  <i>
+   labels
+  </i>
+  , void *
+  <i>
+   arg
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesInstances(pmSeriesSettings *
+  <i>
+   sp
+  </i>
+  , int
+  <i>
+   count
+  </i>
+  , sds *
+  <i>
+   series
+  </i>
+  , void *
+  <i>
+   arg
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesMetrics(pmSeriesSettings *
+  <i>
+   sp
+  </i>
+  , int
+  <i>
+   count
+  </i>
+  , sds *
+  <i>
+   series
+  </i>
+  , void *
+  <i>
+   arg
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesSources(pmSeriesSettings *
+  <i>
+   sp
+  </i>
+  , int
+  <i>
+   count
+  </i>
+  , sds *
+  <i>
+   series
+  </i>
+  , void *
+  <i>
+   arg
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp_web
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ Each performance metric and data source forming part of the Performance
+Co-Pilot (PCP) fast, scalable time series service has certain properties
+(metadata) associated with it.
+These properties can be queried using the interfaces described here.
+ <p>
+  This functionality is provided through asynchronous APIs, which function
+in an event-driven fashion where callbacks are invoked for each metadata
+structure being returned.
+ </p>
+ <p>
+  As a general pattern, all interfaces in these APIs that need to invoke
+callbacks provided by the calling program (see
+  <b>
+   <a href="/man/man3/pmseriessetup.3.html">
+    pmSeriesSetup
+   </a>
+  </b>
+  (3))
+
+will take an opaque (void * pointer) parameter,
+  <i>
+   arg
+  </i>
+  .
+
+This pointer will be passed through unchanged and is typically used to
+access a data structure maintaining state within the calling program.
+ </p>
+ <p>
+  With a couple of exceptions, these interfaces tend to operate in one of
+two modes.
+Firstly, one invocation is available to query metadata for a specific
+(non-zero)
+  <i>
+   count
+  </i>
+  of time
+  <i>
+   series
+  </i>
+  .
+
+A second, (zero)
+  <i>
+   count
+  </i>
+  ,
+
+mode returns all available metadata of that type, across all time series.
+ </p>
+ <p>
+  In order to retrieve metric descriptor information for one or more time
+series, the
+  <b>
+   pmSeriesDescs
+  </b>
+  interface is used.
+For each valid
+  <i>
+   series
+  </i>
+  identifier provided, a callback will be invoked providing the metric
+units, semantics, and type as well as other identifiers associated with
+it (pmID, InDom and source identifier).
+When this call is issued with a zero value for
+  <i>
+   count
+  </i>
+  ,
+
+It is an error to pass a zero or negative value of
+  <i>
+   count
+  </i>
+  into this interface.
+ </p>
+ <p>
+  To extract label names and values, the
+  <b>
+   pmSeriesLabels
+  </b>
+  interface is used.
+With a non-zero value for
+  <i>
+   count
+  </i>
+  valid
+  <i>
+   series
+  </i>
+  identifiers, this routine will invoke a callback once for each label
+name and once for each label name:value pair, for labels associated
+with those time series.
+If called with a
+  <i>
+   count
+  </i>
+  of zero, this interface will return (via the label name callback) all
+label names that have observed to date - not associated with specific
+time series.
+The
+  <b>
+   pmSeriesLabelValues
+  </b>
+  interface is comparable to this latter mode, except will return all
+label values that have been observed to date for the given array of
+  <i>
+   labels
+  </i>
+  names (not associated with any specific time series identifiers).
+ </p>
+ <p>
+  <b>
+   pmSeriesInstances
+  </b>
+  can be used to find metadata about instance domains and instance
+identifiers associated with a given (non-zero)
+  <i>
+   count
+  </i>
+  of time
+  <i>
+   series
+  </i>
+  identifiers.
+If a zero value is passed for
+  <i>
+   count
+  </i>
+  then all instance names observed to date will be returned.
+ </p>
+ <p>
+  <b>
+   pmSeriesMetrics
+  </b>
+  can be used to find metric names associated with a given (non-zero)
+  <i>
+   count
+  </i>
+  of time
+  <i>
+   series
+  </i>
+  identifiers.
+If a zero value is passed for
+  <i>
+   count
+  </i>
+  then all metric names observed to date will be returned.
+ </p>
+ <p>
+  <b>
+   pmSeriesSources
+  </b>
+  can be used to find metadata about the source of metrics - that is,
+host names and archive file paths.
+If a zero value is passed for
+  <i>
+   count
+  </i>
+  then all metric sources observed to date will be returned.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Where these functions return a status code, this is always zero on success.
+On failure a negative PMAPI error code is returned.
+ <a name="lbAF">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmproxy.1.html">
+   pmproxy
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmseries.1.html">
+   pmseries
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/pmseriesquery.3.html">
+   pmSeriesQuery
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmseriessetup.3.html">
+   pmSeriesSetup
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmwebapi.3.html">
+   PMWEBAPI
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://github.com/performancecopilot/pcp/projects/1'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2019 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>

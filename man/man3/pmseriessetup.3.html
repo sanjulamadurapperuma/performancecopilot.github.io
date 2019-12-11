@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  PMSERIESSETUP
+ </h1>
+ Section: C Library Functions (3)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  pmSeriesSetup
+ </b>
+ ,
+ <b>
+  pmSeriesSetSlots
+ </b>
+ ,
+ <b>
+  pmSeriesSetEventLoop
+ </b>
+ ,
+ <b>
+  pmSeriesSetConfiguration
+ </b>
+ ,
+ <b>
+  pmSeriesSetMetricRegistry
+ </b>
+ ,
+ <b>
+  pmSeriesClose
+ </b>
+ - fast, scalable time series services
+ <a name="lbAC">
+ </a>
+ <h2>
+  C SYNOPSIS
+ </h2>
+ <b>
+  #include &lt;
+  <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmwebapi.h">
+   pcp/pmwebapi.h
+  </a>
+  &gt;
+ </b>
+ <p>
+  <br/>
+  int pmSeriesSetup(pmSeriesModule *
+  <i>
+   module
+  </i>
+  , pmSeriesCallBacks *
+  <i>
+   callbacks
+  </i>
+  , void *
+  <i>
+   arg
+  </i>
+  );
+ </p>
+ <p>
+  <br/>
+  int pmSeriesSetSlots(pmSeriesModule *
+  <i>
+   module
+  </i>
+  , void *
+  <i>
+   slots
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesSetEventLoop(pmSeriesModule *
+  <i>
+   module
+  </i>
+  , void *
+  <i>
+   uvloop
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesSetConfiguration(pmSeriesModule *
+  <i>
+   module
+  </i>
+  , struct dict *
+  <i>
+   config
+  </i>
+  );
+  <br/>
+  <br/>
+  int pmSeriesSetMetricRegistry(pmSeriesModule *
+  <i>
+   module
+  </i>
+  , struct mmv_registry *
+  <i>
+   registry
+  </i>
+  );
+ </p>
+ <p>
+  <br/>
+  int pmSeriesClose(pmSeriesModule *
+  <i>
+   module
+  </i>
+  );
+ </p>
+ <p>
+  cc ... -lpcp_web
+  <a name="lbAD">
+  </a>
+ </p>
+ <h2>
+  DESCRIPTION
+ </h2>
+ The
+ <b>
+  pmSeriesSetup
+ </b>
+ and related API functions prepare an application for accessing the fast,
+scalable time series querying functionality of the Performance Co-Pilot (PCP).
+ <p>
+  This functionality is provided through asynchronous APIs, which function in
+an event-driven fashion.
+The interfaces described here prepare a given time series
+  <i>
+   module
+  </i>
+  which associates callback routines with certain asynchronous events that occur
+as part of servicing time series requests.
+ </p>
+ <p>
+  As a general pattern, all interfaces in these APIs that need to invoke
+  <i>
+   callbacks
+  </i>
+  provided by the calling program will take an opaque (void * pointer) parameter,
+  <i>
+   arg
+  </i>
+  .
+
+This pointer will be passed through unchanged and is typically used to access a
+data structure maintaining state within the calling program.
+ </p>
+ <p>
+  Where asynchronous setup is required by
+  <b>
+   pmSeriesSetup
+  </b>
+  its completion will be indicated through use of the
+  <i>
+   on_setup
+  </i>
+  callback, which is part of the passed in
+  <b>
+   pmSeriesModule
+  </b>
+  structure.
+This structure also provides for custom diagnostics handling, through the
+  <i>
+   on_info
+  </i>
+  callback.
+These are self-explanatory, see
+  <i>
+   &lt;
+   <a href="https://github.com/performancecopilot/pcp/tree/master/src/include/pcp/pmwebapi.h">
+    pcp/pmwebapi.h
+   </a>
+   &gt;
+  </i>
+  for exact calling conventions.
+ </p>
+ <p>
+  The
+  <i>
+   callbacks
+  </i>
+  registered by
+  <b>
+   pmSeriesSetup
+  </b>
+  to handle events are as follows:
+ </p>
+ <dl compact="">
+  <dt>
+   <b>
+    pmSeriesMatchCallBack
+   </b>
+   <i>
+    on_match
+   </i>
+  </dt>
+  <dd>
+   When a time series query discovers time series identifiers that
+match the query, the
+   <i>
+    on_match
+   </i>
+   callback will be called once for every series identifier (SID).
+The SID is a unique 40-byte ASCII representation of a SHA hash.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesDescCallBack
+   </b>
+   <i>
+    on_desc
+   </i>
+  </dt>
+  <dd>
+   Metric descriptor requests from
+   <b>
+    <a href="/man/man1/pmseriesdescs.1.html">
+     pmSeriesDescs
+    </a>
+   </b>
+   (1)
+
+will invoke this callback once for each series identifier.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesInstCallBack
+   </b>
+   <i>
+    on_inst
+   </i>
+  </dt>
+  <dd>
+   Instance identification callback - internal (numeric) and
+external (string) instance IDs,
+as well as time series and source (host) SHA1 identifiers.
+Called once for each instance.
+The associated series identifier is also provided to the callback.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesLabelCallBack
+   </b>
+   <i>
+    on_labelmap
+   </i>
+  </dt>
+  <dd>
+   Provides metric labels (name and value mappings) for each
+series identifier passed to
+   <b>
+    <a href="/man/man1/pmserieslabels.1.html">
+     pmSeriesLabels
+    </a>
+   </b>
+   (1).
+  </dd>
+  <dt>
+   <b>
+    pmSeriesStringCallBack
+   </b>
+   <i>
+    on_instance
+   </i>
+  </dt>
+  <dd>
+   Provides an instance name for a call to
+   <b>
+    <a href="/man/man1/pmseriesinstances.1.html">
+     pmSeriesInstances
+    </a>
+   </b>
+   (1)
+   <b>
+    -
+   </b>
+   the callback is called once for each instance name.
+The associated series identifier is also provided to the callback.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesStringCallBack
+   </b>
+   <i>
+    on_context
+   </i>
+  </dt>
+  <dd>
+   Provides a context name for a call to
+   <b>
+    <a href="/man/man1/pmseriessources.1.html">
+     pmSeriesSources
+    </a>
+   </b>
+   (1)
+   <b>
+    -
+   </b>
+   the callback is called once for each source (hostname or archive).
+The associated source identifier is also provided to the callback.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesStringCallBack
+   </b>
+   <i>
+    on_metric
+   </i>
+  </dt>
+  <dd>
+   Provides a metric name for a call to
+   <b>
+    <a href="/man/man1/pmseriesmetrics.1.html">
+     pmSeriesMetrics
+    </a>
+   </b>
+   (1)
+   <b>
+    -
+   </b>
+   the callback is called once for each metric name.
+The associated series identifier is also provided to the callback.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesStringCallBack
+   </b>
+   <i>
+    on_label
+   </i>
+  </dt>
+  <dd>
+   Provides a label name for a call to
+   <b>
+    <a href="/man/man1/pmserieslabels.1.html">
+     pmSeriesLabels
+    </a>
+   </b>
+   (1)
+   <b>
+    -
+   </b>
+   the callback is called once for each label name.
+The associated series identifier is also provided to the callback.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesValueCallBack
+   </b>
+   <i>
+    on_value
+   </i>
+  </dt>
+  <dd>
+   Calls to the
+   <b>
+    pmSeriesQuery
+   </b>
+   interface that provide a time window may result in values being
+found for matching time series.
+The
+   <i>
+    on_value
+   </i>
+   callback will be invoked once for each time series value, also
+providing the sample timestamp (in both string and binary form,
+as a time in nanoseconds since the epoch).
+The associated series identifier is also provided to the callback.
+  </dd>
+  <dt>
+   <b>
+    pmSeriesDoneCallBack
+   </b>
+   <i>
+    on_done
+   </i>
+  </dt>
+  <dd>
+   On completion of all asynchronous interfaces that return success
+(zero return code), this callback will be called.
+It provides a status code indicating overall success (zero) or
+failure (negative PMAPI code) of the operation.
+  </dd>
+ </dl>
+ <p>
+  The helper functions
+  <b>
+   pmSeriesSetSlots
+  </b>
+  (redis),
+  <b>
+   pmSeriesSetEventLoop
+  </b>
+  (libuv),
+  <b>
+   pmSeriesSetConfiguration
+  </b>
+  (configuration file)
+and
+  <b>
+   pmSeriesSetMetricRegistry
+  </b>
+  (MMV instrumentation)
+interfaces provide a mechanism for passing in state for each of
+the associated subsystems.
+ </p>
+ <p>
+  Finally, a call to
+  <b>
+   pmSeriesClose
+  </b>
+  is used to end services available from a series
+  <i>
+   module
+  </i>
+  previously established through
+  <b>
+   pmSeriesSetup
+  </b>
+  .
+ </p>
+ <p>
+  Within PCP, the
+  <b>
+   <a href="/man/man1/pmproxy.1.html">
+    pmproxy
+   </a>
+  </b>
+  (1)
+
+and
+  <b>
+   <a href="/man/man1/pmseries.1.html">
+    pmseries
+   </a>
+  </b>
+  (1)
+
+utilities are the primary users of these interfaces, providing REST API
+and command line time series query services respectively.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ Where these functions return a status code, this is always zero on success.
+On failure a negative PMAPI error code is returned.
+ <a name="lbAF">
+ </a>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="/man/man1/pmproxy.1.html">
+   pmproxy
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogger.1.html">
+   pmlogger
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmseries.1.html">
+   pmseries
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/redis-server.1.html">
+   redis-server
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man3/mmv_stats_registry.3.html">
+   mmv_stats_registry
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmseriesdescs.3.html">
+   pmSeriesDescs
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmseriesquery.3.html">
+   pmSeriesQuery
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3)
+
+and
+ <b>
+  <a href="/man/man3/pmwebapi.3.html">
+   PMWEBAPI
+  </a>
+ </b>
+ (3).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    C SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://github.com/performancecopilot/pcp/projects/1'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2019 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>
