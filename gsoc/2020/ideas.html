@@ -43,24 +43,26 @@
 <div class='colspan12-8 colspan8-5 colspan6-4 colspan2-2 as-grid with-gutter'>
 <div class='col__module--img'>
 <br>
-<h3>Ideas List</h3>
+<h2>Ideas List</h2>
 <ol>
 <li>
 Web projects
+<br>
 <ul>
 <li>
-<a href='#targeted'>Targeted Grafana dashboards</a>
+<a href='#directed'>Directed Grafana dashboards</a>
 </li>
 </ul>
 </li>
 <li>
 Timeseries projects
+<br>
 <ul>
 <li>
 <a href='#scalable'>Scale-out timeseries injest and querying</a>
 </li>
 <li>
-<a href='#language'>Timeseries query language extenstion</a>
+<a href='#language'>Timeseries query language extenstions</a>
 </li>
 </ul>
 </li>
@@ -89,25 +91,30 @@ Timeseries projects
 <a name='grafana'></a>
 <h3>Grafana dashboards for PCP metrics</h3>
 <p>
-This project involves advancing the performance analaysis
-visualization features provided by the PCP
+This project involves advancing the performance analysis
+capabilities provided by the PCP
 <a href='https://grafana.com/'>Grafana</a>
-integration module
+integration in
 <a href='https://grafana-pcp.readthedocs.io/'>grafana-pcp.</a>
-The successful student will:
-<ul>
+</p>
+<p>
+The successful student will work on:
+<ol>
 <li>
-develop 'targeted' dashboards with the
+developing 'directed' dashboards with the
 <a href='https://grafana.com/docs/grafana/latest/reference/scripting/'>scripted dashboards</a>
 </li>
 <li>
-add 'derived metrics' support to the front end
+supporting PCP 'derived metrics' in the Vector data source,
+as described in the PCP
+<a href='https://pcp.io/man/man3/pmwebapi.1.html'>REST API</a>
+documentation
 </li>
 <li>
-improve the 'metric search' process through full-text
+improving the 'metric search' process through full-text
 search on PCP metric names, labels and descriptions
 </li>
-</ul>
+</ol>
 </p>
 <p>
 Based on performance metrics from PCP and a predefined rule set,
@@ -119,7 +126,7 @@ The user should then be able to drill down into more specific
 areas of interest - e.g. present graphs about lock contention.
 </p>
 <p>
-For each recognised performance issue a link should be presented
+For each recognized performance issue a link should be presented
 to the user on how to resolve the issue.
 In this way the dashboards guide users toward possible root cause
 of performance problems.
@@ -154,10 +161,6 @@ Intermediate-Advanced
 , secondary mentor:
 <a href='mailto:jkoch@netflix.com'>Jason Koch</a>
 </p>
-<p>
-<strong>Interested students so far:</strong>
-0
-</p>
 <br>
 </div>
 </div>
@@ -185,11 +188,11 @@ to expose latency and throughput metrics to analysis tools
 <li>
 adding PCP functionality to make
 <a href='https://pcp.io/man/man1/pmseries.1.html'>pmseries</a>
-queries use Redis features for parallel query execution
+queries use Redis features for parallel query execution, with
+the aim of scaling up PCP timeseries injest and querying to the
+level of many-thousands-of-nodes.
 </li>
 </ol>
-With the aim of scaling up PCP timeseries injest and querying to the
-level of many-thousands-of-nodes.
 </p>
 <p>
 <strong>Expected results:</strong>
@@ -219,10 +222,6 @@ Intermediate-Advanced
 <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
 , secondary mentor:
 <a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
-</p>
-<p>
-<strong>Interested students so far:</strong>
-0
 </p>
 <br>
 </div>
@@ -256,7 +255,7 @@ command line utility provides low-level access to the language.
 </p>
 <p>
 This project will extend the existing query language with:
-<ul>
+<ol>
 <li>
 statistical functions (sum, mean, average, standard deviation,
 histogram binning, top-N, N-th percentile)
@@ -274,7 +273,7 @@ mathematical functions (abs, floor, log, sqrt, round)
 binary operators for numeric metrics (addition, subtraction,
 division, multiplication, exponentiation)
 </li>
-</ul>
+</ol>
 </p>
 <p>
 <strong>Expected results:</strong>
@@ -301,10 +300,6 @@ Intermediate-Advanced
 <a href='mailto:mgoodwin@redhat.com'>Mark Goodwin</a>
 , secondary mentor:
 <a href='mailto:nathans@redhat.com'>Nathan Scott</a>
-</p>
-<p>
-<strong>Interested students so far:</strong>
-0
 </p>
 <br>
 </div>
