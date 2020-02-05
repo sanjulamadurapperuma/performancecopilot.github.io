@@ -78,7 +78,7 @@
   The configuration format supports metrics from multiple hosts or archives.  A
 configuration file can specify metrics without a source, with different hosts
 and different archives.  However, a configuration file that contains archives
-may only have one archive for any one host.  When in ``replay'' mode, any 
+may only have one archive for any one host.  When in ``replay'' mode, any
 metrics with host specific sources require an archive to be specified for that
 host on the command line or as a source to a previous metric.  The archive must
 be the same archive (based on a string comparison of the archive names) of any
@@ -190,7 +190,7 @@ rgbi:1.0/0.0/0.0
   </dt>
   <dd>
    A metric consists of an optional source (host or archive), the metric name,
-an optional instance list immediately after name, followed by the maximum (or 
+an optional instance list immediately after name, followed by the maximum (or
 normalization value).  A colon (``:'') is used to separate a host name from the
 metric, and a forward slash (``/'') to separate an archive name from the
 metric.  Instances are enclosed in square brackets and comma separated.  Each
@@ -389,7 +389,7 @@ alignment is
   </dt>
   <dd>
    The size of an object may not be known as the number of instances for some
-metrics will vary between hosts and 
+metrics will vary between hosts and
 PMDA
 configurations.  Therefore, the position of the object can be used to specify
 the likely size of the object, so that the position of the surrounding objects
@@ -883,9 +883,9 @@ to red:
   </dt>
   <dd>
    <pre>
-_colorScale coldToHot blue ( rgbi:0.5/0.0/1.0 0.3 
-                             purple 0.6 
-                             rgbi:1.0/0.0/0.5 0.8 
+_colorScale coldToHot blue ( rgbi:0.5/0.0/1.0 0.3
+                             purple 0.6
+                             rgbi:1.0/0.0/0.5 0.8
                              red 0.95)
 </pre>
   </dd>
@@ -965,7 +965,8 @@ The
   <b>
    _grid
   </b>
-  objects, which controls the layout of the scene.  A
+  objects, which controls the layout of the scene.
+A
   <b>
    _grid
   </b>
@@ -1331,7 +1332,8 @@ optional label for the metric:
         _bar
        </b>
        color list may be a named color list that was defined earlier, or an unnamed
-color list.  A
+color list.
+A
        <b>
         _colorScale
        </b>
@@ -1343,7 +1345,8 @@ color list.  A
        <b>
         _colorymod
        </b>
-       modulation.  Therefore, the syntax for color lists within a
+       modulation.
+Therefore, the syntax for color lists within a
        <b>
         _bar
        </b>
@@ -1489,7 +1492,7 @@ error message and the later object will be ignored.
     <b>
      _grid
     </b>
-    object control the position 
+    object control the position
 (
     <i>
      pos
@@ -1719,7 +1722,7 @@ numbers. The
        <i>
         alignment
        </i>
-       value is used to decide the orientation of the link (links are always 
+       value is used to decide the orientation of the link (links are always
 aligned at the center):
        <i>
         east
@@ -1750,7 +1753,7 @@ aligned at the center):
        <i>
         southwest
        </i>
-       links are L-shaped and connect the corresponding points of the compass, 
+       links are L-shaped and connect the corresponding points of the compass,
 i.e. a
        <i>
         northeast
@@ -1773,8 +1776,6 @@ link.
      </dl>
     </dd>
    </dl>
-   <p>
-   </p>
    <p>
    </p>
   </dd>
@@ -1875,7 +1876,8 @@ The length of the
        field used to define at which end of the pipe to stack the colored
 cylinders. The cylinders are stacked at the corresponding point of the
 compass and the pipe's direction is from the point of the compass
-towards the center of the compass. Only
+towards the center of the compass.
+Only
        <i>
         east
        </i>
@@ -2105,7 +2107,7 @@ by normalizing the height of each block
        </b>
        ),
 
-or by adding a grey block to the top of the stack 
+or by adding a grey block to the top of the stack
 (
        <b>
         _fillmod
@@ -2377,7 +2379,7 @@ _grid _hide (
         _link 0 2 west "West link"
 
         # Add xing
-        _xing 1 0 3 3 west east east west 
+        _xing 1 0 3 3 west east east west
 
         # Add a link and a pipe with eastern orientation
         _pipe 4 0 east (

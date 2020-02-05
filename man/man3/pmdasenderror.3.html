@@ -61,6 +61,7 @@
  <b>
   pmdaSendError
  </b>
+ - send an error PDU to PMCD
  <a name="lbAC">
  </a>
  <h2>
@@ -105,10 +106,8 @@
   <br/>
   PMDA.pmda_ready()
  </b>
- <p>
-  <a name="lbAE">
-  </a>
- </p>
+ <a name="lbAE">
+ </a>
  <h2>
   DESCRIPTION
  </h2>
@@ -165,8 +164,6 @@ then PMCD will not send it any requests until the PMDA sends an
   error PDU using this function.
 This is used by a PMDA that may have a long startup time, e.g. to process a
 large configuration file or similar.
- </p>
- <p>
   <a name="lbAF">
   </a>
  </p>
@@ -194,8 +191,8 @@ large configuration file or similar.
 
 and
  <b>
-  <a href="/man/man1/pmdaprometheus.1.html">
-   pmdaprometheus
+  <a href="/man/man1/pmdaopenmetrics.1.html">
+   pmdaopenmetrics
   </a>
  </b>
  (1).

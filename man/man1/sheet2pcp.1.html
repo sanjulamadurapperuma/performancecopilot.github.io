@@ -623,64 +623,66 @@ Examples: indom=``
     PMI_DOMAIN
    </font>
    .4''.
-
-More than
+   <p>
+    More than
 one metric can share the same Instance Domain when the metrics have defined
 values over similar sets of instances, e.g. all the metrics for each network
 interface.  It is standard practice for the
-   <b>
-    domain
-   </b>
-   field to be the
+    <b>
+     domain
+    </b>
+    field to be the
 same for the
-   <b>
-    pmid
-   </b>
-   and the
-   <b>
-    indom
-   </b>
-   ; if the
-   <b>
-    pmid
-   </b>
-   attribute is missing,
+    <b>
+     pmid
+    </b>
+    and the
+    <b>
+     indom
+    </b>
+    ; if the
+    <b>
+     pmid
+    </b>
+    attribute is missing,
 then the
-   <b>
-    domain
-   </b>
-   field for the
-   <b>
-    indom
-   </b>
-   should be the reserved domain
-   <b>
-   </b>
-   <font size="-1">
     <b>
-     PMI_DOMAIN
+     domain
     </b>
-   </font>
-   <b>
-   </b>
-   .
-
-If the
-   <b>
-    indom
-   </b>
-   attribute is omitted then the default Instance Domain for
+    field for the
+    <b>
+     indom
+    </b>
+    should be the reserved domain
+    <b>
+    </b>
+    <font size="-1">
+     <b>
+      PMI_DOMAIN
+     </b>
+    </font>
+    <b>
+    </b>
+    .
+   </p>
+   <p>
+    If the
+    <b>
+     indom
+    </b>
+    attribute is omitted then the default Instance Domain for
 the metric is
-   <b>
-   </b>
-   <font size="-1">
     <b>
-     PM_INDOM_NULL
     </b>
-   </font>
-   <b>
-   </b>
-   .
+    <font size="-1">
+     <b>
+      PM_INDOM_NULL
+     </b>
+    </font>
+    <b>
+    </b>
+    .
+   </p>
   </dd>
   <dt>
    <b>
@@ -911,7 +913,13 @@ generate no metric values in the output archive.
  </i>
  ...
  <p>
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
     &lt;sheet heading="1"&gt;
         &lt;!-- simple example --&gt;
         &lt;metric pmid="60.0.2" indom="60.0" units="0,1,0,0,PM_TIME_MSEC,0"
@@ -922,18 +930,30 @@ generate no metric values in the output archive.
         &lt;data&gt;kernel.percpu.cpu.sys[cpu0]&lt;/data&gt;
         &lt;data&gt;kernel.percpu.cpu.sys[cpu1]&lt;/data&gt;
     &lt;/sheet&gt;
- </p>
+
+</pre>
+  </dd>
+ </dl>
  <p>
   could be used for a spreadsheet in which the first few rows are ...
  </p>
  <p>
-  Date;"Status";"SysTime - 0";"SysTime - 1";
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+    Date;"Status";"SysTime - 0";"SysTime - 1";
     26/01/2001 14:05:22;"Some Busy";0.750;0.133
     26/01/2001 14:05:37;"OK";0.150;0.273
     26/01/2001 14:05:52;"All Busy";0.733;0.653
-  <a name="lbAG">
-  </a>
- </p>
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAG">
+ </a>
  <h2>
   CAVEATS
  </h2>

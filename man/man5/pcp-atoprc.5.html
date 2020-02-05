@@ -90,22 +90,16 @@ during startup, first from the system-wide rcfile
   </i>
   (so system-wide settings can be overruled by an individual user).
 The options in both rcfiles are identical.
- </p>
- <p>
   <a name="lbAD">
   </a>
  </p>
  <h2>
   OPTIONS
  </h2>
- <p>
-  The rcfile contains keyword-value pairs, one on every line (blank lines
+ The rcfile contains keyword-value pairs, one on every line (blank lines
 and lines starting with a #-sign are ignored).
-  <br/>
-  The following keywords can be specified:
- </p>
- <p>
- </p>
+ <br/>
+ The following keywords can be specified:
  <dl compact="">
   <dt>
    <b>
@@ -121,10 +115,6 @@ and lines starting with a #-sign are ignored).
 are 'g', 'm', 'd', 'n', 'u', 'p', 's', 'c', 'v', 'C', 'M', 'D', 'N', 'A',
 'a', 'y', 'f', 'F', 'G', 'R', '1', 'e', 'E' and 'x'.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     interval
@@ -133,10 +123,6 @@ are 'g', 'm', 'd', 'n', 'u', 'p', 's', 'c', 'v', 'C', 'M', 'D', 'N', 'A',
   <dd>
    The default interval value in seconds.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     linelen
@@ -145,10 +131,6 @@ are 'g', 'm', 'd', 'n', 'u', 'p', 's', 'c', 'v', 'C', 'M', 'D', 'N', 'A',
   <dd>
    The length of a screen line when sending output to a file or pipe (default 80).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     username
@@ -158,10 +140,6 @@ are 'g', 'm', 'd', 'n', 'u', 'p', 's', 'c', 'v', 'C', 'M', 'D', 'N', 'A',
    The default regular expression for the users for which active
 processes will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     procname
@@ -170,10 +148,6 @@ processes will be shown.
   <dd>
    The default regular expression for the process names to be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlinecpu
@@ -182,10 +156,6 @@ processes will be shown.
   <dd>
    The maximum number of active CPUs that will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlinegpu
@@ -194,10 +164,6 @@ processes will be shown.
   <dd>
    The maximum number of active GPUs that will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlinelvm
@@ -206,10 +172,6 @@ processes will be shown.
   <dd>
    The maximum number of active logical volumes that will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlinemdd
@@ -218,10 +180,6 @@ processes will be shown.
   <dd>
    The maximum number of active multiple devices that will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlinedisk
@@ -230,10 +188,6 @@ processes will be shown.
   <dd>
    The maximum number of active disks that will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlinenfsm
@@ -242,10 +196,6 @@ processes will be shown.
   <dd>
    The maximum number of NFS mounts that will be shown on an NFS client.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlineintf
@@ -254,10 +204,6 @@ processes will be shown.
   <dd>
    The maximum number of active network interfaces that will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     maxlinecont
@@ -266,10 +212,6 @@ processes will be shown.
   <dd>
    The maximum number of active containers that will be shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     cpucritperc
@@ -282,15 +224,11 @@ processes will be shown.
     pcp-atop
    </i>
    command).
-This percentage is used to determine 
+This percentage is used to determine
 a weighted percentage for line coloring and sorting of active processes.
 When this value is zero, no line coloring or automatic sorting is performed
 for this resource.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     dskcritperc
@@ -303,15 +241,11 @@ for this resource.
     pcp-atop
    </i>
    command).
-This percentage is used to determine 
+This percentage is used to determine
 a weighted percentage for line coloring and sorting of active processes.
 When this value is zero, no line coloring or automatic sorting is performed
 for this resource.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     netcritperc
@@ -324,15 +258,11 @@ for this resource.
     pcp-atop
    </i>
    command).
-This percentage is used to determine 
+This percentage is used to determine
 a weighted percentage for line coloring and sorting of active processes.
 When this value is zero, no line coloring or automatic sorting is performed
 for this resource.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     memcritperc
@@ -345,15 +275,11 @@ for this resource.
     pcp-atop
    </i>
    command).
-This percentage is used to determine 
+This percentage is used to determine
 a weighted percentage for line coloring and sorting of active processes.
 When this value is zero, no line coloring or automatic sorting is performed
 for this resource.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     swpcritperc
@@ -366,22 +292,18 @@ for this resource.
     pcp-atop
    </i>
    command).
-This percentage is used to determine 
+This percentage is used to determine
 a weighted percentage for line coloring and sorting of active processes.
 When this value is zero, no line coloring or automatic sorting is performed
 for this resource.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     swoutcritsec
    </b>
   </dt>
   <dd>
-   The number of pages swapped out per second considered critical for 
+   The number of pages swapped out per second considered critical for
 for memory utilization
 (see section COLORS in the man-page of the
    <i>
@@ -393,10 +315,6 @@ weighted percentage for line coloring and sorting of active processes.
 When this value is zero, no line coloring or automatic sorting is performed
 for this resource.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     almostcrit
@@ -413,10 +331,6 @@ is almost critical
 When this value is zero, no line coloring for `almost critical' is
 performed.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     colorinfo
@@ -427,10 +341,6 @@ performed.
    <br/>
    Allowed colors are: red green yellow blue magenta cyan black white.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     colorthread
@@ -442,10 +352,6 @@ the 'y' option (default: yellow).
    <br/>
    Allowed colors are: red green yellow blue magenta cyan black white.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     coloralmost
@@ -456,10 +362,6 @@ the 'y' option (default: yellow).
    <br/>
    Allowed colors are: red green yellow blue magenta cyan black white.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     colorcritical
@@ -470,10 +372,6 @@ the 'y' option (default: yellow).
    <br/>
    Allowed colors are: red green yellow blue magenta cyan black white.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     pcp-atopsarflags
@@ -579,8 +477,6 @@ special columnid is followed by a priority (usually low).
  <p>
   The following definition can be specified for process information:
  </p>
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -600,10 +496,6 @@ sort-criterium.
    <br/>
    An example of a user-defined process line:
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
@@ -619,8 +511,6 @@ VGROW:14 VSIZE:12 RGROW:14 RSIZE:12 ST:8 EXC:7 S:11 SORTITEM:18 CMD:20
   as the default system lines (you can redefine each of them in the
 rcfile as one line):
  </p>
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -630,19 +520,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'PRC':
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownsysprcline   PRCSYS:8 PRCUSER:8 BLANKBOX:0 PRCNPROC:7 PRCNZOMBIE:5 PRCCLONES:4 BLANKBOX:0 PRCNNEXIT:6
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownallcpuline
@@ -651,19 +533,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'CPU' for total CPU-utilization:
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownallcpuline   CPUSYS:8 CPUUSER:7 CPUIRQ:4 BLANKBOX:0 CPUIDLE:5 CPUWAIT:6 BLANKBOX:0 CPUSTEAL:1 CPUGUEST:3
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownonecpuline
@@ -672,19 +546,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'CPU' for utilization of one CPU:
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownonecpuline   CPUISYS:8 CPUIUSER:7 CPUIIRQ:4 BLANKBOX:0 CPUIIDLE:5 CPUIWAIT:6 BLANKBOX:0 CPUISTEAL:1 CPUIGUEST:3
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     owncplline
@@ -693,19 +559,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'CPL':
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    owncplline   CPLAVG1:4 CPLAVG5:3 CPLAVG15:2 BLANKBOX:0 CPLCSW:6 CPLINTR:5 BLANKBOX:0 CPLNUMCPU:1
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownmemline
@@ -714,19 +572,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'MEM':
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownmemline   MEMTOT:2 MEMFREE:5 MEMCACHE:3 MEMDIRTY:1 MEMBUFFER:3 MEMSLAB:3 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownswpline
@@ -735,19 +585,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'SWP':
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownswpline   SWPTOT:3 SWPFREE:4 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 SWPCOMMITTED:5 SWPCOMMITLIM:6
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownpagline
@@ -756,19 +598,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'PAG':
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownpagline   PAGSCAN:3 PAGSTALL:1 BLANKBOX:0 PAGSWIN:4 PAGSWOUT:3
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     owndskline
@@ -777,19 +611,11 @@ rcfile as one line):
   <dd>
    Redefinition of lines labeled with 'LVM', 'MDD' and 'DSK':
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    owndskline   DSKNAME:8 DSKBUSY:7 DSKNREAD:6 DSKNWRITE:6 DSKKBPERRD:4 DSKKBPERWR:4 DSKMBPERSECRD:5 DSKMBPERSECWR:5 DSKAVQUEUE:1 DSKAVIO:5
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownnettrline
@@ -798,19 +624,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'NET' for transport:
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownnettrline   NETTRANSPORT:9 NETTCPI:8 NETTCPO:8 NETUDPI:8 NETUDPO:8 NETTCPACTOPEN:6 NETTCPPASVOPEN:5 NETTCPRETRANS:4 NETTCPINERR:3 NETTCPORESET:20 NETUDPNOPORT:1 NETUDPINERR:3
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownnetnetline
@@ -819,19 +637,11 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'NET' for network:
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>
    ownnetnetline   NETNETWORK:5 NETIPI:4 NETIPO:4 NETIPFRW:4 NETIPDELIV:4 BLANKBOX:0 BLANKBOX:0 BLANKBOX:0 NETICMPIN:1 NETICMPOUT:1
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ownnetifline
@@ -840,10 +650,6 @@ rcfile as one line):
   <dd>
    Redefinition of line labeled with 'NET' for interfaces:
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
   </dt>
   <dd>

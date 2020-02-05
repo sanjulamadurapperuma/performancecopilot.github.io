@@ -239,26 +239,22 @@ Default:
   </dt>
   <dd>
    Verbosity level.
-Prints info about agent execution into logfile. Valid values are 0-2. 0 = Default value, shows config information, read socket state, and 
+Prints info about agent execution into logfile. Valid values are 0-2. 0 = Default value, shows config information, read socket state, and
 first 100 dropped messages. 1 = Shows PMNS and related information. 2 = Most detailed verbosity level, also shows dropped messages above 100.
 All levels include those belows.
   </dd>
   <dt>
-   <dt>
-    <b>
-     -o, --debug-output-filename=&lt;value&gt;
-    </b>
-   </dt>
+   <b>
+    -o, --debug-output-filename=&lt;value&gt;
+   </b>
   </dt>
   <dd>
-   <dd>
-    You can send USR1 signal that 'asks' agent to output basic information about all
+   You can send USR1 signal that 'asks' agent to output basic information about all
 aggregated metric into a $PCP_LOG_DIR/pmcd/statsd_{name} file.
 Default:
-    <i>
-     0
-    </i>
-   </dd>
+   <i>
+    0
+   </i>
   </dd>
   <dt>
    <b>
@@ -278,7 +274,7 @@ Default:
    </b>
   </dt>
   <dd>
-   Flag specifying which parser to use for incoming packets, Basic =
+   Flag specifying which parser to use for incoming packets; Basic =
    <i>
     0
    </i>
@@ -286,9 +282,9 @@ Default:
 
 Ragel =
    <i>
-    1
+    1.
    </i>
-   46 Default:
+   Default:
    <i>
     0
    </i>
@@ -299,7 +295,7 @@ Ragel =
    </b>
   </dt>
   <dd>
-   Flag specifying which aggregation scheme to use for duration metrics,
+   Flag specifying which aggregation scheme to use for duration metrics;
 basic histogram =
    <i>
     0
@@ -310,7 +306,9 @@ HDR histogram =
    <i>
     1
    </i>
-   46 Default:
+   .
+
+Default:
    <i>
     1
    </i>
@@ -329,71 +327,61 @@ Default:
     2048
    </i>
   </dd>
-  <dt>
-   The agent also looks for a
-  </dt>
-  <dd>
-   <i>
-    pmdastatsd.ini
-   </i>
-   file in the
-   <b>
-    $PCP_PMDAS_DIR/statsd
-   </b>
-   directory.
+ </dl>
+ <p>
+  The agent also looks for a
+  <i>
+   pmdastatsd.ini
+  </i>
+  file in the
+  <b>
+   $PCP_PMDAS_DIR/statsd
+  </b>
+  directory.
 There, the same options may be specified, albeit with slightly different
 names as follows:
-   <dl compact="">
-    <dt>
-    </dt>
-    <dd>
-     <p>
-      <b>
-       max_udp_packet_size=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       port=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       verbose=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       debug=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       debug_output_filename=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       version=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       parser_type=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       duration_aggregation_type=&lt;value&gt;
-      </b>
-     </p>
-     <p>
-      <b>
-       max_unprocessed_packets=&lt;value&gt;
-      </b>
-     </p>
-    </dd>
-   </dl>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <p>
+    <b>
+     max_udp_packet_size=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     port=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     verbose=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     debug=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     debug_output_filename=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     version=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     parser_type=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     duration_aggregation_type=&lt;value&gt;
+    </b>
+    <br/>
+    <b>
+     max_unprocessed_packets=&lt;value&gt;
+    </b>
+   </p>
   </dd>
  </dl>
  <p>
@@ -534,13 +522,11 @@ Constraints for each of the above variables are:
     <b>
      &lt;metricname&gt; = [a-z][a-zA-Z0-9_.]*
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      &lt;value&gt;      = described further in each metric type subsection
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      &lt;type&gt;       = One of the following: c, g or ms
     </b>
@@ -601,13 +587,11 @@ Constraints for each of the above variables are:
     <b>
      metric:20|c
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric:10|c
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric:3.3|c
     </b>
@@ -617,22 +601,17 @@ Constraints for each of the above variables are:
  <p>
   Value available to PCP will be:
  </p>
+ <p>
+ </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   <p>
-   </p>
-   <p>
-    <b>
-     pminfo --fetch statsd.metric
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst [0 or '/'] value 33.3
-    </b>
-   </p>
+   <pre>
+# pminfo --fetch statsd.metric
+
+    inst [0 or '/'] value 33.3
+</pre>
   </dd>
  </dl>
  <a name="lbAI">
@@ -640,10 +619,8 @@ Constraints for each of the above variables are:
  <h3>
   2 Gauge metric
  </h3>
- <p>
-  Stores metrics as modifiable values, with an option to either set,
+ Stores metrics as modifiable values, with an option to either set,
 increment or decrement values.
- </p>
  <dl compact="">
   <dt>
   </dt>
@@ -714,13 +691,11 @@ set the metric to the passed value.
     <b>
      metric:20|g
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric:+10|g
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric:-3.3|g
     </b>
@@ -730,20 +705,17 @@ set the metric to the passed value.
  <p>
   Value available to PCP will be:
  </p>
+ <p>
+ </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   <p>
-    <b>
-     pminfo --fetch statsd.metric
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst [0 or '/'] value 26.7
-    </b>
-   </p>
+   <pre>
+# pminfo --fetch statsd.metric
+
+    inst [0 or '/'] value 26.7
+</pre>
   </dd>
  </dl>
  <a name="lbAJ">
@@ -791,8 +763,7 @@ set the metric to the passed value.
     <b>
      metric:10|ms
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric:20|ms
     </b>
@@ -802,60 +773,25 @@ set the metric to the passed value.
  <p>
   Values available to PCP will be:
  </p>
+ <p>
+ </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   <p>
-    <b>
-     pminfo --fetch statsd.metric
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[0 or '/min'] value 10
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[1 or '/max'] value 20
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[2 or '/median'] value 10
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[3 or '/average'] value 15
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[4 or '/percentile90'] value 20
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[5 or '/percentile95'] value 20
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[6 or '/percentile99'] value 20
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[7 or '/count'] value 2
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt; inst[8 or '/std_deviation'] value 5
-    </b>
-   </p>
+   <pre>
+# pminfo --fetch statsd.metric
+
+    inst[0 or '/min'] value 10
+    inst[1 or '/max'] value 20
+    inst[2 or '/median'] value 10
+    inst[3 or '/average'] value 15
+    inst[4 or '/percentile90'] value 20
+    inst[5 or '/percentile95'] value 20
+    inst[6 or '/percentile99'] value 20
+    inst[7 or '/count'] value 2
+    inst[8 or '/std_deviation'] value 5
+</pre>
   </dd>
  </dl>
  <p>
@@ -942,7 +878,7 @@ the agent will no longer aggregate any messages with same.
   <i>
    value
   </i>
-  46
+  .
  </p>
  <p>
   Both
@@ -953,11 +889,11 @@ the agent will no longer aggregate any messages with same.
   <i>
    value
   </i>
-  of such pair are
+  of such a pair are
   <b>
    [a-ZA-Z0-9_.]{1,}
   </b>
-  46
+  .
  </p>
  <p>
   Both formats are interchangeable and you may combine them together.
@@ -1017,32 +953,20 @@ Pairs are ordered by
   </dd>
  </dl>
  <p>
-  Such payload would map to PCP as follows (non-related labels were ommited):
+  Such a payload would map to PCP as follows (non-related labels were ommited):
+ </p>
+ <p>
  </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   <p>
-    <b>
-     pminfo --fetch --labels statsd.metric
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt;
-    </b>
-   </p>
-   <p>
-    <b>
-     inst [0 or '/tagX=X'] value 5
-    </b>
-   </p>
-   <p>
-    <b>
-     inst [0 or '/tagX=X'] labels {'tagX':'X'}
-    </b>
-   </p>
+   <pre>
+# pminfo --fetch --labels statsd.metric
+
+    inst [0 or '/tagX=X'] value 5
+    inst [0 or '/tagX=X'] labels {'tagX':'X'}
+</pre>
   </dd>
  </dl>
  <p>
@@ -1064,30 +988,18 @@ Example:
  <p>
   This resolves to:
  </p>
+ <p>
+ </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   <p>
-    <b>
-     pminfo --fetch --labels statsd.metric
-    </b>
-   </p>
-   <p>
-    <b>
-     -&gt;
-    </b>
-   </p>
-   <p>
-    <b>
-     inst [0 or '/tagX=X::tagW=W'] value 5
-    </b>
-   </p>
-   <p>
-    <b>
-     inst [0 or '/tagX=X::tagW=W'] labels {'tagX':'X','tagW':'W'}
-    </b>
-   </p>
+   <pre>
+# pminfo --fetch --labels statsd.metric
+
+    inst [0 or '/tagX=X::tagW=W'] value 5
+    inst [0 or '/tagX=X::tagW=W'] labels {'tagX':'X','tagW':'W'}
+</pre>
   </dd>
  </dl>
  <p>
@@ -1098,7 +1010,7 @@ Example:
  <p>
   Be mindful of the fact that duration metric type already maps to
 instances even without any labels.
-Sending labeled value to a such metric creates another 9 (as there
+Sending labeled value to such a metric creates another 9 (as there
 are that many hardcoded) instances.
  </p>
  <p>
@@ -1112,23 +1024,19 @@ are that many hardcoded) instances.
     <b>
      metric:200|ms
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric:100|ms
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric,target=cpu2:10|ms
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric,target=cpu2:100|ms
     </b>
-   </p>
-   <p>
+    <br/>
     <b>
      metric,target=cpu2:1000|ms
     </b>
@@ -1139,41 +1047,24 @@ are that many hardcoded) instances.
   Creates 18 instances.
 Duration data type and label name compose instance name in following manner:
  </p>
+ <p>
+ </p>
  <dl compact="">
   <dt>
   </dt>
   <dd>
-   <p>
-    <b>
-     pminfo --fetch --labels statsd.metric
-    </b>
-   </p>
-   <p>
-    <b>
-     ...
-    </b>
-   </p>
-   <p>
-    <b>
-     inst [10 or '/max::target=cpu0'] value 1000
-    </b>
-   </p>
-   <p>
-    <b>
-     inst [10 or '/max::target=cpu0'] labels {'target':'cpu0'}
-    </b>
-   </p>
-   <p>
-    <b>
-     ...
-    </b>
-   </p>
+   <pre>
+# pminfo --fetch --labels statsd.metric
+
+    ...
+    inst [10 or '/max::target=cpu0'] value 1000
+    inst [10 or '/max::target=cpu0'] labels {'target':'cpu0'}
+    ...
+</pre>
   </dd>
  </dl>
- <p>
-  <a name="lbAL">
-  </a>
- </p>
+ <a name="lbAL">
+ </a>
  <h3>
   5 Hardcoded stats
  </h3>

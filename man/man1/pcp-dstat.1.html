@@ -101,6 +101,30 @@
  ]
 [
  <b>
+  -L
+ </b>
+ <i>
+  DM devices
+ </i>
+ ]
+[
+ <b>
+  -M
+ </b>
+ <i>
+  MD devices
+ </i>
+ ]
+[
+ <b>
+  -P
+ </b>
+ <i>
+  partitions
+ </i>
+ ]
+[
+ <b>
   -I
  </b>
  <i>
@@ -428,7 +452,7 @@ for a complete description of these options.
    </b>
   </dt>
   <dd>
-   enable CPU stats (system, user, idle, wait),
+   enable CPU stats (system, user, idle, wait);
 for more CPU related stats also see
    <b>
     --cpu-adv
@@ -471,7 +495,7 @@ for more CPU related stats also see
    </b>
   </dt>
   <dd>
-   enable disk stats (read, write),
+   enable disk stats (read, write);
 for more disk related stats look into the other
    <b>
     --disk
@@ -503,7 +527,159 @@ for more disk related stats look into the other
    <b>
     --disk
    </b>
-   )
+   or
+   <b>
+    --disk-tps
+   </b>
+   plugin)
+  </dd>
+  <dt>
+   <b>
+    --dm
+   </b>
+   ,
+   <b>
+    --device-mapper
+   </b>
+  </dt>
+  <dd>
+   enable device mapper stats (read, write);
+for more device-mapper related stats look into the other
+   <b>
+    --dm
+   </b>
+   plugins
+  </dd>
+  <dt>
+   <b>
+    --L
+   </b>
+   <i>
+    total,root,home
+   </i>
+  </dt>
+  <dd>
+   include
+   <i>
+    total
+   </i>
+   ,
+   <i>
+    root
+   </i>
+   and
+   <i>
+    home
+   </i>
+   (when using
+   <b>
+    --dm
+   </b>
+   /
+   <b>
+    --device-mapper
+   </b>
+   or
+   <b>
+    --dm-tps
+   </b>
+   plugin)
+  </dd>
+  <dt>
+   <b>
+    --md
+   </b>
+   ,
+   <b>
+    --multi-device
+   </b>
+  </dt>
+  <dd>
+   enable multi-device driver stats (read, write);
+for more multi-device driver related stats look into the other
+   <b>
+    --md
+   </b>
+   plugins
+  </dd>
+  <dt>
+   <b>
+    --M
+   </b>
+   <i>
+    total,md-0
+   </i>
+  </dt>
+  <dd>
+   include
+   <i>
+    total
+   </i>
+   and
+   <i>
+    md-0
+   </i>
+   (when using
+   <b>
+    --md
+   </b>
+   /
+   <b>
+    --multi-device
+   </b>
+   or
+   <b>
+    --md-tps
+   </b>
+   plugin)
+  </dd>
+  <dt>
+   <b>
+    --part
+   </b>
+   ,
+   <b>
+    --partition
+   </b>
+  </dt>
+  <dd>
+   enable disk partition stats (read, write);
+for more partition related stats look into the other
+   <b>
+    --part
+   </b>
+   plugins
+  </dd>
+  <dt>
+   <b>
+    --P
+   </b>
+   <i>
+    total,sda2
+   </i>
+  </dt>
+  <dd>
+   include
+   <i>
+    total
+   </i>
+   and
+   <i>
+    sda2
+   </i>
+   (when using
+   <b>
+    --part
+   </b>
+   /
+   <b>
+    --partition
+   </b>
+   or
+   <b>
+    --part-tps
+   </b>
+   plugin)
   </dd>
   <dt>
    <b>

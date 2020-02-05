@@ -149,11 +149,10 @@
   <b>
    -r
   </b>
-  [
   <i>
    folio
   </i>
-  ] [
+  [
   <b>
    -AcCdDfFgGmMnNopRsuvxy1
   </b>
@@ -189,7 +188,15 @@
   <i>
    label
   </i>
-  ]...]
+  ]...] [
+  <i>
+   interval
+  </i>
+  [
+  <i>
+   samples
+  </i>
+  ]]
   <a name="lbAD">
   </a>
  </p>
@@ -396,8 +403,6 @@ percentage of 90%.
  </b>
  uses the following default values to calculate a weighted percentage
 per resource:
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -537,8 +542,6 @@ output.
 In general, lower case keys can be used to show other information for
 the active processes and upper case keys can be used to influence the
 sort order of the active process/thread list.
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -571,10 +574,6 @@ chosen resource (default: cpu) and the process name.
     When more than 80 positions are available, other information is added.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     m
@@ -598,10 +597,6 @@ last interval, memory occupation percentage and process name.
 that were not active during the interval).
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     d
@@ -617,10 +612,6 @@ amount of data that was written but has been withdrawn again (WCANCL),
 disk occupation percentage and process name.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     s
@@ -644,10 +635,6 @@ resource and the process name.
     When more than 80 positions are available, other information is added.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     v
@@ -666,10 +653,6 @@ state, the occupation percentage for the chosen resource and the process name.
     When more than 80 positions are available, other information is added.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     c
@@ -683,10 +666,6 @@ the occupation percentage for the chosen resource and the
 command line including arguments.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     e
@@ -716,10 +695,6 @@ GPU memory occupation instead of the GPU busy percentage (which
 is preferred).
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     o
@@ -745,10 +720,6 @@ is preferred).
 for a detailed description.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     y
@@ -768,10 +739,6 @@ or only the threads that were active during the last interval.
     Whether this key is active or not can be seen in the header line.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     u
@@ -795,10 +762,6 @@ the number of received and sent network packets are shown.
 chosen resource (default: cpu) and the user name.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     p
@@ -820,10 +783,6 @@ the accumulated read and write throughput on disk is shown.
 chosen resource (default: cpu) and the program name.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     j
@@ -845,10 +804,6 @@ the accumulated read and write throughput on disk is shown.
 chosen resource (default: cpu) and the Docker container id (CID).
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     C
@@ -858,10 +813,6 @@ chosen resource (default: cpu) and the Docker container id (CID).
    Sort the current list in the order of cpu consumption (default).
 The one-but-last column changes to ``CPU''.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     E
@@ -878,10 +829,6 @@ when the
 GPU memory occupation).
 The one-but-last column changes to ``GPU''.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     M
@@ -893,10 +840,6 @@ The one-but-last column changes to ``MEM''.
 In case of sorting on memory,
 the full process list will be shown (not only the active processes).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     D
@@ -906,10 +849,6 @@ the full process list will be shown (not only the active processes).
    Sort the current list in the order of disk accesses issued.
 The one-but-last column changes to ``DSK''.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     N
@@ -920,10 +859,6 @@ The one-but-last column changes to ``DSK''.
 and transmitted).
 The one-but-last column changes to ``NET''.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     A
@@ -947,8 +882,6 @@ another sorting-order is explicitly selected again.
  <p>
   Miscellaneous interactive commands:
  </p>
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -958,10 +891,6 @@ another sorting-order is explicitly selected again.
   <dd>
    Request for help information (also the key 'h' can be pressed).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     V
@@ -970,10 +899,6 @@ another sorting-order is explicitly selected again.
   <dd>
    Request for version information (version number and date).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     R
@@ -985,10 +910,6 @@ Gathering of all values that are needed to calculate the PSIZE of a process
 is a relatively time-consuming task, so this key should only be active when
 analyzing the resident memory consumption of processes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     x
@@ -999,10 +920,6 @@ analyzing the resident memory consumption of processes.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     z
@@ -1023,10 +940,6 @@ Whenever the pause key is pressed again,
    </b>
    will continue with the next sample.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     i
@@ -1039,10 +952,6 @@ entered, the interval timer is switched off.
 In that case a new sample can
 only be triggered manually by pressing the key 't'.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     t
@@ -1065,10 +974,6 @@ seconds this transaction will last.
 show the next sample from the folio.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     T
@@ -1078,10 +983,6 @@ show the next sample from the folio.
    When viewing the contents of an archive folio, this key can be used to
 show the previous sample from the folio.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     b
@@ -1091,10 +992,6 @@ show the previous sample from the folio.
    When viewing the contents of an archive folio, this key can be used to
 move to a certain timestamp within the file (either forward or backward).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     r
@@ -1108,10 +1005,6 @@ boot again.
 to the beginning of the file again.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     U
@@ -1127,10 +1020,6 @@ processes of all users will be shown again.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     I
@@ -1146,10 +1035,6 @@ processes will be shown again.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     P
@@ -1165,10 +1050,6 @@ processes will be shown again.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     /
@@ -1184,10 +1065,6 @@ processes will be shown again.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     J
@@ -1203,10 +1080,6 @@ all (active) processes will be shown again.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     S
@@ -1223,10 +1096,6 @@ system resources of that type will be shown again.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     a
@@ -1239,10 +1108,6 @@ showing/accumulating all processes.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     G
@@ -1260,10 +1125,6 @@ showing/accumulating the processes that are exited can be suppressed.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     f
@@ -1282,10 +1143,6 @@ With this key you can force
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     F
@@ -1298,10 +1155,6 @@ network interfaces) are sorted on utilization.
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     1
@@ -1313,10 +1166,6 @@ instead of as a total during the interval (toggle).
    <br/>
    Whether this key is active or not can be seen in the header line.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     l
@@ -1344,10 +1193,6 @@ the maximum number of disk lines to 5 and
 the maximum number of interface lines to 3.
 These values can be modified again in interactive mode.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     k
@@ -1356,10 +1201,6 @@ These values can be modified again in interactive mode.
   <dd>
    Send a signal to an active process (a.k.a. kill a process).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     q
@@ -1368,10 +1209,6 @@ These values can be modified again in interactive mode.
   <dd>
    Quit the program.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PgDn
@@ -1382,10 +1219,6 @@ These values can be modified again in interactive mode.
    <br/>
    With the arrow-down key the list can be scrolled downwards with single lines.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ^F
@@ -1396,10 +1229,6 @@ These values can be modified again in interactive mode.
    <br/>
    With the arrow-down key the list can be scrolled downwards with single lines.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PgUp
@@ -1410,10 +1239,6 @@ These values can be modified again in interactive mode.
    <br/>
    With the arrow-up key the list can be scrolled upwards with single lines.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ^B
@@ -1424,10 +1249,6 @@ These values can be modified again in interactive mode.
    <br/>
    With the arrow-up key the list can be scrolled upwards with single lines.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ^L
@@ -1576,8 +1397,6 @@ shown in a column of 5 positions gives 123e6).
   OUTPUT DESCRIPTION - SYSTEM LEVEL
  </h2>
  The system level information consists of the following output lines:
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -1602,10 +1421,6 @@ column may indicate that process accounting could not be activated
    If the screen-width does not allow all of these counters,
 only a relevant subset is shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     CPU
@@ -1713,10 +1528,6 @@ capacity of the CPU has been used in user mode.
 only a relevant subset is shown.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     CPL
@@ -1737,10 +1548,6 @@ of serviced interrupts (`intr') and the number of available CPUs are shown.
 only a relevant subset is shown.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     GPU
@@ -1774,10 +1581,6 @@ only a relevant subset is shown.
     The number of lines showing the GPUs can be limited.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     MEM
@@ -1805,10 +1608,6 @@ and the amount of huge page memory that is really in use (`hpuse`).
 only a relevant subset is shown.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     SWP
@@ -1829,10 +1628,6 @@ The kernel only verifies whether the
 committed space exceeds the limit if strict overcommit handling is
 configured (vm.overcommit_memory is 2).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PAG
@@ -1849,10 +1644,6 @@ times that the kernel tries to reclaim pages due to an urgent need (`stall').
 and the number of memory pages the system wrote to swap space (`swout')
 are shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PSI
@@ -1869,10 +1660,6 @@ average pressure percentage over the last 10, 60 and 300 seconds
 memory for 'some' (`ms'), memory for 'full' (`mf'),
 I/O for 'some' (`is'), and I/O for 'full' (`if').
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     LVM/MDD/DSK
@@ -1910,10 +1697,6 @@ By specifying the value 0 for a particular class, no lines will be
 shown any more for that class.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     NFM
@@ -1934,10 +1717,6 @@ the number of bytes written via direct I/O (`dwrit'),
 the number of bytes read via memory mapped I/O pages (`mread'), and
 the number of bytes written via memory mapped I/O pages (`mwrit').
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     NFC
@@ -1952,10 +1731,6 @@ write RPC calls (`rpwrite') issued to the NFS server,
 the number of RPC calls being retransmitted (`retxmit')
 and the number of authorization refreshes (`autref').
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     NFS
@@ -1979,10 +1754,6 @@ Furthermore some error counters indicating the number of requests
 with a bad format (`badfmt') or a bad authorization (`badaut'), and a
 counter indicating the number of bad clients (`badcln').
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     NET
@@ -2058,10 +1829,6 @@ only a relevant subset is shown.
     The number of lines showing the network interfaces can be limited.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     IFB
@@ -2109,8 +1876,6 @@ the process itself was in sleep state).
 depending on the current output mode as described in the section
 INTERACTIVE COMMANDS and depending on the current width of your window:
  </p>
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -2120,10 +1885,6 @@ INTERACTIVE COMMANDS and depending on the current width of your window:
   <dd>
    The average size of one read-action on disk.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     AVGWSZ
@@ -2132,10 +1893,6 @@ INTERACTIVE COMMANDS and depending on the current width of your window:
   <dd>
    The average size of one write-action on disk.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     CID
@@ -2148,10 +1905,6 @@ If a process has been started and finished during the last
 interval, a `?' is shown because the container ID is not part of
 the standard process accounting record.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     CMD
@@ -2166,10 +1919,6 @@ interval.
    Behind the abbreviation `CMD' in the header line, the current page number and
 the total number of pages of the process/thread list are shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     COMMAND-LINE
@@ -2183,10 +1932,6 @@ keys -&gt; and &lt;- can be used for horizontal scroll.
    Behind the verb `COMMAND-LINE' in the header line, the current page number
 and the total number of pages of the process/thread list are shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     CPU
@@ -2196,10 +1941,6 @@ and the total number of pages of the process/thread list are shown.
    The occupation percentage of this process related to the available capacity
 for this resource on system level.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     CPUNR
@@ -2209,10 +1950,6 @@ for this resource on system level.
    The identification of the CPU the (main) thread is running on
 or has recently been running on.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     CTID
@@ -2224,10 +1961,6 @@ If a process has been started and finished during the last
 interval, a `?' is shown because the container ID is not part of
 the standard process accounting record.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     DSK
@@ -2241,10 +1974,6 @@ by all processes during the last interval).
    This information is shown when per process "storage accounting" is active
 in the kernel.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     EGID
@@ -2253,10 +1982,6 @@ in the kernel.
   <dd>
    Effective group-id under which this process executes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ENDATE
@@ -2266,10 +1991,6 @@ in the kernel.
    Date that the process has been finished.
 If the process is still running, this field shows `active'.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ENTIME
@@ -2279,10 +2000,6 @@ If the process is still running, this field shows `active'.
    Time that the process has been finished.
 If the process is still running, this field shows `active'.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ENVID
@@ -2291,10 +2008,6 @@ If the process is still running, this field shows `active'.
   <dd>
    Virtual environment identified (OpenVZ only).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     EUID
@@ -2303,10 +2016,6 @@ If the process is still running, this field shows `active'.
   <dd>
    Effective user-id under which this process executes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     EXC
@@ -2316,10 +2025,6 @@ If the process is still running, this field shows `active'.
    The exit code of a terminated process (second position of column `ST' is E)
 or the fatal signal number (second position of column `ST' is S or C).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     FSGID
@@ -2328,10 +2033,6 @@ or the fatal signal number (second position of column `ST' is S or C).
   <dd>
    Filesystem group-id under which this process executes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     FSUID
@@ -2340,10 +2041,6 @@ or the fatal signal number (second position of column `ST' is S or C).
   <dd>
    Filesystem user-id under which this process executes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     GPU
@@ -2364,10 +2061,6 @@ reflects the GPU memory occupation percentage (memory of all GPUs is 100%).
    daemon runs with root privileges, the GPU percentage
 reflects the GPU busy percentage.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     GPUBUSY
@@ -2382,10 +2075,6 @@ reflects the GPU busy percentage.
    </b>
    daemon does not run with root privileges, this value is not available.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     GPUNUMS
@@ -2397,10 +2086,6 @@ during the interval.
 When the comma-separated list exceeds
 the width of the column, a hexadecimal value is shown.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     MAJFLT
@@ -2410,10 +2095,6 @@ the width of the column, a hexadecimal value is shown.
    The number of page faults issued by this process that have been solved
 by creating/loading the requested memory page.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     MEM
@@ -2423,10 +2104,6 @@ by creating/loading the requested memory page.
    The occupation percentage of this process related to the available capacity
 for this resource on system level.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     MEMAVG
@@ -2435,10 +2112,6 @@ for this resource on system level.
   <dd>
    Average memory occupation during the interval on all used GPUs.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     MEMBUSY
@@ -2454,10 +2127,6 @@ the time needed for read and write accesses on memory.
    </b>
    daemon does not run with root privileges, this value is not available.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     MEMNOW
@@ -2466,10 +2135,6 @@ the time needed for read and write accesses on memory.
   <dd>
    Memory occupation at the moment of the sample on all used GPUs.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     MINFLT
@@ -2479,10 +2144,6 @@ the time needed for read and write accesses on memory.
    The number of page faults issued by this process that have been solved
 by reclaiming the requested memory page from the free list of pages.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     NICE
@@ -2492,10 +2153,6 @@ by reclaiming the requested memory page from the free list of pages.
    The more or less static priority that can be given to a process on a
 scale from -20 (high priority) to +19 (low priority).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     NPROCS
@@ -2505,10 +2162,6 @@ scale from -20 (high priority) to +19 (low priority).
    The number of active and terminated processes accumulated for this user
 or program.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PID
@@ -2517,10 +2170,6 @@ or program.
   <dd>
    Process-id.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     POLI
@@ -2532,10 +2181,6 @@ and 'idle' refer to timesharing processes.
 The policies 'fifo' (SCHED_FIFO) and 'rr' (round robin, which is SCHED_RR)
 refer to realtime processes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PPID
@@ -2544,10 +2189,6 @@ refer to realtime processes.
   <dd>
    Parent process-id.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PRI
@@ -2561,10 +2202,6 @@ priority independent of their behavior) and priority 100 to 139 for
 timesharing processes (variable priority depending on their recent
 CPU consumption and the nice value).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     PSIZE
@@ -2594,10 +2231,6 @@ be active.
 Gathering these values also requires superuser privileges
 (otherwise '?K' is shown in the output).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     RDDSK
@@ -2614,10 +2247,6 @@ data tranfer of a process to the data transfer of its parent process when
 terminating, so you might see transfers for (parent) processes like
 cron, bash or init, that are not really issued by them.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     RGID
@@ -2626,10 +2255,6 @@ cron, bash or init, that are not really issued by them.
   <dd>
    The real group-id under which the process executes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     RGROW
@@ -2646,10 +2271,6 @@ allocated memory.
 For a process which started during the last interval, the resident growth
 reflects the total resident size of the process at that moment.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     RSIZE
@@ -2661,10 +2282,6 @@ Notice that the RSIZE of a process includes all resident memory used
 by that process, even if certain memory parts are shared with other processes
 (see also the explanation of PSIZE).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     RTPR
@@ -2676,10 +2293,6 @@ Value can be 0 for a timesharing process (policy 'norm', 'btch' or 'idle')
 or ranges from 1 (lowest) till 99 (highest) for a realtime process
 (policy 'rr' or 'fifo').
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     RUID
@@ -2688,10 +2301,6 @@ or ranges from 1 (lowest) till 99 (highest) for a realtime process
   <dd>
    The real user-id under which the process executes.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     S
@@ -2706,10 +2315,6 @@ with its parent process), `T' for stopped (suspended or traced), `W' for
 swapping, and `E' (exit) for processes which have finished during the last
 interval.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     SGID
@@ -2718,10 +2323,6 @@ interval.
   <dd>
    The saved group-id of the process.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ST
@@ -2763,10 +2364,6 @@ by a signal, producing a core dump in its current directory;
 the signal number is displayed in the column `EXC'.
    </p>
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     STDATE
@@ -2775,10 +2372,6 @@ the signal number is displayed in the column `EXC'.
   <dd>
    The start date of the process.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     STTIME
@@ -2787,10 +2380,6 @@ the signal number is displayed in the column `EXC'.
   <dd>
    The start time of the process.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     SUID
@@ -2799,10 +2388,6 @@ the signal number is displayed in the column `EXC'.
   <dd>
    The saved user-id of the process.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     SWAPSZ
@@ -2811,10 +2396,6 @@ the signal number is displayed in the column `EXC'.
   <dd>
    The swap space consumed by this process (or user).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     SYSCPU
@@ -2824,10 +2405,6 @@ the signal number is displayed in the column `EXC'.
    CPU time consumption of this process in system mode (kernel mode), usually
 due to system call handling.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     THR
@@ -2841,10 +2418,6 @@ All related threads are contained in a thread group, represented by
    </b>
    as one line or as a separate line when the 'y' key (or -y flag) is active.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     TID
@@ -2857,10 +2430,6 @@ different TID.
 This value is shown for individual threads in
 multi-threaded processes (when using the key 'y').
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     TRUN
@@ -2869,10 +2438,6 @@ multi-threaded processes (when using the key 'y').
   <dd>
    Number of threads within this process that are in the state 'running' (R).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     TSLPI
@@ -2882,10 +2447,6 @@ multi-threaded processes (when using the key 'y').
    Number of threads within this process that are in the
 state 'interruptible sleeping' (S).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     TSLPU
@@ -2895,10 +2456,6 @@ state 'interruptible sleeping' (S).
    Number of threads within this process that are in the
 state 'uninterruptible sleeping' (D).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     USRCPU
@@ -2908,10 +2465,6 @@ state 'uninterruptible sleeping' (D).
    CPU time consumption of this process in user mode, due to processing the
 own program text.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     VDATA
@@ -2921,10 +2474,6 @@ own program text.
    The virtual memory size of the private data used by this process
 (including heap and shared library data).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     VGROW
@@ -2940,10 +2489,6 @@ be negative by e.g. issueing a free() or detaching a shared memory segment.
 For a process which started during the last interval, the virtual growth
 reflects the total virtual size of the process at that moment.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     VPID
@@ -2955,10 +2500,6 @@ If a process has been started and finished during the last
 interval, a `?' is shown because the virtual process-id is not part of
 the standard process accounting record.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     VSIZE
@@ -2967,10 +2508,6 @@ the standard process accounting record.
   <dd>
    The total virtual memory usage consumed by this process (or user).
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     VSLIBS
@@ -2980,10 +2517,6 @@ the standard process accounting record.
    The virtual memory size of the (shared) text of all shared libraries used
 by this process.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     VSTACK
@@ -2992,10 +2525,6 @@ by this process.
   <dd>
    The virtual memory size of the (private) stack used by this process
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     VSTEXT
@@ -3004,10 +2533,6 @@ by this process.
   <dd>
    The virtual memory size of the (shared) text of the executable program.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     WRDSK
@@ -3028,10 +2553,6 @@ data tranfer of a process to the data transfer of its parent process when
 terminating, so you might see transfers for (parent) processes like
 cron, bash or init, that are not really issued by them.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     WCANCL
@@ -3115,8 +2636,6 @@ lines for this sample are generated.
  </p>
  <p>
   The subsequent fields of each output-line depend on the label:
- </p>
- <p>
  </p>
  <dl compact="">
   <dt>
@@ -3541,8 +3060,6 @@ in an interactive session.
   EXAMPLES
  </h2>
  To monitor the current system load interactively with an interval of 5 seconds:
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -3557,8 +3074,6 @@ in an interactive session.
 with an interval of one minute during half an hour with active
 processes sorted on memory consumption:
  </p>
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -3571,8 +3086,6 @@ processes sorted on memory consumption:
  <p>
   Store information about the system and process activity in a PCP archive
 folio with an interval of ten minutes during an hour:
- </p>
- <p>
  </p>
  <dl compact="">
   <dt>
@@ -3624,8 +3137,6 @@ interactively:
   <b>
    pcp atop -r 20140607 -b 14:00
   </b>
- </p>
- <p>
   <a name="lbAO">
   </a>
  </p>
@@ -3716,8 +3227,6 @@ for further details on activating these metrics.
  <h2>
   FILES
  </h2>
- <p>
- </p>
  <dl compact="">
   <dt>
    <b>
@@ -3728,10 +3237,6 @@ for further details on activating these metrics.
    Configuration file containing system-wide default values.
 See related man-page.
   </dd>
- </dl>
- <p>
- </p>
- <dl compact="">
   <dt>
    <b>
     ~/.atoprc
