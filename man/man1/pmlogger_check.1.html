@@ -1447,7 +1447,7 @@ with hostname
    </i>
    are maintained in the directory
    <b>
-    $PCP_LOG_DIR/pmlogger/
+    $PCP_ARCHIVE_DIR/
    </b>
    <i>
     myhost
@@ -1466,7 +1466,7 @@ with hostname
    </i>
    are maintained in
    <b>
-    $PCP_LOG_DIR/pmlogger/
+    $PCP_ARCHIVE_DIR/
    </b>
    <i>
     mumble
@@ -1588,9 +1588,9 @@ performance metrics from the hosts
      </p>
      <pre>
 $version=1.1
-bozo   y  n  $PCP_LOG_DIR/pmlogger/bozo   -c config.default
+bozo   y  n  $PCP_ARCHIVE_DIR/bozo   -c config.default
 wobbly n  n  "/store/wobbly/$(date +%Y)"  -c ./wobbly.config
-boing  n  n  $PCP_LOG_DIR/pmlogger/boing  -c ./pmlogger.config
+boing  n  n  $PCP_ARCHIVE_DIR/boing  -c ./pmlogger.config
 </pre>
      <p>
       Typical
@@ -1715,7 +1715,7 @@ generated automatically by
       </dd>
       <dt>
        <i>
-        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;
+        $PCP_ARCHIVE_DIR/&lt;hostname&gt;
        </i>
       </dt>
       <dd>
@@ -1726,7 +1726,7 @@ generated automatically by
       </dd>
       <dt>
        <i>
-        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/lock
+        $PCP_ARCHIVE_DIR/&lt;hostname&gt;/lock
        </i>
       </dt>
       <dd>
@@ -1750,7 +1750,7 @@ generated automatically by
       </dd>
       <dt>
        <i>
-        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/Latest
+        $PCP_ARCHIVE_DIR/&lt;hostname&gt;/Latest
        </i>
       </dt>
       <dd>
@@ -1812,7 +1812,7 @@ The normal case is no output in which case the file does not exist.
       </dd>
       <dt>
        <i>
-        $PCP_LOG_DIR/pmlogger/&lt;hostname&gt;/SaveLogs
+        $PCP_ARCHIVE_DIR/&lt;hostname&gt;/SaveLogs
        </i>
       </dt>
       <dd>
@@ -1871,7 +1871,7 @@ instances for
 Because the cron-driven PCP archive management scripts run under
 the uid of the user ``pcp'',
        <b>
-        $PCP_LOG_DIR/pmlogger/
+        $PCP_ARCHIVE_DIR/
        </b>
        <i>
         hostname
