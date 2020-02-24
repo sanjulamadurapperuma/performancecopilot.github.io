@@ -1059,9 +1059,33 @@ pmseries: [Info] processed 2275 archive records from [...]
 the import to specific timeseries (using metric names, labels, etc)
 and to a specific time window using the time specification component
 of the query language.
-  <a name="lbAS">
-  </a>
  </p>
+ <p>
+  As a convenience, if the argument to load is a valid file path as
+determined by
+  <b>
+   <a href="/man/man2/access.2.html">
+    access
+   </a>
+  </b>
+  (2),
+
+then a short-hand form can be used:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <pre>
+$ pmseries --load $PCP_LOG_DIR/pmlogger/acme.0
+
+</pre>
+  </dd>
+ </dl>
+ <a name="lbAS">
+ </a>
  <h2>
   OPTIONS
  </h2>
@@ -1408,6 +1432,12 @@ configuration file, as described in
   </a>
  </b>
  (1),
+ <b>
+  <a href="/man/man2/access.2.html">
+   access
+  </a>
+ </b>
+ (2),
  <b>
   <a href="/man/man3/pmapi.3.html">
    PMAPI
