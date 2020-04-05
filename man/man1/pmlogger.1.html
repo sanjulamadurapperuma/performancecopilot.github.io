@@ -225,6 +225,37 @@ performance analysis services common to the PCP toolkit.
   </i>
   is the base name for the physical files that constitute
 an archive log.
+The
+  <i>
+   archive
+  </i>
+  argument may contain
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+    strftime
+   </a>
+  </b>
+  (3)
+
+meta-characters, which will be substituted prior to creating the
+archive log files.
+When
+  <b>
+   pmlogger
+  </b>
+  is run as a service (see
+  <b>
+   <a href="/man/man1/pmlogger_daily.1.html">
+    pmlogger_daily
+   </a>
+  </b>
+  (1)),
+
+the standard archive base name template is
+  <b>
+   %Y%0m%0d.%0H.%0M
+  </b>
+  .
  </p>
  <p>
   The
@@ -885,7 +916,11 @@ In this case the
   <b>
    pmlogger
   </b>
-  receives a SIGHUP signal, the current volume of the log is closed, and
+  receives a
+  <b>
+   SIGHUP
+  </b>
+  signal, the current volume of the log is closed, and
 a new volume is opened.
 This mechanism (or the alternative mechanism
 via
@@ -911,6 +946,46 @@ See also the
   option above.
  </p>
  <p>
+  When
+  <b>
+   pmlogger
+  </b>
+  receives a
+  <b>
+   SIGUSR2
+  </b>
+  signal, the current archive log is closed, and
+a new archive is opened.
+For this to succeed, the original
+  <i>
+   archive
+  </i>
+  argument must include
+  <b>
+   <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+    strftime
+   </a>
+  </b>
+  (3)
+
+meta characters
+(e.g.
+  <b>
+   %Y%0m%0d.%0H.%0M
+  </b>
+  ),
+
+otherwise
+  <b>
+   pmlogger
+  </b>
+  will exit because the archive files will already exit and
+  <b>
+   pmlogger
+  </b>
+  will not over-write existing archive files.
+ </p>
+ <p>
   Historically the buffers for the current log may be flushed to disk using the
   <b>
    flush
@@ -923,11 +998,6 @@ See also the
   </b>
   (1),
 
-or by sending
-  <b>
-   pmlogger
-  </b>
-  a SIGUSR1 signal
 or by using the
   <b>
    -u
@@ -959,7 +1029,7 @@ The
   <b>
    -u
   </b>
-  option, the SIGUSR1 handling and the
+  option and the
   <b>
    <a href="/man/man1/pmlc.1.html">
     pmlc
@@ -1024,7 +1094,30 @@ when the
     pmlogger_check
    </a>
   </b>
-  (1).
+  (1),
+
+(
+  <b>
+   -m pmlogger_check
+  </b>
+  )
+or was re-exec'd (see
+  <b>
+   <a href="/man/man3/execvp.3.html">
+    execvp
+   </a>
+  </b>
+  (3))
+
+due to a
+  <b>
+   SIGUSR2
+  </b>
+  signal being recieved as described above (
+  <b>
+   -m reexec
+  </b>
+  ).
  </p>
  <p>
   The
@@ -2557,8 +2650,20 @@ configuration file, as described in
  </b>
  (1),
  <b>
+  <a href="/man/man3/execvp.3.html">
+   execvp
+  </a>
+ </b>
+ (3),
+ <b>
   <a href="/man/man3/pmspeclocalpmda.3.html">
    pmSpecLocalPMDA
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
+   strftime
   </a>
  </b>
  (3),

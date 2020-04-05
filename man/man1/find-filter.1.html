@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<meta content='initial-scale=1' name='viewport'>
+<title>Performance Co-Pilot</title>
+<link href='/assets/css/screen.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/assets/css/master.css' media='all' rel='stylesheet' type='text/css'>
+<link href='/images/pcp.ico' rel='shortcut icon' type='image/ico'>
+
+</head>
+<body>
+<header class='global-header'>
+<div class='row'>
+<h1 class='global-logo colspan12-6 colspan8-4 colspan6-3 colspan2-1 as-grid'>
+<a href='/index.html'>Performance Co-Pilot</a>
+</h1>
+<nav class='global-header__navigation colspan12-6 colspan8-6 colspan6-4 colspan2-1 as-grid'>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a href='/download.html'>Download</a>
+</li>
+<li>
+<a href='/community.html'>Get Involved</a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class='site-content'>
+<div class='how-to is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<div class='manpage'>
+﻿
+ <h1>
+  FIND-FILTER
+ </h1>
+ Section: User Commands  (1)
+ <br/>
+ <a href="#index">
+  Index
+ </a>
+ <a href="/man">
+  Return to Main Contents
+ </a>
+ <hr/>
+ <a name="lbAB">
+ </a>
+ <h2>
+  NAME
+ </h2>
+ <b>
+  find-filter
+ </b>
+ - fine-grained file selection based on time attributes
+ <a name="lbAC">
+ </a>
+ <h2>
+  SYNOPSIS
+ </h2>
+ <b>
+  $PCP_BINADM_DIR/find-filter
+ </b>
+ [
+ <b>
+  -v?
+ </b>
+ ]
+ <i>
+  predicate
+ </i>
+ <a name="lbAD">
+ </a>
+ <h2>
+  DESCRIPTION
+ </h2>
+ <b>
+  find-filter
+ </b>
+ is a filter for a list
+of file names read on standard input, and if the files match the
+ <i>
+  predicate
+ </i>
+ their names are written on standard output.
+ <p>
+  The supported
+  <i>
+   predicate
+  </i>
+  forms are based on the file's creation
+time or modification time, and take the form
+  <b>
+   ctime
+  </b>
+  or
+  <b>
+   mtime
+  </b>
+  followed by a time specification.
+A time specification takes the form of a
+  <b>
+   +
+  </b>
+  or
+  <b>
+   -
+  </b>
+  followed by days (a non-negative integer),
+optionally followed by a colon (
+  <b>
+   :
+  </b>
+  ) and hours
+(an integer in the range 0 to 23),
+optionally followed by another colon (
+  <b>
+   :
+  </b>
+  )
+and minutes (an integer in the range 0 to 59).
+ </p>
+ <p>
+  The semantics of the time specification are that a file matches
+the predicate if the
+chosen time attribute for the file is
+  <i>
+   less than
+  </i>
+  (
+  <b>
+   +
+  </b>
+  ) the current time
+minus the time specification, else
+  <i>
+   more than or equal to
+  </i>
+  (
+  <b>
+   -
+  </b>
+  ) the current time
+minus the time specification.
+Alternatively,
+  <b>
+   +
+  </b>
+  means
+  <i>
+   before
+  </i>
+  the current time minus the
+time specification, and
+  <b>
+   -
+  </b>
+  means
+  <i>
+   at
+  </i>
+  or
+  <i>
+   after
+  </i>
+  the current time minus the
+time specification.
+ </p>
+ <p>
+  <b>
+   find-filter
+  </b>
+  is intended to be used to provide finer-grain and platform independent
+selection compared to the
+  <b>
+   -mtime
+  </b>
+  or
+  <b>
+   -ctime
+  </b>
+  options of
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/find.1.html">
+    find
+   </a>
+  </b>
+  (1).
+  <b>
+   find-filter
+  </b>
+  is expected to be used as a post-filter for the output from
+  <b>
+   <a href="http://man7.org/linux/man-pages/man1/find.1.html">
+    find
+   </a>
+  </b>
+  (1),
+
+and this is how it is used in the
+  <b>
+   <a href="/man/man1/pmlogger_daily.1.html">
+    pmlogger_daily
+   </a>
+  </b>
+  (1)
+
+scripts to select files to be compressed or culled.
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
+  EXAMPLES
+ </h2>
+ The following
+ <i>
+  predicate
+ </i>
+ examples illustrate some typical uses.
+ <dl compact="">
+  <dt>
+   <b>
+    mtime +3
+    <dd>
+     Matches files modified more than 3 days ago.
+    </dd>
+    <dt>
+     ctime -0:2
+    </dt>
+    <dd>
+     Matches files created in the last 2 hours.
+    </dd>
+    <dt>
+     ctime +0:0:15
+    </dt>
+    <dd>
+     Matches files created more than 15 minutes ago.
+    </dd>
+   </b>
+  </dt>
+ </dl>
+ <a name="lbAF">
+ </a>
+ <h2>
+  DIAGNOSTICS
+ </h2>
+ There are none, unless the
+ <b>
+  -v
+ </b>
+ option is used, in which case some diagnostics are written to standard
+error.
+ <p>
+  Exit status is always zero, unless there are errors found
+when parsing the command line arguments.
+  <a name="lbAG">
+  </a>
+ </p>
+ <h2>
+  SEE ALSO
+ </h2>
+ <b>
+  <a href="http://man7.org/linux/man-pages/man1/find.1.html">
+   find
+  </a>
+ </b>
+ (1)
+
+and
+ <b>
+  <a href="/man/man1/pmlogger_daily.1.html">
+   pmlogger_daily
+  </a>
+ </b>
+ (1).
+ <p>
+ </p>
+ <hr/>
+ <a name="index">
+ </a>
+ <h2>
+  Index
+ </h2>
+ <dl>
+  <dt>
+   <a href="#lbAB">
+    NAME
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAC">
+    SYNOPSIS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAD">
+    DESCRIPTION
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAE">
+    EXAMPLES
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAF">
+    DIAGNOSTICS
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
+    SEE ALSO
+   </a>
+  </dt>
+  <dd>
+  </dd>
+ </dl>
+ 
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class='global-footer is-typeset'>
+<div class='row-parent'>
+<div class='row'>
+<section class='row__colspaced'>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Main Menu</h4>
+<ul>
+<li>
+<a href='/features.html'>Features</a>
+</li>
+<li>
+<a href='/documentation.html'>Documentation</a>
+</li>
+<li>
+<a class='download' href='/download.html'>Download</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Developers</h4>
+<ul>
+<li>
+<a href='https://github.com/performancecopilot/pcp/issues'>Report an issue</a>
+</li>
+<li>
+<a href='https://github.com/performancecopilot/pcp/projects/1'>Roadmap</a>
+</li>
+<li>
+<a href='/community.html'>Contributing</a>
+</li>
+<li>
+<a href='/team.html'>Team</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>About</h4>
+<ul>
+<li>
+<a href='/testimonials.html'>Testimonials</a>
+</li>
+<li>
+<a href='/faq.html'>FAQ</a>
+</li>
+<li>
+<a href='/website.html'>Website</a>
+</li>
+</ul>
+</div>
+</div>
+<div class='colspan12-3 colspan8-2 colspan6-2 colspan2-2 as-grid with-gutter'>
+<div class='col__module'>
+<h4>Get Social</h4>
+<ul>
+<li>
+<a class='twitter' href='https://twitter.com/performancepcp' rel='external'>Twitter</a>
+</li>
+<li>
+<a class='github' href='https://github.com/performancecopilot' rel='external'>Github</a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<div class='row'>
+<div class='colspan2-2'>
+<p class='legal'>
+This website is Copyright &copy; 2000-2004 Silicon Graphics Inc, 2007-2010 Aconex, 2012-2020 Red Hat
+</p>
+</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>
