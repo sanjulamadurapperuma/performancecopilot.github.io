@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -CLoPruy?
+  -CNLoPruy?
  </b>
  ]
 [
@@ -253,7 +253,7 @@ When
 
 the standard archive base name template is
   <b>
-   %Y%0m%0d.%0H.%0M
+   %Y%m%d.%H.%M
   </b>
   .
  </p>
@@ -601,6 +601,77 @@ The
   option may be used to override the default behavior.
 If the log file cannot be created or is not writable, output is
 written to standard error instead.
+If the
+  <i>
+   logfile
+  </i>
+  for the
+  <b>
+   -l
+  </b>
+  option is "
+  <b>
+   -
+  </b>
+  "
+(i.e.
+  <b>
+   -l-
+  </b>
+  )
+
+then log messages are written to the standard output stream.
+This can be particularly useful when running
+  <b>
+   pmlogger
+  </b>
+  manually, rather than as a service daemon.
+ </p>
+ <p>
+  The
+  <b>
+   -N
+  </b>
+  option directs
+  <b>
+   pmlogger
+  </b>
+  to notify a service manager, typically
+  <b>
+   <a href="/man/man1/systemd.1.html">
+    systemd
+   </a>
+  </b>
+  (1),
+
+when it has started and is about to begin writing PCP archive logs.
+This option would only normally be used when
+  <b>
+   pmlogger
+  </b>
+  is run as a daemon service under the control of a service manager.
+For more details, see
+  <b>
+   <a href="/man/man3/pmservernotifyservicemanagerready.3.html">
+    __pmServerNotifyServiceManagerReady
+   </a>
+  </b>
+  (3)
+
+and
+  <b>
+   <a href="/man/man1/systemd.1.html">
+    systemd
+   </a>
+  </b>
+  (1).
+
+On platforms that do not use a service manager that supports notifications,
+the
+  <b>
+   -N
+  </b>
+  option is basically a no-op.
  </p>
  <p>
   If specified, the
@@ -971,7 +1042,7 @@ For this to succeed, the original
 meta characters
 (e.g.
   <b>
-   %Y%0m%0d.%0H.%0M
+   %Y%m%d.%H.%M
   </b>
   ),
 
@@ -2578,6 +2649,31 @@ of pending
 Both the command line and directives in the configuration file will
 override this value.
 It is an integer in units of seconds.
+ </p>
+ <p>
+  On platforms using
+  <b>
+   <a href="/man/man1/systemd.1.html">
+    systemd
+   </a>
+  </b>
+  (1),
+
+and when the
+  <b>
+   -N
+  </b>
+  option is given,
+the
+  <b>
+   NOTIFY_SOCKET
+  </b>
+  environment variable would normally be set by the service manager
+prior to launching
+  <b>
+   pmlogger
+  </b>
+  .
   <a name="lbAK">
   </a>
  </p>
@@ -2650,6 +2746,12 @@ configuration file, as described in
  </b>
  (1),
  <b>
+  <a href="/man/man1/systemd.1.html">
+   systemd
+  </a>
+ </b>
+ (1),
+ <b>
   <a href="/man/man3/execvp.3.html">
    execvp
   </a>
@@ -2664,6 +2766,12 @@ configuration file, as described in
  <b>
   <a href="http://man7.org/linux/man-pages/man3/strftime.3.html">
    strftime
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmservernotifyservicemanagerready.3.html">
+   __pmServerNotifyServiceManagerReady
   </a>
  </b>
  (3),

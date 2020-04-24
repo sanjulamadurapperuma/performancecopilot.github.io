@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -Aft?
+  -AFft?
  </b>
  ]
 [
@@ -474,6 +474,84 @@ connections.
   </dd>
   <dt>
    <b>
+    -F
+   </b>
+   ,
+   <b>
+    --systemd
+   </b>
+  </dt>
+  <dd>
+   Like
+   <b>
+    -f
+   </b>
+   ,
+
+the
+   <b>
+    -F
+   </b>
+   option runs
+   <b>
+    pmproxy
+   </b>
+   in the foreground, but also does some housekeeping (like create a
+``pid'' file and change user id).  This is intended for use when
+   <b>
+    pmproxy
+   </b>
+   is launched from
+   <b>
+    <a href="/man/man1/systemd.1.html">
+     systemd
+    </a>
+   </b>
+   (1)
+
+and the daemonizing has already been done by
+   <b>
+    <a href="/man/man1/systemd.1.html">
+     systemd
+    </a>
+   </b>
+   (1)
+
+and does not need to be done again by
+   <b>
+    pmproxy
+   </b>
+   ,
+
+which is the case when neither
+   <b>
+    -f
+   </b>
+   nor
+   <b>
+    -F
+   </b>
+   is specified.
+   <dl compact="">
+    <dt>
+    </dt>
+    <dd>
+     <p>
+      At most one of
+      <b>
+       -f
+      </b>
+      and
+      <b>
+       -F
+      </b>
+      may be specified.
+     </p>
+    </dd>
+   </dl>
+  </dd>
+  <dt>
+   <b>
     -h
    </b>
    <i>
@@ -649,7 +727,7 @@ The
    <b>
     -M
    </b>
-   option allows this certficate
+   option allows this certificate
    <i>
     name
    </i>

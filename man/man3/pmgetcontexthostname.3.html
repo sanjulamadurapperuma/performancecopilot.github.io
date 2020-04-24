@@ -59,6 +59,10 @@
   NAME
  </h2>
  <b>
+  pmGetHostName
+ </b>
+ ,
+ <b>
   pmGetContextHostName
  </b>
  ,
@@ -79,6 +83,20 @@
   &gt;
  </b>
  <p>
+  int pmGetHostName(int
+  <i>
+   id
+  </i>
+  , char *
+  <i>
+   buf
+  </i>
+  , int
+  <i>
+   buflen
+  </i>
+  );
+  <br/>
   const char *pmGetContextHostName(int
   <i>
    id
@@ -152,6 +170,12 @@ which should have room for at least
   MAXHOSTNAMELEN
  </b>
  bytes.
+The
+ <b>
+  pmGetHostName
+ </b>
+ function behaves similarly again, but returns a status code to indicate
+success or failure.
  <p>
   If the context
   <i>
@@ -210,8 +234,23 @@ context host specification will be used.
  </i>
  is not a valid PCP context identifier,
 the returned hostname is a zero length string.
- <a name="lbAF">
- </a>
+ <p>
+  On failure, the return code of
+  <b>
+   pmGetHostName
+  </b>
+  is a negative PMAPI error code which can be processed by
+  <b>
+   <a href="/man/man3/pmerrstr_r.3.html">
+    pmErrStr_r
+   </a>
+  </b>
+  (3)
+
+for diagnostics relating to the failure to obtain the context hostname.
+  <a name="lbAF">
+  </a>
+ </p>
  <h2>
   NOTES
  </h2>
@@ -225,6 +264,10 @@ so the returned value is only valid until the next call to
  </b>
  and hence is not thread-safe.
 Multi-threaded applications should use
+ <b>
+  pmGetHostName
+ </b>
+ or
  <b>
   pmGetContextHostName_r
  </b>
@@ -295,6 +338,12 @@ function.
  <b>
   <a href="/man/man3/pmdupcontext.3.html">
    pmDupContext
+  </a>
+ </b>
+ (3),
+ <b>
+  <a href="/man/man3/pmerrstr_r.3.html">
+   pmErrStr_r
   </a>
  </b>
  (3),
