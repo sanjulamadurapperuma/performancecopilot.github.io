@@ -85,10 +85,26 @@
  ]
 [
  <b>
+  -g
+ </b>
+ <i>
+  grouptag
+ </i>
+ ]
+[
+ <b>
   -h
  </b>
  <i>
   host
+ </i>
+ ]
+[
+ <b>
+  -s
+ </b>
+ <i>
+  groupfile
  </i>
  ]
  <i>
@@ -907,6 +923,29 @@ on
   </dd>
   <dt>
    <b>
+    -g
+   </b>
+   <i>
+    grouptag
+   </i>
+   ,
+   <b>
+    --group
+   </b>
+   =
+   <i>
+    grouptag
+   </i>
+  </dt>
+  <dd>
+   Query logging state for the specific logging group named
+   <i>
+    grouptag
+   </i>
+   .
+  </dd>
+  <dt>
+   <b>
     -h
    </b>
    <i>
@@ -965,6 +1004,34 @@ rather than on the default localhost.
     configfile
    </i>
    .
+  </dd>
+  <dt>
+   <b>
+    -s
+   </b>
+   <i>
+    groupfile
+   </i>
+   ,
+   <b>
+    --setup
+   </b>
+   =
+   <i>
+    groupfile
+   </i>
+  </dt>
+  <dd>
+   Report the default logging state for the one logging group in
+   <i>
+    groupfile
+   </i>
+   .
+This is equivalent output to that produced by the retired
+   <b>
+    pmlogconf-setup
+   </b>
+   shell script from earlier versions of PCP.
   </dd>
   <dt>
    <b>

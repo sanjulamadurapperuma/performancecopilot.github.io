@@ -103,6 +103,59 @@ This page describes replacement utilities for historical PCP tools.
   </a>
  </p>
  <h2>
+  PMLOGCONF-SETUP
+ </h2>
+ Earlier versions of PCP (prior to v5.1.1) provided a shell script that
+was used internally by
+ <b>
+  <a href="/man/man1/pmlogconf.1.html">
+   pmlogconf
+  </a>
+ </b>
+ (1),
+
+located in the
+ <b>
+  PCP_BINADM_DIR
+ </b>
+ directory, named
+ <b>
+  pmlogconf-setup
+ </b>
+ .
+
+This script has been retired.
+The equivalent functionality remains available in the unlikely event
+it should be needed via the
+ <b>
+  -s
+ </b>
+ or
+ <b>
+  --setup
+ </b>
+ option to
+ <b>
+  <a href="/man/man1/pmlogconf.1.html">
+   pmlogconf
+  </a>
+ </b>
+ (1).
+ <p>
+  The version 1
+  <b>
+   pmlogconf-setup
+  </b>
+  configuration file format (from IRIX) was also retired in this release,
+after more than 10 years of automatic transition to version 2 format by
+  <b>
+   pmlogconf
+  </b>
+  .
+  <a name="lbAE">
+  </a>
+ </p>
+ <h2>
   PCP-COLLECTL
  </h2>
  The
@@ -175,7 +228,7 @@ from PCP v5 onward.
    Network subsystem view.
   </dd>
  </dl>
- <a name="lbAE">
+ <a name="lbAF">
  </a>
  <h2>
   PCP-WEBAPPS
@@ -225,7 +278,7 @@ scripts) and
   (1)
 
 (fast, scalable Redis-based time series analysis).
-  <a name="lbAF">
+  <a name="lbAG">
   </a>
  </p>
  <h2>
@@ -301,7 +354,7 @@ services could use the scalable time series REST APIs described on
    </a>
   </b>
   (3).
-  <a name="lbAG">
+  <a name="lbAH">
   </a>
  </p>
  <h2>
@@ -334,6 +387,12 @@ services could use the scalable time series REST APIs described on
  <b>
   <a href="/man/man1/pmseries.1.html">
    pmseries
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pmlogconf.1.html">
+   pmlogconf
   </a>
  </b>
  (1),
@@ -388,27 +447,34 @@ and
   </dd>
   <dt>
    <a href="#lbAD">
-    PCP-COLLECTL
+    PMLOGCONF-SETUP
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAE">
-    PCP-WEBAPPS
+    PCP-COLLECTL
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAF">
-    PMWEBD
+    PCP-WEBAPPS
    </a>
   </dt>
   <dd>
   </dd>
   <dt>
    <a href="#lbAG">
+    PMWEBD
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAH">
     SEE ALSO
    </a>
   </dt>

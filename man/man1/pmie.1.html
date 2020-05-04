@@ -72,7 +72,7 @@
  </b>
  [
  <b>
-  -bCdefHPqvVWxXz?
+  -bCdeFfHPqvVWxXz?
  </b>
  ]
 [
@@ -511,11 +511,78 @@ The
    <b>
     -f
    </b>
-   option forces
+   (and
+   <b>
+    -F
+   </b>
+   ,
+
+see below) options force
    <b>
     pmie
    </b>
    to be run in the foreground, independent of any other options.
+  </dd>
+  <dt>
+   <b>
+    -F
+   </b>
+   ,
+   <b>
+    --systemd
+   </b>
+  </dt>
+  <dd>
+   Like
+   <b>
+    -f
+   </b>
+   ,
+
+the
+   <b>
+    -F
+   </b>
+   option runs
+   <b>
+    pmie
+   </b>
+   in the foreground, but also does some housekeeping
+(like create a pid file, change user id and notify
+   <b>
+    <a href="/man/man1/systemd.1.html">
+     systemd
+    </a>
+   </b>
+   (1)
+
+when
+   <b>
+    pmie
+   </b>
+   has started or is shutting down).
+This is intended for use when
+   <b>
+    pmie
+   </b>
+   is launched from
+   <b>
+    <a href="/man/man1/systemd.1.html">
+     systemd
+    </a>
+   </b>
+   (1)
+
+and the daemonizing has already been done.
+The
+   <b>
+    -f
+   </b>
+   and
+   <b>
+    -F
+   </b>
+   options are mutually exclusive.
   </dd>
   <dt>
    <b>
@@ -3058,6 +3125,12 @@ a cross-platform dialog box.
  <b>
   <a href="/man/man1/pmval.1.html">
    pmval
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/systemd.1.html">
+   systemd
   </a>
  </b>
  (1),
