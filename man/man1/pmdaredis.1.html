@@ -138,36 +138,72 @@ information must be specified in the
   /redis/redis.conf file.
  </p>
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/redis
-  <br/>
-  <br/>
-  # [ edit redis.conf ]
-  <br/>
-  <br/>
-  host=localhost.localdomain:6379
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/redis
+# [ edit redis.conf ]
+  host=localhost.localdomain:6379
+</pre>
+  </dd>
+ </dl>
+ <p>
+  To uninstall, the following must be done as root:
+ </p>
+ <p>
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/redis
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   Once this is setup, you can access the names and values for the
 redis performance metrics by doing the following as root:
  </p>
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/redis
-  <br/>
-  <br/>
-  # ./Install
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/redis
+# ./Install
+</pre>
+  </dd>
+ </dl>
+ <p>
+  To uninstall, the following must be done as root:
  </p>
  <p>
-  To uninstall, do the following as root:
  </p>
- <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/redis
-  <br/>
-  <br/>
-  # ./Remove
- </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/redis
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   <b>
    pmdaredis

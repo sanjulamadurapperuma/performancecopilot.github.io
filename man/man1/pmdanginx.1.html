@@ -129,14 +129,19 @@ location /nginx_status {
 commands (compile-time then run-time checks):
  </p>
  <p>
-  <br/>
-  # nginx -V 2&gt;&amp;1 | grep -o with-http_stub_status_module
-  <br/>
-  # curl
-  <a href="http://localhost/nginx_status">
-   http://localhost/nginx_status
-  </a>
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# nginx -V 2&gt;&amp;1 | grep -o with-http_stub_status_module
+# curl <a href="http://localhost/nginx_status">http://localhost/nginx_status</a>
+</pre>
+  </dd>
+ </dl>
  <p>
   Install the nginx
   <font size="-1">
@@ -145,22 +150,36 @@ commands (compile-time then run-time checks):
   by using the Install script as root:
  </p>
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/nginx
-  <br/>
-  <br/>
-  # ./Install
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/nginx
+# ./Install
+</pre>
+  </dd>
+ </dl>
+ <p>
+  To uninstall, the following must be done as root:
  </p>
  <p>
-  To uninstall, do the following as root:
  </p>
- <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/nginx
-  <br/>
-  <br/>
-  # ./Remove
- </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/nginx
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   <b>
    pmdanginx

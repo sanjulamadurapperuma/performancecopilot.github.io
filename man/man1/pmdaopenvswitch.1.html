@@ -42,11 +42,9 @@
 <div class='manpage'>
 ﻿
  <h1>
-  PMDAGPSD
+  PMDAOPENVSWITCH
  </h1>
- Section: Performance Co-Pilot (1)
- <br/>
- Updated: Performance Co-Pilot
+ Section: User Commands  (1)
  <br/>
  <a href="#index">
   Index
@@ -60,64 +58,79 @@
  <h2>
   NAME
  </h2>
- pmdagpsd - gpsd performance metrics domain agent (PMDA)
+ <b>
+  pmdaopenvswitch
+ </b>
+ - OpenvSwitch PMDA
  <a name="lbAC">
  </a>
  <h2>
   DESCRIPTION
  </h2>
  <b>
-  pmdagpsd
+  pmdaopenvswitch
  </b>
- is a Performance Metrics Domain Agent (
- <font size="-1">
-  PMDA
- </font>
- ) which exports
-values from the gpsd daemon.
+ is a Performance Metrics Domain Agent (PMDA) which exports
+metric values for each openvswitch virtual switch configured on the local system.
  <a name="lbAD">
  </a>
  <h2>
   INSTALLATION
  </h2>
- If you want access to the names and values for gpsd, do the following as
-root:
+ Install the openvswitch PMDA by using the Install script as root:
  <p>
  </p>
- <pre>
-    # cd $PCP_PMDAS_DIR/gpsd
-    # ./Install
-
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/openvswitch
+# ./Install
 </pre>
+  </dd>
+ </dl>
  <p>
-  If you want to undo the installation, do the following as root:
+ </p>
+ <p>
+  To uninstall, do the following as root:
  </p>
  <p>
  </p>
- <pre>
-    # cd $PCP_PMDAS_DIR/gpsd
-    # ./Remove
-
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/openvswitch
+# ./Remove
 </pre>
+  </dd>
+ </dl>
  <p>
   <b>
-   pmdagpsd
+   pmdaopenvswitch
   </b>
   is launched by
-  <b>
+  <i>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </b>
-  (1) and should never be executed
-directly.  The Install and Remove scripts notify
-  <b>
+  </i>
+  (1) and should never be
+executed directly.
+The Install and Remove scripts notify
+  <i>
    <a href="/man/man1/pmcd.1.html">
     pmcd
    </a>
-  </b>
-  (1) when
-the agent is installed or removed.
+  </i>
+  (1) when the agent is
+installed or removed.
   <a name="lbAE">
   </a>
  </p>
@@ -126,43 +139,101 @@ the agent is installed or removed.
  </h2>
  <dl compact="">
   <dt>
-   $PCP_PMDAS_DIR/gpsd/Install
+   <b>
+    $PCP_PMDAS_DIR/openvswitch/Install
+   </b>
   </dt>
   <dd>
    installation script for the
    <b>
-    pmdagpsd
+    pmdaopenvswitch
    </b>
    agent
   </dd>
   <dt>
-   $PCP_PMDAS_DIR/gpsd/Remove
+   <b>
+    $PCP_PMDAS_DIR/openvswitch/Remove
+   </b>
   </dt>
   <dd>
    undo installation script for the
    <b>
-    pmdagpsd
+    pmdaopenvswitch
    </b>
    agent
   </dd>
   <dt>
-   $PCP_LOG_DIR/pmcd/gpsd.log
+   <b>
+    $PCP_LOG_DIR/pmcd/openvswitch.log
+   </b>
   </dt>
   <dd>
    default log file for error messages from
    <b>
-    pmdagpsd
+    pmdaopenvswitch
    </b>
   </dd>
  </dl>
  <a name="lbAF">
  </a>
  <h2>
+  PCP ENVIRONMENT
+ </h2>
+ Environment variables with the prefix
+ <b>
+  PCP_
+ </b>
+ are used to parameterize
+the file and directory names used by
+ <b>
+  PCP
+ </b>
+ . On each installation, the
+file
+ <b>
+  /etc/pcp.conf
+ </b>
+ contains the local values for these variables.
+The
+ <b>
+  $PCP_CONF
+ </b>
+ variable may be used to specify an alternative
+configuration file, as described in
+ <i>
+  <a href="/man/man5/pcp.conf.5.html">
+   pcp.conf
+  </a>
+ </i>
+ (5).
+ <a name="lbAG">
+ </a>
+ <h2>
   SEE ALSO
  </h2>
  <b>
+  <a href="/man/man1/pcpintro.1.html">
+   PCPIntro
+  </a>
+ </b>
+ (1),
+ <b>
   <a href="/man/man1/pmcd.1.html">
    pmcd
+  </a>
+ </b>
+ (1),
+ <b>
+  <a href="/man/man1/pminfo.1.html">
+   pminfo
+  </a>
+ </b>
+ (1)
+
+and
+ <b>
+  <a href="/man/man1/pmpython.1.html">
+   pmpython
   </a>
  </b>
  (1).
@@ -205,6 +276,13 @@ the agent is installed or removed.
   </dd>
   <dt>
    <a href="#lbAF">
+    PCP ENVIRONMENT
+   </a>
+  </dt>
+  <dd>
+  </dd>
+  <dt>
+   <a href="#lbAG">
     SEE ALSO
    </a>
   </dt>

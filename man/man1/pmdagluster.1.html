@@ -115,8 +115,8 @@ can report on the current status of profiling of each volume.
 # pminfo -f gluster.volume.profile
 
 gluster.volume.profile
-    inst [0 or "gv0"] value 0
-    inst [1 or "gv1"] value 1
+    inst [0 or "gv0"] value 0
+    inst [1 or "gv1"] value 1
 
 # pmstore -i "gv0" gluster.volume.profile 1
 gluster.volume.profile inst [0 or "gv0"] old value=0 new value=1
@@ -137,22 +137,38 @@ gluster.volume.profile inst [0 or "gv0"] old value=0 new value=1
  </h2>
  Install the gluster PMDA by using the Install script as root:
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/gluster
-  <br/>
-  <br/>
-  # ./Install
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/gluster
+# ./Install
+</pre>
+  </dd>
+ </dl>
+ <p>
  </p>
  <p>
   To uninstall, do the following as root:
  </p>
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/gluster
-  <br/>
-  <br/>
-  # ./Remove
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/gluster
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   <b>
    pmdagluster

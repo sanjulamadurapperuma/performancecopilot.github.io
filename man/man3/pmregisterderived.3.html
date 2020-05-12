@@ -81,7 +81,6 @@
   &gt;
  </b>
  <p>
-  <br/>
   char *pmRegisterDerived(char *
   <i>
    name
@@ -114,11 +113,9 @@
  <h2>
   DESCRIPTION
  </h2>
- <p>
-  Derived metrics provide a way of extending the Performance Metrics
+ Derived metrics provide a way of extending the Performance Metrics
 Name Space (PMNS) with new metrics defined at the PCP client-side using
 expressions over the existing performance metrics.
- </p>
  <p>
   Typical uses would be to aggregate a number of similar metrics to provide
 a higher-level summary metric or to support the ``delta V over delta V''
@@ -540,13 +537,11 @@ For example:
    <br/>
    fw.bytes = network.interface.in.bytes[eth1] + \
    <br/>
-   <br/>
    network.interface.out.bytes[eth1]
    <br/>
    or (equivalently):
    <br/>
    fw.bytes = (network.interface.in.bytes + \
-   <br/>
    <br/>
    network.interface.out.bytes)[eth1]
    <dl compact="">
@@ -1117,7 +1112,6 @@ For example:
    <br/>
    net.in.bytes = scalar(network.interface.in.bytes[eth0]) + \
    <br/>
-   <br/>
    scalar(network.interface.in.bytes[eth1])
    <dl compact="">
     <dt>
@@ -1175,11 +1169,9 @@ with a pattern that matches at most one instance.
  <h2>
   SEMANTIC CHECKS AND RULES
  </h2>
- <p>
-  There are a number of conversions required to determine the
+ There are a number of conversions required to determine the
 metadata for a derived metric and to ensure the semantics of
 the expressions are sound.
- </p>
  <p>
   In an arithmetic expression or a relational expression, if the semantics of both operands is not
 a counter (i.e. PM_SEM_INSTANT or PM_SEM_DISCRETE) then the result
@@ -1772,24 +1764,22 @@ from top to bottom until a match is found.
  <h2>
   CAVEATS
  </h2>
- <p>
-  Derived metrics are not available when using
-  <b>
-   <a href="/man/man3/pmfetcharchive.3.html">
-    pmFetchArchive
-   </a>
-  </b>
-  (3)
+ Derived metrics are not available when using
+ <b>
+  <a href="/man/man3/pmfetcharchive.3.html">
+   pmFetchArchive
+  </a>
+ </b>
+ (3)
 
 as this routine does not use a target list of PMIDs that could be
 remapped (as is done for
-  <b>
-   <a href="/man/man3/pmfetch.3.html">
-    pmFetch
-   </a>
-  </b>
-  (3)).
- </p>
+ <b>
+  <a href="/man/man3/pmfetch.3.html">
+   pmFetch
+  </a>
+ </b>
+ (3)).
  <p>
   There is no
   <b>
@@ -1803,13 +1793,11 @@ of the application.
  <h2>
   DIAGNOSTICS
  </h2>
- <p>
-  On success,
-  <b>
-   pmRegisterDerived
-  </b>
-  returns NULL.
- </p>
+ On success,
+ <b>
+  pmRegisterDerived
+ </b>
+ returns NULL.
  <p>
   If a syntactic error is found at the time of registration, the
 value returned by

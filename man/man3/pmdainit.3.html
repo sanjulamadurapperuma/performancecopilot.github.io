@@ -618,25 +618,23 @@ and is provided as a convenience interface in situations where the
  <h2>
   COMMUNICATION ATTRIBUTES
  </h2>
- <p>
-  Agents that make use of authentication or container attributes
+ Agents that make use of authentication or container attributes
 should indicate this using the
-  <b>
-   pmdaSetCommFlags
-  </b>
-  interface.
+ <b>
+  pmdaSetCommFlags
+ </b>
+ interface.
 This indicates the need for these attributes to be communicated
 on the channel between the PMDA and
-  <b>
-   pmcd
-  </b>
-  or local context client.
+ <b>
+  pmcd
+ </b>
+ or local context client.
 Valid flags are PMDA_FLAG_AUTHORIZE (for authentication related
 attributes) and PMDA_FLAG_CONTAINER (for container name related
 attributes).
-  <a name="lbAI">
-  </a>
- </p>
+ <a name="lbAI">
+ </a>
  <h2>
   PRIVATE DATA
  </h2>

@@ -99,22 +99,38 @@ which exports metric values from the
  If you want access to the names and values for the rsyslog performance
 metrics, do the following as root:
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/rsyslog
-  <br/>
-  <br/>
-  # ./Install
+ </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/rsyslog
+# ./Install
+</pre>
+  </dd>
+ </dl>
+ <p>
  </p>
  <p>
   To uninstall, do the following as root:
  </p>
  <p>
-  <br/>
-  # cd $PCP_PMDAS_DIR/rsyslog
-  <br/>
-  <br/>
-  # ./Remove
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+# cd $PCP_PMDAS_DIR/rsyslog
+# ./Remove
+</pre>
+  </dd>
+ </dl>
  <p>
   <b>
    pmdarsyslog
@@ -140,15 +156,20 @@ agent is installed or removed.
 This is done by adding the lines:
  </p>
  <p>
-  <br/>
-  $ModLoad impstats
-  <br/>
-  <br/>
-  $PStatsInterval 5       # log every 5 seconds
-  <br/>
-  <br/>
-  syslog.info             |/var/log/pcp/rsyslog/stats
  </p>
+ <dl compact="">
+  <dt>
+  </dt>
+  <dd>
+   <b>
+   </b>
+   <pre>
+$ModLoad impstats
+$PStatsInterval 5       # log every 5 seconds
+syslog.info             |/var/log/pcp/rsyslog/stats
+</pre>
+  </dd>
+ </dl>
  <p>
   to your
   <i>

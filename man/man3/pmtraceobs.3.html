@@ -784,56 +784,54 @@ prior to the call.
  <h2>
   CAVEAT
  </h2>
- <p>
-  Applications that use
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
+ Applications that use
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+   gethostbyname
+  </a>
+ </b>
+ (3)
 
 should exercise caution because the static fields in
-  <i>
-   struct hostent
-  </i>
-  may not be preserved across some
-  <i>
-   pcp_trace
-  </i>
-  calls.
+ <i>
+  struct hostent
+ </i>
+ may not be preserved across some
+ <i>
+  pcp_trace
+ </i>
+ calls.
 In particular,
-  <b>
-   pmtracebegin
-  </b>
-  ,
-  <b>
-   pmtraceend
-  </b>
-  ,
-  <b>
-   pmtracepoint
-  </b>
-  ,
-  <b>
-   pmtracecounter
-  </b>
-  ,
+ <b>
+  pmtracebegin
+ </b>
+ ,
+ <b>
+  pmtraceend
+ </b>
+ ,
+ <b>
+  pmtracepoint
+ </b>
+ ,
+ <b>
+  pmtracecounter
+ </b>
+ ,
 
 and
-  <b>
-   pmtraceobs
-  </b>
-  may all call
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
+ <b>
+  pmtraceobs
+ </b>
+ may all call
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+   gethostbyname
+  </a>
+ </b>
+ (3)
 
 internally.
- </p>
  <p>
  </p>
  <hr/>

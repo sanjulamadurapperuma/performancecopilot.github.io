@@ -672,23 +672,21 @@ interpolation will
  <h2>
   CAVEATS
  </h2>
- <p>
-  The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
+ The preamble metrics (pmcd.pmlogger.archive, pmcd.pmlogger.host,
 and pmcd.pmlogger.port), which are automatically recorded by
-  <b>
-   pmlogger
-  </b>
-  at the start of the archive, may not be present in the archive output by
-  <b>
-   pmlogreduce
-  </b>
-  .
+ <b>
+  pmlogger
+ </b>
+ at the start of the archive, may not be present in the archive output by
+ <b>
+  pmlogreduce
+ </b>
+ .
 
 These metrics are only relevant while the archive is being created,
 and have no significance once recording has finished.
-  <a name="lbAH">
-  </a>
- </p>
+ <a name="lbAH">
+ </a>
  <h2>
   DIAGNOSTICS
  </h2>

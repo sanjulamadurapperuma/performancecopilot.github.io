@@ -344,11 +344,9 @@ and
  <h2>
   DIAGNOSTICS
  </h2>
- <p>
-  <b>
-   PM_ERR_NOCONTEXT
-  </b>
- </p>
+ <b>
+  PM_ERR_NOCONTEXT
+ </b>
  <dl compact="">
   <dt>
   </dt>
@@ -376,54 +374,52 @@ and
  <h2>
   CAVEAT
  </h2>
- <p>
-  Applications that use
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
+ Applications that use
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+   gethostbyname
+  </a>
+ </b>
+ (3)
 
 should exercise caution because the static fields in
-  <i>
-   struct hostent
-  </i>
-  may not be preserved across some
-  <b>
-   <a href="/man/man3/pmapi.3.html">
-    PMAPI
-   </a>
-  </b>
-  (3)
+ <i>
+  struct hostent
+ </i>
+ may not be preserved across some
+ <b>
+  <a href="/man/man3/pmapi.3.html">
+   PMAPI
+  </a>
+ </b>
+ (3)
 
 calls.
 In particular,
-  <b>
-   <a href="/man/man3/pmnewcontext.3.html">
-    pmNewContext
-   </a>
-  </b>
-  (3)
+ <b>
+  <a href="/man/man3/pmnewcontext.3.html">
+   pmNewContext
+  </a>
+ </b>
+ (3)
 
 and
-  <b>
-   <a href="/man/man3/pmreconnectcontext.3.html">
-    pmReconnectContext
-   </a>
-  </b>
-  (3)
+ <b>
+  <a href="/man/man3/pmreconnectcontext.3.html">
+   pmReconnectContext
+  </a>
+ </b>
+ (3)
 
 both may call
-  <b>
-   <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
-    gethostbyname
-   </a>
-  </b>
-  (3)
+ <b>
+  <a href="http://man7.org/linux/man-pages/man3/gethostbyname.3.html">
+   gethostbyname
+  </a>
+ </b>
+ (3)
 
 internally.
- </p>
  <p>
  </p>
  <hr/>

@@ -355,27 +355,25 @@ event callback occurs.
  <h2>
   DIAGNOSTICS
  </h2>
- <p>
-  <b>
-   __pmAFsetup
-  </b>
-  ,
-  <b>
-   __pmAFregister
-  </b>
-  and
-  <b>
-   __pmAFunregister
-  </b>
-  return values less than zero in the case of an error.  These values
+ <b>
+  __pmAFsetup
+ </b>
+ ,
+ <b>
+  __pmAFregister
+ </b>
+ and
+ <b>
+  __pmAFunregister
+ </b>
+ return values less than zero in the case of an error.  These values
 are PCP error codes, and may be used to produce error messages via
-  <b>
-   <a href="/man/man3/pmerrstr.3.html">
-    pmErrStr
-   </a>
-  </b>
-  (3).
- </p>
+ <b>
+  <a href="/man/man3/pmerrstr.3.html">
+   pmErrStr
+  </a>
+ </b>
+ (3).
  <p>
   The routines support the standard PCP debug tracing, and the
   <b>
